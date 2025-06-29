@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Aflami"
 include(":app")
-include(":designSystem")
+ 
