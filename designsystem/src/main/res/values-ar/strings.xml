@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loading">جار التحميل</string>
+    <string name="home">الرئيسية</string>
+    <string name="lists">القوائم</string>
+    <string name="categories">الفئات</string>
+    <string name="let_s_play">لنلعب</string>
+    <string name="profile">الملف الشخصي</string>
 </resources>
