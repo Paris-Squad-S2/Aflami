@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.component
+package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -16,6 +16,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
 
@@ -65,11 +66,16 @@ fun RatingCard(
 @PreviewLightDark
 @Composable
 fun PreviewRatingCard() {
-    RatingCard(rating = 8.toString())
+    AflamiTheme {
+        RatingCard(rating = 8.toString())
+    }
+
 }
 
 @PreviewLightDark
 @Composable
 fun PreviewRatingCard2() {
-    RatingCard(rating = 9.9.toString())
+    AflamiTheme {
+        RatingCard(rating = 9.9.toString())
+    }
 }

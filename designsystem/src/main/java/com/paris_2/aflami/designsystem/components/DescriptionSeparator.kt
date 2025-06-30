@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.component
+package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row

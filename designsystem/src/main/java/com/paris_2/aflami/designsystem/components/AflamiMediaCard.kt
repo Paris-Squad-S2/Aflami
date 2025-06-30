@@ -1,0 +1,213 @@
+package com.paris_2.aflami.designsystem.components
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.aflami.designsystem.theme.Theme
+
+@Composable
+fun AflamiMediaCard(
+    modifier: Modifier = Modifier,
+    imageId: Int,
+    rating: String = "",
+    movieName: String = "",
+    mediaType: String = "",
+    year: String = "",
+    onClick: () -> Unit = {},
+    mediaCardType: MediaCardType,
+    showRating: Boolean = true,
+    showGradientFilter: Boolean = false,
+    cardWidth: Int? = null,
+    cardHeight: Int? = null,
+    showPlayButton: Boolean = false,
+    onPlayButtonClick: () -> Unit = {}
+) {
+    val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
+        MediaCardType.UP_COMING -> (cardWidth?.dp ?: 328.dp) to (cardHeight?.dp ?: 196.dp)
+        MediaCardType.NORMAL -> (cardWidth?.dp ?: 156.dp) to (cardHeight?.dp ?: 222.dp)
+        MediaCardType.EPISODE -> (cardWidth?.dp ?: 116.dp) to (cardHeight?.dp ?: 78.dp)
+        MediaCardType.SLIDER -> (cardWidth?.dp ?: 244.dp) to (cardHeight?.dp ?: 300.dp)
+    }
+    val clipRadius = when (mediaCardType) {
+        MediaCardType.EPISODE -> 12.dp
+        MediaCardType.SLIDER -> 24.dp
+        else -> 16.dp
+    }
+
+    Box(
+        modifier = modifier
+            .width(finalCardWidth)
+            .height(finalCardHeight)
+            .border(
+                width = 1.dp,
+                color = Color.White.copy(alpha = 0.08f),
+                shape = RoundedCornerShape(clipRadius)
+            )
+            .clip(RoundedCornerShape(clipRadius))
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null
+            ) { onClick() }
+    ) {
+        Image(
+            modifier = Modifier.fillMaxSize(),
+            painter = painterResource(imageId),
+            contentDescription = "media poster",
+            contentScale = ContentScale.Crop
+        )
+
+        if (showRating) {
+            Row() {
+                Spacer(modifier = Modifier.weight(1f))
+                RatingCard(
+                    rating = rating,
+                    modifier = Modifier.padding(top = 4.dp, end = 4.dp)
+                )
+            }
+
+        }
+
+        if (showGradientFilter) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(finalCardHeight - 114.dp)
+                    .align(Alignment.BottomCenter)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = Theme.colors.gradient.overly.asReversed()
+                        )
+                    )
+            )
+        }
+        Column(
+            modifier = Modifier.padding(top = finalCardHeight - 48.dp, start = 8.dp)
+        ) {
+            Text(
+                text = movieName,
+                style = Theme.textStyle.label.large,
+                color = Theme.colors.onPrimaryColors.onPrimary,
+            )
+            DescriptionSeparator(firstText = mediaType, secondText = year)
+
+        }
+
+        if (showPlayButton) {
+            MediaPlayButton(
+                modifier = Modifier.align(Alignment.Center),
+                onButtonClick = onPlayButtonClick
+            )
+        }
+
+    }
+}
+
+enum class MediaCardType {
+    NORMAL,
+    UP_COMING,
+    EPISODE,
+    SLIDER
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewMediaNormalCard() {
+    AflamiTheme {
+        AflamiMediaCard(
+            imageId = R.drawable.anime_movie,
+            rating = 9.9.toString(),
+            movieName = "Your Name",
+            mediaType = "TV show",
+            year = "2016",
+            mediaCardType = MediaCardType.NORMAL,
+            showGradientFilter = true
+        )
+    }
+
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewMediaUpComingCard() {
+    AflamiTheme {
+        AflamiMediaCard(
+            imageId = R.drawable.anime_horizontal,
+            rating = 9.toString(),
+            movieName = "Grave of the Fireflies",
+            mediaType = "TV show",
+            year = "2016",
+            mediaCardType = MediaCardType.UP_COMING,
+            showGradientFilter = true
+        )
+    }
+
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewMediaEpisodeCard() {
+    AflamiTheme {
+        AflamiMediaCard(
+            imageId = R.drawable.attack_on_titan,
+            rating = 8.8.toString(),
+            mediaCardType = MediaCardType.EPISODE
+        )
+    }
+
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewMediaSliderCard() {
+    AflamiTheme {
+        AflamiMediaCard(
+            imageId = R.drawable.shniderlist_slider,
+            rating = 8.toString(),
+            mediaCardType = MediaCardType.SLIDER,
+            showRating = true,
+            showPlayButton = true
+        )
+    }
+
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewMediaEmptySliderCard() {
+    AflamiTheme {
+        AflamiMediaCard(
+            imageId = R.drawable.shniderlist_slider,
+            mediaCardType = MediaCardType.SLIDER,
+            showRating = false,
+            cardWidth = 207,
+            cardHeight = 276,
+        )
+    }
+
+}
