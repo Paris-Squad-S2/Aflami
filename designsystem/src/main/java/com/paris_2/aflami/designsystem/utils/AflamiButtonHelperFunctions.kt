@@ -58,12 +58,6 @@ fun getBackgroundBrush(
                     Theme.colors.primaryVariant,
                 )
             )
-            ButtonType.OnPrimary -> Brush.verticalGradient(
-                colors = listOf(
-                    Theme.colors.onPrimaryColors.onPrimaryButton,
-                    Theme.colors.onPrimaryColors.onPrimaryButton,
-                )
-            )
 
             ButtonType.TextButton -> Brush.verticalGradient(
                 colors = listOf(Color.Transparent, Color.Transparent)
@@ -98,7 +92,6 @@ fun getContentColor(
         isNegative -> Theme.colors.status.redAccent
 
         else -> when (type) {
-            ButtonType.OnPrimary -> Theme.colors.text.title
             ButtonType.TextButton, ButtonType.Secondary -> Theme.colors.primary
             ButtonType.Primary, ButtonType.FloatingActionButton -> Theme.colors.onPrimaryColors.onPrimary
         }
@@ -110,7 +103,6 @@ fun getContentPadding(type: ButtonType): PaddingValues {
     return when (type) {
         ButtonType.TextButton -> PaddingValues(horizontal = 0.dp, vertical = 0.dp)
         ButtonType.FloatingActionButton -> PaddingValues(horizontal = 18.dp, vertical = 18.dp)
-        ButtonType.OnPrimary -> PaddingValues(horizontal = 8.dp, vertical = 4.dp)
         else -> PaddingValues(horizontal = 24.dp, vertical = 16.dp)
     }
 }

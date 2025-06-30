@@ -2,14 +2,12 @@ package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -25,10 +23,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.modifiers.innerShadow
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -47,7 +43,6 @@ enum class ButtonState {
 sealed class ButtonType {
     object Primary : ButtonType()
     object Secondary : ButtonType()
-    object OnPrimary : ButtonType()
     object TextButton : ButtonType()
     object FloatingActionButton : ButtonType()
 }
@@ -65,7 +60,7 @@ fun AflamiButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isLoading = (state == ButtonState.Loading)
     val enabled = (state == ButtonState.Normal)
-    val spacing = if (type == ButtonType.OnPrimary) 4.dp else 8.dp
+    val spacing = 8.dp
 
     val backgroundColorBrush = getBackgroundBrush(
         type,
@@ -97,10 +92,6 @@ fun AflamiButton(
         shape = RoundedCornerShape(16.dp),
         color = Color.Transparent,
         contentColor = buttonContentColor,
-        border = if (type == ButtonType.OnPrimary) BorderStroke(
-            0.5.dp,
-            Theme.colors.stroke
-        ) else null,
         onClick = { if (enabled) onClick() },
         enabled = enabled,
         interactionSource = interactionSource,
@@ -115,7 +106,7 @@ fun AflamiButton(
             text?.let {
                 Text(
                     it,
-                    style = if (type == ButtonType.OnPrimary) Theme.textStyle.label.small else Theme.textStyle.label.large,
+                    style = Theme.textStyle.label.large,
                     color = buttonContentColor
                 )
             }
@@ -124,7 +115,7 @@ fun AflamiButton(
                 if (text != null) Spacer(modifier = Modifier.width(spacing))
                 AnimatedVisibility(visible = true, enter = fadeIn()) {
                     AnimatedLoadingIcon(
-                        modifier = Modifier.size(if (type == ButtonType.OnPrimary) 12.dp else 20.dp),
+                        modifier = Modifier.size(20.dp),
                         color = buttonContentColor
                     )
                 }
@@ -137,7 +128,6 @@ fun AflamiButton(
         }
     }
 }
-
 
 
 //======================================= Previews ========================================
@@ -289,48 +279,6 @@ fun FABButton() {
         }
     }
 }
-
-@Composable
-@PreviewLightDark
-fun OnPrimaryButton() {
-    AflamiTheme {
-        Surface(color = Theme.colors.surface)
-        {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(20.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                AflamiButton(
-                    modifier = Modifier.height(24.dp),
-                    onClick = { }, text = "play now",
-                    type = ButtonType.OnPrimary,
-                )
-                AflamiButton(
-                    modifier = Modifier.height(24.dp),
-                    onClick = { }, text = "play now",
-                    type = ButtonType.OnPrimary,
-                    state = ButtonState.Loading
-                )
-                AflamiButton(
-                    modifier = Modifier.height(24.dp),
-                    onClick = { }, text = "play now",
-                    type = ButtonType.OnPrimary,
-                    state = ButtonState.Normal,
-                    icon = {
-                        Icon(painter = painterResource(R.drawable.ic_play_circle), null)
-                    }
-                )
-                AflamiButton(
-                    modifier = Modifier.height(24.dp),
-                    onClick = { }, text = "play now",
-                    type = ButtonType.OnPrimary,
-                    state = ButtonState.Disabled
-                )
-            }
-        }
-    }
-}
-
 
 @Composable
 @PreviewLightDark
