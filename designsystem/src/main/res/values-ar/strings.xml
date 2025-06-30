@@ -14,4 +14,8 @@
     <string name="item">%1$s عنصر</string>
     <string name="submit">تسليم</string>
     <string name="cancel">الغاء</string>
+    <string name="light">فاتح</string>
+    <string name="dark">داكن</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الإنجليزية</string>
 </resources>

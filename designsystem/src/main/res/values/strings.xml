@@ -14,4 +14,8 @@
     <string name="item">%1$s item</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
+    <string name="light">Light</string>
+    <string name="dark">Dark</string>
+    <string name="arabic">Arabic</string>
+    <string name="english">English</string>
 </resources>
