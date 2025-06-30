@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loading">Loading</string>
+    <string name="thumbs_up_icon">Thumbs up icon</string>
+    <string name="thumbs_down_icon">Thumbs down icon</string>
 </resources>

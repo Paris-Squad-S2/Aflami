@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loading">جار التحميل</string>
+    <string name="thumbs_up_icon">أيقونة الإبهام لأعلى</string>
+    <string name="thumbs_down_icon">أيقونة الإبهام أسفل</string>
 </resources>
