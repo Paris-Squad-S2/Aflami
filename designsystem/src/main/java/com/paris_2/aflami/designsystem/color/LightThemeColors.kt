@@ -18,7 +18,7 @@ val lightThemeColors = Colors(
         onPrimary = Color(0xDEFFFFFF),
         onPrimaryBody = Color(0x80FFFFFF),
         onPrimaryHint = Color(0x14FFFFFF),
-        onPrimaryButton = Color(0x70FFFFFF)
+        onPrimaryButton = Color(0xFFFFFFFF).copy(alpha = 0.44f)
     ),
     disable = Color(0xFFE1E4E5),
     iconBackground = Color(0xB30D090B),

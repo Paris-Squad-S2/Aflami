@@ -18,7 +18,7 @@ val darkThemeColors = Colors(
         onPrimary = Color(0xDEFFFFFF),
         onPrimaryBody = Color(0x80FFFFFF),
         onPrimaryHint = Color(0x14FFFFFF),
-        onPrimaryButton = Color(0x14FFFFFF)
+        onPrimaryButton = Color(0xFFFFFFFF).copy(alpha = 0.08f)
     ),
     disable = Color(0xFF292828),
     iconBackground = Color(0xFF0D090B),
