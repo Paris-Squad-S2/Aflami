@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.composable
+package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
