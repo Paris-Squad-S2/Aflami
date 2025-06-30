@@ -26,7 +26,9 @@ val lightThemeColors = Colors(
     gradient = Gradient(
         overly = listOf(Color(0xB3FAF5F7), Color(0x00FAF5F7)),
         streakGradient = listOf(Color(0x52D85895), Color(0xFFD85895)),
-        pointsOverly = listOf(Color(0xFFD02C7A), Color(0xFF7D1C4A))
+        pointsOverly = listOf(Color(0xFFD02C7A), Color(0xFF7D1C4A)),
+        blueGradient = listOf(Color(0xFF53ABF9), Color(0xFF336490)),
+        pinkGradient = listOf(Color(0xFFD85895), Color(0xFF803559))
     ),
     status = Status(
         redAccent = Color(0xFFD94C56),
