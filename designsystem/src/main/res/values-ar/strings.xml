@@ -3,4 +3,9 @@
     <string name="loading">جار التحميل</string>
     <string name="thumbs_up_icon">أيقونة الإبهام لأعلى</string>
     <string name="thumbs_down_icon">أيقونة الإبهام أسفل</string>
+    <string name="home">الرئيسية</string>
+    <string name="lists">القوائم</string>
+    <string name="categories">الفئات</string>
+    <string name="let_s_play">لنلعب</string>
+    <string name="profile">الملف الشخصي</string>
 </resources>

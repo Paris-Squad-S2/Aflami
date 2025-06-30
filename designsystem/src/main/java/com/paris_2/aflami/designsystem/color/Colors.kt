@@ -50,7 +50,9 @@ data class OnPrimaryColors(
 data class Gradient(
     val overly: List<Color>,
     val streakGradient: List<Color>,
-    val pointsOverly: List<Color>
+    val pointsOverly: List<Color>,
+    val blueGradient : List<Color>,
+    val pinkGradient : List<Color>
 )
 
 val LocalColors = staticCompositionLocalOf { lightThemeColors }
