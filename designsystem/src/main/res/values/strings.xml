@@ -10,4 +10,6 @@
     <string name="profile">Profile</string>
     <string name="error">Error</string>
     <string name="incorrect_password">incorrect password</string>
+    <string name="list_card">List card</string>
+    <string name="item">%1$s item</string>
 </resources>
