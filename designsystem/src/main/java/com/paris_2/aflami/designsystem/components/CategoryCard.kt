@@ -21,6 +21,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
@@ -70,22 +71,24 @@ fun CategoryCard(
 @Composable
 @PreviewMultiDevices
 fun CategoryCardPreview(){
-    Row(
-        modifier = Modifier
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        CategoryCard(
-            categoryName = "Action",
-            categoryImage = painterResource(R.drawable.img_category_card),
-            onCategoryClick = {},
-            modifier = Modifier.weight(1f)
-        )
-        CategoryCard(
-            categoryName = "Action",
-            categoryImage = painterResource(R.drawable.img_category_card),
-            onCategoryClick = {},
-            modifier = Modifier.weight(1f)
-        )
+    BasePreview {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            CategoryCard(
+                categoryName = "Action",
+                categoryImage = painterResource(R.drawable.img_category_card),
+                onCategoryClick = {},
+                modifier = Modifier.weight(1f)
+            )
+            CategoryCard(
+                categoryName = "Action",
+                categoryImage = painterResource(R.drawable.img_category_card),
+                onCategoryClick = {},
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
