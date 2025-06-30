@@ -28,6 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
@@ -46,7 +47,7 @@ fun SearchSuggestionHub(
             .background(
                 brush = Brush.linearGradient(colors = gradientColors)
             )
-            .clickable{onCardClick}
+            .clickable { onCardClick }
     ) {
         Box(
             modifier = Modifier
@@ -87,27 +88,29 @@ fun SearchSuggestionHub(
 
 @Composable
 @PreviewMultiDevices
-fun SearchSuggestionHubPreview(){
-    Row(
-        modifier = Modifier
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        SearchSuggestionHub(
-            title = "World Tour",
-            description = "Explore World Cinema",
-            icon = painterResource(id = R.drawable.img_world_tour),
-            gradientColors = Theme.colors.gradient.pinkGradient,
-            onCardClick = {},
-            modifier = Modifier.weight(1f)
-        )
-        SearchSuggestionHub(
-            title = "Find by Actor",
-            description = "Search by favorite Actor",
-            icon = painterResource(id = R.drawable.img_world_tour),
-            gradientColors = Theme.colors.gradient.blueGradient,
-            onCardClick = {},
-            modifier = Modifier.weight(1f)
-        )
+fun SearchSuggestionHubPreview() {
+    BasePreview {
+        Row(
+            modifier = Modifier
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            SearchSuggestionHub(
+                title = "World Tour",
+                description = "Explore World Cinema",
+                icon = painterResource(id = R.drawable.img_world_tour),
+                gradientColors = Theme.colors.gradient.pinkGradient,
+                onCardClick = {},
+                modifier = Modifier.weight(1f)
+            )
+            SearchSuggestionHub(
+                title = "Find by Actor",
+                description = "Search by favorite Actor",
+                icon = painterResource(id = R.drawable.img_world_tour),
+                gradientColors = Theme.colors.gradient.blueGradient,
+                onCardClick = {},
+                modifier = Modifier.weight(1f)
+            )
+        }
     }
 }
