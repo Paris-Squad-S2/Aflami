@@ -18,7 +18,7 @@ val darkThemeColors = Colors(
         onPrimary = Color(0xDEFFFFFF),
         onPrimaryBody = Color(0x80FFFFFF),
         onPrimaryHint = Color(0x14FFFFFF),
-        onPrimaryButton = Color(0xDEFFFFFF)
+        onPrimaryButton = Color(0xFFFFFFFF).copy(alpha = 0.08f)
     ),
     disable = Color(0xFF292828),
     iconBackground = Color(0xFF0D090B),
@@ -26,7 +26,9 @@ val darkThemeColors = Colors(
     gradient = Gradient(
         overly = listOf(Color(0xFF0D090B), Color(0x000D090B)),
         streakGradient = listOf(Color(0x1FFFFFFF), Color(0x80FFFFFF)),
-        pointsOverly = listOf(Color(0xFF3B0D23), Color(0xFF7D1C4A))
+        pointsOverly = listOf(Color(0xFF3B0D23), Color(0xFF7D1C4A)),
+        blueGradient = listOf(Color(0xFF53ABF9), Color(0xFF336490)),
+        pinkGradient = listOf(Color(0xFFD85895), Color(0xFF803559))
     ),
     status = Status(
         redAccent = Color(0xFFA63A42),
