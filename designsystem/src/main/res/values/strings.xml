@@ -8,4 +8,6 @@
     <string name="categories">Categories</string>
     <string name="let_s_play">Let\'s play</string>
     <string name="profile">Profile</string>
+    <string name="error">Error</string>
+    <string name="incorrect_password">incorrect password</string>
 </resources>

@@ -8,4 +8,6 @@
     <string name="categories">الفئات</string>
     <string name="let_s_play">لنلعب</string>
     <string name="profile">الملف الشخصي</string>
+    <string name="error">خطأ</string>
+    <string name="incorrect_password">خطأ في كلمة المرور</string>
 </resources>
