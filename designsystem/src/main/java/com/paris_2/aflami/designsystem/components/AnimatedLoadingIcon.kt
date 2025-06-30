@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,6 +17,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
@@ -47,6 +49,8 @@ fun AnimatedLoadingIcon(
 @Composable
 private fun AnimatedLoadingIconPreview() {
     BasePreview {
-        AnimatedLoadingIcon()
+        Column {
+            AnimatedLoadingIcon(color = Theme.colors.text.title)
+        }
     }
 }
