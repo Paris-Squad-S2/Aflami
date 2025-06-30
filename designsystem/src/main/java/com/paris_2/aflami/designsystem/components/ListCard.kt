@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -18,9 +19,15 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 @Composable
 fun ListCard(
     title: String,
-    count: Int
+    count: Int,
+    onCardClick: () -> Unit
 ){
-    Box {
+    Box(
+        modifier = Modifier
+            .clickable {
+                onCardClick()
+            }
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_list_card),
             contentDescription = "List card",
@@ -50,6 +57,6 @@ fun ListCard(
 @Composable
 fun ListCardPreview(){
     BasePreview {
-        ListCard(title = "My favourite", count = 12)
+        ListCard(title = "My favourite", count = 12, {})
     }
 }
