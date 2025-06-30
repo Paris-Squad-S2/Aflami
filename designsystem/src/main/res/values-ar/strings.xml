@@ -8,4 +8,6 @@
     <string name="categories">الفئات</string>
     <string name="let_s_play">لنلعب</string>
     <string name="profile">الملف الشخصي</string>
+    <string name="list_card">بطاقة القائمة</string>
+    <string name="item">%1$s عنصر</string>
 </resources>

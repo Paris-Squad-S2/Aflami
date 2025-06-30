@@ -8,4 +8,6 @@
     <string name="categories">Categories</string>
     <string name="let_s_play">Let\'s play</string>
     <string name="profile">Profile</string>
+    <string name="list_card">List card</string>
+    <string name="item">%1$s item</string>
 </resources>
