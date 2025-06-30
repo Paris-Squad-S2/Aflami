@@ -1,5 +1,10 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -102,7 +107,11 @@ fun TextField(
     val separatorColor = Theme.colors.stroke
 
     Column(modifier = modifier.fillMaxWidth()) {
-        if (showError) {
+        AnimatedVisibility(
+            visible = showError,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -133,7 +142,9 @@ fun TextField(
                         .offset(y = (-0.2).dp)
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
+            if (showError) {
+                Spacer(modifier = Modifier.height(4.dp))
+            }
         }
 
         BasicTextField(

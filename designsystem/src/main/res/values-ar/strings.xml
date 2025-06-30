@@ -12,4 +12,6 @@
     <string name="incorrect_password">خطأ في كلمة المرور</string>
     <string name="list_card">بطاقة القائمة</string>
     <string name="item">%1$s عنصر</string>
+    <string name="submit">تسليم</string>
+    <string name="cancel">الغاء</string>
 </resources>

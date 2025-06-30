@@ -12,4 +12,6 @@
     <string name="incorrect_password">incorrect password</string>
     <string name="list_card">List card</string>
     <string name="item">%1$s item</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
 </resources>
