@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -30,12 +31,12 @@ fun ListCard(
     ) {
         Icon(
             painter = painterResource(id = R.drawable.ic_list_card),
-            contentDescription = "List card",
+            contentDescription = stringResource(R.string.list_card),
             tint = Theme.colors.surfaceHigh
         )
         Column(
             modifier = Modifier
-                .padding(start = 8.dp , bottom = 21.dp)
+                .padding(start = 8.dp, bottom = 21.dp)
                 .align(Alignment.BottomStart)
         ) {
             Text(
@@ -44,7 +45,7 @@ fun ListCard(
                 style = Theme.textStyle.title.medium
             )
             Text(
-                text = "$count item",
+                text = stringResource(R.string.item, count),
                 color = Theme.colors.text.hint,
                 style = Theme.textStyle.label.large
             )
