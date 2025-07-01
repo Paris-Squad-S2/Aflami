@@ -15,14 +15,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -48,6 +51,7 @@ fun iconItemWithDefaults(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopAppBar(
     modifier: Modifier = Modifier,
@@ -56,9 +60,16 @@ fun TopAppBar(
     logo: IconItem? = null,
     leadingIcons: List<IconItem> = emptyList(),
     trailingIcons: List<IconItem> = emptyList(),
+    scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
+
+    val scrollModifier = scrollBehavior?.let {
+        Modifier.nestedScroll(it.nestedScrollConnection)
+    } ?: Modifier
+
     Box(
         modifier = modifier
+            .then(scrollModifier)
             .fillMaxWidth()
             .height(56.dp)
             .padding(horizontal = 12.dp),
@@ -115,7 +126,7 @@ private fun IconBox(
     iconItem: IconItem,
     tint: Color = Theme.colors.text.body,
     modifier: Modifier = Modifier,
-    ) {
+) {
     Box(
         modifier = modifier
             .size(40.dp)
@@ -139,6 +150,7 @@ private fun IconBox(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @PreviewMultiDevices
 @Composable
 fun PreviewTopAppBar() {
