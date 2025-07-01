@@ -61,8 +61,7 @@ fun SearchSuggestionHub(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-                .padding(top = 10.dp)
+                .padding(horizontal = 8.dp, vertical = 8.dp)
         ) {
             Image(
                 painter = icon,
