@@ -12,8 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -42,14 +45,13 @@ fun AflamiSectionTitle(
             Icon(
                 painter = painter,
                 contentDescription = null,
-                tint = Theme.colors.iconBackground,
                 modifier = Modifier.padding(start = 8.dp)
             )
         }
         Spacer(modifier = Modifier.weight(1f))
         if (hasViewAll) {
             Text(
-                text = "All",
+                text = stringResource(R.string.all),
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
                 modifier = Modifier.clickable(
@@ -63,12 +65,15 @@ fun AflamiSectionTitle(
 
 }
 
-@Preview
+@Preview(showBackground = false, showSystemUi = true)
 @Composable
 fun AflamiSectionTitlePreview() {
     AflamiTheme {
         AflamiSectionTitle(
-            title = "Home"
+            title = "Home",
+            hasViewAll = true,
+            hasIcon = true,
+            painter = painterResource(R.drawable.ic_home),
         )
     }
 }
