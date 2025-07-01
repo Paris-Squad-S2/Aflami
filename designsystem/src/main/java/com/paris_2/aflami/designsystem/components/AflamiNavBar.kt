@@ -26,10 +26,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.BasePreview
+import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
 fun AflamiNavBar(
@@ -156,8 +157,10 @@ sealed class AflamiNavBarItem(
     }
 }
 
-@Preview
 @Composable
+@PreviewMultiDevices
 private fun AflamiNavigationBarPreview() {
-    AflamiNavBar()
+    BasePreview {
+        AflamiNavBar()
+    }
 }

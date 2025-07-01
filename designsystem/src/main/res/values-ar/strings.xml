@@ -15,5 +15,9 @@
     <string name="submit">تسليم</string>
     <string name="cancel">الغاء</string>
     <string name="episode">حلقة</string>
-
+    <string name="light">فاتح</string>
+    <string name="dark">داكن</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الإنجليزية</string>
+    <string name="_11_item">11 item</string>
 </resources>
