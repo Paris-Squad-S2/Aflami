@@ -39,6 +39,7 @@ fun AflamiMediaCard(
     movieName: String = "",
     mediaType: String = "",
     year: String = "",
+    clickable: Boolean = false,
     onClick: () -> Unit = {},
     mediaCardType: MediaCardType,
     showRating: Boolean = true,
@@ -70,10 +71,12 @@ fun AflamiMediaCard(
                 shape = RoundedCornerShape(clipRadius)
             )
             .clip(RoundedCornerShape(clipRadius))
-            .clickable(
-                interactionSource = remember { MutableInteractionSource() },
-                indication = null
-            ) { onClick() }
+            .then(
+                if (clickable){
+                    Modifier.clickable { onClick() }
+                }else Modifier
+            )
+
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
@@ -114,14 +117,15 @@ fun AflamiMediaCard(
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.onPrimaryColors.onPrimary,
             )
-            DescriptionSeparator(firstText = mediaType, secondText = year)
+            DescriptionSeparator(firstText = mediaType, secondText = year, textColor = Theme.colors.onPrimaryColors.onPrimaryBody)
 
         }
 
         if (showPlayButton) {
             MediaPlayButton(
                 modifier = Modifier.align(Alignment.Center),
-                onButtonClick = onPlayButtonClick
+                onButtonClick = onPlayButtonClick,
+                buttonType = MediaButtonType.BIG
             )
         }
 
@@ -207,6 +211,7 @@ fun PreviewMediaEmptySliderCard() {
             showRating = false,
             cardWidth = 207,
             cardHeight = 276,
+            clickable = true
         )
     }
 

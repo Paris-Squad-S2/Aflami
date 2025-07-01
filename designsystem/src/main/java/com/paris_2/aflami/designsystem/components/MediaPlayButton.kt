@@ -24,16 +24,29 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun MediaPlayButton(
     modifier: Modifier = Modifier,
-    backGroundColor: Color = Theme.colors.onPrimaryColors.onPrimary,
+    backGroundColor: Color? = null,
     boarderColor: Color = Theme.colors.stroke,
     showBoarder: Boolean = false,
-    buttonSize: Int = 64,
-    iconSize: Int = 32,
-    onButtonClick: () -> Unit = {}
+    buttonSize: Int? = null,
+    iconSize: Int? = null,
+    onButtonClick: () -> Unit = {},
+    buttonType: MediaButtonType
 ) {
+
+    val (finalButtonSize, finalIconSize) = when (buttonType) {
+        MediaButtonType.BIG -> (buttonSize?.dp ?: 64.dp) to (iconSize?.dp ?: 32.dp)
+        MediaButtonType.MEDIUM -> (buttonSize?.dp ?: 40.dp) to (iconSize?.dp ?: 19.dp)
+    }
+
+    val finalBackGroundColor = backGroundColor ?: when (buttonType) {
+        MediaButtonType.BIG ->  Theme.colors.onPrimaryColors.onPrimary
+        MediaButtonType.MEDIUM -> Theme.colors.surfaceHigh
+    }
+
+
     Box(
         modifier = modifier
-            .size(buttonSize.dp)
+            .size(finalButtonSize)
             .then(
                 if (showBoarder) {
                     Modifier.border(
@@ -44,14 +57,15 @@ fun MediaPlayButton(
                 } else Modifier
             )
             .clip(CircleShape)
-            .background(backGroundColor)
+            .background(finalBackGroundColor)
             .clickable { onButtonClick() }
     ) {
         val iconPadding = if(buttonSize == 64) 10 else 3
         Image(
             modifier = Modifier
-                .align(Alignment.Center).padding(start = iconPadding.dp)
-                .size(iconSize.dp),
+                .align(Alignment.Center)
+                .padding(start = iconPadding.dp)
+                .size(finalIconSize),
             painter = painterResource(R.drawable.play_media),
             contentDescription = "play media"
         )
@@ -60,11 +74,16 @@ fun MediaPlayButton(
 
 }
 
+enum class MediaButtonType {
+    BIG,
+    MEDIUM,
+}
+
 @PreviewLightDark
 @Composable
 fun PreviewPlayButton() {
     AflamiTheme {
-        MediaPlayButton(backGroundColor = Theme.colors.onPrimaryColors.onPrimary)
+        MediaPlayButton(buttonType = MediaButtonType.BIG)
     }
 }
 
@@ -72,6 +91,6 @@ fun PreviewPlayButton() {
 @Composable
 fun PreviewSmallPlayButton() {
     AflamiTheme {
-        MediaPlayButton(buttonSize = 40, iconSize = 19, backGroundColor = Theme.colors.surfaceHigh, showBoarder = true)
+        MediaPlayButton(buttonType = MediaButtonType.MEDIUM,showBoarder = true)
     }
 }
