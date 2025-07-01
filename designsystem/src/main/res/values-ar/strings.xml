@@ -14,4 +14,6 @@
     <string name="item">%1$s عنصر</string>
     <string name="submit">تسليم</string>
     <string name="cancel">الغاء</string>
+    <string name="episode">حلقة</string>
+
 </resources>

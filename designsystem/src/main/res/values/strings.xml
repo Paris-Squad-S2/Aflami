@@ -14,4 +14,5 @@
     <string name="item">%1$s item</string>
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
+    <string name="episode">Episode</string>
 </resources>
