@@ -85,7 +85,7 @@ fun TopAppBar(
             }
 
             logo?.let {
-                IconBox(it, tint = Color.Unspecified)
+                IconBox(it, tint = Color.Unspecified,)
             }
 
             Column(
@@ -97,7 +97,11 @@ fun TopAppBar(
                 title?.let {
                     Text(
                         text = it,
-                        style = Theme.textStyle.label.medium,
+                        style = if (subtitle != null) {
+                            Theme.textStyle.label.medium
+                        } else {
+                            Theme.textStyle.title.large
+                        },
                         color = Theme.colors.text.title,
                         maxLines = 1,
                     )
@@ -124,7 +128,7 @@ fun TopAppBar(
 @Composable
 private fun IconBox(
     iconItem: IconItem,
-    tint: Color = Theme.colors.text.body,
+    tint: Color = Theme.colors.text.title,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -176,7 +180,7 @@ fun PreviewTopAppBar() {
                     iconItemWithDefaults(
                         ImageVector.vectorResource(R.drawable.ic_search),
                         {},
-                        Theme.colors.primaryVariant
+                        Theme.colors.primaryVariant,
                     ),
                 )
             )
