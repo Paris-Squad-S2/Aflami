@@ -56,8 +56,8 @@ fun SelectionCard(
         !isSelected && optionDescription != null -> R.drawable.ic_radio_add
         isCorrect == true && isSelected -> R.drawable.ic_radio_true
         isCorrect == false && isSelected -> R.drawable.ic_radio_false
-        isCorrect == null && isSelected -> R.drawable.ic_radio_close
-        else -> R.drawable.ic_radio_check
+        isCorrect == null && isSelected -> null
+        else -> null
     }
 
     val radioIconTint = when {
@@ -107,11 +107,13 @@ fun SelectionCard(
                 )
             }
         }
-        Icon(
-            imageVector = ImageVector.vectorResource(radioIcon),
-            contentDescription = null,
-            tint = radioIconTint,
-            modifier = Modifier.size(18.dp)
+
+        AflamiRadioButton(
+            selected = isSelected,
+            isDisable = false,
+            icon = radioIcon,
+            iconTint = radioIconTint,
+            onClick = onClick
         )
     }
 }

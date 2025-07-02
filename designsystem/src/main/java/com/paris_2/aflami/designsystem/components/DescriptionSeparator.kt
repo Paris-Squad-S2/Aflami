@@ -16,7 +16,13 @@ import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun DescriptionSeparator(modifier: Modifier = Modifier, firstText: String, secondText: String,textColor: Color,separatorColor: Color = textColor) {
+fun DescriptionSeparator(
+    modifier: Modifier = Modifier,
+    firstText: String,
+    secondText: String,
+    textColor: Color,
+    separatorColor: Color = textColor
+) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         Text(
             text = firstText,
@@ -45,5 +51,9 @@ fun DescriptionSeparator(modifier: Modifier = Modifier, firstText: String, secon
 @Preview
 @Composable
 fun PreviewDescriptionSeparator() {
-    DescriptionSeparator(firstText = "TV show", secondText = "2016", textColor =Theme.colors.onPrimaryColors.onPrimaryBody)
+    DescriptionSeparator(
+        firstText = "TV show",
+        secondText = "2016",
+        textColor = Theme.colors.onPrimaryColors.onPrimaryBody
+    )
 }
