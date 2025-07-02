@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,7 +38,7 @@ fun MediaPlayButton(
     }
 
     val finalBackGroundColor = backGroundColor ?: when (buttonType) {
-        MediaButtonType.BIG ->  Theme.colors.onPrimaryColors.onPrimary
+        MediaButtonType.BIG -> Theme.colors.onPrimaryColors.onPrimary
         MediaButtonType.MEDIUM -> Theme.colors.surfaceHigh
     }
 
@@ -60,7 +59,7 @@ fun MediaPlayButton(
             .background(finalBackGroundColor)
             .clickable { onButtonClick() }
     ) {
-        val iconPadding = if(buttonSize == 64) 10 else 3
+        val iconPadding = if (buttonSize == 64) 10 else 3
         Image(
             modifier = Modifier
                 .align(Alignment.Center)
@@ -91,6 +90,6 @@ fun PreviewPlayButton() {
 @Composable
 fun PreviewSmallPlayButton() {
     AflamiTheme {
-        MediaPlayButton(buttonType = MediaButtonType.MEDIUM,showBoarder = true)
+        MediaPlayButton(buttonType = MediaButtonType.MEDIUM, showBoarder = true)
     }
 }
