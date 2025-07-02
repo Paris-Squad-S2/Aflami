@@ -32,7 +32,7 @@ fun DescriptionSeparator(
         )
 
         Image(
-            painter = painterResource(R.drawable.media_year_seprarator),
+            painter = painterResource(R.drawable.media_year_separator),
             contentDescription = "separator",
             modifier = Modifier.padding(end = 4.dp),
             colorFilter = ColorFilter.tint(separatorColor)
