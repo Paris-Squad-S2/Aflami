@@ -77,6 +77,7 @@ fun Slider(
                     showRating = isFocused,
                     showPlayButton = isFocused,
                     onClick = { onClick },
+                    cardHeight = if (isFocused) 300 else 276
                 )
             }
         }
