@@ -3,6 +3,7 @@ package com.paris_2.aflami.designsystem.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -64,6 +65,18 @@ fun NetworkError(
 fun NetworkErrorPreview() {
     BasePreview {
         NetworkError(
+            onRetry = {}
+        )
+    }
+}
+
+@Composable
+@PreviewLightDark
+fun NetworkErrorPreview2() {
+    BasePreview {
+        NetworkError(
+            modifier = Modifier
+                .fillMaxSize(),
             onRetry = {}
         )
     }
