@@ -71,9 +71,6 @@ fun getBackgroundBrush(
             )
         }
     }
-    return Brush.verticalGradient(
-        colors = listOf(Color.Transparent, Color.Transparent)
-    )
 }
 
 
