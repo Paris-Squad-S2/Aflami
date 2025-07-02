@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.background
@@ -54,7 +55,7 @@ fun AflamiButton(
     state: ButtonState = ButtonState.Normal,
     type: ButtonType,
     isNegative: Boolean = false,
-    text: Int? = null,
+    @StringRes text: Int? = null,
     icon: @Composable (() -> Unit)? = null,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
