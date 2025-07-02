@@ -34,8 +34,6 @@ import com.paris_2.aflami.designsystem.utils.getBackgroundBrush
 import com.paris_2.aflami.designsystem.utils.getContentColor
 import com.paris_2.aflami.designsystem.utils.getContentPadding
 
-// TODO: I will refactor it later
-
 enum class ButtonState {
     Normal,
     Disabled,
