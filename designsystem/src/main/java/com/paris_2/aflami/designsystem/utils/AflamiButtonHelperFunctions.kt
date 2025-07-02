@@ -66,7 +66,7 @@ fun getBackgroundBrush(
             else -> Brush.verticalGradient(
                 colors = listOf(
                     Theme.colors.primary,
-                    Color(0xFF973A66) //TODO : Replace with a proper color
+                    Color(0xFF973A66)
                 )
             )
         }
