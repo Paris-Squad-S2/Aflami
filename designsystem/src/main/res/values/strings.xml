@@ -23,4 +23,7 @@
     <string name="all">All</string>
     <string name="pts_to_unlock">Pts. to unlock</string>
     <string name="play_now">play now</string>
+    <string name="character_image">Character Image</string>
+    <string name="hint_text">hint?</string>
+    <string name="pts">Pts.</string>
 </resources>
