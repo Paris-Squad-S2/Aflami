@@ -10,3 +10,7 @@ val popPins = FontFamily(
     Font(R.font.poppins_regular, FontWeight.Normal),
     Font(R.font.poppins_semibold, FontWeight.SemiBold),
 )
+
+val nicoMoji = FontFamily(
+    Font(R.font.nico_moji_regular,FontWeight.Normal)
+)
