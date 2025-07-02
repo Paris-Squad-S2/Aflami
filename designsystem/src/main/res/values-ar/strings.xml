@@ -25,4 +25,8 @@
     <string name="character_image">صورة الشخصية</string>
     <string name="hint_text">تلميح؟</string>
     <string name="pts">نقاط</string>
+    <string name="network_error_icon">أيقونة خطأ الشبكة</string>
+    <string name="network_error_message">أُووبس! يبدو أنك في وضع عدم الاتصال.</string>
+    <string name="network_error_hint">تحقق من اتصالك وحاول مرة أخرى ، سننتظر أفلامك والفشار</string>
+    <string name="retry">إعادة المحاولة</string>
 </resources>

@@ -113,15 +113,14 @@ fun AflamiButton(
                 )
             }
 
-            if (isLoading) {
+            AnimatedVisibility(visible = isLoading, enter = fadeIn()) {
                 if (text != null) Spacer(modifier = Modifier.width(spacing))
-                AnimatedVisibility(visible = true, enter = fadeIn()) {
-                    AnimatedLoadingIcon(
-                        modifier = Modifier.size(20.dp),
-                        color = buttonContentColor
-                    )
-                }
-            } else {
+                AnimatedLoadingIcon(
+                    modifier = Modifier.size(20.dp),
+                    color = buttonContentColor
+                )
+            }
+            AnimatedVisibility(visible = !isLoading, enter = fadeIn()) {
                 icon?.let {
                     if (text != null) Spacer(modifier = Modifier.width(spacing))
                     it()

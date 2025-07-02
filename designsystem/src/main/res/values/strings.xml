@@ -26,4 +26,8 @@
     <string name="character_image">Character Image</string>
     <string name="hint_text">hint?</string>
     <string name="pts">Pts.</string>
+    <string name="network_error_icon">Network error icon</string>
+    <string name="network_error_message">Oops! It looks like you’re offline.</string>
+    <string name="network_error_hint">Check your connection and try again, we’ll be waiting with your movies and popcorn</string>
+    <string name="retry">Retry</string>
 </resources>
