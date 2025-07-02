@@ -74,7 +74,7 @@ fun AflamiButton(
         ButtonType.FloatingActionButton -> 6.dp
         else -> 0.dp
     }
-    val iShadow =
+    val shadowModifier =
         if ((type == ButtonType.FloatingActionButton || type == ButtonType.Primary) && state != ButtonState.Disabled && !isNegative) {
             Modifier.innerShadow(
                 shape = RoundedCornerShape(16.dp),
@@ -89,7 +89,7 @@ fun AflamiButton(
 
     Surface(
         modifier = modifier
-            .then(iShadow)
+            .then(shadowModifier)
             .shadow(elevation = buttonElevation, shape = RoundedCornerShape(16.dp)),
         shape = RoundedCornerShape(16.dp),
         color = Color.Transparent,
