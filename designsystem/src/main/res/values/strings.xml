@@ -30,4 +30,7 @@
     <string name="network_error_message">Oops! It looks like you’re offline.</string>
     <string name="network_error_hint">Check your connection and try again, we’ll be waiting with your movies and popcorn</string>
     <string name="retry">Retry</string>
+    <string name="settings">Settings</string>
+    <string name="close_icon">Close Icon</string>
+    <string name="click_me">Click me</string>
 </resources>
