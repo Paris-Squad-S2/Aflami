@@ -54,7 +54,7 @@ fun Slider(
     ) {
         HorizontalPager(
             state = pagerState,
-            contentPadding = PaddingValues(horizontal = 90.dp),
+            contentPadding = PaddingValues(horizontal = 80.dp),
             modifier = Modifier.fillMaxWidth()
         ) { page ->
             val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
@@ -62,13 +62,13 @@ fun Slider(
             val scaleX = 1f - (0.1f * abs(pageOffset))
             val item = items[page]
             Box(
-                contentAlignment = Alignment.TopCenter,
+                contentAlignment = Alignment.Center,
                 modifier = Modifier
                     .padding(top = if (isFocused) 0.dp else 24.dp)
                     .graphicsLayer(
                         scaleX = scaleX,
                         scaleY = 1f
-                    ),
+                    )
             ) {
                 AflamiMediaCard(
                     imageId = item.imageResId,
@@ -77,8 +77,6 @@ fun Slider(
                     showRating = isFocused,
                     showPlayButton = isFocused,
                     onClick = { onClick },
-                    cardWidth = if (isFocused) 244 else 207,
-                    cardHeight = if (isFocused) 300 else 276
                 )
             }
         }
