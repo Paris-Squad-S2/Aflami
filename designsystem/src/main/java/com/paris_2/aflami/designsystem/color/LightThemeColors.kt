@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.color
 
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 
 val lightThemeColors = Colors(
@@ -28,7 +29,8 @@ val lightThemeColors = Colors(
         streakGradient = listOf(Color(0x52D85895), Color(0xFFD85895)),
         pointsOverly = listOf(Color(0xFFD02C7A), Color(0xFF7D1C4A)),
         blueGradient = listOf(Color(0xFF53ABF9), Color(0xFF336490)),
-        pinkGradient = listOf(Color(0xFFD85895), Color(0xFF803559))
+        pinkGradient = listOf(Color(0xFFD85895), Color(0xFF803559)),
+        logoGradient = listOf(Color(0xDED85895), Color(0xDE64163B)),
     ),
     status = Status(
         redAccent = Color(0xFFD94C56),
@@ -44,4 +46,13 @@ val lightThemeColors = Colors(
         backgroundCircles = Color(0x3DD85895),
         profileOverlay = Color(0x80FAF5F7)
     )
+)
+
+val gradient = Brush.linearGradient(
+    colors = listOf(
+        Color(0xD85895).copy(alpha = 0.87f),
+        Color(0x64163B).copy(alpha = 0.87f)
+    ),
+    start = androidx.compose.ui.geometry.Offset.Zero,
+    end = androidx.compose.ui.geometry.Offset.Infinite
 )

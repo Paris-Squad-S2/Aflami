@@ -28,7 +28,8 @@ val darkThemeColors = Colors(
         streakGradient = listOf(Color(0x1FFFFFFF), Color(0x80FFFFFF)),
         pointsOverly = listOf(Color(0xFF3B0D23), Color(0xFF7D1C4A)),
         blueGradient = listOf(Color(0xFF53ABF9), Color(0xFF336490)),
-        pinkGradient = listOf(Color(0xFFD85895), Color(0xFF803559))
+        pinkGradient = listOf(Color(0xFFD85895), Color(0xFF803559)),
+        logoGradient = listOf(Color(0xDED85895), Color(0xDE64163B)),
     ),
     status = Status(
         redAccent = Color(0xFFA63A42),

@@ -52,7 +52,8 @@ data class Gradient(
     val streakGradient: List<Color>,
     val pointsOverly: List<Color>,
     val blueGradient : List<Color>,
-    val pinkGradient : List<Color>
+    val pinkGradient : List<Color>,
+    val logoGradient: List<Color>
 )
 
 val LocalColors = staticCompositionLocalOf { lightThemeColors }
