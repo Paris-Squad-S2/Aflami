@@ -32,6 +32,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -68,8 +69,9 @@ fun GameCard(
             .border(
                 width = 1.dp, brush = Brush.linearGradient(
                     colorStops = arrayOf(
-                        0.0f to Theme.colors.surfaceHigh,
-                        1f to backgroundColors.first().copy(alpha = 0.50f),
+                        0.0f to backgroundColors.first().copy(alpha = 0.50f),
+                        0.75f to Theme.colors.surfaceHigh.copy(alpha = 0.02f),
+                        1f to Theme.colors.surfaceHigh.copy(alpha = 0.02f),
                     ),
                     start = Offset(0f, 0f),
                     end = Offset(1000f, 0f)
@@ -170,7 +172,7 @@ fun GameCard(
                     painter = painterResource(R.drawable.linear_light),
                     contentDescription = "linear light",
                     modifier = Modifier
-                        .align(Alignment.TopEnd)
+                        .align(Alignment.TopEnd),
 
                 )
 
@@ -193,6 +195,7 @@ fun GameCard(
                         modifier = Modifier
                             .align(Alignment.BottomEnd),
                         painter = trailingImages.first(),
+                        contentScale = ContentScale.FillHeight,
                         contentDescription = "leading game icon"
                     )
                 }
@@ -250,7 +253,7 @@ private val playButtonBorderColor = Brush.linearGradient(
 
 @PreviewLightDark
 @Composable
-private fun GameCardPreview() {
+private fun GameCardCalenderPreview() {
     AflamiTheme(isDarkTheme = true) {
         GameCard(
             modifier = Modifier
@@ -271,7 +274,7 @@ private fun GameCardPreview() {
 
 @PreviewLightDark
 @Composable
-private fun GameCardLockedPreview() {
+private fun GameCardCalenderLockedPreview() {
     AflamiTheme {
         GameCard(
             modifier = Modifier
@@ -281,6 +284,82 @@ private fun GameCardLockedPreview() {
             description = "Pick the right release year",
             backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
             trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
+            onPlayClick = {},
+            isPlayButtonLocked = true,
+            pointsToUnlock = 400,
+        )
+    }
+}
+
+
+@PreviewLightDark
+@Composable
+private fun GameCardChairPreview() {
+    AflamiTheme(isDarkTheme = true) {
+        GameCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp),
+            title = "Which Genre?",
+            description = "Which one is the real action movie?",
+            backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
+            trailingImages = listOf(painterResource(R.drawable.image_chair)),
+            onPlayClick = {},
+            isPlayButtonLocked = false,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GameCardChairLockedPreview() {
+    AflamiTheme {
+        GameCard(
+            modifier = Modifier
+                .width(328.dp)
+                .height(140.dp),
+            title = "Which Genre?",
+            description = "Which one is the real action movie?",
+            backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
+            trailingImages = listOf(painterResource(R.drawable.image_chair)),
+            onPlayClick = {},
+            isPlayButtonLocked = true,
+            pointsToUnlock = 400,
+        )
+    }
+}
+
+
+@PreviewLightDark
+@Composable
+private fun GameCardClownPreview() {
+    AflamiTheme(isDarkTheme = true) {
+        GameCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp),
+            title = "Guess the Character",
+            description = "Can you tell who this characher?",
+            backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
+            trailingImages = listOf(painterResource(R.drawable.image_clown)),
+            onPlayClick = {},
+            isPlayButtonLocked = false,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GameCardClownLockedPreview() {
+    AflamiTheme {
+        GameCard(
+            modifier = Modifier
+                .width(328.dp)
+                .height(140.dp),
+            title = "Guess the Character",
+            description = "Can you tell who this characher?",
+            backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
+            trailingImages = listOf(painterResource(R.drawable.image_clown)),
             onPlayClick = {},
             isPlayButtonLocked = true,
             pointsToUnlock = 400,
