@@ -1,5 +1,7 @@
 package com.paris_2.aflami.designsystem.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.res.Configuration.UI_MODE_TYPE_NORMAL
 import android.os.Build
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +39,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -162,15 +165,13 @@ fun GuessCard(
                             val tileWidthDp = 20.dp
                             val spacingDp = 20.dp
 
-                            // Convert dp to pixels
                             val tileWidthPx = density.run { tileWidthDp.toPx() }
                             val spacingPx = density.run { spacingDp.toPx() }
 
                             val totalTileWidth = tileWidthPx + spacingPx
                             val horizontalTiles = ceil(size.width / totalTileWidth).toInt()
 
-                            // Draw tiled background
-                            for (i in 0 until horizontalTiles) {
+                            for (i in -1 until horizontalTiles) {
                                 drawImage(
                                     image = imageBitmap,
                                     topLeft = Offset(i * totalTileWidth, 0f),
@@ -178,7 +179,6 @@ fun GuessCard(
                                 )
                             }
 
-                            // Draw overlay content (your text/icon/etc.)
                             drawContent()
                         }
                         .padding(vertical = 8.dp),
@@ -213,6 +213,28 @@ enum class GuessCardImageState {
     Hard,
     Medium,
     Show,
+}
+
+@Composable
+@Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES or UI_MODE_TYPE_NORMAL, widthDp = 1000)
+private fun GuessCharacterCardPreview2() {
+    BasePreview {
+        Column {
+            var state by remember { mutableStateOf(GuessCardImageState.Hard) }
+            GuessCard(
+                textNoImage = "Test the hint part on large width",
+                clickable = true,
+                showHint = state == GuessCardImageState.Hard,
+                onClick = {
+                    state = when (state) {
+                        GuessCardImageState.Hard -> GuessCardImageState.Medium
+                        GuessCardImageState.Medium -> GuessCardImageState.Show
+                        GuessCardImageState.Show -> GuessCardImageState.Hard
+                    }
+                },
+            )
+        }
+    }
 }
 
 @Composable
