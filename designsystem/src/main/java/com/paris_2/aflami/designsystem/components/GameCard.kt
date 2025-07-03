@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -35,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import dropShadow
 
 
 @Composable
@@ -51,7 +54,15 @@ fun GameCard(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
+            .height(140.dp)
+            .dropShadow(
+                shape = RoundedCornerShape(16.dp),
+                color = backgroundColors.first().copy(alpha = 0.12f),
+                blur = 12.dp,
+                offsetY = 4.dp,
+                offsetX = 0.dp,
+                spread = 0.dp
+            )
             .background(color = Theme.colors.surfaceHigh, shape = RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(15.dp))
             .border(
@@ -70,15 +81,14 @@ fun GameCard(
 
         if (isPlayButtonLocked)
             Text(
-                text = pointsToUnlock.toString() + stringResource(R.string.pts_to_unlock),
+                text = pointsToUnlock.toString() + "\t" + stringResource(R.string.pts_to_unlock),
                 style = Theme.textStyle.label.small,
                 color = Theme.colors.status.yellowAccent,
-                modifier = Modifier.padding(vertical = 6.dp)
+                modifier = Modifier.padding(vertical = 4.dp)
             )
 
         Box(
             modifier = Modifier
-                .weight(2f)
                 .fillMaxSize()
                 .background(
                     brush = Brush.horizontalGradient(
@@ -93,31 +103,34 @@ fun GameCard(
 
             Column(
                 modifier = Modifier
+                    .padding(vertical = if (isPlayButtonLocked) 4.dp else 8.dp)
                     .fillMaxSize()
-                    .padding(vertical = 12.dp)
-                    .padding(start = 12.dp, end = LocalConfiguration.current.screenWidthDp.dp / 8),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(start = 12.dp, end = LocalConfiguration.current.screenWidthDp.dp / 4),
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = title,
                     color = Theme.colors.text.title,
                     style = Theme.textStyle.title.small,
                     maxLines = 1,
                 )
                 Text(
-                    modifier = Modifier.weight(1f),
                     text = description,
                     color = Theme.colors.text.body,
                     style = Theme.textStyle.body.small,
                     maxLines = 2,
                 )
                 Surface(
-                    modifier = Modifier.weight(1f),
                     onClick = onPlayClick,
                     enabled = !isPlayButtonLocked,
                     color = Theme.colors.onPrimaryColors.onPrimaryButton,
-                    shape = RoundedCornerShape(16.dp)
+                    contentColor = Theme.colors.text.title,
+                    border = BorderStroke(width = 0.5.dp, brush = playButtonBorderColor),
+                    shape = if (!isPlayButtonLocked) RoundedCornerShape(16.dp) else CircleShape,
+                    modifier = Modifier
+                        .align(Alignment.Start)
+                        .offset(x = if (isPlayButtonLocked) (-10).dp else 0.dp)
                 ) {
                     Row(
                         modifier = Modifier.padding(horizontal = 8.6.dp, vertical = 6.dp),
@@ -127,19 +140,19 @@ fun GameCard(
                         if (!isPlayButtonLocked) {
                             Text(
                                 text = stringResource(R.string.play_now),
-                                color = Theme.colors.text.title,
-                                style = Theme.textStyle.label.small
+                                style = Theme.textStyle.label.small,
+                                color = Theme.colors.text.title
                             )
                             Icon(
                                 painter = painterResource(R.drawable.ic_play_circle),
-                                tint = Theme.colors.text.title,
                                 contentDescription = "icon play",
+                                tint = Theme.colors.text.title
                             )
                         } else
                             Icon(
                                 painter = painterResource(R.drawable.ic_locked),
-                                tint = Theme.colors.text.title,
-                                contentDescription = "icon lock"
+                                contentDescription = "icon lock",
+                                tint = Theme.colors.text.title
                             )
                     }
                 }
@@ -227,17 +240,28 @@ fun GameCard(
     }
 }
 
+private val playButtonBorderColor = Brush.linearGradient(
+    colorStops = arrayOf(
+        0.0f to Color.White.copy(alpha = 0.08f),
+        0.8f to Color.White.copy(alpha = 0.08f),
+        1.0f to Color.White.copy(alpha = 0.24f)
+    )
+)
+
 @PreviewLightDark
 @Composable
 private fun GameCardPreview() {
-    AflamiTheme {
+    AflamiTheme(isDarkTheme = true) {
         GameCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(140.dp),
             title = "When Was It Released?",
             description = "Pick the right release year",
-            backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
+            backgroundColors = listOf(
+                Theme.colors.status.navyCard,
+                Theme.colors.status.darkBlue
+            ),
             trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
             onPlayClick = {},
             isPlayButtonLocked = false,
