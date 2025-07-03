@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -32,7 +33,7 @@ fun PageLoadingPlaceHolder(
             color = Theme.colors.primary
         )
         Text(
-            text = "Loading...",
+            text = context.getString(R.string.loading_with_dots),
             style = Theme.textStyle.label.medium,
             color = Theme.colors.text.body
         )

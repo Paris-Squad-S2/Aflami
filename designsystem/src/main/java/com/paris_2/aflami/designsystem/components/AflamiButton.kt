@@ -61,7 +61,7 @@ fun AflamiButton(
     val interactionSource = remember { MutableInteractionSource() }
     val isLoading = (state == ButtonState.Loading)
     val enabled = (state == ButtonState.Normal)
-    val spacing = 8.dp
+    val contentSpacing = 8.dp
 
     val backgroundColorBrush = getBackgroundBrush(
         type,
@@ -113,7 +113,7 @@ fun AflamiButton(
             }
 
             AnimatedVisibility(visible = isLoading, enter = fadeIn()) {
-                if (text != null) Spacer(modifier = Modifier.width(spacing))
+                if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
                 AnimatedLoadingIcon(
                     modifier = Modifier.size(20.dp),
                     color = buttonContentColor
@@ -121,7 +121,7 @@ fun AflamiButton(
             }
             AnimatedVisibility(visible = !isLoading, enter = fadeIn()) {
                 icon?.let {
-                    if (text != null) Spacer(modifier = Modifier.width(spacing))
+                    if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
                     it()
                 }
             }
