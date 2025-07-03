@@ -19,6 +19,7 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 import com.paris_2.aflami.designsystem.R
+import androidx.compose.animation.core.tween
 
 
 @Composable
@@ -38,15 +39,15 @@ fun Slider(
             .pointerInput(Unit) {
                 detectHorizontalDragGestures { _, dragAmount ->
                     coroutineScope.launch {
-                        if (dragAmount > 0) {
-                            pagerState.animateScrollToPage(
-                                (pagerState.currentPage - 1).coerceAtLeast(0)
-                            )
+                        val targetPage = if (dragAmount > 0) {
+                            (pagerState.currentPage - 1).coerceAtLeast(0)
                         } else {
-                            pagerState.animateScrollToPage(
-                                (pagerState.currentPage + 1).coerceAtMost(items.size - 1)
-                            )
+                            (pagerState.currentPage + 1).coerceAtMost(items.size - 1)
                         }
+                        pagerState.animateScrollToPage(
+                            targetPage,
+                            animationSpec = tween(durationMillis = 60)
+                        )
                     }
                 }
             },
