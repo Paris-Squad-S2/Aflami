@@ -65,6 +65,7 @@ dependencies {
     testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.mockk)
+    testImplementation(libs.junit.platform.launcher)
 }
 
 jacoco {
