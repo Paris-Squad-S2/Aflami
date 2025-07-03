@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -143,10 +143,10 @@ fun MoodPicker(
     }
 }
 
-@Preview("Dark Theme")
+@PreviewLightDark
 @Composable
 private fun MoodPickerDarkThemePreview() {
-    AflamiTheme(isDarkTheme = true) {
+    AflamiTheme {
         MoodPicker(
             title = "Mood Picker ( Get a Movie )",
             question = "What’s your vibe today? ",
@@ -164,26 +164,6 @@ private fun MoodPickerDarkThemePreview() {
     }
 }
 
-@Preview("Light Theme")
-@Composable
-private fun MoodPickerLightThemePreview() {
-    AflamiTheme(isDarkTheme = false) {
-        MoodPicker(
-            title = "Mood Picker ( Get a Movie )",
-            question = "What’s your vibe today? ",
-            onEmojiClick = {emojiMood ->
-                // action
-            },
-            backgroundColor = listOf(
-                Theme.colors.primary,
-                Theme.colors.status.redAccent,
-                Theme.colors.status.yellowAccent,
-            ),
-            image = painterResource(R.drawable.img_clown),
-            modifier = Modifier.size(328.dp, 194.dp)
-        )
-    }
-}
 
 enum class MoodType(val tags: List<String>){
     SAD(listOf("Comedy")),
