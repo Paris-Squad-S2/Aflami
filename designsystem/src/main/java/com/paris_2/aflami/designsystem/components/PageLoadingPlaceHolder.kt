@@ -15,6 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import androidx.compose.ui.res.stringResource
+
 
 @Composable
 fun PageLoadingPlaceHolder(
@@ -33,7 +35,7 @@ fun PageLoadingPlaceHolder(
             color = Theme.colors.primary
         )
         Text(
-            text = context.getString(R.string.loading_with_dots),
+            text =  stringResource(R.string.loading_with_dots),
             style = Theme.textStyle.label.medium,
             color = Theme.colors.text.body
         )
