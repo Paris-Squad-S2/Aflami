@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -25,7 +26,7 @@ fun AflamiSectionTitle(
     title: String,
     modifier: Modifier = Modifier,
     painter: Painter? = null,
-    hasIcon: Boolean = false,
+    iconColor: Color = Theme.colors.iconBackground,
     hasViewAll: Boolean = false,
     onClickViewAll: () -> Unit = {}
 ) {
@@ -41,11 +42,12 @@ fun AflamiSectionTitle(
             style = Theme.textStyle.headline.small,
             color = Theme.colors.text.title,
         )
-        if (painter != null && hasIcon) {
+        if (painter != null) {
             Icon(
                 painter = painter,
                 contentDescription = null,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp),
+                tint = iconColor
             )
         }
         Spacer(modifier = Modifier.weight(1f))
@@ -72,7 +74,6 @@ fun AflamiSectionTitlePreview() {
         AflamiSectionTitle(
             title = "Home",
             hasViewAll = true,
-            hasIcon = true,
             painter = painterResource(R.drawable.ic_home),
         )
     }
