@@ -77,7 +77,7 @@ fun Slider(
                     mediaCardType = MediaCardType.SLIDER,
                     showRating = isFocused,
                     showPlayButton = isFocused,
-                    onClick = { onClick },
+                    onClick = onClick,
                     cardHeight = if (isFocused) 300 else 276
                 )
             }
