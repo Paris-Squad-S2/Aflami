@@ -26,6 +26,7 @@ fun AflamiSectionTitle(
     title: String,
     modifier: Modifier = Modifier,
     painter: Painter? = null,
+    contentDescription: String? = null,
     iconColor: Color = Theme.colors.iconBackground,
     hasViewAll: Boolean = false,
     onClickViewAll: () -> Unit = {}
@@ -45,7 +46,7 @@ fun AflamiSectionTitle(
         if (painter != null) {
             Icon(
                 painter = painter,
-                contentDescription = null,
+                contentDescription = contentDescription,
                 modifier = Modifier.padding(start = 8.dp),
                 tint = iconColor
             )
