@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading">جار التحميل</string>
+    <string name="thumbs_up_icon">أيقونة الإبهام لأعلى</string>
+    <string name="thumbs_down_icon">أيقونة الإبهام أسفل</string>
+    <string name="home">الرئيسية</string>
+    <string name="lists">القوائم</string>
+    <string name="categories">الفئات</string>
+    <string name="let_s_play">لنلعب</string>
+    <string name="profile">الملف الشخصي</string>
+    <string name="error">خطأ</string>
+    <string name="incorrect_password">خطأ في كلمة المرور</string>
+    <string name="list_card">بطاقة القائمة</string>
+    <string name="item">%1$s عنصر</string>
+    <string name="submit">تسليم</string>
+    <string name="cancel">الغاء</string>
+    <string name="episode">حلقة</string>
+    <string name="light">فاتح</string>
+    <string name="dark">داكن</string>
+    <string name="arabic">العربية</string>
+    <string name="english">الإنجليزية</string>
+    <string name="_11_item">11 item</string>
+    <string name="all">الكل</string>
+    <string name="pts_to_unlock">النقط اللازمة للفتح</string>
+    <string name="play_now">ألعب الان</string>
+    <string name="character_image">صورة الشخصية</string>
+    <string name="hint_text">تلميح؟</string>
+    <string name="pts">نقاط</string>
+    <string name="network_error_icon">أيقونة خطأ الشبكة</string>
+    <string name="network_error_message">أُووبس! يبدو أنك في وضع عدم الاتصال.</string>
+    <string name="network_error_hint">تحقق من اتصالك وحاول مرة أخرى ، سننتظر أفلامك والفشار</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="settings">الاعدادات</string>
+    <string name="close_icon">أيقونة إغلاق</string>
+    <string name="click_me">اضغط علي</string>
+    <string name="aflami">أفلامي</string>
+    <string name="loading_with_dots">جارٍ التحميل…</string>
+</resources>

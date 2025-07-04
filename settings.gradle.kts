@@ -21,7 +21,7 @@ dependencyResolutionManagement {
 
 rootProject.name = "Aflami"
 include(":app")
-include(":designSystem")
+include(":designsystem")
 include(":domain")
 include(":domain:user")
 include(":domain:guessGame")
