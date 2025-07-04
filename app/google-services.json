@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "939632921981",
+    "project_id": "aflami-609e6",
+    "storage_bucket": "aflami-609e6.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939632921981:android:caaa2815eb9c29a3fed014",
+        "android_client_info": {
+          "package_name": "com.paris_2.aflami"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADmM72MIdvDBqao6RACqpvLj6PgdUReos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:939632921981:android:29f39c62a47fcd32fed014",
+        "android_client_info": {
+          "package_name": "com.parise_2.aflami"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADmM72MIdvDBqao6RACqpvLj6PgdUReos"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
