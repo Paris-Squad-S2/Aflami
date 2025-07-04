@@ -88,7 +88,7 @@ fun AflamiDialog(
 @Composable
 fun PreviewAflamiDialog() {
     BasePreview {
-        var showDialog = remember { mutableStateOf(false) }
+        val showDialog = remember { mutableStateOf(false) }
 
         Box(
             modifier = Modifier
