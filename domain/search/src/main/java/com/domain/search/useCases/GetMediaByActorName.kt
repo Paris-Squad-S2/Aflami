@@ -10,8 +10,8 @@ class GetMediaByActorName(
     suspend operator fun invoke(actorName: String): List<Media> {
         return TemporaryFakeData.mediaList
         /*
-    val moviesDeferred = async { movieRepository.getMediaByActor(actorName) }
-    val tvShowsDeferred = async { tvShowRepository.getMediaByActor(actorName) }
+    val moviesDeferred = async { movieRepository.getMoviesByActor(actorName) }
+    val tvShowsDeferred = async { tvShowRepository.getTvShowsByActor(actorName) }
     moviesDeferred.await() + tvShowsDeferred.await()
          */
     }

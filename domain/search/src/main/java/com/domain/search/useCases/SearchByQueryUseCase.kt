@@ -2,10 +2,10 @@ package com.domain.search.useCases
 
 import com.domain.search.model.Media
 
-class SearchByQueryUseCase (
+class SearchByQueryUseCase(
     // private val movieRepository: MovieRepository,
     // private val tvShowRepository: TvShowRepository
-){
+) {
 
     suspend operator fun invoke(query: String): List<Media> {
         return TemporaryFakeData.mediaList
@@ -13,7 +13,7 @@ class SearchByQueryUseCase (
 
 val allMediaDeferred = async { movieRepository.getAllMovies() + tvShowRepository.getAllTvShows() }
 val filteredByActorDeferred = async { movieRepository.getMoviesByActor(query) + tvShowRepository.getTvShowsByActor(query) }
-val filteredByCountryDeferred = async { tvShowRepository.getMoviesByCountry(query) }
+val filteredByCountryDeferred = async { movieRepository.getMoviesByCountry(query) }
 
 val allMedia = allMediaDeferred.await()
 val filteredByTitleOrCategory = allMedia.filter {
@@ -29,5 +29,3 @@ val filteredByCountry = filteredByCountryDeferred.await()
          */
     }
 }
-
-
