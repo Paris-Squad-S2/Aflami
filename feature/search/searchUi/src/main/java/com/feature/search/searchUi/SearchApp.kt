@@ -1,10 +1,10 @@
-package com.feature.search.searchUi.navigation
+package com.feature.search.searchUi
 
 import android.app.Application
 import com.feature.search.searchUi.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.GlobalContext.startKoin
+import org.koin.core.context.startKoin
 
 class SearchApp : Application() {
     override fun onCreate() {
