@@ -12,9 +12,6 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun WorldTourScreen(viewModel: WorldTourViewModel = koinViewModel()) {
-    /**
-     * use this method to navigate to different screens
-     */
     WorldTourScreenContent(onNavigate = viewModel::onNavigateToSearchScreen)
 }
 

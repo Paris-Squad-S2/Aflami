@@ -13,9 +13,6 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
-    /**
-     * use this method to navigate to different screens
-     */
     SearchScreenContent(onNavigateToFilterScreen = viewModel::onNavigateToFilterScreen,
         onNavigateToWorldTourScreen = viewModel::onNavigateToWorldTourScreen,
         onNavigateToFindByActorScreen = viewModel::onNavigateToFindByActorScreen

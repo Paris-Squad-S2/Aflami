@@ -12,10 +12,6 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FindByActorScreen(viewModel: FindByActorViewModel = koinViewModel()) {
-
-    /**
-     * use this method to navigate to different screens
-     */
     FindByActorScreenContent(onNavigate = viewModel::onNavigateToSearchScreen)
 }
 
