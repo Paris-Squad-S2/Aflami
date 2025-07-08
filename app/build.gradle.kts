@@ -34,12 +34,6 @@ android {
         }
         getByName("debug") {
             enableUnitTestCoverage = true
-
-            firebaseAppDistribution {
-                artifactType = "APK"
-                groups = "testers"
-
-            }
         }
     }
     compileOptions {
