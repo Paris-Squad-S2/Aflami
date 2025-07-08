@@ -1,3 +1,6 @@
+import java.util.Properties
+import java.io.FileInputStream
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -6,6 +9,12 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply true
     id("com.google.firebase.crashlytics")
     id("jacoco")
+}
+
+val localProperties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    localProperties.load(FileInputStream(localPropertiesFile))
 }
 
 android {
@@ -20,6 +29,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "API_TOKEN", "\"${localProperties.getProperty("API_TOKEN", "")}\"")
     }
 
     buildTypes {
@@ -43,6 +54,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -65,6 +77,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(project(":domain:user"))
     implementation(project(":FireBase"))
+    implementation(project(":datasource:remote:search"))
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)
