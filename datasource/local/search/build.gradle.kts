@@ -55,4 +55,6 @@ dependencies {
     // test
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
+
+    implementation(project(":repository:search"))
 }

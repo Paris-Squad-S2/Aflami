@@ -4,16 +4,16 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.datasource.local.search.dao.MediaDao
-import com.datasource.local.search.dao.SearchDao
-import com.datasource.local.search.entity.MediaEntity
-import com.datasource.local.search.entity.SearchEntity
+import com.datasource.local.search.dao.SearchHistoryDao
+import com.repository.search.entity.MediaEntity
+import com.repository.search.entity.SearchHistoryEntity
 
 @Database(
-    entities = [SearchEntity::class, MediaEntity::class],
+    entities = [com.repository.search.entity.SearchHistoryEntity::class, com.repository.search.entity.MediaEntity::class],
     version = 1,
 )
 @TypeConverters(SearchConverter::class)
 abstract class SearchDatabase : RoomDatabase() {
-    abstract fun searchDao(): SearchDao
+    abstract fun searchDao(): SearchHistoryDao
     abstract fun mediaDao(): MediaDao
 }

@@ -1,4 +1,4 @@
-package com.datasource.local.search.entity
+package com.repository.search.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
