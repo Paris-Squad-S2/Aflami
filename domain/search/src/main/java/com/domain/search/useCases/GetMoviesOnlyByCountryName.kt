@@ -3,11 +3,11 @@ package com.domain.search.useCases
 import com.domain.search.model.Media
 
 class GetMoviesOnlyByCountryName (
-    // private val movieRepository: MovieRepository
+    // private val searchMediaRepository: SearchMediaRepository
 ){
 
     suspend operator fun invoke(countryName: String): List<Media> {
         return TemporaryFakeData.MoviesList
-        // return mediaRepository.getMoviesByCountry(countryName)
+        // return searchMediaRepository.getMoviesByCountry(countryName)
     }
 }
