@@ -8,24 +8,26 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.feature.search.searchUi.navigation.Destinations
-import com.feature.search.searchUi.navigation.LocalNavController
 import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = koinViewModel()){
-    val navController = LocalNavController.current
-
+fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
     /**
      * use this method to navigate to different screens
      */
-    SearchScreenContent(onNavigate = { navController.navigate(Destinations.FilterScreen(it)) })
-
+    SearchScreenContent(onNavigateToFilterScreen = viewModel::onNavigateToFilterScreen,
+        onNavigateToWorldTourScreen = viewModel::onNavigateToWorldTourScreen,
+        onNavigateToFindByActorScreen = viewModel::onNavigateToFindByActorScreen
+    )
 }
 
 @Composable
-fun SearchScreenContent(onNavigate: (String) -> Unit = {}){
+fun SearchScreenContent(
+    onNavigateToFilterScreen: (String) -> Unit,
+    onNavigateToWorldTourScreen: (String) -> Unit,
+    onNavigateToFindByActorScreen: (String) -> Unit
+) {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -33,9 +35,19 @@ fun SearchScreenContent(onNavigate: (String) -> Unit = {}){
     ) {
         Text("SearchScreen")
         Button(
-            onClick = { onNavigate("") },
+            onClick = { onNavigateToFilterScreen("Filter") },
         ) {
-            Text("next")
+            Text("Filter")
+        }
+        Button(
+            onClick = { onNavigateToWorldTourScreen("worldTour") },
+        ) {
+            Text("World Tour")
+        }
+        Button(
+            onClick = { onNavigateToFindByActorScreen("findByActor") },
+        ) {
+            Text("Find By Actor")
         }
     }
 }

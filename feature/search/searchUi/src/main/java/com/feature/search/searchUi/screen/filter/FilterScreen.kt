@@ -8,18 +8,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.feature.search.searchUi.navigation.Destinations
-import com.feature.search.searchUi.navigation.LocalNavController
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun FilterScreen(viewModel: FilterViewModel = koinViewModel()) {
-    val navController = LocalNavController.current
 
-    /**
-     * use this method to navigate to different screens
-     */
-    FilterScreenContent(onNavigate = { navController.navigate(Destinations.SearchScreen) })
+    FilterScreenContent(onNavigate = viewModel::navigateToSearchScreen)
 }
 
 @Composable
@@ -33,7 +27,7 @@ fun FilterScreenContent(onNavigate: () -> Unit = {}) {
         Button(
             onClick = { onNavigate() },
         ) {
-            Text("next")
+            Text("SearchScreen")
         }
     }
 }

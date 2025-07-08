@@ -8,22 +8,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.feature.search.searchUi.navigation.Destinations
-import com.feature.search.searchUi.navigation.LocalNavController
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun FindByActorScreen(viewModel: FindByActorViewModel = koinViewModel()){
-    val navController = LocalNavController.current
+fun FindByActorScreen(viewModel: FindByActorViewModel = koinViewModel()) {
 
     /**
      * use this method to navigate to different screens
      */
-    FindByActorScreenContent(onNavigate = { navController.navigate(Destinations.SearchScreen) })
+    FindByActorScreenContent(onNavigate = viewModel::onNavigateToSearchScreen)
 }
 
 @Composable
-fun FindByActorScreenContent(onNavigate: () -> Unit = {}){
+fun FindByActorScreenContent(onNavigate: () -> Unit = {}) {
     Column(
         Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -33,7 +30,7 @@ fun FindByActorScreenContent(onNavigate: () -> Unit = {}){
         Button(
             onClick = { onNavigate() },
         ) {
-            Text("next")
+            Text("SearchScreen")
         }
     }
 }
