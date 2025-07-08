@@ -1,9 +1,11 @@
+import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.firebase.appdistribution)
-    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.gms.google.services) apply true
     id("com.google.firebase.crashlytics")
     id("jacoco")
 }
@@ -65,6 +67,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(project(":domain:user"))
     implementation(project(":FireBase"))
+    implementation(project(":designsystem:safeimageviewer"))
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)
@@ -93,7 +96,18 @@ tasks.withType<Test> {
 }
 
 tasks.register<JacocoReport>("jacocoTestReport") {
-    dependsOn("testDebugUnitTest", "testReleaseUnitTest")
+    dependsOn(
+        "testDebugUnitTest",
+        "testReleaseUnitTest"
+    )
+
+    mustRunAfter(
+        "generateDebugAndroidTestResValues",
+        "generateDebugAndroidTestLintModel",
+        "lintAnalyzeDebugAndroidTest",
+        "mergeDebugAssets",
+        "mergeReleaseAssets"
+    )
 
     reports {
         xml.required.set(true)
@@ -110,20 +124,27 @@ tasks.register<JacocoReport>("jacocoTestReport") {
         "**/di/**",
     )
 
-    val classDirs = fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug/classes") {
+    val debugTree = fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug/classes") {
         exclude(fileFilter)
-    } + fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+    }
+    val kotlinDebugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
         exclude(fileFilter)
     }
 
-    classDirectories.setFrom(classDirs)
-    sourceDirectories.setFrom(files("src/main/java", "src/main/kotlin"))
-
-    executionData.setFrom(
-        fileTree(layout.buildDirectory.get()) {
-            include("**/*.exec")
-        }
+    classDirectories.setFrom(files(debugTree, kotlinDebugTree))
+    sourceDirectories.setFrom(
+        files(
+            "${project.projectDir}/src/main/java",
+            "${project.projectDir}/src/main/kotlin"
+        )
     )
+
+    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
+        include(
+            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
+            "outputs/unit_test_code_coverage/releaseUnitTest/testReleaseUnitTest.exec"
+        )
+    })
 }
 
 tasks.register<JacocoCoverageVerification>("verifyCoverage") {

@@ -1,11 +1,11 @@
 [versions]
 agp = "8.10.1"
 firebaseBom = "33.16.0"
-
-junitJupiterApi = "5.12.0"
-junitJupiterEngine = "5.12.0"
-junitJupiterParams = "5.12.0"
-junitPlatformLauncher = "1.12.0"
+coil = "2.7.0"
+junitJupiterApi = "5.13.2"
+junitJupiterEngine = "5.13.2"
+junitJupiterParams = "5.13.3"
+junitPlatformLauncher = "1.13.3"
 kotlin = "2.0.21"
 coreKtx = "1.16.0"
 junit = "4.13.2"
@@ -14,18 +14,23 @@ espressoCore = "3.6.1"
 kotlinxDatetime = "0.7.0"
 lifecycleRuntimeKtx = "2.9.1"
 activityCompose = "1.10.1"
-composeBom = "2024.09.00"
-appcompat = "1.6.1"
+composeBom = "2025.06.01"
+appcompat = "1.7.1"
 material = "1.12.0"
-accompanistPager = "0.34.0"
-jetbrainsKotlinJvm = "2.0.21"
+accompanistPager = "0.36.0"
+jetbrainsKotlinJvm = "2.2.0"
 googleFirebaseAppdistribution = "5.1.1"
 googleGmsGoogleServices = "4.4.3"
-mockk = "1.14.0"
-koinAndroid = "4.0.2"
-koinCompose = "4.0.2"
-koinComposeViewmodel = "4.0.2"
-koinCore = "4.0.2"
+mockk = "1.14.4"
+koinAndroid = "4.1.0"
+koinCompose = "4.1.0"
+koinComposeViewmodel = "4.1.0"
+koinCore = "4.1.0"
+tensorflowLite = "2.13.0"
+tensorflowLiteSupport = "0.4.4"
+tensorflowLiteMetadata = "0.1.0"
+tensorflowLiteGpu = "2.3.0"
+lifecycleViewmodelCompose = "2.9.1"
 roomKtx = "2.7.2"
 roomRuntime = "2.7.2"
 roomTesting = "2.7.2"
@@ -45,6 +50,9 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-lifecycle-viewmodel-compose = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+# Legacy aliases for backward compatibility
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -65,6 +73,10 @@ koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndr
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
 koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koinComposeViewmodel" }
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinCore" }
+tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
+tensorflow-lite-support = { group = "org.tensorflow", name = "tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
+tensorflow-lite-metadata = { group = "org.tensorflow", name = "tensorflow-lite-metadata", version.ref = "tensorflowLiteMetadata" }
+tensorflow-lite-gpu = { group = "org.tensorflow", name = "tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
