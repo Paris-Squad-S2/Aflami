@@ -8,8 +8,9 @@ import com.datasource.local.search.dao.SearchHistoryDao
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.SearchHistoryEntity
 
+
 @Database(
-    entities = [com.repository.search.entity.SearchHistoryEntity::class, com.repository.search.entity.MediaEntity::class],
+    entities = [SearchHistoryEntity::class, MediaEntity::class],
     version = 1,
 )
 @TypeConverters(SearchConverter::class)

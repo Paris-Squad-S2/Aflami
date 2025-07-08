@@ -1,7 +1,6 @@
 package com.datasource.local.search
 
 import androidx.room.TypeConverter
-import com.repository.search.entity.MediaTypeEntity
 import kotlinx.datetime.LocalDate
 
 class SearchConverter {
