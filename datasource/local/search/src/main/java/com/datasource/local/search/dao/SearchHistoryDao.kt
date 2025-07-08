@@ -10,10 +10,10 @@ import com.repository.search.entity.SearchHistoryEntity
 interface SearchHistoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addSearchQuery(history: com.repository.search.entity.SearchHistoryEntity)
+    suspend fun addSearchQuery(history: SearchHistoryEntity)
 
     @Query("SELECT * FROM search_history ORDER BY id DESC")
-    suspend fun getAllSearchQueries(): List<com.repository.search.entity.SearchHistoryEntity>
+    suspend fun getAllSearchQueries(): List<SearchHistoryEntity>
 
     @Query("DELETE FROM search_history WHERE id = :historyId")
     suspend fun clearSearchQueryById(historyId: Long)
