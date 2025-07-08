@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -152,9 +153,10 @@ fun GuessCard(
             val bitmap = drawable.toBitmap()
             val imageBitmap = bitmap.asImageBitmap()
             val tintColor = Theme.colors.primary.copy(alpha = 0.03f)
+            val configuration = LocalConfiguration.current
 
             CompositionLocalProvider(
-                LocalLayoutDirection provides if (LocalContext.current.resources.configuration.layoutDirection == android.util.LayoutDirection.RTL)
+                LocalLayoutDirection provides if (configuration.layoutDirection == android.util.LayoutDirection.RTL)
                     LayoutDirection.Rtl else LayoutDirection.Ltr,
             ) {
                 Row(
