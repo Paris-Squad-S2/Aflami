@@ -5,7 +5,7 @@ class ClearRecentSearch (
 ){
     suspend operator fun invoke(searchHistoryId: String) {
         TemporaryFakeData.searchHistoryList.removeIf { it.id.toString() == searchHistoryId }
-        // searchHistoryRepository.deleteSearchHistory(searchHistoryId)
+        // searchHistoryRepository.clearSearchHistory(searchHistoryId)
     }
 }
 
