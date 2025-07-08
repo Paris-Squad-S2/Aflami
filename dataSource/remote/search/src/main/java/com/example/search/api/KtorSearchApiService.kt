@@ -43,8 +43,7 @@ class KtorSearchApiService(
             countryCode = countryCode
         )
     }
-
-
+    
     private suspend fun performSearchWithCountry(
         endpoint: String,
         query: String,
