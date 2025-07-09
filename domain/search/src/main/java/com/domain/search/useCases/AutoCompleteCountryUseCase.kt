@@ -2,7 +2,7 @@ package com.domain.search.useCases
 
 import com.domain.search.repository.CountryRepository
 
-class AutoCompleteCountry(
+class AutoCompleteCountryUseCase(
     private val countryRepository: CountryRepository,
 ) {
     suspend operator fun invoke(query: String): List<String> {
