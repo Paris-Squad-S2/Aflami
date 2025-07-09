@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.search"
+    namespace = "com.datasource.local.search"
     compileSdk = 35
 
     defaultConfig {
