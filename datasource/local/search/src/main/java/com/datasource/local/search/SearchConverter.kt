@@ -3,6 +3,7 @@ package com.datasource.local.search
 import androidx.room.TypeConverter
 import com.repository.search.entity.MediaTypeEntity
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.json.Json
@@ -35,5 +36,14 @@ class SearchConverter {
         return LocalDate.Companion.parse(dateString)
     }
 
+    @TypeConverter
+    fun fromLocalDateTime(date: LocalDateTime): String {
+        return date.toString()
+    }
+
+    @TypeConverter
+    fun toLocalDateTime(dateString: String): LocalDateTime {
+        return LocalDateTime.Companion.parse(dateString)
+    }
 
 }
