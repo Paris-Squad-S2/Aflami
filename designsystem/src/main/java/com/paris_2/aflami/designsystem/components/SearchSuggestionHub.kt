@@ -47,7 +47,7 @@ fun SearchSuggestionHub(
             .background(
                 brush = Brush.linearGradient(colors = gradientColors)
             )
-            .clickable { onCardClick }
+            .clickable(onClick = onCardClick)
     ) {
         Box(
             modifier = Modifier

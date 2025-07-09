@@ -20,6 +20,7 @@ import kotlinx.coroutines.launch
 import kotlin.math.abs
 import com.paris_2.aflami.designsystem.R
 import androidx.compose.animation.core.tween
+import androidx.compose.ui.res.painterResource
 
 
 @Composable
@@ -72,7 +73,7 @@ fun Slider(
                     )
             ) {
                 AflamiMediaCard(
-                    imageId = item.imageResId,
+                    imagePainter = painterResource(item.imageResId),
                     rating = item.rating,
                     mediaCardType = MediaCardType.SLIDER,
                     showRating = isFocused,

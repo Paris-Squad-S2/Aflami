@@ -5,7 +5,7 @@ import com.domain.search.repository.SearchHistoryRepository
 class ClearRecentSearchUseCase(
     private val searchHistoryRepository: SearchHistoryRepository,
 ) {
-    suspend operator fun invoke(searchHistoryId: String) {
+    suspend operator fun invoke(searchHistoryId: Long) {
         searchHistoryRepository.clearSearchHistory(searchHistoryId)
     }
 }

@@ -80,7 +80,15 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
+    //coil
+    implementation(libs.coil.compose)
+
     implementation(project(":repository:search"))
     implementation(project(":datasource:local:search"))
     implementation(project(":domain:search"))
+    implementation(project(":designsystem"))
+    implementation(project(":designsystem:safeimageviewer"))
 }

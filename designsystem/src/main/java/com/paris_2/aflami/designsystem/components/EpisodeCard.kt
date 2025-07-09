@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -38,7 +39,7 @@ fun EpisodeCard(
             AflamiMediaCard(
                 rating = episodeRating,
                 mediaCardType = MediaCardType.EPISODE,
-                imageId = R.drawable.attack_on_titan,
+                imagePainter = painterResource(R.drawable.attack_on_titan),
                 modifier = Modifier.padding(bottom = 8.dp, end = 12.dp),
                 clickable = true
             )

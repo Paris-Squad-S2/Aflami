@@ -21,8 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -32,7 +34,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun AflamiMediaCard(
     modifier: Modifier = Modifier,
-    imageId: Int,
+    imagePainter: Painter,
     rating: String = "",
     movieName: String = "",
     mediaType: String = "",
@@ -78,7 +80,7 @@ fun AflamiMediaCard(
     ) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(imageId),
+            painter = imagePainter,
             contentDescription = "media poster",
             contentScale = ContentScale.Crop
         )
@@ -113,6 +115,7 @@ fun AflamiMediaCard(
                 text = movieName,
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.onPrimaryColors.onPrimary,
+                overflow = TextOverflow.Ellipsis,
             )
             DescriptionSeparator(
                 firstText = mediaType,
@@ -145,7 +148,7 @@ enum class MediaCardType {
 fun PreviewMediaNormalCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.anime_movie,
+            imagePainter = painterResource(R.drawable.anime_movie),
             rating = 9.9.toString(),
             movieName = "Your Name",
             mediaType = "TV show",
@@ -162,7 +165,7 @@ fun PreviewMediaNormalCard() {
 fun PreviewMediaUpComingCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.anime_horizontal,
+            imagePainter = painterResource(R.drawable.anime_horizontal),
             rating = 9.toString(),
             movieName = "Grave of the Fireflies",
             mediaType = "TV show",
@@ -179,7 +182,7 @@ fun PreviewMediaUpComingCard() {
 fun PreviewMediaEpisodeCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.attack_on_titan,
+            imagePainter = painterResource(R.drawable.attack_on_titan),
             rating = 8.8.toString(),
             mediaCardType = MediaCardType.EPISODE
         )
@@ -192,7 +195,7 @@ fun PreviewMediaEpisodeCard() {
 fun PreviewMediaSliderCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.shniderlist_slider,
+            imagePainter = painterResource(R.drawable.shniderlist_slider),
             rating = 8.toString(),
             mediaCardType = MediaCardType.SLIDER,
             showRating = true,
@@ -207,7 +210,7 @@ fun PreviewMediaSliderCard() {
 fun PreviewMediaEmptySliderCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.shniderlist_slider,
+            imagePainter = painterResource(R.drawable.shniderlist_slider),
             mediaCardType = MediaCardType.SLIDER,
             showRating = false,
             cardWidth = 207,

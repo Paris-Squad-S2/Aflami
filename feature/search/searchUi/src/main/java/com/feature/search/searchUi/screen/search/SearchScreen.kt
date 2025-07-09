@@ -1,50 +1,91 @@
 package com.feature.search.searchUi.screen.search
 
-import androidx.compose.foundation.layout.Arrangement
+import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.feature.search.searchUi.screen.search.components.FilterDialog
+import com.feature.search.searchUi.screen.search.components.NoSearchQueryContent
+import com.feature.search.searchUi.screen.search.components.WithSearchQueryContent
+import com.paris_2.aflami.designsystem.components.TextField
+import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
+import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
+import com.feature.search.searchUi.R as RSearchUi
+import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 
 @Composable
 fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
-    SearchScreenContent(onNavigateToFilterScreen = viewModel::onNavigateToFilterScreen,
-        onNavigateToWorldTourScreen = viewModel::onNavigateToWorldTourScreen,
-        onNavigateToFindByActorScreen = viewModel::onNavigateToFindByActorScreen
+    val screenState = viewModel.screenState.collectAsStateWithLifecycle()
+
+    SearchScreenContent(
+        state = screenState.value,
+        searchScreenInteractionListener = viewModel,
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SearchScreenContent(
-    onNavigateToFilterScreen: (String) -> Unit,
-    onNavigateToWorldTourScreen: (String) -> Unit,
-    onNavigateToFindByActorScreen: (String) -> Unit
+private fun SearchScreenContent(
+    searchScreenInteractionListener: SearchScreenInteractionListener,
+    state: SearchScreenState
 ) {
+    if (state.uiState.showFilterDialog) {
+        FilterDialog(
+            searchScreenInteractionListener = searchScreenInteractionListener,
+        )
+    }
+
     Column(
-        Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        Modifier
+            .fillMaxSize()
+            .background(Theme.colors.surface)
+            .navigationBarsPadding()
     ) {
-        Text("SearchScreen")
-        Button(
-            onClick = { onNavigateToFilterScreen("Filter") },
-        ) {
-            Text("Filter")
-        }
-        Button(
-            onClick = { onNavigateToWorldTourScreen("worldTour") },
-        ) {
-            Text("World Tour")
-        }
-        Button(
-            onClick = { onNavigateToFindByActorScreen("findByActor") },
-        ) {
-            Text("Find By Actor")
+        TopAppBar(
+            modifier = Modifier
+                .statusBarsPadding()
+                .padding(bottom = 8.dp),
+            title = stringResource(RSearchUi.string.searchTitle),
+            leadingIcons = listOf(
+                iconItemWithDefaults(
+                    icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                    onClick = searchScreenInteractionListener::onNavigateBack,
+                )
+            ),
+        )
+        TextField(
+            value = state.uiState.searchQuery,
+            onValueChange = searchScreenInteractionListener::onSearchQueryChange,
+            placeholder = stringResource(RSearchUi.string.search),
+            trailingIcon = RDesignSystem.drawable.ic_filter_vertical,
+            onClickTrailingIcon = searchScreenInteractionListener::onFilterButtonClick,
+        )
+
+        if (state.uiState.searchQuery.isEmpty()) {
+            NoSearchQueryContent(
+                state = state,
+                searchScreenInteractionListener = searchScreenInteractionListener
+            )
+        } else {
+            WithSearchQueryContent(
+                state = state,
+                searchScreenInteractionListener = searchScreenInteractionListener,
+            )
         }
     }
 }

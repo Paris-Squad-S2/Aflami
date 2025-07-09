@@ -13,7 +13,7 @@ data class Media(
 )
 
 
-enum class MediaType {
-    TVSHOW,
-    MOVIE
+enum class MediaType(val displayName: String) {
+    TVSHOW("TV Show"),
+    MOVIE("Movie")
 }
