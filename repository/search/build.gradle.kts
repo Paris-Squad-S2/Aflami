@@ -43,5 +43,10 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
+    //koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+
+
     implementation(project(":domain:search"))
 }

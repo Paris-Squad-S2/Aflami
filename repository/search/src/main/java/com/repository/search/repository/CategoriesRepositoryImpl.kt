@@ -1,17 +1,23 @@
 package com.repository.search.repository
 
+import android.Manifest
+import androidx.annotation.RequiresPermission
 import com.domain.search.model.CategoryModel
 import com.domain.search.repository.CategoriesRepository
+import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.GenresLocalDataSource
 import com.repository.search.entity.GenreEntity
 
 class CategoriesRepositoryImpl(
-    private val isNetworkConnected: Boolean, // impl the way to check the network connection
+    private val networkConnectionChecker: NetworkConnectionChecker,
     private val genresLocalDataSource: GenresLocalDataSource,
 //    private val genresRemoteDataSource: GenresRemoteDataSource,
 ) : CategoriesRepository {
+    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+
     override suspend fun getAllCategories(): List<CategoryModel> {
-        return if (isNetworkConnected)
+
+        return if (networkConnectionChecker.isConnected.value)
             TODO()
         else
             genresLocalDataSource.getGenres().toCategories()

@@ -1,16 +1,18 @@
 package com.repository.search.repository
 
 import com.domain.search.repository.CountryRepository
+import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.CountriesLocalDataSource
 import com.repository.search.entity.CountryEntity
 
 class CountryRepositoryImpl(
-    private val isNetworkConnected: Boolean,
+    private val networkConnectionChecker: NetworkConnectionChecker,
     private val countriesLocalDataSource: CountriesLocalDataSource,
-    // private val countriesRemoteDataSource: ContriesRemoteDataSource,
+    // private val countriesRemoteDataSource: CountriesRemoteDataSource,
 ): CountryRepository {
+
     override suspend fun getAllCountries(): List<String> {
-        return if (isNetworkConnected)
+        return if (networkConnectionChecker.isConnected.value)
             TODO()
         else
             countriesLocalDataSource.getCountries().toCountriesName()
