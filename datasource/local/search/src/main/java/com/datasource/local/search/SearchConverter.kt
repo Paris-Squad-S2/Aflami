@@ -9,7 +9,7 @@ import kotlinx.serialization.json.Json
 
 class SearchConverter {
     private val json = Json { ignoreUnknownKeys = true }
-    private val listSerializer = ListSerializer(String.serializer())
+    private val listSerializer = ListSerializer(String.Companion.serializer())
 
     @TypeConverter
     fun fromStringToListOfString(value: String): List<String> =
@@ -27,12 +27,12 @@ class SearchConverter {
 
     @TypeConverter
     fun fromLocalDate(date: LocalDate): String {
-        return date.toString() // format: YYYY-MM-DD
+        return date.toString()
     }
 
     @TypeConverter
     fun toLocalDate(dateString: String): LocalDate {
-        return LocalDate.parse(dateString)
+        return LocalDate.Companion.parse(dateString)
     }
 
 

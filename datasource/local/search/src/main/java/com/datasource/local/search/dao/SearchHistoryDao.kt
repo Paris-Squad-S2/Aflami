@@ -12,13 +12,13 @@ interface SearchHistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSearchQuery(history: SearchHistoryEntity)
 
-    @Query("SELECT * FROM search_history ORDER BY id DESC")
+    @Query("SELECT * FROM search_history_table ORDER BY id DESC")
     suspend fun getAllSearchQueries(): List<SearchHistoryEntity>
 
-    @Query("DELETE FROM search_history WHERE id = :historyId")
+    @Query("DELETE FROM search_history_table WHERE id = :historyId")
     suspend fun clearSearchQueryById(historyId: Long)
 
-    @Query("DELETE FROM search_history")
+    @Query("DELETE FROM search_history_table")
     suspend fun clearAllSearchQueries()
 
 }

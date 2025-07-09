@@ -1,4 +1,4 @@
-package com.datasource.local.search
+package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.SearchHistoryDao
 import com.repository.search.dataSource.HistoryLocalDataSource

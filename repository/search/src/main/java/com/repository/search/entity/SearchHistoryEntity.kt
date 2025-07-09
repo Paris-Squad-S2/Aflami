@@ -3,7 +3,7 @@ package com.repository.search.entity
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "search_history")
+@Entity(tableName = "search_history_table")
 data class SearchHistoryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0,
