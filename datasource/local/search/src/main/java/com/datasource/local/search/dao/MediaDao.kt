@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.repository.search.entity.MediaEntity
+import kotlinx.datetime.LocalDateTime
 
 @Dao
 interface MediaDao {
@@ -23,5 +24,11 @@ interface MediaDao {
 
     @Query("SELECT * FROM media_table WHERE title LIKE '%' || :query || '%'")
     suspend fun getMediaByTitleQuery(query: String): List<MediaEntity>
+
+    @Query("SELECT media_table.* FROM media_table INNER JOIN search_history_table ON media_table.searchQuery = search_history_table.search_query")
+    suspend fun getCachedMedia(): List<MediaEntity>
+
+    @Query("DELETE FROM media_table WHERE searchQuery IN (SELECT search_query FROM search_history_table WHERE search_date < :currentDate)")
+    suspend fun clearAllMedia(currentDate: LocalDateTime)
 
 }
