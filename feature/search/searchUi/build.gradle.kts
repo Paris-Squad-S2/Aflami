@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -63,6 +64,12 @@ dependencies {
     //Navigation
     implementation(libs.navigation.compose)
 
+    //Room
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.room.compiler)
+    annotationProcessor(libs.room.compiler)
+    implementation(libs.androidx.room.ktx)
+    testImplementation(libs.androidx.room.testing)
 
     //Koin
     implementation(libs.koin.core)
@@ -72,4 +79,8 @@ dependencies {
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
+
+    implementation(project(":repository:search"))
+    implementation(project(":datasource:local:search"))
+    implementation(project(":domain:search"))
 }

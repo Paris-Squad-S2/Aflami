@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.repository.search"
+    namespace = "com.datasource.local.search"
     compileSdk = 35
 
     defaultConfig {
@@ -20,8 +20,7 @@ android {
         release {
             isMinifyEnabled = false
             proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
             )
         }
     }
@@ -33,15 +32,31 @@ android {
         jvmTarget = "11"
     }
 }
+
 dependencies {
+
+    //Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
+    testImplementation(libs.androidx.room.testing)
+
+    //Koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.android)
+
+    // kotlin date time
     implementation(libs.kotlinx.datetime)
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
-    implementation(project(":domain:search"))
+    // test
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+
+    implementation(project(":repository:search"))
 }
