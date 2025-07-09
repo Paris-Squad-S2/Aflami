@@ -1,6 +1,8 @@
 package com.datasource.local.search
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.datasource.local.search.dao.MediaDao
@@ -15,6 +17,22 @@ import com.repository.search.entity.SearchHistoryEntity
 )
 @TypeConverters(SearchConverter::class)
 abstract class SearchDatabase : RoomDatabase() {
-    abstract fun searchDao(): SearchHistoryDao
+    abstract fun searchHistoryDao(): SearchHistoryDao
     abstract fun mediaDao(): MediaDao
+
+    companion object {
+        const val DATABASE_NAME = "search_db"
+
+        @Volatile
+        private var instance: SearchDatabase? = null
+
+        fun getInstance(context: Context): SearchDatabase {
+            return instance ?: synchronized(this) { buildDatabase(context).also { instance = it } }
+        }
+
+        private fun buildDatabase(context: Context): SearchDatabase {
+            return Room.databaseBuilder(context, SearchDatabase::class.java, DATABASE_NAME)
+                .build()
+        }
+    }
 }

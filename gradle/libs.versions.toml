@@ -35,7 +35,7 @@ roomKtx = "2.7.2"
 roomRuntime = "2.7.2"
 roomTesting = "2.7.2"
 roomCompiler = "2.7.2"
-ksp  = "2.0.21-1.0.27"
+ksp  = "2.2.0-2.0.2"
 serializationJson ="1.6.3"
 navigationCompose = "2.9.0"
 
@@ -83,7 +83,6 @@ tensorflow-lite-support = { group = "org.tensorflow", name = "tensorflow-lite-su
 tensorflow-lite-metadata = { group = "org.tensorflow", name = "tensorflow-lite-metadata", version.ref = "tensorflowLiteMetadata" }
 tensorflow-lite-gpu = { group = "org.tensorflow", name = "tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
-androidx-room-room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomRuntime" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomTesting" }
 room-compiler = { module = "androidx.room:room-compiler", version.ref = "roomCompiler" }

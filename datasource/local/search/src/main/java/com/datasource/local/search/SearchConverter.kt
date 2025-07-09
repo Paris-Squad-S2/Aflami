@@ -1,37 +1,39 @@
 package com.datasource.local.search
 
 import androidx.room.TypeConverter
+import com.repository.search.entity.MediaTypeEntity
 import kotlinx.datetime.LocalDate
+import kotlinx.serialization.builtins.ListSerializer
+import kotlinx.serialization.builtins.serializer
+import kotlinx.serialization.json.Json
 
 class SearchConverter {
+    private val json = Json { ignoreUnknownKeys = true }
+    private val listSerializer = ListSerializer(String.serializer())
+
     @TypeConverter
-    fun fromStringToListOfString(value: String): List<String> {
-        return value.split(",")
+    fun fromStringToListOfString(value: String): List<String> =
+        json.decodeFromString(listSerializer, value)
+
+    @TypeConverter
+    fun fromListOfStringToString(list: List<String>): String =
+        json.encodeToString(listSerializer, list)
+
+    @TypeConverter
+    fun fromEnumToString(mediaTypeEntity: MediaTypeEntity): String = mediaTypeEntity.name
+
+    @TypeConverter
+    fun fromStringToEnum(type: String): MediaTypeEntity = MediaTypeEntity.valueOf(type)
+
+    @TypeConverter
+    fun fromLocalDate(date: LocalDate): String {
+        return date.toString() // format: YYYY-MM-DD
     }
 
     @TypeConverter
-    fun fromListOfStringToString(list: List<String>): String {
-        return list.joinToString(",")
+    fun toLocalDate(dateString: String): LocalDate {
+        return LocalDate.parse(dateString)
     }
 
-    @TypeConverter
-    fun fromEnumToString(mediaTypeEntity: com.repository.search.entity.MediaTypeEntity): String {
-        return mediaTypeEntity.name
-    }
-
-    @TypeConverter
-    fun fromStringToEnum(type: String): com.repository.search.entity.MediaTypeEntity {
-        return com.repository.search.entity.MediaTypeEntity.valueOf(type)
-    }
-
-    @TypeConverter
-    fun fromStringToDateTime(time: String): LocalDate {
-        return LocalDate.parse(time)
-    }
-
-    @TypeConverter
-    fun fromDateTimeToString(localDate: LocalDate): String {
-        return localDate.toString()
-    }
 
 }

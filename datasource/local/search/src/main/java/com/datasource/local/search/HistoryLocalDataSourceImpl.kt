@@ -1,12 +1,12 @@
 package com.datasource.local.search
 
 import com.datasource.local.search.dao.SearchHistoryDao
-import com.repository.search.dataSource.SearchHistoryLocalDataSource
+import com.repository.search.dataSource.HistoryLocalDataSource
 import com.repository.search.entity.SearchHistoryEntity
 
-class SearchHistoryLocalDataSourceImpl(
+class HistoryLocalDataSourceImpl(
     private val dao: SearchHistoryDao
-) : SearchHistoryLocalDataSource {
+) : HistoryLocalDataSource {
     override suspend fun addSearchQuery(title: String) {
         val entity = SearchHistoryEntity(
             searchTitle = title

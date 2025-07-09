@@ -1,0 +1,15 @@
+package com.feature.search.searchUi.di
+
+import com.datasource.local.search.SearchDatabase
+import com.datasource.local.search.dao.MediaDao
+import com.datasource.local.search.dao.SearchHistoryDao
+import org.koin.android.ext.koin.androidApplication
+import org.koin.dsl.module
+
+val roomModule = module{
+    single { androidApplication().applicationContext}
+    single { SearchDatabase.getInstance(androidApplication().applicationContext) }
+    single<SearchHistoryDao> { get<SearchDatabase>().searchHistoryDao() }
+    single<MediaDao> { get<SearchDatabase>().mediaDao() }
+
+}
