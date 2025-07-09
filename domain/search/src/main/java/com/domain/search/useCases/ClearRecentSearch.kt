@@ -1,11 +1,12 @@
 package com.domain.search.useCases
 
-class ClearRecentSearch (
-    // private val searchHistoryRepository: SearchHistoryRepository
-){
+import com.domain.search.repository.SearchHistoryRepository
+
+class ClearRecentSearch(
+    private val searchHistoryRepository: SearchHistoryRepository,
+) {
     suspend operator fun invoke(searchHistoryId: String) {
-        TemporaryFakeData.searchHistoryList.removeIf { it.id.toString() == searchHistoryId }
-        // searchHistoryRepository.clearSearchHistory(searchHistoryId)
+        searchHistoryRepository.clearSearchHistory(searchHistoryId)
     }
 }
 
