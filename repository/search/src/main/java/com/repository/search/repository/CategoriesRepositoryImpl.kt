@@ -1,7 +1,5 @@
 package com.repository.search.repository
 
-import android.Manifest
-import androidx.annotation.RequiresPermission
 import com.domain.search.model.CategoryModel
 import com.domain.search.repository.CategoriesRepository
 import com.repository.search.NetworkConnectionChecker
@@ -13,7 +11,6 @@ class CategoriesRepositoryImpl(
     private val genresLocalDataSource: GenresLocalDataSource,
 //    private val genresRemoteDataSource: GenresRemoteDataSource,
 ) : CategoriesRepository {
-    @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
 
     override suspend fun getAllCategories(): List<CategoryModel> {
 

@@ -16,8 +16,8 @@ class SearchHistoryRepositoryImpl(
         return historyLocalDataSource.addSearchQuery(title = searchTitle)
     }
 
-    override suspend fun clearSearchHistory(searchHistoryId: Int) {
-        return historyLocalDataSource.clearSearchQueryById(id = searchHistoryId.toLong()) // should use int not long
+    override suspend fun clearSearchHistory(query: String) {
+        return historyLocalDataSource.clearSearchQueryByQuery(query)
     }
 
     override suspend fun clearAllSearchHistory() {
@@ -32,7 +32,8 @@ fun List<SearchHistoryEntity>.toSearchHistories(): List<SearchHistoryModel> {
 
 fun SearchHistoryEntity.toSearchHistoryModel(): SearchHistoryModel {
     return SearchHistoryModel(
-        id = this.id,
-        searchTitle = this.searchTitle
+
+        searchTitle = this.searchQuery,
+        searchDate = this.searchDate.toString()
     )
 }
