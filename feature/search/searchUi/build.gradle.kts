@@ -95,5 +95,4 @@ dependencies {
     implementation(project(":repository:search"))
     implementation(project(":datasource:local:search"))
     implementation(project(":domain:search"))
-    implementation(project(":datasource:remote:search"))
 }

@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.di
 
+/*
 import com.feature.search.searchUi.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -29,4 +30,4 @@ val NetworkModule = module {
             }
         }
     }
-}
+}*/
