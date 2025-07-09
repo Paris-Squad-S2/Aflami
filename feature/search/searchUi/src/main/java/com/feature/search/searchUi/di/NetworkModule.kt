@@ -1,6 +1,6 @@
-package com.paris_2.aflami.di
+package com.feature.search.searchUi.di
 
-import com.paris_2.aflami.BuildConfig
+import com.feature.search.searchUi.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.DefaultRequest

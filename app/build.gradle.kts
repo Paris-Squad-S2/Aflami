@@ -1,5 +1,3 @@
-import java.util.Properties
-import java.io.FileInputStream
 
 import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
 
@@ -12,13 +10,6 @@ plugins {
     id("com.google.firebase.crashlytics")
     id("jacoco")
 }
-
-val localProperties = Properties()
-val localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(FileInputStream(localPropertiesFile))
-}
-
 android {
     namespace = "com.paris_2.aflami"
     compileSdk = 35
@@ -31,8 +22,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "API_TOKEN", "\"${localProperties.getProperty("API_TOKEN", "")}\"")
     }
 
     buildTypes {
@@ -80,7 +69,6 @@ dependencies {
     implementation(project(":domain:user"))
     implementation(project(":FireBase"))
     implementation(project(":designsystem:safeimageviewer"))
-    implementation(project(":datasource:remote:search"))
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)

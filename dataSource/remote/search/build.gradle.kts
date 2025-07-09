@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.datasource.local.search"
+    namespace = "com.datasource.remote.search"
     compileSdk = 35
 
     defaultConfig {
@@ -38,7 +38,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
