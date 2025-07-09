@@ -5,6 +5,6 @@ import com.repository.search.entity.SearchHistoryEntity
 interface HistoryLocalDataSource {
     suspend fun addSearchQuery(title: String)
     suspend fun getAllSearchQueries(): List<SearchHistoryEntity>
-    suspend fun clearSearchQueryById(id: Long)
+    suspend fun clearSearchQueryByQuery(query: String)
     suspend fun clearAll()
 }

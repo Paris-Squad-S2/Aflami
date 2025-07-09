@@ -8,4 +8,6 @@ interface MediaLocalDataSource {
     suspend fun getMediaByCountry(country: String): List<MediaEntity>
     suspend fun getMediaByActor(actor: String): List<MediaEntity>
     suspend fun getMediaByTitleQuery(query: String) : List<MediaEntity>
+    suspend fun getCachedMedia(): List<MediaEntity>
+    suspend fun clearAllMediaBySearchQuery(searchQuery: String)
 }
