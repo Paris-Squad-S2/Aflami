@@ -17,10 +17,14 @@ class SearchMediaRepositoryImpl(
 ) : SearchMediaRepository {
 
     override suspend fun getMediaByActor(actorName: String): List<Media> {
-        return if (networkConnectionChecker.isConnected.value)
-            TODO()
-        else
-            mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
+        return try {
+            if (networkConnectionChecker.isConnected.value)
+                searchRemoteDataSource.searchPerson(query = actorName).toMediaList()
+            else
+                mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override suspend fun getMoviesByCountry(countryName: String): List<Media> {
