@@ -60,8 +60,22 @@ class SearchMediaRepositoryImpl(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun getMoviesByCountry(countryName: String): List<Media> {
-        return try {
+         try {
+             val media = mediaLocalDataSource.getMediaByCountry(country = countryName)
+             if (media.isNotEmpty()) {
+                 val queryDate =
+                     searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
+                 val timeZone = TimeZone.Companion.currentSystemDefault()
+                 if (queryDate != null && queryDate.toInstant(timeZone)
+                         .plus(1, DateTimeUnit.HOUR) > getCurrentDate().toInstant(timeZone)
+                 ) {
+                     return media.toMedias()
+                 } else {
+                     mediaLocalDataSource.clearAllMediaBySearchQuery(countryName)
+                 }
+             }
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchCountryCode(query = countryName)
                 val mediaEntities = searchDto.toMediaEntities(
@@ -73,6 +87,7 @@ class SearchMediaRepositoryImpl(
             } else {
                 mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
             }
+             return mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
         } catch (e: Exception) {
             throw e
         }
