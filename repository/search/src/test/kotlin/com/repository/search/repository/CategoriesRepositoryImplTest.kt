@@ -65,5 +65,19 @@ class CategoriesRepositoryImplTest {
         coVerify { genresRemoteDataSource.getAllGenres() }
     }
 
+    @Test
+    fun `getAllCategories should throw NoInternetConnectionException when local empty and no internet`() = runTest {
+        // Given
+        coEvery { genresLocalDataSource.getGenres() } returns emptyList()
+        every { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When + Then
+        val exception = assertThrows<NoInternetConnectionException> {
+            repository.getAllCategories()
+        }
+
+        assertNotNull(exception)
+    }
+
 
 }
