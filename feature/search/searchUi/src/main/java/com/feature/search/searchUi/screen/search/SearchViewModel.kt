@@ -34,7 +34,7 @@ data class UIState(
     val tvShowsResult: List<Media>,
     val filteredMoviesResult: List<Media>,
     val filteredTvShowsResult: List<Media>,
-    val categories: MutableMap<CategoryModel, Boolean>,
+    val categories: Map<CategoryModel, Boolean>,
     val selectedRating: Float
 )
 
@@ -58,7 +58,7 @@ class SearchViewModel(
                 filteredMoviesResult = listOf(),
                 filteredTvShowsResult = listOf(),
                 selectedTabIndex = 0,
-                categories = mutableMapOf(),
+                categories = mapOf(),
                 selectedRating = 0f,
                 moviesResult = listOf(),
                 tvShowsResult = listOf()

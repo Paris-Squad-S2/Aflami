@@ -18,6 +18,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.feature.search.searchUi.R
+import com.feature.search.searchUi.comon.GenreResourceMapper.getResourceId
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.feature.search.searchUi.screen.search.SearchScreenState
 import com.paris_2.aflami.designsystem.components.AflamiButton
@@ -40,21 +41,20 @@ fun FilterDialog(
         onDismiss = searchScreenInteractionListener::onFilterButtonClick,
         title = R.string.filter_result,
     ) {
-        Column (
+        Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
-        ){
+        ) {
             AflamiText(
                 text = stringResource(R.string.imdb_rating),
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
-                modifier = Modifier.padding( end = 12.dp, bottom = 8.dp)
+                modifier = Modifier.padding(end = 12.dp, bottom = 8.dp)
             )
             RatingBar(
                 modifier = Modifier
                     .padding(bottom = 12.dp)
-                    .align(Alignment.CenterHorizontally)
-                ,
+                    .align(Alignment.CenterHorizontally),
                 rating = currentRating,
                 onRatingChange = { newRating ->
                     currentRating = newRating
@@ -71,7 +71,7 @@ fun FilterDialog(
                     val category = currentCategories.keys.elementAt(index)
                     Chips(
                         title = category.name,
-                        icon = painterResource(com.paris_2.aflami.designsystem.R.drawable.ic_all), //TODO
+                        icon = painterResource(getResourceId(category.id)),
                         isSelected = currentCategories[category] ?: false,
                         onClick = {
                             currentCategories = currentCategories.toMutableMap().apply {
