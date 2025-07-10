@@ -27,7 +27,7 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     }
 
     @Test
-    fun invoke_should_Return_OnlyMovies_when_Repository_Returns_Mixed_Media_Types() = runTest {
+    fun `invoke should Return OnlyMovies when Repository Returns Mixed Media Types`() = runTest {
         // Given
         val countryName = "United States"
         val mixedMediaList = listOf(
