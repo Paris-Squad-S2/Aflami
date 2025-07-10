@@ -12,6 +12,7 @@ fun createMedia(
     id: Int,
     title: String,
     type: MediaType,
+    rating: Double = 0.0,
 ): Media {
     return Media(
         id = id,
@@ -20,6 +21,6 @@ fun createMedia(
         type = type,
         categories = listOf("Drama", "Action", "Science Fiction", "Romance"),
         yearOfRelease = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
-        rating = 8.5,
+        rating = rating,
     )
 }
