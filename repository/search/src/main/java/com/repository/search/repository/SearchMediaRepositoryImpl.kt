@@ -31,30 +31,31 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByActor(actor = actorName)
             if (media.isNotEmpty()) {
-                val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
-                val timeZone = TimeZone.Companion.currentSystemDefault()
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
+                val timeZone = TimeZone.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
-                ) {
+                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)) {
                     return media.toMedias()
                 } else {
                     mediaLocalDataSource.clearAllMediaBySearchQuery(actorName)
                 }
             }
-            if (networkConnectionChecker.isConnected.value) {
-                val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
-                val mediaEntities = searchDto.toMediaEntities(
-                    query = actorName,
-                    actor = listOf(actorName)
-                )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
-                searchHistoryLocalDataSource.addSearchQuery(actorName)
-            } else {
+
+            if (!networkConnectionChecker.isConnected.value) {
                 throw NoInternetConnectionException()
             }
-            return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
 
+            val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
+            val mediaEntities = searchDto.toMediaEntities(
+                query = actorName,
+                actor = listOf(actorName)
+            )
+            mediaLocalDataSource.addAllMedia(mediaEntities)
+            searchHistoryLocalDataSource.addSearchQuery(actorName)
+
+            return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForActorException()
         }
@@ -124,4 +125,5 @@ class SearchMediaRepositoryImpl(
             throw NoDataForSearchException()
         }
     }
+
 }
