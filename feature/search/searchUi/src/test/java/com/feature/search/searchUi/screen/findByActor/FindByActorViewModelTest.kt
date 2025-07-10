@@ -93,13 +93,12 @@ class FindByActorViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `searchQuery should call use case and update state on success`() = runTest {
+    fun `searchQueryChange should call use case and update state on success`() = runTest {
         val testQuery = "Tom Hanks"
         val mockMediaList = listOf(
             mockk<Media> { every { title } returns "Cast Away" },
             mockk<Media> { every { title } returns "Forrest Gump" }
         )
-
         coEvery { getMediaByActorNameUseCase.invoke(testQuery) } returns mockMediaList
 
         viewModel.onSearchQueryChange(testQuery)
@@ -109,8 +108,24 @@ class FindByActorViewModelTest {
         assertThat(currentState.uiState.searchResult).isEqualTo(mockMediaList)
         assertThat(currentState.isLoading).isFalse()
         assertThat(currentState.errorMessage).isNull()
-
         coVerify { addRecentSearchesUseCase.invoke(testQuery) }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `searchQuery should handle error and update state`() = runTest {
+        val testQuery = "Tom Hanks"
+        val errorMessage = "Network error occurred"
+        coEvery { getMediaByActorNameUseCase.invoke(testQuery) } throws Exception(errorMessage)
+
+        viewModel.onSearchQueryChange(testQuery)
+        advanceUntilIdle()
+
+        val currentState = viewModel.screenState.value
+        assertThat(currentState.uiState.searchResult).isEmpty()
+        assertThat(currentState.isLoading).isFalse()
+        assertThat(currentState.errorMessage).isEqualTo(errorMessage)
+        coVerify(exactly = 0) { addRecentSearchesUseCase.invoke(any()) }
     }
 
 }
