@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.domain.search.model.Media
 import com.domain.search.useCases.AddRecentSearchUseCase
 import com.domain.search.useCases.AutoCompleteCountryUseCase
+import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
 import kotlinx.coroutines.Job
@@ -24,6 +25,7 @@ data class WorldTourUiState(
 
 class WorldTourViewModel(
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
+    private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
     private val addRecentSearchesUseCase: AddRecentSearchUseCase,
 ) : WorldTourScreenInteractionListener,
@@ -60,12 +62,15 @@ class WorldTourViewModel(
                 emitState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
-                            hints = hints
+                            hints = hints.map { it.countryName }
                         )
                     )
                 )
                 delay(500)
-                searchQuery(query)
+                val countryCode = getCountryCodeByNameUseCase(query)
+                if (countryCode != null) {
+                    searchQuery(countryCode)
+                }
             }
         }
     }

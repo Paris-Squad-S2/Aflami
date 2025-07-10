@@ -1,33 +1,29 @@
 package com.domain.search.repository
 
+import com.domain.search.model.Country
+
 interface CountryRepository {
-    suspend fun getAllCountries(): List<String>
+    suspend fun getAllCountries(): List<Country>
 }
 
 class CountryRepositoryFakeImpl : CountryRepository {
-    override suspend fun getAllCountries(): List<String> {
+    override suspend fun getAllCountries(): List<Country> {
         return listOf(
-            "United States",
-            "Canada",
-            "United Kingdom",
-            "Australia",
-            "India",
-            "Japan",
-            "South Korea",
-            "France",
-            "Germany",
-            "Italy",
-            "Spain",
-            "Spain",
-            "Spain",
-            "Spain",
-            "Spain",
-            "Spain",
-            "Spain",
-            "Brazil",
-            "Mexico",
-            "Russia",
-            "China"
+            Country("US", "United States"),
+            Country("CA", "Canada"),
+            Country("GB", "United Kingdom"),
+            Country("AU", "Australia"),
+            Country("IN", "India"),
+            Country("JP", "Japan"),
+            Country("KR", "South Korea"),
+            Country("FR", "France"),
+            Country("DE", "Germany"),
+            Country("IT", "Italy"),
+            Country("ES", "Spain"),
+            Country("BR", "Brazil"),
+            Country("MX", "Mexico"),
+            Country("RU", "Russia"),
+            Country("CN", "China")
         )
     }
 }

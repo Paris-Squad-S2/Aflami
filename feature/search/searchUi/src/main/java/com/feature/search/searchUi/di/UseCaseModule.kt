@@ -8,6 +8,7 @@ import com.domain.search.useCases.FilterByListOfCategoriesUseCase
 import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
+import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
@@ -19,6 +20,7 @@ val useCaseModule = module {
     factory { ClearAllRecentSearchesUseCase(get()) }
     factory { AddRecentSearchUseCase(get()) }
     factory { AutoCompleteCountryUseCase(get()) }
+    factory { GetCountryCodeByNameUseCase(get()) }
     factory { FilterByListOfCategoriesUseCase() }
     factory { FilterMediaByRatingUseCase() }
     factory { GetAllCategoriesUseCase(get()) }
