@@ -21,12 +21,15 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
@@ -68,8 +71,16 @@ fun TextField(
     errorMessage: Int? = null,
     onClick: () -> Unit = {},
     onClickTrailingIcon: () -> Unit = { },
-    showText: Boolean = true
+    showText: Boolean = true,
+    suggestions: List<String> = emptyList(),
+    onSuggestionSelected: (String) -> Unit = {}
 ) {
+
+    var expanded by remember { mutableStateOf(false) }
+    val filteredSuggestions = remember(value, suggestions) {
+        if (value.isEmpty()) emptyList()
+        else suggestions
+    }
 
     var isFocused by remember { mutableStateOf(false) }
     val interactionSource = remember { MutableInteractionSource() }
@@ -155,10 +166,12 @@ fun TextField(
                 if (singleLine) {
                     if (newText.length <= 100) {
                         onValueChange(newText)
+                        expanded = true
                     }
                 } else {
                     if (newText.lines().size <= 11) {
                         onValueChange(newText)
+                        expanded = true
                     }
                 }
             },
@@ -210,6 +223,36 @@ fun TextField(
                 }
             }
         )
+
+        AnimatedVisibility(
+            visible = filteredSuggestions.isNotEmpty() && expanded,
+            enter = fadeIn() + expandVertically(),
+            exit = fadeOut() + shrinkVertically()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Theme.colors.surfaceHigh)
+                    .border(BorderStroke(1.dp, Theme.colors.stroke), shape)
+                    .heightIn(max = 200.dp)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                filteredSuggestions.forEach { suggestion ->
+                    Text(
+                        text = suggestion,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                onSuggestionSelected(suggestion)
+                                onValueChange(suggestion)
+                                expanded = false
+                            }
+                            .padding(16.dp),
+                        style = Theme.textStyle.body.medium
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -397,6 +440,16 @@ fun PreviewTextField() {
                 singleLine = false,
                 trailingIcon = null,
                 showError = showError4,
+            )
+
+            val hints = listOf("Apple", "Banana", "Cherry", "Date", "Elderberry")
+            var text4 by remember { mutableStateOf("") }
+            TextField(
+                value = text4,
+                onValueChange = { text4 = it },
+                placeholder = "Type fruit...",
+                suggestions = hints,
+                onSuggestionSelected = { text4 = it }
             )
         }
 

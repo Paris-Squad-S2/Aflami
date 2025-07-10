@@ -63,6 +63,8 @@ fun WorldTourScreenContent(
             value = state.uiState.searchQuery,
             onValueChange = worldTourScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(R.string.search),
+            suggestions = state.uiState.hints,
+            onSuggestionSelected = worldTourScreenInteractionListener::onSearchQueryChange,
         )
         if (state.uiState.searchQuery.isEmpty()) {
             PlaceholderView(
@@ -73,8 +75,7 @@ fun WorldTourScreenContent(
                 subTitle = stringResource(R.string.start_exploring_the_world_movie),
                 spacer = 16.dp
             )
-        }
-        else if (state.errorMessage != null) {
+        } else if (state.errorMessage != null) {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = worldTourScreenInteractionListener::onRetrySearchQuery
