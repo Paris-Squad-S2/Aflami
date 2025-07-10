@@ -7,6 +7,9 @@ import com.repository.search.dto.Genre
 import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.entity.GenreEntity
+import com.repository.search.exception.AflamiException
+import com.repository.search.exception.NoDataWereFoundException
+import com.repository.search.exception.NoInternetConnectionException
 
 class CategoriesRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
@@ -25,11 +28,11 @@ class CategoriesRepositoryImpl(
                 val genreEntities = remoteGenres.map { it.toEntity() }
                 genresLocalDataSource.addGenres(genreEntities)
             }else{
-                throw Exception()
+                throw NoInternetConnectionException()
             }
                 genresLocalDataSource.getGenres().toCategories()
-        } catch (e: Exception) {
-            throw e
+        } catch (_: Exception) {
+            throw NoDataWereFoundException()
         }
 
     }
