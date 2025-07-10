@@ -47,4 +47,20 @@ class GetMediaByActorNameUseCaseTest {
             result.map { it.title }
         )
     }
+
+    @Test
+    fun `invoke should return empty list when repository returns no media for given actor`() = runTest {
+
+        // Given
+        val actorName = "Wael"
+
+        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns emptyList()
+
+        // When
+        val result = useCase.invoke(actorName)
+
+        // Then
+        assertTrue(result.isEmpty())
+
+    }
 }
