@@ -114,7 +114,7 @@ class SearchHistoryRepositoryFakeImpl : SearchHistoryRepository {
     )
 
     override suspend fun getAllSearchHistory(): List<SearchHistoryModel> {
-        return searchHistoryList
+        return searchHistoryList.toList()
     }
 
     override suspend fun addSearchHistory(searchTitle: String) {

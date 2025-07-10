@@ -61,10 +61,6 @@ class SearchViewModel(
         tryToExecute(
             execute = getAllRecentSearchesUseCase::invoke,
             onSuccess = { recentSearches ->
-                Log.d("TAG1", "loadRecentSearches: $recentSearches")
-                clearAllRecentSearchesUseCase() //TODO: should Be removed after testing
-                Log.d("TAG2", "loadRecentSearches: $recentSearches")
-                // TODO: What is happening here? 😂
                 emitState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
@@ -142,6 +138,7 @@ class SearchViewModel(
                     )
                 )
                 addRecentSearchesUseCase(query)
+                loadRecentSearches()
             },
             onError = { errorMessage ->
                 emitState(
@@ -178,7 +175,7 @@ class SearchViewModel(
         tryToExecute(
             execute = clearAllRecentSearchesUseCase::invoke,
             onSuccess = {
-                loadRecentSearches() //TODO: there is somthing wrong in updating the RecentSearches again after delete
+                loadRecentSearches()
             },
             onError = { errorMessage ->
                 emitState(
@@ -196,7 +193,7 @@ class SearchViewModel(
                 clearRecentSearchUseCase(id)
             },
             onSuccess = {
-                loadRecentSearches() //TODO: there is somthing wrong in updating the RecentSearches again after delete
+                loadRecentSearches()
             },
             onError = { errorMessage ->
                 emitState(
