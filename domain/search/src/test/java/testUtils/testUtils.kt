@@ -13,13 +13,14 @@ fun createMedia(
     title: String,
     type: MediaType,
     rating: Double = 0.0,
-): Media {
+    categories: List<String> = listOf(""),
+    ): Media {
     return Media(
         id = id,
         imageUri = "image.com",
         title = title,
         type = type,
-        categories = listOf("Drama", "Action", "Science Fiction", "Romance"),
+        categories = categories,
         yearOfRelease = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
         rating = rating,
     )
