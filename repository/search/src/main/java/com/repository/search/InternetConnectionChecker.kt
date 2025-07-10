@@ -5,6 +5,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
 import android.net.NetworkCapabilities
+import android.util.Log
 import androidx.annotation.RequiresPermission
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -31,5 +32,6 @@ class NetworkConnectionChecker(private val context: Context) {
         _isConnected.value = capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 
         connectivityManager.registerDefaultNetworkCallback(networkCallback)
+        Log.d("NetworkChecker", "Capabilities: $capabilities")
     }
 }
