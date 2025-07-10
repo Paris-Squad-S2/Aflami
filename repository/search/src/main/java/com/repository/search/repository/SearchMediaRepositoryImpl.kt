@@ -89,6 +89,8 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
             return mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForCountryException()
         }
@@ -121,6 +123,8 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForSearchException()
         }
