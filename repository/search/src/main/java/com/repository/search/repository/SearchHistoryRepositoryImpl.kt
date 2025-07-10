@@ -3,7 +3,7 @@ package com.repository.search.repository
 import com.domain.search.model.SearchHistoryModel
 import com.domain.search.repository.SearchHistoryRepository
 import com.repository.search.dataSource.local.HistoryLocalDataSource
-import com.repository.search.entity.SearchHistoryEntity
+import com.repository.search.mapper.toSearchHistories
 
 class SearchHistoryRepositoryImpl(
     private val historyLocalDataSource: HistoryLocalDataSource,
@@ -25,15 +25,3 @@ class SearchHistoryRepositoryImpl(
     }
 }
 
-
-fun List<SearchHistoryEntity>.toSearchHistories(): List<SearchHistoryModel> {
-    return this.map { it.toSearchHistoryModel() }
-}
-
-fun SearchHistoryEntity.toSearchHistoryModel(): SearchHistoryModel {
-    return SearchHistoryModel(
-
-        searchTitle = this.searchQuery,
-        searchDate = this.searchDate.toString()
-    )
-}

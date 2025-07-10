@@ -3,7 +3,7 @@ package com.repository.search.repository
 import com.domain.search.model.Country
 import com.domain.search.repository.CountryRepository
 import com.repository.search.dataSource.local.CountriesLocalDataSource
-import com.repository.search.entity.CountryEntity
+import com.repository.search.mapper.toCountry
 
 class CountryRepositoryImpl(
     private val countriesLocalDataSource: CountriesLocalDataSource,
@@ -15,11 +15,4 @@ class CountryRepositoryImpl(
         countriesLocalDataSource.addCountries()
         return countriesLocalDataSource.getCountries().toCountry()
     }
-}
-
-fun List<CountryEntity>.toCountry(): List<Country> = this.map {
-    Country(
-        it.countryCode,
-        it.name
-    )
 }

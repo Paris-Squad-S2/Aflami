@@ -2,14 +2,13 @@ package com.repository.search.repository
 
 import com.domain.search.model.CategoryModel
 import com.domain.search.repository.CategoriesRepository
-import com.repository.search.dataSource.remote.GenresRemoteDataSource
-import com.repository.search.dto.Genre
 import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
-import com.repository.search.entity.GenreEntity
-import com.repository.search.exception.AflamiException
-import com.repository.search.exception.NoDataWereFoundException
+import com.repository.search.dataSource.remote.GenresRemoteDataSource
+import com.repository.search.exception.NoCategoriesFoundException
 import com.repository.search.exception.NoInternetConnectionException
+import com.repository.search.mapper.toCategories
+import com.repository.search.mapper.toEntity
 
 class CategoriesRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
@@ -23,38 +22,17 @@ class CategoriesRepositoryImpl(
             val genres = genresLocalDataSource.getGenres()
             if (genres.isNotEmpty()) return genres.toCategories()
 
-            if (networkConnectionChecker.isConnected.value){
+            if (networkConnectionChecker.isConnected.value) {
                 val remoteGenres = genresRemoteDataSource.getAllGenres().genres
                 val genreEntities = remoteGenres.map { it.toEntity() }
                 genresLocalDataSource.addGenres(genreEntities)
-            }else{
+            } else {
                 throw NoInternetConnectionException()
             }
-                genresLocalDataSource.getGenres().toCategories()
+            genresLocalDataSource.getGenres().toCategories()
         } catch (_: Exception) {
-            throw NoDataWereFoundException()
+            throw NoCategoriesFoundException()
         }
-
     }
-
 }
 
-
-fun List<GenreEntity>.toCategories(): List<CategoryModel> {
-    return this.map { it.toCategoryModel() }
-}
-
-
-fun GenreEntity.toCategoryModel(): CategoryModel {
-    return CategoryModel(
-        id = this.id.toInt(), // need to change
-        name = this.name
-    )
-}
-
-fun Genre.toEntity(): GenreEntity {
-    return GenreEntity(
-        id = this.id.toString(),
-        name = this.name
-    )
-}
