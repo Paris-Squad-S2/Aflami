@@ -44,4 +44,17 @@ class SearchHistoryRepositoryImplTest {
         // Then
         coVerify(exactly = 1) { historyLocalDataSource.addSearchQuery(title) }
     }
+
+    @Test
+    fun `clearSearchHistory should call clearSearchQueryByQuery with correct query`() = runTest {
+        // Given
+        val query = "drama"
+        coEvery { historyLocalDataSource.clearSearchQueryByQuery(query) } just Runs
+
+        // When
+        repository.clearSearchHistory(query)
+
+        // Then
+        coVerify(exactly = 1) { historyLocalDataSource.clearSearchQueryByQuery(query) }
+    }
 }
