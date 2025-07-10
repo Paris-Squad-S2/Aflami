@@ -133,5 +133,93 @@ class SearchMediaRepositoryImplTest {
 
     // getMoviesByCountry Test Cases
 
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `getMoviesByCountry should return cached media if not expired`() = runTest {
+        val countryName = "USA"
+        val cachedMedia = listOf(
+            MediaEntity(
+                id = 1,
+                searchQuery = countryName,
+                imageUri = "image.jpg",
+                title = "Movie 1",
+                type = MediaTypeEntity.MOVIE,
+                category = listOf("Drama"),
+                yearOfRelease = LocalDate(2022, 5, 20),
+                rating = 7.8,
+                country = countryName,
+                actor = listOf("Actor 1")
+            )
+        )
+        val validDate = Clock.System.now()
+            .minus(2, DateTimeUnit.HOUR)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
+
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns cachedMedia
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName) } returns SearchHistoryEntity(countryName, validDate)
+
+        val result = repository.getMoviesByCountry(countryName)
+        assertEquals(cachedMedia.toMedias(), result)
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `getMoviesByCountry should fetch remotely if cache expired`() = runTest {
+        val countryName = "Egypt"
+        val expiredDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+
+        val oldMedia = listOf(
+            MediaEntity(
+                id = 2,
+                searchQuery = countryName,
+                imageUri = "old.jpg",
+                title = "Old Movie",
+                type = MediaTypeEntity.MOVIE,
+                category = listOf("Action"),
+                yearOfRelease = LocalDate(2020, 1, 1),
+                rating = 6.0,
+                country = countryName,
+                actor = listOf("Old Actor")
+            )
+        )
+
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns oldMedia
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName) } returns SearchHistoryEntity(countryName, expiredDate)
+        coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(countryName) } just Runs
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { searchRemoteDataSource.searchCountryCode(countryName) } returns mockk(relaxed = true)
+        coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
+        coEvery { historyLocalDataSource.addSearchQuery(countryName) } just Runs
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns emptyList()
+
+        val result = repository.getMoviesByCountry(countryName)
+        assertEquals(emptyList(), result)
+    }
+
+    @Test
+    fun `getMoviesByCountry should throw NoInternetConnectionException if no internet`() = runTest {
+        val countryName = "France"
+
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns emptyList()
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        assertFailsWith<NoInternetConnectionException> {
+            repository.getMoviesByCountry(countryName)
+        }
+    }
+
+    @Test
+    fun `getMoviesByCountry should throw NoDataForCountryException on exception`() = runTest {
+        val countryName = "Spain"
+
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } throws RuntimeException("DB error")
+
+        assertFailsWith<NoDataForCountryException> {
+            repository.getMoviesByCountry(countryName)
+        }
+    }
+
     // getMediaByQuery Test Cases
+
+
 }
