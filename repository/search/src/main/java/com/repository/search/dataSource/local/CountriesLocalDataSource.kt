@@ -1,4 +1,4 @@
-package com.repository.search.dataSource
+package com.repository.search.dataSource.local
 
 import com.repository.search.entity.CountryEntity
 

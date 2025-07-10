@@ -1,6 +1,7 @@
 package com.example.search.service.contract
 
-import com.example.search.models.SearchDto
+import com.repository.search.dto.SearchDto
+
 
 interface SearchApiService {
     suspend fun searchMulti(query: String, page: Int, language: String): SearchDto

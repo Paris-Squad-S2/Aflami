@@ -1,7 +1,7 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.MediaDao
-import com.repository.search.dataSource.MediaLocalDataSource
+import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.entity.MediaEntity
 
 class MediaLocalDataSourceImpl(
