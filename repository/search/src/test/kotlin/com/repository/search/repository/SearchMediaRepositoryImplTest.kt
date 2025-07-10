@@ -81,8 +81,6 @@ class SearchMediaRepositoryImplTest {
     fun `getMediaByActor should fetch remotely if cache is expired`() = runTest {
         val actorName = "Tom Cruise"
 
-        val expiredDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-
         coEvery { mediaLocalDataSource.getMediaByActor(actorName) } returns listOf(
             MediaEntity(
                 id = 1,
