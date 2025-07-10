@@ -1,7 +1,5 @@
 package com.repository.search.repository
 
-import org.junit.jupiter.api.Assertions.*
-import com.domain.search.model.Country
 import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.entity.CountryEntity
 import com.repository.search.mapper.toCountry
@@ -49,6 +47,21 @@ class CountryRepositoryImplTest {
 
         // Then
         assertEquals(populated.toCountry(), result)
+        coVerify(exactly = 1) { countriesLocalDataSource.addCountries() }
+    }
+
+    @Test
+    fun `getAllCountries should return empty list if addCountries doesn't add anything`() = runTest {
+        // Given
+        val empty = emptyList<CountryEntity>()
+        coEvery { countriesLocalDataSource.getCountries() } returns empty
+        coEvery { countriesLocalDataSource.addCountries() } just Runs
+
+        // When
+        val result = repository.getAllCountries()
+
+        // Then
+        assertEquals(empty.toCountry(), result)
         coVerify(exactly = 1) { countriesLocalDataSource.addCountries() }
     }
 }
