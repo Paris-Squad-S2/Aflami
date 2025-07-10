@@ -48,8 +48,8 @@ class SearchMediaRepositoryImpl(
                     query = actorName,
                     actor = listOf(actorName)
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
@@ -82,8 +82,8 @@ class SearchMediaRepositoryImpl(
                     query = countryName,
                     country = countryName
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
                 searchHistoryLocalDataSource.addSearchQuery(countryName)
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
@@ -114,11 +114,10 @@ class SearchMediaRepositoryImpl(
                 val mediaEntities = searchDto.toMediaEntities(
                     query = query
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
                 searchHistoryLocalDataSource.addSearchQuery(query)
-            } else {
+                mediaLocalDataSource.addAllMedia(mediaEntities)
+            } else
                 throw NoInternetConnectionException()
-            }
             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
         } catch (_: Exception) {
             throw NoDataForSearchException()
