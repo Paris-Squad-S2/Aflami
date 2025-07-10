@@ -10,7 +10,6 @@ import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.MediaLocalDataSource
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
-import com.repository.search.mapper.toMediaList
 import kotlinx.datetime.toLocalDate
 
 class SearchMediaRepositoryImpl(
@@ -60,9 +59,17 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByQuery(query: String): List<Media> {
         return try {
-            if (networkConnectionChecker.isConnected.value)
-                searchRemoteDataSource.searchMulti(query).toMediaList()
-            else mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+            if (networkConnectionChecker.isConnected.value){
+                val searchDto = searchRemoteDataSource.searchMulti(query)
+                val mediaEntities = searchDto.toMediaEntities(
+                    query = query
+                )
+                mediaLocalDataSource.addAllMedia(mediaEntities)
+                mediaEntities.toMedias()
+            }
+            else{
+                mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+            }
         } catch (e: Exception) {
             throw (e)
         }
