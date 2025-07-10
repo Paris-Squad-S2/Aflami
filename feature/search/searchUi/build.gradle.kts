@@ -97,6 +97,15 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
+    //test
+
+
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.junit)
+
     implementation(project(":repository:search"))
     implementation(project(":datasource:local:search"))
     implementation(project(":datasource:remote:search"))
