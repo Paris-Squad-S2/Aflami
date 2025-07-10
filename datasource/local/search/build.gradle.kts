@@ -32,7 +32,9 @@ android {
         jvmTarget = "11"
     }
 }
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 dependencies {
 
     //Room
@@ -61,10 +63,7 @@ dependencies {
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
-    testImplementation(kotlin("test"))
+    testImplementation(libs.kotlin.test.junit5)
 
     implementation(project(":repository:search"))
-}
-tasks.test {
-    useJUnitPlatform()
 }
