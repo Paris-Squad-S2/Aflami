@@ -1,6 +1,7 @@
-package com.example.search.api
+package com.example.search.service.implementation
 
 import com.example.search.models.SearchDto
+import com.example.search.service.contract.SearchApiService
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -30,10 +31,7 @@ class KtorSearchApiService(
     }
 
     override suspend fun searchCountryCode(
-        query: String,
-        page: Int,
-        language: String,
-        countryCode: String,
+        query: String, page: Int, language: String, countryCode: String,
     ): SearchDto {
         return performSearchWithCountry(
             endpoint = DISCOVER_MOVIE_ENDPOINT,
@@ -45,11 +43,7 @@ class KtorSearchApiService(
     }
 
     private suspend fun performSearchWithCountry(
-        endpoint: String,
-        query: String,
-        page: Int,
-        language: String,
-        countryCode: String,
+        endpoint: String, query: String, page: Int, language: String,countryCode: String,
     ): SearchDto {
         return httpClient.get("$baseUrl/$endpoint") {
             parameter(QUERY_PARAM, query)
@@ -60,10 +54,7 @@ class KtorSearchApiService(
     }
 
     private suspend fun performSearch(
-        endpoint: String,
-        query: String,
-        page: Int,
-        language: String,
+        endpoint: String, query: String, page: Int, language: String,
     ): SearchDto {
         return httpClient.get("$baseUrl/$endpoint") {
             parameter(QUERY_PARAM, query)
