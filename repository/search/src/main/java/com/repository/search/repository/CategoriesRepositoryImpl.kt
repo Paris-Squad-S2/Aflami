@@ -23,7 +23,12 @@ class CategoriesRepositoryImpl(
                 genresLocalDataSource.addGenres(genreEntities)
                 genreEntities.toCategories()
             }
-            else
+            else{
+                val localGenres = genresLocalDataSource.getGenres()
+                if(localGenres.isNotEmpty()){
+                    localGenres.toCategories()
+                }
+            }
                 genresLocalDataSource.getGenres().toCategories()
         } catch (e: Exception) {
             throw e
