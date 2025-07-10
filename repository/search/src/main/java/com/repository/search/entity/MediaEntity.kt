@@ -20,7 +20,7 @@ data class MediaEntity(
     val imageUri: String,
     val title: String,
     val type: MediaTypeEntity,
-    val category: List<String>,
+    val category: List<Int>,
     val yearOfRelease: LocalDate,
     val rating: Double,
     val country: String,

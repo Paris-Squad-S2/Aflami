@@ -5,111 +5,111 @@ import com.domain.search.model.SearchHistoryModel
 interface SearchHistoryRepository {
     suspend fun getAllSearchHistory(): List<SearchHistoryModel>
     suspend fun addSearchHistory(searchTitle: String)
-    suspend fun clearSearchHistory(query:String)
+    suspend fun clearSearchHistory(query: String)
     suspend fun clearAllSearchHistory()
 }
 
 class SearchHistoryRepositoryFakeImpl : SearchHistoryRepository {
     private val searchHistoryList = mutableListOf(
         SearchHistoryModel(
-            id = 1,
             searchTitle = "Example Movie 1",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 2,
             searchTitle = "Example TV Show 1",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 3,
             searchTitle = "Example Movie 2",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 4,
             searchTitle = "Example TV Show 2",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 5,
             searchTitle = "Example Movie 3",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 6,
             searchTitle = "Example TV Show 3",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 7,
             searchTitle = "Example Movie 4",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 8,
             searchTitle = "Example TV Show 4",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 9,
             searchTitle = "Example Movie 5",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 10,
             searchTitle = "Example TV Show 5",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 11,
             searchTitle = "Example Movie 6",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 12,
             searchTitle = "Example TV Show 6",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 13,
             searchTitle = "Example Movie 7",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 14,
             searchTitle = "Example TV Show 7",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 15,
             searchTitle = "Example Movie 8",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 16,
             searchTitle = "Example TV Show 8",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 17,
             searchTitle = "Example Movie 9",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 18,
             searchTitle = "Example TV Show 9",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 19,
             searchTitle = "Example Movie 10",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 20,
             searchTitle = "Example TV Show 10",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 21,
             searchTitle = "Example Movie 11",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 22,
             searchTitle = "Example TV Show 11",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 23,
             searchTitle = "Example Movie 12",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 24,
             searchTitle = "Example TV Show 12",
+            searchDate = "2023-10-01T12:00:00",
         ),
         SearchHistoryModel(
-            id = 25,
             searchTitle = "Example Movie 13",
+            searchDate = "2023-10-01T12:00:00",
         ),
     )
 
@@ -118,13 +118,19 @@ class SearchHistoryRepositoryFakeImpl : SearchHistoryRepository {
     }
 
     override suspend fun addSearchHistory(searchTitle: String) {
-        val newId = (searchHistoryList.maxOfOrNull { it.id } ?: 0) + 1
-        searchHistoryList.add(SearchHistoryModel(id = newId, searchTitle = searchTitle))
+        searchHistoryList.add(
+            SearchHistoryModel(
+                searchTitle = searchTitle,
+                searchDate = "2023-10-01T12:00:00",
+            )
+        )
     }
 
 
     override suspend fun clearSearchHistory(query: String) {
-        searchHistoryList.removeIf { it.id == searchHistoryId }
+        searchHistoryList.removeIf {
+            it.searchTitle == query
+        }
     }
 
     override suspend fun clearAllSearchHistory() {
