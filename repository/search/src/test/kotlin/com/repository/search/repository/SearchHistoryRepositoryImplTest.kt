@@ -31,4 +31,17 @@ class SearchHistoryRepositoryImplTest {
         // Then
         assertEquals(localHistory.toSearchHistories(), result)
     }
+
+    @Test
+    fun `addSearchHistory should call addSearchQuery with correct title`() = runTest {
+        // Given
+        val title = "comedy"
+        coEvery { historyLocalDataSource.addSearchQuery(title) } just Runs
+
+        // When
+        repository.addSearchHistory(title)
+
+        // Then
+        coVerify(exactly = 1) { historyLocalDataSource.addSearchQuery(title) }
+    }
 }
