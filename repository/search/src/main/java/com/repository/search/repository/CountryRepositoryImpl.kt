@@ -1,21 +1,27 @@
 package com.repository.search.repository
 
 import com.domain.search.repository.CountryRepository
+import com.example.search.GenresRemoteDataSource
 import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.CountriesLocalDataSource
 import com.repository.search.entity.CountryEntity
+import com.repository.search.mapper.toCountriesName
 
 class CountryRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val countriesLocalDataSource: CountriesLocalDataSource,
-    // private val countriesRemoteDataSource: CountriesRemoteDataSource,
+    private val genresRemoteDataSource: GenresRemoteDataSource
 ): CountryRepository {
 
     override suspend fun getAllCountries(): List<String> {
-        return if (networkConnectionChecker.isConnected.value)
-            TODO()
-        else
-            countriesLocalDataSource.getCountries().toCountriesName()
+        return try {
+            return if (networkConnectionChecker.isConnected.value)
+                genresRemoteDataSource.getAllGenres().genres.toCountriesName()
+            else
+                countriesLocalDataSource.getCountries().toCountriesName()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 }
 
