@@ -17,22 +17,24 @@ class CategoriesRepositoryImpl(
 ) : CategoriesRepository {
 
     override suspend fun getAllCategories(): List<CategoryModel> {
-
         return try {
             val genres = genresLocalDataSource.getGenres()
             if (genres.isNotEmpty()) return genres.toCategories()
 
-            if (networkConnectionChecker.isConnected.value) {
-                val remoteGenres = genresRemoteDataSource.getAllGenres().genreDto
-                val genreEntities = remoteGenres?.map { it.toEntity() }
-                if (genreEntities != null) {
-                    genresLocalDataSource.addGenres(genreEntities)
-                }
-            } else {
+            if (!networkConnectionChecker.isConnected.value) {
                 throw NoInternetConnectionException()
             }
+
+            val remoteGenres = genresRemoteDataSource.getAllGenres().genreDto
+            val genreEntities = remoteGenres?.map { it.toEntity() }
+            if (genreEntities != null) {
+                genresLocalDataSource.addGenres(genreEntities)
+            }
+
             genresLocalDataSource.getGenres().toCategories()
-        } catch (_: Exception) {
+        } catch (e: NoInternetConnectionException) {
+            throw e
+        } catch (e: Exception) {
             throw NoCategoriesFoundException()
         }
     }
