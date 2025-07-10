@@ -1,6 +1,5 @@
 package com.example.search
 
-import com.example.search.exception.SearchNetworkException
 import com.example.search.models.SearchDto
 import com.example.search.service.contract.SearchApiService
 import com.google.common.truth.Truth.assertThat
@@ -38,7 +37,7 @@ class SearchRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when searchMulti is called with api exception then throw SearchNetworkException`() = runTest {
+    fun `when searchMulti is called with exception then propagate exception`() = runTest {
         val query = "avengers"
         val page = 1
         val language = "en-US"
@@ -49,9 +48,9 @@ class SearchRemoteDataSourceImplTest {
 
         try {
             searchRemoteDataSource.searchMulti(query, page, language)
-            throw AssertionError("Should have thrown SearchNetworkException")
-        } catch (e: SearchNetworkException) {
-            assertThat(e.message).isEqualTo("Failed to perform multi search")
+            throw AssertionError("Should have propagated the exception")
+        } catch (e: Exception) {
+            assertThat(e).isEqualTo(apiException)
         }
 
         coVerify(exactly = 1) { mockSearchApiService.searchMulti(query, page, language) }
@@ -74,7 +73,7 @@ class SearchRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when searchPerson is called with api exception then throw SearchNetworkException`() = runTest {
+    fun `when searchPerson is called with exception then propagate exception`() = runTest {
         val query = "chris evans"
         val page = 1
         val language = "en-US"
@@ -85,10 +84,9 @@ class SearchRemoteDataSourceImplTest {
 
         try {
             searchRemoteDataSource.searchPerson(query, page, language)
-            throw AssertionError("Should have thrown SearchNetworkException")
-        } catch (e: SearchNetworkException) {
-            assertThat(e.message).isEqualTo("Failed to search for person")
-            assertThat(e.cause).isEqualTo(apiException)
+            throw AssertionError("Should have propagated the exception")
+        } catch (e: Exception) {
+            assertThat(e).isEqualTo(apiException)
         }
 
         coVerify(exactly = 1) { mockSearchApiService.searchPerson(query, page, language) }
@@ -114,7 +112,7 @@ class SearchRemoteDataSourceImplTest {
     }
 
     @Test
-    fun `when searchCountryCode is called with api exception then throw SearchNetworkException`() = runTest {
+    fun `when searchCountryCode is called with exception then propagate exception`() = runTest {
         val query = "avengers"
         val page = 1
         val language = "en-US"
@@ -126,10 +124,9 @@ class SearchRemoteDataSourceImplTest {
 
         try {
             searchRemoteDataSource.searchCountryCode(query, page, language, countryCode)
-            throw AssertionError("Should have thrown SearchNetworkException")
-        } catch (e: SearchNetworkException) {
-            assertThat(e.message).isEqualTo("Failed to search by country")
-            assertThat(e.cause).isEqualTo(apiException)
+            throw AssertionError("Should have propagated the exception")
+        } catch (e: Exception) {
+            assertThat(e).isEqualTo(apiException)
         }
 
         coVerify(exactly = 1) {

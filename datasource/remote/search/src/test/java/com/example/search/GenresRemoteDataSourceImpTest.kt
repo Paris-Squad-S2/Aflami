@@ -1,6 +1,5 @@
 package com.example.search
 
-import com.example.search.exception.SearchNetworkException
 import com.example.search.models.GenreDto
 import com.example.search.models.GenresDto
 import com.example.search.service.contract.GenresApiServices
@@ -51,16 +50,15 @@ class GenresRemoteDataSourceImpTest {
     }
 
     @Test
-    fun `when getAllGenres is called with api exception then throw SearchNetworkException`() = runTest {
+    fun `when getAllGenres is called with exception then propagate exception`() = runTest {
         val apiException = RuntimeException("API Error")
         coEvery { mockGenresApiServices.getAllGenres() } throws apiException
 
         try {
             genresRemoteDataSource.getAllGenres()
-            throw AssertionError("Should have thrown SearchNetworkException")
-        } catch (e: SearchNetworkException) {
-            assertThat(e.message).isEqualTo("Error fetching all genres")
-            assertThat(e.cause).isEqualTo(apiException)
+            throw AssertionError("Should have propagated the exception")
+        } catch (e: Exception) {
+            assertThat(e).isEqualTo(apiException)
         }
 
         coVerify(exactly = 1) { mockGenresApiServices.getAllGenres() }
