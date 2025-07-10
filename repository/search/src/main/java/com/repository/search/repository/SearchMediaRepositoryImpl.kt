@@ -1,6 +1,5 @@
 package com.repository.search.repository
 
-import android.util.Log
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.search.NetworkConnectionChecker
