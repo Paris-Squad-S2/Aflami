@@ -13,7 +13,12 @@ kotlin {
 }
 dependencies{
     implementation(libs.kotlinx.datetime)
-    testImplementation(libs.junit)
+
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // test
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
