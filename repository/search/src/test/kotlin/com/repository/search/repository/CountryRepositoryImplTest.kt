@@ -34,4 +34,21 @@ class CountryRepositoryImplTest {
         assertEquals(localCountries.toCountry(), result)
         coVerify(exactly = 0) { countriesLocalDataSource.addCountries() }
     }
+
+    @Test
+    fun `getAllCountries should call addCountries when local is empty`() = runTest {
+        // Given
+        val empty = emptyList<CountryEntity>()
+        val populated = listOf(CountryEntity("2", "France"))
+
+        coEvery { countriesLocalDataSource.getCountries() } returnsMany listOf(empty, populated)
+        coEvery { countriesLocalDataSource.addCountries() } just Runs
+
+        // When
+        val result = repository.getAllCountries()
+
+        // Then
+        assertEquals(populated.toCountry(), result)
+        coVerify(exactly = 1) { countriesLocalDataSource.addCountries() }
+    }
 }
