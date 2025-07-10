@@ -31,6 +31,7 @@ import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
     private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase = mockk()
     private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase = mockk()
@@ -124,8 +125,8 @@ class SearchViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `init should load recent searches and categories`() = runTest {
-        val recentSearches = listOf(SearchHistoryModel("1", "query1"))
-        val categories = listOf(CategoryModel(1, "Action"), CategoryModel(2, "Comedy"))
+        val recentSearches = listOf(mockSearchHistory1)
+        val categories = listOf(mockCategory1, mockCategory2)
 
         coEvery { getAllRecentSearchesUseCase.invoke() } returns recentSearches
         coEvery { getAllCategoriesUseCase.invoke() } returns categories
@@ -146,7 +147,7 @@ class SearchViewModelTest {
         assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(recentSearches)
         assertThat(viewModel.screenState.value.uiState.categories).isEqualTo(
             mapOf(
-                CategoryModel(1, "Action") to true, CategoryModel(2, "Comedy") to true
+                mockCategory1 to true, mockCategory2 to true
             )
         )
         assertThat(viewModel.screenState.value.errorMessage).isNull()
@@ -200,7 +201,7 @@ class SearchViewModelTest {
             val query1 = "first_query"
             val query2 = "second_query"
 
-            coEvery { searchByQueryUseCase(any()) } returns emptyList() // Mock any search to return empty
+            coEvery { searchByQueryUseCase(any()) } returns emptyList()
             every {
                 filterMediaByRatingUseCase(
                     any(), any()
@@ -212,56 +213,313 @@ class SearchViewModelTest {
                 )
             } answers { it.invocation.args[1] as List<Media> }
             coEvery { addRecentSearchesUseCase(any()) } just Runs
-            coEvery { getAllRecentSearchesUseCase.invoke() } returns emptyList() // For simplicity in this test
+            coEvery { getAllRecentSearchesUseCase.invoke() } returns emptyList()
 
-            // First query
+
             viewModel.onSearchQueryChange(query1)
             assertThat(viewModel.screenState.value.uiState.searchQuery).isEqualTo(query1)
-            advanceTimeBy(200) // Advance partially, not enough for debounce
+            advanceTimeBy(200)
 
-            // Second query before first debounce finishes
+
             viewModel.onSearchQueryChange(query2)
             assertThat(viewModel.screenState.value.uiState.searchQuery).isEqualTo(query2)
-            advanceTimeBy(400) // Advance enough for query2's debounce to pass (200 + 400 = 600 total)
+            advanceTimeBy(400)
 
-            advanceUntilIdle() // Ensure all coroutines complete
+            advanceUntilIdle()
 
-            // Only the second query's searchByQueryUseCase should have been called
             coVerify(exactly = 0) { searchByQueryUseCase(query1) }
             coVerify(exactly = 1) { searchByQueryUseCase(query2) }
             coVerify(exactly = 1) { addRecentSearchesUseCase(query2) }
         }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `searchQuery should handle error during search and update error message`() = runTest {
         val query = "error_query"
         val errorMessage = "Network unavailable"
 
-        // Mock searchByQueryUseCase to throw an exception
         coEvery { searchByQueryUseCase(query) } throws RuntimeException(errorMessage)
-        coEvery { addRecentSearchesUseCase(query) } just Runs // Mocked but won't be called on error
+        coEvery { addRecentSearchesUseCase(query) } just Runs
 
-        // Call onSearchQueryChange to trigger searchQuery via debounce
         viewModel.onSearchQueryChange(query)
         advanceUntilIdle()
 
-        // Verify loading state and error message
         assertThat(viewModel.screenState.value.isLoading).isFalse()
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo(errorMessage)
 
-        // Verify results are empty or unchanged from initial state
-        assertThat(viewModel.screenState.value.uiState.moviesResult).isEmpty() // Assuming they start empty
+        assertThat(viewModel.screenState.value.uiState.moviesResult).isEmpty()
         assertThat(viewModel.screenState.value.uiState.tvShowsResult).isEmpty()
         assertThat(viewModel.screenState.value.uiState.filteredMoviesResult).isEmpty()
         assertThat(viewModel.screenState.value.uiState.filteredTvShowsResult).isEmpty()
 
-        // Verify use cases were called
         coVerify(exactly = 1) { searchByQueryUseCase(query) }
-        coVerify(exactly = 0) { addRecentSearchesUseCase(any()) } // Should not be called on error
-        // getAllRecentSearchesUseCase is called once in init, but not again after error in searchQuery
+        coVerify(exactly = 0) { addRecentSearchesUseCase(any()) }
         coVerify(exactly = 1) { getAllRecentSearchesUseCase.invoke() }
         coVerify(exactly = 0) { filterMediaByRatingUseCase(any(), any()) }
         coVerify(exactly = 0) { filterMedByListOfCategoriesUseCase(any(), any()) }
     }
 
+    @Test
+    fun `onSelectTab updates selectedTabIndex in uiState`() = runTest {
+        assertThat(viewModel.screenState.value.uiState.selectedTabIndex).isEqualTo(0)
+
+        val newTabIndex1 = 1
+        viewModel.onSelectTab(newTabIndex1)
+        assertThat(viewModel.screenState.value.uiState.selectedTabIndex).isEqualTo(newTabIndex1)
+
+        val newTabIndex2 = 2
+        viewModel.onSelectTab(newTabIndex2)
+        assertThat(viewModel.screenState.value.uiState.selectedTabIndex).isEqualTo(newTabIndex2)
+
+        val newTabIndex0 = 0
+        viewModel.onSelectTab(newTabIndex0)
+        assertThat(viewModel.screenState.value.uiState.selectedTabIndex).isEqualTo(newTabIndex0)
+    }
+
+    @Test
+    fun `onFilterButtonClick toggles showFilterDialog state`() = runTest {
+        assertThat(viewModel.screenState.value.uiState.showFilterDialog).isFalse()
+
+        viewModel.onFilterButtonClick()
+        assertThat(viewModel.screenState.value.uiState.showFilterDialog).isTrue()
+
+        viewModel.onFilterButtonClick()
+        assertThat(viewModel.screenState.value.uiState.showFilterDialog).isFalse()
+
+        viewModel.onFilterButtonClick()
+        assertThat(viewModel.screenState.value.uiState.showFilterDialog).isTrue()
+    }
+
+    @Test
+    fun `onApplyFilterButtonClick applies filters and updates state on success`() = runTest {
+        val initialMovies = listOf(mockMovie1, mockMovie2)
+        val initialTvShows = listOf(mockTvShow1, mockTvShow2)
+
+        viewModel.emitState(
+            viewModel.screenState.value.copy(
+                uiState = viewModel.screenState.value.uiState.copy(
+                    moviesResult = initialMovies,
+                    tvShowsResult = initialTvShows,
+                    filteredMoviesResult = initialMovies,
+                    filteredTvShowsResult = initialTvShows,
+                    showFilterDialog = true,
+                    categories = mapOf(
+                        mockCategory1 to true, mockCategory2 to true,
+                        mockCategory3 to true, mockCategory4 to true,
+                        mockCategory5 to true
+                    )
+                )
+            )
+        )
+        advanceUntilIdle()
+
+        val selectedRating = 7.0f
+        val selectedCategories = listOf(mockCategory1, mockCategory4)
+
+        val filteredByRatingMovies = listOf(mockMovie1)
+        val filteredByRatingTvShows = listOf(mockTvShow1, mockTvShow2)
+
+        val finalFilteredMovies = listOf(mockMovie1)
+        val finalFilteredTvShows = listOf(mockTvShow1)
+
+        every {
+            filterMediaByRatingUseCase(
+                selectedRating,
+                initialMovies
+            )
+        } returns filteredByRatingMovies
+        every {
+            filterMediaByRatingUseCase(
+                selectedRating,
+                initialTvShows
+            )
+        } returns filteredByRatingTvShows
+        every {
+            filterMedByListOfCategoriesUseCase(
+                selectedCategories.map { it.id },
+                filteredByRatingMovies
+            )
+        } returns finalFilteredMovies
+        every {
+            filterMedByListOfCategoriesUseCase(
+                selectedCategories.map { it.id },
+                filteredByRatingTvShows
+            )
+        } returns finalFilteredTvShows
+
+        viewModel.onApplyFilterButtonClick(selectedRating, selectedCategories)
+        advanceUntilIdle()
+
+        assertThat(viewModel.screenState.value.isLoading).isFalse()
+        assertThat(viewModel.screenState.value.uiState.selectedRating).isEqualTo(selectedRating)
+        assertThat(viewModel.screenState.value.uiState.filteredMoviesResult).isEqualTo(
+            finalFilteredMovies
+        )
+        assertThat(viewModel.screenState.value.uiState.filteredTvShowsResult).isEqualTo(
+            finalFilteredTvShows
+        )
+    }
+
+    @Test
+    fun `onApplyFilterButtonClick handles error and updates error message`() = runTest {
+        val errorMessage = "Failed to apply filters"
+        val selectedRating = 7.0f
+        val selectedCategories = listOf(mockCategory1)
+
+        viewModel.emitState(
+            viewModel.screenState.value.copy(
+                uiState = viewModel.screenState.value.uiState.copy(
+                    moviesResult = listOf(mockMovie1),
+                    tvShowsResult = listOf(mockTvShow1),
+                    showFilterDialog = false
+                )
+            )
+        )
+        advanceUntilIdle()
+
+        every { filterMediaByRatingUseCase(any(), any()) } throws RuntimeException(errorMessage)
+
+
+        viewModel.onApplyFilterButtonClick(selectedRating, selectedCategories)
+        advanceUntilIdle()
+
+        // Then
+
+        assertThat(viewModel.screenState.value.errorMessage).isEqualTo(errorMessage)
+        assertThat(viewModel.screenState.value.uiState.showFilterDialog).isFalse()
+    }
+
+    @Test
+    fun `onClearFilterClick resets filter states and filtered results`() = runTest {
+        val initialMovies = listOf(mockMovie1, mockMovie2)
+        val initialTvShows = listOf(mockTvShow1, mockTvShow2)
+
+        viewModel.emitState(
+            viewModel.screenState.value.copy(
+                uiState = viewModel.screenState.value.uiState.copy(
+                    showFilterDialog = true,
+                    selectedRating = 8.0f,
+                    categories = mapOf(
+                        mockCategory1 to true,
+                        mockCategory2 to false
+                    ),
+                    moviesResult = initialMovies,
+                    tvShowsResult = initialTvShows,
+                    filteredMoviesResult = listOf(mockMovie1),
+                    filteredTvShowsResult = listOf(mockTvShow1)
+                )
+            )
+        )
+        advanceUntilIdle()
+
+
+        viewModel.onClearFilterClick()
+        advanceUntilIdle()
+
+
+        assertThat(viewModel.screenState.value.uiState.showFilterDialog).isFalse()
+        assertThat(viewModel.screenState.value.uiState.selectedRating).isEqualTo(0f)
+        viewModel.screenState.value.uiState.categories.forEach { (category, isSelected) ->
+            assertThat(isSelected).isTrue()
+        }
+        assertThat(viewModel.screenState.value.uiState.filteredMoviesResult).isEqualTo(initialMovies)
+        assertThat(viewModel.screenState.value.uiState.filteredTvShowsResult).isEqualTo(
+            initialTvShows
+        )
+    }
+
+    @Test
+    fun `onClearAllRecentSearches calls use case and reloads recent searches on success`() =
+        runTest {
+
+            val initialRecentSearches = listOf(mockSearchHistory1, mockSearchHistory2)
+            coEvery { getAllRecentSearchesUseCase.invoke() } returns initialRecentSearches andThen emptyList()
+            coEvery { clearAllRecentSearchesUseCase.invoke() } just Runs
+
+            viewModel = SearchViewModel(
+                getAllRecentSearchesUseCase,
+                clearAllRecentSearchesUseCase,
+                clearRecentSearchUseCase,
+                searchByQueryUseCase,
+                addRecentSearchesUseCase,
+                getAllCategoriesUseCase,
+                filterMediaByRatingUseCase,
+                filterMedByListOfCategoriesUseCase
+            )
+            advanceUntilIdle()
+
+            assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
+                initialRecentSearches
+            )
+
+
+            viewModel.onClearAllRecentSearches()
+            advanceUntilIdle()
+
+            // Then
+            coVerify(exactly = 1) { clearAllRecentSearchesUseCase.invoke() }
+            coVerify(exactly = 3) { getAllRecentSearchesUseCase.invoke() }
+            assertThat(viewModel.screenState.value.uiState.recentSearches).isEmpty()
+            assertThat(viewModel.screenState.value.errorMessage).isNull()
+        }
+
+    @Test
+    fun `onClearAllRecentSearches handles error and updates error message`() = runTest {
+        val errorMessage = "Failed to clear all recent searches"
+        coEvery { clearAllRecentSearchesUseCase.invoke() } throws RuntimeException(errorMessage)
+        coEvery { getAllRecentSearchesUseCase.invoke() } returns listOf(mockSearchHistory1)
+
+        viewModel.onClearAllRecentSearches()
+        advanceUntilIdle()
+
+        coVerify(exactly = 1) { clearAllRecentSearchesUseCase.invoke() }
+        coVerify(exactly = 1) { getAllRecentSearchesUseCase.invoke() }
+        assertThat(viewModel.screenState.value.errorMessage).isEqualTo(errorMessage)
+        assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
+            listOf(
+                mockSearchHistory1
+            )
+        )
+    }
+
+
+    @Test
+    fun `onClearRecentSearch calls use case with id and reloads recent searches on success`() =
+        runTest {
+            val idToClear = mockSearchHistory1.searchTitle
+            val initialRecentSearches = listOf(mockSearchHistory1, mockSearchHistory2)
+            val afterClearRecentSearches = listOf(mockSearchHistory2)
+
+            coEvery { getAllRecentSearchesUseCase.invoke() } returns initialRecentSearches andThen afterClearRecentSearches
+            coEvery { clearRecentSearchUseCase(idToClear) } just Runs
+
+
+            viewModel = SearchViewModel(
+                getAllRecentSearchesUseCase,
+                clearAllRecentSearchesUseCase,
+                clearRecentSearchUseCase,
+                searchByQueryUseCase,
+                addRecentSearchesUseCase,
+                getAllCategoriesUseCase,
+                filterMediaByRatingUseCase,
+                filterMedByListOfCategoriesUseCase
+            )
+            advanceUntilIdle()
+
+            assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
+                initialRecentSearches
+            )
+
+
+            viewModel.onClearRecentSearch(idToClear)
+            advanceUntilIdle()
+
+
+            coVerify(exactly = 1) { clearRecentSearchUseCase(idToClear) }
+            coVerify(exactly = 3) { getAllRecentSearchesUseCase.invoke() }
+            assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
+                afterClearRecentSearches
+            )
+            assertThat(viewModel.screenState.value.errorMessage).isNull()
+        }
 }
