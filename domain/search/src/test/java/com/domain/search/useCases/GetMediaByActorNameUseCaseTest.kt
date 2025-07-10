@@ -23,7 +23,7 @@ class GetMediaByActorNameUseCaseTest {
     }
 
     @Test
-    fun `invoke should return all media from repository for given actor name`() = runTest {
+    fun `invoke should return oly movies from repository for given actor name`() = runTest {
 
         // Given
         val actorName = "actor"
@@ -41,9 +41,9 @@ class GetMediaByActorNameUseCaseTest {
         val result = useCase.invoke(actorName)
 
         // Then
-        assertEquals(5, result.size)
+        assertEquals(3, result.size)
         assertEquals(
-            listOf("Movie 1", "Series 1", "Movie 2", "Series 2", "Movie 3"),
+            listOf("Movie 1", "Movie 2", "Movie 3"),
             result.map { it.title }
         )
     }
@@ -63,4 +63,24 @@ class GetMediaByActorNameUseCaseTest {
         assertTrue(result.isEmpty())
 
     }
+
+    @Test
+    fun `invoke should return empty list when only TV shows are returned`() = runTest {
+
+        // Given
+        val actorName = "actor"
+        val tvOnlyMedia = listOf(
+            createMedia(id = 10, title = "Show 1", type = MediaType.TVSHOW),
+            createMedia(id = 11, title = "Show 2", type = MediaType.TVSHOW)
+        )
+
+        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns tvOnlyMedia
+
+        // When
+        val result = useCase.invoke(actorName)
+
+        // Then
+        assertTrue(result.isEmpty())
+    }
+
 }
