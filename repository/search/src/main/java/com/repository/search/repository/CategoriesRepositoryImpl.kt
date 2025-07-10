@@ -23,9 +23,11 @@ class CategoriesRepositoryImpl(
             if (genres.isNotEmpty()) return genres.toCategories()
 
             if (networkConnectionChecker.isConnected.value) {
-                val remoteGenres = genresRemoteDataSource.getAllGenres().genres
-                val genreEntities = remoteGenres.map { it.toEntity() }
-                genresLocalDataSource.addGenres(genreEntities)
+                val remoteGenres = genresRemoteDataSource.getAllGenres().genreDto
+                val genreEntities = remoteGenres?.map { it.toEntity() }
+                if (genreEntities != null) {
+                    genresLocalDataSource.addGenres(genreEntities)
+                }
             } else {
                 throw NoInternetConnectionException()
             }
