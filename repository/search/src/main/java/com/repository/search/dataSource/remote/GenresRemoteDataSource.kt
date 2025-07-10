@@ -1,7 +1,7 @@
-package com.example.search.service.contract
+package com.repository.search.dataSource.remote
 
 import com.repository.search.dto.GenresDto
 
-fun interface GenresApiServices {
+fun interface GenresRemoteDataSource {
     suspend fun getAllGenres(): GenresDto
 }

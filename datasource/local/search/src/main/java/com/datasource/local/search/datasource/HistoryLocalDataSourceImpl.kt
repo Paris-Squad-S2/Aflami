@@ -1,7 +1,7 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.SearchHistoryDao
-import com.repository.search.dataSource.HistoryLocalDataSource
+import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.entity.SearchHistoryEntity
 
 class HistoryLocalDataSourceImpl(
@@ -16,6 +16,10 @@ class HistoryLocalDataSourceImpl(
 
     override suspend fun getAllSearchQueries(): List<SearchHistoryEntity> {
         return dao.getAllSearchQueries()
+    }
+
+    override suspend fun getSearchHistoryQuery(query: String): SearchHistoryEntity? {
+        return dao.getSearchHistoryQuery(query)
     }
 
     override suspend fun clearSearchQueryByQuery(query: String) {

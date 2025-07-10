@@ -1,6 +1,6 @@
-package com.example.search
+package com.repository.search.dataSource.remote
 
-import com.example.search.models.SearchDto
+import com.repository.search.dto.SearchDto
 
 interface SearchRemoteDataSource {
     suspend fun searchMulti(query: String, page: Int = 1, language: String = "en-US"): SearchDto
