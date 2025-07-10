@@ -1,14 +1,10 @@
 package com.repository.search.dto
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class GenreDto(
-    val genres: List<Genre>,
-)
-
-@Serializable
-data class Genre(
-    val id: Int,
-    val name: String,
+    @SerialName("id") val id: Int? = null,
+    @SerialName("name") val name: String? = null
 )

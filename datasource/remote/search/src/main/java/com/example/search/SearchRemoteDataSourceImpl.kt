@@ -1,16 +1,15 @@
 package com.example.search
 
-import com.example.search.api.SearchApiService
-import com.repository.search.models.SearchDto
+import com.example.search.models.SearchDto
+import com.example.search.service.contract.SearchApiService
 
-open class SearchRemoteDataSourceImpl(
-    private val apiService: SearchApiService,
-) : com.repository.search.dataSource.remote.SearchRemoteDataSource {
-    override suspend fun searchMulti(query: String, page: Int, language: String): com.repository.search.models.SearchDto {
+class SearchRemoteDataSourceImpl(private val apiService: SearchApiService) : SearchRemoteDataSource {
+
+    override suspend fun searchMulti(query: String, page: Int, language: String): SearchDto {
         return apiService.searchMulti(query, page, language)
     }
 
-    override suspend fun searchPerson(query: String, page: Int, language: String): com.repository.search.models.SearchDto {
+    override suspend fun searchPerson(query: String, page: Int, language: String): SearchDto {
         return apiService.searchPerson(query, page, language)
     }
 
@@ -19,7 +18,7 @@ open class SearchRemoteDataSourceImpl(
         page: Int,
         language: String,
         countryCode: String,
-    ): com.repository.search.models.SearchDto {
+    ): SearchDto {
         return apiService.searchCountryCode(query, page, language, countryCode)
     }
 }

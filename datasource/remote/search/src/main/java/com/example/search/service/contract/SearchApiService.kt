@@ -1,4 +1,4 @@
-package com.example.search.api
+package com.example.search.service.contract
 
 import com.repository.search.models.SearchDto
 

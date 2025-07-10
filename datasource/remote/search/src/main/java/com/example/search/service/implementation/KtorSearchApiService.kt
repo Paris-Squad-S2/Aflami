@@ -1,6 +1,7 @@
-package com.example.search.api
+package com.example.search.service.implementation
 
-import com.repository.search.models.SearchDto
+import com.example.search.models.SearchDto
+import com.example.search.service.contract.SearchApiService
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -21,20 +22,17 @@ class KtorSearchApiService(
         private const val COUNTRY_PARAM = "with_origin_country"
     }
 
-    override suspend fun searchMulti(query: String, page: Int, language: String): com.repository.search.models.SearchDto {
+    override suspend fun searchMulti(query: String, page: Int, language: String): SearchDto {
         return performSearch(MULTI_SEARCH_ENDPOINT, query, page, language)
     }
 
-    override suspend fun searchPerson(query: String, page: Int, language: String): com.repository.search.models.SearchDto {
+    override suspend fun searchPerson(query: String, page: Int, language: String): SearchDto {
         return performSearch(PERSON_SEARCH_ENDPOINT, query, page, language)
     }
 
     override suspend fun searchCountryCode(
-        query: String,
-        page: Int,
-        language: String,
-        countryCode: String,
-    ): com.repository.search.models.SearchDto {
+        query: String, page: Int, language: String, countryCode: String,
+    ): SearchDto {
         return performSearchWithCountry(
             endpoint = DISCOVER_MOVIE_ENDPOINT,
             query = query,
@@ -45,12 +43,8 @@ class KtorSearchApiService(
     }
 
     private suspend fun performSearchWithCountry(
-        endpoint: String,
-        query: String,
-        page: Int,
-        language: String,
-        countryCode: String,
-    ): com.repository.search.models.SearchDto {
+        endpoint: String, query: String, page: Int, language: String,countryCode: String,
+    ): SearchDto {
         return httpClient.get("$baseUrl/$endpoint") {
             parameter(QUERY_PARAM, query)
             parameter(PAGE_PARAM, page)
@@ -60,11 +54,8 @@ class KtorSearchApiService(
     }
 
     private suspend fun performSearch(
-        endpoint: String,
-        query: String,
-        page: Int,
-        language: String,
-    ): com.repository.search.models.SearchDto {
+        endpoint: String, query: String, page: Int, language: String,
+    ): SearchDto {
         return httpClient.get("$baseUrl/$endpoint") {
             parameter(QUERY_PARAM, query)
             parameter(PAGE_PARAM, page)
