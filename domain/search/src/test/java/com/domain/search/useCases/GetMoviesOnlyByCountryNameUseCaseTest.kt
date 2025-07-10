@@ -15,19 +15,19 @@ import org.junit.jupiter.api.Test
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
-class GetMoviesOnlyByCountryNameUseCaseTest{
+class GetMoviesOnlyByCountryNameUseCaseTest {
 
     private lateinit var searchMediaRepository: SearchMediaRepository
     private lateinit var useCase: GetMoviesOnlyByCountryNameUseCase
 
-    @Before
-    fun setUp(){
+    @BeforeEach
+    fun setUp() {
         searchMediaRepository = mockk()
         useCase = GetMoviesOnlyByCountryNameUseCase(searchMediaRepository)
     }
 
     @Test
-    fun `invoke should return only movies when repository returns mixed media types`() = runTest {
+    fun invoke_should_Return_OnlyMovies_when_Repository_Returns_Mixed_Media_Types() = runTest {
         // Given
         val countryName = "United States"
         val mixedMediaList = listOf(
@@ -49,7 +49,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest{
         assertEquals(listOf("Movie 1", "Movie 2", "Movie 3"), result.map { it.title })
     }
 
-    // Helper function to create test Media objects
     @OptIn(ExperimentalTime::class)
     private fun createMedia(
         id: Int,
