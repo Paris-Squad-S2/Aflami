@@ -83,7 +83,7 @@ fun AflamiMediaCard(
             modifier = Modifier.fillMaxSize(),
             painter = imagePainter,
             contentDescription = "media poster",
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.Crop
         )
 
         if (showRating) {

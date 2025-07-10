@@ -7,9 +7,11 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberAsyncImagePainter
 import com.domain.search.model.Media
+import com.feature.search.searchUi.R
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 
@@ -31,13 +33,16 @@ fun SearchResultContent(
                     .clickable {
                         onMediaCardClick(media.id)
                     },
-                imagePainter = rememberAsyncImagePainter(model = media.imageUri),
+                imagePainter = rememberAsyncImagePainter(
+                    model = media.imageUri,
+                    placeholder = painterResource(id = R.drawable.film_roll)
+                ),
                 rating = media.rating.toString(),
                 movieName = media.title,
                 mediaType = media.type.displayName,
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
-                showGradientFilter = true
+                showGradientFilter = true,
             )
 
         }

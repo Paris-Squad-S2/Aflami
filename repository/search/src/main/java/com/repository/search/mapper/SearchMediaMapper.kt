@@ -14,7 +14,7 @@ fun List<MediaEntity>.toMedias() = this.map { it.toMedia() }
 fun MediaEntity.toMedia(): Media {
     return Media(
         id = this.id,
-        imageUri = "https://image.tmdb.org/t/p/w500/" + this.imageUri,
+        imageUri = this.imageUri,
         title = this.title,
         type = this.type.toMediaType(),
         categories = this.category,
@@ -42,7 +42,7 @@ fun ResultDto.toMediaEntity(
 
     return MediaEntity(
         searchQuery = searchQuery,
-        imageUri = "https://image.tmdb.org/t/p/w500/" + image,
+        imageUri = "https://image.tmdb.org/t/p/w500/$image",
         title = title,
         type = when (this.mediaType) {
             "movie" -> MediaTypeEntity.MOVIE
