@@ -4,11 +4,14 @@ import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.repository.SearchMediaRepository
 import com.example.search.SearchRemoteDataSource
+import com.example.search.models.ResultDto
+import com.example.search.models.SearchDto
 import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.MediaLocalDataSource
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.mapper.toMediaList
+import kotlinx.datetime.toLocalDate
 
 class SearchMediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
@@ -18,10 +21,18 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByActor(actorName: String): List<Media> {
         return try {
-            if (networkConnectionChecker.isConnected.value)
-                searchRemoteDataSource.searchPerson(query = actorName).toMediaList()
-            else
+            if (networkConnectionChecker.isConnected.value){
+                val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
+                val mediaEntities = searchDto.toMediaEntities(
+                    query = actorName,
+                    actor = listOf(actorName)
+                )
+                mediaLocalDataSource.addAllMedia(mediaEntities)
+                mediaEntities.toMedias()
+            }
+            else{
                 mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
+            }
         } catch (e: Exception) {
             throw e
         }
@@ -68,4 +79,44 @@ fun MediaTypeEntity.toMediaType(): MediaType {
         MediaTypeEntity.MOVIE -> MediaType.MOVIE
         MediaTypeEntity.TVSHOW -> MediaType.TVSHOW
     }
+}
+
+
+
+
+fun ResultDto.toMediaEntity(
+    searchQuery: String,
+    actor: List<String> = emptyList(),
+    country: String = ""
+): MediaEntity? {
+    val title = this.title ?: this.name ?: return null
+    val image = this.posterPath ?: this.profilePath ?: ""
+    val releaseDateStr = this.releaseDate ?: this.firstAirDate ?: return null
+
+    return MediaEntity(
+        searchQuery = searchQuery,
+        imageUri = image,
+        title = title,
+        type = when (this.mediaType) {
+            "movie" -> MediaTypeEntity.MOVIE
+            "tv" -> MediaTypeEntity.TVSHOW
+            else -> return null
+        },
+        category = this.genreIds?.map { it.toString() } ?: emptyList(),
+        yearOfRelease = releaseDateStr.toLocalDate(),
+        rating = this.voteAverage ?: 0.0,
+        country = country,
+        actor = actor
+    )
+}
+
+
+fun SearchDto.toMediaEntities(
+    query: String,
+    actor: List<String> = emptyList(),
+    country: String = ""
+): List<MediaEntity> {
+    return results?.mapNotNull {
+        it.toMediaEntity(query, actor, country)
+    } ?: emptyList()
 }
