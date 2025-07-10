@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.comon.components
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
@@ -40,7 +41,7 @@ fun SearchResultContent(
                     .clickable {
                         onMediaCardClick(media.id)
                     },
-                imagePainter = rememberAsyncImagePainter(model = media.imageUri.toUri()),
+                imagePainter = rememberAsyncImagePainter(model = media.imageUri),
                 rating = media.rating.toString(),
                 movieName = media.title,
                 mediaType = media.type.displayName,

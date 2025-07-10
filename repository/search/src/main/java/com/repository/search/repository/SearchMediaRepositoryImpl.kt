@@ -1,5 +1,6 @@
 package com.repository.search.repository
 
+import android.util.Log
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.search.NetworkConnectionChecker
@@ -35,7 +36,7 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 } else {
@@ -69,7 +70,7 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 } else {
@@ -98,11 +99,10 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByTitleQuery(query = query)
             if (media.isNotEmpty()) {
-                val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 } else {
@@ -119,7 +119,7 @@ class SearchMediaRepositoryImpl(
             } else
                 throw NoInternetConnectionException()
             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
-        } catch (_: Exception) {
+        } catch (e: Exception) {
             throw NoDataForSearchException()
         }
     }
