@@ -79,5 +79,16 @@ class CategoriesRepositoryImplTest {
         assertNotNull(exception)
     }
 
+    @Test
+    fun `getAllCategories should throw NoCategoriesFoundException on exception`() = runTest {
+        // Given
+        coEvery { genresLocalDataSource.getGenres() } throws RuntimeException("DB error")
 
+        // When + Then
+        val exception = assertThrows<NoCategoriesFoundException> {
+            repository.getAllCategories()
+        }
+
+        assertNotNull(exception)
+    }
 }
