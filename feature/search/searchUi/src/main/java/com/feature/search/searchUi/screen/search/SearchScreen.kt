@@ -71,6 +71,8 @@ private fun SearchScreenContent(
             placeholder = stringResource(RSearchUi.string.search),
             trailingIcon = RDesignSystem.drawable.ic_filter_vertical,
             onClickTrailingIcon = searchScreenInteractionListener::onFilterButtonClick,
+            modifier = Modifier
+                .padding(bottom = 16.dp)
         )
 
         if (state.uiState.searchQuery.isEmpty()) {
