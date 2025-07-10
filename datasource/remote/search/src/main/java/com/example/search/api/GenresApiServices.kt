@@ -1,7 +1,7 @@
 package com.example.search.api
 
-import com.example.search.models.GenreDto
+import com.repository.search.models.GenreDto
 
 interface GenresApiServices {
-    suspend fun getAllGenres(): GenreDto
+    suspend fun getAllGenres(): com.repository.search.models.GenreDto
 }

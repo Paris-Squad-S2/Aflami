@@ -2,7 +2,7 @@ package com.repository.search.repository
 
 import com.domain.search.model.SearchHistoryModel
 import com.domain.search.repository.SearchHistoryRepository
-import com.repository.search.dataSource.HistoryLocalDataSource
+import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.entity.SearchHistoryEntity
 
 class SearchHistoryRepositoryImpl(

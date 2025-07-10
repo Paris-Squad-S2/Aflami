@@ -1,7 +1,7 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.SearchHistoryDao
-import com.repository.search.dataSource.HistoryLocalDataSource
+import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.entity.SearchHistoryEntity
 
 class HistoryLocalDataSourceImpl(

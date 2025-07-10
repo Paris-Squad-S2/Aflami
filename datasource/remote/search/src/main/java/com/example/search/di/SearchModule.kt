@@ -1,8 +1,8 @@
 package com.example.search.di
 
-import com.example.search.GenresRemoteDataSource
+import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.example.search.GenresRemoteDataSourceImp
-import com.example.search.SearchRemoteDataSource
+import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.example.search.SearchRemoteDataSourceImpl
 import com.example.search.api.GenresApiServices
 import com.example.search.api.KtorGenresApiServices
@@ -27,6 +27,6 @@ val SearchModule: Module = module {
             baseUrl = "https://api.themoviedb.org/3/"
         )
     }
-    singleOf(::SearchRemoteDataSourceImpl) { bind<SearchRemoteDataSource>() }
-    singleOf(::GenresRemoteDataSourceImp) { bind<GenresRemoteDataSource>() }
+    singleOf(::SearchRemoteDataSourceImpl) { bind<com.repository.search.dataSource.remote.SearchRemoteDataSource>() }
+    singleOf(::GenresRemoteDataSourceImp) { bind<com.repository.search.dataSource.remote.GenresRemoteDataSource>() }
 }

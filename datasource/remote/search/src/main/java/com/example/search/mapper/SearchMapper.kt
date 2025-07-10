@@ -2,9 +2,9 @@ package com.example.search.mapper
 
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
-import com.example.search.models.ResultDto
+import com.repository.search.models.ResultDto
 
-fun ResultDto.toMediaOrNull(): Media? {
+fun com.repository.search.models.ResultDto.toMediaOrNull(): Media? {
     if (this.id == null || this.posterPath == null || this.title == null) {
         return null
     }

@@ -49,5 +49,4 @@ dependencies {
 
 
     implementation(project(":domain:search"))
-    implementation(project(":datasource:remote:search"))
 }

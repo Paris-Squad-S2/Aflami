@@ -1,11 +1,11 @@
 package com.example.search
 
 import com.example.search.api.GenresApiServices
-import com.example.search.models.GenreDto
+import com.repository.search.models.GenreDto
 
 class GenresRemoteDataSourceImp(private val apiService: GenresApiServices) :
-    GenresRemoteDataSource {
-    override suspend fun getAllGenres(): GenreDto {
+    com.repository.search.dataSource.remote.GenresRemoteDataSource {
+    override suspend fun getAllGenres(): com.repository.search.models.GenreDto {
         return apiService.getAllGenres()
     }
 }

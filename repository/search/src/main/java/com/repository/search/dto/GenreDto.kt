@@ -1,4 +1,4 @@
-package com.example.search.models
+package com.repository.search.dto
 
 import kotlinx.serialization.Serializable
 

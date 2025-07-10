@@ -1,22 +1,25 @@
 package com.repository.search.repository
 
+import com.domain.search.model.Country
 import com.domain.search.repository.CountryRepository
-import com.repository.search.NetworkConnectionChecker
-import com.repository.search.dataSource.CountriesLocalDataSource
+import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.entity.CountryEntity
 
 class CountryRepositoryImpl(
-    private val networkConnectionChecker: NetworkConnectionChecker,
     private val countriesLocalDataSource: CountriesLocalDataSource,
-    // private val countriesRemoteDataSource: CountriesRemoteDataSource,
-): CountryRepository {
+) : CountryRepository {
 
-    override suspend fun getAllCountries(): List<String> {
-        return if (networkConnectionChecker.isConnected.value)
-            TODO()
-        else
-            countriesLocalDataSource.getCountries().toCountriesName()
+    override suspend fun getAllCountries(): List<Country> {
+        val countries = countriesLocalDataSource.getCountries().toCountry()
+        if (countries.isNotEmpty()) return countries
+        countriesLocalDataSource.addCountries()
+        return countriesLocalDataSource.getCountries().toCountry()
     }
 }
 
-fun List<CountryEntity>.toCountriesName(): List<String> = this.map { it.name }
+fun List<CountryEntity>.toCountry(): List<Country> = this.map {
+    Country(
+        it.countryCode,
+        it.name
+    )
+}

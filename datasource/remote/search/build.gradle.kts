@@ -37,7 +37,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(project(":domain:search"))
+    implementation(project(":repository:search"))
+
 
     // Ktor dependencies for networking - using api to make them transitively available
     api(libs.ktor.client.android)
