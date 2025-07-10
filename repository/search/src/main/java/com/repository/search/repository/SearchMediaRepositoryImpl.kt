@@ -28,9 +28,13 @@ class SearchMediaRepositoryImpl(
     }
 
     override suspend fun getMoviesByCountry(countryName: String): List<Media> {
-        return if (networkConnectionChecker.isConnected.value)
-            TODO()
-        else mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+        return try {
+            if (networkConnectionChecker.isConnected.value)
+                searchRemoteDataSource.searchCountryCode(query = countryName).toMediaList()
+            else mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+        } catch (e: Exception) {
+            throw e
+        }
     }
 
     override suspend fun getMediaByQuery(query: String): List<Media> {
