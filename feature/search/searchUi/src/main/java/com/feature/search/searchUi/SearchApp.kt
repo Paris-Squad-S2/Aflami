@@ -1,6 +1,8 @@
 package com.feature.search.searchUi
 
 import android.app.Application
+import com.feature.search.searchUi.di.NetworkModule
+import com.example.search.di.SearchModule
 import com.feature.search.searchUi.di.dataSourceModule
 import com.feature.search.searchUi.di.repositoryModule
 import com.feature.search.searchUi.di.roomModule
@@ -17,7 +19,15 @@ class SearchApp : Application() {
         startKoin {
             androidLogger()
             androidContext(this@SearchApp)
-            modules(viewModelModule, roomModule,dataSourceModule, useCaseModule, repositoryModule)
+            modules(
+                viewModelModule,
+                roomModule,
+                dataSourceModule,
+                useCaseModule,
+                repositoryModule,
+                NetworkModule,
+                SearchModule
+            )
         }
     }
 }
