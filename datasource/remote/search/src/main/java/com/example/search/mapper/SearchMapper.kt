@@ -3,18 +3,22 @@ package com.example.search.mapper
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.example.search.models.ResultDto
-import com.example.search.models.SearchDto
 
-fun ResultDto.toMedia(): Media {
+fun ResultDto.toMediaOrNull(): Media? {
+    if (this.id == null || this.posterPath == null || this.title == null) {
+        return null
+    }
+
     val mediaType = when (this.mediaType) {
         "tv" -> MediaType.TVSHOW
         "movie" -> MediaType.MOVIE
         else -> MediaType.MOVIE
     }
+
     return Media(
-        id = this.id!!,
-        imageUri = this.posterPath!!,
-        title = this.title!!,
+        id = this.id,
+        imageUri = this.posterPath,
+        title = this.title,
         type = mediaType,
         categories = mapGenreIdsToCategoryNames(this.genreIds),
         yearOfRelease = TODO(),
