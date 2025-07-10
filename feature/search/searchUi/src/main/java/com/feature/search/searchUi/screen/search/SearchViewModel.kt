@@ -317,7 +317,7 @@ class SearchViewModel(
         )
     }
 
-    override fun onClearRecentSearch(id: Long) {
+    override fun onClearRecentSearch(id: String) {
         tryToExecute(
             execute = {
                 clearRecentSearchUseCase(id)

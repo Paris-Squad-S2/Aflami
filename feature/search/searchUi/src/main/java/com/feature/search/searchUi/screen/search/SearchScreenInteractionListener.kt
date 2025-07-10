@@ -10,7 +10,7 @@ interface SearchScreenInteractionListener {
     fun onFilterButtonClick()
     fun onClearFilterClick()
     fun onClearAllRecentSearches()
-    fun onClearRecentSearch(id: Long)
+    fun onClearRecentSearch(id: String)
     fun onRetryRecentSearches()
     fun onRetrySearchQuery()
     fun onMediaCardClick(id: Int)

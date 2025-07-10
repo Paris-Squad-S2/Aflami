@@ -10,14 +10,14 @@ fun List<GenreEntity>.toCategories(): List<CategoryModel> {
 
 fun GenreEntity.toCategoryModel(): CategoryModel {
     return CategoryModel(
-        id = this.id.toInt(), // need to change
+        id = this.id,
         name = this.name
     )
 }
 
 fun GenreDto.toEntity(): GenreEntity {
     return GenreEntity(
-        id = this.id.toString(),
+        id = this.id ?: 0,
         name = this.name.orEmpty()
     )
 }

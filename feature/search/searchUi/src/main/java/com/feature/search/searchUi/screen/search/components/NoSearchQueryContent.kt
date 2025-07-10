@@ -120,7 +120,7 @@ fun NoSearchQueryContent(
         } else {
             items(
                 count = state.uiState.recentSearches.size,
-                key = { index -> state.uiState.recentSearches[index].id }
+                key = { index -> state.uiState.recentSearches[index].searchTitle }
             ) { index ->
                 val recentSearch = state.uiState.recentSearches[index]
                 RecentSearchItem(
@@ -133,7 +133,7 @@ fun NoSearchQueryContent(
                     },
                     onDeleteRecentSearch = {
                         searchScreenInteractionListener.onClearRecentSearch(
-                            recentSearch.id
+                            recentSearch.searchTitle
                         )
                         searchScreenInteractionListener.onRetryRecentSearches()
                     }

@@ -49,7 +49,7 @@ fun ResultDto.toMediaEntity(
             "tv" -> MediaTypeEntity.TVSHOW
             else -> return null
         },
-        category = this.genreIds?.map { it.toString() } ?: emptyList(),
+        category = this.genreIds ?: emptyList(),
         yearOfRelease = LocalDate.parse(releaseDateStr),
         rating = this.voteAverage ?: 0.0,
         country = country,

@@ -23,6 +23,17 @@ class SearchConverter {
     }
 
     @TypeConverter
+    fun fromStringToListOfInt(value: String?): List<Int>? {
+        return value?.let { json.decodeFromString(ListSerializer(Int.serializer()), it) }
+            ?: emptyList()
+    }
+
+    @TypeConverter
+    fun fromListOfIntToString(list: List<Int>?): String? {
+        return list?.let { json.encodeToString(ListSerializer(Int.serializer()), it) }
+    }
+
+    @TypeConverter
     fun fromEnumToString(mediaTypeEntity: MediaTypeEntity): String = mediaTypeEntity.name
 
     @TypeConverter
@@ -45,7 +56,7 @@ class SearchConverter {
 
     @TypeConverter
     fun toLocalDateTime(dateString: String?): LocalDateTime? {
-        return dateString?.let {  LocalDateTime.Companion.parse(it) }
+        return dateString?.let { LocalDateTime.Companion.parse(it) }
     }
 
 }
