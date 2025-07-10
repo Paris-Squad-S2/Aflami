@@ -2,6 +2,7 @@ package com.feature.search.searchUi.screen.findByActor
 
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.Media
+import com.domain.search.useCases.AddRecentSearchUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
 import kotlinx.coroutines.Job
@@ -19,7 +20,8 @@ data class FindByActorUiState(
 )
 
 class FindByActorViewModel(
-    private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase
+    private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
+    private val addRecentSearchesUseCase: AddRecentSearchUseCase,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -75,6 +77,7 @@ class FindByActorViewModel(
                         )
                     )
                 )
+                addRecentSearchesUseCase(query)
             },
             onError = { errorMessage ->
                 emitState(
