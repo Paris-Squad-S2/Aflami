@@ -2,10 +2,12 @@ package com.repository.search.mapper
 
 import com.domain.search.model.SearchHistoryModel
 import com.repository.search.entity.SearchHistoryEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 
-fun List<SearchHistoryEntity>.toSearchHistories(): List<SearchHistoryModel> {
-    return this.map { it.toSearchHistoryModel() }
+fun Flow<List<SearchHistoryEntity>>.toSearchHistories(): Flow<List<SearchHistoryModel>> {
+    return this.map { entities -> entities.map { it.toSearchHistoryModel() } }
 }
 
 fun SearchHistoryEntity.toSearchHistoryModel(): SearchHistoryModel {

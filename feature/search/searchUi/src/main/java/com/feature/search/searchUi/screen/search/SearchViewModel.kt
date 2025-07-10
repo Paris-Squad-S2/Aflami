@@ -76,14 +76,16 @@ class SearchViewModel(
         tryToExecute(
             execute = getAllRecentSearchesUseCase::invoke,
             onSuccess = { recentSearches ->
-                emitState(
-                    screenState.value.copy(
-                        uiState = screenState.value.uiState.copy(
-                            recentSearches = recentSearches
+                recentSearches.collect { recentSearchesList ->
+                    emitState(
+                        screenState.value.copy(
+                            uiState = screenState.value.uiState.copy(
+                                recentSearches = recentSearchesList
+                            )
                         )
                     )
-                )
-                loadCategories()
+                    loadCategories()
+                }
             },
             onError = { errorMessage ->
                 emitState(
@@ -196,7 +198,6 @@ class SearchViewModel(
                     )
                 )
                 addRecentSearchesUseCase(query)
-                loadRecentSearches()
             },
             onError = { errorMessage ->
                 emitState(
@@ -304,9 +305,6 @@ class SearchViewModel(
     override fun onClearAllRecentSearches() {
         tryToExecute(
             execute = clearAllRecentSearchesUseCase::invoke,
-            onSuccess = {
-                loadRecentSearches()
-            },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
@@ -321,9 +319,6 @@ class SearchViewModel(
         tryToExecute(
             execute = {
                 clearRecentSearchUseCase(id)
-            },
-            onSuccess = {
-                loadRecentSearches()
             },
             onError = { errorMessage ->
                 emitState(
