@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -38,7 +40,10 @@ fun FilterDialog(
         onDismiss = searchScreenInteractionListener::onFilterButtonClick,
         title = R.string.filter_result,
     ) {
-        Column {
+        Column (
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+        ){
             AflamiText(
                 text = stringResource(R.string.imdb_rating),
                 style = Theme.textStyle.title.small,
