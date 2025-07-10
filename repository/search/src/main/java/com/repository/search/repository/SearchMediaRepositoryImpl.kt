@@ -69,7 +69,7 @@ class SearchMediaRepositoryImpl(
                      searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
                  val timeZone = TimeZone.Companion.currentSystemDefault()
                  if (queryDate != null && queryDate.toInstant(timeZone)
-                         .plus(1, DateTimeUnit.HOUR) > getCurrentDate().toInstant(timeZone)
+                         .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
                  ) {
                      return media.toMedias()
                  } else {
@@ -83,7 +83,7 @@ class SearchMediaRepositoryImpl(
                     country = countryName
                 )
                 mediaLocalDataSource.addAllMedia(mediaEntities)
-                mediaEntities.toMedias()
+                searchHistoryLocalDataSource.addSearchQuery(countryName)
             } else {
                 mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
             }
@@ -93,18 +93,32 @@ class SearchMediaRepositoryImpl(
         }
     }
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun getMediaByQuery(query: String): List<Media> {
-        return try {
+         try {
+             val media = mediaLocalDataSource.getMediaByTitleQuery(query = query)
+             if(media.isNotEmpty()){
+                 val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
+                 val timeZone = TimeZone.Companion.currentSystemDefault()
+                 if (queryDate != null && queryDate.toInstant(timeZone)
+                         .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                 ) {
+                     return media.toMedias()
+                 } else {
+                     mediaLocalDataSource.clearAllMediaBySearchQuery(query)
+                 }
+             }
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchMulti(query)
                 val mediaEntities = searchDto.toMediaEntities(
                     query = query
                 )
                 mediaLocalDataSource.addAllMedia(mediaEntities)
-                mediaEntities.toMedias()
+                searchHistoryLocalDataSource.addSearchQuery(query)
             } else {
                 mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
             }
+             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
         } catch (e: Exception) {
             throw (e)
         }
