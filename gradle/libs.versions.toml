@@ -40,6 +40,7 @@ serializationJson ="1.6.3"
 navigationCompose = "2.9.0"
 ktor = "2.3.5"
 coroutines = "1.7.3"
+truth = "1.4.4"
 
 
 [libraries]
@@ -95,6 +96,7 @@ ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "k
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 ktor-client-auth = { module = "io.ktor:ktor-client-auth", version.ref = "ktor" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
 
 
 [plugins]
