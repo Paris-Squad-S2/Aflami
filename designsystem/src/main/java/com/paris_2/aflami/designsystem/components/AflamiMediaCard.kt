@@ -26,6 +26,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -44,16 +45,16 @@ fun AflamiMediaCard(
     mediaCardType: MediaCardType,
     showRating: Boolean = true,
     showGradientFilter: Boolean = false,
-    cardWidth: Int? = null,
-    cardHeight: Int? = null,
+    cardWidth: Dp? = null,
+    cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
     onPlayButtonClick: () -> Unit = {}
 ) {
     val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
-        MediaCardType.UP_COMING -> (cardWidth?.dp ?: 328.dp) to (cardHeight?.dp ?: 196.dp)
-        MediaCardType.NORMAL -> (cardWidth?.dp ?: 156.dp) to (cardHeight?.dp ?: 222.dp)
-        MediaCardType.EPISODE -> (cardWidth?.dp ?: 116.dp) to (cardHeight?.dp ?: 78.dp)
-        MediaCardType.SLIDER -> (cardWidth?.dp ?: 244.dp) to (cardHeight?.dp ?: 300.dp)
+        MediaCardType.UP_COMING -> (cardWidth ?: 328.dp) to (cardHeight ?: 196.dp)
+        MediaCardType.NORMAL -> (cardWidth ?: 156.dp) to (cardHeight ?: 222.dp)
+        MediaCardType.EPISODE -> (cardWidth ?: 116.dp) to (cardHeight ?: 78.dp)
+        MediaCardType.SLIDER -> (cardWidth ?: 244.dp) to (cardHeight ?: 300.dp)
     }
     val clipRadius = when (mediaCardType) {
         MediaCardType.EPISODE -> 12.dp
@@ -213,8 +214,8 @@ fun PreviewMediaEmptySliderCard() {
             imagePainter = painterResource(R.drawable.shniderlist_slider),
             mediaCardType = MediaCardType.SLIDER,
             showRating = false,
-            cardWidth = 207,
-            cardHeight = 276,
+            cardWidth = 207.dp,
+            cardHeight = 276.dp,
             clickable = true
         )
     }
