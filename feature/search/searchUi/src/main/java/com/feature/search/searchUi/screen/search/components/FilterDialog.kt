@@ -3,7 +3,6 @@ package com.feature.search.searchUi.screen.search.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -16,6 +15,7 @@ import com.feature.search.searchUi.R
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.paris_2.aflami.designsystem.components.AflamiButton
 import com.paris_2.aflami.designsystem.components.AflamiDialog
+import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.RatingBar
@@ -31,7 +31,7 @@ fun FilterDialog(
         title = R.string.filter_result,
     ) {
         Column {
-            Text(
+            AflamiText(
                 text = "IMDb rating",
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
@@ -47,7 +47,7 @@ fun FilterDialog(
                     currentRating = newRating
                 }
             )
-            Text(
+            AflamiText(
                 text = "Genre",
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
