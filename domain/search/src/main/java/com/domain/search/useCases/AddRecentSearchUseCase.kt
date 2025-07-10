@@ -6,6 +6,8 @@ class AddRecentSearchUseCase(
     private val searchHistoryRepository: SearchHistoryRepository,
 ) {
     suspend operator fun invoke(searchTitle: String) {
-        searchHistoryRepository.addSearchHistory(searchTitle)
+        if (searchTitle.trim().isNotBlank()) {
+            searchHistoryRepository.addSearchHistory(searchTitle)
+        }
     }
 }
