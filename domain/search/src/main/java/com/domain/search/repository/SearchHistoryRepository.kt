@@ -5,7 +5,7 @@ import com.domain.search.model.SearchHistoryModel
 interface SearchHistoryRepository {
     suspend fun getAllSearchHistory(): List<SearchHistoryModel>
     suspend fun addSearchHistory(searchTitle: String)
-    suspend fun clearSearchHistory(searchHistoryId: Long)
+    suspend fun clearSearchHistory(query:String)
     suspend fun clearAllSearchHistory()
 }
 
@@ -123,7 +123,7 @@ class SearchHistoryRepositoryFakeImpl : SearchHistoryRepository {
     }
 
 
-    override suspend fun clearSearchHistory(searchHistoryId: Long) {
+    override suspend fun clearSearchHistory(query: String) {
         searchHistoryList.removeIf { it.id == searchHistoryId }
     }
 

@@ -1,7 +1,7 @@
 package com.example.search
 
-import com.example.search.models.GenreDto
-import com.example.search.models.GenresDto
+import com.repository.search.dto.GenreDto
+import com.repository.search.dto.GenresDto
 import com.example.search.service.contract.GenresApiServices
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery

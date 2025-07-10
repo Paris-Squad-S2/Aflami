@@ -15,6 +15,9 @@ interface SearchHistoryDao {
     @Query("SELECT * FROM search_history_table ORDER BY search_query DESC")
     suspend fun getAllSearchQueries(): List<SearchHistoryEntity>
 
+    @Query("SELECT * FROM search_history_table WHERE search_query = :searchQuery")
+    suspend fun getSearchHistoryQuery(searchQuery: String): SearchHistoryEntity?
+
     @Query("DELETE FROM search_history_table WHERE search_query = :searchQuery")
     suspend fun clearSearchQueryByQuery(searchQuery: String)
 
