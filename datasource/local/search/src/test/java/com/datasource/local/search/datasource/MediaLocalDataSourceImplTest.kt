@@ -62,7 +62,7 @@ class MediaLocalDataSourceImplTest {
 
             val result = mediaLocalDataSourceImpl.getCachedMedia()
 
-            assertEquals(sampleMedia, result)
+            assertEquals(sampleMedia, result.first())
         }
 
     @Test
