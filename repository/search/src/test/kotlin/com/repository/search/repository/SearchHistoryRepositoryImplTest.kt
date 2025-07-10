@@ -57,4 +57,16 @@ class SearchHistoryRepositoryImplTest {
         // Then
         coVerify(exactly = 1) { historyLocalDataSource.clearSearchQueryByQuery(query) }
     }
+
+    @Test
+    fun `clearAllSearchHistory should call clearAll`() = runTest {
+        // Given
+        coEvery { historyLocalDataSource.clearAll() } just Runs
+
+        // When
+        repository.clearAllSearchHistory()
+
+        // Then
+        coVerify(exactly = 1) { historyLocalDataSource.clearAll() }
+    }
 }
