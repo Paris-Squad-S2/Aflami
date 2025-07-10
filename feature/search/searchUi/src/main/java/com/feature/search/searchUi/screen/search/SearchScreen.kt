@@ -42,6 +42,7 @@ private fun SearchScreenContent(
 ) {
     if (state.uiState.showFilterDialog) {
         FilterDialog(
+            state = state,
             searchScreenInteractionListener = searchScreenInteractionListener,
         )
     }

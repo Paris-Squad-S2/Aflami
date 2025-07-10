@@ -48,7 +48,7 @@ fun WithSearchQueryContent(
                 }
             }
             val searchResult =
-                if (state.uiState.selectedTabIndex == 0) state.uiState.moviesResult else state.uiState.tvShowsResult
+                if (state.uiState.selectedTabIndex == 0) state.uiState.filteredMoviesResult else state.uiState.filteredTvShowsResult
             if (searchResult.isEmpty()) {
                 PlaceholderView(
                     modifier = Modifier.fillMaxSize(),

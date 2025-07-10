@@ -7,7 +7,7 @@ data class Media(
     val imageUri: String,
     val title: String,
     val type: MediaType,
-    val categories: List<String>,
+    val categories: List<Int>,
     val yearOfRelease: LocalDate,
     val rating: Double,
 )
