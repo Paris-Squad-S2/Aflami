@@ -1,7 +1,7 @@
 package com.repository.search.dataSource.remote
 
-import com.repository.search.dto.GenreDto
+import com.repository.search.dto.GenresDto
 
-interface GenresRemoteDataSource {
-    suspend fun getAllGenres(): GenreDto
+fun interface GenresRemoteDataSource {
+    suspend fun getAllGenres(): GenresDto
 }
