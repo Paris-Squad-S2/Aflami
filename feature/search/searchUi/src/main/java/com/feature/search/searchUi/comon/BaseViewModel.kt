@@ -35,7 +35,7 @@ open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
     }
 
     protected fun <T> tryToExecute(
-        onSuccess: ((T) -> Unit)? = null,
+        onSuccess: (suspend (T) -> Unit)? = null,
         onError: (String) -> Unit,
         scope: CoroutineScope = viewModelScope,
         execute: suspend () -> T,

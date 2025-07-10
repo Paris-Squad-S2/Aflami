@@ -1,9 +1,12 @@
 package com.feature.search.searchUi.screen.search
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.model.SearchHistoryModel
+import com.domain.search.useCases.AddRecentSearchUseCase
+import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
@@ -30,9 +33,10 @@ data class UIState(
 
 class SearchViewModel(
     private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase,
-    private val clearAllRecentSearchesUseCase: GetAllRecentSearchesUseCase,
+    private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase,
     private val clearRecentSearchUseCase: ClearRecentSearchUseCase,
     private val searchByQueryUseCase: SearchByQueryUseCase,
+    private val addRecentSearchesUseCase: AddRecentSearchUseCase
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -57,6 +61,10 @@ class SearchViewModel(
         tryToExecute(
             execute = getAllRecentSearchesUseCase::invoke,
             onSuccess = { recentSearches ->
+                Log.d("TAG1", "loadRecentSearches: $recentSearches")
+                clearAllRecentSearchesUseCase() //TODO: should Be removed after testing
+                Log.d("TAG2", "loadRecentSearches: $recentSearches")
+                // TODO: What is happening here? 😂
                 emitState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
@@ -133,6 +141,7 @@ class SearchViewModel(
                         )
                     )
                 )
+                addRecentSearchesUseCase(query)
             },
             onError = { errorMessage ->
                 emitState(

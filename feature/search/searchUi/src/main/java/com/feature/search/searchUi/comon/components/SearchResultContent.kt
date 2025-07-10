@@ -38,7 +38,7 @@ fun SearchResultContent(
                     .clickable {
                         onMediaCardClick(media.id)
                     },
-                imagePainter = painterResource(R.drawable.anime_horizontal), //rememberAsyncImagePainter(model = media.imageUri)
+                imagePainter = painterResource(R.drawable.anime_horizontal), //TODO: replace with rememberAsyncImagePainter(model = media.imageUri)
                 rating = media.rating.toString(),
                 movieName = media.title,
                 mediaType = media.type.displayName,
