@@ -39,7 +39,9 @@ ksp  = "2.2.0-2.0.2"
 serializationJson ="1.6.3"
 navigationCompose = "2.9.0"
 ktor = "2.3.5"
-
+truth = "1.4.4"
+junitJupiter = "5.13.2"
+coroutines-test = "1.7.3"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -72,6 +74,8 @@ junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinxDatetime" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+truth = { module = "com.google.truth:truth", version.ref = "truth" }
+kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistPager" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
 koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koinCompose" }
