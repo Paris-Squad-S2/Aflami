@@ -52,12 +52,6 @@ dependencies {
     // Koin dependency injection - using api to make it transitively available
     implementation(libs.koin.android)
     implementation(libs.koin.core)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
     //To Ask About

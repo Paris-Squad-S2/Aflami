@@ -51,6 +51,12 @@ android {
         compose = true
         buildConfig = true
     }
+
+
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -98,8 +104,6 @@ dependencies {
     implementation(libs.coil.compose)
 
     //test
-
-
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.junit.jupiter.api)
@@ -107,6 +111,14 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(kotlin("test"))
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(project(":repository:search"))
     implementation(project(":datasource:local:search"))
