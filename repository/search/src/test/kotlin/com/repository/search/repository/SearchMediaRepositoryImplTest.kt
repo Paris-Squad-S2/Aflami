@@ -220,6 +220,74 @@ class SearchMediaRepositoryImplTest {
     }
 
     // getMediaByQuery Test Cases
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `getMediaByQuery should return cached media if not expired`() = runTest {
+        val query = "Inception"
+        val cachedMedia = listOf(
+            MediaEntity(
+                id = 1,
+                searchQuery = query,
+                imageUri = "image.jpg",
+                title = "Inception",
+                type = MediaTypeEntity.MOVIE,
+                category = listOf("Sci-Fi"),
+                yearOfRelease = LocalDate(2010, 7, 16),
+                rating = 8.8,
+                country = "USA",
+                actor = listOf("Leonardo DiCaprio")
+            )
+        )
+        val validDate = Clock.System.now()
+            .minus(2, DateTimeUnit.HOUR)
+            .toLocalDateTime(TimeZone.currentSystemDefault())
 
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns cachedMedia
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(query, validDate)
+
+        val result = repository.getMediaByQuery(query)
+        assertEquals(cachedMedia.toMedias(), result)
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun `getMediaByQuery should fetch remotely if cache is expired`() = runTest {
+        val query = "Matrix"
+        val expiredDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns listOf(MediaEntity(1, query, "img", "Old", MediaTypeEntity.MOVIE, listOf("Action"), LocalDate(2000, 1, 1), 8.0, "USA", listOf("Keanu"))) andThen emptyList()
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(query, expiredDate)
+        coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(query) } just Runs
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { searchRemoteDataSource.searchMulti(query) } returns mockk(relaxed = true)
+        coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
+        coEvery { historyLocalDataSource.addSearchQuery(query) } just Runs
+
+        val result = repository.getMediaByQuery(query)
+        assertEquals(emptyList(), result)
+    }
+
+    @Test
+    fun `getMediaByQuery should throw NoInternetConnectionException if no internet`() = runTest {
+        val query = "Titanic"
+
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns emptyList()
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        assertFailsWith<NoInternetConnectionException> {
+            repository.getMediaByQuery(query)
+        }
+    }
+
+    @Test
+    fun `getMediaByQuery should throw NoDataForSearchException on error`() = runTest {
+        val query = "Avatar"
+
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } throws RuntimeException("DB error")
+
+        assertFailsWith<NoDataForSearchException> {
+            repository.getMediaByQuery(query)
+        }
+    }
 
 }
