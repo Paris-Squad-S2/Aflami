@@ -1,19 +1,15 @@
 package com.domain.search.useCases
 
-import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.repository.SearchMediaRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.toLocalDateTime
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import kotlin.time.Clock
-import kotlin.time.ExperimentalTime
+import testUtils.createMedia
 
 class GetMoviesOnlyByCountryNameUseCaseTest {
 
@@ -47,22 +43,5 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
         assertEquals(3, result.size)
         assertTrue(result.all { it.type == MediaType.MOVIE })
         assertEquals(listOf("Movie 1", "Movie 2", "Movie 3"), result.map { it.title })
-    }
-
-    @OptIn(ExperimentalTime::class)
-    private fun createMedia(
-        id: Int,
-        title: String,
-        type: MediaType,
-    ): Media {
-        return Media(
-            id = id,
-            imageUri = "image.com",
-            title = title,
-            type = type,
-            categories = listOf("Drama", "Action", "Science Fiction", "Romance"),
-            yearOfRelease = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
-            rating = 8.5,
-        )
     }
 }
