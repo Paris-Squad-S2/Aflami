@@ -3,35 +3,58 @@ package com.repository.search.repository
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.repository.SearchMediaRepository
-import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.NetworkConnectionChecker
+import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
+import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.dto.ResultDto
 import com.repository.search.dto.SearchDto
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
-import kotlinx.datetime.toLocalDate
+import com.repository.search.util.getCurrentDate
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.plus
+import kotlinx.datetime.toInstant
+import kotlin.time.ExperimentalTime
 
 class SearchMediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val mediaLocalDataSource: MediaLocalDataSource,
-    private val searchRemoteDataSource: SearchRemoteDataSource
+    private val searchRemoteDataSource: SearchRemoteDataSource,
+    private val searchHistoryLocalDataSource: HistoryLocalDataSource
 ) : SearchMediaRepository {
 
+    @OptIn(ExperimentalTime::class)
     override suspend fun getMediaByActor(actorName: String): List<Media> {
-        return try {
-            if (networkConnectionChecker.isConnected.value){
+        try {
+            val media = mediaLocalDataSource.getMediaByActor(actor = actorName)
+            if (media.isNotEmpty()) {
+                val queryDate =
+                    searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
+                val timeZone = TimeZone.Companion.currentSystemDefault()
+                if (queryDate != null && queryDate.toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                ) {
+                    return media.toMedias()
+                } else {
+                    mediaLocalDataSource.clearAllMediaBySearchQuery(actorName)
+                }
+            }
+            if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
                 val mediaEntities = searchDto.toMediaEntities(
                     query = actorName,
                     actor = listOf(actorName)
                 )
                 mediaLocalDataSource.addAllMedia(mediaEntities)
-                mediaEntities.toMedias()
+                searchHistoryLocalDataSource.addSearchQuery(actorName)
+            } else {
+                throw Exception()
             }
-            else{
-                mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
-            }
+            return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
+
         } catch (e: Exception) {
             throw e
         }
@@ -39,7 +62,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMoviesByCountry(countryName: String): List<Media> {
         return try {
-            if (networkConnectionChecker.isConnected.value){
+            if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchCountryCode(query = countryName)
                 val mediaEntities = searchDto.toMediaEntities(
                     query = countryName,
@@ -47,9 +70,7 @@ class SearchMediaRepositoryImpl(
                 )
                 mediaLocalDataSource.addAllMedia(mediaEntities)
                 mediaEntities.toMedias()
-            }
-            else
-            {
+            } else {
                 mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
             }
         } catch (e: Exception) {
@@ -59,15 +80,14 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByQuery(query: String): List<Media> {
         return try {
-            if (networkConnectionChecker.isConnected.value){
+            if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchMulti(query)
                 val mediaEntities = searchDto.toMediaEntities(
                     query = query
                 )
                 mediaLocalDataSource.addAllMedia(mediaEntities)
                 mediaEntities.toMedias()
-            }
-            else{
+            } else {
                 mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
             }
         } catch (e: Exception) {
@@ -99,8 +119,6 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 }
 
 
-
-
 fun ResultDto.toMediaEntity(
     searchQuery: String,
     actor: List<String>,
@@ -120,7 +138,7 @@ fun ResultDto.toMediaEntity(
             else -> return null
         },
         category = this.genreIds?.map { it.toString() } ?: emptyList(),
-        yearOfRelease = releaseDateStr.toLocalDate(),
+        yearOfRelease = LocalDate.parse(releaseDateStr),
         rating = this.voteAverage ?: 0.0,
         country = country,
         actor = actor
