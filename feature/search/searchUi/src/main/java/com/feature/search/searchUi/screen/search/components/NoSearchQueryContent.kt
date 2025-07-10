@@ -87,7 +87,7 @@ fun NoSearchQueryContent(
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = searchScreenInteractionListener::onRetryRecentSearches
-            ) //TODO What the Screen of the error, it's not network here
+            ) //TODO What the Screen of the error, it's not network only here
         } else if (state.isLoading) {
             PageLoadingPlaceHolder(
                 modifier = Modifier.fillMaxSize()

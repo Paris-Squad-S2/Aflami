@@ -37,7 +37,7 @@ fun FilterDialog(
                 color = Theme.colors.text.title,
                 modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
             )
-            RatingBar( //TODO: Refactor it
+            RatingBar(
                 modifier = Modifier
                     .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .align(Alignment.CenterHorizontally)
