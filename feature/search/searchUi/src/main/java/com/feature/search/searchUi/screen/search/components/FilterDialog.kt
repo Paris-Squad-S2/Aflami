@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.search.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -49,11 +50,11 @@ fun FilterDialog(
                 text = stringResource(R.string.imdb_rating),
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
-                modifier = Modifier.padding(end = 12.dp, bottom = 8.dp)
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
             )
             RatingBar(
                 modifier = Modifier
-                    .padding(bottom = 12.dp)
+                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .align(Alignment.CenterHorizontally),
                 rating = currentRating,
                 onRatingChange = { newRating ->
@@ -64,9 +65,11 @@ fun FilterDialog(
                 text = stringResource(R.string.genre),
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
             )
-            LazyRow {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 12.dp),
+            ) {
                 items(currentCategories.size) { index ->
                     val category = currentCategories.keys.elementAt(index)
                     Chips(
