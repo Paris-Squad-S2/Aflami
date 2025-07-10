@@ -46,5 +46,24 @@ class CategoriesRepositoryImplTest {
         assertEquals(localGenres.map { CategoryModel(it.id.toInt(), it.name) }, result)
         coVerify(exactly = 0) { genresRemoteDataSource.getAllGenres() }
     }
-    
+
+    @Test
+    fun `getAllCategories should fetch from remote when local is empty and internet available`() = runTest {
+        // Given
+        coEvery { genresLocalDataSource.getGenres() } returnsMany listOf(emptyList(), listOf(GenreEntity("2", "Drama")))
+        every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { genresRemoteDataSource.getAllGenres() } returns GenresDto(
+            genreDto = listOf(GenreDto(2, "Drama"))
+        )
+        coEvery { genresLocalDataSource.addGenres(any()) } just Runs
+
+        // When
+        val result = repository.getAllCategories()
+
+        // Then
+        assertEquals(listOf(CategoryModel(2, "Drama")), result)
+        coVerify { genresRemoteDataSource.getAllGenres() }
+    }
+
+
 }
