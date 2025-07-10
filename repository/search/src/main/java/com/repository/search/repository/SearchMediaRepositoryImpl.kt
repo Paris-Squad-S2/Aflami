@@ -40,9 +40,19 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMoviesByCountry(countryName: String): List<Media> {
         return try {
-            if (networkConnectionChecker.isConnected.value)
-                searchRemoteDataSource.searchCountryCode(query = countryName).toMediaList()
-            else mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+            if (networkConnectionChecker.isConnected.value){
+                val searchDto = searchRemoteDataSource.searchCountryCode(query = countryName)
+                val mediaEntities = searchDto.toMediaEntities(
+                    query = countryName,
+                    country = countryName
+                )
+                mediaLocalDataSource.addAllMedia(mediaEntities)
+                mediaEntities.toMedias()
+            }
+            else
+            {
+                mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+            }
         } catch (e: Exception) {
             throw e
         }
@@ -86,8 +96,8 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 
 fun ResultDto.toMediaEntity(
     searchQuery: String,
-    actor: List<String> = emptyList(),
-    country: String = ""
+    actor: List<String>,
+    country: String
 ): MediaEntity? {
     val title = this.title ?: this.name ?: return null
     val image = this.posterPath ?: this.profilePath ?: ""
