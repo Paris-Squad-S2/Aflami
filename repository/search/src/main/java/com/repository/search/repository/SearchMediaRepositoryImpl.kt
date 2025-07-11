@@ -35,7 +35,7 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 } else {
@@ -69,7 +69,7 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 } else {
@@ -101,7 +101,7 @@ class SearchMediaRepositoryImpl(
                 val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 } else {
@@ -114,11 +114,13 @@ class SearchMediaRepositoryImpl(
                     query = query
                 )
                 searchHistoryLocalDataSource.addSearchQuery(query)
+
                 mediaLocalDataSource.addAllMedia(mediaEntities)
-            } else
+            } else {
                 throw NoInternetConnectionException()
+            }
             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             throw NoDataForSearchException()
         }
     }
