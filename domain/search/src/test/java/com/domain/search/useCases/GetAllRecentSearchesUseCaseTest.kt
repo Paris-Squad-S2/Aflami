@@ -3,6 +3,7 @@ package com.domain.search.useCases
 import com.domain.search.model.SearchHistoryModel
 import com.domain.search.repository.SearchHistoryRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -38,6 +39,7 @@ class GetAllRecentSearchesUseCaseTest {
         //Then
         assertEquals(2, result.size)
         assertEquals(recentSearches, result)
+        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
     }
 
 
@@ -52,6 +54,7 @@ class GetAllRecentSearchesUseCaseTest {
 
         //Then
         assertTrue { result.isEmpty() }
+        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
     }
 
 }

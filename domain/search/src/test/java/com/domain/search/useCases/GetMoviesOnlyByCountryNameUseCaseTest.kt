@@ -45,6 +45,7 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
         assertEquals(3, result.size)
         assertTrue(result.all { it.type == MediaType.MOVIE })
         assertEquals(listOf("Movie 1", "Movie 2", "Movie 3"), result.map { it.title })
+        coVerify(exactly = 1) { searchMediaRepository.getMoviesByCountry(countryName) }
     }
 
     @Test
