@@ -2,7 +2,6 @@ package com.feature.search.searchUi.screen.worldTour
 
 import com.domain.search.model.Country
 import com.domain.search.model.Media
-import com.domain.search.useCases.AddRecentSearchUseCase
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
@@ -25,7 +24,6 @@ import org.junit.jupiter.api.Test
 class WorldTourViewModelTest {
     private lateinit var viewModel: WorldTourViewModel
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
-    private lateinit var addRecentSearchesUseCase: AddRecentSearchUseCase
     private lateinit var autoCompleteCountryUseCase: AutoCompleteCountryUseCase
     private lateinit var getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase
     private lateinit var getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase
@@ -37,7 +35,6 @@ class WorldTourViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         getMediaByActorNameUseCase = mockk(relaxed = true)
-        addRecentSearchesUseCase = mockk(relaxed = true)
         autoCompleteCountryUseCase = mockk(relaxed = true)
         getMoviesByCountryUseCase = mockk(relaxed = true)
         getCountryCodeByNameUseCase = mockk(relaxed = true)
@@ -46,7 +43,6 @@ class WorldTourViewModelTest {
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
             getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
-            addRecentSearchesUseCase = addRecentSearchesUseCase
         )
     }
 
@@ -108,24 +104,6 @@ class WorldTourViewModelTest {
 
         coVerify(exactly = 1) { autoCompleteCountryUseCase(query2) }
         coVerify(exactly = 0) { autoCompleteCountryUseCase(query1) }
-    }
-
-    @Test
-    fun `successful search should add to recent searches`() = runTest {
-        val query = "France"
-        val countryCode = "FR"
-        val mockMediaList = listOf(
-            mockk<Media> { every { title } returns "Cast Away" },
-            mockk<Media> { every { title } returns "Forrest Gump" }
-        )
-        coEvery { autoCompleteCountryUseCase(query) } returns emptyList()
-        coEvery { getCountryCodeByNameUseCase(query) } returns countryCode
-        coEvery { getMoviesByCountryUseCase(countryCode) } returns mockMediaList
-
-        viewModel.onSearchQueryChange(query)
-        testDispatcher.scheduler.advanceUntilIdle()
-
-        coVerify { addRecentSearchesUseCase(countryCode) }
     }
 
 }

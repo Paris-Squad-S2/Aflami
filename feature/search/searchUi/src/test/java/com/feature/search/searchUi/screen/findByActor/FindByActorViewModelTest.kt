@@ -1,7 +1,6 @@
 package com.feature.search.searchUi.screen.findByActor
 
 import com.domain.search.model.Media
-import com.domain.search.useCases.AddRecentSearchUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -23,7 +22,7 @@ import org.junit.jupiter.api.Test
 class FindByActorViewModelTest {
     private lateinit var viewModel: FindByActorViewModel
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
-    private lateinit var addRecentSearchesUseCase: AddRecentSearchUseCase
+
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -32,10 +31,8 @@ class FindByActorViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         getMediaByActorNameUseCase = mockk(relaxed = true)
-        addRecentSearchesUseCase = mockk(relaxed = true)
         viewModel = FindByActorViewModel(
-            getMediaByActorNameUseCase = getMediaByActorNameUseCase,
-            addRecentSearchesUseCase = addRecentSearchesUseCase
+            getMediaByActorNameUseCase = getMediaByActorNameUseCase
         )
     }
 
@@ -108,7 +105,6 @@ class FindByActorViewModelTest {
         assertThat(currentState.uiState.searchResult).isEqualTo(mockMediaList)
         assertThat(currentState.isLoading).isFalse()
         assertThat(currentState.errorMessage).isNull()
-        coVerify { addRecentSearchesUseCase.invoke(testQuery) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -125,7 +121,6 @@ class FindByActorViewModelTest {
         assertThat(currentState.uiState.searchResult).isEmpty()
         assertThat(currentState.isLoading).isFalse()
         assertThat(currentState.errorMessage).isEqualTo(errorMessage)
-        coVerify(exactly = 0) { addRecentSearchesUseCase.invoke(any()) }
     }
 
 }
