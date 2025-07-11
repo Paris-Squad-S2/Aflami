@@ -13,10 +13,16 @@ import com.repository.search.exception.NoDataForSearchException
 import com.repository.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMedia
 import com.repository.search.mapper.toMedias
-import io.mockk.*
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.just
+import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
 import kotlinx.datetime.toLocalDateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,9 +30,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import kotlinx.datetime.TimeZone
-import kotlinx.datetime.DateTimeUnit
-import kotlinx.datetime.minus
 
 class SearchMediaRepositoryImplTest {
 
@@ -69,7 +72,10 @@ class SearchMediaRepositoryImplTest {
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         coEvery { mediaLocalDataSource.getMediaByActor(actorName) } returns cachedMedia
-        coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName) } returns SearchHistoryEntity(actorName, oldDate)
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName) } returns SearchHistoryEntity(
+            actorName,
+            oldDate
+        )
 
         val result = repository.getMediaByActor(actorName)
         assertEquals(cachedMedia.toMedias(), result)
@@ -94,7 +100,9 @@ class SearchMediaRepositoryImplTest {
         )
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(actorName) } just Runs
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { searchRemoteDataSource.searchPerson(actorName) } returns mockk(relaxed = true)
+        coEvery { searchRemoteDataSource.searchPerson(actorName, language = any()) } returns mockk(
+            relaxed = true
+        )
         coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
         coEvery { historyLocalDataSource.addSearchQuery(actorName) } just Runs
         coEvery { mediaLocalDataSource.getMediaByActor(actorName) } returns emptyList()
@@ -149,7 +157,10 @@ class SearchMediaRepositoryImplTest {
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns cachedMedia
-        coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName) } returns SearchHistoryEntity(countryName, validDate)
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName) } returns SearchHistoryEntity(
+            countryName,
+            validDate
+        )
 
         val result = repository.getMoviesByCountry(countryName)
         assertEquals(cachedMedia.toMedias(), result)
@@ -175,10 +186,19 @@ class SearchMediaRepositoryImplTest {
         )
 
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns oldMedia
-        coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName) } returns SearchHistoryEntity(countryName, expiredDate)
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName) } returns SearchHistoryEntity(
+            countryName,
+            expiredDate
+        )
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(countryName) } just Runs
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { searchRemoteDataSource.searchCountryCode(query = countryName, countryCode = countryName) } returns mockk(relaxed = true)
+        coEvery {
+            searchRemoteDataSource.searchCountryCode(
+                query = countryName,
+                countryCode = countryName,
+                language = any()
+            )
+        } returns mockk(relaxed = true)
         coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
         coEvery { historyLocalDataSource.addSearchQuery(countryName) } just Runs
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns emptyList()
@@ -232,7 +252,10 @@ class SearchMediaRepositoryImplTest {
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns cachedMedia
-        coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(query, validDate)
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(
+            query,
+            validDate
+        )
 
         val result = repository.getMediaByQuery(query)
         assertEquals(cachedMedia.toMedias(), result)
@@ -243,13 +266,27 @@ class SearchMediaRepositoryImplTest {
     fun `getMediaByQuery should fetch remotely if cache is expired`() = runTest {
         val query = "Matrix"
         val expiredDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
-        val entity = MediaEntity(1, query, "img", "Old", MediaTypeEntity.MOVIE, listOf(1), LocalDate(2000, 1, 1), 8.0)
+        val entity = MediaEntity(
+            1,
+            query,
+            "img",
+            "Old",
+            MediaTypeEntity.MOVIE,
+            listOf(1),
+            LocalDate(2000, 1, 1),
+            8.0
+        )
 
         coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns listOf(entity) andThen emptyList()
-        coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(query, expiredDate)
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(
+            query,
+            expiredDate
+        )
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(query) } just Runs
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { searchRemoteDataSource.searchMulti(query) } returns mockk(relaxed = true)
+        coEvery { searchRemoteDataSource.searchMulti(query, language = any()) } returns mockk(
+            relaxed = true
+        )
         coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
         coEvery { historyLocalDataSource.addSearchQuery(query) } just Runs
 
