@@ -19,7 +19,7 @@ class GenresLocalDataSourceImplTest {
     fun setUp() {
         genresLocalDataSource = GenresLocalDataSourceImpl(genresDao)
         sampleGenre = GenreEntity(
-            id = "1",
+            id = 1,
             name = "all"
         )
     }

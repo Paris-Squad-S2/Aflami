@@ -5,6 +5,7 @@ import com.repository.search.entity.SearchHistoryEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -24,14 +25,13 @@ class HistoryLocalDataSourceImplTest {
     }
 
     @Test
-    fun `getAllSearchQueries should return genres when getAll in SearchHistoryDao called successfully`() =
-        runTest {
-            coEvery { searchHistoryDao.getAllSearchQueries() } returns listOf(sampleSearchHistory)
+    fun `getAllSearchQueries should return genres when getAll in SearchHistoryDao called successfully`() = runTest {
+        coEvery { searchHistoryDao.getAllSearchQueries() } returns kotlinx.coroutines.flow.flowOf(listOf(sampleSearchHistory))
 
-            val result = historyLocalDataSource.getAllSearchQueries()
+        val result = historyLocalDataSource.getAllSearchQueries().first()
 
-            assertEquals(sampleSearchHistory.searchQuery, result[0].searchQuery)
-        }
+        assertEquals(sampleSearchHistory.searchQuery, result[0].searchQuery)
+    }
 
     @Test
     fun `addSearchQuery should add SearchQuery when add in SearchHistoryDao called successfully`() =

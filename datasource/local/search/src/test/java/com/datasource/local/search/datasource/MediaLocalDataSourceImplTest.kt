@@ -27,11 +27,9 @@ class MediaLocalDataSourceImplTest {
             imageUri = "www.image.com",
             title = "batman",
             type = MediaTypeEntity.MOVIE,
-            category = listOf("action", "adventure"),
+            category = listOf(1, 2),
             yearOfRelease = LocalDate.parse("2023-01-01"),
             rating = 4.5,
-            country = "usa",
-            actor = listOf("aaa", "bbb")
         )
     }
 
@@ -72,7 +70,7 @@ class MediaLocalDataSourceImplTest {
 
             val result = mediaLocalDataSourceImpl.getMediaByActor("aaa")
 
-            assertEquals(sampleMedia.actor, result[0].actor)
+            assertEquals(sampleMedia.searchQuery, result[0].searchQuery)
         }
 
     @Test
@@ -82,7 +80,7 @@ class MediaLocalDataSourceImplTest {
 
             val result = mediaLocalDataSourceImpl.getMediaByCountry("usa")
 
-            assertEquals(sampleMedia.country, result[0].country)
+            assertEquals(sampleMedia.searchQuery, result[0].searchQuery)
         }
 
     @Test
