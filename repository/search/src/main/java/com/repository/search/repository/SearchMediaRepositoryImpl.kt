@@ -43,8 +43,9 @@ class SearchMediaRepositoryImpl(
             }
 
             if (networkConnectionChecker.isConnected.value) {
-                val language = detectLanguage(actorName)
-                val searchDto = searchRemoteDataSource.searchPerson(query = actorName, language = language)
+                val language = detectLanguage()
+                val searchDto =
+                    searchRemoteDataSource.searchPerson(query = actorName, language = language)
                 val mediaEntities = searchDto.toMediaEntitiesForActors(query = actorName)
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
                 mediaLocalDataSource.addAllMedia(mediaEntities)
@@ -67,7 +68,7 @@ class SearchMediaRepositoryImpl(
             val media = mediaLocalDataSource.getMediaByCountry(country = countryName)
             if (media.isNotEmpty()) {
                 val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
-                val timeZone = TimeZone.currentSystemDefault()
+                val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
@@ -76,7 +77,7 @@ class SearchMediaRepositoryImpl(
             }
 
             if (networkConnectionChecker.isConnected.value) {
-                val language = detectLanguage(countryName)
+                val language = detectLanguage()
                 val searchDto = searchRemoteDataSource.searchCountryCode(
                     query = countryName,
                     countryCode = countryName,
@@ -103,9 +104,8 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByTitleQuery(query = query)
             if (media.isNotEmpty()) {
-                val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
-                val timeZone = TimeZone.currentSystemDefault()
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
+                val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
@@ -114,9 +114,8 @@ class SearchMediaRepositoryImpl(
             }
 
             if (networkConnectionChecker.isConnected.value) {
-                val language = detectLanguage(query)
-                val searchDto =
-                    searchRemoteDataSource.searchMulti(query = query, language = language)
+                val language = detectLanguage()
+                val searchDto = searchRemoteDataSource.searchMulti(query = query, language = language)
                 val mediaEntities = searchDto.toMediaEntities(query = query)
                 searchHistoryLocalDataSource.addSearchQuery(query)
                 mediaLocalDataSource.addAllMedia(mediaEntities)
