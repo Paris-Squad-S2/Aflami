@@ -1,6 +1,5 @@
 package com.repository.search.repository
 
-import android.util.Log
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.search.NetworkConnectionChecker
@@ -14,6 +13,7 @@ import com.repository.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMediaEntities
 import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
+import com.repository.search.util.detectLanguage
 import com.repository.search.util.getCurrentDate
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.TimeZone
@@ -34,25 +34,25 @@ class SearchMediaRepositoryImpl(
             val media = mediaLocalDataSource.getMediaByActor(actor = actorName)
             if (media.isNotEmpty()) {
                 val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
-                val timeZone = TimeZone.Companion.currentSystemDefault()
+                val timeZone = TimeZone.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 }
             }
+
             if (networkConnectionChecker.isConnected.value) {
-                val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
-                val mediaEntities = searchDto.toMediaEntitiesForActors(
-                    query = actorName
-                )
+                val language = detectLanguage(actorName)
+                val searchDto = searchRemoteDataSource.searchPerson(query = actorName, language = language)
+                val mediaEntities = searchDto.toMediaEntitiesForActors(query = actorName)
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
                 mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
-            return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
 
+            return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
@@ -60,33 +60,35 @@ class SearchMediaRepositoryImpl(
         }
     }
 
+
     @OptIn(ExperimentalTime::class)
     override suspend fun getMoviesByCountry(countryName: String): List<Media> {
         try {
             val media = mediaLocalDataSource.getMediaByCountry(country = countryName)
             if (media.isNotEmpty()) {
-                val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
-                val timeZone = TimeZone.Companion.currentSystemDefault()
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
+                val timeZone = TimeZone.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 }
             }
+
             if (networkConnectionChecker.isConnected.value) {
+                val language = detectLanguage(countryName)
                 val searchDto = searchRemoteDataSource.searchCountryCode(
                     query = countryName,
-                    countryCode = countryName
+                    countryCode = countryName,
+                    language = language
                 )
-                val mediaEntities = searchDto.toMediaEntities(
-                    query = countryName
-                )
+                val mediaEntities = searchDto.toMediaEntities(query = countryName)
                 searchHistoryLocalDataSource.addSearchQuery(countryName)
                 mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
+
             return mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
@@ -95,6 +97,7 @@ class SearchMediaRepositoryImpl(
         }
     }
 
+
     @OptIn(ExperimentalTime::class)
     override suspend fun getMediaByQuery(query: String): List<Media> {
         try {
@@ -102,26 +105,25 @@ class SearchMediaRepositoryImpl(
             if (media.isNotEmpty()) {
                 val queryDate =
                     searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
-                val timeZone = TimeZone.Companion.currentSystemDefault()
+                val timeZone = TimeZone.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
                 }
             }
+
             if (networkConnectionChecker.isConnected.value) {
-                val searchDto = searchRemoteDataSource.searchMulti(query)
-                val mediaEntities = searchDto.toMediaEntities(
-                    query = query
-                )
-                Log.d("SearchMediaRepositoryImpl", "getMediaByActor: $mediaEntities")
-
+                val language = detectLanguage(query)
+                val searchDto =
+                    searchRemoteDataSource.searchMulti(query = query, language = language)
+                val mediaEntities = searchDto.toMediaEntities(query = query)
                 searchHistoryLocalDataSource.addSearchQuery(query)
-
                 mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
+
             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
