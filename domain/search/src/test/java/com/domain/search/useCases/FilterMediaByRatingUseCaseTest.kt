@@ -31,7 +31,7 @@ class FilterMediaByRatingUseCaseTest {
             val expectedMediaList = mediaList
 
             //When
-            val result = filterMediaByRatingUseCase(4.0, mediaList)
+            val result = filterMediaByRatingUseCase(4.0f, mediaList)
 
             //Then
             assertEquals(2, result.size)
@@ -58,7 +58,7 @@ class FilterMediaByRatingUseCaseTest {
             )
 
             //When
-            val result = filterMediaByRatingUseCase(4.0, mediaList)
+            val result = filterMediaByRatingUseCase(4.0f, mediaList)
 
             //Then
             assertEquals(3, result.size)
@@ -80,7 +80,7 @@ class FilterMediaByRatingUseCaseTest {
         val expectedMediaList = emptyList<Media>()
 
         //When
-        val result = filterMediaByRatingUseCase(5.5, mediaList)
+        val result = filterMediaByRatingUseCase(5.5f, mediaList)
 
         //Then
         assertEquals(expectedMediaList, result)
@@ -95,7 +95,7 @@ class FilterMediaByRatingUseCaseTest {
         val expectedMediaList = emptyList<Media>()
 
         //When
-        val result = filterMediaByRatingUseCase(5.0, mediaList)
+        val result = filterMediaByRatingUseCase(5.0f, mediaList)
 
         //Then
         assertEquals(expectedMediaList, result)
