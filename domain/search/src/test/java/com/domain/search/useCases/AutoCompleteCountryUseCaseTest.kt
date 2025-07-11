@@ -1,6 +1,5 @@
 package com.domain.search.useCases
 
-import com.domain.search.model.Country
 import com.domain.search.repository.CountryRepository
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -11,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import testUtils.sampleCountries
 
 class AutoCompleteCountryUseCaseTest {
     private lateinit var countryRepository: CountryRepository
@@ -102,17 +102,4 @@ class AutoCompleteCountryUseCaseTest {
             coVerify(exactly = 1) { countryRepository.getAllCountries() }
         }
     }
-
-    private val sampleCountries = listOf(
-        Country(countryCode = "1612", countryName = "United States"),
-        Country(countryCode = "2113", countryName = "United Kingdom"),
-        Country(countryCode = "1213", countryName = "Canada"),
-        Country(countryCode = "3478", countryName = "Australia"),
-        Country(countryCode = "3462", countryName = "Germany"),
-        Country(countryCode = "1237", countryName = "France"),
-        Country(countryCode = "9872", countryName = "Japan"),
-        Country(countryCode = "2434", countryName = "Brazil"),
-        Country(countryCode = "2312", countryName = "India"),
-        Country(countryCode = "7484", countryName = "China")
-    )
 }
