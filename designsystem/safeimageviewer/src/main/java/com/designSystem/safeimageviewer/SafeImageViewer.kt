@@ -37,7 +37,7 @@ fun SafeImageViewer(
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Fit,
     blurRadius: Float = 20f,
-    confidenceThreshold: Float = 0.8f,
+    confidenceThreshold: Float = 0.7f,
     showLoadingIndicator: Boolean = true,
     placeholder: @Composable (() -> Unit)? = null,
 ) {
@@ -48,10 +48,10 @@ fun SafeImageViewer(
     var isAnalyzing by remember { mutableStateOf(false) }
     val nsfwDetector = remember { NSFWDetector(context) }
 
-    // Clean up detector when composable is disposed
-    DisposableEffect(Unit) {
-        onDispose {
-            nsfwDetector.close()
+    val coroutineExceptionHandler = remember {
+        kotlinx.coroutines.CoroutineExceptionHandler { _, exception ->
+            isNSFW = false
+            isAnalyzing = false
         }
     }
 
@@ -67,7 +67,7 @@ fun SafeImageViewer(
     LaunchedEffect(drawable) {
         drawable?.let { drw ->
             isAnalyzing = true
-            withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO + coroutineExceptionHandler) {
                 try {
                     val bitmap = convertToARGB8888Bitmap(drw)
                     nsfwDetector.isNSFW(bitmap, confidenceThreshold) { isNSFWResult, _, _ ->
