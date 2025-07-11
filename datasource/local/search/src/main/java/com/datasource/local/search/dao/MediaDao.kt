@@ -15,13 +15,13 @@ interface MediaDao {
     @Query("SELECT * FROM media_table")
     suspend fun getAllMedia(): List<MediaEntity>
 
-    @Query("SELECT * FROM media_table WHERE searchQuery LIKE '%' || :country || '%'")
+    @Query("SELECT * FROM media_table WHERE searchQuery LIKE :country ")
     suspend fun getMediaByCountry(country: String): List<MediaEntity>
 
-    @Query("SELECT * FROM media_table WHERE searchQuery LIKE '%' || :actor || '%'")
+    @Query("SELECT * FROM media_table WHERE searchQuery LIKE  :actor")
     suspend fun getMediaByActor(actor: String): List<MediaEntity>
 
-    @Query("SELECT * FROM media_table WHERE searchQuery LIKE '%' || :query || '%'")
+    @Query("SELECT * FROM media_table WHERE searchQuery LIKE  :query ")
     suspend fun getMediaByTitleQuery(query: String): List<MediaEntity>
 
     @Query("SELECT media_table.* FROM media_table INNER JOIN search_history_table ON media_table.searchQuery = search_history_table.search_query")

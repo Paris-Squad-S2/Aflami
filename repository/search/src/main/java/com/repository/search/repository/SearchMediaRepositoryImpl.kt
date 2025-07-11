@@ -1,5 +1,6 @@
 package com.repository.search.repository
 
+import android.util.Log
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.search.NetworkConnectionChecker
@@ -73,7 +74,10 @@ class SearchMediaRepositoryImpl(
                 }
             }
             if (networkConnectionChecker.isConnected.value) {
-                val searchDto = searchRemoteDataSource.searchCountryCode(query = countryName)
+                val searchDto = searchRemoteDataSource.searchCountryCode(
+                    query = countryName,
+                    countryCode = countryName
+                )
                 val mediaEntities = searchDto.toMediaEntities(
                     query = countryName
                 )
@@ -107,6 +111,7 @@ class SearchMediaRepositoryImpl(
                 val mediaEntities = searchDto.toMediaEntities(
                     query = query
                 )
+                Log.d("SearchMediaRepositoryImpl", "getMediaByActor: $mediaEntities")
 
                 searchHistoryLocalDataSource.addSearchQuery(query)
 
@@ -114,8 +119,7 @@ class SearchMediaRepositoryImpl(
             } else {
                 throw NoInternetConnectionException()
             }
-            val result = mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
-            return result
+            return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
         } catch (_: Exception) {
             throw NoDataForSearchException()
         }

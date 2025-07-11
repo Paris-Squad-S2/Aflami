@@ -1,5 +1,6 @@
 package com.example.search
 
+import android.util.Log
 import com.example.search.service.contract.SearchApiService
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.dto.SearchDto
@@ -21,6 +22,11 @@ class SearchRemoteDataSourceImpl(private val apiService: SearchApiService) :
         language: String,
         countryCode: String,
     ): SearchDto {
-        return apiService.searchCountryCode(query, page, language, countryCode)
+        val api = apiService.searchCountryCode(query, page, language, countryCode)
+        Log.d("TAG", "searchCountryCode:DataSourceImp: ${api.results?.size}")
+        api.results?.forEach {
+            Log.d("TAG", "searchCountryCode:DataSourceImp: ${it}")
+        }
+        return api
     }
 }

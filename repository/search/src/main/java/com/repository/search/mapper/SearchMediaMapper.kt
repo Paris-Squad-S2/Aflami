@@ -35,7 +35,7 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 fun ResultDto.toMediaEntity(
     searchQuery: String,
 ): MediaEntity? {
-    val title = this.title ?: this.name ?: return null
+    val title = this.originalTitle ?: this.title ?: this.name ?: return null
     val image = this.posterPath ?: this.profilePath ?: ""
     val releaseDateStr = (this.releaseDate?.takeIf { it.isNotBlank() }
         ?: this.firstAirDate?.takeIf { it.isNotBlank() }) ?: return null
@@ -48,7 +48,7 @@ fun ResultDto.toMediaEntity(
             type = when (this.mediaType) {
                 "movie" -> MediaTypeEntity.MOVIE
                 "tv" -> MediaTypeEntity.TVSHOW
-                else -> return null
+                else -> MediaTypeEntity.MOVIE
             },
             category = this.genreIds ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
@@ -60,7 +60,7 @@ fun ResultDto.toMediaEntity(
 }
 
 fun KnownForDto.toMediaEntity(
-    searchQuery: String
+    searchQuery: String,
 ): MediaEntity? {
     val title = this.title ?: return null
     val image = this.posterPath ?: ""
@@ -87,7 +87,7 @@ fun KnownForDto.toMediaEntity(
 
 
 fun ResultDto.toMediaEntityForActors(
-    searchQuery: String
+    searchQuery: String,
 ): List<MediaEntity?> {
 
     return this.knownForDTO?.map {
@@ -99,7 +99,7 @@ fun ResultDto.toMediaEntityForActors(
 
 
 fun SearchDto.toMediaEntities(
-    query: String
+    query: String,
 ): List<MediaEntity> {
     return results?.mapNotNull {
         it.toMediaEntity(query)
@@ -107,7 +107,7 @@ fun SearchDto.toMediaEntities(
 }
 
 fun SearchDto.toMediaEntitiesForActors(
-    query: String
+    query: String,
 ): List<MediaEntity> {
     return results?.flatMap {
         it.toMediaEntityForActors(query)
