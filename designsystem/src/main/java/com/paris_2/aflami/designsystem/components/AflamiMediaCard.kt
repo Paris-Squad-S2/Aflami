@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -21,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
@@ -81,6 +84,14 @@ fun AflamiMediaCard(
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
+            placeholder = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_film_roll),
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
         )
 
         if (showRating) {

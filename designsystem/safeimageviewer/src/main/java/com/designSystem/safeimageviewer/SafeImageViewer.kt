@@ -19,8 +19,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.createBitmap
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
@@ -29,7 +29,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.core.graphics.createBitmap
 
 @Composable
 fun SafeImageViewer(
@@ -40,6 +39,7 @@ fun SafeImageViewer(
     blurRadius: Float = 20f,
     confidenceThreshold: Float = 0.7f,
     showLoadingIndicator: Boolean = true,
+    placeholder: @Composable (() -> Unit)? = null,
 ) {
     val context = LocalContext.current
     var isNSFW by remember { mutableStateOf(false) }
@@ -134,7 +134,7 @@ fun SafeImageViewer(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                CircularProgressIndicator()
+                placeholder?.invoke() ?: CircularProgressIndicator()
             }
         }
     }
