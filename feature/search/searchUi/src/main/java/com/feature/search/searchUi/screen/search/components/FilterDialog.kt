@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.search.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -37,6 +38,7 @@ fun FilterDialog(
 ) {
     var currentRating by remember { mutableFloatStateOf(state.uiState.selectedRating) }
     var currentCategories by remember { mutableStateOf(state.uiState.categories) }
+    var isAllCategories by remember { mutableStateOf(state.uiState.isAllCategories) }
     AflamiDialog(
         onDismiss = searchScreenInteractionListener::onFilterButtonClick,
         title = R.string.filter_result,
@@ -49,11 +51,11 @@ fun FilterDialog(
                 text = stringResource(R.string.imdb_rating),
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
-                modifier = Modifier.padding(end = 12.dp, bottom = 8.dp)
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
             )
             RatingBar(
                 modifier = Modifier
-                    .padding(bottom = 12.dp)
+                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .align(Alignment.CenterHorizontally),
                 rating = currentRating,
                 onRatingChange = { newRating ->
@@ -64,9 +66,24 @@ fun FilterDialog(
                 text = stringResource(R.string.genre),
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
             )
-            LazyRow {
+            LazyRow(
+                contentPadding = PaddingValues(horizontal = 12.dp),
+            ) {
+                item {
+                    Chips(
+                        title = stringResource(R.string.all),
+                        icon = painterResource(R.drawable.ic_category_all),
+                        isSelected = isAllCategories,
+                        onClick = {
+                            isAllCategories = !isAllCategories
+                            if (isAllCategories) {
+                                currentCategories = state.uiState.categories.mapValues { false }
+                            }
+                        }
+                    )
+                }
                 items(currentCategories.size) { index ->
                     val category = currentCategories.keys.elementAt(index)
                     Chips(
@@ -74,6 +91,7 @@ fun FilterDialog(
                         icon = painterResource(getResourceId(category.id)),
                         isSelected = currentCategories[category] ?: false,
                         onClick = {
+                            isAllCategories = false
                             currentCategories = currentCategories.toMutableMap().apply {
                                 this[category] = !(currentCategories[category] ?: false)
                             }
@@ -86,6 +104,7 @@ fun FilterDialog(
                 onClick = {
                     searchScreenInteractionListener.onApplyFilterButtonClick(
                         selectedRating = currentRating,
+                        isAllCategories = isAllCategories,
                         selectedCategories = currentCategories.filter { it.value }.keys.toList()
                     )
                 },

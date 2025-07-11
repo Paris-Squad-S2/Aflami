@@ -4,11 +4,12 @@ import com.domain.search.model.SearchHistoryModel
 import com.domain.search.repository.SearchHistoryRepository
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.mapper.toSearchHistories
+import kotlinx.coroutines.flow.Flow
 
 class SearchHistoryRepositoryImpl(
     private val historyLocalDataSource: HistoryLocalDataSource,
 ) : SearchHistoryRepository {
-    override suspend fun getAllSearchHistory(): List<SearchHistoryModel> {
+    override fun getAllSearchHistory(): Flow<List<SearchHistoryModel>> {
         return historyLocalDataSource.getAllSearchQueries().toSearchHistories()
     }
 

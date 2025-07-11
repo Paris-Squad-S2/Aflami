@@ -47,7 +47,6 @@ class KtorSearchApiService(
         endpoint: String, query: String, page: Int, language: String,countryCode: String,
     ): SearchDto {
         return httpClient.get("$baseUrl/$endpoint") {
-            parameter(QUERY_PARAM, query)
             parameter(PAGE_PARAM, page)
             parameter(LANGUAGE_PARAM, language)
             parameter(COUNTRY_PARAM, countryCode)

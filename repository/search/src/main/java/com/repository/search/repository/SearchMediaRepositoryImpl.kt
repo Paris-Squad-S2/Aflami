@@ -1,5 +1,6 @@
 package com.repository.search.repository
 
+import android.util.Log
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.search.NetworkConnectionChecker
@@ -11,6 +12,7 @@ import com.repository.search.exception.NoDataForCountryException
 import com.repository.search.exception.NoDataForSearchException
 import com.repository.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMediaEntities
+import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
 import com.repository.search.util.getCurrentDate
 import kotlinx.datetime.DateTimeUnit
@@ -31,30 +33,28 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByActor(actor = actorName)
             if (media.isNotEmpty()) {
-                val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
-                } else {
-                    mediaLocalDataSource.clearAllMediaBySearchQuery(actorName)
                 }
             }
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
                 val mediaEntities = searchDto.toMediaEntities(
-                    query = actorName,
-                    actor = listOf(actorName)
+                    query = actorName
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
             return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
 
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForActorException()
         }
@@ -69,25 +69,27 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
-                } else {
-                    mediaLocalDataSource.clearAllMediaBySearchQuery(countryName)
                 }
             }
             if (networkConnectionChecker.isConnected.value) {
-                val searchDto = searchRemoteDataSource.searchCountryCode(query = countryName)
-                val mediaEntities = searchDto.toMediaEntities(
+                val searchDto = searchRemoteDataSource.searchCountryCode(
                     query = countryName,
-                    country = countryName
+                    countryCode = countryName
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
+                val mediaEntities = searchDto.toMediaEntities(
+                    query = countryName
+                )
                 searchHistoryLocalDataSource.addSearchQuery(countryName)
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
             return mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForCountryException()
         }
@@ -102,11 +104,9 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
-                } else {
-                    mediaLocalDataSource.clearAllMediaBySearchQuery(query)
                 }
             }
             if (networkConnectionChecker.isConnected.value) {
@@ -114,12 +114,17 @@ class SearchMediaRepositoryImpl(
                 val mediaEntities = searchDto.toMediaEntities(
                     query = query
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
+                Log.d("SearchMediaRepositoryImpl", "getMediaByActor: $mediaEntities")
+
                 searchHistoryLocalDataSource.addSearchQuery(query)
+
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForSearchException()
         }

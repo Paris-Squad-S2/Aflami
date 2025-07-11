@@ -39,7 +39,7 @@ fun EpisodeCard(
             AflamiMediaCard(
                 rating = episodeRating,
                 mediaCardType = MediaCardType.EPISODE,
-                imagePainter = painterResource(R.drawable.attack_on_titan),
+                imageUri = R.drawable.attack_on_titan.toString(),
                 modifier = Modifier.padding(bottom = 8.dp, end = 12.dp),
                 clickable = true
             )

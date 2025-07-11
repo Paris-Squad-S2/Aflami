@@ -2,7 +2,6 @@ package com.feature.search.searchUi.screen.worldTour
 
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.Media
-import com.domain.search.useCases.AddRecentSearchUseCase
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
@@ -27,7 +26,6 @@ class WorldTourViewModel(
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
     private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
-    private val addRecentSearchesUseCase: AddRecentSearchUseCase,
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
         WorldTourScreenState(
@@ -96,7 +94,6 @@ class WorldTourViewModel(
                         )
                     )
                 )
-                addRecentSearchesUseCase(query)
             },
             onError = { errorMessage ->
                 emitState(
