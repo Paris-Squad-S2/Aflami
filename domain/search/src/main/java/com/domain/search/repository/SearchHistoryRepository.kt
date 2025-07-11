@@ -1,10 +1,11 @@
 package com.domain.search.repository
 
 import com.domain.search.model.SearchHistoryModel
+import kotlinx.coroutines.flow.Flow
 
 interface SearchHistoryRepository {
-    suspend fun getAllSearchHistory(): List<SearchHistoryModel>
+    fun getAllSearchHistory(): Flow<List<SearchHistoryModel>>
     suspend fun addSearchHistory(searchTitle: String)
-    suspend fun clearSearchHistory(searchHistoryId: String)
+    suspend fun clearSearchHistory(query:String)
     suspend fun clearAllSearchHistory()
 }
