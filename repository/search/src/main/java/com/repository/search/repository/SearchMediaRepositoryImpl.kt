@@ -1,6 +1,5 @@
 package com.repository.search.repository
 
-import android.util.Log
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.search.NetworkConnectionChecker
@@ -37,11 +36,9 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
-                } else {
-                    mediaLocalDataSource.clearAllMediaBySearchQuery(actorName)
                 }
             }
             if (networkConnectionChecker.isConnected.value) {
@@ -70,11 +67,9 @@ class SearchMediaRepositoryImpl(
                     searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
-                } else {
-                    mediaLocalDataSource.clearAllMediaBySearchQuery(countryName)
                 }
             }
             if (networkConnectionChecker.isConnected.value) {
@@ -98,14 +93,13 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByTitleQuery(query = query)
             if (media.isNotEmpty()) {
-                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
+                val queryDate =
+                    searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
+                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
                 ) {
                     return media.toMedias()
-                } else {
-                    mediaLocalDataSource.clearAllMediaBySearchQuery(query)
                 }
             }
             if (networkConnectionChecker.isConnected.value) {
@@ -113,7 +107,6 @@ class SearchMediaRepositoryImpl(
                 val mediaEntities = searchDto.toMediaEntities(
                     query = query
                 )
-                Log.d("SearchMediaRepositoryImpl", "getMediaByActor: $mediaEntities")
 
                 searchHistoryLocalDataSource.addSearchQuery(query)
 
@@ -121,7 +114,8 @@ class SearchMediaRepositoryImpl(
             } else {
                 throw NoInternetConnectionException()
             }
-            return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+            val result = mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+            return result
         } catch (_: Exception) {
             throw NoDataForSearchException()
         }
