@@ -119,7 +119,6 @@ class SearchViewModel(
         )
     }
 
-
     override fun onNavigateToWorldTourScreen() {
         navigate(
             Destinations.WorldTourScreen(
@@ -168,23 +167,14 @@ class SearchViewModel(
                 searchByQueryUseCase(query)
             },
             onSuccess = { searchResult ->
-                val moviesResult = searchResult.filter { it.type == MediaType.MOVIE }
-                val tvShowsResult = searchResult.filter { it.type == MediaType.TVSHOW }
-
-                val filteredMediaByRating = filterMediaByRatingUseCase(
-                    screenState.value.uiState.selectedRating,
-                    moviesResult
-                )
-                val filteredMediaByCategories = filterMedByListOfCategoriesUseCase(
-                    screenState.value.uiState.categories.filter { it.value }.keys.toList()
-                        .map { it.id },
-                    filteredMediaByRating
-                )
-
-                val filteredMoviesResult =
-                    filteredMediaByCategories.filter { it.type == MediaType.MOVIE }
-                val filteredTvShowsResult =
-                    filteredMediaByCategories.filter { it.type == MediaType.TVSHOW }
+                val (moviesResult, tvShowsResult) = searchResult.partition { it.type == MediaType.MOVIE }
+                val selectedRating = screenState.value.uiState.selectedRating
+                val selectedCategories = screenState.value.uiState.categories
+                    .filter { it.value }
+                    .keys
+                    .toList()
+                val filteredMoviesResult = applyMediaFilters(moviesResult, selectedRating, selectedCategories)
+                val filteredTvShowsResult = applyMediaFilters(tvShowsResult, selectedRating, selectedCategories)
 
                 emitState(
                     screenState.value.copy(
@@ -345,5 +335,21 @@ class SearchViewModel(
     override fun onMediaCardClick(id: Int) {
         //TODO: Navigate to media details screen
     }
-}
 
+
+    private fun applyMediaFilters(
+        media: List<Media>,
+        rating: Float,
+        categories: List<CategoryModel>
+    ): List<Media> {
+        var filteredMedia = media
+        if (rating > 0f) {
+            filteredMedia = filterMediaByRatingUseCase(rating, filteredMedia)
+        }
+        if (categories.isNotEmpty()) {
+            val category = categories.map { it.id }
+            filteredMedia = filterMedByListOfCategoriesUseCase(category, filteredMedia)
+        }
+        return filteredMedia
+    }
+}
