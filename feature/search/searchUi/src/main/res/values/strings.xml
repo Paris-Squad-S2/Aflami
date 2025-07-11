@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Search</string>
+    <string name="app_name" translatable="false">Search</string>
     <string name="search">Search...</string>
     <string name="searchTitle">Search</string>
     <string name="search_suggestions_hub">Search Suggestions Hub</string>

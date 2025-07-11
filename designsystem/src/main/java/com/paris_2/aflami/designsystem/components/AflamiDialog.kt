@@ -48,13 +48,12 @@ fun AflamiDialog(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Theme.colors.surface, shape = RoundedCornerShape(16.dp))
-                    .padding(12.dp),
+                    .background(Theme.colors.surface, shape = RoundedCornerShape(16.dp)),
             ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 24.dp),
+                        .padding(bottom = 24.dp, top = 12.dp, start = 12.dp, end = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
@@ -63,7 +62,8 @@ fun AflamiDialog(
                         color = Theme.colors.text.title,
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                            .weight(1f)
                     )
                     Icon(
                         painter = painterResource(R.drawable.ic_cancel),

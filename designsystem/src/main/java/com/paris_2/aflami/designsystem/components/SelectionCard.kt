@@ -29,6 +29,7 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 @Composable
 fun SelectionCard(
     optionTitle: Int,
+    modifier: Modifier = Modifier,
     optionDescription: Int? = null,
     isSelected: Boolean,
     isCorrect: Boolean? = null,
@@ -69,7 +70,7 @@ fun SelectionCard(
     val iconTint = if (isSelected) Theme.colors.primary else Theme.colors.text.body
 
     Row(
-        modifier = Modifier
+        modifier = modifier
             .border(
                 width = 1.dp,
                 color = borderColor,

@@ -48,8 +48,8 @@ class SearchMediaRepositoryImpl(
                     query = actorName,
                     actor = listOf(actorName)
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
@@ -82,8 +82,8 @@ class SearchMediaRepositoryImpl(
                     query = countryName,
                     country = countryName
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
                 searchHistoryLocalDataSource.addSearchQuery(countryName)
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
@@ -98,8 +98,7 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByTitleQuery(query = query)
             if (media.isNotEmpty()) {
-                val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) <= getCurrentDate().toInstant(timeZone)
@@ -114,8 +113,9 @@ class SearchMediaRepositoryImpl(
                 val mediaEntities = searchDto.toMediaEntities(
                     query = query
                 )
-                mediaLocalDataSource.addAllMedia(mediaEntities)
                 searchHistoryLocalDataSource.addSearchQuery(query)
+
+                mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }

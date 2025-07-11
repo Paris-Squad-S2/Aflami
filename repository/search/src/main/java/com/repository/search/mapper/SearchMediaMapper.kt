@@ -34,7 +34,7 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 fun ResultDto.toMediaEntity(
     searchQuery: String,
     actor: List<String>,
-    country: String
+    country: String,
 ): MediaEntity? {
     val title = this.title ?: this.name ?: return null
     val image = this.posterPath ?: this.profilePath ?: ""
@@ -42,7 +42,7 @@ fun ResultDto.toMediaEntity(
 
     return MediaEntity(
         searchQuery = searchQuery,
-        imageUri = image,
+        imageUri = "https://image.tmdb.org/t/p/w500/$image",
         title = title,
         type = when (this.mediaType) {
             "movie" -> MediaTypeEntity.MOVIE
@@ -61,7 +61,7 @@ fun ResultDto.toMediaEntity(
 fun SearchDto.toMediaEntities(
     query: String,
     actor: List<String> = emptyList(),
-    country: String = ""
+    country: String = "",
 ): List<MediaEntity> {
     return results?.mapNotNull {
         it.toMediaEntity(query, actor, country)

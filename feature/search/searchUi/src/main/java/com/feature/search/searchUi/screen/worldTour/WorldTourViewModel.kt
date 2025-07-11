@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.worldTour
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.Media
 import com.domain.search.useCases.AddRecentSearchUseCase
@@ -96,7 +97,7 @@ class WorldTourViewModel(
                         )
                     )
                 )
-                addRecentSearchesUseCase(query)
+                addRecentSearchesUseCase(screenState.value.uiState.searchQuery)
             },
             onError = { errorMessage ->
                 emitState(

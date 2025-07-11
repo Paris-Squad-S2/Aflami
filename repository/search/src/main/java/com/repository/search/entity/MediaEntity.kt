@@ -5,14 +5,16 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDate
 
-@Entity(tableName = "media_table",foreignKeys = [
-    ForeignKey(
-        entity = SearchHistoryEntity::class,
-        parentColumns = ["search_query"],
-        childColumns = ["searchQuery"],
-        onDelete = ForeignKey.CASCADE
-    )
-])
+@Entity(tableName = "media_table",
+//    foreignKeys = [
+//    ForeignKey(
+//        entity = SearchHistoryEntity::class,
+//        parentColumns = ["search_query"],
+//        childColumns = ["searchQuery"],
+//        onDelete = ForeignKey.CASCADE
+//    )
+//] //TODO: fix
+)
 data class MediaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
