@@ -23,9 +23,9 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build release APK
-        run: ./gradlew app:assembleRelease
+        run: ./gradlew :feature:search:searchUi:assembleRelease
       - name: Build debug APK
-        run: ./gradlew app:assembleDebug
+        run: ./gradlew :feature:search:searchUi:assembleDebug
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
