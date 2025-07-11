@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">Search</string>
+    <string name="app_name" translatable="false">Search</string>
+    <string name="search">Search…</string>
+    <string name="searchTitle">Search</string>
+    <string name="search_suggestions_hub">Search Suggestions Hub</string>
+    <string name="world_tour">World Tour</string>
+    <string name="explore_world_cinema">Explore World Cinema</string>
+    <string name="find_by_actor">Find by Actor</string>
+    <string name="search_by_favorite_actor">Search by favorite Actor</string>
+    <string name="recent_searches">Recent Searches</string>
+    <string name="clear_all">Clear all</string>
+    <string name="no_search_history">No search History</string>
+    <string name="you_haven_t_searched_for_anything_yet">You haven’t searched for anything yet</string>
+    <string name="no_search_result">No search result</string>
+    <string name="please_try_with_another_keyword">please try with another keyword.</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">Tv Shows</string>
+    <string name="filter_result">Filter result</string>
+    <string name="apply">Apply</string>
+    <string name="clear">Clear</string>
+    <string name="start_exploring_the_world_movie">Start exploring the world movie by enter your favorite country in search bar</string>
+    <string name="country_tour">Country tour</string>
+    <string name="start_exploring_your_favorite_actor_s_movies">Start exploring your favorite actor’s movies and enjoy it.</string>
+    <string name="loading_recent_searches">Loading recent searches</string>
+    <string name="imdb_rating">IMDb rating</string>
+    <string name="genre">Genre</string>
+    <string name="all">All</string>
 </resources>

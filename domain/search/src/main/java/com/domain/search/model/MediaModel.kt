@@ -7,13 +7,13 @@ data class Media(
     val imageUri: String,
     val title: String,
     val type: MediaType,
-    val categories: List<String>,
+    val categories: List<Int>,
     val yearOfRelease: LocalDate,
     val rating: Double,
 )
 
 
-enum class MediaType {
-    TVSHOW,
-    MOVIE
+enum class MediaType(val displayName: String) {
+    TVSHOW("TV Show"),
+    MOVIE("Movie")
 }

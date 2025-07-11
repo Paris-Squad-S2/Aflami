@@ -19,7 +19,7 @@ internal class NSFWDetector(private val context: Context) {
     private companion object {
         const val MODEL_PATH = "NSFW.tflite"
         const val LABELS_PATH = "dict.txt"
-        const val CONFIDENCE_THRESHOLD = 0.7f
+        const val CONFIDENCE_THRESHOLD = 0.8f
         const val INPUT_SIZE = 224
     }
 

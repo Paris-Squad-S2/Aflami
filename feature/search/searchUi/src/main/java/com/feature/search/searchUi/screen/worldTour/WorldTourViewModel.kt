@@ -1,21 +1,116 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
-import com.feature.search.searchUi.navigation.Destinations
-import com.feature.search.searchUi.navigation.Navigator
+import com.domain.search.model.Media
+import com.domain.search.useCases.AutoCompleteCountryUseCase
+import com.domain.search.useCases.GetCountryCodeByNameUseCase
+import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.feature.search.searchUi.comon.BaseViewModel
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.inject
 
-class WorldTourViewModel(savedStateHandle: SavedStateHandle): ViewModel() {
-    val args = savedStateHandle.toRoute<Destinations.WorldTourScreen>().name
+data class WorldTourScreenState(
+    val uiState: WorldTourUiState,
+    val isLoading: Boolean,
+    val errorMessage: String?
+)
 
-    private val navigator: Navigator by inject(Navigator::class.java)
+data class WorldTourUiState(
+    val searchQuery: String,
+    val searchResult: List<Media>,
+    val hints: List<String>
+)
 
-    fun onNavigateToSearchScreen() =
-        viewModelScope.launch {
-            navigator.navigate(Destinations.SearchScreen)
+class WorldTourViewModel(
+    private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
+    private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
+    private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
+) : WorldTourScreenInteractionListener,
+    BaseViewModel<WorldTourScreenState>(
+        WorldTourScreenState(
+            uiState = WorldTourUiState(
+                searchQuery = "",
+                searchResult = listOf(),
+                hints = listOf()
+            ),
+            isLoading = false,
+            errorMessage = null
+        )
+    ) {
+
+    override fun onNavigateBack() {
+        navigateUp()
+    }
+
+    private var debounceJob: Job? = null
+
+    override fun onSearchQueryChange(query: String) {
+        emitState(
+            screenState.value.copy(
+                uiState = screenState.value.uiState.copy(
+                    searchQuery = query,
+                )
+            )
+        )
+        debounceJob?.cancel()
+        if (query.isNotEmpty()) {
+            debounceJob = viewModelScope.launch {
+                val hints = autoCompleteCountryUseCase(query)
+                emitState(
+                    screenState.value.copy(
+                        uiState = screenState.value.uiState.copy(
+                            hints = hints.map { it.countryName }
+                        )
+                    )
+                )
+                delay(500)
+                val countryCode = getCountryCodeByNameUseCase(query)
+                if (countryCode != null) {
+                    searchQuery(countryCode)
+                }
+            }
         }
+    }
+
+
+    private fun searchQuery(query: String): Job {
+        return tryToExecute(
+            execute = {
+                emitState(
+                    screenState.value.copy(
+                        isLoading = true,
+                        errorMessage = null
+                    )
+                )
+                getMoviesByCountryUseCase(query)
+            },
+            onSuccess = { searchResult ->
+                emitState(
+                    screenState.value.copy(
+                        isLoading = false,
+                        uiState = screenState.value.uiState.copy(
+                            searchResult = searchResult,
+                        )
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        isLoading = false,
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
+    }
+
+    override fun onRetrySearchQuery() {
+        searchQuery(screenState.value.uiState.searchQuery)
+    }
+
+    override fun onMediaCardClick(id: Int) {
+        //TODO: Navigate to media details screen
+    }
 }

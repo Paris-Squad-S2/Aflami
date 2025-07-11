@@ -380,9 +380,9 @@ private fun GameCardThreeImagesPreview() {
             description = "Match the poster with the right title!",
             backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
             trailingImages = listOf(
-                painterResource(R.drawable.image_game3),
                 painterResource(R.drawable.image_game2),
-                painterResource(R.drawable.image_game1)
+                painterResource(R.drawable.image_game2),
+                painterResource(R.drawable.image_game2)
             ),
             onPlayClick = {},
             isPlayButtonLocked = false,
@@ -404,9 +404,9 @@ private fun GameCardThreeImagesLockedPreview() {
             description = "Match the poster with the right title!",
             backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
             trailingImages = listOf(
-                painterResource(R.drawable.image_game3),
                 painterResource(R.drawable.image_game2),
-                painterResource(R.drawable.image_game1)
+                painterResource(R.drawable.image_game2),
+                painterResource(R.drawable.image_game2)
             ),
             onPlayClick = {},
             isPlayButtonLocked = true,
