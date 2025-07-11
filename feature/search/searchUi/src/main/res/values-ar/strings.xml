@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="search">بحث…</string>
+    <string name="searchTitle">بحث</string>
+    <string name="search_suggestions_hub">مركز اقتراحات البحث</string>
+    <string name="world_tour">جولة حول العالم</string>
+    <string name="explore_world_cinema">استكشاف سينما العالم</string>
+    <string name="find_by_actor">البحث حسب الممثل</string>
+    <string name="search_by_favorite_actor">ابحث حسب الممثل المفضل</string>
+    <string name="recent_searches">عمليات البحث الأخيرة</string>
+    <string name="clear_all">مسح الكل</string>
+    <string name="no_search_history">لا يوجد سجل بحث</string>
+    <string name="you_haven_t_searched_for_anything_yet">لم تقم بالبحث عن أي شيء بعد</string>
+    <string name="no_search_result">لا توجد نتائج بحث</string>
+    <string name="please_try_with_another_keyword">يرجى المحاولة بكلمة مفتاحية أخرى.</string>
+    <string name="movies">أفلام</string>
+    <string name="tv_shows">مسلسلات</string>
+    <string name="filter_result">تصفية النتائج</string>
+    <string name="apply">تطبيق</string>
+    <string name="clear">مسح</string>
+    <string name="start_exploring_the_world_movie">ابدأ في استكشاف أفلام العالم بإدخال بلدك المفضل في شريط البحث</string>
+    <string name="country_tour">جولة في البلد</string>
+    <string name="start_exploring_your_favorite_actor_s_movies">ابدأ في استكشاف أفلام ممثلك المفضل واستمتع بها.</string>
+    <string name="loading_recent_searches">جاري تحميل عمليات البحث الأخيرة</string>
+    <string name="imdb_rating">تقييم IMDb</string>
+    <string name="genre">النوع</string>
+    <string name="all">الكل</string>
+</resources>

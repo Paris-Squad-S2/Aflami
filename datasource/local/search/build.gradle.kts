@@ -32,7 +32,9 @@ android {
         jvmTarget = "11"
     }
 }
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 dependencies {
 
     //Room
@@ -40,7 +42,6 @@ dependencies {
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
-    testImplementation(libs.androidx.room.testing)
 
     //Koin
     implementation(libs.koin.core)
@@ -55,8 +56,14 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     // test
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.mockk)
+    implementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.kotlin.test.junit5)
 
     implementation(project(":repository:search"))
 }

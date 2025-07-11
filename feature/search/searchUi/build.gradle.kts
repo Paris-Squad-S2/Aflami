@@ -64,7 +64,6 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -92,8 +91,16 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
+    //coil
+    implementation(libs.coil.compose)
+
     implementation(project(":repository:search"))
     implementation(project(":datasource:local:search"))
     implementation(project(":datasource:remote:search"))
     implementation(project(":domain:search"))
+    implementation(project(":designsystem"))
+    implementation(project(":designsystem:safeimageviewer"))
 }

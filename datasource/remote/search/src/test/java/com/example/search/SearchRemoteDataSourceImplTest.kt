@@ -1,6 +1,6 @@
 package com.example.search
 
-import com.example.search.models.SearchDto
+import com.repository.search.dto.SearchDto
 import com.example.search.service.contract.SearchApiService
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery

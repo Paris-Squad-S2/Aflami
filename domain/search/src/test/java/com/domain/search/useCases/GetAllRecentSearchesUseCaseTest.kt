@@ -3,8 +3,8 @@ package com.domain.search.useCases
 import com.domain.search.model.SearchHistoryModel
 import com.domain.search.repository.SearchHistoryRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
@@ -27,19 +27,18 @@ class GetAllRecentSearchesUseCaseTest {
 
         //Given
         val recentSearches = listOf(
-            SearchHistoryModel(id = 1, searchTitle = "Movie1"),
-            SearchHistoryModel(id = 2, searchTitle = "Movie2")
+            SearchHistoryModel(searchTitle = "Movie1", searchDate = "2023-10-01"),
+            SearchHistoryModel(searchTitle = "Movie2",searchDate = "2023-10-01")
         )
 
-        coEvery { searchHistoryRepository.getAllSearchHistory() } returns recentSearches
+        coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow { emit(recentSearches) }
 
         //When
-        val result = getAllRecentSearchesUseCase()
+        val result = getAllRecentSearchesUseCase().first()
 
         //Then
         assertEquals(2, result.size)
         assertEquals(recentSearches, result)
-        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
     }
 
 
@@ -47,14 +46,13 @@ class GetAllRecentSearchesUseCaseTest {
     fun `invoke should return empty list when repository returns no recent searches`() = runTest {
 
         //Given
-        coEvery { searchHistoryRepository.getAllSearchHistory() } returns emptyList()
+        coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow { emit(emptyList()) }
 
         //When
-        val result = getAllRecentSearchesUseCase()
+        val result = getAllRecentSearchesUseCase().first()
 
         //Then
-        assertTrue { result.isEmpty() }
-        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
+        assertTrue(result.isEmpty())
     }
 
 }

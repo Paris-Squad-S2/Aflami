@@ -54,4 +54,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.accompanist.pager)
+    implementation(project(":designsystem:safeimageviewer"))
 }
