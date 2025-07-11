@@ -3,6 +3,7 @@ package com.domain.search.useCases
 import com.domain.search.model.MediaType
 import com.domain.search.repository.SearchMediaRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -40,6 +41,7 @@ class SearchByQueryUseCaseTest {
         //Then
         assertEquals(2, result.size)
         assertEquals(mediaList, result)
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
     }
 
     @Test
@@ -54,6 +56,7 @@ class SearchByQueryUseCaseTest {
 
         //Then
         assertTrue { result.isEmpty() }
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
 
     }
 

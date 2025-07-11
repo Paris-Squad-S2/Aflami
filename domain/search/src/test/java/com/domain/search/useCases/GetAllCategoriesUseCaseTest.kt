@@ -3,6 +3,7 @@ package com.domain.search.useCases
 import com.domain.search.model.CategoryModel
 import com.domain.search.repository.CategoriesRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -40,6 +41,7 @@ class GetAllCategoriesUseCaseTest {
         //Then
         assertEquals(3, result.size)
         assertEquals(categories, result)
+        coVerify(exactly = 1) { categoriesRepository.getAllCategories() }
 
     }
 
@@ -54,7 +56,7 @@ class GetAllCategoriesUseCaseTest {
 
         //Then
         assertTrue { result.isEmpty() }
-
+        coVerify(exactly = 1) { categoriesRepository.getAllCategories() }
     }
 
 }

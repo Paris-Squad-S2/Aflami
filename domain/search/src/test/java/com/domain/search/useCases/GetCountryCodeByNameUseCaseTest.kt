@@ -3,6 +3,7 @@ package com.domain.search.useCases
 import com.domain.search.model.Country
 import com.domain.search.repository.CountryRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
@@ -36,6 +37,7 @@ class GetCountryCodeByNameUseCaseTest {
 
         //Then
         assertEquals("FR", result)
+        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 
     @Test
@@ -53,6 +55,7 @@ class GetCountryCodeByNameUseCaseTest {
 
         //Then
         assertEquals("FR", result)
+        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 
     @Test
@@ -71,6 +74,7 @@ class GetCountryCodeByNameUseCaseTest {
 
         //Then
         assertNull(result)
+        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 
     @Test
@@ -84,6 +88,6 @@ class GetCountryCodeByNameUseCaseTest {
 
         //Then
         assertNull(result)
-
+        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 }
