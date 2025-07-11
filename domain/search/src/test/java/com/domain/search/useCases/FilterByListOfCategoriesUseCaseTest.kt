@@ -25,17 +25,17 @@ class FilterByListOfCategoriesUseCaseTest {
                 id = 1,
                 title = "Movie 1",
                 type = MediaType.MOVIE,
-                categories = listOf("Action", "Romance")
+                categories = listOf(1, 2)
             ),
             createMedia(
                 id = 2,
                 title = "Series 1",
                 type = MediaType.TVSHOW,
-                categories = listOf("Comedy")
+                categories = listOf(3)
             ),
         )
 
-        val selectedCategories = listOf("Action")
+        val selectedCategories = listOf(1)
 
         val expectedMediaList = listOf(
             mediaList[0]
@@ -59,17 +59,17 @@ class FilterByListOfCategoriesUseCaseTest {
                 id = 1,
                 title = "Movie 1",
                 type = MediaType.MOVIE,
-                categories = listOf("Action", "Romance")
+                categories = listOf(1, 2)
             ),
             createMedia(
                 id = 2,
                 title = "Series 1",
                 type = MediaType.TVSHOW,
-                categories = listOf("Comedy")
+                categories = listOf(3)
             ),
         )
 
-        val selectedCategories = listOf("Science Fiction")
+        val selectedCategories = listOf(4)
 
         val expectedMediaList = emptyList<Media>()
 
@@ -86,7 +86,7 @@ class FilterByListOfCategoriesUseCaseTest {
 
         //Given
         val mediaList = emptyList<Media>()
-        val selectedCategories = listOf("Comedy")
+        val selectedCategories = listOf(3)
         val expectedMediaList = emptyList<Media>()
 
         //When
@@ -106,17 +106,17 @@ class FilterByListOfCategoriesUseCaseTest {
                 id = 1,
                 title = "Movie 1",
                 type = MediaType.MOVIE,
-                categories = listOf("Action", "Romance")
+                categories = listOf(1, 2)
             ),
             createMedia(
                 id = 2,
                 title = "Series 1",
                 type = MediaType.TVSHOW,
-                categories = listOf("Comedy")
+                categories = listOf(3)
             ),
         )
 
-        val selectedCategoriesList = listOf("Action", "Comedy")
+        val selectedCategoriesList = listOf(1, 3)
 
         val expectedMediaList = listOf(
             mediaList[0],
