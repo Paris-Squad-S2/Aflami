@@ -25,13 +25,14 @@ import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun PlaceholderView(
+    modifier: Modifier = Modifier,
     image: Painter,
     title: String? = null,
     subTitle: String? = null,
     spacer: Dp
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 24.dp),
         horizontalAlignment = Alignment.CenterHorizontally,

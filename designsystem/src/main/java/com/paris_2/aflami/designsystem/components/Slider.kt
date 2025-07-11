@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,12 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import kotlinx.coroutines.launch
 import kotlin.math.abs
-import com.paris_2.aflami.designsystem.R
-import androidx.compose.animation.core.tween
 
 
 @Composable
@@ -72,13 +72,13 @@ fun Slider(
                     )
             ) {
                 AflamiMediaCard(
-                    imageId = item.imageResId,
+                    imageUri = item.imageResId.toString(),
                     rating = item.rating,
                     mediaCardType = MediaCardType.SLIDER,
                     showRating = isFocused,
                     showPlayButton = isFocused,
                     onClick = onClick,
-                    cardHeight = if (isFocused) 300 else 276
+                    cardHeight = if (isFocused) 300.dp else 276.dp
                 )
             }
         }

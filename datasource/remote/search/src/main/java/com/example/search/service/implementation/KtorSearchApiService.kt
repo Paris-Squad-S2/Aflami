@@ -1,10 +1,11 @@
 package com.example.search.service.implementation
 
-import com.example.search.models.SearchDto
 import com.example.search.service.contract.SearchApiService
-import io.ktor.client.*
-import io.ktor.client.call.*
-import io.ktor.client.request.*
+import com.repository.search.dto.SearchDto
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.request.get
+import io.ktor.client.request.parameter
 
 class KtorSearchApiService(
     private val httpClient: HttpClient,
@@ -46,7 +47,6 @@ class KtorSearchApiService(
         endpoint: String, query: String, page: Int, language: String,countryCode: String,
     ): SearchDto {
         return httpClient.get("$baseUrl/$endpoint") {
-            parameter(QUERY_PARAM, query)
             parameter(PAGE_PARAM, page)
             parameter(LANGUAGE_PARAM, language)
             parameter(COUNTRY_PARAM, countryCode)

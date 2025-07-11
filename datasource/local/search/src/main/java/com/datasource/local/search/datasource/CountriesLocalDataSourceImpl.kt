@@ -1,7 +1,7 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.CountryDao
-import com.repository.search.dataSource.CountriesLocalDataSource
+import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.entity.CountryEntity
 import com.repository.search.util.Util
 

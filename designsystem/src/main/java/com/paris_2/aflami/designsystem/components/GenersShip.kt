@@ -16,7 +16,7 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
-fun GenersChip(
+fun GenresChip(
     isSelected:Boolean,
     title:String
 ) {
@@ -44,11 +44,11 @@ fun GenersChipPreview(){
             modifier = Modifier.padding(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            GenersChip(
+            GenresChip(
                 isSelected = false,
                 title = "Drama"
             )
-            GenersChip(
+            GenresChip(
                 isSelected = true,
                 title = "Drama"
             )
