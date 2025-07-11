@@ -58,11 +58,9 @@ class SearchMediaRepositoryImplTest {
                 imageUri = "image.jpg",
                 title = "Movie 1",
                 type = MediaTypeEntity.MOVIE,
-                category = listOf("Action"),
+                category = listOf(1),
                 yearOfRelease = LocalDate(2024, 1, 1),
                 rating = 8.5,
-                country = "USA",
-                actor = listOf(actorName)
             )
         )
         val oldDate = Clock.System.now()
@@ -88,11 +86,9 @@ class SearchMediaRepositoryImplTest {
                 imageUri = "old.jpg",
                 title = "Old Movie",
                 type = MediaTypeEntity.MOVIE,
-                category = listOf("Action"),
+                category = listOf(1),
                 yearOfRelease = LocalDate(2023, 1, 1),
                 rating = 7.8,
-                country = "USA",
-                actor = listOf(actorName)
             )
         )
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(actorName) } just Runs
@@ -142,11 +138,9 @@ class SearchMediaRepositoryImplTest {
                 imageUri = "image.jpg",
                 title = "Movie 1",
                 type = MediaTypeEntity.MOVIE,
-                category = listOf("Drama"),
+                category = listOf(3),
                 yearOfRelease = LocalDate(2022, 5, 20),
-                rating = 7.8,
-                country = countryName,
-                actor = listOf("Actor 1")
+                rating = 7.8
             )
         )
         val validDate = Clock.System.now()
@@ -173,11 +167,9 @@ class SearchMediaRepositoryImplTest {
                 imageUri = "old.jpg",
                 title = "Old Movie",
                 type = MediaTypeEntity.MOVIE,
-                category = listOf("Action"),
+                category = listOf(1),
                 yearOfRelease = LocalDate(2020, 1, 1),
                 rating = 6.0,
-                country = countryName,
-                actor = listOf("Old Actor")
             )
         )
 
@@ -185,7 +177,7 @@ class SearchMediaRepositoryImplTest {
         coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName) } returns SearchHistoryEntity(countryName, expiredDate)
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(countryName) } just Runs
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { searchRemoteDataSource.searchCountryCode(countryName) } returns mockk(relaxed = true)
+        coEvery { searchRemoteDataSource.searchCountryCode(query = countryName, countryCode = countryName) } returns mockk(relaxed = true)
         coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
         coEvery { historyLocalDataSource.addSearchQuery(countryName) } just Runs
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns emptyList()
@@ -229,11 +221,9 @@ class SearchMediaRepositoryImplTest {
                 imageUri = "image.jpg",
                 title = "Inception",
                 type = MediaTypeEntity.MOVIE,
-                category = listOf("Sci-Fi"),
+                category = listOf(2),
                 yearOfRelease = LocalDate(2010, 7, 16),
                 rating = 8.8,
-                country = "USA",
-                actor = listOf("Leonardo DiCaprio")
             )
         )
         val validDate = Clock.System.now()
@@ -253,7 +243,7 @@ class SearchMediaRepositoryImplTest {
         val query = "Matrix"
         val expiredDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
-        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns listOf(MediaEntity(1, query, "img", "Old", MediaTypeEntity.MOVIE, listOf("Action"), LocalDate(2000, 1, 1), 8.0, "USA", listOf("Keanu"))) andThen emptyList()
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns listOf(MediaEntity(1, query, "img", "Old", MediaTypeEntity.MOVIE, listOf(1), LocalDate(2000, 1, 1), 8.0)) andThen emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(query, expiredDate)
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(query) } just Runs
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)

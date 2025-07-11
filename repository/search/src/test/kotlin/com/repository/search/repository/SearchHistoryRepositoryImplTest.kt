@@ -4,6 +4,8 @@ import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.entity.SearchHistoryEntity
 import com.repository.search.mapper.toSearchHistories
 import io.mockk.*
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -23,13 +25,13 @@ class SearchHistoryRepositoryImplTest {
     fun `getAllSearchHistory should return mapped history from local data source`() = runTest {
         // Given
         val localHistory = listOf(SearchHistoryEntity("action"))
-        coEvery { historyLocalDataSource.getAllSearchQueries() } returns localHistory
+        coEvery { historyLocalDataSource.getAllSearchQueries() } returns flowOf(localHistory)
 
         // When
-        val result = repository.getAllSearchHistory()
+        val result = repository.getAllSearchHistory().first()
 
         // Then
-        assertEquals(localHistory.toSearchHistories(), result)
+        assertEquals(flowOf(localHistory).toSearchHistories().first(), result)
     }
 
     @Test

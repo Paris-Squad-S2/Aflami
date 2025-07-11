@@ -36,7 +36,7 @@ class CategoriesRepositoryImplTest {
     @Test
     fun `getAllCategories should return local categories if not empty`() = runTest {
         // Given
-        val localGenres = listOf(GenreEntity("1", "Action"))
+        val localGenres = listOf(GenreEntity(1, "Action"))
         coEvery { genresLocalDataSource.getGenres() } returns localGenres
 
         // When
@@ -50,7 +50,7 @@ class CategoriesRepositoryImplTest {
     @Test
     fun `getAllCategories should fetch from remote when local is empty and internet available`() = runTest {
         // Given
-        coEvery { genresLocalDataSource.getGenres() } returnsMany listOf(emptyList(), listOf(GenreEntity("2", "Drama")))
+        coEvery { genresLocalDataSource.getGenres() } returnsMany listOf(emptyList(), listOf(GenreEntity(2, "Drama")))
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { genresRemoteDataSource.getAllGenres() } returns GenresDto(
             genreDto = listOf(GenreDto(2, "Drama"))
