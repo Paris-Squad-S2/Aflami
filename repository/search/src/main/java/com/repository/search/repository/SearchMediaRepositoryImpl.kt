@@ -43,7 +43,7 @@ class SearchMediaRepositoryImpl(
             }
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
-                val mediaEntities = searchDto.toMediaEntities(
+                val mediaEntities = searchDto.toMediaEntitiesForActors(
                     query = actorName
                 )
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
