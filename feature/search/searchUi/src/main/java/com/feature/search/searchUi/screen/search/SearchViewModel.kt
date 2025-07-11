@@ -104,7 +104,7 @@ class SearchViewModel(
                 emitState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
-                            categories = categories.associateWith { true }.toMutableMap()
+                            categories = categories.associateWith { false }.toMutableMap()
                         )
                     )
                 )
