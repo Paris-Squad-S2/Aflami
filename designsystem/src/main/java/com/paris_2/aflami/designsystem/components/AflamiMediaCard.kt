@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -23,8 +24,11 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -32,7 +36,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun AflamiMediaCard(
     modifier: Modifier = Modifier,
-    imageId: Int,
+    imageUri: String,
     rating: String = "",
     movieName: String = "",
     mediaType: String = "",
@@ -42,16 +46,16 @@ fun AflamiMediaCard(
     mediaCardType: MediaCardType,
     showRating: Boolean = true,
     showGradientFilter: Boolean = false,
-    cardWidth: Int? = null,
-    cardHeight: Int? = null,
+    cardWidth: Dp? = null,
+    cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
     onPlayButtonClick: () -> Unit = {}
 ) {
     val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
-        MediaCardType.UP_COMING -> (cardWidth?.dp ?: 328.dp) to (cardHeight?.dp ?: 196.dp)
-        MediaCardType.NORMAL -> (cardWidth?.dp ?: 156.dp) to (cardHeight?.dp ?: 222.dp)
-        MediaCardType.EPISODE -> (cardWidth?.dp ?: 116.dp) to (cardHeight?.dp ?: 78.dp)
-        MediaCardType.SLIDER -> (cardWidth?.dp ?: 244.dp) to (cardHeight?.dp ?: 300.dp)
+        MediaCardType.UP_COMING -> (cardWidth ?: 328.dp) to (cardHeight ?: 196.dp)
+        MediaCardType.NORMAL -> (cardWidth ?: 156.dp) to (cardHeight ?: 222.dp)
+        MediaCardType.EPISODE -> (cardWidth ?: 116.dp) to (cardHeight ?: 78.dp)
+        MediaCardType.SLIDER -> (cardWidth ?: 244.dp) to (cardHeight ?: 300.dp)
     }
     val clipRadius = when (mediaCardType) {
         MediaCardType.EPISODE -> 12.dp
@@ -74,17 +78,24 @@ fun AflamiMediaCard(
                     Modifier.clickable { onClick() }
                 } else Modifier
             )
-
     ) {
-        Image(
+        SafeImageViewer(
+            model = imageUri,
             modifier = Modifier.fillMaxSize(),
-            painter = painterResource(imageId),
             contentDescription = "media poster",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            placeholder = {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_film_roll),
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp),
+                    contentScale = ContentScale.Crop
+                )
+            }
         )
 
         if (showRating) {
-            Row() {
+            Row {
                 Spacer(modifier = Modifier.weight(1f))
                 RatingCard(
                     rating = rating,
@@ -113,6 +124,8 @@ fun AflamiMediaCard(
                 text = movieName,
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.onPrimaryColors.onPrimary,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
             )
             DescriptionSeparator(
                 firstText = mediaType,
@@ -145,7 +158,7 @@ enum class MediaCardType {
 fun PreviewMediaNormalCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.anime_movie,
+            imageUri = R.drawable.anime_movie.toString(),
             rating = 9.9.toString(),
             movieName = "Your Name",
             mediaType = "TV show",
@@ -162,7 +175,7 @@ fun PreviewMediaNormalCard() {
 fun PreviewMediaUpComingCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.anime_horizontal,
+            imageUri = R.drawable.anime_horizontal.toString(),
             rating = 9.toString(),
             movieName = "Grave of the Fireflies",
             mediaType = "TV show",
@@ -179,7 +192,7 @@ fun PreviewMediaUpComingCard() {
 fun PreviewMediaEpisodeCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.attack_on_titan,
+            imageUri = R.drawable.attack_on_titan.toString(),
             rating = 8.8.toString(),
             mediaCardType = MediaCardType.EPISODE
         )
@@ -192,7 +205,7 @@ fun PreviewMediaEpisodeCard() {
 fun PreviewMediaSliderCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.shniderlist_slider,
+            imageUri = R.drawable.shniderlist_slider.toString(),
             rating = 8.toString(),
             mediaCardType = MediaCardType.SLIDER,
             showRating = true,
@@ -207,11 +220,11 @@ fun PreviewMediaSliderCard() {
 fun PreviewMediaEmptySliderCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imageId = R.drawable.shniderlist_slider,
+            imageUri = R.drawable.shniderlist_slider.toString(),
             mediaCardType = MediaCardType.SLIDER,
             showRating = false,
-            cardWidth = 207,
-            cardHeight = 276,
+            cardWidth = 207.dp,
+            cardHeight = 276.dp,
             clickable = true
         )
     }

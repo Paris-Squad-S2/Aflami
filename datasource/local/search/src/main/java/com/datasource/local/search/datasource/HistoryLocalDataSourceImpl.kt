@@ -3,6 +3,7 @@ package com.datasource.local.search.datasource
 import com.datasource.local.search.dao.SearchHistoryDao
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.entity.SearchHistoryEntity
+import kotlinx.coroutines.flow.Flow
 
 class HistoryLocalDataSourceImpl(
     private val dao: SearchHistoryDao
@@ -14,7 +15,7 @@ class HistoryLocalDataSourceImpl(
         dao.addSearchQuery(entity)
     }
 
-    override suspend fun getAllSearchQueries(): List<SearchHistoryEntity> {
+    override fun getAllSearchQueries(): Flow<List<SearchHistoryEntity>> {
         return dao.getAllSearchQueries()
     }
 
