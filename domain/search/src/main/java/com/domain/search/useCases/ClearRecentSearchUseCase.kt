@@ -9,5 +9,3 @@ class ClearRecentSearchUseCase(
         searchHistoryRepository.clearSearchHistory(searchHistoryId)
     }
 }
-
-
