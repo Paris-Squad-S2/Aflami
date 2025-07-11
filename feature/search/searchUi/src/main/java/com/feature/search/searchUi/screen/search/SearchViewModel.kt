@@ -47,7 +47,6 @@ class SearchViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
-
     ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
