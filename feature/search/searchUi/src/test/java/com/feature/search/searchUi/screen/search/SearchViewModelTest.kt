@@ -22,6 +22,7 @@ import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -107,8 +108,8 @@ class SearchViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
 
-        coEvery { getAllRecentSearchesUseCase.invoke() } returns flowOf(emptyList())
-        coEvery { getAllCategoriesUseCase.invoke() } returns emptyList()
+        coEvery { getAllRecentSearchesUseCase() } returns flowOf(emptyList())
+        coEvery { getAllCategoriesUseCase() } returns emptyList()
 
         viewModel = spyk(
             SearchViewModel(
@@ -129,8 +130,8 @@ class SearchViewModelTest {
         val recentSearches = listOf(mockSearchHistory1)
         val categories = listOf(mockCategory1, mockCategory2)
 
-        coEvery { getAllRecentSearchesUseCase.invoke() } returns flowOf(recentSearches)
-        coEvery { getAllCategoriesUseCase.invoke() } returns categories
+        coEvery { getAllRecentSearchesUseCase() } returns flowOf(recentSearches)
+        coEvery { getAllCategoriesUseCase() } returns categories
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -151,7 +152,7 @@ class SearchViewModelTest {
     @Test
     fun `init should handle error when loading recent searches`() = runTest {
         val errorMessage = "Failed to load recent searches"
-        coEvery { getAllRecentSearchesUseCase.invoke() } throws RuntimeException(errorMessage)
+        coEvery { getAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -171,7 +172,7 @@ class SearchViewModelTest {
     @Test
     fun `init should handle error when loading categories`() = runTest {
         val errorMessage = "Failed to load categories"
-        coEvery { getAllCategoriesUseCase.invoke() } throws RuntimeException(errorMessage)
+        coEvery { getAllCategoriesUseCase() } throws RuntimeException(errorMessage)
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -193,21 +194,6 @@ class SearchViewModelTest {
         runTest {
             val query1 = "first_query"
             val query2 = "second_query"
-
-            coEvery { searchByQueryUseCase(any()) } returns emptyList()
-            every {
-                filterMediaByRatingUseCase(
-                    any(), any()
-                )
-            } answers { it.invocation.args[1] as List<Media> }
-            every {
-                filterMedByListOfCategoriesUseCase(
-                    any(), any()
-                )
-            } answers { it.invocation.args[1] as List<Media> }
-            coEvery { getAllRecentSearchesUseCase.invoke() } returns flowOf(emptyList())
-
-
             viewModel.onSearchQueryChange(query1)
             assertThat(viewModel.screenState.value.uiState.searchQuery).isEqualTo(query1)
             advanceTimeBy(200)
@@ -243,7 +229,7 @@ class SearchViewModelTest {
         assertThat(viewModel.screenState.value.uiState.filteredTvShowsResult).isEmpty()
 
         coVerify(exactly = 1) { searchByQueryUseCase(query) }
-        coVerify(exactly = 1) { getAllRecentSearchesUseCase.invoke() }
+        coVerify(exactly = 1) { getAllRecentSearchesUseCase() }
         coVerify(exactly = 0) { filterMediaByRatingUseCase(any(), any()) }
         coVerify(exactly = 0) { filterMedByListOfCategoriesUseCase(any(), any()) }
     }
@@ -428,55 +414,63 @@ class SearchViewModelTest {
     }
 
     @Test
-    fun `onClearAllRecentSearches calls use case and reloads recent searches on success`() =
-        runTest {
-            val initialRecentSearches = listOf(mockSearchHistory1, mockSearchHistory2)
+    fun `onClearAllRecentSearches calls use case and reloads recent searches on success`() = runTest {
+        val initialRecentSearches = listOf(mockSearchHistory1, mockSearchHistory2)
 
-            // Mock getAllRecentSearchesUseCase to emit initial list, then empty list on subsequent collection
-            // This setup is correct *if* the ViewModel re-collects or the flow itself emits.
-            coEvery { getAllRecentSearchesUseCase() } returns flowOf(initialRecentSearches) andThen flowOf(
-                emptyList()
-            )
-            coEvery { clearAllRecentSearchesUseCase() } just Runs
+        // Always emit the current state of recent searches, which will be updated after clear
+        val recentSearchesFlow = MutableStateFlow(initialRecentSearches)
+        coEvery { getAllRecentSearchesUseCase() } returns recentSearchesFlow
 
-            viewModel = SearchViewModel(
-                getAllRecentSearchesUseCase,
-                clearAllRecentSearchesUseCase,
-                clearRecentSearchUseCase,
-                searchByQueryUseCase,
-                getAllCategoriesUseCase,
-                filterMediaByRatingUseCase,
-                filterMedByListOfCategoriesUseCase
-            )
-            advanceUntilIdle() // Allow initial collection to complete
-
-            assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
-                initialRecentSearches
-            )
-
-            viewModel.onClearAllRecentSearches()
-            advanceUntilIdle() // Allow the clear operation and subsequent state updates to complete
-
-            // Then
-            coVerify(exactly = 1) { clearAllRecentSearchesUseCase() }
-
-            // The key is that the ViewModel's flow collection should now have processed the `emptyList()`
-            // due to the `andThen` and the continuous collection from the `init` block.
-            assertThat(viewModel.screenState.value.uiState.recentSearches).isEmpty()
-            assertThat(viewModel.screenState.value.errorMessage).isNull()
+        coEvery { clearAllRecentSearchesUseCase() } answers {
+            recentSearchesFlow.value = emptyList()
         }
 
-    @Test
-    fun `onClearAllRecentSearches handles error and updates error message`() = runTest {
-        val errorMessage = "Failed to clear all recent searches"
-        coEvery { clearAllRecentSearchesUseCase.invoke() } throws RuntimeException(errorMessage)
-        coEvery { getAllRecentSearchesUseCase.invoke() } returns flowOf(listOf(mockSearchHistory1))
+        viewModel = SearchViewModel(
+            getAllRecentSearchesUseCase,
+            clearAllRecentSearchesUseCase,
+            clearRecentSearchUseCase,
+            searchByQueryUseCase,
+            getAllCategoriesUseCase,
+            filterMediaByRatingUseCase,
+            filterMedByListOfCategoriesUseCase
+        )
+        advanceUntilIdle()
+
+        assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(initialRecentSearches)
 
         viewModel.onClearAllRecentSearches()
         advanceUntilIdle()
 
-        coVerify(exactly = 1) { clearAllRecentSearchesUseCase.invoke() }
-        coVerify(exactly = 1) { getAllRecentSearchesUseCase.invoke() }
+        coVerify(exactly = 1) { clearAllRecentSearchesUseCase() }
+        assertThat(viewModel.screenState.value.uiState.recentSearches).isEmpty()
+        assertThat(viewModel.screenState.value.errorMessage).isNull()
+    }
+
+    @Test
+    fun `onClearAllRecentSearches handles error and updates error message`() = runTest {
+        val errorMessage = "Failed to clear all recent searches"
+        coEvery { clearAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
+        coEvery { getAllRecentSearchesUseCase() } returns flowOf(listOf(mockSearchHistory1))
+
+        viewModel = SearchViewModel(
+            getAllRecentSearchesUseCase,
+            clearAllRecentSearchesUseCase,
+            clearRecentSearchUseCase,
+            searchByQueryUseCase,
+            getAllCategoriesUseCase,
+            filterMediaByRatingUseCase,
+            filterMedByListOfCategoriesUseCase
+        )
+        advanceUntilIdle()
+
+        assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
+            listOf(mockSearchHistory1)
+        )
+
+        viewModel.onClearAllRecentSearches()
+        advanceUntilIdle()
+
+        coVerify(exactly = 1) { clearAllRecentSearchesUseCase() }
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo(errorMessage)
         assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
             listOf(
@@ -493,10 +487,11 @@ class SearchViewModelTest {
             val initialRecentSearches = listOf(mockSearchHistory1, mockSearchHistory2)
             val afterClearRecentSearches = listOf(mockSearchHistory2)
 
-            coEvery { getAllRecentSearchesUseCase.invoke() } returns flowOf(initialRecentSearches) andThen flowOf(
-                afterClearRecentSearches
-            )
-            coEvery { clearRecentSearchUseCase(idToClear) } just Runs
+            val recentSearchesFlow = MutableStateFlow(initialRecentSearches)
+            coEvery { getAllRecentSearchesUseCase() } returns recentSearchesFlow
+            coEvery { clearRecentSearchUseCase(idToClear) } answers {
+                recentSearchesFlow.value = afterClearRecentSearches
+            }
 
 
             viewModel = SearchViewModel(
@@ -520,7 +515,6 @@ class SearchViewModelTest {
 
 
             coVerify(exactly = 1) { clearRecentSearchUseCase(idToClear) }
-            coVerify(exactly = 3) { getAllRecentSearchesUseCase.invoke() }
             assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
                 afterClearRecentSearches
             )

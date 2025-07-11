@@ -70,7 +70,7 @@ class FindByActorViewModelTest {
         viewModel.onSearchQueryChange(emptyQuery)
         advanceUntilIdle()
 
-        coVerify(exactly = 0) { getMediaByActorNameUseCase.invoke(any()) }
+        coVerify(exactly = 0) { getMediaByActorNameUseCase(any()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -84,8 +84,8 @@ class FindByActorViewModelTest {
         viewModel.onSearchQueryChange(query2)
         advanceTimeBy(600)
 
-        coVerify(exactly = 1) { getMediaByActorNameUseCase.invoke(query2) }
-        coVerify(exactly = 0) { getMediaByActorNameUseCase.invoke(query1) }
+        coVerify(exactly = 1) { getMediaByActorNameUseCase(query2) }
+        coVerify(exactly = 0) { getMediaByActorNameUseCase(query1) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -96,7 +96,7 @@ class FindByActorViewModelTest {
             mockk<Media> { every { title } returns "Cast Away" },
             mockk<Media> { every { title } returns "Forrest Gump" }
         )
-        coEvery { getMediaByActorNameUseCase.invoke(testQuery) } returns mockMediaList
+        coEvery { getMediaByActorNameUseCase(testQuery) } returns mockMediaList
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
@@ -112,7 +112,7 @@ class FindByActorViewModelTest {
     fun `searchQuery should handle error and update state`() = runTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
-        coEvery { getMediaByActorNameUseCase.invoke(testQuery) } throws Exception(errorMessage)
+        coEvery { getMediaByActorNameUseCase(testQuery) } throws Exception(errorMessage)
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
