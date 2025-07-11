@@ -13,10 +13,10 @@ import kotlinx.datetime.LocalDateTime
 data class SearchHistoryEntity(
     @ColumnInfo(name = "search_query")
     val searchQuery: String,
+    @ColumnInfo(name = "search_type")
+    val searchType: SearchType,
     @ColumnInfo(name = "search_date")
     val searchDate: LocalDateTime = getCurrentDate(),
-    @ColumnInfo(name = "search_type")
-    val searchType: SearchType
 )
 
 enum class SearchType {
