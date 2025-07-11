@@ -6,8 +6,12 @@ class GetCountryCodeByNameUseCase(
     private val countryRepository: CountryRepository,
 ) {
     suspend operator fun invoke(countryName: String): String? {
-        return countryRepository.getAllCountries()
-            .firstOrNull { it.countryName.equals(countryName, ignoreCase = true) }
+        val allCountries = countryRepository.getAllCountries()
+        if (allCountries.any { it.countryCode.equals(countryName, ignoreCase = true) }) {
+            return countryName
+        }
+        return allCountries
+            .firstOrNull { it.countryName.contains(countryName, ignoreCase = true) }
             ?.countryCode
     }
 }
