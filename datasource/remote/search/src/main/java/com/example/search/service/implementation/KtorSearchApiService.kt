@@ -1,6 +1,5 @@
 package com.example.search.service.implementation
 
-import android.util.Log
 import com.example.search.service.contract.SearchApiService
 import com.repository.search.dto.SearchDto
 import io.ktor.client.HttpClient
@@ -47,7 +46,6 @@ class KtorSearchApiService(
     private suspend fun performSearchWithCountry(
         endpoint: String, query: String, page: Int, language: String,countryCode: String,
     ): SearchDto {
-        Log.d("TAG", "performSearchWithCountryAPISer: $countryCode")
         return httpClient.get("$baseUrl/$endpoint") {
             parameter(PAGE_PARAM, page)
             parameter(LANGUAGE_PARAM, language)

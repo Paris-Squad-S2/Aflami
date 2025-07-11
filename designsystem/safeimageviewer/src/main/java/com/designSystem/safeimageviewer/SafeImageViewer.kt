@@ -37,7 +37,7 @@ fun SafeImageViewer(
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Fit,
     blurRadius: Float = 20f,
-    confidenceThreshold: Float = 0.7f,
+    confidenceThreshold: Float = 0.8f,
     showLoadingIndicator: Boolean = true,
     placeholder: @Composable (() -> Unit)? = null,
 ) {

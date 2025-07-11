@@ -22,11 +22,6 @@ class SearchRemoteDataSourceImpl(private val apiService: SearchApiService) :
         language: String,
         countryCode: String,
     ): SearchDto {
-        val api = apiService.searchCountryCode(query, page, language, countryCode)
-        Log.d("TAG", "searchCountryCode:DataSourceImp: ${api.results?.size}")
-        api.results?.forEach {
-            Log.d("TAG", "searchCountryCode:DataSourceImp: ${it}")
-        }
-        return api
+        return apiService.searchCountryCode(query, page, language, countryCode)
     }
 }
