@@ -125,5 +125,5 @@ dependencies {
     implementation(project(":datasource:remote:search"))
     implementation(project(":domain:search"))
     implementation(project(":designsystem"))
-    implementation(project(":designsystem:safeimageviewer"))
+    implementation(project(":safeimageviewer"))
 }
