@@ -91,6 +91,14 @@ fun AflamiMediaCard(
                     modifier = Modifier.size(48.dp),
                     contentScale = ContentScale.Crop
                 )
+            },
+            errorPlaceholder = {
+                Image(
+                    painter = painterResource(id = R.drawable.img_disconnect),
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp),
+                    contentScale = ContentScale.Crop
+                )
             }
         )
 

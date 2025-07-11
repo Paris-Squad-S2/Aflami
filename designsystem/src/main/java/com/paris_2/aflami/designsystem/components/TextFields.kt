@@ -232,9 +232,11 @@ fun TextField(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(shape)
                     .background(Theme.colors.surfaceHigh)
                     .border(BorderStroke(1.dp, Theme.colors.stroke), shape)
-                    .heightIn(max = 200.dp)
+                    .heightIn(max = 300.dp)
                     .verticalScroll(rememberScrollState())
             ) {
                 filteredSuggestions.forEach { suggestion ->

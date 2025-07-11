@@ -1,5 +1,7 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,8 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,9 +26,11 @@ import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -44,6 +46,7 @@ fun RatingBar(
     onRatingChange: (Float) -> Unit
 ) {
     val density = LocalDensity.current
+    val layoutDirection = LocalLayoutDirection.current
 
     Row(
         modifier = modifier
@@ -51,12 +54,13 @@ fun RatingBar(
             .pointerInput(maxRating, starSize, spaceBetween) {
                 detectHorizontalDragGestures { change, _ ->
                     val x = change.position.x
-                    // Calculate the star index based on x position
                     val starWidthPx = with(density) { starSize.toPx() }
                     val spaceBetweenPx = with(density) { spaceBetween.toPx() }
                     val totalStarWidth = starWidthPx + spaceBetweenPx
-
-                    val calculatedRating = (x / totalStarWidth).coerceIn(0f, maxRating.toFloat())
+                    val effectiveX =
+                        if (layoutDirection == LayoutDirection.Rtl) size.width - x else x
+                    val calculatedRating =
+                        (effectiveX / totalStarWidth).coerceIn(0f, maxRating.toFloat())
                     onRatingChange(calculatedRating)
                 }
             }
@@ -65,7 +69,8 @@ fun RatingBar(
                     val starWidthPx = with(density) { starSize.toPx() }
                     val spaceBetweenPx = with(density) { spaceBetween.toPx() }
                     val totalStarWidth = starWidthPx + spaceBetweenPx
-                    val x = offset.x
+                    val x =
+                        if (layoutDirection == LayoutDirection.Rtl) size.width - offset.x else offset.x
                     val calculatedRating = (x / totalStarWidth).coerceIn(0f, maxRating.toFloat())
                     onRatingChange(calculatedRating)
                 }
@@ -82,6 +87,7 @@ fun RatingBar(
             StarIconFromResource(
                 modifier = Modifier.size(starSize),
                 fillRatio = fillRatio,
+                layoutDirection = layoutDirection,
                 selectedColor = selectedColor
             )
         }
@@ -92,6 +98,7 @@ fun RatingBar(
 private fun StarIconFromResource(
     modifier: Modifier = Modifier,
     fillRatio: Float,
+    layoutDirection: LayoutDirection,
     selectedColor: Color = Theme.colors.status.yellowAccent
 ) {
     Box(
@@ -116,7 +123,9 @@ private fun StarIconFromResource(
                     compositingStrategy = CompositingStrategy.Offscreen
                 }
                 .drawWithContent {
-                    clipRect(right = size.width * fillRatio) {
+                    clipRect(
+                        right = if (layoutDirection == LayoutDirection.Rtl) size.width else size.width * fillRatio,
+                        left = if (layoutDirection == LayoutDirection.Rtl) size.width - size.width * fillRatio else 0f) {
                         this@drawWithContent.drawContent()
                     }
                 }

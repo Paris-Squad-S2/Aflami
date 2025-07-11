@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.createBitmap
 import coil.compose.AsyncImage
@@ -40,11 +41,13 @@ fun SafeImageViewer(
     confidenceThreshold: Float = 0.7f,
     showLoadingIndicator: Boolean = true,
     placeholder: @Composable (() -> Unit)? = null,
+    errorPlaceholder: @Composable (() -> Unit)? = null
 ) {
     val context = LocalContext.current
     var isNSFW by remember { mutableStateOf(false) }
     var drawable by remember { mutableStateOf<Drawable?>(null) }
     var isLoading by remember { mutableStateOf(true) }
+    var isError by remember { mutableStateOf(false) }
     var isAnalyzing by remember { mutableStateOf(false) }
     val nsfwDetector = remember { NSFWDetector(context) }
 
@@ -108,21 +111,25 @@ fun SafeImageViewer(
                 when (state) {
                     is AsyncImagePainter.State.Loading -> {
                         isLoading = true
+                        isError = false
                         isAnalyzing = false
                     }
 
                     is AsyncImagePainter.State.Success -> {
                         isLoading = false
+                        isError = false
                         drawable = state.result.drawable
                     }
 
                     is AsyncImagePainter.State.Error -> {
                         isLoading = false
+                        isError = true
                         isAnalyzing = false
                     }
 
                     else -> {
                         isLoading = false
+                        isError = false
                         isAnalyzing = false
                     }
                 }
@@ -135,6 +142,14 @@ fun SafeImageViewer(
                 contentAlignment = Alignment.Center
             ) {
                 placeholder?.invoke() ?: CircularProgressIndicator()
+            }
+        }
+        if (isError) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                errorPlaceholder?.invoke() ?: CircularProgressIndicator()
             }
         }
     }
