@@ -11,6 +11,7 @@ import com.repository.search.exception.NoDataForActorException
 import com.repository.search.exception.NoDataForCountryException
 import com.repository.search.exception.NoDataForSearchException
 import com.repository.search.exception.NoInternetConnectionException
+import com.repository.search.mapper.toMedia
 import com.repository.search.mapper.toMedias
 import io.mockk.*
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -64,7 +65,7 @@ class SearchMediaRepositoryImplTest {
             )
         )
         val oldDate = Clock.System.now()
-            .minus(2, DateTimeUnit.HOUR)
+            .minus(30, DateTimeUnit.MINUTE)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         coEvery { mediaLocalDataSource.getMediaByActor(actorName) } returns cachedMedia
@@ -144,7 +145,7 @@ class SearchMediaRepositoryImplTest {
             )
         )
         val validDate = Clock.System.now()
-            .minus(2, DateTimeUnit.HOUR)
+            .minus(30, DateTimeUnit.MINUTE)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns cachedMedia
@@ -227,7 +228,7 @@ class SearchMediaRepositoryImplTest {
             )
         )
         val validDate = Clock.System.now()
-            .minus(2, DateTimeUnit.HOUR)
+            .minus(30, DateTimeUnit.MINUTE)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
         coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns cachedMedia
@@ -242,8 +243,9 @@ class SearchMediaRepositoryImplTest {
     fun `getMediaByQuery should fetch remotely if cache is expired`() = runTest {
         val query = "Matrix"
         val expiredDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
+        val entity = MediaEntity(1, query, "img", "Old", MediaTypeEntity.MOVIE, listOf(1), LocalDate(2000, 1, 1), 8.0)
 
-        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns listOf(MediaEntity(1, query, "img", "Old", MediaTypeEntity.MOVIE, listOf(1), LocalDate(2000, 1, 1), 8.0)) andThen emptyList()
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns listOf(entity) andThen emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(query) } returns SearchHistoryEntity(query, expiredDate)
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(query) } just Runs
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
@@ -252,7 +254,7 @@ class SearchMediaRepositoryImplTest {
         coEvery { historyLocalDataSource.addSearchQuery(query) } just Runs
 
         val result = repository.getMediaByQuery(query)
-        assertEquals(emptyList(), result)
+        assertEquals(listOf(entity.toMedia()), result)
     }
 
     @Test
