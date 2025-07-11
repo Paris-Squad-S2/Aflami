@@ -25,11 +25,11 @@ fun AflamiRadioButton(
     selected: Boolean,
     isDisable: Boolean,
     onClick: () -> Unit,
-    icon:Int? = null,
-    iconTint:Color = Color.Unspecified,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    icon: Int? = null,
+    iconTint: Color = Color.Unspecified,
 ) {
-    if (icon == null){
+    if (icon == null) {
         Spacer(
             modifier = modifier
                 .size(18.dp)
@@ -57,7 +57,7 @@ fun AflamiRadioButton(
     }else{
         Icon(
             imageVector = ImageVector.vectorResource(icon),
-            contentDescription = null,
+            contentDescription = "radio button icon",
             tint = iconTint,
             modifier = Modifier.size(18.dp)
         )

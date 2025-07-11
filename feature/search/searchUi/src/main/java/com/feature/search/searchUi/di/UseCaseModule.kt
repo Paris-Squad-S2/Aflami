@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.di
 
-import com.domain.search.useCases.AddRecentSearchUseCase
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
@@ -18,7 +17,6 @@ val useCaseModule = module {
     factory { GetAllRecentSearchesUseCase(get()) }
     factory { ClearRecentSearchUseCase(get()) }
     factory { ClearAllRecentSearchesUseCase(get()) }
-    factory { AddRecentSearchUseCase(get()) }
     factory { AutoCompleteCountryUseCase(get()) }
     factory { GetCountryCodeByNameUseCase(get()) }
     factory { FilterByListOfCategoriesUseCase() }

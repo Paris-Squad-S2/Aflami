@@ -1,5 +1,6 @@
 package com.example.search
 
+import android.util.Log
 import com.example.search.service.contract.SearchApiService
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.dto.SearchDto

@@ -33,8 +33,16 @@ android {
         jvmTarget = "11"
     }
 }
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 dependencies {
     implementation(libs.androidx.room.runtime)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.junit.jupiter)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -47,6 +55,11 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
 
+    // test
+    testImplementation(kotlin("test"))
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(project(":domain:search"))
 }
