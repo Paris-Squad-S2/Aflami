@@ -33,8 +33,7 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByActor(actor = actorName)
             if (media.isNotEmpty()) {
-                val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
@@ -44,7 +43,7 @@ class SearchMediaRepositoryImpl(
             }
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
-                val mediaEntities = searchDto.toMediaEntitiesForActors(
+                val mediaEntities = searchDto.toMediaEntities(
                     query = actorName
                 )
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
@@ -54,6 +53,8 @@ class SearchMediaRepositoryImpl(
             }
             return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
 
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForActorException()
         }
@@ -87,6 +88,8 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
             return mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForCountryException()
         }
@@ -120,6 +123,8 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
             return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+        } catch (e: NoInternetConnectionException) {
+            throw e
         } catch (_: Exception) {
             throw NoDataForSearchException()
         }
