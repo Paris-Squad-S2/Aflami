@@ -14,12 +14,12 @@ import kotlin.test.assertTrue
 class SearchByQueryUseCaseTest {
 
     private lateinit var searchMediaRepository: SearchMediaRepository
-    private lateinit var useCase: SearchByQueryUseCase
+    private lateinit var searchByQueryUseCase: SearchByQueryUseCase
 
     @BeforeEach
     fun setUp() {
         searchMediaRepository = mockk()
-        useCase = SearchByQueryUseCase(searchMediaRepository)
+        searchByQueryUseCase = SearchByQueryUseCase(searchMediaRepository)
     }
 
     @Test
@@ -35,7 +35,7 @@ class SearchByQueryUseCaseTest {
         coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
 
         //When
-        val result = useCase(query)
+        val result = searchByQueryUseCase(query)
 
         //Then
         assertEquals(2, result.size)
@@ -50,7 +50,7 @@ class SearchByQueryUseCaseTest {
         coEvery { searchMediaRepository.getMediaByQuery(query) } returns emptyList()
 
         //When
-        val result = useCase(query)
+        val result = searchByQueryUseCase(query)
 
         //Then
         assertTrue { result.isEmpty() }

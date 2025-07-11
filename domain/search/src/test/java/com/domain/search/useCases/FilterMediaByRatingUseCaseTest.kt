@@ -10,11 +10,11 @@ import kotlin.test.assertEquals
 
 class FilterMediaByRatingUseCaseTest {
 
-    private lateinit var useCase: FilterMediaByRatingUseCase
+    private lateinit var filterMediaByRatingUseCase: FilterMediaByRatingUseCase
 
     @BeforeEach
     fun setUp() {
-        useCase = FilterMediaByRatingUseCase()
+        filterMediaByRatingUseCase = FilterMediaByRatingUseCase()
     }
 
     @Test
@@ -31,7 +31,7 @@ class FilterMediaByRatingUseCaseTest {
             val expectedMediaList = mediaList
 
             //When
-            val result = useCase(4.0, mediaList)
+            val result = filterMediaByRatingUseCase(4.0, mediaList)
 
             //Then
             assertEquals(2, result.size)
@@ -58,7 +58,7 @@ class FilterMediaByRatingUseCaseTest {
             )
 
             //When
-            val result = useCase(4.0, mediaList)
+            val result = filterMediaByRatingUseCase(4.0, mediaList)
 
             //Then
             assertEquals(3, result.size)
@@ -80,7 +80,7 @@ class FilterMediaByRatingUseCaseTest {
         val expectedMediaList = emptyList<Media>()
 
         //When
-        val result = useCase(5.5, mediaList)
+        val result = filterMediaByRatingUseCase(5.5, mediaList)
 
         //Then
         assertEquals(expectedMediaList, result)
@@ -95,7 +95,7 @@ class FilterMediaByRatingUseCaseTest {
         val expectedMediaList = emptyList<Media>()
 
         //When
-        val result = useCase(5.0, mediaList)
+        val result = filterMediaByRatingUseCase(5.0, mediaList)
 
         //Then
         assertEquals(expectedMediaList, result)

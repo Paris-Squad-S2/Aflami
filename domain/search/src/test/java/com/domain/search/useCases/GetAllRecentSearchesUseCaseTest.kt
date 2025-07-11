@@ -13,12 +13,12 @@ import kotlin.test.assertTrue
 class GetAllRecentSearchesUseCaseTest {
 
     private lateinit var searchHistoryRepository: SearchHistoryRepository
-    private lateinit var useCase: GetAllRecentSearchesUseCase
+    private lateinit var getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase
 
     @BeforeEach
     fun setUp() {
         searchHistoryRepository = mockk()
-        useCase = GetAllRecentSearchesUseCase(searchHistoryRepository)
+        getAllRecentSearchesUseCase = GetAllRecentSearchesUseCase(searchHistoryRepository)
     }
 
     @Test
@@ -33,7 +33,7 @@ class GetAllRecentSearchesUseCaseTest {
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns recentSearches
 
         //When
-        val result = useCase()
+        val result = getAllRecentSearchesUseCase()
 
         //Then
         assertEquals(2, result.size)
@@ -48,7 +48,7 @@ class GetAllRecentSearchesUseCaseTest {
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns emptyList()
 
         //When
-        val result = useCase()
+        val result = getAllRecentSearchesUseCase()
 
         //Then
         assertTrue { result.isEmpty() }

@@ -13,12 +13,12 @@ import kotlin.test.assertEquals
 class GetCountryCodeByNameUseCaseTest {
 
     private lateinit var countryRepository: CountryRepository
-    private lateinit var useCase: GetCountryCodeByNameUseCase
+    private lateinit var getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase
 
     @BeforeEach
     fun setUp() {
         countryRepository = mockk()
-        useCase = GetCountryCodeByNameUseCase(countryRepository)
+        getCountryCodeByNameUseCase = GetCountryCodeByNameUseCase(countryRepository)
     }
 
     @Test
@@ -32,7 +32,7 @@ class GetCountryCodeByNameUseCaseTest {
         coEvery { countryRepository.getAllCountries() } returns countries
 
         //When
-        val result = useCase("France")
+        val result = getCountryCodeByNameUseCase("France")
 
         //Then
         assertEquals("FR", result)
@@ -49,7 +49,7 @@ class GetCountryCodeByNameUseCaseTest {
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
-        val result = useCase("france")
+        val result = getCountryCodeByNameUseCase("france")
 
         //Then
         assertEquals("FR", result)
@@ -67,7 +67,7 @@ class GetCountryCodeByNameUseCaseTest {
         coEvery { countryRepository.getAllCountries() } returns countries
 
         //When
-        val result = useCase("Canada")
+        val result = getCountryCodeByNameUseCase("Canada")
 
         //Then
         assertNull(result)
@@ -80,7 +80,7 @@ class GetCountryCodeByNameUseCaseTest {
         coEvery { countryRepository.getAllCountries() } returns emptyList()
 
         //When
-        val result = useCase("France")
+        val result = getCountryCodeByNameUseCase("France")
 
         //Then
         assertNull(result)

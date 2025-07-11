@@ -13,13 +13,13 @@ import kotlin.test.assertTrue
 class GetAllCategoriesUseCaseTest {
 
     private lateinit var categoriesRepository: CategoriesRepository
-    private lateinit var useCase: GetAllCategoriesUseCase
+    private lateinit var getAllCategoriesUseCase: GetAllCategoriesUseCase
 
     @BeforeEach
 
     fun setUp() {
         categoriesRepository = mockk()
-        useCase = GetAllCategoriesUseCase(categoriesRepository)
+        getAllCategoriesUseCase = GetAllCategoriesUseCase(categoriesRepository)
     }
 
 
@@ -35,7 +35,7 @@ class GetAllCategoriesUseCaseTest {
         coEvery { categoriesRepository.getAllCategories() } returns categories
 
         //When
-        val result = useCase()
+        val result = getAllCategoriesUseCase()
 
         //Then
         assertEquals(3, result.size)
@@ -50,7 +50,7 @@ class GetAllCategoriesUseCaseTest {
         coEvery { categoriesRepository.getAllCategories() } returns emptyList()
 
         //When
-        val result = useCase()
+        val result = getAllCategoriesUseCase()
 
         //Then
         assertTrue { result.isEmpty() }

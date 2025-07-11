@@ -13,12 +13,12 @@ import testUtils.createMedia
 
 class GetMediaByActorNameUseCaseTest {
     private lateinit var searchMediaRepository: SearchMediaRepository
-    private lateinit var useCase: GetMediaByActorNameUseCase
+    private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
 
     @BeforeEach
     fun setUp() {
         searchMediaRepository = mockk()
-        useCase = GetMediaByActorNameUseCase(searchMediaRepository)
+        getMediaByActorNameUseCase = GetMediaByActorNameUseCase(searchMediaRepository)
     }
 
     @Test
@@ -37,7 +37,7 @@ class GetMediaByActorNameUseCaseTest {
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns mediaList
 
         // When
-        val result = useCase.invoke(actorName)
+        val result = getMediaByActorNameUseCase.invoke(actorName)
 
         // Then
         assertEquals(3, result.size)
@@ -56,7 +56,7 @@ class GetMediaByActorNameUseCaseTest {
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns emptyList()
 
         // When
-        val result = useCase.invoke(actorName)
+        val result = getMediaByActorNameUseCase.invoke(actorName)
 
         // Then
         assertTrue(result.isEmpty())
@@ -76,7 +76,7 @@ class GetMediaByActorNameUseCaseTest {
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns tvOnlyMedia
 
         // When
-        val result = useCase.invoke(actorName)
+        val result = getMediaByActorNameUseCase.invoke(actorName)
 
         // Then
         assertTrue(result.isEmpty())
