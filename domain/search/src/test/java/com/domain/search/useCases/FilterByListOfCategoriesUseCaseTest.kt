@@ -130,6 +130,4 @@ class FilterByListOfCategoriesUseCaseTest {
         assertEquals(expectedMediaList, result)
 
     }
-
-
 }

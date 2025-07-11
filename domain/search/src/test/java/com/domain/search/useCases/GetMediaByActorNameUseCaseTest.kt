@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import testUtils.createMedia
 
-
 class GetMediaByActorNameUseCaseTest {
     private lateinit var searchMediaRepository: SearchMediaRepository
     private lateinit var useCase: GetMediaByActorNameUseCase
