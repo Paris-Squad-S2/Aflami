@@ -33,6 +33,6 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: app/build/outputs/apk/debug/app-debug.apk
+          file: feature/search/searchUi/build/outputs/apk/debug/searchUi-debug.apk
           releaseNotes: "Automated release from develop branch"
           debug: true
