@@ -12,6 +12,7 @@ import com.repository.search.exception.NoDataForCountryException
 import com.repository.search.exception.NoDataForSearchException
 import com.repository.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMediaEntities
+import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
 import com.repository.search.util.getCurrentDate
 import kotlinx.datetime.DateTimeUnit
@@ -45,9 +46,8 @@ class SearchMediaRepositoryImpl(
             }
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchPerson(query = actorName)
-                val mediaEntities = searchDto.toMediaEntities(
-                    query = actorName,
-                    actor = listOf(actorName)
+                val mediaEntities = searchDto.toMediaEntitiesForActors(
+                    query = actorName
                 )
                 searchHistoryLocalDataSource.addSearchQuery(actorName)
                 mediaLocalDataSource.addAllMedia(mediaEntities)
@@ -80,8 +80,7 @@ class SearchMediaRepositoryImpl(
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchCountryCode(query = countryName)
                 val mediaEntities = searchDto.toMediaEntities(
-                    query = countryName,
-                    country = countryName
+                    query = countryName
                 )
                 searchHistoryLocalDataSource.addSearchQuery(countryName)
                 mediaLocalDataSource.addAllMedia(mediaEntities)

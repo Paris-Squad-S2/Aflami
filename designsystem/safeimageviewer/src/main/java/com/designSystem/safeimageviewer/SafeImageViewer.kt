@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.Placeholder
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
@@ -38,7 +39,7 @@ fun SafeImageViewer(
     contentScale: ContentScale = ContentScale.Fit,
     blurRadius: Float = 20f,
     confidenceThreshold: Float = 0.7f,
-    showLoadingIndicator: Boolean = true
+    showLoadingIndicator: Boolean = true,
 ) {
     val context = LocalContext.current
     var isNSFW by remember { mutableStateOf(false) }

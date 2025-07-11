@@ -1,11 +1,11 @@
 package com.feature.search.searchUi.screen.search
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.CategoryModel
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.model.SearchHistoryModel
-import com.domain.search.useCases.AddRecentSearchUseCase
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -35,7 +35,8 @@ data class UIState(
     val filteredMoviesResult: List<Media>,
     val filteredTvShowsResult: List<Media>,
     val categories: Map<CategoryModel, Boolean>,
-    val selectedRating: Float
+    val selectedRating: Float,
+    val isAllCategories: Boolean
 )
 
 class SearchViewModel(
@@ -43,7 +44,6 @@ class SearchViewModel(
     private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase,
     private val clearRecentSearchUseCase: ClearRecentSearchUseCase,
     private val searchByQueryUseCase: SearchByQueryUseCase,
-    private val addRecentSearchesUseCase: AddRecentSearchUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
@@ -61,7 +61,8 @@ class SearchViewModel(
                 categories = mapOf(),
                 selectedRating = 0f,
                 moviesResult = listOf(),
-                tvShowsResult = listOf()
+                tvShowsResult = listOf(),
+                isAllCategories = true
             ),
             isLoading = false,
             errorMessage = null
@@ -167,15 +168,23 @@ class SearchViewModel(
                 searchByQueryUseCase(query)
             },
             onSuccess = { searchResult ->
-                val (moviesResult, tvShowsResult) = searchResult.partition { it.type == MediaType.MOVIE }
-                val selectedRating = screenState.value.uiState.selectedRating
-                val selectedCategories = screenState.value.uiState.categories
-                    .filter { it.value }
-                    .keys
-                    .toList()
-                val filteredMoviesResult = applyMediaFilters(moviesResult, selectedRating, selectedCategories)
-                val filteredTvShowsResult = applyMediaFilters(tvShowsResult, selectedRating, selectedCategories)
+                val moviesResult = searchResult.filter { it.type == MediaType.MOVIE }
+                val tvShowsResult = searchResult.filter { it.type == MediaType.TVSHOW }
 
+                val filteredMediaByRating = filterMediaByRatingUseCase(
+                    screenState.value.uiState.selectedRating,
+                    searchResult
+                )
+                val filteredMediaByCategories = if (!screenState.value.uiState.isAllCategories) filterMedByListOfCategoriesUseCase(
+                    screenState.value.uiState.categories.filter { it.value }.keys.toList()
+                        .map { it.id },
+                    filteredMediaByRating
+                ) else searchResult
+
+                val filteredMoviesResult =
+                    filteredMediaByCategories.filter { it.type == MediaType.MOVIE }
+                val filteredTvShowsResult =
+                    filteredMediaByCategories.filter { it.type == MediaType.TVSHOW }
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
@@ -187,7 +196,6 @@ class SearchViewModel(
                         )
                     )
                 )
-                addRecentSearchesUseCase(query)
             },
             onError = { errorMessage ->
                 emitState(
@@ -222,6 +230,7 @@ class SearchViewModel(
 
     override fun onApplyFilterButtonClick(
         selectedRating: Float,
+        isAllCategories: Boolean,
         selectedCategories: List<CategoryModel>,
     ) {
         tryToExecute(
@@ -233,27 +242,36 @@ class SearchViewModel(
                             showFilterDialog = false,
                             selectedRating = selectedRating,
                             categories = screenState.value.uiState.categories.mapValues { it.key in selectedCategories }
-                                .toMutableMap()
+                                .toMutableMap(),
+                            isAllCategories = isAllCategories
                         )
                     )
                 )
 
                 val filteredMovies = filterMediaByRatingUseCase(
-                    screenState.value.uiState.selectedRating,
+                    selectedRating,
                     screenState.value.uiState.moviesResult
                 )
                 val filteredTvShows = filterMediaByRatingUseCase(
-                    screenState.value.uiState.selectedRating,
+                    selectedRating,
                     screenState.value.uiState.tvShowsResult
                 )
-                val filteredByCategoriesMovies = filterMedByListOfCategoriesUseCase(
-                    selectedCategories.map { it.id },
+                val filteredByCategoriesMovies = if (isAllCategories) {
                     filteredMovies
-                )
-                val filteredByCategoriesTvShows = filterMedByListOfCategoriesUseCase(
-                    selectedCategories.map { it.id },
+                } else {
+                    filterMedByListOfCategoriesUseCase(
+                        selectedCategories.map { it.id },
+                        filteredMovies
+                    )
+                }
+                val filteredByCategoriesTvShows = if (isAllCategories) {
                     filteredTvShows
-                )
+                } else {
+                    filterMedByListOfCategoriesUseCase(
+                        selectedCategories.map { it.id },
+                        filteredTvShows
+                    )
+                }
                 Pair(filteredByCategoriesMovies, filteredByCategoriesTvShows)
             },
             onSuccess = { (filteredByCategoriesMovies, filteredByCategoriesTvShows) ->
@@ -334,22 +352,5 @@ class SearchViewModel(
 
     override fun onMediaCardClick(id: Int) {
         //TODO: Navigate to media details screen
-    }
-
-
-    private fun applyMediaFilters(
-        media: List<Media>,
-        rating: Float,
-        categories: List<CategoryModel>
-    ): List<Media> {
-        var filteredMedia = media
-        if (rating > 0f) {
-            filteredMedia = filterMediaByRatingUseCase(rating, filteredMedia)
-        }
-        if (categories.isNotEmpty()) {
-            val category = categories.map { it.id }
-            filteredMedia = filterMedByListOfCategoriesUseCase(category, filteredMedia)
-        }
-        return filteredMedia
     }
 }

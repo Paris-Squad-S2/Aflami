@@ -1,6 +1,5 @@
 package com.paris_2.aflami.designsystem.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -21,13 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -35,7 +33,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun AflamiMediaCard(
     modifier: Modifier = Modifier,
-    imagePainter: Painter,
+    imageUri: String,
     rating: String = "",
     movieName: String = "",
     mediaType: String = "",
@@ -77,17 +75,16 @@ fun AflamiMediaCard(
                     Modifier.clickable { onClick() }
                 } else Modifier
             )
-
     ) {
-        Image(
+        SafeImageViewer(
+            model = imageUri,
             modifier = Modifier.fillMaxSize(),
-            painter = imagePainter,
             contentDescription = "media poster",
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
 
         if (showRating) {
-            Row() {
+            Row {
                 Spacer(modifier = Modifier.weight(1f))
                 RatingCard(
                     rating = rating,
@@ -117,6 +114,7 @@ fun AflamiMediaCard(
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.onPrimaryColors.onPrimary,
                 overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
             )
             DescriptionSeparator(
                 firstText = mediaType,
@@ -149,7 +147,7 @@ enum class MediaCardType {
 fun PreviewMediaNormalCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imagePainter = painterResource(R.drawable.anime_movie),
+            imageUri = R.drawable.anime_movie.toString(),
             rating = 9.9.toString(),
             movieName = "Your Name",
             mediaType = "TV show",
@@ -166,7 +164,7 @@ fun PreviewMediaNormalCard() {
 fun PreviewMediaUpComingCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imagePainter = painterResource(R.drawable.anime_horizontal),
+            imageUri = R.drawable.anime_horizontal.toString(),
             rating = 9.toString(),
             movieName = "Grave of the Fireflies",
             mediaType = "TV show",
@@ -183,7 +181,7 @@ fun PreviewMediaUpComingCard() {
 fun PreviewMediaEpisodeCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imagePainter = painterResource(R.drawable.attack_on_titan),
+            imageUri = R.drawable.attack_on_titan.toString(),
             rating = 8.8.toString(),
             mediaCardType = MediaCardType.EPISODE
         )
@@ -196,7 +194,7 @@ fun PreviewMediaEpisodeCard() {
 fun PreviewMediaSliderCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imagePainter = painterResource(R.drawable.shniderlist_slider),
+            imageUri = R.drawable.shniderlist_slider.toString(),
             rating = 8.toString(),
             mediaCardType = MediaCardType.SLIDER,
             showRating = true,
@@ -211,7 +209,7 @@ fun PreviewMediaSliderCard() {
 fun PreviewMediaEmptySliderCard() {
     AflamiTheme {
         AflamiMediaCard(
-            imagePainter = painterResource(R.drawable.shniderlist_slider),
+            imageUri = R.drawable.shniderlist_slider.toString(),
             mediaCardType = MediaCardType.SLIDER,
             showRating = false,
             cardWidth = 207.dp,

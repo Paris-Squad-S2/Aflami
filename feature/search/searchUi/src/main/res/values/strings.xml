@@ -24,4 +24,5 @@
     <string name="loading_recent_searches">Loading recent searches</string>
     <string name="imdb_rating">IMDb rating</string>
     <string name="genre">Genre</string>
+    <string name="all">All</string>
 </resources>

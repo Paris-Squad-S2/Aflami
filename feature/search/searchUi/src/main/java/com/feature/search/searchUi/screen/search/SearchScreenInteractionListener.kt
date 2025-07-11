@@ -17,6 +17,7 @@ interface SearchScreenInteractionListener {
     fun onSelectTab(tabIndex: Int)
     fun onApplyFilterButtonClick(
         selectedRating: Float,
+        isAllCategories: Boolean,
         selectedCategories: List<CategoryModel>
     )
 }

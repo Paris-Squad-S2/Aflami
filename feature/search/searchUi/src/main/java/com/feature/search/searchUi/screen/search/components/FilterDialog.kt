@@ -38,6 +38,7 @@ fun FilterDialog(
 ) {
     var currentRating by remember { mutableFloatStateOf(state.uiState.selectedRating) }
     var currentCategories by remember { mutableStateOf(state.uiState.categories) }
+    var isAllCategories by remember { mutableStateOf(state.uiState.isAllCategories) }
     AflamiDialog(
         onDismiss = searchScreenInteractionListener::onFilterButtonClick,
         title = R.string.filter_result,
@@ -70,6 +71,19 @@ fun FilterDialog(
             LazyRow(
                 contentPadding = PaddingValues(horizontal = 12.dp),
             ) {
+                item {
+                    Chips(
+                        title = stringResource(R.string.all),
+                        icon = painterResource(R.drawable.ic_category_all),
+                        isSelected = isAllCategories,
+                        onClick = {
+                            isAllCategories = !isAllCategories
+                            if (isAllCategories) {
+                                currentCategories = state.uiState.categories.mapValues { false }
+                            }
+                        }
+                    )
+                }
                 items(currentCategories.size) { index ->
                     val category = currentCategories.keys.elementAt(index)
                     Chips(
@@ -77,6 +91,7 @@ fun FilterDialog(
                         icon = painterResource(getResourceId(category.id)),
                         isSelected = currentCategories[category] ?: false,
                         onClick = {
+                            isAllCategories = false
                             currentCategories = currentCategories.toMutableMap().apply {
                                 this[category] = !(currentCategories[category] ?: false)
                             }
@@ -89,6 +104,7 @@ fun FilterDialog(
                 onClick = {
                     searchScreenInteractionListener.onApplyFilterButtonClick(
                         selectedRating = currentRating,
+                        isAllCategories = isAllCategories,
                         selectedCategories = currentCategories.filter { it.value }.keys.toList()
                     )
                 },
