@@ -14,4 +14,18 @@ kotlin {
 dependencies{
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines.core)
+
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // test
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
