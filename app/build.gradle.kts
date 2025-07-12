@@ -68,6 +68,7 @@ dependencies {
     implementation(project(":domain:user"))
     implementation(project(":FireBase"))
     implementation(project(":designsystem:safeimageviewer"))
+    implementation(project(":feature:search:searchUi"))
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)

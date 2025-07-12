@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   build-and-distribute:
@@ -27,7 +30,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build debug APK
-        run: ./gradlew feature:search:searchUi:assembleDebug
+        run: ./gradlew app:assembleDebug
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -35,6 +38,6 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: feature/search/searchUi/build/outputs/apk/debug/searchUi-debug.apk
-          releaseNotes: "Test the search feature"
+          file: app/build/outputs/apk/debug/app-debug.apk
+          releaseNotes: "Latest build from develop branch"
           debug: true
