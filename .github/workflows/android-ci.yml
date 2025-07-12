@@ -8,10 +8,6 @@ on:
     branches:
       - develop
 
-permissions:
-  pull-requests: write
-  contents: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -63,7 +59,6 @@ jobs:
         with:
           files: build/reports/kover/report.xml
           token: ${{ secrets.CODECOV_TOKEN }}
-          update-comment: true
 
       - name: Generate coverage HTML report
         run: ./gradlew koverHtmlReport
