@@ -1,6 +1,7 @@
 package com.repository.search.dataSource.local
 
 import com.repository.search.entity.MediaEntity
+import com.repository.search.entity.SearchType
 
 interface MediaLocalDataSource {
     suspend fun addAllMedia(media: List<MediaEntity>)
@@ -9,5 +10,5 @@ interface MediaLocalDataSource {
     suspend fun getMediaByActor(actor: String): List<MediaEntity>
     suspend fun getMediaByTitleQuery(query: String) : List<MediaEntity>
     suspend fun getCachedMedia(): List<MediaEntity>
-    suspend fun clearAllMediaBySearchQuery(searchQuery: String)
+    suspend fun clearAllMediaBySearchQuery(searchQuery: String, searchType: SearchType)
 }

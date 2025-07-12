@@ -5,6 +5,7 @@ import com.domain.search.model.CategoryModel
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.model.SearchHistoryModel
+import com.domain.search.model.SearchType
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -89,11 +90,11 @@ class SearchViewModelTest {
     )
 
     val mockSearchHistory1 = SearchHistoryModel(
-        searchTitle = "Lord of the Rings", searchDate = "2023-10-26"
+        searchTitle = "Lord of the Rings", searchDate = "2023-10-26", SearchType.Query
     )
 
     val mockSearchHistory2 = SearchHistoryModel(
-        searchTitle = "Inception", searchDate = "2023-11-15"
+        searchTitle = "Inception", searchDate = "2023-11-15", SearchType.Query
     )
 
     private val mockCategory1 = CategoryModel(id = 1, name = "Action")
@@ -489,7 +490,7 @@ class SearchViewModelTest {
 
             val recentSearchesFlow = MutableStateFlow(initialRecentSearches)
             coEvery { getAllRecentSearchesUseCase() } returns recentSearchesFlow
-            coEvery { clearRecentSearchUseCase(idToClear) } answers {
+            coEvery { clearRecentSearchUseCase(idToClear, SearchType.Query) } answers {
                 recentSearchesFlow.value = afterClearRecentSearches
             }
 
@@ -510,11 +511,11 @@ class SearchViewModelTest {
             )
 
 
-            viewModel.onClearRecentSearch(idToClear)
+            viewModel.onClearRecentSearch(idToClear, SearchType.Query)
             advanceUntilIdle()
 
 
-            coVerify(exactly = 1) { clearRecentSearchUseCase(idToClear) }
+            coVerify(exactly = 1) { clearRecentSearchUseCase(idToClear, SearchType.Query) }
             assertThat(viewModel.screenState.value.uiState.recentSearches).isEqualTo(
                 afterClearRecentSearches
             )

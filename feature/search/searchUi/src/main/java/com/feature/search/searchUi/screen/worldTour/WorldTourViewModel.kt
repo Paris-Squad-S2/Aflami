@@ -1,11 +1,14 @@
 package com.feature.search.searchUi.screen.worldTour
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.domain.search.model.Media
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.navigation.Destinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -23,6 +26,7 @@ data class WorldTourUiState(
 )
 
 class WorldTourViewModel(
+    savedStateHandle: SavedStateHandle,
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
     private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
@@ -38,6 +42,13 @@ class WorldTourViewModel(
             errorMessage = null
         )
     ) {
+
+    init {
+        val initialQuery = savedStateHandle.toRoute<Destinations.WorldTourScreen>().name
+        if (initialQuery != null) {
+            onSearchQueryChange(initialQuery)
+        }
+    }
 
     override fun onNavigateBack() {
         navigateUp()

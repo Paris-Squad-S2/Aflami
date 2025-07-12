@@ -43,7 +43,8 @@ class WorldTourViewModelTest {
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
             getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
-        )
+            savedStateHandle = mockk(relaxed = true),
+            )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
