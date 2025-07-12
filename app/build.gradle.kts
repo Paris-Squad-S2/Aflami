@@ -67,7 +67,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(project(":domain:user"))
     implementation(project(":FireBase"))
-    implementation(project(":designsystem:safeimageviewer"))
+    implementation(project(":safeimageviewer"))
     implementation(project(":feature:search:searchUi"))
 
     // JUnit 5

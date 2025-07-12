@@ -1,9 +1,12 @@
 package com.feature.search.searchUi.screen.findByActor
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.toRoute
 import com.domain.search.model.Media
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.navigation.Destinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,6 +22,7 @@ data class FindByActorUiState(
 )
 
 class FindByActorViewModel(
+    savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
@@ -30,6 +34,13 @@ class FindByActorViewModel(
         errorMessage = null
     )
 ) {
+
+    init {
+        val initialQuery = savedStateHandle.toRoute<Destinations.FindByActorScreen>().name
+        if (initialQuery != null) {
+            onSearchQueryChange(initialQuery)
+        }
+    }
 
     override fun onNavigateBack() {
         navigateUp()

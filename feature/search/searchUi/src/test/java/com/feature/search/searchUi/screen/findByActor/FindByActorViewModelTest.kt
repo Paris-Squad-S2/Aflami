@@ -32,6 +32,7 @@ class FindByActorViewModelTest {
         Dispatchers.setMain(testDispatcher)
         getMediaByActorNameUseCase = mockk(relaxed = true)
         viewModel = FindByActorViewModel(
+            savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase
         )
     }

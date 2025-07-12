@@ -2,6 +2,7 @@ package com.repository.search.repository
 
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.entity.SearchHistoryEntity
+import com.repository.search.entity.SearchType
 import com.repository.search.mapper.toSearchHistories
 import io.mockk.*
 import kotlinx.coroutines.flow.first
@@ -24,7 +25,7 @@ class SearchHistoryRepositoryImplTest {
     @Test
     fun `getAllSearchHistory should return mapped history from local data source`() = runTest {
         // Given
-        val localHistory = listOf(SearchHistoryEntity("action"))
+        val localHistory = listOf(SearchHistoryEntity("action", SearchType.Query))
         coEvery { historyLocalDataSource.getAllSearchQueries() } returns flowOf(localHistory)
 
         // When
@@ -38,26 +39,26 @@ class SearchHistoryRepositoryImplTest {
     fun `addSearchHistory should call addSearchQuery with correct title`() = runTest {
         // Given
         val title = "comedy"
-        coEvery { historyLocalDataSource.addSearchQuery(title) } just Runs
+        coEvery { historyLocalDataSource.addSearchQuery(title, SearchType.Query) } just Runs
 
         // When
-        repository.addSearchHistory(title)
+        repository.addSearchHistory(title, com.domain.search.model.SearchType.Query)
 
         // Then
-        coVerify(exactly = 1) { historyLocalDataSource.addSearchQuery(title) }
+        coVerify(exactly = 1) { historyLocalDataSource.addSearchQuery(title, SearchType.Query) }
     }
 
     @Test
     fun `clearSearchHistory should call clearSearchQueryByQuery with correct query`() = runTest {
         // Given
         val query = "drama"
-        coEvery { historyLocalDataSource.clearSearchQueryByQuery(query) } just Runs
+        coEvery { historyLocalDataSource.clearSearchQueryByQuery(query, SearchType.Query) } just Runs
 
         // When
-        repository.clearSearchHistory(query)
+        repository.clearSearchHistory(query, com.domain.search.model.SearchType.Query)
 
         // Then
-        coVerify(exactly = 1) { historyLocalDataSource.clearSearchQueryByQuery(query) }
+        coVerify(exactly = 1) { historyLocalDataSource.clearSearchQueryByQuery(query, SearchType.Query) }
     }
 
     @Test

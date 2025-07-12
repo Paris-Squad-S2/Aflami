@@ -1,6 +1,7 @@
 package com.domain.search.useCases
 
 import com.domain.search.model.SearchHistoryModel
+import com.domain.search.model.SearchType
 import com.domain.search.repository.SearchHistoryRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -28,8 +29,8 @@ class GetAllRecentSearchesUseCaseTest {
 
         //Given
         val recentSearches = listOf(
-            SearchHistoryModel(searchTitle = "Movie1", searchDate = "2023-10-01"),
-            SearchHistoryModel(searchTitle = "Movie2", searchDate = "2023-10-01")
+            SearchHistoryModel(searchTitle = "Movie1", searchDate = "2023-10-01", SearchType.Query),
+            SearchHistoryModel(searchTitle = "Movie2", searchDate = "2023-10-01", SearchType.Query)
         )
 
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {

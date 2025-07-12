@@ -1,11 +1,11 @@
 package com.feature.search.searchUi.screen.search
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.CategoryModel
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.model.SearchHistoryModel
+import com.domain.search.model.SearchType
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -47,7 +47,7 @@ class SearchViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
-    ) : SearchScreenInteractionListener,
+) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
             uiState = UIState(
@@ -121,17 +121,13 @@ class SearchViewModel(
 
     override fun onNavigateToWorldTourScreen() {
         navigate(
-            Destinations.WorldTourScreen(
-                name = "World Tour"
-            )
+            Destinations.WorldTourScreen()
         )
     }
 
     override fun onNavigateToFindByActorScreen() {
         navigate(
-            Destinations.FindByActorScreen(
-                name = "Find By Actor"
-            )
+            Destinations.FindByActorScreen()
         )
     }
 
@@ -174,11 +170,12 @@ class SearchViewModel(
                     screenState.value.uiState.selectedRating,
                     searchResult
                 )
-                val filteredMediaByCategories = if (!screenState.value.uiState.isAllCategories) filterMedByListOfCategoriesUseCase(
-                    screenState.value.uiState.categories.filter { it.value }.keys.toList()
-                        .map { it.id },
-                    filteredMediaByRating
-                ) else searchResult
+                val filteredMediaByCategories =
+                    if (!screenState.value.uiState.isAllCategories) filterMedByListOfCategoriesUseCase(
+                        screenState.value.uiState.categories.filter { it.value }.keys.toList()
+                            .map { it.id },
+                        filteredMediaByRating
+                    ) else searchResult
 
                 val filteredMoviesResult =
                     filteredMediaByCategories.filter { it.type == MediaType.MOVIE }
@@ -309,6 +306,49 @@ class SearchViewModel(
         )
     }
 
+    override fun onRecentSearchClick(searchTitle: String, searchType: SearchType) {
+        when (searchType) {
+            SearchType.Query -> onSearchQueryChange(searchTitle)
+            SearchType.Country -> {
+                tryToExecute(
+                    execute = {
+                        navigate(
+                            Destinations.WorldTourScreen(
+                                name = searchTitle
+                            )
+                        )
+                    },
+                    onError = { errorMessage ->
+                        emitState(
+                            screenState.value.copy(
+                                errorMessage = errorMessage
+                            )
+                        )
+                    }
+                )
+            }
+
+            SearchType.Actor -> {
+                tryToExecute(
+                    execute = {
+                        navigate(
+                            Destinations.FindByActorScreen(
+                                name = searchTitle
+                            )
+                        )
+                    },
+                    onError = { errorMessage ->
+                        emitState(
+                            screenState.value.copy(
+                                errorMessage = errorMessage
+                            )
+                        )
+                    }
+                )
+            }
+        }
+    }
+
     override fun onClearAllRecentSearches() {
         tryToExecute(
             execute = clearAllRecentSearchesUseCase::invoke,
@@ -322,10 +362,10 @@ class SearchViewModel(
         )
     }
 
-    override fun onClearRecentSearch(id: String) {
+    override fun onClearRecentSearch(id: String, searchType: SearchType) {
         tryToExecute(
             execute = {
-                clearRecentSearchUseCase(id)
+                clearRecentSearchUseCase(id, searchType)
             },
             onError = { errorMessage ->
                 emitState(

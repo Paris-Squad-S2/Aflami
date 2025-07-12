@@ -7,6 +7,7 @@ import com.repository.search.dto.ResultDto
 import com.repository.search.dto.SearchDto
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
+import com.repository.search.entity.SearchType
 import kotlinx.datetime.LocalDate
 
 
@@ -34,8 +35,9 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 
 fun ResultDto.toMediaEntity(
     searchQuery: String,
+    searchType: SearchType
 ): MediaEntity? {
-    val title = this.originalTitle ?: this.title ?: this.name ?: return null
+    val title = this.title ?: this.name ?: return null
     val image = this.posterPath ?: this.profilePath ?: ""
     val releaseDateStr = (this.releaseDate?.takeIf { it.isNotBlank() }
         ?: this.firstAirDate?.takeIf { it.isNotBlank() }) ?: return null
@@ -52,7 +54,8 @@ fun ResultDto.toMediaEntity(
             },
             category = this.genreIds ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
-            rating = this.voteAverage ?: 0.0
+            rating = this.voteAverage ?: 0.0,
+            searchType = searchType
         )
     } catch (_: Exception) {
         null
@@ -79,6 +82,7 @@ fun KnownForDto.toMediaEntity(
             category = this.genreIds ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage ?: 0.0,
+            searchType = SearchType.Actor
         )
     } catch (_: Exception) {
         return null
@@ -89,7 +93,6 @@ fun KnownForDto.toMediaEntity(
 fun ResultDto.toMediaEntityForActors(
     searchQuery: String,
 ): List<MediaEntity?> {
-
     return this.knownForDTO?.map {
         it.toMediaEntity(searchQuery)?.let { mediaEntity ->
             return listOf(mediaEntity)
@@ -100,9 +103,10 @@ fun ResultDto.toMediaEntityForActors(
 
 fun SearchDto.toMediaEntities(
     query: String,
+    searchType: SearchType
 ): List<MediaEntity> {
     return results?.mapNotNull {
-        it.toMediaEntity(query)
+        it.toMediaEntity(query, searchType)
     } ?: emptyList()
 }
 

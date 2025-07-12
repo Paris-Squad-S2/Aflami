@@ -106,7 +106,7 @@ fun AflamiMediaCard(
             Row {
                 Spacer(modifier = Modifier.weight(1f))
                 RatingCard(
-                    rating = rating,
+                    rating = rating.take(3),
                     modifier = Modifier.padding(top = 4.dp, end = 4.dp)
                 )
             }
