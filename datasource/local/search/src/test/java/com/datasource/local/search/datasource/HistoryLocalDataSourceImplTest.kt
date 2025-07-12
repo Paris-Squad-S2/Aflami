@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertNull
 
 class HistoryLocalDataSourceImplTest {
     private lateinit var historyLocalDataSource: HistoryLocalDataSourceImpl
@@ -65,5 +66,25 @@ class HistoryLocalDataSourceImplTest {
             coVerify { searchHistoryDao.clearAllSearchQueries() }
 
         }
+
+    @Test
+    fun `getSearchHistoryQuery should return entity when DAO returns non-null`() = runTest {
+        coEvery { searchHistoryDao.getSearchHistoryQuery("a", SearchType.Query) } returns sampleSearchHistory
+
+        val result = historyLocalDataSource.getSearchHistoryQuery("a", SearchType.Query)
+
+        assertEquals(sampleSearchHistory, result)
+        coVerify { searchHistoryDao.getSearchHistoryQuery("a", SearchType.Query) }
+    }
+
+    @Test
+    fun `getSearchHistoryQuery should return null when DAO returns null`() = runTest {
+        coEvery { searchHistoryDao.getSearchHistoryQuery("b", SearchType.Query) } returns null
+
+        val result = historyLocalDataSource.getSearchHistoryQuery("b", SearchType.Query)
+
+        assertNull(result)
+        coVerify { searchHistoryDao.getSearchHistoryQuery("b", SearchType.Query) }
+    }
 
 }

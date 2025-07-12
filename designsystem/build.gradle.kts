@@ -56,3 +56,4 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(project(":safeimageviewer"))
 }
+
