@@ -45,6 +45,7 @@ kotlinxCoroutinesTest = "1.10.1"
 truth = "1.4.4"
 junitJupiter = "5.13.2"
 coroutines-test = "1.7.3"
+kover = "0.9.1"
 
 
 [libraries]
@@ -116,4 +117,5 @@ google-firebase-appdistribution = { id = "com.google.firebase.appdistribution", 
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 

@@ -49,10 +49,26 @@ jobs:
         run: chmod +x gradlew
 
       - name: Run unit tests
-        run: ./gradlew testDebugUnitTest
+        run: ./gradlew test
 
-      - name: Generate coverage report
-        run: ./gradlew jacocoTestReport
+      - name: Generate coverage HTML report
+        run: ./gradlew koverHtmlReport
+
+      - name: Generate coverage XML report
+        run: ./gradlew koverXmlReport
 
       - name: Verify coverage
-        run: ./gradlew verifyCoverage
+        run: ./gradlew koverVerify
+
+      - name: Add coverage results to PR
+        id: cov
+        uses: codecov/codecov-action@v4
+        with:
+          paths: ${{ github.workspace }}/build/reports/kover/xml/report.xml
+          token: ${{ secrets.GITHUB_TOKEN }}
+          min-coverage-overall: 80
+          min-coverage-changed-files: 80
+          update-comment: true
+          title: Code Coverage Summary
+          pass-emoji: '✅'
+          fail-emoji: '❌'
