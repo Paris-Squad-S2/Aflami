@@ -5,7 +5,6 @@ on:
     branches:
       - develop
 
-
 jobs:
   build-and-distribute:
     runs-on: ubuntu-latest
@@ -19,13 +18,16 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Generate local.properties
+        run: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+          echo "API_TOKEN=${{ secrets.API_TOKEN }}" >> local.properties
+
       - name: Give gradlew permission to execute
         run: chmod +x ./gradlew
 
-      - name: Build release APK
-        run: ./gradlew :feature:search:searchUi:assembleRelease
       - name: Build debug APK
-        run: ./gradlew :feature:search:searchUi:assembleDebug
+        run: ./gradlew feature:search:searchUi:assembleDebug
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -34,5 +36,5 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: feature/search/searchUi/build/outputs/apk/debug/searchUi-debug.apk
-          releaseNotes: "Automated release from develop branch"
+          releaseNotes: "Test the search feature"
           debug: true
