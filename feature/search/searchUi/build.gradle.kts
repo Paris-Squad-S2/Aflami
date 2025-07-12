@@ -1,12 +1,11 @@
 import java.util.Properties
 
 plugins {
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.google.gms.google.services)
 }
 
@@ -15,12 +14,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "com.feature.search.searchUi"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 1
-        versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_TOKEN", "\"${getApiToken()}\"")
