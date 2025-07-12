@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "com.repository.search"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 24
+        minSdk = Configurations.MIN_SDK_24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -30,7 +30,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
 }
 
@@ -61,5 +61,5 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(project(":domain:search"))
+    implementation(Modules.DOMAIN_SEARCH)
 }
