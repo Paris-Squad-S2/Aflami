@@ -61,5 +61,5 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(Modules.DOMAIN_SEARCH)
+    implementation(project(Modules.DOMAIN_SEARCH))
 }
