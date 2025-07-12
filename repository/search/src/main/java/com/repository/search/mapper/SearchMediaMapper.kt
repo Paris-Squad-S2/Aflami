@@ -37,7 +37,7 @@ fun ResultDto.toMediaEntity(
     searchQuery: String,
     searchType: SearchType
 ): MediaEntity? {
-    val title = this.originalTitle ?: this.title ?: this.name ?: return null
+    val title = this.title ?: this.name ?: return null
     val image = this.posterPath ?: this.profilePath ?: ""
     val releaseDateStr = (this.releaseDate?.takeIf { it.isNotBlank() }
         ?: this.firstAirDate?.takeIf { it.isNotBlank() }) ?: return null
