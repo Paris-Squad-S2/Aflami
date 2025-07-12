@@ -12,9 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Aflami">
         <activity
-            android:name=".MainActivity"
+            android:name="com.feature.search.searchUi.MainActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.Aflami">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
