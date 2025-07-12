@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.paris_2.aflami.designsystem"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 26
+        minSdk = Configurations.MIN_SDK_26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -29,7 +29,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
     buildFeatures {
         compose = true
@@ -54,5 +54,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.accompanist.pager)
-    implementation(project(":safeimageviewer"))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
 }
