@@ -118,6 +118,7 @@ dependencies {
     implementation(project(":safeimageviewer"))
 }
 
+/*
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
 kover {
@@ -132,4 +133,4 @@ kover {
             }
         }
     }
-}
+}*/

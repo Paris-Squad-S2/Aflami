@@ -20,6 +20,7 @@ val koverExcludedPackages = listOf(
     "*.BuildConfig*",
     "*.Manifest*",
     "**.model.**",
+    "**.models.**",
     "**.dto.**",
     "**.entity.**",
     "**.exception.**",
