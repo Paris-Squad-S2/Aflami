@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   build-and-distribute:
@@ -39,5 +36,5 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: feature/search/searchUi/build/outputs/apk/debug/searchUi-debug.apk
-          releaseNotes: "Automated release from develop branch"
+          releaseNotes: "Test the search feature"
           debug: true
