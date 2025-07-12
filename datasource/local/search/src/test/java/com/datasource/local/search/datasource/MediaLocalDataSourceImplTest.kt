@@ -3,6 +3,7 @@ package com.datasource.local.search.datasource
 import com.datasource.local.search.dao.MediaDao
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
+import com.repository.search.entity.SearchType
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -30,6 +31,7 @@ class MediaLocalDataSourceImplTest {
             category = listOf(1, 2),
             yearOfRelease = LocalDate.parse("2023-01-01"),
             rating = 4.5,
+            searchType = SearchType.Query
         )
     }
 
@@ -96,11 +98,11 @@ class MediaLocalDataSourceImplTest {
     @Test
     fun `clearAllMediaBySearchQuery should clear AllMediaBySearchQuery when clear in MediaDao called successfully`() =
         runTest {
-            coEvery { mediaDao.clearAllMediaBySearchQuery("aa") } returns Unit
+            coEvery { mediaDao.clearAllMediaBySearchQuery("aa", SearchType.Query) } returns Unit
 
-            mediaLocalDataSourceImpl.clearAllMediaBySearchQuery("aa")
+            mediaLocalDataSourceImpl.clearAllMediaBySearchQuery("aa", SearchType.Query)
 
-            coVerify { mediaDao.clearAllMediaBySearchQuery("aa") }
+            coVerify { mediaDao.clearAllMediaBySearchQuery("aa", SearchType.Query) }
         }
 
 }

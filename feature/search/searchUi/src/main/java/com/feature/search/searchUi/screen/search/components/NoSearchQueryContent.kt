@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.domain.search.model.SearchType
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.feature.search.searchUi.screen.search.SearchScreenState
@@ -120,20 +121,22 @@ fun NoSearchQueryContent(
         } else {
             items(
                 count = state.uiState.recentSearches.size,
-                key = { index -> state.uiState.recentSearches[index].searchTitle }
+                key = { index -> state.uiState.recentSearches[index].searchTitle  + state.uiState.recentSearches[index].searchType.name }
             ) { index ->
                 val recentSearch = state.uiState.recentSearches[index]
                 RecentSearchItem(
                     modifier = Modifier.animateItem(),
-                    recentSearchTitle = recentSearch.searchTitle,
+                    recentSearchTitle = recentSearch.searchTitle + if (recentSearch.searchType != SearchType.Query) " (${recentSearch.searchType.name})" else "",
                     onRecentSearchClick = {
-                        searchScreenInteractionListener.onSearchQueryChange(
-                            recentSearch.searchTitle
+                        searchScreenInteractionListener.onRecentSearchClick(
+                            recentSearch.searchTitle,
+                            recentSearch.searchType
                         )
                     },
                     onDeleteRecentSearch = {
                         searchScreenInteractionListener.onClearRecentSearch(
-                            recentSearch.searchTitle
+                            recentSearch.searchTitle,
+                            recentSearch.searchType
                         )
                         searchScreenInteractionListener.onRetryRecentSearches()
                     }

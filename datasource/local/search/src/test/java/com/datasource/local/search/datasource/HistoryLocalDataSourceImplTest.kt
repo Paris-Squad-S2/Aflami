@@ -2,6 +2,7 @@ package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.SearchHistoryDao
 import com.repository.search.entity.SearchHistoryEntity
+import com.repository.search.entity.SearchType
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -20,7 +21,8 @@ class HistoryLocalDataSourceImplTest {
     fun setUp() {
         historyLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao)
         sampleSearchHistory = SearchHistoryEntity(
-            searchQuery = "a"
+            searchQuery = "a",
+            searchType = SearchType.Query
         )
     }
 
@@ -38,7 +40,7 @@ class HistoryLocalDataSourceImplTest {
         runTest {
             coEvery { searchHistoryDao.addSearchQuery(any()) } returns Unit
 
-            historyLocalDataSource.addSearchQuery("aaa")
+            historyLocalDataSource.addSearchQuery("aaa", SearchType.Query)
 
             coVerify { searchHistoryDao.addSearchQuery(any()) }
         }
@@ -46,11 +48,11 @@ class HistoryLocalDataSourceImplTest {
     @Test
     fun `clearSearchQueryByQuery should clear SearchQuery when clear in SearchHistoryDao called successfully`() =
         runTest {
-            coEvery { searchHistoryDao.clearSearchQueryByQuery(any()) } returns Unit
+            coEvery { searchHistoryDao.clearSearchQueryByQuery(any(), SearchType.Query) } returns Unit
 
-            historyLocalDataSource.clearSearchQueryByQuery("aaa")
+            historyLocalDataSource.clearSearchQueryByQuery("aaa", SearchType.Query)
 
-            coVerify { searchHistoryDao.clearSearchQueryByQuery(any()) }
+            coVerify { searchHistoryDao.clearSearchQueryByQuery(any(), SearchType.Query) }
         }
 
     @Test

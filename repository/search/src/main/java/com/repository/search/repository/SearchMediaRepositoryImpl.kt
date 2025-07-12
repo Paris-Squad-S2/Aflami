@@ -7,6 +7,7 @@ import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
+import com.repository.search.entity.SearchType
 import com.repository.search.exception.NoDataForActorException
 import com.repository.search.exception.NoDataForCountryException
 import com.repository.search.exception.NoDataForSearchException
@@ -33,7 +34,7 @@ class SearchMediaRepositoryImpl(
         try {
             val media = mediaLocalDataSource.getMediaByActor(actor = actorName)
             if (media.isNotEmpty()) {
-                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(actorName)?.searchDate
+                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
@@ -46,7 +47,7 @@ class SearchMediaRepositoryImpl(
                 val mediaEntities = searchDto.toMediaEntitiesForActors(
                     query = actorName
                 )
-                searchHistoryLocalDataSource.addSearchQuery(actorName)
+                searchHistoryLocalDataSource.addSearchQuery(actorName, SearchType.Actor)
                 mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
@@ -66,7 +67,7 @@ class SearchMediaRepositoryImpl(
             val media = mediaLocalDataSource.getMediaByCountry(country = countryName)
             if (media.isNotEmpty()) {
                 val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(countryName)?.searchDate
+                    searchHistoryLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
@@ -80,9 +81,10 @@ class SearchMediaRepositoryImpl(
                     countryCode = countryName
                 )
                 val mediaEntities = searchDto.toMediaEntities(
-                    query = countryName
+                    query = countryName,
+                    searchType = SearchType.Country
                 )
-                searchHistoryLocalDataSource.addSearchQuery(countryName)
+                searchHistoryLocalDataSource.addSearchQuery(countryName, SearchType.Country)
                 mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {
                 throw NoInternetConnectionException()
@@ -101,7 +103,7 @@ class SearchMediaRepositoryImpl(
             val media = mediaLocalDataSource.getMediaByTitleQuery(query = query)
             if (media.isNotEmpty()) {
                 val queryDate =
-                    searchHistoryLocalDataSource.getSearchHistoryQuery(query)?.searchDate
+                    searchHistoryLocalDataSource.getSearchHistoryQuery(query, SearchType.Query)?.searchDate
                 val timeZone = TimeZone.Companion.currentSystemDefault()
                 if (queryDate != null && queryDate.toInstant(timeZone)
                         .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
@@ -112,11 +114,12 @@ class SearchMediaRepositoryImpl(
             if (networkConnectionChecker.isConnected.value) {
                 val searchDto = searchRemoteDataSource.searchMulti(query)
                 val mediaEntities = searchDto.toMediaEntities(
-                    query = query
+                    query = query,
+                    searchType = SearchType.Query
                 )
                 Log.d("SearchMediaRepositoryImpl", "getMediaByActor: $mediaEntities")
 
-                searchHistoryLocalDataSource.addSearchQuery(query)
+                searchHistoryLocalDataSource.addSearchQuery(query, SearchType.Query)
 
                 mediaLocalDataSource.addAllMedia(mediaEntities)
             } else {

@@ -3,6 +3,7 @@ package com.datasource.local.search.datasource
 import com.datasource.local.search.dao.MediaDao
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.entity.MediaEntity
+import com.repository.search.entity.SearchType
 
 class MediaLocalDataSourceImpl(
     private val dao: MediaDao,
@@ -25,8 +26,8 @@ class MediaLocalDataSourceImpl(
     override suspend fun getCachedMedia(): List<MediaEntity> =
         dao.getCachedMedia()
 
-    override suspend fun clearAllMediaBySearchQuery(searchQuery: String) {
-        dao.clearAllMediaBySearchQuery(searchQuery)
+    override suspend fun clearAllMediaBySearchQuery(searchQuery: String, searchType: SearchType) {
+        dao.clearAllMediaBySearchQuery(searchQuery, searchType)
     }
 
 }
