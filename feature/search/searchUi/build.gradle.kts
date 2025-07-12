@@ -1,4 +1,3 @@
-import java.io.FileInputStream
 import java.util.Properties
 
 plugins {
@@ -7,11 +6,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-}
-val localProperties = Properties()
-val localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localProperties.load(FileInputStream(localPropertiesFile))
+    alias(libs.plugins.google.firebase.appdistribution)
+    alias(libs.plugins.google.gms.google.services)
 }
 
 android {
@@ -27,7 +23,7 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "API_TOKEN", "\"${localProperties.getProperty("API_TOKEN", "")}\"")
+        buildConfigField("String", "API_TOKEN", "\"${getApiToken()}\"")
 
     }
 
@@ -125,5 +121,5 @@ dependencies {
     implementation(project(":datasource:remote:search"))
     implementation(project(":domain:search"))
     implementation(project(":designsystem"))
-    implementation(project(":designsystem:safeimageviewer"))
+    implementation(project(":safeimageviewer"))
 }
