@@ -39,5 +39,5 @@ jobs:
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
           file: app/build/outputs/apk/debug/app-debug.apk
-          releaseNotes: "Latest build from develop branch In App module"
+          releaseNotes: "Fix backstack issue "
           debug: true
