@@ -8,6 +8,10 @@ on:
     branches:
       - develop
 
+permissions:
+  pull-requests: write
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -65,10 +69,5 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           paths: ${{ github.workspace }}/build/reports/kover/xml/report.xml
-          token: ${{ secrets.GITHUB_TOKEN }}
-          min-coverage-overall: 80
-          min-coverage-changed-files: 80
+          token: ${{ secrets.CODECOV_TOKEN }}
           update-comment: true
-          title: Code Coverage Summary
-          pass-emoji: '✅'
-          fail-emoji: '❌'
