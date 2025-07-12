@@ -10,8 +10,8 @@ import kotlinx.datetime.LocalDate
     foreignKeys = [
         ForeignKey(
             entity = SearchHistoryEntity::class,
-            parentColumns = ["search_query"],
-            childColumns = ["searchQuery"],
+            parentColumns = ["search_query", "search_type"],
+            childColumns = ["searchQuery", "searchType"],
             onDelete = ForeignKey.CASCADE
         )
     ]
@@ -19,13 +19,14 @@ import kotlinx.datetime.LocalDate
 data class MediaEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val searchQuery: String,
     val imageUri: String,
     val title: String,
     val type: MediaTypeEntity,
     val category: List<Int>,
     val yearOfRelease: LocalDate,
-    val rating: Double
+    val rating: Double,
+    val searchQuery: String,
+    val searchType: SearchType
 )
 
 enum class MediaTypeEntity {
