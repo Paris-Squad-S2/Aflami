@@ -31,8 +31,10 @@ class ClearAllRecentSearchesUseCaseTest {
         coVerify(exactly = 1) { searchHistoryRepository.clearAllSearchHistory() }
     }
 
+
     @Test
-    fun `should propagate repository exceptions`() = runTest {
+    fun `should throw exception when repository fails to clear search history`() = runTest {
+
         // Given
         val exception = RuntimeException("Failed to clear search history")
         coEvery { searchHistoryRepository.clearAllSearchHistory() } throws exception
@@ -42,9 +44,40 @@ class ClearAllRecentSearchesUseCaseTest {
             clearAllRecentSearchesUseCase()
             assertThat(false).isTrue()
         } catch (e: RuntimeException) {
+            assertThat(e).isInstanceOf(RuntimeException::class.java)
+        }
+    }
+
+
+    @Test
+    fun `should throw exception with correct message when repository fails`() = runTest {
+
+        // Given
+        val exception = RuntimeException("Failed to clear search history")
+        coEvery { searchHistoryRepository.clearAllSearchHistory() } throws exception
+
+        // When & Then
+        try {
+            clearAllRecentSearchesUseCase()
+        } catch (e: RuntimeException) {
             assertThat(e.message).isEqualTo("Failed to clear search history")
         }
+    }
 
+    @Test
+    fun `should verify repository is called when exception is thrown`() = runTest {
+
+        // Given
+        val exception = RuntimeException("Failed to clear search history")
+        coEvery { searchHistoryRepository.clearAllSearchHistory() } throws exception
+
+        // When
+        try {
+            clearAllRecentSearchesUseCase()
+        } catch (_: Exception) {}
+
+        // Then
         coVerify(exactly = 1) { searchHistoryRepository.clearAllSearchHistory() }
     }
+    
 }
