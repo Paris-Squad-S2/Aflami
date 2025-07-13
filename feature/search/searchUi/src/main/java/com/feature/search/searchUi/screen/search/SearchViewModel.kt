@@ -189,6 +189,13 @@ class SearchViewModel(
                 searchQuery(query)
             }
         }
+        else {
+            emitState(
+                screenState.value.copy(
+                    isLoading = false,
+                )
+            )
+        }
     }
 
 

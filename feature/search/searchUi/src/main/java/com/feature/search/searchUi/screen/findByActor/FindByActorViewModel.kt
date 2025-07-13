@@ -69,6 +69,16 @@ class FindByActorViewModel(
                 searchQuery(query)
             }
         }
+        else {
+            emitState(
+                screenState.value.copy(
+                    isLoading = false,
+                    uiState = screenState.value.uiState.copy(
+                        searchResult = listOf(),
+                    )
+                )
+            )
+        }
     }
 
 

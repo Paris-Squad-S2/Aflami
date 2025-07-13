@@ -49,8 +49,7 @@ fun FindByActorScreenContent(
     ) {
         TopAppBar(
             modifier = Modifier
-                .statusBarsPadding()
-                .padding(bottom = 8.dp),
+                .statusBarsPadding(),
             title = stringResource(R.string.find_by_actor),
             leadingIcons = listOf(
                 iconItemWithDefaults(
