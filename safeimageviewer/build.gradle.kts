@@ -13,25 +13,37 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
         jvmTarget = "11"
     }
+
     buildFeatures {
         mlModelBinding = true
         compose = true
+        // Disable unused build features
+        buildConfig = false
+        aidl = false
+        renderScript = false
+        resValues = false
+        shaders = false
     }
+
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.4"
     }
@@ -54,9 +66,8 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.coil.compose)
 
-    // TensorFlow Lite
+    // TensorFlow Lite - include necessary dependencies for ML model binding
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.support)
     implementation(libs.tensorflow.lite.metadata)
-    implementation(libs.tensorflow.lite.gpu)
 }

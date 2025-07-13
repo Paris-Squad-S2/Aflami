@@ -1,10 +1,13 @@
 package com.feature.search.searchUi.comon.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -18,15 +21,22 @@ fun SearchResultContent(
     onMediaCardClick: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
-        modifier = Modifier.padding(top = 8.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
         columns = GridCells.Adaptive(minSize = 160.dp),
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp),
+        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        items(searchResult.size) { index ->
-            val media = searchResult[index]
+        items(
+            items = searchResult,
+            key = { media -> media.id },
+            contentType = { "media_card" }
+        ) { media ->
             AflamiMediaCard(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .fillMaxWidth()
                     .clickable {
                         onMediaCardClick(media.id)
                     },
