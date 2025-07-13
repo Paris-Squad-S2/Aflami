@@ -3,6 +3,7 @@ package com.feature.search.searchUi.screen.search.components
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -16,6 +17,7 @@ import com.paris_2.aflami.designsystem.components.CustomTab
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
+import com.paris_2.aflami.designsystem.components.TabRow
 
 @Composable
 fun WithSearchQueryContent(
@@ -37,16 +39,12 @@ fun WithSearchQueryContent(
         )
     } else {
         Column {
-            Row {
-                tabs.forEachIndexed { index, title ->
-                    CustomTab(
-                        title = title,
-                        isSelected = state.uiState.selectedTabIndex == index,
-                        onClick = { searchScreenInteractionListener.onSelectTab(index) },
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-            }
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                onTabSelected = searchScreenInteractionListener::onSelectTab,
+                selectedIndex = state.uiState.selectedTabIndex,
+                tabItems = tabs
+            )
             val searchResult =
                 if (state.uiState.selectedTabIndex == 0) state.uiState.filteredMoviesResult else state.uiState.filteredTvShowsResult
             if (searchResult.isEmpty()) {

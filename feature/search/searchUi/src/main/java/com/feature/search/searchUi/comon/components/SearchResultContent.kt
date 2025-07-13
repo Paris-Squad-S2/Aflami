@@ -18,9 +18,8 @@ fun SearchResultContent(
     onMediaCardClick: (Int) -> Unit,
 ) {
     LazyVerticalGrid(
-        modifier = Modifier.padding(top = 8.dp),
         columns = GridCells.Adaptive(minSize = 160.dp),
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp),
+        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp, top = 8.dp),
     ) {
         items(searchResult.size) { index ->
             val media = searchResult[index]
