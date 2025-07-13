@@ -57,9 +57,14 @@ class FindByActorViewModel(
             )
         )
         debounceJob?.cancel()
-        if (query.isNotEmpty()) {
+        if (query.isNotBlank()) {
             debounceJob = viewModelScope.launch {
-                delay(500)
+                delay(1000)
+                emitState(
+                    screenState.value.copy(
+                        isLoading = true,
+                    )
+                )
                 searchQuery(query)
             }
         }

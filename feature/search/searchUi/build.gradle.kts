@@ -11,10 +11,10 @@ plugins {
 
 android {
     namespace = "com.feature.search.searchUi"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 26
+        minSdk = Configurations.MIN_SDK_26
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "API_TOKEN", "\"${getApiToken()}\"")
@@ -35,7 +35,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
     buildFeatures {
         compose = true
@@ -110,16 +110,14 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(project(":repository:search"))
-    implementation(project(":datasource:local:search"))
-    implementation(project(":datasource:remote:search"))
-    implementation(project(":domain:search"))
-    implementation(project(":designsystem"))
-    implementation(project(":safeimageviewer"))
+    implementation(project(Modules.REPOSITORY_SEARCH))
+    implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
+    implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
+    implementation(project(Modules.DOMAIN_SEARCH))
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
 }
 
-/*
-val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
 kover {
     reports {
@@ -127,10 +125,10 @@ kover {
             verify {
                 rule {
                     bound {
-                        minValue = coverageMinValue
+                        minValue = 75
                     }
                 }
             }
         }
     }
-}*/
+}
