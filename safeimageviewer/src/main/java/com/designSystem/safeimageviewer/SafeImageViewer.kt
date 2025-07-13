@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,11 +25,56 @@ import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
 import coil.request.ImageRequest
 import coil.size.Size
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import com.designSystem.safeimageviewer.modifier.blur
+import kotlinx.coroutines.launch
+
+@Stable
+internal class SafeImageState(
+    painterState: AsyncImagePainter.State,
+    shouldBlur: Boolean,
+    sourceBitmap: Bitmap?,
+    isAnalyzing: Boolean
+) {
+    var painterState by mutableStateOf(painterState)
+    var shouldBlur by mutableStateOf(shouldBlur)
+    var sourceBitmap by mutableStateOf(sourceBitmap)
+    var isAnalyzing by mutableStateOf(isAnalyzing)
+}
+
+@Composable
+internal fun rememberSafeImageState(
+    context: android.content.Context,
+    confidenceThreshold: Float
+): SafeImageState = remember {
+    SafeImageState(
+        painterState = AsyncImagePainter.State.Empty,
+        shouldBlur = true,
+        sourceBitmap = null,
+        isAnalyzing = false
+    )
+}.apply {
+    val nsfwDetector = remember { NSFWDetector(context) }
+    val coroutineScope = rememberCoroutineScope()
+
+    LaunchedEffect(painterState) {
+        val currentState = painterState
+        if (currentState is AsyncImagePainter.State.Success) {
+            isAnalyzing = true
+            val bitmap = convertToARGB8888Bitmap(currentState.result.drawable)
+            sourceBitmap = bitmap
+            coroutineScope.launch {
+                nsfwDetector.isNSFW(bitmap, confidenceThreshold) { isNSFWResult, _, _ ->
+                    shouldBlur = isNSFWResult
+                    isAnalyzing = false
+                }
+            }
+        } else {
+            shouldBlur = true
+            sourceBitmap = null
+            isAnalyzing = false
+        }
+    }
+}
 
 @Composable
 fun SafeImageViewer(
@@ -42,126 +89,51 @@ fun SafeImageViewer(
     errorPlaceholder: @Composable (() -> Unit)? = null
 ) {
     val context = LocalContext.current
-    var isNSFW by remember { mutableStateOf(true) }
-    var drawable by remember { mutableStateOf<Drawable?>(null) }
-    var sourceBitmap by remember { mutableStateOf<Bitmap?>(null) }
-    var isLoading by remember { mutableStateOf(true) }
-    var isError by remember { mutableStateOf(false) }
-    var isAnalyzing by remember { mutableStateOf(false) }
-    val nsfwDetector = remember { NSFWDetector(context) }
+    val state = rememberSafeImageState(context, confidenceThreshold)
 
-    val coroutineExceptionHandler = remember {
-        kotlinx.coroutines.CoroutineExceptionHandler { _, exception ->
-            isNSFW = true
-            isAnalyzing = false
-        }
-    }
-
-    // Create image request
-    val imageRequest = remember(model) {
-        ImageRequest.Builder(context)
-            .data(model)
-            .size(Size.ORIGINAL)
-            .crossfade(true)
-            .build()
-    }
-
-    LaunchedEffect(drawable) {
-        drawable?.let { drw ->
-            isAnalyzing = true
-            withContext(Dispatchers.Default + coroutineExceptionHandler) {
-                try {
-                    val bitmap = convertToARGB8888Bitmap(drw)
-                    sourceBitmap = bitmap
-                    nsfwDetector.isNSFW(bitmap, confidenceThreshold) { isNSFWResult, _, _ ->
-                        // Switch back to Main thread to update UI state
-                        CoroutineScope(Dispatchers.Main).launch {
-                            isNSFW = isNSFWResult // Now unblur if safe
-                            isAnalyzing = false
-                        }
-                    }
-                } catch (_: Exception) {
-                    withContext(Dispatchers.Main) {
-                        isNSFW = true
-                        isAnalyzing = false
-                    }
-                }
-            }
-        }
-    }
+    val isLoading = state.painterState is AsyncImagePainter.State.Loading
+    val isError = state.painterState is AsyncImagePainter.State.Error
 
     Box(modifier = modifier) {
         AsyncImage(
-            model = imageRequest,
+            model = remember(model) {
+                ImageRequest.Builder(context)
+                    .data(model)
+                    .size(Size.ORIGINAL)
+                    .crossfade(true)
+                    .build()
+            },
+            onState = { state.painterState = it },
             contentDescription = contentDescription,
             modifier = Modifier
                 .fillMaxSize()
                 .then(
-                    if (sourceBitmap != null) {
+                    if (state.sourceBitmap != null) {
                         Modifier.blur(
-                            sourceBitmap = sourceBitmap,
+                            sourceBitmap = state.sourceBitmap,
                             radius = blurRadius,
-                            enabled = isNSFW || isLoading || isAnalyzing
+                            enabled = state.shouldBlur
                         )
                     } else {
-                        // Use built-in blur while bitmap is not ready
-                        if (isNSFW || isLoading || isAnalyzing) {
-                            Modifier.blur(blurRadius.dp)
-                        } else {
-                            Modifier
-                        }
+                        Modifier.blur(blurRadius.dp)
                     }
                 ),
             contentScale = contentScale,
-            onState = { state ->
-                when (state) {
-                    is AsyncImagePainter.State.Loading -> {
-                        isLoading = true
-                        isError = false
-                        isAnalyzing = false
-                        isNSFW = true
-                        sourceBitmap = null
-                    }
+        )
 
-                    is AsyncImagePainter.State.Success -> {
-                        isLoading = false
-                        isError = false
-                        drawable = state.result.drawable
-                        val bitmap = convertToARGB8888Bitmap(state.result.drawable)
-                        sourceBitmap = bitmap
-                    }
-
-                    is AsyncImagePainter.State.Error -> {
-                        isLoading = false
-                        isError = true
-                        isAnalyzing = false
-                        isNSFW = true
-                        sourceBitmap = null
-                    }
-
-                    else -> {
-                        isLoading = false
-                        isError = false
-                        isAnalyzing = false
+        when {
+            isLoading || state.isAnalyzing -> {
+                if (showLoadingIndicator) {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                        placeholder?.invoke() ?: CircularProgressIndicator()
                     }
                 }
             }
-        )
 
-        if ((isLoading || isAnalyzing) && showLoadingIndicator) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                placeholder?.invoke() ?: CircularProgressIndicator()
-            }
-        }
-        if (isError) {
-            Box(
-                modifier = Modifier.fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                errorPlaceholder?.invoke() ?: CircularProgressIndicator()
+            isError -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    errorPlaceholder?.invoke()
+                }
             }
         }
     }
