@@ -1,11 +1,19 @@
 package com.feature.search.searchUi.comon.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.domain.search.model.Media
@@ -17,12 +25,19 @@ fun SearchResultContent(
     searchResult: List<Media>,
     onMediaCardClick: (Int) -> Unit,
 ) {
+    val lazyGridState = rememberLazyGridState()
+    val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
+
     LazyVerticalGrid(
+        state = lazyGridState,
         columns = GridCells.Adaptive(minSize = 160.dp),
         contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp, top = 8.dp),
     ) {
-        items(searchResult.size) { index ->
-            val media = searchResult[index]
+        items(
+            items = searchResult,
+            key = { media -> media.id },
+            contentType = { "media_card" }
+        ) { media ->
             AflamiMediaCard(
                 modifier = Modifier
                     .padding(8.dp)
@@ -36,6 +51,7 @@ fun SearchResultContent(
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,
+                enabled = !isScrolling,
             )
 
         }
