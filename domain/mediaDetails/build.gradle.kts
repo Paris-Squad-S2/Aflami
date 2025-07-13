@@ -14,3 +14,19 @@ kotlin {
 dependencies {
     implementation(libs.kotlinx.datetime)
 }
+
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = 0
+                    }
+                }
+            }
+        }
+    }
+}
