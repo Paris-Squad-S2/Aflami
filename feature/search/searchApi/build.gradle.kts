@@ -11,3 +11,18 @@ kotlin {
         jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11
     }
 }
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
+}

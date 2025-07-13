@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.example.search"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 24
+        minSdk = Configurations.MIN_SDK_24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -29,7 +29,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
 }
 
@@ -38,7 +38,7 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
-    implementation(project(":repository:search"))
+    implementation(project(Modules.REPOSITORY_SEARCH))
 
 
     // Ktor dependencies for networking - using api to make them transitively available
@@ -62,4 +62,20 @@ dependencies {
 
     //To Ask About
     implementation(libs.kotlinx.datetime)
+}
+
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
 }

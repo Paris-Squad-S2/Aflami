@@ -79,6 +79,7 @@ class SearchViewModel(
                 recentSearches.collect { recentSearchesList ->
                     emitState(
                         screenState.value.copy(
+                            isLoading = false,
                             uiState = screenState.value.uiState.copy(
                                 recentSearches = recentSearchesList
                             )
@@ -142,9 +143,14 @@ class SearchViewModel(
             )
         )
         debounceJob?.cancel()
-        if (query.isNotEmpty()) {
+        if (query.isNotBlank()) {
+            emitState(
+                screenState.value.copy(
+                    isLoading = true,
+                )
+            )
             debounceJob = viewModelScope.launch {
-                delay(500)
+                delay(1000)
                 searchQuery(query)
             }
         }
@@ -297,7 +303,8 @@ class SearchViewModel(
                 uiState = screenState.value.uiState.copy(
                     showFilterDialog = false,
                     selectedRating = 0f,
-                    categories = screenState.value.uiState.categories.mapValues { true }
+                    isAllCategories = true,
+                    categories = screenState.value.uiState.categories.mapValues { false }
                         .toMutableMap(),
                     filteredMoviesResult = screenState.value.uiState.moviesResult,
                     filteredTvShowsResult = screenState.value.uiState.tvShowsResult

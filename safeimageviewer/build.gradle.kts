@@ -6,10 +6,10 @@ plugins {
 
 android {
     namespace = "com.designSystem.safeimageviewer"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 26
+        minSdk = Configurations.MIN_SDK_26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -30,7 +30,7 @@ android {
     }
 
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
 
     buildFeatures {
@@ -45,7 +45,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.4"
+        kotlinCompilerExtensionVersion = Configurations.KOTLIN_COMPILER
     }
 }
 

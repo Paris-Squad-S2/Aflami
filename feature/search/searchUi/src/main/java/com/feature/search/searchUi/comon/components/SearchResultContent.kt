@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
@@ -29,13 +30,8 @@ fun SearchResultContent(
 
     LazyVerticalGrid(
         state = lazyGridState,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp),
         columns = GridCells.Adaptive(minSize = 160.dp),
-        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 8.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp, top = 8.dp),
     ) {
         items(
             items = searchResult,
@@ -44,7 +40,7 @@ fun SearchResultContent(
         ) { media ->
             AflamiMediaCard(
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .padding(8.dp)
                     .clickable {
                         onMediaCardClick(media.id)
                     },

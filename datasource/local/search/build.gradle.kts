@@ -7,10 +7,10 @@ plugins {
 
 android {
     namespace = "com.datasource.local.search"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 24
+        minSdk = Configurations.MIN_SDK_24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -29,7 +29,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
 }
 tasks.withType<Test> {
@@ -65,5 +65,20 @@ dependencies {
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.kotlin.test.junit5)
 
-    implementation(project(":repository:search"))
+    implementation(project(Modules.REPOSITORY_SEARCH))
+}
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
 }
