@@ -18,18 +18,36 @@ android {
         minSdk = Configurations.MIN_SDK_26
         targetSdk = Configurations.TARGET_SDK
         versionCode = Configurations.VERSION_CODE
-        versionName = "0.1.5"
+        versionName = "0.1.6"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        resConfigs("en")
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles("proguard-rules.pro")
+            isDebuggable = false
+            isCrunchPngs = true
+        }
+        create("minified") {
+            initWith(getByName("debug"))
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            matchingFallbacks.add("debug")
+        }
+        getByName("debug") {
+            enableUnitTestCoverage = true
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
     compileOptions {
