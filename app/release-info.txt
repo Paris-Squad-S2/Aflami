@@ -1,3 +1,5 @@
-versionName=0.1.7
-- refactor top app bar padding
-- change releaseNotes to releaseNotesFile
+versionName=0.1.9
+- Localized Genres Support:
+- Genres fetched using device language (e.g., "ar", "en")
+- Local caching of genres by language
+- Improved integration with remote API & Room
