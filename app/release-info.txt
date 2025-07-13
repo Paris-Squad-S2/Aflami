@@ -1,3 +1,2 @@
-versionName=0.1.7
-- refactor top app bar padding
-- change releaseNotes to releaseNotesFile
+versionName=0.1.8
+- refactor domain unit tests
