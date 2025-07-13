@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.CategoryModel
 import com.domain.search.model.Media
@@ -18,6 +19,7 @@ import com.feature.search.searchUi.navigation.Destinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Locale
 
 data class SearchScreenState(
     val uiState: UIState,
@@ -98,9 +100,10 @@ class SearchViewModel(
         )
     }
 
-    private fun loadCategories() {
+    fun loadCategories() {
+        val language = Locale.getDefault().language
         tryToExecute(
-            execute = getAllCategoriesUseCase::invoke,
+            execute = { getAllCategoriesUseCase(language) },
             onSuccess = { categories ->
                 emitState(
                     screenState.value.copy(
@@ -118,6 +121,7 @@ class SearchViewModel(
                 )
             }
         )
+        Log.d("GenresDebug", "Fetching genres with lang: $language")
     }
 
     override fun onNavigateToWorldTourScreen() {
