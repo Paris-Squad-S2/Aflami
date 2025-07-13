@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -105,13 +106,12 @@ fun AflamiMediaCard(
         )
 
         if (showRating) {
-            Row {
-                Spacer(modifier = Modifier.weight(1f))
-                RatingCard(
-                    rating = rating.take(3),
-                    modifier = Modifier.padding(top = 4.dp, end = 4.dp)
-                )
-            }
+            RatingCard(
+                rating = rating.take(3),
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .padding(top = 4.dp, end = 4.dp)
+            )
         }
 
         if (showGradientFilter) {
@@ -122,13 +122,21 @@ fun AflamiMediaCard(
                     .align(Alignment.BottomCenter)
                     .background(
                         brush = Brush.verticalGradient(
-                            colors = Theme.colors.gradient.overly.asReversed()
+                            colors = Theme.colors.gradient.overlyDark.asReversed()
                         )
                     )
             )
         }
         Column(
-            modifier = Modifier.padding(top = finalCardHeight - 48.dp, start = 8.dp)
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .padding(
+                    top = finalCardHeight - 48.dp,
+                    start = 8.dp,
+                    end = 8.dp,
+                    bottom = 8.dp
+                ),
+            verticalArrangement = Arrangement.Bottom,
         ) {
             Text(
                 text = movieName,
