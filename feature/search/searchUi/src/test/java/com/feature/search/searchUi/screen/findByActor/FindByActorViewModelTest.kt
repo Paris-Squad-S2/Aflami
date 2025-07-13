@@ -83,7 +83,7 @@ class FindByActorViewModelTest {
         viewModel.onSearchQueryChange(query1)
         advanceTimeBy(200)
         viewModel.onSearchQueryChange(query2)
-        advanceTimeBy(600)
+        advanceTimeBy(1100)
 
         coVerify(exactly = 1) { getMediaByActorNameUseCase(query2) }
         coVerify(exactly = 0) { getMediaByActorNameUseCase(query1) }
