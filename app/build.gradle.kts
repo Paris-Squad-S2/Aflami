@@ -18,7 +18,7 @@ android {
         minSdk = Configurations.MIN_SDK_26
         targetSdk = Configurations.TARGET_SDK
         versionCode = Configurations.VERSION_CODE
-        versionName = "0.1.4"
+        versionName = "0.1.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
