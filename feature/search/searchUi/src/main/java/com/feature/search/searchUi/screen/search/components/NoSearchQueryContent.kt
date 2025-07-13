@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -59,7 +60,7 @@ fun NoSearchQueryContent(
                 SearchSuggestionHub(
                     title = stringResource(R.string.find_by_actor),
                     description = stringResource(R.string.search_by_favorite_actor),
-                    icon = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.img_world_tour),
+                    icon = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.img_find_by_actor),
                     gradientColors = Theme.colors.gradient.blueGradient,
                     onCardClick = searchScreenInteractionListener::onNavigateToFindByActorScreen,
                     modifier = Modifier.weight(1f)
@@ -67,25 +68,30 @@ fun NoSearchQueryContent(
             }
         }
         item {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, bottom = 12.dp, end = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+            AnimatedVisibility(
+                visible = state.uiState.recentSearches.isNotEmpty(),
+                enter = androidx.compose.animation.expandVertically(),
+                exit = androidx.compose.animation.shrinkVertically()
             ) {
-                AflamiText(
-                    text = stringResource(R.string.recent_searches),
-                    style = Theme.textStyle.title.medium,
-                    color = Theme.colors.text.title,
-                )
-                if (state.uiState.recentSearches.isNotEmpty())
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 16.dp, bottom = 12.dp, end = 16.dp),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AflamiText(
+                        text = stringResource(R.string.recent_searches),
+                        style = Theme.textStyle.title.medium,
+                        color = Theme.colors.text.title,
+                    )
                     AflamiButton(
                         onClick = searchScreenInteractionListener::onClearAllRecentSearches,
                         text = R.string.clear_all,
                         type = ButtonType.TextButton,
                         state = ButtonState.Normal
                     )
+                }
             }
         }
         if (state.errorMessage != null) {
@@ -93,7 +99,7 @@ fun NoSearchQueryContent(
                 NetworkError(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(vertical = 30.dp),
+                        .padding(vertical = 70.dp),
                     onRetry = searchScreenInteractionListener::onRetryRecentSearches
                 ) //TODO What the Screen of the error, it's not network only here
             }
@@ -102,7 +108,7 @@ fun NoSearchQueryContent(
                 PageLoadingPlaceHolder(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(vertical = 30.dp)
+                        .padding(vertical = 70.dp)
 
                 )
             }
@@ -111,17 +117,16 @@ fun NoSearchQueryContent(
                 PlaceholderView(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(vertical = 30.dp),
+                        .padding(vertical = 70.dp),
                     image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_no_search_result),
-                    title = stringResource(R.string.no_search_history),
-                    subTitle = stringResource(R.string.you_haven_t_searched_for_anything_yet),
+                    subTitle = stringResource(R.string.start_exploring_search_for_your_favorite_movies_series_and_shows),
                     spacer = 16.dp
                 )
             }
         } else {
             items(
                 count = state.uiState.recentSearches.size,
-                key = { index -> state.uiState.recentSearches[index].searchTitle  + state.uiState.recentSearches[index].searchType.name }
+                key = { index -> state.uiState.recentSearches[index].searchTitle + state.uiState.recentSearches[index].searchType.name }
             ) { index ->
                 val recentSearch = state.uiState.recentSearches[index]
                 RecentSearchItem(

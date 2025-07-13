@@ -3,6 +3,7 @@ package com.feature.search.searchUi.screen.worldTour
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.domain.search.model.Country
 import com.domain.search.model.Media
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
@@ -22,7 +23,7 @@ data class WorldTourScreenState(
 data class WorldTourUiState(
     val searchQuery: String,
     val searchResult: List<Media>,
-    val hints: List<String>
+    val hints: List<Country>
 )
 
 class WorldTourViewModel(
@@ -65,20 +66,31 @@ class WorldTourViewModel(
             )
         )
         debounceJob?.cancel()
-        if (query.isNotEmpty()) {
+        if (query.isNotBlank()) {
             debounceJob = viewModelScope.launch {
                 val hints = autoCompleteCountryUseCase(query)
                 emitState(
                     screenState.value.copy(
+                        isLoading = true,
                         uiState = screenState.value.uiState.copy(
-                            hints = hints.map { it.countryName }
+                            hints = hints
                         )
                     )
                 )
-                delay(500)
+                delay(1000)
                 val countryCode = getCountryCodeByNameUseCase(query)
                 if (countryCode != null) {
                     searchQuery(countryCode)
+                }
+                else if (screenState.value.uiState.hints.isNotEmpty()){
+                    searchQuery(screenState.value.uiState.hints.first().countryName)
+                }
+                else {
+                    emitState(
+                        screenState.value.copy(
+                            isLoading = false,
+                        )
+                    )
                 }
             }
         }

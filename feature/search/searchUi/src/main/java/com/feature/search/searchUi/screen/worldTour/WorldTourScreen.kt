@@ -63,7 +63,7 @@ fun WorldTourScreenContent(
             value = state.uiState.searchQuery,
             onValueChange = worldTourScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(R.string.search),
-            suggestions = state.uiState.hints,
+            suggestions = state.uiState.hints.map { it.countryName + " (${it.countryCode})" },
             onSuggestionSelected = worldTourScreenInteractionListener::onSearchQueryChange,
         )
         if (state.uiState.searchQuery.isEmpty()) {
