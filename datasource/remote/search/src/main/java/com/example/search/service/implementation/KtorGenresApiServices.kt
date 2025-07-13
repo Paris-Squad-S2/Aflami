@@ -15,11 +15,12 @@ class KtorGenresApiServices(
         private const val TV_GENRES_ENDPOINT = "genre/tv/list"
     }
 
-    override suspend fun getAllGenres(): GenresDto {
-        val movieDto = httpClient.get("$baseUrl/$GENRES_ENDPOINT").body<GenresDto>()
-        val tvDto = httpClient.get("$baseUrl/$TV_GENRES_ENDPOINT").body<GenresDto>()
+    override suspend fun getAllGenres(language: String): GenresDto {
+        val movieDto = httpClient.get("$baseUrl/$GENRES_ENDPOINT?language=$language")
+            .body<GenresDto>()
+        val tvDto = httpClient.get("$baseUrl/$TV_GENRES_ENDPOINT?language=$language")
+            .body<GenresDto>()
 
         return movieDto.copy(genreDto = movieDto.genreDto.orEmpty() + tvDto.genreDto.orEmpty())
     }
-
 }
