@@ -25,32 +25,89 @@ class GetAllRecentSearchesUseCaseTest {
     }
 
     @Test
-    fun `invoke should return all recent searches from repository`() = runTest {
+    fun `should return all recent searches from repository`() = runTest {
 
-        //Given
+        // Given
         val recentSearches = listOf(
             SearchHistoryModel(searchTitle = "Movie1", searchDate = "2023-10-01", SearchType.Query),
             SearchHistoryModel(searchTitle = "Movie2", searchDate = "2023-10-01", SearchType.Query)
         )
-
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
-            emit(
-                recentSearches
-            )
+            emit(recentSearches)
         }
 
-        //When
+        // When
         val result = getAllRecentSearchesUseCase().first()
 
-        //Then
-        assertEquals(2, result.size)
+        // Then
         assertEquals(recentSearches, result)
-        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
     }
 
 
     @Test
-    fun `invoke should return empty list when repository returns no recent searches`() = runTest {
+    fun `should verify repository is called once when returning all recent searches`() = runTest {
+
+        // Given
+        val recentSearches = listOf(
+            SearchHistoryModel(searchTitle = "Movie1", searchDate = "2023-10-01", SearchType.Query),
+            SearchHistoryModel(searchTitle = "Movie2", searchDate = "2023-10-01", SearchType.Query)
+        )
+        coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
+            emit(recentSearches)
+        }
+
+        // When
+        getAllRecentSearchesUseCase().first()
+
+        // Then
+        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
+    }
+
+    @Test
+    fun `should return list of correct size when repository has recent searches`() =
+        runTest {
+            // Given
+            val recentSearches = listOf(
+                SearchHistoryModel(
+                    searchTitle = "Movie1",
+                    searchDate = "2023-10-01",
+                    SearchType.Query
+                ),
+                SearchHistoryModel(
+                    searchTitle = "Movie2",
+                    searchDate = "2023-10-01",
+                    SearchType.Query
+                )
+            )
+            coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
+                emit(recentSearches)
+            }
+
+            // When
+            val result = getAllRecentSearchesUseCase().first()
+
+            // Then
+            assertEquals(2, result.size)
+        }
+
+    @Test
+    fun `should verify repository is called once when retrieving recent searches`() =
+        runTest {
+
+            // Given
+            coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
+                emit(emptyList())
+            }
+
+            // When
+            getAllRecentSearchesUseCase().first()
+
+            // Then
+            coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
+        }
+
+    @Test
+    fun `should return empty list when repository returns no recent searches`() = runTest {
 
         //Given
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
@@ -64,7 +121,20 @@ class GetAllRecentSearchesUseCaseTest {
 
         //Then
         assertTrue(result.isEmpty())
-        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
     }
 
+    @Test
+    fun `should verify repository is called once when repository returns no recent searches`() = runTest {
+
+            // Given
+            coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
+                emit(emptyList())
+            }
+
+            // When
+            getAllRecentSearchesUseCase().first()
+
+            // Then
+            coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
+        }
 }
