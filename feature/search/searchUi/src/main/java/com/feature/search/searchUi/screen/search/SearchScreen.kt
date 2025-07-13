@@ -40,7 +40,7 @@ private fun SearchScreenContent(
     searchScreenInteractionListener: SearchScreenInteractionListener,
     state: SearchScreenState
 ) {
-    if (state.uiState.showFilterDialog) {
+    if (state.searchUiState.showFilterDialog) {
         FilterDialog(
             state = state,
             searchScreenInteractionListener = searchScreenInteractionListener,
@@ -66,7 +66,7 @@ private fun SearchScreenContent(
             ),
         )
         TextField(
-            value = state.uiState.searchQuery,
+            value = state.searchUiState.searchQuery,
             onValueChange = searchScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(RSearchUi.string.search),
             trailingIcon = RDesignSystem.drawable.ic_filter_vertical,
@@ -75,7 +75,7 @@ private fun SearchScreenContent(
                 .padding(bottom = 16.dp)
         )
 
-        if (state.uiState.searchQuery.isEmpty()) {
+        if (state.searchUiState.searchQuery.isEmpty()) {
             NoSearchQueryContent(
                 state = state,
                 searchScreenInteractionListener = searchScreenInteractionListener
