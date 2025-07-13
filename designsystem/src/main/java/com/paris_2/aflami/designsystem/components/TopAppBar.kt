@@ -73,9 +73,9 @@ fun TopAppBar(
         modifier = modifier
             .then(scrollModifier)
             .fillMaxWidth()
-            .height(56.dp)
             .background(Theme.colors.surface)
-            .padding(horizontal = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 8.dp)
+            .height(56.dp),
         contentAlignment = Alignment.CenterStart
     ) {
         Row(

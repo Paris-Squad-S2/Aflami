@@ -85,8 +85,7 @@ private fun SearchScreenContent(
     ) {
         TopAppBar(
             modifier = Modifier
-                .statusBarsPadding()
-                .padding(bottom = 8.dp),
+                .statusBarsPadding(),
             title = stringResource(RSearchUi.string.searchTitle),
             leadingIcons = listOf(
                 iconItemWithDefaults(

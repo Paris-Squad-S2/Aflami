@@ -49,7 +49,8 @@ fun AflamiMediaCard(
     cardWidth: Dp? = null,
     cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
-    onPlayButtonClick: () -> Unit = {}
+    onPlayButtonClick: () -> Unit = {},
+    enabled: Boolean = true
 ) {
     val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
         MediaCardType.UP_COMING -> (cardWidth ?: 328.dp) to (cardHeight ?: 196.dp)
@@ -84,6 +85,7 @@ fun AflamiMediaCard(
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
+            enabled = enabled,
             placeholder = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_film_roll),
