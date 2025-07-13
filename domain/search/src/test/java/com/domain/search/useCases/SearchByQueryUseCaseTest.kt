@@ -28,11 +28,6 @@ class SearchByQueryUseCaseTest {
 
         //Given
         val query = "chance"
-        val mediaList = listOf(
-            createMedia(id = 1, title = "chance Movie", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "chance Drama", type = MediaType.TVSHOW),
-        )
-
         coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
 
         //When
@@ -47,10 +42,6 @@ class SearchByQueryUseCaseTest {
 
         // Given
         val query = "chance"
-        val mediaList = listOf(
-            createMedia(id = 1, title = "chance Movie", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "chance Drama", type = MediaType.TVSHOW),
-        )
         coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
 
         // When
@@ -65,9 +56,6 @@ class SearchByQueryUseCaseTest {
 
         // Given
         val query = "chance"
-        val mediaList = listOf(
-            createMedia(id = 1, title = "chance Movie", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
 
         // When
@@ -103,5 +91,12 @@ class SearchByQueryUseCaseTest {
 
         // Then
         coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
+    }
+
+    companion object {
+        val mediaList = listOf(
+            createMedia(id = 1, title = "chance Movie", type = MediaType.MOVIE),
+            createMedia(id = 2, title = "chance Drama", type = MediaType.TVSHOW),
+        )
     }
 }

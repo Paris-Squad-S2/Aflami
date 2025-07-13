@@ -24,15 +24,9 @@ class GetMediaByActorNameUseCaseTest {
 
     @Test
     fun `should return only movies for given actor`() = runTest {
+
         // Given
         val actorName = "actor"
-        val mediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
-            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns mediaList
 
         // When
@@ -47,13 +41,6 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        val mediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
-            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns mediaList
 
         // When
@@ -68,9 +55,6 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        val mediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns mediaList
 
         // When
@@ -83,20 +67,21 @@ class GetMediaByActorNameUseCaseTest {
     @Test
     fun `should return empty list when repository returns no media for given actor`() = runTest {
 
-            // Given
-            val actorName = "Wael"
-            coEvery { searchMediaRepository.getMediaByActor(actorName) } returns emptyList()
+        // Given
+        val actorName = "Wael"
+        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns emptyList()
 
-            // When
-            val result = getMediaByActorNameUseCase.invoke(actorName)
+        // When
+        val result = getMediaByActorNameUseCase.invoke(actorName)
 
-            // Then
-            assertTrue(result.isEmpty())
+        // Then
+        assertTrue(result.isEmpty())
 
-        }
+    }
 
     @Test
     fun `should verify repository is called when no media returned`() = runTest {
+
         // Given
         val actorName = "Wael"
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns emptyList()
@@ -110,12 +95,9 @@ class GetMediaByActorNameUseCaseTest {
 
     @Test
     fun `should return empty list when only TV shows are returned`() = runTest {
+
         // Given
         val actorName = "actor"
-        val tvOnlyMedia = listOf(
-            createMedia(id = 10, title = "Show 1", type = MediaType.TVSHOW),
-            createMedia(id = 11, title = "Show 2", type = MediaType.TVSHOW)
-        )
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns tvOnlyMedia
 
         // When
@@ -130,10 +112,6 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        val tvOnlyMedia = listOf(
-            createMedia(id = 10, title = "Show 1", type = MediaType.TVSHOW),
-            createMedia(id = 11, title = "Show 2", type = MediaType.TVSHOW)
-        )
         coEvery { searchMediaRepository.getMediaByActor(actorName) } returns tvOnlyMedia
 
         // When
@@ -143,4 +121,17 @@ class GetMediaByActorNameUseCaseTest {
         coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName) }
     }
 
+    companion object {
+        val mediaList = listOf(
+            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
+            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
+            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
+            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
+        )
+        val tvOnlyMedia = listOf(
+            createMedia(id = 10, title = "Show 1", type = MediaType.TVSHOW),
+            createMedia(id = 11, title = "Show 2", type = MediaType.TVSHOW)
+        )
+    }
 }

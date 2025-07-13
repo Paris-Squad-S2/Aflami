@@ -26,10 +26,6 @@ class GetCountryCodeByNameUseCaseTest {
     fun `should return correct country code when name matches`() = runTest {
 
         // Given
-        val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
-        )
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -43,10 +39,6 @@ class GetCountryCodeByNameUseCaseTest {
     fun `should verify repository is exactly once when name matches`() = runTest {
 
         // Given
-        val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
-        )
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -58,11 +50,8 @@ class GetCountryCodeByNameUseCaseTest {
 
     @Test
     fun `should return country code even if name case is different`() = runTest {
+
         // Given
-        val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
-        )
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -76,11 +65,6 @@ class GetCountryCodeByNameUseCaseTest {
     fun `should return null when country name is not found`() = runTest {
 
         //Given
-        val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
-        )
-
         coEvery { countryRepository.getAllCountries() } returns countries
 
         //When
@@ -94,10 +78,6 @@ class GetCountryCodeByNameUseCaseTest {
     fun `should verify repository is called when name not found`() = runTest {
 
         // Given
-        val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
-        )
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -136,10 +116,6 @@ class GetCountryCodeByNameUseCaseTest {
     fun `should return uppercased input when input matches country code`() = runTest {
 
         // Given
-        val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
-        )
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -152,10 +128,6 @@ class GetCountryCodeByNameUseCaseTest {
     @Test
     fun `should return country code when input is contained in country name`() = runTest {
         // Given
-        val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
-        )
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -176,6 +148,13 @@ class GetCountryCodeByNameUseCaseTest {
 
         // Then
         coVerify(exactly = 1) { countryRepository.getAllCountries() }
+    }
+
+    companion object{
+        val countries = listOf(
+            Country("EG", "Egypt"),
+            Country("FR", "France")
+        )
     }
 
 }

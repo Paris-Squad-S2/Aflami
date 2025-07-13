@@ -28,10 +28,6 @@ class GetAllRecentSearchesUseCaseTest {
     fun `should return all recent searches from repository`() = runTest {
 
         // Given
-        val recentSearches = listOf(
-            SearchHistoryModel(searchTitle = "Movie1", searchDate = "2023-10-01", SearchType.Query),
-            SearchHistoryModel(searchTitle = "Movie2", searchDate = "2023-10-01", SearchType.Query)
-        )
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
             emit(recentSearches)
         }
@@ -48,10 +44,6 @@ class GetAllRecentSearchesUseCaseTest {
     fun `should verify repository is called once when returning all recent searches`() = runTest {
 
         // Given
-        val recentSearches = listOf(
-            SearchHistoryModel(searchTitle = "Movie1", searchDate = "2023-10-01", SearchType.Query),
-            SearchHistoryModel(searchTitle = "Movie2", searchDate = "2023-10-01", SearchType.Query)
-        )
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
             emit(recentSearches)
         }
@@ -67,18 +59,6 @@ class GetAllRecentSearchesUseCaseTest {
     fun `should return list of correct size when repository has recent searches`() =
         runTest {
             // Given
-            val recentSearches = listOf(
-                SearchHistoryModel(
-                    searchTitle = "Movie1",
-                    searchDate = "2023-10-01",
-                    SearchType.Query
-                ),
-                SearchHistoryModel(
-                    searchTitle = "Movie2",
-                    searchDate = "2023-10-01",
-                    SearchType.Query
-                )
-            )
             coEvery { searchHistoryRepository.getAllSearchHistory() } returns kotlinx.coroutines.flow.flow {
                 emit(recentSearches)
             }
@@ -137,4 +117,19 @@ class GetAllRecentSearchesUseCaseTest {
             // Then
             coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
         }
+
+    companion object{
+        val recentSearches = listOf(
+            SearchHistoryModel(
+                searchTitle = "Movie1",
+                searchDate = "2023-10-01",
+                SearchType.Query
+            ),
+            SearchHistoryModel(
+                searchTitle = "Movie2",
+                searchDate = "2023-10-01",
+                SearchType.Query
+            )
+        )
+    }
 }

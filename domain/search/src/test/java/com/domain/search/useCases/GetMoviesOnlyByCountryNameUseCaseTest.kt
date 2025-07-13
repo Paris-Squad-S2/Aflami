@@ -29,13 +29,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         // Given
         val countryName = "United States"
-        val mixedMediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
-            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns mixedMediaList
 
         // When
@@ -50,13 +43,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         // Given
         val countryName = "United States"
-        val mixedMediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
-            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns mixedMediaList
 
         // When
@@ -71,13 +57,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         // Given
         val countryName = "United States"
-        val mixedMediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
-            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns mixedMediaList
 
         // When
@@ -92,8 +71,7 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         //Given
         val countryName = "United States"
-        val list = listOf(createMedia(id = 1, title = "Movie", type = MediaType.MOVIE))
-        coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns list
+        coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns mixedMediaList
 
         //When
         getMoviesOnlyByCountryNameUseCase(countryName)
@@ -106,10 +84,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should return empty list when only TV shows returned`() = runTest {
         //Given
         val countryName = "Canada"
-        val nonMovieMedia = listOf(
-            createMedia(id = 1, title = "TV Show 1", type = MediaType.TVSHOW),
-            createMedia(id = 2, title = "TV Show 2", type = MediaType.TVSHOW)
-        )
         coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns nonMovieMedia
 
         //When
@@ -124,10 +98,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         //Given
         val countryName = "Canada"
-        val nonMovieMedia = listOf(
-            createMedia(id = 1, title = "TV Show 1", type = MediaType.TVSHOW),
-            createMedia(id = 2, title = "TV Show 2", type = MediaType.TVSHOW)
-        )
         coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns nonMovieMedia
 
         //When
@@ -142,10 +112,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         // Given
         val countryName = "Canada"
-        val nonMovieMedia = listOf(
-            createMedia(id = 1, title = "TV Show 1", type = MediaType.TVSHOW),
-            createMedia(id = 2, title = "TV Show 2", type = MediaType.TVSHOW)
-        )
         coEvery { searchMediaRepository.getMoviesByCountry(countryName) } returns nonMovieMedia
 
         // When
@@ -230,9 +196,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         // Given
         val upperCaseCountry = "CANADA"
-        val movies = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE)
-        )
         coEvery { searchMediaRepository.getMoviesByCountry(upperCaseCountry) } returns movies
 
         // When
@@ -247,7 +210,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         //Given
         val upperCaseCountry = "CANADA"
-        val movies = listOf(createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE))
         coEvery { searchMediaRepository.getMoviesByCountry(upperCaseCountry) } returns movies
 
         //When
@@ -255,5 +217,22 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         //Then
         coVerify(exactly = 1) { searchMediaRepository.getMoviesByCountry(upperCaseCountry) }
+    }
+
+    companion object{
+        val mixedMediaList = listOf(
+            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
+            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
+            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
+            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
+        )
+        val nonMovieMedia = listOf(
+            createMedia(id = 1, title = "TV Show 1", type = MediaType.TVSHOW),
+            createMedia(id = 2, title = "TV Show 2", type = MediaType.TVSHOW)
+        )
+        val movies = listOf(
+            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE)
+        )
     }
 }
