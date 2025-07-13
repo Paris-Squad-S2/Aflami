@@ -74,10 +74,12 @@ class ClearAllRecentSearchesUseCaseTest {
         // When
         try {
             clearAllRecentSearchesUseCase()
-        } catch (_: Exception) {}
+        } catch (e: RuntimeException) {
+            assertThat(e.message).isEqualTo("Failed to clear search history")
+        }
 
         // Then
         coVerify(exactly = 1) { searchHistoryRepository.clearAllSearchHistory() }
     }
-    
+
 }
