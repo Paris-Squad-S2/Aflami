@@ -12,14 +12,14 @@ plugins {
 
 android {
     namespace = "com.paris_2.aflami"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
         applicationId = "com.paris_2.aflami"
-        minSdk = 26
-        targetSdk = 35
-        versionCode = 1
-        versionName = "0.1.1"
+        minSdk = Configurations.MIN_SDK_26
+        targetSdk = Configurations.TARGET_SDK
+        versionCode = Configurations.VERSION_CODE
+        versionName = Configurations.VERSION_NAME
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -37,11 +37,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Configurations.JAVA_VERSION
+        targetCompatibility = Configurations.JAVA_VERSION
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
     buildFeatures {
         compose = true
@@ -65,10 +65,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(project(":domain:user"))
-    implementation(project(":FireBase"))
-    implementation(project(":safeimageviewer"))
-    implementation(project(":feature:search:searchUi"))
+    implementation(project(Modules.DOMAIN_USER))
+    implementation(project(Modules.FIREBASE))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+    implementation(project(Modules.FEATURE_SEARCH_UI))
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)
