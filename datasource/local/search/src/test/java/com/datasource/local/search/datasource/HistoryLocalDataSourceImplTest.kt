@@ -1,11 +1,14 @@
 package com.datasource.local.search.datasource
 
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.datasource.local.search.dao.SearchHistoryDao
 import com.repository.search.entity.SearchHistoryEntity
 import com.repository.search.entity.SearchType
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -16,11 +19,12 @@ import org.junit.jupiter.api.assertNull
 class HistoryLocalDataSourceImplTest {
     private lateinit var historyLocalDataSource: HistoryLocalDataSourceImpl
     private val searchHistoryDao: SearchHistoryDao = mockk(relaxed = true)
+    val workManager: WorkManager = mockk(relaxed = true)
     private lateinit var sampleSearchHistory: SearchHistoryEntity
 
     @BeforeEach
     fun setUp() {
-        historyLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao)
+        historyLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao,workManager)
         sampleSearchHistory = SearchHistoryEntity(
             searchQuery = "a",
             searchType = SearchType.Query
@@ -44,6 +48,7 @@ class HistoryLocalDataSourceImplTest {
             historyLocalDataSource.addSearchQuery("aaa", SearchType.Query)
 
             coVerify { searchHistoryDao.addSearchQuery(any()) }
+            verify { workManager.enqueue(any<OneTimeWorkRequest>()) }
         }
 
     @Test
