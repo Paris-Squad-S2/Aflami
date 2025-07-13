@@ -87,7 +87,7 @@ class WorldTourViewModelTest {
 
         coVerify { autoCompleteCountryUseCase(query) }
         assertEquals(
-            listOf("United States", "United Kingdom"),
+            mockHints,
             viewModel.screenState.value.uiState.hints
         )
     }
