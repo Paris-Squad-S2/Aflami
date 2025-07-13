@@ -17,26 +17,21 @@ class FilterByListOfCategoriesUseCaseTest {
     }
 
     @Test
-    fun `invoke should return media with matching categories`() {
-
+    fun `should return 1 item when one category matches`() {
         //Given
-        val mediaList = listOf(
-            createMedia(
-                id = 1,
-                title = "Movie 1",
-                type = MediaType.MOVIE,
-                categories = listOf(1, 2)
-            ),
-            createMedia(
-                id = 2,
-                title = "Series 1",
-                type = MediaType.TVSHOW,
-                categories = listOf(3)
-            ),
-        )
-
         val selectedCategories = listOf(1)
 
+        //When
+        val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
+
+        //Then
+        assertEquals(1, result.size)
+    }
+
+    @Test
+    fun `should return correct media when one category matches`() {
+        //Given
+        val selectedCategories = listOf(1)
         val expectedMediaList = listOf(
             mediaList[0]
         )
@@ -45,32 +40,13 @@ class FilterByListOfCategoriesUseCaseTest {
         val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
 
         //Then
-        assertEquals(1, result.size)
         assertEquals(expectedMediaList, result)
-
     }
 
     @Test
-    fun `invoke should return empty list when no media matches categories`() {
-
+    fun `should return empty list when no category matches`() {
         //Given
-        val mediaList = listOf(
-            createMedia(
-                id = 1,
-                title = "Movie 1",
-                type = MediaType.MOVIE,
-                categories = listOf(1, 2)
-            ),
-            createMedia(
-                id = 2,
-                title = "Series 1",
-                type = MediaType.TVSHOW,
-                categories = listOf(3)
-            ),
-        )
-
         val selectedCategories = listOf(4)
-
         val expectedMediaList = emptyList<Media>()
 
         //When
@@ -78,56 +54,50 @@ class FilterByListOfCategoriesUseCaseTest {
 
         //Then
         assertEquals(expectedMediaList, result)
-
     }
 
     @Test
-    fun `invoke should return empty list when media list is empty`() {
-
+    fun `should return empty list when media list is empty`() {
         //Given
         val mediaList = emptyList<Media>()
         val selectedCategories = listOf(3)
-        val expectedMediaList = emptyList<Media>()
 
         //When
         val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
 
         //Then
-        assertEquals(expectedMediaList, result)
-
+        assertEquals(emptyList(), result)
     }
 
     @Test
-    fun `invoke should return all media when multiple categories match`() {
-
+    fun `should return items matching any of the selected categories`() {
         //Given
-        val mediaList = listOf(
-            createMedia(
-                id = 1,
-                title = "Movie 1",
-                type = MediaType.MOVIE,
-                categories = listOf(1, 2)
-            ),
-            createMedia(
-                id = 2,
-                title = "Series 1",
-                type = MediaType.TVSHOW,
-                categories = listOf(3)
-            ),
-        )
-
         val selectedCategoriesList = listOf(1, 3)
-
-        val expectedMediaList = listOf(
-            mediaList[0],
-            mediaList[1]
-        )
 
         //When
         val result = filterByListOfCategoriesUseCase(selectedCategoriesList, mediaList)
 
         //Then
-        assertEquals(expectedMediaList, result)
+        assertEquals(2, result.size)
+    }
 
+    @Test
+    fun `should return correct media when multiple categories match`() {
+        //Given
+        val selectedCategories = listOf(1, 3)
+        val expected = mediaList
+
+        //When
+        val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
+
+        //Then
+        assertEquals(expected, result)
+    }
+
+    companion object {
+        private val mediaList = listOf(
+            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE, categories = listOf(1, 2)),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW, categories = listOf(3))
+        )
     }
 }
