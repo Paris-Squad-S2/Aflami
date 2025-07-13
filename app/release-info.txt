@@ -1,2 +1,2 @@
-versionName=0.1.8
-- Add models , repositories and use cases to the domain.
+versionName=0.1.9
+- implement ClearMediaWorker to delete old media entries after 1 hour using WorkManager and Koin injection
