@@ -1,4 +1,4 @@
-import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -7,7 +7,6 @@ plugins {
     alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.google.gms.google.services) apply true
     id("com.google.firebase.crashlytics")
-    id("jacoco")
 }
 
 android {
@@ -19,21 +18,38 @@ android {
         minSdk = Configurations.MIN_SDK_26
         targetSdk = Configurations.TARGET_SDK
         versionCode = Configurations.VERSION_CODE
-        versionName = "0.1.3"
+        versionName = Properties().apply {
+            load(file("release-info.txt").inputStream())
+        }.getProperty("versionName")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        resConfigs("en")
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles("proguard-rules.pro")
+            isDebuggable = false
+            isCrunchPngs = true
+        }
+        create("minified") {
+            initWith(getByName("debug"))
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            matchingFallbacks.add("debug")
         }
         getByName("debug") {
             enableUnitTestCoverage = true
+            isMinifyEnabled = false
+            isShrinkResources = false
         }
     }
     compileOptions {
@@ -84,87 +100,16 @@ dependencies {
     implementation(libs.koin.android)
 }
 
-jacoco {
-    toolVersion = "0.8.11"
-}
-
-tasks.withType<Test> {
-    useJUnitPlatform()
-
-    testLogging {
-        events("passed", "skipped", "failed")
-    }
-}
-
-tasks.register<JacocoReport>("jacocoTestReport") {
-    dependsOn(
-        "testDebugUnitTest",
-        "testReleaseUnitTest"
-    )
-
-    mustRunAfter(
-        "generateDebugAndroidTestResValues",
-        "generateDebugAndroidTestLintModel",
-        "lintAnalyzeDebugAndroidTest",
-        "mergeDebugAssets",
-        "mergeReleaseAssets"
-    )
-
+kover {
     reports {
-        xml.required.set(true)
-        html.required.set(true)
-        csv.required.set(true)
-    }
-
-    val fileFilter = listOf(
-        "**/R.class",
-        "**/R$*.class",
-        "**/BuildConfig.*",
-        "**/Manifest*.*",
-        "**/*Test*.*",
-        "**/di/**",
-    )
-
-    val debugTree = fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug/classes") {
-        exclude(fileFilter)
-    }
-    val kotlinDebugTree = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
-        exclude(fileFilter)
-    }
-
-    classDirectories.setFrom(files(debugTree, kotlinDebugTree))
-    sourceDirectories.setFrom(
-        files(
-            "${project.projectDir}/src/main/java",
-            "${project.projectDir}/src/main/kotlin"
-        )
-    )
-
-    executionData.setFrom(fileTree(layout.buildDirectory.get()) {
-        include(
-            "outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec",
-            "outputs/unit_test_code_coverage/releaseUnitTest/testReleaseUnitTest.exec"
-        )
-    })
-}
-
-tasks.register<JacocoCoverageVerification>("verifyCoverage") {
-    dependsOn("jacocoTestReport")
-    violationRules {
-        rule {
-            limit {
-                minimum = "0.0".toBigDecimal()
-                counter = "LINE"
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = 100
+                    }
+                }
             }
         }
     }
-
-    val reportTask = tasks.getByName<JacocoReport>("jacocoTestReport")
-    classDirectories.setFrom(reportTask.classDirectories)
-    sourceDirectories.setFrom(reportTask.sourceDirectories)
-    executionData.setFrom(reportTask.executionData)
-}
-
-tasks.named("check") {
-    dependsOn("verifyCoverage")
 }

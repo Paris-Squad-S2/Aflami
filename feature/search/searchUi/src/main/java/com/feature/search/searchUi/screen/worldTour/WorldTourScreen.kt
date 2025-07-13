@@ -49,8 +49,7 @@ fun WorldTourScreenContent(
     ) {
         TopAppBar(
             modifier = Modifier
-                .statusBarsPadding()
-                .padding(bottom = 8.dp),
+                .statusBarsPadding(),
             title = stringResource(R.string.world_tour),
             leadingIcons = listOf(
                 iconItemWithDefaults(

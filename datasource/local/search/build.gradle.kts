@@ -67,3 +67,18 @@ dependencies {
 
     implementation(project(Modules.REPOSITORY_SEARCH))
 }
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
+}

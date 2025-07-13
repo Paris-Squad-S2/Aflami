@@ -154,6 +154,13 @@ class SearchViewModel(
                 searchQuery(query)
             }
         }
+        else {
+            emitState(
+                screenState.value.copy(
+                    isLoading = false,
+                )
+            )
+        }
     }
 
 
@@ -303,7 +310,8 @@ class SearchViewModel(
                 uiState = screenState.value.uiState.copy(
                     showFilterDialog = false,
                     selectedRating = 0f,
-                    categories = screenState.value.uiState.categories.mapValues { true }
+                    isAllCategories = true,
+                    categories = screenState.value.uiState.categories.mapValues { false }
                         .toMutableMap(),
                     filteredMoviesResult = screenState.value.uiState.moviesResult,
                     filteredTvShowsResult = screenState.value.uiState.tvShowsResult
