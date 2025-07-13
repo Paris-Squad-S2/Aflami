@@ -93,17 +93,17 @@ class FindByActorViewModelTest {
     @Test
     fun `searchQueryChange should call use case and update state on success`() = runTest {
         val testQuery = "Tom Hanks"
-        val mockMediaList = listOf(
+        val mockMediaUiStateLists = listOf(
             mockk<Media> { every { title } returns "Cast Away" },
             mockk<Media> { every { title } returns "Forrest Gump" }
         )
-        coEvery { getMediaByActorNameUseCase(testQuery) } returns mockMediaList
+        coEvery { getMediaByActorNameUseCase(testQuery) } returns mockMediaUiStateLists
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
 
         val currentState = viewModel.screenState.value
-        assertThat(currentState.uiState.searchResult).isEqualTo(mockMediaList)
+        assertThat(currentState.uiState.searchResult).isEqualTo(mockMediaUiStateLists)
         assertThat(currentState.isLoading).isFalse()
         assertThat(currentState.errorMessage).isNull()
     }
