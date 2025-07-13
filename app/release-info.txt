@@ -1,0 +1,3 @@
+versionName=0.1.6
+- refactor top app bar padding
+- change releaseNotes to releaseNotesFile
