@@ -66,7 +66,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.coil.compose)
 
-    // TensorFlow Lite - include necessary dependencies for ML model binding
+    // TensorFlow Lite - core only (minimal dependencies)
     implementation(libs.tensorflow.lite)
     implementation(libs.tensorflow.lite.support)
     implementation(libs.tensorflow.lite.metadata)

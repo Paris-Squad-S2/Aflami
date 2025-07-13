@@ -8,7 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.domain.search.model.Media
@@ -20,7 +24,11 @@ fun SearchResultContent(
     searchResult: List<Media>,
     onMediaCardClick: (Int) -> Unit,
 ) {
+    val lazyGridState = rememberLazyGridState()
+    val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
+
     LazyVerticalGrid(
+        state = lazyGridState,
         modifier = Modifier
             .fillMaxWidth()
             .padding(top = 8.dp),
@@ -47,6 +55,7 @@ fun SearchResultContent(
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,
+                enabled = !isScrolling,
             )
 
         }

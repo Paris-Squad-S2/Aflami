@@ -43,12 +43,13 @@ internal class SafeImageState(
 
 @Composable
 internal fun rememberSafeImageState(
+    model: Any,
     context: android.content.Context,
     confidenceThreshold: Float
-): SafeImageState = remember {
+): SafeImageState = remember(model) {
     SafeImageState(
         painterState = AsyncImagePainter.State.Empty,
-        shouldBlur = true,
+        shouldBlur = NSFWCache.get(model) ?: true,
         sourceBitmap = null,
         isAnalyzing = false
     )
@@ -59,17 +60,24 @@ internal fun rememberSafeImageState(
     LaunchedEffect(painterState) {
         val currentState = painterState
         if (currentState is AsyncImagePainter.State.Success) {
+            val cachedNSFWResult = NSFWCache.get(model)
+            if (cachedNSFWResult != null) {
+                shouldBlur = cachedNSFWResult
+                sourceBitmap = convertToARGB8888Bitmap(currentState.result.drawable)
+                isAnalyzing = false
+                return@LaunchedEffect
+            }
             isAnalyzing = true
             val bitmap = convertToARGB8888Bitmap(currentState.result.drawable)
             sourceBitmap = bitmap
             coroutineScope.launch {
                 nsfwDetector.isNSFW(bitmap, confidenceThreshold) { isNSFWResult, _, _ ->
+                    NSFWCache.put(model, isNSFWResult)
                     shouldBlur = isNSFWResult
                     isAnalyzing = false
                 }
             }
-        } else {
-            shouldBlur = true
+        } else if (currentState !is AsyncImagePainter.State.Loading) {
             sourceBitmap = null
             isAnalyzing = false
         }
@@ -85,23 +93,28 @@ fun SafeImageViewer(
     blurRadius: Int = 50,
     confidenceThreshold: Float = 0.7f,
     showLoadingIndicator: Boolean = true,
+    enabled: Boolean = true,
     placeholder: @Composable (() -> Unit)? = null,
     errorPlaceholder: @Composable (() -> Unit)? = null
 ) {
     val context = LocalContext.current
-    val state = rememberSafeImageState(context, confidenceThreshold)
+    val state = rememberSafeImageState(model, context, confidenceThreshold)
 
     val isLoading = state.painterState is AsyncImagePainter.State.Loading
     val isError = state.painterState is AsyncImagePainter.State.Error
 
     Box(modifier = modifier) {
         AsyncImage(
-            model = remember(model) {
-                ImageRequest.Builder(context)
-                    .data(model)
-                    .size(Size.ORIGINAL)
-                    .crossfade(true)
-                    .build()
+            model = if (enabled || state.painterState is AsyncImagePainter.State.Success) {
+                remember(model) {
+                    ImageRequest.Builder(context)
+                        .data(model)
+                        .size(Size.ORIGINAL)
+                        .crossfade(true)
+                        .build()
+                }
+            } else {
+                null
             },
             onState = { state.painterState = it },
             contentDescription = contentDescription,
@@ -122,7 +135,12 @@ fun SafeImageViewer(
         )
 
         when {
-            isLoading || state.isAnalyzing -> {
+            !enabled && state.painterState !is AsyncImagePainter.State.Success -> {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    placeholder?.invoke() ?: CircularProgressIndicator()
+                }
+            }
+            (isLoading || state.isAnalyzing) && enabled -> {
                 if (showLoadingIndicator) {
                     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                         placeholder?.invoke() ?: CircularProgressIndicator()
