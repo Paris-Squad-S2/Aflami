@@ -1,8 +1,8 @@
-package com.repository.datasorce.local
+package com.datasource.local.dao
 
 import com.repository.entity.MovieEntity
 
-interface MovieLocalDataSource {
+interface MovieDao {
     suspend fun addMovies(movies: List<MovieEntity>)
     suspend fun getMovies(): List<MovieEntity>
 }

@@ -1,10 +1,11 @@
 package com.repository.entity
 
+import androidx.room.Entity
 import androidx.room.PrimaryKey
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.Serializable
 
-@Serializable
+@Entity(tableName = "Reviews_Table")
 data class ReviewEntity(
     @PrimaryKey
     val id: String,
