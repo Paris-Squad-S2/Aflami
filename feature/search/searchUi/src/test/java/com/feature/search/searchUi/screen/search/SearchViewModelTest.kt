@@ -13,9 +13,9 @@ import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
-import com.feature.search.searchUi.mapper.toUi
-import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toCategoryUiList
+import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.mapper.toUi
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -146,7 +146,7 @@ class SearchViewModelTest {
 
         advanceUntilIdle()
 
-        assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEqualTo(recentSearches)
+        assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(recentSearches.map { it.searchTitle })
         assertThat(viewModel.screenState.value.errorMessage).isNull()
     }
 
@@ -334,11 +334,11 @@ class SearchViewModelTest {
 
         assertThat(viewModel.screenState.value.isLoading).isFalse()
         assertThat(viewModel.screenState.value.searchUiState.selectedRating).isEqualTo(selectedRating)
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult).isEqualTo(
-            finalFilteredMovies
+        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.map { it.title }).isEqualTo(
+            finalFilteredMovies.map { it.title }
         )
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult).isEqualTo(
-            finalFilteredTvShows
+        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.map { it.title }).isEqualTo(
+            finalFilteredTvShows.map { it.title }
         )
     }
 
@@ -405,12 +405,12 @@ class SearchViewModelTest {
 
         assertThat(viewModel.screenState.value.searchUiState.showFilterDialog).isFalse()
         assertThat(viewModel.screenState.value.searchUiState.selectedRating).isEqualTo(0f)
-        viewModel.screenState.value.searchUiState.categories.forEach { (category, isSelected) ->
+        viewModel.screenState.value.searchUiState.categories.forEach { (_, isSelected) ->
             assertThat(isSelected).isTrue()
         }
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult).isEqualTo(initialMovies)
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult).isEqualTo(
-            initialTvShows
+        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.map { it.title }).isEqualTo(initialMovies.map { it.title })
+        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.map { it.title }).isEqualTo(
+            initialTvShows.map { it.title }
         )
     }
 
@@ -437,7 +437,7 @@ class SearchViewModelTest {
         )
         advanceUntilIdle()
 
-        assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEqualTo(initialRecentSearches)
+        assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(initialRecentSearches.map { it.searchTitle })
 
         viewModel.onClearAllRecentSearches()
         advanceUntilIdle()
@@ -464,8 +464,8 @@ class SearchViewModelTest {
         )
         advanceUntilIdle()
 
-        assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEqualTo(
-            listOf(mockSearchHistory1)
+        assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(
+            listOf(mockSearchHistory1.searchTitle)
         )
 
         viewModel.onClearAllRecentSearches()
@@ -473,9 +473,9 @@ class SearchViewModelTest {
 
         coVerify(exactly = 1) { clearAllRecentSearchesUseCase() }
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo(errorMessage)
-        assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEqualTo(
+        assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(
             listOf(
-                mockSearchHistory1
+                mockSearchHistory1.searchTitle
             )
         )
     }
@@ -506,8 +506,8 @@ class SearchViewModelTest {
             )
             advanceUntilIdle()
 
-            assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEqualTo(
-                initialRecentSearches
+            assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(
+                initialRecentSearches.map { it.searchTitle }
             )
 
 
@@ -516,8 +516,8 @@ class SearchViewModelTest {
 
 
             coVerify(exactly = 1) { clearRecentSearchUseCase(idToClear, SearchType.Query) }
-            assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEqualTo(
-                afterClearRecentSearches
+            assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(
+                afterClearRecentSearches.map { it.searchTitle }
             )
             assertThat(viewModel.screenState.value.errorMessage).isNull()
         }

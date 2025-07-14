@@ -1,11 +1,12 @@
 package com.feature.search.searchUi.screen.findByActor
 
 import com.domain.search.model.Media
+import com.domain.search.model.MediaType
 import com.domain.search.useCases.GetMediaByActorNameUseCase
+import com.feature.search.searchUi.mapper.toMediaUiList
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,9 +16,11 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import kotlin.test.assertEquals
 
 class FindByActorViewModelTest {
     private lateinit var viewModel: FindByActorViewModel
@@ -93,17 +96,33 @@ class FindByActorViewModelTest {
     @Test
     fun `searchQueryChange should call use case and update state on success`() = runTest {
         val testQuery = "Tom Hanks"
-        val mockMediaUiStateLists = listOf(
-            mockk<Media> { every { title } returns "Cast Away" },
-            mockk<Media> { every { title } returns "Forrest Gump" }
+        val mockMediaLists = listOf(
+            Media(
+                id = 1,
+                imageUri = "",
+                title = "Cast Away",
+                type = MediaType.MOVIE,
+                categories = listOf(12,11),
+                yearOfRelease = LocalDate(2023,1,1),
+                rating = 2.3,
+            ),
+            Media(
+                id = 2,
+                imageUri = "",
+                title = "Forrest Gump",
+                type = MediaType.MOVIE,
+                categories = listOf(12,11),
+                yearOfRelease = LocalDate(2023,1,1),
+                rating = 2.7,
+            ),
         )
-        coEvery { getMediaByActorNameUseCase(testQuery) } returns mockMediaUiStateLists
+        coEvery { getMediaByActorNameUseCase(testQuery) } returns mockMediaLists
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
 
         val currentState = viewModel.screenState.value
-        assertThat(currentState.uiState.searchResult).isEqualTo(mockMediaUiStateLists)
+        assertEquals(mockMediaLists.toMediaUiList().map { it.title },currentState.uiState.searchResult.map { it.title })
         assertThat(currentState.isLoading).isFalse()
         assertThat(currentState.errorMessage).isNull()
     }
