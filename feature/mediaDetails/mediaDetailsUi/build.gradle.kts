@@ -38,6 +38,10 @@ android {
 
 dependencies {
 
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+    implementation(project(Modules.REPOSITORY_MOVIE))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -55,4 +59,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.android)
 }
