@@ -3,10 +3,10 @@ package com.domain.mediaDetails.useCases.movie
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.repository.MovieRepository
 
-class GetMovieDetailsUseCase(
+class GetMovieRecommendationsUseCase(
     private val movieRepository: MovieRepository
 ) {
-    suspend operator fun invoke(movieId: Int): Movie {
-        return movieRepository.getMovieDetails(movieId)
+    suspend operator fun invoke(movieId: Int): List<Movie> {
+        return movieRepository.getMovieRecommendations(movieId)
     }
 }
