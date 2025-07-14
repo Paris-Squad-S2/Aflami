@@ -1,2 +1,2 @@
-versionName=0.1.11
-- Update Firebase App Distribution configuration to use minified APK and increment version number
+versionName=0.1.12
+- Update build configuration to use debug signing config for release APK
