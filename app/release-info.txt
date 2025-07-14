@@ -1,2 +1,6 @@
-versionName=0.1.8
-- Add models , repositories and use cases to the domain.
+versionName=0.1.9
+- improve Media card shadow
+- fix illustration size
+- fix Filter dialog padding
+- fix genres colors in filter dialog
+- fix ration card problem
