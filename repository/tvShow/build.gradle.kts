@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.movie"
+    namespace = "com.example.tvshow"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
@@ -33,6 +33,7 @@ android {
         jvmTarget = Configurations.JVM_TARGET
     }
 }
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
