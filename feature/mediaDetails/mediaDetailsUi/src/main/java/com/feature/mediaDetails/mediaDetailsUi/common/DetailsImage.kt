@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaButtonType
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -77,9 +76,9 @@ fun DetailsImagePreview() {
         DetailsImage(
             modifier = Modifier.height(236.dp),
             imageUris = listOf(
-                R.drawable.green_mile.toString(),
-                R.drawable.green_mile.toString(),
-                R.drawable.green_mile.toString()
+                "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
+                "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
+                "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg"
             ),
             rating = "9.9",
             onPlayClick = {}
