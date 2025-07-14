@@ -3,26 +3,20 @@ package com.feature.search.searchUi.navigation
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import org.koin.compose.koinInject
+import com.feature.search.searchUi.screen.findByActor.findByActorRoute
+import com.feature.search.searchUi.screen.search.searchRoute
+import com.feature.search.searchUi.screen.worldTour.worldTourRoute
 
 @Composable
-fun SearchNavGraph(navigator: Navigator = koinInject()) {
+fun SearchNavGraph() {
     val navController = rememberNavController()
-
-    ObserveAsEvents(navigator.navigationEvent) { event ->
-        when (event) {
-            is NavigationEvent.Navigate -> navController.navigate(
-                route = event.destination, navOptions = event.navOptions
-            )
-
-            NavigationEvent.NavigateUp -> navController.navigateUp()
-        }
-    }
 
     NavHost(
         navController = navController,
-        startDestination = navigator.startGraph
+        startDestination = Screen.SearchScreen.route
     ) {
-        buildSearchNavGraph()
+        searchRoute(navController)
+        worldTourRoute(navController)
+        findByActorRoute(navController)
     }
 }

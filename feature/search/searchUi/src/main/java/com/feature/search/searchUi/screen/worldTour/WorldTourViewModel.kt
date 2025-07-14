@@ -2,14 +2,12 @@ package com.feature.search.searchUi.screen.worldTour
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.domain.search.model.Country
 import com.domain.search.model.Media
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.navigation.Destinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -32,7 +30,7 @@ class WorldTourViewModel(
     private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
 ) : WorldTourScreenInteractionListener,
-    BaseViewModel<WorldTourScreenState>(
+    BaseViewModel<WorldTourScreenState, WorldTourUiEffect>(
         WorldTourScreenState(
             uiState = WorldTourUiState(
                 searchQuery = "",
@@ -44,15 +42,14 @@ class WorldTourViewModel(
         )
     ) {
 
+    val args = WorldTourArgs(savedStateHandle)
+
     init {
-        val initialQuery = savedStateHandle.toRoute<Destinations.WorldTourScreen>().name
-        if (initialQuery != null) {
-            onSearchQueryChange(initialQuery)
-        }
+        onSearchQueryChange(args.query)
     }
 
     override fun onNavigateBack() {
-        navigateUp()
+        sendUiEffect(WorldTourUiEffect.NavigateToBack)
     }
 
     private var debounceJob: Job? = null
@@ -81,11 +78,9 @@ class WorldTourViewModel(
                 val countryCode = getCountryCodeByNameUseCase(query)
                 if (countryCode != null) {
                     searchQuery(countryCode)
-                }
-                else if (screenState.value.uiState.hints.isNotEmpty()){
+                } else if (screenState.value.uiState.hints.isNotEmpty()) {
                     searchQuery(screenState.value.uiState.hints.first().countryName)
-                }
-                else {
+                } else {
                     emitState(
                         screenState.value.copy(
                             isLoading = false,

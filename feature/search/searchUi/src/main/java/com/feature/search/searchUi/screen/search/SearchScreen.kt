@@ -13,9 +13,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import com.feature.search.searchUi.comon.CollectUiEffect
+import com.feature.search.searchUi.screen.findByActor.navigateToFindByActor
 import com.feature.search.searchUi.screen.search.components.FilterDialog
 import com.feature.search.searchUi.screen.search.components.NoSearchQueryContent
 import com.feature.search.searchUi.screen.search.components.WithSearchQueryContent
+import com.feature.search.searchUi.screen.worldTour.navigateToWorldTour
 import com.paris_2.aflami.designsystem.components.TextField
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -26,8 +30,24 @@ import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
+fun SearchScreen(
+    navController: NavController,
+    viewModel: SearchViewModel = koinViewModel()
+) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
+
+    CollectUiEffect(viewModel.uiEffect) { effect ->
+        when (effect) {
+            is SearchUiEffect.NavigateToWorldTourScreen -> navController.navigateToWorldTour(effect.name)
+            is SearchUiEffect.NavigateToBack -> {
+                // navigate tp back
+            }
+            is SearchUiEffect.NavigateToMediaDetails -> {
+                // navigate to media details
+            }
+            is SearchUiEffect.NavigateToFindByActorScreen -> navController.navigateToFindByActor(effect.name)
+        }
+    }
 
     SearchScreenContent(
         state = screenState.value,

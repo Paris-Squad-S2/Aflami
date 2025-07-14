@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -14,8 +13,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
 import com.feature.search.searchUi.R
+import com.feature.search.searchUi.comon.CollectUiEffect
 import com.feature.search.searchUi.comon.components.SearchResultContent
+import com.feature.search.searchUi.screen.worldTour.WorldTourUiEffect
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
@@ -27,8 +29,17 @@ import org.koin.compose.viewmodel.koinViewModel
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
-fun FindByActorScreen(viewModel: FindByActorViewModel = koinViewModel()) {
+fun FindByActorScreen(
+    navController: NavController,
+    viewModel: FindByActorViewModel = koinViewModel()
+) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
+
+    CollectUiEffect(viewModel.uiEffect) { effect ->
+        when (effect) {
+            is WorldTourUiEffect.NavigateToBack -> navController.popBackStack()
+        }
+    }
 
     FindByActorScreenContent(
         state = screenState.value,

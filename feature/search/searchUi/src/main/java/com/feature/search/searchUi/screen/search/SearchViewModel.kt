@@ -14,7 +14,6 @@ import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.navigation.Destinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -48,7 +47,7 @@ class SearchViewModel(
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
 ) : SearchScreenInteractionListener,
-    BaseViewModel<SearchScreenState>(
+    BaseViewModel<SearchScreenState, SearchUiEffect>(
         SearchScreenState(
             uiState = UIState(
                 searchQuery = "",
@@ -121,15 +120,12 @@ class SearchViewModel(
     }
 
     override fun onNavigateToWorldTourScreen() {
-        navigate(
-            Destinations.WorldTourScreen()
-        )
+        sendUiEffect(SearchUiEffect.NavigateToWorldTourScreen(name = screenState.value.uiState.searchQuery))
     }
 
     override fun onNavigateToFindByActorScreen() {
-        navigate(
-            Destinations.FindByActorScreen()
-        )
+        sendUiEffect(SearchUiEffect.NavigateToFindByActorScreen(name = screenState.value.uiState.searchQuery))
+
     }
 
     private var debounceJob: Job? = null
@@ -326,11 +322,7 @@ class SearchViewModel(
             SearchType.Country -> {
                 tryToExecute(
                     execute = {
-                        navigate(
-                            Destinations.WorldTourScreen(
-                                name = searchTitle
-                            )
-                        )
+                        sendUiEffect(SearchUiEffect.NavigateToWorldTourScreen(searchTitle))
                     },
                     onError = { errorMessage ->
                         emitState(
@@ -345,11 +337,8 @@ class SearchViewModel(
             SearchType.Actor -> {
                 tryToExecute(
                     execute = {
-                        navigate(
-                            Destinations.FindByActorScreen(
-                                name = searchTitle
-                            )
-                        )
+                        sendUiEffect(SearchUiEffect.NavigateToFindByActorScreen(searchTitle))
+
                     },
                     onError = { errorMessage ->
                         emitState(
@@ -392,7 +381,7 @@ class SearchViewModel(
     }
 
     override fun onNavigateBack() {
-        //TODO: Implement navigation back to home feature
+        sendUiEffect(SearchUiEffect.NavigateToBack)
     }
 
     override fun onRetryRecentSearches() {
@@ -404,6 +393,6 @@ class SearchViewModel(
     }
 
     override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+        sendUiEffect(SearchUiEffect.NavigateToMediaDetails(id))
     }
 }

@@ -2,11 +2,9 @@ package com.feature.search.searchUi.screen.findByActor
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.toRoute
 import com.domain.search.model.Media
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.navigation.Destinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -16,6 +14,7 @@ data class FindByActorScreenState(
     val isLoading: Boolean,
     val errorMessage: String?
 )
+
 data class FindByActorUiState(
     val searchQuery: String,
     val searchResult: List<Media>,
@@ -24,26 +23,26 @@ data class FindByActorUiState(
 class FindByActorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
-) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
-    FindByActorScreenState(
-        uiState = FindByActorUiState(
-            searchQuery = "",
-            searchResult = listOf()
-        ),
-        isLoading = false,
-        errorMessage = null
-    )
-) {
+) : FindByActorScreenInteractionListener,
+    BaseViewModel<FindByActorScreenState, FindByActorUiEffect>(
+        FindByActorScreenState(
+            uiState = FindByActorUiState(
+                searchQuery = "",
+                searchResult = listOf()
+            ),
+            isLoading = false,
+            errorMessage = null
+        )
+    ) {
+
+    private val args = FindByActorArgs(savedStateHandle)
 
     init {
-        val initialQuery = savedStateHandle.toRoute<Destinations.FindByActorScreen>().name
-        if (initialQuery != null) {
-            onSearchQueryChange(initialQuery)
-        }
+        onSearchQueryChange(args.query)
     }
 
     override fun onNavigateBack() {
-        navigateUp()
+        sendUiEffect(FindByActorUiEffect.NavigateToBack)
     }
 
     private var debounceJob: Job? = null
@@ -67,8 +66,7 @@ class FindByActorViewModel(
                 )
                 searchQuery(query)
             }
-        }
-        else {
+        } else {
             emitState(
                 screenState.value.copy(
                     isLoading = false,

@@ -2,33 +2,26 @@ package com.feature.search.searchUi.comon
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptions
-import com.feature.search.searchUi.navigation.Destination
-import com.feature.search.searchUi.navigation.Navigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.java.KoinJavaComponent
 
-open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
+open class BaseViewModel<S, UiEffect>(initialState: S) : ViewModel(), KoinComponent {
+    interface BaseUiEffect
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
 
-    private val navigator: Navigator by KoinJavaComponent.inject(Navigator::class.java)
-
-    protected fun navigate(destination: Destination, navOptions: NavOptions? = null) =
-        viewModelScope.launch {
-            navigator.navigate(destination = destination, navOptions = navOptions)
-        }
-
-    protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
+    private val privateUiEffect = MutableSharedFlow<UiEffect>()
+    val uiEffect = privateUiEffect.asSharedFlow()
 
     fun emitState(newState: S) {
         privateScreenState.update { newState }
@@ -50,6 +43,12 @@ open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
             } catch (e: Exception) {
                 onError(e.message ?: "Unexpected error")
             }
+        }
+    }
+
+    protected fun sendUiEffect(effect: UiEffect){
+        viewModelScope.launch {
+            privateUiEffect.emit(effect)
         }
     }
 }
