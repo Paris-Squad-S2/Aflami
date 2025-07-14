@@ -38,7 +38,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun AflamiMediaCard(
     modifier: Modifier = Modifier,
     imageUri: String,
-    rating: String = "",
+    rating: Float,
     movieName: String = "",
     mediaType: String = "",
     year: String = "",
@@ -107,7 +107,7 @@ fun AflamiMediaCard(
 
         if (showRating) {
             RatingCard(
-                rating = rating.take(3),
+                rating = rating,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(top = 4.dp, end = 4.dp)
@@ -177,7 +177,7 @@ fun PreviewMediaNormalCard() {
     AflamiTheme {
         AflamiMediaCard(
             imageUri = R.drawable.anime_movie.toString(),
-            rating = 9.9.toString(),
+            rating = 9.9f,
             movieName = "Your Name",
             mediaType = "TV show",
             year = "2016",
@@ -194,7 +194,7 @@ fun PreviewMediaUpComingCard() {
     AflamiTheme {
         AflamiMediaCard(
             imageUri = R.drawable.anime_horizontal.toString(),
-            rating = 9.toString(),
+            rating = 9f,
             movieName = "Grave of the Fireflies",
             mediaType = "TV show",
             year = "2016",
@@ -211,7 +211,7 @@ fun PreviewMediaEpisodeCard() {
     AflamiTheme {
         AflamiMediaCard(
             imageUri = R.drawable.attack_on_titan.toString(),
-            rating = 8.8.toString(),
+            rating = 8.8f,
             mediaCardType = MediaCardType.EPISODE
         )
     }
@@ -224,7 +224,7 @@ fun PreviewMediaSliderCard() {
     AflamiTheme {
         AflamiMediaCard(
             imageUri = R.drawable.shniderlist_slider.toString(),
-            rating = 8.toString(),
+            rating = 8f,
             mediaCardType = MediaCardType.SLIDER,
             showRating = true,
             showPlayButton = true
@@ -243,7 +243,8 @@ fun PreviewMediaEmptySliderCard() {
             showRating = false,
             cardWidth = 207.dp,
             cardHeight = 276.dp,
-            clickable = true
+            clickable = true,
+            rating = 3.563f,
         )
     }
 
