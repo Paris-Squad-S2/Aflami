@@ -93,6 +93,15 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
+
+    // koin
+    implementation(libs.koin.workmanager)
+    implementation(libs.koin.android)
+    implementation(libs.koin.core )
+
+
     //test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

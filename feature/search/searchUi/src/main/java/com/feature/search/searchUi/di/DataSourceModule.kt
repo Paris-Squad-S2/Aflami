@@ -11,7 +11,7 @@ import com.repository.search.dataSource.local.MediaLocalDataSource
 import org.koin.dsl.module
 
 val dataSourceModule = module {
-    single<HistoryLocalDataSource> { HistoryLocalDataSourceImpl(get()) }
+    single<HistoryLocalDataSource> { HistoryLocalDataSourceImpl(get(),get()) }
     single<MediaLocalDataSource> { MediaLocalDataSourceImpl(get()) }
     single<CountriesLocalDataSource> { CountriesLocalDataSourceImpl(get()) }
     single<GenresLocalDataSource> { GenresLocalDataSourceImpl(get()) }
