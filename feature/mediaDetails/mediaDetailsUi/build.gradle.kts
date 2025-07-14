@@ -62,6 +62,9 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.android)
 
+    //coil
+    implementation(libs.coil.compose)
+
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
 }
