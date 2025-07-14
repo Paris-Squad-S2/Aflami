@@ -1,2 +1,2 @@
-versionName=0.1.9
-- refactor domain unit tests
+versionName=0.1.10
+- prevent rapid navigation in SearchUi
