@@ -23,7 +23,7 @@ class AutoCompleteCountryUseCaseTest {
     }
 
     @Test
-    fun `should return countries matching query case`() = runTest {
+    fun `should return 2 countries when query is 'united'`() = runTest {
         // Given
         coEvery { countryRepository.getAllCountries() } returns sampleCountries
 
@@ -32,16 +32,26 @@ class AutoCompleteCountryUseCaseTest {
 
         // Then
         assertThat(result).hasSize(2)
+    }
+
+    @Test
+    fun `should return correct countries when query is 'united'`() = runTest {
+        // Given
+        coEvery { countryRepository.getAllCountries() } returns sampleCountries
+
+        // When
+        val result = autoCompleteCountryUseCase("united")
+
+        // Then
         assertThat(result.map { it.countryName }).containsExactly(
             "United States",
             "United Kingdom"
         )
-        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 
     @Test
-    @DisplayName("Should return countries matching query with different case")
-    fun `should return countries matching query with different case`() = runTest {
+    @DisplayName("Should return 1 country when query is 'CANADA'")
+    fun `should return 1 country when query is uppercase`() = runTest {
         // Given
         coEvery { countryRepository.getAllCountries() } returns sampleCountries
 
@@ -50,12 +60,22 @@ class AutoCompleteCountryUseCaseTest {
 
         // Then
         assertThat(result).hasSize(1)
-        assertThat(result.first().countryName).isEqualTo("Canada")
-        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 
     @Test
-    fun `should return countries matching partial query`() = runTest {
+    fun `should return Canada as result when query is 'CANADA'`() = runTest {
+        // Given
+        coEvery { countryRepository.getAllCountries() } returns sampleCountries
+
+        // When
+        val result = autoCompleteCountryUseCase("CANADA")
+
+        // Then
+        assertThat(result.first().countryName).isEqualTo("Canada")
+    }
+
+    @Test
+    fun `should return 4 countries when query is 'an'`() = runTest {
         // Given
         coEvery { countryRepository.getAllCountries() } returns sampleCountries
 
@@ -64,13 +84,23 @@ class AutoCompleteCountryUseCaseTest {
 
         // Then
         assertThat(result).hasSize(4)
+    }
+
+    @Test
+    fun `should return correct country names when query is 'an'`() = runTest {
+        // Given
+        coEvery { countryRepository.getAllCountries() } returns sampleCountries
+
+        // When
+        val result = autoCompleteCountryUseCase("an")
+
+        // Then
         assertThat(result.map { it.countryName }).containsExactly(
             "Canada",
             "Germany",
             "France",
             "Japan"
         )
-        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 
     @Nested
@@ -85,7 +115,6 @@ class AutoCompleteCountryUseCaseTest {
 
             // Then
             assertThat(result).isEmpty()
-            coVerify(exactly = 1) { countryRepository.getAllCountries() }
         }
 
         @Test
@@ -98,8 +127,27 @@ class AutoCompleteCountryUseCaseTest {
 
             // Then
             assertThat(result).hasSize(sampleCountries.size)
-            assertThat(result).containsExactlyElementsIn(sampleCountries)
-            coVerify(exactly = 1) { countryRepository.getAllCountries() }
         }
+
+        @Test
+        fun `should return all country objects when query is empty`() = runTest {
+            // Given
+            coEvery { countryRepository.getAllCountries() } returns sampleCountries
+
+            // When
+            val result = autoCompleteCountryUseCase("")
+
+            // Then
+            assertThat(result).containsExactlyElementsIn(sampleCountries)
+        }
+    }
+
+    @Test
+    fun `should call getAllCountries when querying`() = runTest {
+        coEvery { countryRepository.getAllCountries() } returns sampleCountries
+
+        autoCompleteCountryUseCase("any")
+
+        coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 }
