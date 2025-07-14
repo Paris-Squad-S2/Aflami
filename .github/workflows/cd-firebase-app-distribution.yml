@@ -40,4 +40,4 @@ jobs:
           groups: testers
           file: app/build/outputs/apk/release/app-release-unsigned.apk
           releaseNotesFile: app/release-info.txt
-          debug: false
+          debug: true
