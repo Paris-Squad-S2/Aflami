@@ -101,9 +101,8 @@ class SearchViewModel(
     }
 
     fun loadCategories() {
-        val language = Locale.getDefault().language
         tryToExecute(
-            execute = { getAllCategoriesUseCase(language) },
+            execute = getAllCategoriesUseCase::invoke,
             onSuccess = { categories ->
                 emitState(
                     screenState.value.copy(
@@ -121,7 +120,6 @@ class SearchViewModel(
                 )
             }
         )
-        Log.d("GenresDebug", "Fetching genres with lang: $language")
     }
 
     override fun onNavigateToWorldTourScreen() {
