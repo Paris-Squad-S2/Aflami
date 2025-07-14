@@ -10,6 +10,7 @@ object Modules {
     const val DOMAIN_LISTS = ":domain:lists"
     const val DOMAIN_HOME = ":domain:home"
     const val DOMAIN_CATEGORIES = ":domain:categories"
+    const val DOMAIN_MEDIA_DETAILS = ":domain:mediaDetails"
 
     const val REPOSITORY = ":repository"
     const val REPOSITORY_MOVIE = ":repository:movie"

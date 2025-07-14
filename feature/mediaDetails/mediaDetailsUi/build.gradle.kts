@@ -55,4 +55,13 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    //Koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.android)
+
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
 }
