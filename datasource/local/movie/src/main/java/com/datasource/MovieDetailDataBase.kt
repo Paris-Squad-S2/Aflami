@@ -12,8 +12,6 @@ import com.repository.entity.CastEntity
 import com.repository.entity.GalleryEntity
 import com.repository.entity.MovieEntity
 import com.repository.entity.ReviewEntity
-import kotlin.jvm.java
-
 
 @Database(
     entities = [MovieEntity::class, CastEntity::class, ReviewEntity::class, GalleryEntity::class],
