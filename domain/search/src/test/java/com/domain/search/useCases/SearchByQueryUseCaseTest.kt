@@ -24,15 +24,10 @@ class SearchByQueryUseCaseTest {
     }
 
     @Test
-    fun `invoke should return media list matching query`() = runTest {
+    fun `should return correct size when media matches query`() = runTest {
 
         //Given
         val query = "chance"
-        val mediaList = listOf(
-            createMedia(id = 1, title = "chance Movie", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "chance Drama", type = MediaType.TVSHOW),
-        )
-
         coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
 
         //When
@@ -40,12 +35,38 @@ class SearchByQueryUseCaseTest {
 
         //Then
         assertEquals(2, result.size)
+    }
+
+    @Test
+    fun `should return exact media list when media matches query`() = runTest {
+
+        // Given
+        val query = "chance"
+        coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
+
+        // When
+        val result = searchByQueryUseCase(query)
+
+        // Then
         assertEquals(mediaList, result)
+    }
+
+    @Test
+    fun `should verify repository called once for matching query`() = runTest {
+
+        // Given
+        val query = "chance"
+        coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
+
+        // When
+        searchByQueryUseCase(query)
+
+        // Then
         coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
     }
 
     @Test
-    fun `invoke should return empty list when no media matches query`() = runTest {
+    fun `should return empty list when no media matches query`() = runTest {
 
         //Given
         val query = "unknown title"
@@ -56,9 +77,26 @@ class SearchByQueryUseCaseTest {
 
         //Then
         assertTrue { result.isEmpty() }
-        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
 
     }
 
+    @Test
+    fun `should verify repository is called once for unmatched query`() = runTest {
+        // Given
+        val query = "unknown title"
+        coEvery { searchMediaRepository.getMediaByQuery(query) } returns emptyList()
 
+        // When
+        searchByQueryUseCase(query)
+
+        // Then
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
+    }
+
+    companion object {
+        val mediaList = listOf(
+            createMedia(id = 1, title = "chance Movie", type = MediaType.MOVIE),
+            createMedia(id = 2, title = "chance Drama", type = MediaType.TVSHOW),
+        )
+    }
 }
