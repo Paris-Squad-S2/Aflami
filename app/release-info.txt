@@ -4,3 +4,4 @@ versionName=0.1.10
 - fix Filter dialog padding
 - fix genres colors in filter dialog
 - fix ration card problem
+- animate chip color changes
