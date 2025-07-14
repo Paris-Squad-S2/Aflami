@@ -48,7 +48,7 @@ class HistoryLocalDataSourceImpl(
 
         val workRequest = OneTimeWorkRequestBuilder<ClearMediaWorker>()
             .setInputData(inputData)
-            .setInitialDelay(10, TimeUnit.SECONDS)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .build()
 
         workManager.enqueue(workRequest)
