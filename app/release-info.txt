@@ -1,2 +1,2 @@
 versionName=0.1.8
-- refactor domain unit tests
+- Add models , repositories and use cases to the domain.
