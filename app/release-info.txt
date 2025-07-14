@@ -1,2 +1,2 @@
-versionName=0.1.10
-- prevent rapid navigation in SearchUi
+versionName=0.1.11
+- Update Firebase App Distribution configuration to use minified APK and increment version number
