@@ -4,9 +4,6 @@ on:
   push:
     branches:
       - develop
-  pull_request:
-    branches:
-      - develop
 
 jobs:
   build-and-distribute:
@@ -29,8 +26,8 @@ jobs:
       - name: Give gradlew permission to execute
         run: chmod +x ./gradlew
 
-      - name: Build release APK
-        run: ./gradlew app:assembleRelease
+      - name: Build minified APK
+        run: ./gradlew app:assembleMinified
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
@@ -38,6 +35,6 @@ jobs:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
           groups: testers
-          file: app/build/outputs/apk/release/app-release-unsigned.apk
+          file: app/build/outputs/apk/minified/app-minified.apk
           releaseNotesFile: app/release-info.txt
           debug: true
