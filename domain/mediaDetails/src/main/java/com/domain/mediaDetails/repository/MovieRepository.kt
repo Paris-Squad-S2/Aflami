@@ -5,7 +5,6 @@ import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
-import com.domain.mediaDetails.model.Season
 
 interface MovieRepository {
     suspend fun getMovieDetails(movieId: Int): Movie
