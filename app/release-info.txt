@@ -1,2 +1,2 @@
-versionName=0.1.8
+versionName=0.1.10
 - prevent rapid navigation in SearchUi
