@@ -2,6 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.VerticalPager
@@ -29,6 +30,8 @@ fun DetailsImage(
     val pagerState = rememberPagerState(pageCount = { imageUris.size })
     Box(
         modifier = modifier
+            .fillMaxWidth()
+            .height(236.dp)
     ) {
         VerticalPager(
             state = pagerState,
@@ -74,7 +77,6 @@ fun DetailsImage(
 fun DetailsImagePreview() {
     AflamiTheme {
         DetailsImage(
-            modifier = Modifier.height(236.dp),
             imageUris = listOf(
                 "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
                 "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
