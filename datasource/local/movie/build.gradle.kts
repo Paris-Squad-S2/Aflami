@@ -11,6 +11,8 @@ java {
 dependencies{
     //Room
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.common.jvm)
+    implementation(project(":repository:movie"))
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -26,6 +28,9 @@ dependencies{
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
+
+
+    implementation(Modules.REPOSITORY_MOVIE)
 }
 kotlin {
     compilerOptions {
