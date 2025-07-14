@@ -25,29 +25,32 @@ class GetAllCategoriesUseCaseTest {
 
 
     @Test
-    fun `invoke should return all categories from repository`() = runTest {
+    fun `should return correct number of categories from repository`() = runTest {
         //Given
-        val categories = listOf(
-            CategoryModel(id = 1, name = "Romance"),
-            CategoryModel(id = 2, name = "Science Fiction"),
-            CategoryModel(id = 3, name = "Family")
-        )
-
-        coEvery { categoriesRepository.getAllCategories() } returns categories
+        coEvery { categoriesRepository.getAllCategories() } returns sampleCategories
 
         //When
         val result = getAllCategoriesUseCase()
 
         //Then
         assertEquals(3, result.size)
-        assertEquals(categories, result)
         coVerify(exactly = 1) { categoriesRepository.getAllCategories() }
-
     }
 
     @Test
-    fun `invoke should return empty list when repository returns no categories`() = runTest {
+    fun `should return expected categories from repository`() = runTest {
+        //Given
+        coEvery { categoriesRepository.getAllCategories() } returns sampleCategories
 
+        //When
+        val result = getAllCategoriesUseCase()
+
+        //Then
+        assertEquals(sampleCategories, result)
+    }
+
+    @Test
+    fun `should return empty list when repository returns no categories`() = runTest {
         //Given
         coEvery { categoriesRepository.getAllCategories() } returns emptyList()
 
@@ -57,6 +60,14 @@ class GetAllCategoriesUseCaseTest {
         //Then
         assertTrue { result.isEmpty() }
         coVerify(exactly = 1) { categoriesRepository.getAllCategories() }
+    }
+
+    companion object{
+        private val sampleCategories = listOf(
+            CategoryModel(id = 1, name = "Romance"),
+            CategoryModel(id = 2, name = "Science Fiction"),
+            CategoryModel(id = 3, name = "Family")
+        )
     }
 
 }
