@@ -7,5 +7,5 @@ import androidx.room.PrimaryKey
 data class GalleryEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int,
-    val images : String
+    val images: List<ImageEntity>,
 )
