@@ -1,2 +1,2 @@
 versionName=0.1.13
-implement ClearMediaWorker to delete old media entries after 1 hour using WorkManager and Koin injection
+- implement ClearMediaWorker to delete old media entries after 1 hour using WorkManager and Koin injection
