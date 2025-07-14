@@ -14,22 +14,23 @@ class GenresLocalDataSourceImplTest {
     private lateinit var genresLocalDataSource: GenresLocalDataSourceImpl
     private val genresDao: GenresDao = mockk(relaxed = false)
     private lateinit var sampleGenre: GenreEntity
-
+    private val language = "en"
     @BeforeEach
     fun setUp() {
         genresLocalDataSource = GenresLocalDataSourceImpl(genresDao)
         sampleGenre = GenreEntity(
             id = 1,
-            name = "all"
+            name = "all",
+            language = "en"
         )
     }
 
     @Test
     fun `getGenres should return genres when getAll in GenresDao called successfully`() =
         runTest {
-            coEvery { genresDao.getGenres() } returns listOf(sampleGenre)
+            coEvery { genresDao.getGenres(language) } returns listOf(sampleGenre)
 
-            val result = genresLocalDataSource.getGenres()
+            val result = genresLocalDataSource.getGenres(language)
 
             assertEquals(sampleGenre.name, result[0].name)
         }
