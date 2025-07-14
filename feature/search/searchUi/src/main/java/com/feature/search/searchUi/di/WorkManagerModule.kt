@@ -2,7 +2,7 @@ package com.feature.search.searchUi.di
 
 import androidx.work.WorkManager
 import androidx.work.WorkerFactory
-import com.repository.search.dataSource.local.WorkManager.ClearMediaWorker
+import com.repository.search.dataSource.local.workManager.ClearMediaWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.androidx.workmanager.factory.KoinWorkerFactory

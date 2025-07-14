@@ -1,4 +1,4 @@
-package com.repository.search.dataSource.local.WorkManager
+package com.repository.search.dataSource.local.workManager
 
 import android.content.Context
 import androidx.work.CoroutineWorker
