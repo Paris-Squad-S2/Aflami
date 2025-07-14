@@ -6,7 +6,7 @@ import com.domain.search.repository.CategoriesRepository
 class GetAllCategoriesUseCase(
     private val categoriesRepository: CategoriesRepository,
 ) {
-    suspend operator fun invoke(language: String): List<CategoryModel> {
-        return categoriesRepository.getAllCategories(language)
+    suspend operator fun invoke(): List<CategoryModel> {
+        return categoriesRepository.getAllCategories()
     }
 }

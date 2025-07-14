@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.CategoryModel
 import com.domain.search.model.Media
@@ -19,7 +18,6 @@ import com.feature.search.searchUi.navigation.Destinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 data class SearchScreenState(
     val uiState: UIState,
