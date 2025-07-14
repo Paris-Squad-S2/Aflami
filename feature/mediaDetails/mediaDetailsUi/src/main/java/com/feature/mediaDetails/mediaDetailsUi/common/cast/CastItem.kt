@@ -13,14 +13,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.domain.mediaDetails.model.Cast
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun CastItem(
-    cast: Cast,
+    imageUrl: String,
+    name: String,
     modifier: Modifier,
 ) {
     Column(
@@ -28,21 +29,32 @@ fun CastItem(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
-            model = cast.imageUrl,
+            model = imageUrl,
             contentDescription = "",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(72.dp)
+                .size(78.dp)
                 .clip(RoundedCornerShape(16.dp))
         )
         Spacer(modifier = Modifier.height(4.dp))
         Text(
-            text = cast.name,
+            text = name,
             style = Theme.textStyle.label.small,
+            color = Theme.colors.text.body,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1
         )
 
     }
 
+}
+
+@PreviewLightDark
+@Composable
+fun CastItemPreview() {
+    CastItem(
+        "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
+        "Ahmed",
+        modifier = Modifier
+    )
 }

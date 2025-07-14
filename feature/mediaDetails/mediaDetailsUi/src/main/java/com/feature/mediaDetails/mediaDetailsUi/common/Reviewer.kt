@@ -128,7 +128,7 @@ fun ReviewCard(
 
 @PreviewLightDark
 @Composable
-fun PreviewReviewCard() {
+fun ReviewCardPreview() {
     ReviewCard(
         name = "Manuel São Bento",
         createdAt = LocalDate.of(2016, 9, 10),
