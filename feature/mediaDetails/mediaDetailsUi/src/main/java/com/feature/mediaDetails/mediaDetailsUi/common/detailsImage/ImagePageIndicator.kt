@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.common
+package com.feature.mediaDetails.mediaDetailsUi.common.detailsImage
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

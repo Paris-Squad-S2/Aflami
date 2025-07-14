@@ -1,0 +1,72 @@
+package com.feature.mediaDetails.mediaDetailsUi.common.cast
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
+import com.domain.mediaDetails.model.Cast
+import com.paris_2.aflami.designsystem.theme.Theme
+
+@Composable
+fun CastSection(
+    castList: List<Cast>,
+    onSeeAllClick: () -> Unit,
+) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = "Cast",
+                style = Theme.textStyle.headline.small,
+                color = Theme.colors.text.title
+            )
+            Text(
+                text = "All",
+                style = Theme.textStyle.label.medium,
+                color = Theme.colors.primary,
+                modifier = Modifier.padding(start = 8.dp)
+            )
+        }
+
+        LazyRow(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            items(castList.size) { index ->
+                CastItem(
+                    imageUrl = castList[index].imageUrl,
+                    name = castList[index].name,
+                    modifier = Modifier
+                )
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewCastSection() {
+    val sampleCast = listOf(
+        Cast(1,"Tom Hanks", "https://upload.wikimedia.org/wikipedia/commons/a/a9/Tom_Hanks_TIFF_2019.jpg"),
+        Cast(2,"Michael Clarke", "https://upload.wikimedia.org/wikipedia/commons/e/e1/Michael_Clarke_Duncan.jpg"),
+        Cast(3,"David Morse", "https://upload.wikimedia.org/wikipedia/commons/d/d6/David_Morse_2007.jpg"),
+        Cast(4,"Bonnie Hunt", "https://upload.wikimedia.org/wikipedia/commons/f/fa/Bonnie_Hunt_2011.jpg")
+    )
+
+    CastSection(castList = sampleCast, onSeeAllClick = {})
+}
