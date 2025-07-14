@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.repository.entity.GenreEntity
 
 @Dao
-interface GenreDao {
+interface GenresDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addGenres(genres: List<GenreEntity>)
