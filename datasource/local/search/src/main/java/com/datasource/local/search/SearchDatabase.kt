@@ -5,6 +5,8 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.datasource.local.search.dao.CountryDao
 import com.datasource.local.search.dao.GenresDao
 import com.datasource.local.search.dao.MediaDao
@@ -17,7 +19,7 @@ import com.repository.search.entity.SearchHistoryEntity
 
 @Database(
     entities = [SearchHistoryEntity::class, MediaEntity::class, CountryEntity::class, GenreEntity::class],
-    version = 1,
+    version = 2,
 )
 @TypeConverters(SearchConverter::class)
 abstract class SearchDatabase : RoomDatabase() {
@@ -38,7 +40,15 @@ abstract class SearchDatabase : RoomDatabase() {
 
         private fun buildDatabase(context: Context): SearchDatabase {
             return Room.databaseBuilder(context, SearchDatabase::class.java, DATABASE_NAME)
+                .addMigrations(MIGRATION_1_2)
                 .build()
         }
+
+        private val MIGRATION_1_2 = object : Migration(1, 2) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE Genres_table ADD COLUMN language TEXT NOT NULL DEFAULT 'en'")
+            }
+        }
+
     }
 }
