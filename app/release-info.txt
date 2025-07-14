@@ -1,4 +1,4 @@
-versionName=0.1.13
+versionName=0.1.14
 - Localized Genres Support:
 - Genres fetched using device language (e.g., "ar", "en")
 - Local caching of genres by language
