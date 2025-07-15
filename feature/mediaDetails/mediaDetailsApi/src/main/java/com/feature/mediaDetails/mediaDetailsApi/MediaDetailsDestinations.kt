@@ -8,5 +8,8 @@ sealed interface MediaDetailsDestinations : MediaDetailsGraph {
     data object MediaDetailsGraph1 : MediaDetailsGraph
 
     @Serializable
-    data class MediaDetailsScreen(val mediaId: Int) : MediaDetailsDestination
+    data class MovieDetailsScreen(val movieId: Int) : MediaDetailsDestination
+
+    @Serializable
+    data class TvShowDetailsScreen(val tvShowId: Int) : MediaDetailsDestination
 }

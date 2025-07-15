@@ -443,14 +443,19 @@ class SearchViewModel(
         searchQuery(screenState.value.searchUiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int) {
+    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
         tryToExecute(
             execute = {
                 appNavigator.navigate(
                     AppDestinations.MediaDetailsFeature(
-                        MediaDetailsDestinations.MediaDetailsScreen(
-                            mediaId = id
-                        ).toJson()
+                        when (mediaType) {
+                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = id
+                            )
+                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = id
+                            )
+                        }.toJson()
                     )
                 )
             },

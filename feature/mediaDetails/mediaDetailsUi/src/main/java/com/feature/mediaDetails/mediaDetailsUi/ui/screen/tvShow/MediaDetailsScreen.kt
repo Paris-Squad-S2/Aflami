@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.search
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,7 +12,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun MediaDetailsScreen(viewModel: MediaDetailsViewModelViewModel = koinViewModel()) {
+fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModelViewModel = koinViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     Box(
         modifier = Modifier.fillMaxSize(),

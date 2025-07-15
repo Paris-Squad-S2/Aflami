@@ -1,21 +1,21 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.search
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 
-data class MediaDetailsViewModelScreenState(
+data class MovieDetailsViewModelScreenState(
     val uiState: String,
     val isLoading: Boolean,
     val errorMessage: String?
 )
 
-class MediaDetailsViewModelViewModel(
+class MovieDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle
 ) :
-    BaseViewModel<MediaDetailsViewModelScreenState>(
-        MediaDetailsViewModelScreenState(
+    BaseViewModel<MovieDetailsViewModelScreenState>(
+        MovieDetailsViewModelScreenState(
             uiState = "",
             isLoading = false,
             errorMessage = null
@@ -24,10 +24,10 @@ class MediaDetailsViewModelViewModel(
 
     init {
         val mediaId =
-            savedStateHandle.toRoute<MediaDetailsDestinations.MediaDetailsScreen>().mediaId
+            savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
         emitState(
-            MediaDetailsViewModelScreenState(
-                uiState = "Media ID: $mediaId",
+            MovieDetailsViewModelScreenState(
+                uiState = "Movie ID: $mediaId",
                 isLoading = false,
                 errorMessage = null
             )
@@ -36,8 +36,8 @@ class MediaDetailsViewModelViewModel(
 
     fun onNavigate() {
         navigate(
-            MediaDetailsDestinations.MediaDetailsScreen(
-                mediaId = 123
+            MediaDetailsDestinations.TvShowDetailsScreen(
+                tvShowId = 123
             )
         )
     }

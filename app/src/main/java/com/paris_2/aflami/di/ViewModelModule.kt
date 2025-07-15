@@ -1,6 +1,7 @@
 package com.paris_2.aflami.di
 
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.search.MediaDetailsViewModelViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.MovieDetailsViewModelViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.TvShowDetailsViewModelViewModel
 import com.feature.search.searchUi.screen.findByActor.FindByActorViewModel
 import com.feature.search.searchUi.screen.search.SearchViewModel
 import com.feature.search.searchUi.screen.worldTour.WorldTourViewModel
@@ -11,5 +12,6 @@ val viewModelModule = module{
     viewModelOf(::SearchViewModel)
     viewModelOf(::FindByActorViewModel)
     viewModelOf(::WorldTourViewModel)
-    viewModelOf(::MediaDetailsViewModelViewModel)
+    viewModelOf(::MovieDetailsViewModelViewModel)
+    viewModelOf(::TvShowDetailsViewModelViewModel)
 }
