@@ -1,4 +1,4 @@
-package com.datasource.local.datasorce
+package com.datasource.local.datasource
 
 import com.datasource.local.dao.GalleryDao
 import com.repository.datasorce.local.GalleryLocalDataSource
