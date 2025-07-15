@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi
+package com.feature.mediaDetails.mediaDetailsUi.common.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
