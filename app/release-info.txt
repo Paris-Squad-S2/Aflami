@@ -1,3 +1,4 @@
 versionName=0.1.16
 - update navigation by use ui effect
 - fix multiple navigation for same screen
+- fix back navigation in find by actor screen

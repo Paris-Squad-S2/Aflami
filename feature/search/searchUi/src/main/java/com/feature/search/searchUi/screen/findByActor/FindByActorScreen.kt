@@ -17,7 +17,6 @@ import androidx.navigation.NavController
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.CollectUiEffect
 import com.feature.search.searchUi.comon.components.SearchResultContent
-import com.feature.search.searchUi.screen.worldTour.WorldTourUiEffect
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
@@ -37,7 +36,7 @@ fun FindByActorScreen(
 
     CollectUiEffect(viewModel.uiEffect) { effect ->
         when (effect) {
-            is WorldTourUiEffect.NavigateToBack -> navController.popBackStack()
+            is FindByActorUiEffect.NavigateToBack -> navController.popBackStack()
         }
     }
 
