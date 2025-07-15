@@ -316,7 +316,7 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
         return fakeCast
     }
 
-    override suspend fun getTvShowRecommendations(tvShowId: Int): List<TvShow> {
+    override suspend fun getTvShowRecommendations(tvShowId: Int,page: Int): List<TvShow> {
         return fakeTvShows.filter { it.id != tvShowId }.take(3)
     }
 
@@ -328,12 +328,12 @@ class FakeTvShowRepositoryImpl : TvShowRepository {
         return fakeProductionCompanies
     }
 
-    override suspend fun getTvShowSeasons(tvShowId: Int): List<Season> {
-        return fakeSeasons
+    override suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season {
+        return fakeSeasons.first()
     }
 
 
-    override suspend fun getTvShowReview(tvShowId: Int): List<Review> {
+    override suspend fun getTvShowReview(tvShowId: Int,page: Int): List<Review> {
         return fakeReviews
     }
 

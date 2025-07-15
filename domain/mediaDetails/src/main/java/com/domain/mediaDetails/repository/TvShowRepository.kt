@@ -10,10 +10,10 @@ import com.domain.mediaDetails.model.Season
 interface TvShowRepository {
     suspend fun getTvShowDetails(tvShowId: Int): TvShow
     suspend fun getTvShowCast(tvShowId: Int): List<Cast>
-    suspend fun getTvShowRecommendations(tvShowId: Int): List<TvShow>
+    suspend fun getTvShowRecommendations(tvShowId: Int,page: Int): List<TvShow>
     suspend fun getTvShowGallery(tvShowId: Int): Gallery
     suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany>
-    suspend fun getTvShowSeasons(tvShowId: Int): List<Season>
-    suspend fun getTvShowReview(tvShowId: Int): List<Review>
+    suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season
+    suspend fun getTvShowReview(tvShowId: Int,page: Int): List<Review>
     suspend fun addTvShowToFavorite(tvShowId: Int)
 }
