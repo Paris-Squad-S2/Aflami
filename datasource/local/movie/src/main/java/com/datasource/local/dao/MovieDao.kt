@@ -9,8 +9,8 @@ import com.repository.entity.MovieEntity
 @Dao
 interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMovies(movies: List<MovieEntity>)
+    suspend fun addMovies(movies: MovieEntity)
 
-    @Query("SELECT * FROM movies_table")
-    suspend fun getMovies(): List<MovieEntity>
+    @Query("SELECT * FROM movies_table WHERE id = :movieId")
+    suspend fun getMovies(movieId: Int): MovieEntity
 }

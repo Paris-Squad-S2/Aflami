@@ -5,8 +5,8 @@ import com.repository.datasorce.local.MovieLocalDataSource
 import com.repository.entity.MovieEntity
 
 class MovieLocalDataSourceImp(private val dao: MovieDao) : MovieLocalDataSource {
-    override suspend fun addMovies(movies: List<MovieEntity>) = dao.addMovies(movies)
+    override suspend fun addMovie(movie: MovieEntity) = dao.addMovies(movie)
 
-    override suspend fun getMovies(): List<MovieEntity> = dao.getMovies()
+    override suspend fun getMovie(movieId: Int): MovieEntity = dao.getMovies(movieId)
 
 }

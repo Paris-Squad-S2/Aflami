@@ -5,8 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.datasource.local.dao.CastDao
+import com.datasource.local.dao.CountryDao
 import com.datasource.local.dao.GalleryDao
+import com.datasource.local.dao.GenresDao
+import com.datasource.local.dao.ImageDao
 import com.datasource.local.dao.MovieDao
+import com.datasource.local.dao.ProductionCompanyDao
 import com.datasource.local.dao.ReviewDao
 import com.repository.entity.CastEntity
 import com.repository.entity.GalleryEntity
@@ -18,10 +22,16 @@ import com.repository.entity.ReviewEntity
     version = 1
 )
 abstract class MovieDetailDataBase : RoomDatabase() {
-    abstract fun movieDao(): MovieDao
+
     abstract fun castDao(): CastDao
-    abstract fun reviewDao(): ReviewDao
+    abstract fun countryDao(): CountryDao
     abstract fun galleryDao(): GalleryDao
+    abstract fun genreDao(): GenresDao
+    abstract fun imageDao(): ImageDao
+    abstract fun movieDao(): MovieDao
+    abstract fun productionCompanyDao(): ProductionCompanyDao
+    abstract fun reviewDao(): ReviewDao
+
 
     companion object {
         const val DATABASE_NAME = "movie_detail_db"

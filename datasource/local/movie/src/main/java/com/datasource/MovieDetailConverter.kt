@@ -10,7 +10,7 @@ class MovieDetailConverter {
 
     @TypeConverter
     fun fromProductionCompanyList(companies: List<ProductionCompanyEntity>?): String? =
-        companies.let { json.encodeToString(companies) }
+        companies.let { json.encodeToString(it) }
 
 
     @TypeConverter

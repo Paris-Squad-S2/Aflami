@@ -3,6 +3,6 @@ package com.repository.datasorce.local
 import com.repository.entity.MovieEntity
 
 interface MovieLocalDataSource {
-    suspend fun addMovies(movies: List<MovieEntity>)
-    suspend fun getMovies(): List<MovieEntity>
+    suspend fun addMovie(movie: MovieEntity)
+    suspend fun getMovie(movieId:Int): MovieEntity
 }
