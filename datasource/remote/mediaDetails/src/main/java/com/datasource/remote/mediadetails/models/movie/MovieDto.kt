@@ -1,9 +1,5 @@
 package com.datasource.remote.mediadetails.models.movie
 
-import com.datasource.remote.mediadetails.models.tvShow.TvShowBelongsToCollectionDto
-import com.datasource.remote.mediadetails.models.tvShow.TvShowGenreDto
-import com.datasource.remote.mediadetails.models.tvShow.TvShowProductionCompanyDto
-import com.datasource.remote.mediadetails.models.tvShow.TvShowProductionCountryDto
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -11,9 +7,9 @@ import kotlinx.serialization.Serializable
 data class MovieDto(
     @SerialName("adult") val adult: Boolean? = null,
     @SerialName("backdrop_path") val backdropPath: String? = null,
-    @SerialName("belongs_to_collection") val tvShowBelongsToCollectionDto: TvShowBelongsToCollectionDto? = null,
+    @SerialName("belongs_to_collection") val tvShowBelongsToCollectionDto: MovieBelongsToCollectionDto? = null,
     @SerialName("budget") val budget: Int? = null,
-    @SerialName("genres") val tvShowGenreDto: List<TvShowGenreDto>? = null,
+    @SerialName("genres") val tvShowGenreDto: List<MovieGenreDto>? = null,
     @SerialName("homepage") val homepage: String? = null,
     @SerialName("id") val id: Int? = null,
     @SerialName("imdb_id") val imdbId: String? = null,
@@ -23,8 +19,8 @@ data class MovieDto(
     @SerialName("overview") val overview: String? = null,
     @SerialName("popularity") val popularity: Double? = null,
     @SerialName("poster_path") val posterPath: String? = null,
-    @SerialName("production_companies") val productionCompanies: List<TvShowProductionCompanyDto>? = null,
-    @SerialName("production_countries") val productionCountries: List<TvShowProductionCountryDto>? = null,
+    @SerialName("production_companies") val productionCompanies: List<MovieProductionCompanyDto>? = null,
+    @SerialName("production_countries") val productionCountries: List<MovieProductionCountryDto>? = null,
     @SerialName("release_date") val releaseDate: String? = null,
     @SerialName("revenue") val revenue: Int? = null,
     @SerialName("runtime") val runtime: Int? = null,
