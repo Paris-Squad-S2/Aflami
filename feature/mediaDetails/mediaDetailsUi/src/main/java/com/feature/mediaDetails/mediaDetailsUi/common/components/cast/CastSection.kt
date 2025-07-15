@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.common.components.cast
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -12,16 +13,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.domain.mediaDetails.model.Cast
+import com.feature.mediaDetails.mediaDetailsUi.screen.movie.CastUi
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun CastSection(
-    castList: List<Cast>,
+    castList: List<CastUi>,
     onSeeAllClick: () -> Unit,
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -38,10 +38,13 @@ fun CastSection(
                 text = "All",
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier
+                    .padding(start = 8.dp)
+                    .clickable{
+                        onSeeAllClick()
+                    }
             )
         }
-
         LazyRow(
             modifier = Modifier.padding(horizontal = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -61,10 +64,10 @@ fun CastSection(
 @Composable
 fun PreviewCastSection() {
     val sampleCast = listOf(
-        Cast(1,"Tom Hanks", "https://upload.wikimedia.org/wikipedia/commons/a/a9/Tom_Hanks_TIFF_2019.jpg"),
-        Cast(2,"Michael Clarke", "https://upload.wikimedia.org/wikipedia/commons/e/e1/Michael_Clarke_Duncan.jpg"),
-        Cast(3,"David Morse", "https://upload.wikimedia.org/wikipedia/commons/d/d6/David_Morse_2007.jpg"),
-        Cast(4,"Bonnie Hunt", "https://upload.wikimedia.org/wikipedia/commons/f/fa/Bonnie_Hunt_2011.jpg")
+        CastUi("Tom Hanks", "https://upload.wikimedia.org/wikipedia/commons/a/a9/Tom_Hanks_TIFF_2019.jpg"),
+        CastUi("Michael Clarke", "https://upload.wikimedia.org/wikipedia/commons/e/e1/Michael_Clarke_Duncan.jpg"),
+        CastUi("David Morse", "https://upload.wikimedia.org/wikipedia/commons/d/d6/David_Morse_2007.jpg"),
+        CastUi("Bonnie Hunt", "https://upload.wikimedia.org/wikipedia/commons/f/fa/Bonnie_Hunt_2011.jpg")
     )
 
     CastSection(castList = sampleCast, onSeeAllClick = {})

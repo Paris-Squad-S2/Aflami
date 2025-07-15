@@ -2,10 +2,10 @@ package com.feature.mediaDetails.mediaDetailsUi.screen.movie
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.feature.mediaDetails.mediaDetailsUi.common.components.DescriptionSection
+import com.feature.mediaDetails.mediaDetailsUi.common.components.cast.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage.DetailsImage
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -26,7 +27,7 @@ import com.paris_2.aflami.designsystem.R as RDesignSystem
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
-  //  movieScreenInteractionListener: MovieScreenInteractionListener
+    //  movieScreenInteractionListener: MovieScreenInteractionListener
 ) {
     Box(
         Modifier
@@ -35,7 +36,38 @@ fun MovieDetailsScreenContent(
             .navigationBarsPadding()
             .statusBarsPadding()
     ) {
-        Column {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .navigationBarsPadding()
+        ) {
+            item {
+                DetailsImage(
+                    imageUris = listOf(
+                        state.movieDetailsUiState.movie.posterUrl,
+                    ),
+                    rating = state.movieDetailsUiState.movie.rating,
+                    onPlayClick = {}
+                )
+            }
+            item {
+                DescriptionSection(
+                    title = state.movieDetailsUiState.movie.title,
+                    genres = state.movieDetailsUiState.movie.genres,
+                    releaseDate = state.movieDetailsUiState.movie.releaseDate,
+                    runtime = state.movieDetailsUiState.movie.runtime,
+                    country = state.movieDetailsUiState.movie.country,
+                    description = state.movieDetailsUiState.movie.description
+                )
+            }
+            item {
+                CastSection(
+                    castList = state.movieDetailsUiState.cast,
+                    onSeeAllClick = {}
+                )
+            }
+        }
+
         TopAppBar(
             leadingIcons = listOf(
                 iconItemWithDefaults(
@@ -54,22 +86,6 @@ fun MovieDetailsScreenContent(
                 )
             )
         )
-        DetailsImage(
-            imageUris = listOf(
-                state.movieDetailsUiState.movie.posterUrl,
-            ),
-            rating = state.movieDetailsUiState.movie.rating,
-            onPlayClick = {}
-        )
-        DescriptionSection(
-            title = state.movieDetailsUiState.movie.title,
-            genres = state.movieDetailsUiState.movie.genres,
-            releaseDate = state.movieDetailsUiState.movie.releaseDate,
-            runtime = state.movieDetailsUiState.movie.runtime,
-            country = state.movieDetailsUiState.movie.country,
-            description = state.movieDetailsUiState.movie.description
-        )
-    }
     }
 }
 
