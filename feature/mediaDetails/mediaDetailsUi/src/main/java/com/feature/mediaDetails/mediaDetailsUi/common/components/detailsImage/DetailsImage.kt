@@ -15,8 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -76,11 +76,6 @@ fun DetailsImage(
                     .align(Alignment.BottomCenter)
                     .offset(y = 32.dp)
                     .size(72.dp)
-                    .graphicsLayer {
-                        shadowElevation = 12.dp.toPx()
-                        shape = CircleShape
-                        clip = false
-                    }
                     .drawBehind {
                         drawCircle(
                             color = color,
@@ -88,6 +83,12 @@ fun DetailsImage(
                             center = center
                         )
                     }
+                    .shadow(
+                        elevation = 12.dp,
+                        spotColor = Color(0xFFD85895).copy(alpha = 0.12f),
+                        ambientColor = Color(0xFFD85895).copy(alpha = 0.12f),
+                        shape = CircleShape
+                    )
                     .border(
                         width = 2.dp,
                         color = Theme.colors.stroke.copy(alpha = 0.08f),
