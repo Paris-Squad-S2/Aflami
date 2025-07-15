@@ -65,6 +65,9 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
 }
