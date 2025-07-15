@@ -8,10 +8,10 @@ import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.entity.SearchHistoryEntity
 import com.repository.search.entity.SearchType
-import com.repository.search.exception.NoDataForActorException
-import com.repository.search.exception.NoDataForCountryException
-import com.repository.search.exception.NoDataForSearchException
-import com.repository.search.exception.NoInternetConnectionException
+import com.domain.search.exception.NoDataForActorException
+import com.domain.search.exception.NoDataForCountryException
+import com.domain.search.exception.NoDataForSearchException
+import com.domain.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMedia
 import com.repository.search.mapper.toMedias
 import io.mockk.Runs
@@ -100,18 +100,18 @@ class SearchMediaRepositoryImplTest {
                 rating = 7.8,
                 searchType = SearchType.Actor
             )
-        )
+        ) andThen emptyList()
+
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(actorName, SearchType.Actor) } just Runs
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { searchRemoteDataSource.searchPerson(actorName, language = any()) } returns mockk(
-            relaxed = true
-        )
+        coEvery { searchRemoteDataSource.searchPerson(actorName, language = any()) } returns mockk(relaxed = true)
         coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
         coEvery { historyLocalDataSource.addSearchQuery(actorName, SearchType.Actor) } just Runs
-        coEvery { mediaLocalDataSource.getMediaByActor(actorName) } returns emptyList()
 
-        val result = repository.getMediaByActor(actorName)
-        assertEquals(emptyList(), result)
+
+        assertFailsWith<NoDataForActorException> {
+            repository.getMediaByActor(actorName)
+        }
     }
 
     @Test
@@ -119,11 +119,14 @@ class SearchMediaRepositoryImplTest {
         val actorName = "Will Smith"
 
         coEvery { mediaLocalDataSource.getMediaByActor(actorName) } returns emptyList()
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
-        assertFailsWith<NoInternetConnectionException> {
+        val exception = assertFailsWith<NoInternetConnectionException> {
             repository.getMediaByActor(actorName)
         }
+
+        assertEquals("Please connect your device to the internet", exception.message)
     }
 
     @Test
@@ -217,11 +220,14 @@ class SearchMediaRepositoryImplTest {
         val countryName = "France"
 
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName) } returns emptyList()
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
-        assertFailsWith<NoInternetConnectionException> {
+        val exception = assertFailsWith<NoInternetConnectionException> {
             repository.getMoviesByCountry(countryName)
         }
+
+        assertEquals("Please connect your device to the internet", exception.message)
     }
 
     @Test
@@ -305,11 +311,14 @@ class SearchMediaRepositoryImplTest {
         val query = "Titanic"
 
         coEvery { mediaLocalDataSource.getMediaByTitleQuery(query) } returns emptyList()
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(query, SearchType.Query) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
-        assertFailsWith<NoInternetConnectionException> {
+        val exception = assertFailsWith<NoInternetConnectionException> {
             repository.getMediaByQuery(query)
         }
+
+        assertEquals("Please connect your device to the internet", exception.message)
     }
 
     @Test

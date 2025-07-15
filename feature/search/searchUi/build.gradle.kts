@@ -122,6 +122,7 @@ dependencies {
     implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
+    implementation(project(":datasource:remote:mediaDetails"))
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
