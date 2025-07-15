@@ -48,7 +48,7 @@ fun DetailsImage(
                 .fillMaxWidth()
                 .height(263.dp)
         ) {
-            val color : Color = Theme.colors.stroke.copy(alpha = 0.08f)
+            val color : Color = Theme.colors.surfaceHigh
             VerticalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
@@ -79,7 +79,7 @@ fun DetailsImage(
                     .graphicsLayer {
                         shadowElevation = 12.dp.toPx()
                         shape = CircleShape
-                        clip = true
+                        clip = false
                     }
                     .drawBehind {
                         drawCircle(
