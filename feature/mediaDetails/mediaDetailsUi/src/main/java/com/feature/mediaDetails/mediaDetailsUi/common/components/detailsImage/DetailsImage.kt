@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,7 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import coil.compose.rememberAsyncImagePainter
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.MediaButtonType
 import com.paris_2.aflami.designsystem.components.MediaPlayButton
@@ -48,21 +50,51 @@ fun DetailsImage(
                 .fillMaxWidth()
                 .height(263.dp)
         ) {
-            val color : Color = Theme.colors.surfaceHigh
+            val color: Color = Theme.colors.surfaceHigh
             VerticalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
             ) { page ->
-                AsyncImage(
-                    model = imageUris[page],
-                    contentDescription = "poster",
+                val painter = rememberAsyncImagePainter(model = imageUris[page])
+                val painterState = painter.state
+
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .align(Alignment.Center),
-                    contentScale = ContentScale.Fit,
-                    placeholder = painterResource(id = R.drawable.ic_film_roll),
-                    error = painterResource(id = R.drawable.img_disconnect)
-                )
+                        .align(Alignment.Center)
+                ) {
+                    when (painterState) {
+                        is AsyncImagePainter.State.Loading -> {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_film_roll),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .align(Alignment.Center)
+                            )
+                        }
+                        is AsyncImagePainter.State.Error -> {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_film_roll),
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .size(48.dp)
+                                    .align(Alignment.Center)
+                            )
+                        }
+                        is AsyncImagePainter.State.Success -> {
+                            Image(
+                                painter = painter,
+                                contentDescription = "poster",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .align(Alignment.Center),
+                                contentScale = ContentScale.Fit
+                            )
+                        }
+                        else -> {}
+                    }
+                }
             }
             RatingCard(
                 rating = rating,
@@ -115,18 +147,18 @@ fun DetailsImage(
     }
 }
 
-    @PreviewLightDark
-    @Composable
-    fun DetailsImagePreview() {
-        AflamiTheme {
-            DetailsImage(
-                imageUris = listOf(
-                    "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
-                ),
-                rating = "9.9",
-                onPlayClick = {}
-            )
-        }
+@PreviewLightDark
+@Composable
+fun DetailsImagePreview() {
+    AflamiTheme {
+        DetailsImage(
+            imageUris = listOf(
+                "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
+            ),
+            rating = "9.9",
+            onPlayClick = {}
+        )
     }
+}
 
 

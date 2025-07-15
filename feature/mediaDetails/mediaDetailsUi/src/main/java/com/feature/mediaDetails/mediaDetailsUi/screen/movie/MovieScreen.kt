@@ -59,10 +59,7 @@ fun MovieDetailsScreenContent(
             rating = state.movieDetailsUiState.movie.rating,
             onPlayClick = {}
         )
-
-
     }
-
 }
 
 @PreviewLightDark
