@@ -115,6 +115,7 @@ dependencies {
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_MEDIA_DETAILS))
     implementation(project(Modules.DOMAIN_SEARCH))
+    implementation(project(Modules.DESIGN_SYSTEM))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 

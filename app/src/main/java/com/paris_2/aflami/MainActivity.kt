@@ -1,17 +1,20 @@
 package com.paris_2.aflami
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-
+import com.paris_2.aflami.appnavigation.AppNavGraph
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val intent = Intent(this, Class.forName("com.feature.search.searchUi.MainActivity"))
-        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-        startActivity(intent)
+        setContent {
+            AflamiTheme {
+                AppNavGraph()
+            }
+        }
     }
 }

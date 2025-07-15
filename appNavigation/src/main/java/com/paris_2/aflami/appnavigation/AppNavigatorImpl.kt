@@ -6,22 +6,22 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class NavigatorImpl(override val startGraph: Graph) : Navigator {
-    private val _navigateEvent = Channel<NavigationEvent>()
+class AppNavigatorImpl(override val startGraph: AppGraph) : AppNavigator {
+    private val _navigateEvent = Channel<AppNavigationEvent>()
     override val navigationEvent = _navigateEvent.receiveAsFlow()
     private val mutex = Mutex()
     private var lastNavigateTime = 0L
 
-    override suspend fun navigate(destination: Destination, navOptions: NavOptions?) {
+    override suspend fun navigate(destination: AppDestination, navOptions: NavOptions?) {
         mutex.withLock {
             val now = System.currentTimeMillis()
             if (now - lastNavigateTime >= 1000) {
                 lastNavigateTime = now
                 _navigateEvent.send(
-                    NavigationEvent.Navigate(destination = destination, navOptions = navOptions)
+                    AppNavigationEvent.Navigate(destination = destination, navOptions = navOptions)
                 )
             }
         }
     }
-    override suspend fun navigateUp() { _navigateEvent.send(NavigationEvent.NavigateUp) }
+    override suspend fun navigateUp() { _navigateEvent.send(AppNavigationEvent.NavigateUp) }
 }

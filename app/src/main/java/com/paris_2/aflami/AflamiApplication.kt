@@ -14,6 +14,7 @@ import com.paris_2.aflami.di.viewModelModule
 import com.paris_2.aflami.di.workManagerModule
 import androidx.work.Configuration
 import androidx.work.WorkManager
+import com.paris_2.aflami.di.FeatureAPIModule
 import com.repository.search.NetworkConnectionChecker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -28,6 +29,7 @@ class AflamiApplication : Application() {
             androidLogger()
             androidContext(this@AflamiApplication)
             modules(
+                FeatureAPIModule,
                 viewModelModule,
                 roomModule,
                 workManagerModule,
@@ -36,7 +38,7 @@ class AflamiApplication : Application() {
                 repositoryModule,
                 NetworkModule,
                 SearchRemoteDataSourceModule,
-                mediaDetailsModule
+                mediaDetailsModule,
             )
         }
 

@@ -2,14 +2,15 @@ package com.paris_2.aflami.appnavigation
 
 import kotlinx.serialization.Serializable
 
-sealed interface AppDestinations : Graph {
+@Serializable
+sealed interface AppDestinations : AppGraph {
 
     @Serializable
-    data object AppGraph : Graph
+    data object AppGraph1 : AppGraph
 
     @Serializable
-    data object SearchFeature : Destination
+    data class SearchFeature(val searchDestination: String? = null) : AppDestination
 
     @Serializable
-    data object DetailsFeature : Destination
+    data object DetailsFeature : AppDestination
 }

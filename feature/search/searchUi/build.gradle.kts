@@ -116,6 +116,8 @@ dependencies {
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
     implementation(project(Modules.APP_NAVIGATION))
+
+    implementation(project(Modules.FEATURE_SEARCH_API))
 }
 
 

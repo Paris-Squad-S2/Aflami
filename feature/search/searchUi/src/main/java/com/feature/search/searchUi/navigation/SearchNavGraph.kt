@@ -6,25 +6,27 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.feature.search.searchApi.SearchDestination
+import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.screen.findByActor.FindByActorScreen
 import com.feature.search.searchUi.screen.search.SearchScreen
 import com.feature.search.searchUi.screen.worldTour.WorldTourScreen
-import com.paris_2.aflami.appnavigation.NavigationEvent
-import com.paris_2.aflami.appnavigation.Navigator
-import com.paris_2.aflami.appnavigation.ObserveAsEvents
 import org.koin.compose.koinInject
 
 @Composable
-fun SearchNavGraph(navigator: Navigator = koinInject()) {
+fun SearchNavGraph(
+    navigator: SearchNavigator = koinInject(),
+    startDestination: SearchDestination? = null
+) {
     val navController = rememberNavController()
 
-    ObserveAsEvents(navigator.navigationEvent) { event ->
+    ObserveAsEvents(navigator.searchNavigationEvent) { event ->
         when (event) {
-            is NavigationEvent.Navigate -> navController.navigate(
+            is SearchNavigationEvent.Navigate -> navController.navigate(
                 route = event.destination, navOptions = event.navOptions
             )
 
-            NavigationEvent.NavigateUp -> navController.navigateUp()
+            SearchNavigationEvent.NavigateUp -> navController.navigateUp()
         }
     }
 
@@ -32,12 +34,12 @@ fun SearchNavGraph(navigator: Navigator = koinInject()) {
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        buildSearchNavGraph()
+        buildSearchNavGraph(startDestination)
     }
 }
 
-fun NavGraphBuilder.buildSearchNavGraph() {
-    navigation<SearchDestinations.SearchGraph>(startDestination = SearchDestinations.SearchScreen) {
+fun NavGraphBuilder.buildSearchNavGraph(startDestination: SearchDestination? = null) {
+    navigation<SearchDestinations.SearchGraph1>(startDestination = startDestination ?: SearchDestinations.SearchScreen) {
         composable<SearchDestinations.SearchScreen> { SearchScreen() }
         composable<SearchDestinations.WorldTourScreen> { WorldTourScreen() }
         composable<SearchDestinations.FindByActorScreen> { FindByActorScreen() }
