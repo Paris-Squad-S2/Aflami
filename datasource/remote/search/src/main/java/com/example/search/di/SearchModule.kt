@@ -13,16 +13,8 @@ import org.koin.dsl.module
 
 val SearchModule: Module = module {
 
-    single<SearchApiService> {
-        KtorSearchApiService(
-            httpClient = get(), baseUrl = "https://api.themoviedb.org/3/"
-        )
-    }
-    single<GenresApiServices> {
-        KtorGenresApiServices(
-            httpClient = get(), baseUrl = "https://api.themoviedb.org/3/"
-        )
-    }
+    single<SearchApiService> { KtorSearchApiService(httpClient = get()) }
+    single<GenresApiServices> { KtorGenresApiServices(httpClient = get()) }
     singleOf(::SearchRemoteDataSourceImpl) { bind<com.repository.search.dataSource.remote.SearchRemoteDataSource>() }
     singleOf(::GenresRemoteDataSourceImp) { bind<com.repository.search.dataSource.remote.GenresRemoteDataSource>() }
 }

@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import androidx.work.WorkerFactory
+import com.datasource.remote.mediadetails.di.mediaDetailsModule
 import com.example.search.di.SearchModule
 import com.feature.search.searchUi.di.NetworkModule
 import com.feature.search.searchUi.di.dataSourceModule
@@ -37,6 +38,7 @@ class SearchApp : Application() {
                 repositoryModule,
                 NetworkModule,
                 SearchModule,
+                mediaDetailsModule
             )
         }
 
