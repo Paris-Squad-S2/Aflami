@@ -10,12 +10,13 @@ import com.example.tvshow.model.remote.TvShowLogoDto
 import com.example.tvshow.model.remote.TvShowProductionCompanyDto
 import com.example.tvshow.model.remote.TvShowReviewDto
 import com.example.tvshow.model.remote.TvShowReviewsDto
+import com.example.tvshow.model.remote.TvShowSeasonDto
 import com.example.tvshow.model.remote.TvShowSimilarDto
 import com.example.tvshow.model.remote.TvShowSimilarsDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
 class TvShowRepositoryImplTest {
@@ -163,7 +164,7 @@ class TvShowRepositoryImplTest {
         }
 
     @Test
-    fun `getMovieReview - should return movie review when API delivers the goods`() =
+    fun `getTvShowReview - should return tv show review when API delivers the goods`() =
         runTest {
             // Given
             val tvShowId = 123
@@ -188,6 +189,33 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowReviewsDto
 
             val result = repository.getTvShowReview(tvShowId,page)
+
+            // Then
+            assertEquals(expectedCast, result)
+        }
+
+    @Test
+    fun `getSeasonDetails - should return season details when API delivers the goods`() =
+        runTest {
+            // Given
+            val tvShowId = 123
+            val language = "en"
+            val seasonNumber = 1
+
+            val mockTvShowReviewsDto = TvShowSeasonDto(
+                name = "stronger things"
+            )
+
+            val expectedCast = mockTvShowReviewsDto.toEntity()
+
+            // When
+            coEvery {
+                tvShowDetailsRemoteDataSource.getSeasonDetails(
+                    tvShowId, seasonNumber, language
+                )
+            } returns mockTvShowReviewsDto
+
+            val result = repository.getSeasonDetails(tvShowId,seasonNumber)
 
             // Then
             assertEquals(expectedCast, result)
