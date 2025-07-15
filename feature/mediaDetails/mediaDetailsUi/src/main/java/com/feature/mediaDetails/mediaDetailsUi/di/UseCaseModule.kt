@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.di
 
-import com.domain.mediaDetails.useCases.*
 import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
@@ -9,7 +8,7 @@ import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetSeasonsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
@@ -27,7 +26,7 @@ val useCaseModule = module {
     factory { GetMovieReviewsUseCase(get()) }
     factory { GetMoviesProductionCompaniesUseCase(get()) }
     factory { AddTvShowToFavoriteUseCase(get()) }
-    factory { GetSeasonsUseCase(get()) }
+    factory { GetSeasonDetailsUseCase(get()) }
     factory { GetTvShowCastUseCase(get()) }
     factory { GetTvShowDetailsUseCase(get()) }
     factory { GetTvShowGalleryUseCase(get()) }
