@@ -24,7 +24,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resConfigs("en")
         vectorDrawables.useSupportLibrary = true
     }
 
@@ -102,6 +101,8 @@ dependencies {
     implementation(libs.koin.compose)
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.android)
+
+    implementation(libs.androidx.startup.runtime)
 }
 
 kover {

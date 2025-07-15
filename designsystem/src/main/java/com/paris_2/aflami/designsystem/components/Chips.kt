@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -42,11 +43,15 @@ fun Chips(
             modifier = Modifier.clickable { onClick() }
                 .clip(RoundedCornerShape(16.dp))
                 .background(
-                    if (isSelected) Theme.colors.secondary else Theme.colors.surfaceHigh
+                    animateColorAsState(
+                        targetValue = if (isSelected) Theme.colors.secondary else Theme.colors.surfaceHigh
+                    ).value
                 )
                 .border(
                     width = 1.dp,
-                    color = if (isSelected) Theme.colors.stroke else Color.Transparent,
+                    color = animateColorAsState(
+                        targetValue = if (isSelected) Theme.colors.stroke else Color.Transparent
+                    ).value,
                     shape = RoundedCornerShape(16.dp)
                 ),
             contentAlignment = Alignment.Center
@@ -55,14 +60,18 @@ fun Chips(
                 painter = icon,
                 contentDescription = null,
                 modifier = Modifier.padding(16.dp),
-                tint = if (isSelected) Theme.colors.onPrimaryColors.onPrimary else Theme.colors.text.hint
+                tint = animateColorAsState(
+                    targetValue = if (isSelected) Theme.colors.onPrimaryColors.onPrimary else Theme.colors.text.hint
+                ).value
             )
         }
 
         Text(
             text = title,
             style = Theme.textStyle.label.small,
-            color = if (isSelected) Theme.colors.text.body else Theme.colors.text.hint,
+            color = animateColorAsState(
+                targetValue = if (isSelected) Theme.colors.text.body else Theme.colors.text.hint
+            ).value,
             minLines = 2,
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
