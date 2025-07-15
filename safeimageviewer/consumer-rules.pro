@@ -1,0 +1,2 @@
+-keep class com.designSystem.safeimageviewer.SafeImageViewerKt { *; }
+-keep class java.lang.invoke.StringConcatFactory { *; }

@@ -4,7 +4,9 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
 }
-
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
 android {
     namespace = "com.repository.search"
     compileSdk = Configurations.COMPILE_SDK
@@ -29,8 +31,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
 }
 

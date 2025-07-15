@@ -88,13 +88,30 @@ android {
             isShrinkResources = false
         }
     }
+
+    packaging {
+        resources {
+            excludes += setOf(
+                "**/libtensorflowlite_jni.so",
+                "**/libandroidx.graphics.path.so",
+                "**/libdatastore_shared_counter.so"
+            )
+            excludes += setOf(
+                "/META-INF/AL2.0",
+                "/META-INF/LGPL2.1"
+            )
+        }
+    }
+
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = Configurations.JAVA_VERSION
         targetCompatibility = Configurations.JAVA_VERSION
     }
-    kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
     buildFeatures {
         compose = true

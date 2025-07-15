@@ -52,3 +52,5 @@
 -dontwarn com.paris_2.aflami.designsystem.theme.AflamiThemeKt
 -dontwarn com.paris_2.aflami.designsystem.theme.Theme
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+-keep class java.lang.invoke.StringConcatFactory { *; }
+-keep class java.lang.invoke.StringConcatException { *; }

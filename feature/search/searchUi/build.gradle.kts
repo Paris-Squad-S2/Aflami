@@ -8,7 +8,9 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.google.gms.google.services)
 }
-
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
+}
 android {
     namespace = "com.feature.search.searchUi"
     compileSdk = Configurations.COMPILE_SDK
@@ -34,8 +36,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_11)
+        }
     }
     buildFeatures {
         compose = true
