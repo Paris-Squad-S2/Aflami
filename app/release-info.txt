@@ -1,4 +1,4 @@
-versionName=0.1.14
+versionName=0.1.15
 - improve Media card shadow
 - fix illustration size
 - fix Filter dialog padding
