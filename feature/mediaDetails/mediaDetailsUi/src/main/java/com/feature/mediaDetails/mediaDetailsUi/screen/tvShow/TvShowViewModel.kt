@@ -9,6 +9,11 @@ import com.domain.mediaDetails.useCases.tvShows.GetTvShowMediaUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
 
+data class TvShowDetailsScreenState(
+    val isLoading: Boolean,
+    val errorMessage: String?
+)
+
 class TvShowViewModel(
     private val addTvShowToFavoriteUseCase: AddTvShowToFavoriteUseCase,
     private val addTvShowToListUseCase: AddTvShowToListUseCase,
