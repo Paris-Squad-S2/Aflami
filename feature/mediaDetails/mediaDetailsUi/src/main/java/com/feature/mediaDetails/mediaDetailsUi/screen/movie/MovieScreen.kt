@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage.DetailsImage
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -51,6 +52,14 @@ fun MovieDetailsScreenContent(
                 )
             )
         )
+        DetailsImage(
+            imageUris = listOf(
+                state.movieDetailsUiState.movie.posterUrl,
+            ),
+            rating = state.movieDetailsUiState.movie.rating,
+            onPlayClick = {}
+        )
+
 
     }
 
