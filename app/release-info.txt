@@ -1,2 +1,2 @@
-versionName=0.1.16
-- add ui models and mappers
+versionName=0.1.17
+- enhance some code lines
