@@ -28,6 +28,7 @@ jobs:
 
       - name: Restore keystore from Base64 secret
         run: |
+          mkdir -p $GITHUB_WORKSPACE/appkey
           echo "$JKS_BASE64" | base64 --decode > $GITHUB_WORKSPACE/appkey/aflami-release-key.jks
         env:
           JKS_BASE64: ${{ secrets.JKS_BASE64 }}
