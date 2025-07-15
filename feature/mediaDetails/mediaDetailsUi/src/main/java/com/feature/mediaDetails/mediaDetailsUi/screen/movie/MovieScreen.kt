@@ -2,16 +2,17 @@ package com.feature.mediaDetails.mediaDetailsUi.screen.movie
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.feature.mediaDetails.mediaDetailsUi.common.components.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage.DetailsImage
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -34,9 +35,8 @@ fun MovieDetailsScreenContent(
             .navigationBarsPadding()
             .statusBarsPadding()
     ) {
+        Column {
         TopAppBar(
-            modifier = Modifier
-                .align(Alignment.TopStart),
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
@@ -46,10 +46,10 @@ fun MovieDetailsScreenContent(
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick ={}
+                    onClick = {}
                 ),
                 iconItemWithDefaults(
-                    icon =ImageVector.vectorResource(R.drawable.ic_heart_add),
+                    icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
                     onClick = {}
                 )
             )
@@ -61,6 +61,15 @@ fun MovieDetailsScreenContent(
             rating = state.movieDetailsUiState.movie.rating,
             onPlayClick = {}
         )
+        DescriptionSection(
+            title = state.movieDetailsUiState.movie.title,
+            genres = state.movieDetailsUiState.movie.genres,
+            releaseDate = state.movieDetailsUiState.movie.releaseDate,
+            runtime = state.movieDetailsUiState.movie.runtime,
+            country = state.movieDetailsUiState.movie.country,
+            description = state.movieDetailsUiState.movie.description
+        )
+    }
     }
 }
 
