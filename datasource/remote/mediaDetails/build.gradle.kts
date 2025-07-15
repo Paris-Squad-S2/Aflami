@@ -31,6 +31,10 @@ android {
 }
 
 dependencies {
+
+    implementation(project(Modules.REPOSITORY_MOVIE))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.core.ktx)
 

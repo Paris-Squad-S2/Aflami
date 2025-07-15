@@ -1,11 +1,13 @@
 package com.datasource.remote.mediadetails
 
-import com.datasource.remote.mediadetails.models.movie.MovieCreditsDto
-import com.datasource.remote.mediadetails.models.movie.MovieDto
-import com.datasource.remote.mediadetails.models.movie.MovieImagesDto
-import com.datasource.remote.mediadetails.models.movie.MovieReviewsDto
-import com.datasource.remote.mediadetails.models.movie.MovieSimilarsDto
+
 import com.datasource.remote.mediadetails.service.KtorMovieDetailsApiService
+import com.example.movie.dataSource.remote.MovieDetailsRemoteDataSource
+import com.example.movie.models.remote.MovieCreditsDto
+import com.example.movie.models.remote.MovieDto
+import com.example.movie.models.remote.MovieImagesDto
+import com.example.movie.models.remote.MovieReviewsDto
+import com.example.movie.models.remote.MovieSimilarsDto
 
 class MovieDetailsRemoteDataSourceImpl(
     private val ktorMovieDetailsApiService: KtorMovieDetailsApiService
@@ -18,11 +20,19 @@ class MovieDetailsRemoteDataSourceImpl(
         return ktorMovieDetailsApiService.getMovieImages(movieId)
     }
 
-    override suspend fun getMovieReviews(movieId: Int, page: Int, language: String): MovieReviewsDto {
+    override suspend fun getMovieReviews(
+        movieId: Int,
+        page: Int,
+        language: String
+    ): MovieReviewsDto {
         return ktorMovieDetailsApiService.getMovieReviews(movieId, page, language)
     }
 
-    override suspend fun getSimilarMovies(movieId: Int, page: Int, language: String): MovieSimilarsDto {
+    override suspend fun getSimilarMovies(
+        movieId: Int,
+        page: Int,
+        language: String
+    ): MovieSimilarsDto {
         return ktorMovieDetailsApiService.getSimilarMovies(movieId, page, language)
     }
 

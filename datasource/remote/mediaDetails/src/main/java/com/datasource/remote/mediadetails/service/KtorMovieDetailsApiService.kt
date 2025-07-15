@@ -1,10 +1,11 @@
 package com.datasource.remote.mediadetails.service
 
-import com.datasource.remote.mediadetails.models.movie.MovieCreditsDto
-import com.datasource.remote.mediadetails.models.movie.MovieDto
-import com.datasource.remote.mediadetails.models.movie.MovieImagesDto
-import com.datasource.remote.mediadetails.models.movie.MovieReviewsDto
-import com.datasource.remote.mediadetails.models.movie.MovieSimilarsDto
+import com.example.movie.models.remote.MovieCreditsDto
+import com.example.movie.models.remote.MovieDto
+import com.example.movie.models.remote.MovieImagesDto
+import com.example.movie.models.remote.MovieReviewsDto
+import com.example.movie.models.remote.MovieSimilarsDto
+
 
 interface KtorMovieDetailsApiService {
     suspend fun getMovieDetails(movieId: Int, language: String): MovieDto
