@@ -15,9 +15,8 @@ android {
 
     signingConfigs {
         create("release") {
-
             val keystorePath = System.getenv("KEYSTORE_PATH")
-                ?: "${System.getProperty("user.home")}/.android/debug.keystore"
+                ?: "$rootDir/appkey/aflami-release-key.jks"
             val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "android"
             val keyAliasValue = System.getenv("KEY_ALIAS") ?: "androiddebugkey"
             val keyPasswordValue = System.getenv("KEY_PASSWORD") ?: "android"
