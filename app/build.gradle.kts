@@ -13,6 +13,22 @@ android {
     namespace = "com.paris_2.aflami"
     compileSdk = Configurations.COMPILE_SDK
 
+    signingConfigs {
+        create("release") {
+
+            val keystorePath = System.getenv("KEYSTORE_PATH")
+                ?: "${System.getProperty("user.home")}/.android/debug.keystore"
+            val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "android"
+            val keyAliasValue = System.getenv("KEY_ALIAS") ?: "androiddebugkey"
+            val keyPasswordValue = System.getenv("KEY_PASSWORD") ?: "android"
+
+            storeFile = file(keystorePath)
+            storePassword = keystorePassword
+            keyAlias = keyAliasValue
+            keyPassword = keyPasswordValue
+        }
+    }
+
     defaultConfig {
         applicationId = "com.paris_2.aflami"
         minSdk = Configurations.MIN_SDK_26
@@ -36,19 +52,14 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
             isCrunchPngs = true
         }
         create("minified") {
-            initWith(getByName("debug"))
-            isMinifyEnabled = true
-            isShrinkResources = true
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-            matchingFallbacks.add("debug")
+            initWith(buildTypes.getByName("release"))
+            isDebuggable = false
+            matchingFallbacks.add("release")
         }
         getByName("debug") {
             enableUnitTestCoverage = true

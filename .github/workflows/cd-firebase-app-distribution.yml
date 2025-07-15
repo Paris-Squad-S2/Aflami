@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - develop
+  pull_request:
+    branches:
+      - develop
 
 jobs:
   build-and-distribute:
@@ -23,18 +26,31 @@ jobs:
           echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
           echo "API_TOKEN=${{ secrets.API_TOKEN }}" >> local.properties
 
+      - name: Restore keystore from Base64 secret
+        run: |
+          echo "$JKS_BASE64" | base64 --decode > $GITHUB_WORKSPACE/appkey/aflami-release-key.jks
+        env:
+          JKS_BASE64: ${{ secrets.JKS_BASE64 }}
+
+      - name: Prepare signing env vars
+        run: |
+          echo "KEYSTORE_PATH=$GITHUB_WORKSPACE/appkey/aflami-release-key.jks" >> $GITHUB_ENV
+          echo "KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Give gradlew permission to execute
         run: chmod +x ./gradlew
 
       - name: Build minified APK
-        run: ./gradlew app:assembleMinified
+        run: ./gradlew app:assembleRelease
 
       - name: Upload artifact to Firebase App Distribution
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
-          file: app/build/outputs/apk/minified/app-minified.apk
+          groups: paris_squad_testers
+          file: app/build/outputs/apk/release/app-release.apk
           releaseNotesFile: app/release-info.txt
-          debug: true
+          debug: false
