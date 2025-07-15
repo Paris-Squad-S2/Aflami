@@ -9,7 +9,7 @@ import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.navigation.SearchDestinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -45,7 +45,7 @@ class WorldTourViewModel(
     ) {
 
     init {
-        val initialQuery = savedStateHandle.toRoute<Destinations.WorldTourScreen>().name
+        val initialQuery = savedStateHandle.toRoute<SearchDestinations.WorldTourScreen>().name
         if (initialQuery != null) {
             onSearchQueryChange(initialQuery)
         }

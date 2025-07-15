@@ -14,7 +14,7 @@ import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.navigation.SearchDestinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -122,13 +122,13 @@ class SearchViewModel(
 
     override fun onNavigateToWorldTourScreen() {
         navigate(
-            Destinations.WorldTourScreen()
+            SearchDestinations.WorldTourScreen()
         )
     }
 
     override fun onNavigateToFindByActorScreen() {
         navigate(
-            Destinations.FindByActorScreen()
+            SearchDestinations.FindByActorScreen()
         )
     }
 
@@ -327,7 +327,7 @@ class SearchViewModel(
                 tryToExecute(
                     execute = {
                         navigate(
-                            Destinations.WorldTourScreen(
+                            SearchDestinations.WorldTourScreen(
                                 name = searchTitle
                             )
                         )
@@ -346,7 +346,7 @@ class SearchViewModel(
                 tryToExecute(
                     execute = {
                         navigate(
-                            Destinations.FindByActorScreen(
+                            SearchDestinations.FindByActorScreen(
                                 name = searchTitle
                             )
                         )

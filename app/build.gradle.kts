@@ -117,6 +117,9 @@ dependencies {
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
+
+    implementation(project(Modules.APP_NAVIGATION))
+
 }
 
 kover {

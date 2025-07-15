@@ -6,7 +6,7 @@ import androidx.navigation.toRoute
 import com.domain.search.model.Media
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.navigation.SearchDestinations
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -36,7 +36,7 @@ class FindByActorViewModel(
 ) {
 
     init {
-        val initialQuery = savedStateHandle.toRoute<Destinations.FindByActorScreen>().name
+        val initialQuery = savedStateHandle.toRoute<SearchDestinations.FindByActorScreen>().name
         if (initialQuery != null) {
             onSearchQueryChange(initialQuery)
         }

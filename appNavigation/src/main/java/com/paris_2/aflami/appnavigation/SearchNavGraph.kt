@@ -1,4 +1,4 @@
-package com.feature.search.searchUi.navigation
+package com.paris_2.aflami.appnavigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraphBuilder
@@ -6,16 +6,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.search.searchUi.screen.findByActor.FindByActorScreen
-import com.feature.search.searchUi.screen.search.SearchScreen
-import com.feature.search.searchUi.screen.worldTour.WorldTourScreen
-import com.paris_2.aflami.appnavigation.NavigationEvent
-import com.paris_2.aflami.appnavigation.Navigator
-import com.paris_2.aflami.appnavigation.ObserveAsEvents
 import org.koin.compose.koinInject
 
 @Composable
-fun SearchNavGraph(navigator: Navigator = koinInject()) {
+fun AppNavGraph(navigator: Navigator = koinInject()) {
     val navController = rememberNavController()
 
     ObserveAsEvents(navigator.navigationEvent) { event ->
@@ -37,9 +31,8 @@ fun SearchNavGraph(navigator: Navigator = koinInject()) {
 }
 
 fun NavGraphBuilder.buildSearchNavGraph() {
-    navigation<SearchDestinations.SearchGraph>(startDestination = SearchDestinations.SearchScreen) {
-        composable<SearchDestinations.SearchScreen> { SearchScreen() }
-        composable<SearchDestinations.WorldTourScreen> { WorldTourScreen() }
-        composable<SearchDestinations.FindByActorScreen> { FindByActorScreen() }
+    navigation<AppDestinations.AppGraph>(startDestination = AppDestinations.SearchFeature) {
+//        composable<AppDestinations.SearchFeature> { SearchScreen() }
+//        composable<AppDestinations.DetailsFeature> { WorldTourScreen() }
     }
 }

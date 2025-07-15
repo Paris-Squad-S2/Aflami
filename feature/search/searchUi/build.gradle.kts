@@ -93,10 +93,6 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
-    // koin
-    implementation(libs.koin.android)
-    implementation(libs.koin.core )
-
 
     //test
     testImplementation(libs.junit)
@@ -118,6 +114,8 @@ dependencies {
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
+
+    implementation(project(Modules.APP_NAVIGATION))
 }
 
 

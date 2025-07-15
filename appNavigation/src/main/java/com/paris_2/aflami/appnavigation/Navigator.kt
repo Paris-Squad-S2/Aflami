@@ -1,4 +1,4 @@
-package com.feature.search.searchUi.navigation
+package com.paris_2.aflami.appnavigation
 
 import androidx.navigation.NavOptions
 import kotlinx.coroutines.flow.Flow

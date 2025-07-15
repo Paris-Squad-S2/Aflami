@@ -3,8 +3,8 @@ package com.feature.search.searchUi.comon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.feature.search.searchUi.navigation.Destination
-import com.feature.search.searchUi.navigation.Navigator
+import com.paris_2.aflami.appnavigation.Destination
+import com.paris_2.aflami.appnavigation.Navigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
