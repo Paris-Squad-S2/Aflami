@@ -87,7 +87,7 @@ fun Slider(
 
 data class MediaItem(
     val imageResId: Int,
-    val rating: String
+    val rating: Float
 )
 
 @Composable
@@ -95,12 +95,12 @@ data class MediaItem(
 fun SliderPreview() {
     BasePreview {
         val sampleItems = listOf(
-            MediaItem(R.drawable.anime_movie, "9.0"),
-            MediaItem(R.drawable.anime_horizontal, "8.7"),
-            MediaItem(R.drawable.attack_on_titan, "9.1"),
-            MediaItem(R.drawable.anime_movie, "9.0"),
-            MediaItem(R.drawable.anime_horizontal, "8.7"),
-            MediaItem(R.drawable.attack_on_titan, "9.1")
+            MediaItem(R.drawable.anime_movie, 9.0f),
+            MediaItem(R.drawable.anime_horizontal, 8.7f),
+            MediaItem(R.drawable.attack_on_titan, 9.1f),
+            MediaItem(R.drawable.anime_movie, 9.0f),
+            MediaItem(R.drawable.anime_horizontal, 8.7f),
+            MediaItem(R.drawable.attack_on_titan, 9.1f)
         )
         Slider(
             items = sampleItems,
