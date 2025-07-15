@@ -19,9 +19,3 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--dontwarn java.lang.invoke.**
-
--keep class org.koin.** { *; }
--keep class io.insertkoin.** { *; }
--dontwarn org.koin.**
--dontwarn io.insertkoin.**

@@ -90,6 +90,7 @@ android {
         }
     }
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = Configurations.JAVA_VERSION
         targetCompatibility = Configurations.JAVA_VERSION
     }
@@ -137,6 +138,8 @@ dependencies {
     implementation(libs.koin.android)
 
     implementation(libs.androidx.startup.runtime)
+
+    coreLibraryDesugaring (libs.desugar.jdk.libs)
 }
 
 kover {
