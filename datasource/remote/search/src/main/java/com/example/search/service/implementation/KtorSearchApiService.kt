@@ -7,10 +7,7 @@ import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
 
-class KtorSearchApiService(
-    private val httpClient: HttpClient,
-    private val baseUrl: String,
-) : SearchApiService {
+class KtorSearchApiService( private val httpClient: HttpClient ) : SearchApiService {
 
     companion object {
         private const val MULTI_SEARCH_ENDPOINT = "search/multi"
@@ -19,7 +16,6 @@ class KtorSearchApiService(
         private const val PAGE_PARAM = "page"
         private const val LANGUAGE_PARAM = "language"
         private const val DISCOVER_MOVIE_ENDPOINT = "discover/movie"
-        private const val DISCOVER_TV_ENDPOINT = "discover/tv"
         private const val COUNTRY_PARAM = "with_origin_country"
     }
 
@@ -46,7 +42,7 @@ class KtorSearchApiService(
     private suspend fun performSearchWithCountry(
         endpoint: String, query: String, page: Int, language: String,countryCode: String,
     ): SearchDto {
-        return httpClient.get("$baseUrl/$endpoint") {
+        return httpClient.get("$endpoint") {
             parameter(PAGE_PARAM, page)
             parameter(LANGUAGE_PARAM, language)
             parameter(COUNTRY_PARAM, countryCode)
@@ -56,7 +52,7 @@ class KtorSearchApiService(
     private suspend fun performSearch(
         endpoint: String, query: String, page: Int, language: String,
     ): SearchDto {
-        return httpClient.get("$baseUrl/$endpoint") {
+        return httpClient.get("$endpoint") {
             parameter(QUERY_PARAM, query)
             parameter(PAGE_PARAM, page)
             parameter(LANGUAGE_PARAM, language)

@@ -93,6 +93,15 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
+
+    // koin
+    implementation(libs.koin.workmanager)
+    implementation(libs.koin.android)
+    implementation(libs.koin.core )
+
+
     //test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
@@ -113,6 +122,7 @@ dependencies {
     implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
+    implementation(project(":datasource:remote:mediaDetails"))
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
