@@ -29,7 +29,7 @@ abstract class SearchDatabase : RoomDatabase() {
     abstract fun genresDao(): GenresDao
 
     companion object {
-        const val DATABASE_NAME = "search_db"
+        private const val DATABASE_NAME = "search_db"
 
         @Volatile
         private var instance: SearchDatabase? = null

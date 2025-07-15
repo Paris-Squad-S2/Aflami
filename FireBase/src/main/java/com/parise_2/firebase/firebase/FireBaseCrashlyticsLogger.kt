@@ -1,4 +1,4 @@
-package com.parise_2.firebase.Firebase
+package com.parise_2.firebase.firebase
 
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.parise_2.firebase.repo.Logger

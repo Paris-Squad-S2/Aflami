@@ -1,12 +1,12 @@
 package com.repository.search.repository
 
+import com.domain.search.exception.NoCategoriesFoundException
+import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.CategoryModel
 import com.domain.search.repository.CategoriesRepository
 import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
-import com.repository.search.exception.NoCategoriesFoundException
-import com.repository.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toCategories
 import com.repository.search.mapper.toEntity
 import java.util.Locale
