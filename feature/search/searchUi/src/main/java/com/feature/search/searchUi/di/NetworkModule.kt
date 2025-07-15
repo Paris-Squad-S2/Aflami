@@ -30,6 +30,7 @@ val NetworkModule = module {
 
             install(DefaultRequest) {
                 header(HttpHeaders.Authorization, "Bearer ${BuildConfig.API_TOKEN}")
+                 url("https://api.themoviedb.org/3/")
             }
         }
     }
