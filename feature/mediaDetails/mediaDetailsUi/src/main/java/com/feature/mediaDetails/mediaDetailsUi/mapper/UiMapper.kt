@@ -6,12 +6,14 @@ import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
+import com.domain.mediaDetails.model.TvShow
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.MovieUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.tvShow.EpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.tvShow.SeasonUi
+import com.feature.mediaDetails.mediaDetailsUi.screen.tvShow.TvShowUi
 import kotlinx.datetime.LocalDate
 
 fun Movie.toUi(): MovieUi {
@@ -22,11 +24,26 @@ fun Movie.toUi(): MovieUi {
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate,
         runtime = "${this.runtime} min",
-        country = this.country.toString(),
+        country = this.country.countryCode,
         description = this.description,
         productionCompanies = this.productionCompanies.map { it.toUi() }
     )
 }
+
+fun TvShow.toUi(): TvShowUi {
+    return TvShowUi(
+        posterUrl = this.posterPath,
+        rating = this.voteAverage.toString(),
+        title = this.title,
+        genres = this.genres.map { it.name },
+        releaseDate = this.releaseDate,
+        runtime = "${this.runtime} min",
+        country = this.country.countryCode,
+        description = this.description,
+        productionCompanies = this.productionCompanies.map { it.toUi() }
+    )
+}
+
 
 
 fun ProductionCompany.toUi(): ProductionCompanyUi {
