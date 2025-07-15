@@ -1,6 +1,5 @@
 package com.example.search
 
-import android.util.Log
 import com.example.search.service.contract.SearchApiService
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.dto.SearchDto
@@ -16,12 +15,7 @@ class SearchRemoteDataSourceImpl(private val apiService: SearchApiService) :
         return apiService.searchPerson(query, page, language)
     }
 
-    override suspend fun searchCountryCode(
-        query: String,
-        page: Int,
-        language: String,
-        countryCode: String,
-    ): SearchDto {
+    override suspend fun searchCountryCode(query: String, page: Int, language: String, countryCode: String): SearchDto {
         return apiService.searchCountryCode(query, page, language, countryCode)
     }
 }

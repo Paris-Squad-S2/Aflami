@@ -1,7 +1,9 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.CountryDao
+import com.google.common.truth.Truth.assertThat
 import com.repository.search.entity.CountryEntity
+import com.repository.search.util.Util
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -27,21 +29,48 @@ class CountriesLocalDataSourceImplTest {
     @Test
     fun `getCountries should return countries when getAll in CountryDao called successfully`() =
         runTest {
+            // Given
             coEvery { countryDao.getAllCountries() } returns listOf(sampleCountry)
-
+            // When
             val result = countriesLocalDataSource.getCountries()
-
-            Assertions.assertEquals(sampleCountry.countryCode, result[0].countryCode)
+            // Then
+            assertThat(result).containsExactly(sampleCountry)
         }
 
     @Test
-    fun `addCountries should add countries when add in CountryDao called successfully`() = runTest {
-        coEvery { countryDao.addCountries(any()) } returns Unit
+    fun `getCountries should return empty list when CountryDao returns nothing`() =
+        runTest {
+            // Given
+            coEvery { countryDao.getAllCountries() } returns emptyList()
+            // When
+            val result = countriesLocalDataSource.getCountries()
+            // Then
+            Assertions.assertTrue(result.isEmpty())
+        }
 
-        countriesLocalDataSource.addCountries()
+    @Test
+    fun `addCountries should add countries when add in CountryDao called successfully`() =
+        runTest {
+            // Given
+            coEvery { countryDao.addCountries(any()) } returns Unit
+            // When
+            countriesLocalDataSource.addCountries()
+            // Then
+            coVerify { countryDao.addCountries(any()) }
+        }
 
-        coVerify { countryDao.addCountries(any()) }
-
-    }
-
+    @Test
+    fun `addCountries should add countries from Util countryList`() =
+        runTest {
+            // Given
+            coEvery { countryDao.addCountries(any()) } returns Unit
+            // When
+            countriesLocalDataSource.addCountries()
+            // Then
+            coVerify {
+                countryDao.addCountries(withArg {
+                    Assertions.assertEquals(Util.countryList, it)
+                })
+            }
+        }
 }
