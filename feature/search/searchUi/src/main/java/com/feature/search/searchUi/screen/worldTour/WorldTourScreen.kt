@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -63,7 +62,7 @@ fun WorldTourScreenContent(
             onValueChange = worldTourScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(R.string.search),
             suggestions = state.uiState.hints.map { it.countryName + " (${it.countryCode})" },
-            onSuggestionSelected = worldTourScreenInteractionListener::onSearchQueryChange,
+            onSuggestionSelected = { worldTourScreenInteractionListener.onSearchQueryChange(it.substringBefore("(").trim()) },
         )
         if (state.uiState.searchQuery.isEmpty()) {
             PlaceholderView(

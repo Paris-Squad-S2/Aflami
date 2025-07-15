@@ -48,7 +48,8 @@ data class OnPrimaryColors(
 )
 
 data class Gradient(
-    val overly: List<Color>,
+    val overlyDark: List<Color>,
+    val overlyLight: List<Color>,
     val streakGradient: List<Color>,
     val pointsOverly: List<Color>,
     val blueGradient : List<Color>,

@@ -42,7 +42,7 @@ fun SearchResultContent(
                         onMediaCardClick(media.id)
                     },
                 imageUri = media.imageUri,
-                rating = media.rating.toString(),
+                rating = media.rating.toFloat(),
                 movieName = media.title,
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),

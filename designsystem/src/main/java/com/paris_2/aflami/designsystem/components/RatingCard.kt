@@ -23,7 +23,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun RatingCard(
     modifier: Modifier = Modifier,
-    rating: String,
+    rating: Float,
 ) {
     Row(
         modifier = modifier
@@ -55,7 +55,7 @@ fun RatingCard(
             contentDescription = "star"
         )
         Text(
-            text = rating,
+            text = "%.1f".format(java.util.Locale.US, rating),
             color = Theme.colors.text.body,
             modifier = Modifier.padding(end = 8.dp),
             style = Theme.textStyle.label.small
@@ -67,7 +67,7 @@ fun RatingCard(
 @Composable
 fun PreviewRatingCard() {
     AflamiTheme {
-        RatingCard(rating = 8.toString())
+        RatingCard(rating = 8.5f)
     }
 
 }
@@ -76,6 +76,6 @@ fun PreviewRatingCard() {
 @Composable
 fun PreviewRatingCard2() {
     AflamiTheme {
-        RatingCard(rating = 9.9.toString())
+        RatingCard(rating = 9.946f)
     }
 }
