@@ -1,12 +1,13 @@
 package com.feature.mediaDetails.mediaDetailsUi.screen.movie
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -26,15 +27,16 @@ fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
   //  movieScreenInteractionListener: MovieScreenInteractionListener
 ) {
-    Column(
+    Box(
         Modifier
             .fillMaxSize()
             .background(Theme.colors.surface)
             .navigationBarsPadding()
+            .statusBarsPadding()
     ) {
         TopAppBar(
             modifier = Modifier
-                .statusBarsPadding(),
+                .align(Alignment.TopStart),
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),

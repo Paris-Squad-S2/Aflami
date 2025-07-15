@@ -135,14 +135,16 @@ fun DetailsImage(
                     backGroundColor = Theme.colors.surfaceHigh
                 )
             }
-            ImagePageIndicator(
-                pageSize = if (imageUris.size == 1) 3 else imageUris.size,
-                currentPage = if (imageUris.size == 1) 2 else pagerState.currentPage,
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .padding(end = 4.dp)
-                    .padding(bottom = 4.dp)
-            )
+            if (imageUris.isNotEmpty()) {
+                ImagePageIndicator(
+                    pageSize = if (imageUris.size == 1) 3 else imageUris.size,
+                    currentPage = if (imageUris.size == 1) 2 else pagerState.currentPage,
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 4.dp)
+                        .padding(bottom = 4.dp)
+                )
+            }
         }
     }
 }
