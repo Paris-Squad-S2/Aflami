@@ -1,11 +1,11 @@
 package com.datasource.remote.mediadetails
 
 import com.datasource.remote.mediadetails.models.tvShow.TvShowCreditsDto
+import com.datasource.remote.mediadetails.models.tvShow.TvShowDto
 import com.datasource.remote.mediadetails.models.tvShow.TvShowImagesDto
 import com.datasource.remote.mediadetails.models.tvShow.TvShowReviewsDto
 import com.datasource.remote.mediadetails.models.tvShow.TvShowSeasonDto
 import com.datasource.remote.mediadetails.models.tvShow.TvShowSimilarsDto
-import com.datasource.remote.mediadetails.models.tvShow.TvShowDto
 
 interface TvShowDetailsRemoteDataSource {
     suspend fun getTvShowDetails(tvShowId: Int, language: String): TvShowDto
