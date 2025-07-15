@@ -14,7 +14,7 @@ object Modules {
 
     const val REPOSITORY = ":repository"
     const val REPOSITORY_MOVIE = ":repository:movie"
-    const val REPOSITORY_TV_SHOW = ":repository:tvShow"
+    const val REPOSITORY_TV_SHOW = ":repository:tvShows"
     const val REPOSITORY_USER = ":repository:user"
     const val REPOSITORY_LISTS = ":repository:lists"
     const val REPOSITORY_CATEGORIES = ":repository:categories"

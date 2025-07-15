@@ -75,7 +75,7 @@ dependencies {
     kover(project((":domain:mediaDetails")))
     kover(project((":repository:user")))
     kover(project((":repository:movie")))
-    kover(project((":repository:tvShow")))
+    kover(project((":repository:tvShows")))
     kover(project((":repository:lists")))
     kover(project((":repository:categories")))
     kover(project((":repository:guessGame")))
