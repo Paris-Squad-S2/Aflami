@@ -1,12 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.domain.search.model.CategoryModel
-import com.domain.search.model.Media
-import com.domain.search.model.MediaType
-import com.domain.search.model.SearchHistoryModel
-import com.domain.search.model.SearchType
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -18,31 +12,71 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toDomainList
+import com.feature.search.searchUi.mapper.toDomainModel
+import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.mapper.toSearchHistoryUiList
+import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.LocalDate
 
 data class SearchScreenState(
-    val uiState: UIState,
+    val searchUiState: SearchUiState,
     val isLoading: Boolean,
     val errorMessage: String?
 )
 
-data class UIState(
+
+data class SearchUiState(
     val searchQuery: String,
     val showFilterDialog: Boolean,
-    val recentSearches: List<SearchHistoryModel>,
+    val recentSearches: List<SearchHistoryUiState>,
     val selectedTabIndex: Int,
-    val moviesResult: List<Media>,
-    val tvShowsResult: List<Media>,
-    val filteredMoviesResult: List<Media>,
-    val filteredTvShowsResult: List<Media>,
-    val categories: Map<CategoryModel, Boolean>,
+    val moviesResult: List<MediaUiState>,
+    val tvShowsResult: List<MediaUiState>,
+    val filteredMoviesResult: List<MediaUiState>,
+    val filteredTvShowsResult: List<MediaUiState>,
+    val categories: Map<CategoryUiState, Boolean>,
     val selectedRating: Float,
     val isAllCategories: Boolean
 )
+
+
+data class MediaUiState(
+    val id: Int,
+    val imageUri: String,
+    val title: String,
+    val type: MediaTypeUi,
+    val categories: List<Int>,
+    val yearOfRelease: LocalDate,
+    val rating: Double,
+)
+
+enum class MediaTypeUi(val mediaName: String){
+    TVSHOW("TV Show"),
+    MOVIE("Movie")
+}
+
+data class CategoryUiState(
+    val id: Int,
+    val name: String,
+)
+
+data class SearchHistoryUiState(
+    val searchTitle: String,
+    val searchDate:String,
+    val searchType: SearchTypeUi
+)
+
+enum class SearchTypeUi{
+    Query,
+    Country,
+    Actor
+}
 
 class SearchViewModel(
     private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase,
@@ -55,7 +89,7 @@ class SearchViewModel(
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
-            uiState = UIState(
+            searchUiState = SearchUiState(
                 searchQuery = "",
                 showFilterDialog = false,
                 recentSearches = listOf(),
@@ -87,8 +121,8 @@ class SearchViewModel(
                     emitState(
                         screenState.value.copy(
                             isLoading = false,
-                            uiState = screenState.value.uiState.copy(
-                                recentSearches = recentSearchesList
+                            searchUiState = screenState.value.searchUiState.copy(
+                                recentSearches = recentSearchesList.toSearchHistoryUiList()
                             )
                         )
                     )
@@ -111,8 +145,8 @@ class SearchViewModel(
             onSuccess = { categories ->
                 emitState(
                     screenState.value.copy(
-                        uiState = screenState.value.uiState.copy(
-                            categories = categories.associateWith { false }.toMutableMap()
+                        searchUiState = screenState.value.searchUiState.copy(
+                            categories = categories.toCategoryUiList().associateWith { false }.toMutableMap()
                         )
                     )
                 )
@@ -144,7 +178,7 @@ class SearchViewModel(
     override fun onSearchQueryChange(query: String) {
         emitState(
             screenState.value.copy(
-                uiState = screenState.value.uiState.copy(
+                searchUiState = screenState.value.searchUiState.copy(
                     searchQuery = query,
                 )
             )
@@ -182,28 +216,28 @@ class SearchViewModel(
                 searchByQueryUseCase(query)
             },
             onSuccess = { searchResult ->
-                val moviesResult = searchResult.filter { it.type == MediaType.MOVIE }
-                val tvShowsResult = searchResult.filter { it.type == MediaType.TVSHOW }
+                val moviesResult = searchResult.toMediaUiList().filter { it.type == MediaTypeUi.MOVIE }
+                val tvShowsResult = searchResult.toMediaUiList().filter { it.type == MediaTypeUi.TVSHOW }
 
                 val filteredMediaByRating = filterMediaByRatingUseCase(
-                    screenState.value.uiState.selectedRating,
+                    screenState.value.searchUiState.selectedRating,
                     searchResult
                 )
                 val filteredMediaByCategories =
-                    if (!screenState.value.uiState.isAllCategories) filterMedByListOfCategoriesUseCase(
-                        screenState.value.uiState.categories.filter { it.value }.keys.toList()
+                    if (!screenState.value.searchUiState.isAllCategories) filterMedByListOfCategoriesUseCase(
+                        screenState.value.searchUiState.categories.filter { it.value }.keys.toList()
                             .map { it.id },
                         filteredMediaByRating
                     ) else searchResult
 
                 val filteredMoviesResult =
-                    filteredMediaByCategories.filter { it.type == MediaType.MOVIE }
+                    filteredMediaByCategories.toMediaUiList().filter { it.type == MediaTypeUi.MOVIE }
                 val filteredTvShowsResult =
-                    filteredMediaByCategories.filter { it.type == MediaType.TVSHOW }
+                    filteredMediaByCategories.toMediaUiList().filter { it.type == MediaTypeUi.TVSHOW }
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
-                        uiState = screenState.value.uiState.copy(
+                        searchUiState = screenState.value.searchUiState.copy(
                             moviesResult = moviesResult,
                             tvShowsResult = tvShowsResult,
                             filteredMoviesResult = filteredMoviesResult,
@@ -226,7 +260,7 @@ class SearchViewModel(
     override fun onSelectTab(tabIndex: Int) {
         emitState(
             screenState.value.copy(
-                uiState = screenState.value.uiState.copy(
+                searchUiState = screenState.value.searchUiState.copy(
                     selectedTabIndex = tabIndex
                 )
             )
@@ -236,8 +270,8 @@ class SearchViewModel(
     override fun onFilterButtonClick() {
         emitState(
             screenState.value.copy(
-                uiState = screenState.value.uiState.copy(
-                    showFilterDialog = !screenState.value.uiState.showFilterDialog
+                searchUiState = screenState.value.searchUiState.copy(
+                    showFilterDialog = !screenState.value.searchUiState.showFilterDialog
                 )
             )
         )
@@ -246,17 +280,17 @@ class SearchViewModel(
     override fun onApplyFilterButtonClick(
         selectedRating: Float,
         isAllCategories: Boolean,
-        selectedCategories: List<CategoryModel>,
+        selectedCategories: List<CategoryUiState>,
     ) {
         tryToExecute(
             execute = {
                 emitState(
                     screenState.value.copy(
                         isLoading = true,
-                        uiState = screenState.value.uiState.copy(
+                        searchUiState = screenState.value.searchUiState.copy(
                             showFilterDialog = false,
                             selectedRating = selectedRating,
-                            categories = screenState.value.uiState.categories.mapValues { it.key in selectedCategories }
+                            categories = screenState.value.searchUiState.categories.mapValues { it.key in selectedCategories }
                                 .toMutableMap(),
                             isAllCategories = isAllCategories
                         )
@@ -265,11 +299,11 @@ class SearchViewModel(
 
                 val filteredMovies = filterMediaByRatingUseCase(
                     selectedRating,
-                    screenState.value.uiState.moviesResult
+                    screenState.value.searchUiState.moviesResult.toDomainList()
                 )
                 val filteredTvShows = filterMediaByRatingUseCase(
                     selectedRating,
-                    screenState.value.uiState.tvShowsResult
+                    screenState.value.searchUiState.tvShowsResult.toDomainList()
                 )
                 val filteredByCategoriesMovies = if (isAllCategories) {
                     filteredMovies
@@ -293,9 +327,9 @@ class SearchViewModel(
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
-                        uiState = screenState.value.uiState.copy(
-                            filteredMoviesResult = filteredByCategoriesMovies,
-                            filteredTvShowsResult = filteredByCategoriesTvShows
+                        searchUiState = screenState.value.searchUiState.copy(
+                            filteredMoviesResult = filteredByCategoriesMovies.toMediaUiList(),
+                            filteredTvShowsResult = filteredByCategoriesTvShows.toMediaUiList()
                         )
                     )
                 )
@@ -313,23 +347,23 @@ class SearchViewModel(
     override fun onClearFilterClick() {
         emitState(
             screenState.value.copy(
-                uiState = screenState.value.uiState.copy(
+                searchUiState = screenState.value.searchUiState.copy(
                     showFilterDialog = false,
                     selectedRating = 0f,
                     isAllCategories = true,
-                    categories = screenState.value.uiState.categories.mapValues { false }
+                    categories = screenState.value.searchUiState.categories.mapValues { false }
                         .toMutableMap(),
-                    filteredMoviesResult = screenState.value.uiState.moviesResult,
-                    filteredTvShowsResult = screenState.value.uiState.tvShowsResult
+                    filteredMoviesResult = screenState.value.searchUiState.moviesResult,
+                    filteredTvShowsResult = screenState.value.searchUiState.tvShowsResult
                 )
             )
         )
     }
 
-    override fun onRecentSearchClick(searchTitle: String, searchType: SearchType) {
-        when (searchType) {
-            SearchType.Query -> onSearchQueryChange(searchTitle)
-            SearchType.Country -> {
+    override fun onRecentSearchClick(searchTitle: String, searchTypeUi: SearchTypeUi) {
+        when (searchTypeUi) {
+            SearchTypeUi.Query -> onSearchQueryChange(searchTitle)
+            SearchTypeUi.Country -> {
                 tryToExecute(
                     execute = {
                         navigate(
@@ -348,7 +382,7 @@ class SearchViewModel(
                 )
             }
 
-            SearchType.Actor -> {
+            SearchTypeUi.Actor -> {
                 tryToExecute(
                     execute = {
                         navigate(
@@ -382,10 +416,10 @@ class SearchViewModel(
         )
     }
 
-    override fun onClearRecentSearch(id: String, searchType: SearchType) {
+    override fun onClearRecentSearch(id: String, searchTypeUi: SearchTypeUi) {
         tryToExecute(
             execute = {
-                clearRecentSearchUseCase(id, searchType)
+                clearRecentSearchUseCase(id, searchTypeUi.toDomainModel())
             },
             onError = { errorMessage ->
                 emitState(
@@ -406,7 +440,7 @@ class SearchViewModel(
     }
 
     override fun onRetrySearchQuery() {
-        searchQuery(screenState.value.uiState.searchQuery)
+        searchQuery(screenState.value.searchUiState.searchQuery)
     }
 
     override fun onMediaCardClick(id: Int) {

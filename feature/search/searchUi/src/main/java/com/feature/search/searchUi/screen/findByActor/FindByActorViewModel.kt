@@ -3,12 +3,13 @@ package com.feature.search.searchUi.screen.findByActor
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import com.domain.search.model.Media
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
@@ -22,7 +23,7 @@ data class FindByActorScreenState(
 )
 data class FindByActorUiState(
     val searchQuery: String,
-    val searchResult: List<Media>,
+    val searchResult: List<MediaUiState>,
 )
 
 class FindByActorViewModel(
@@ -103,7 +104,7 @@ class FindByActorViewModel(
                     screenState.value.copy(
                         isLoading = false,
                         uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult,
+                            searchResult = searchResult.toMediaUiList(),
                         )
                     )
                 )
