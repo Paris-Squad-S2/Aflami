@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
@@ -33,7 +34,7 @@ import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.Theme
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-
+import com.feature.mediaDetails.mediaDetailsUi.R
 @Composable
 fun ReviewCard(
     name: String,
@@ -61,6 +62,7 @@ fun ReviewCard(
                     model = avatarUrl,
                     contentDescription = "Profile picture",
                     contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = R.drawable.profile_placholder),
                     modifier = Modifier
                         .size(48.dp)
                         .clip(RoundedCornerShape(12.dp))
