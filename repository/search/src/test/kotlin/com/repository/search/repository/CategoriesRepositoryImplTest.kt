@@ -43,7 +43,7 @@ class CategoriesRepositoryImplTest {
         val result = repository.getAllCategories()
 
         // Then
-        assertEquals(localGenres.map { CategoryModel(it.id.toInt(), it.name) }, result)
+        assertEquals(localGenres.map { CategoryModel(it.id, it.name) }, result)
         coVerify(exactly = 0) { genresRemoteDataSource.getAllGenres() }
     }
 
