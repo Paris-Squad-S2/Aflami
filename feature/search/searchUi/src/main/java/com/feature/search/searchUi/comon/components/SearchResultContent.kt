@@ -1,15 +1,12 @@
 package com.feature.search.searchUi.comon.components
 
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -45,7 +42,7 @@ fun SearchResultContent(
                         onMediaCardClick(media.id)
                     },
                 imageUri = media.imageUri,
-                rating = media.rating.toString(),
+                rating = media.rating.toFloat(),
                 movieName = media.title,
                 mediaType = media.type.displayName,
                 year = media.yearOfRelease.year.toString(),
