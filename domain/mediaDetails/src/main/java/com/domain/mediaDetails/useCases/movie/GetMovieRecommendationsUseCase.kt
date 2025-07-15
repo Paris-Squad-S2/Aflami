@@ -6,7 +6,7 @@ import com.domain.mediaDetails.repository.MovieRepository
 class GetMovieRecommendationsUseCase(
     private val movieRepository: MovieRepository
 ) {
-    suspend operator fun invoke(movieId: Int): List<Movie> {
-        return movieRepository.getMovieRecommendations(movieId)
+    suspend operator fun invoke(movieId: Int, page: Int): List<Movie> {
+        return movieRepository.getMovieRecommendations(movieId, page)
     }
 }

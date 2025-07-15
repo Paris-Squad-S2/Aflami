@@ -6,7 +6,7 @@ import com.domain.mediaDetails.repository.TvShowRepository
 class GetTvShowRecommendationsUseCase(
     private val tvShowRepository: TvShowRepository
 ) {
-    suspend operator fun invoke(tvShowId: Int): List<TvShow>{
-        return tvShowRepository.getTvShowRecommendations(tvShowId)
+    suspend operator fun invoke(tvShowId: Int, page: Int): List<TvShow> {
+        return tvShowRepository.getTvShowRecommendations(tvShowId, page)
     }
 }

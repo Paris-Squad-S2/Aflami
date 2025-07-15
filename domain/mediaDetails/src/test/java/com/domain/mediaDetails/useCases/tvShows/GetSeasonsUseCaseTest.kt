@@ -11,39 +11,27 @@ import kotlin.test.assertEquals
 
 class GetSeasonsUseCaseTest {
 
-    private lateinit var getSeasonsUseCase: GetSeasonsUseCase
+    private lateinit var getSeasonDetailsUseCase: GetSeasonDetailsUseCase
     private val tvShowRepository: TvShowRepository = mockk(relaxed = true)
 
     @Before
     fun setup() {
-        getSeasonsUseCase = GetSeasonsUseCase(tvShowRepository)
+        getSeasonDetailsUseCase = GetSeasonDetailsUseCase(tvShowRepository)
     }
 
     @Test
-    fun `should return seasons from repository`() = runTest {
+    fun `should return season details from repository`() = runTest {
         // Given
         val tvShowId = 1
+        val seasonNumber = 1
 
         // when
-        coEvery { tvShowRepository.getTvShowSeasons(tvShowId) } returns fakeSeasons
+        coEvery { tvShowRepository.getSeasonDetails(tvShowId, seasonNumber) } returns fakeSeasons.first()
 
         // Then
-        val result = getSeasonsUseCase(tvShowId)
-        assertEquals(result, fakeSeasons)
+        val result = getSeasonDetailsUseCase(tvShowId,seasonNumber)
+        assertEquals(result, fakeSeasons.first())
 
-    }
-
-    @Test
-    fun `should return empty list when no cast found`() = runTest{
-        // Given
-        val tvShowId = 1
-
-        // when
-        coEvery { tvShowRepository.getTvShowSeasons(tvShowId) } returns emptyList()
-
-        // Then
-        val result = getSeasonsUseCase(tvShowId)
-        assertEquals(result, emptyList())
     }
 
 }

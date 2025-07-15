@@ -22,12 +22,13 @@ class GetMovieRecommendationsUseCaseTest {
     fun `should return movie recommendation from repository`() = runTest {
         // Given
         val movieId = 1
+        val page = 1
 
         // when
-        coEvery { movieRepository.getMovieRecommendations(movieId) } returns fakeMovies
+        coEvery { movieRepository.getMovieRecommendations(movieId,page) } returns fakeMovies
 
         // Then
-        val result = getMovieRecommendationsUseCase(movieId)
+        val result = getMovieRecommendationsUseCase(movieId,page)
         assertEquals(result, fakeMovies)
 
     }
@@ -36,12 +37,12 @@ class GetMovieRecommendationsUseCaseTest {
     fun `should return empty list when no cast found`() = runTest{
         // Given
         val movieId = 1
-
+        val page = 1
         // when
-        coEvery { movieRepository.getMovieRecommendations(movieId) } returns emptyList()
+        coEvery { movieRepository.getMovieRecommendations(movieId,page) } returns emptyList()
 
         // Then
-        val result = getMovieRecommendationsUseCase(movieId)
+        val result = getMovieRecommendationsUseCase(movieId,page)
         assertEquals(result, emptyList())
     }
 

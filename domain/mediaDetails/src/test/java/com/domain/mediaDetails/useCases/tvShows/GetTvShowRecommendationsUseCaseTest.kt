@@ -23,12 +23,12 @@ class GetTvShowRecommendationsUseCaseTest {
     fun `should return tv show recommendation from repository`() = runTest {
         // Given
         val tvShowId = 1
-
+        val page = 1
         // when
-        coEvery { tvShowRepository.getTvShowRecommendations(tvShowId) } returns fakeTvShows
+        coEvery { tvShowRepository.getTvShowRecommendations(tvShowId,page) } returns fakeTvShows
 
         // Then
-        val result = getTvShowRecommendationsUseCase(tvShowId)
+        val result = getTvShowRecommendationsUseCase(tvShowId,page)
         assertEquals(result, fakeTvShows)
 
     }
@@ -37,12 +37,14 @@ class GetTvShowRecommendationsUseCaseTest {
     fun `should return empty list when no cast found`() = runTest {
         // Given
         val tvShowId = 1
+        val page = 1
+
 
         // when
-        coEvery { tvShowRepository.getTvShowRecommendations(tvShowId) } returns emptyList()
+        coEvery { tvShowRepository.getTvShowRecommendations(tvShowId,page) } returns emptyList()
 
         // Then
-        val result = getTvShowRecommendationsUseCase(tvShowId)
+        val result = getTvShowRecommendationsUseCase(tvShowId,page)
         assertTrue(result.isEmpty())
     }
 
