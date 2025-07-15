@@ -15,11 +15,28 @@ android {
 
     signingConfigs {
         create("release") {
+            val localProps = Properties().apply {
+                val localFile = rootProject.file("local.properties")
+                if (localFile.exists()) {
+                    load(localFile.inputStream())
+                }
+            }
+
             val keystorePath = System.getenv("KEYSTORE_PATH")
-                ?: "$rootDir/appkey/aflami-release-key.jks"
-            val keystorePassword = System.getenv("KEYSTORE_PASSWORD") ?: "android"
-            val keyAliasValue = System.getenv("KEY_ALIAS") ?: "androiddebugkey"
-            val keyPasswordValue = System.getenv("KEY_PASSWORD") ?: "android"
+                ?: localProps.getProperty("KEYSTORE_PATH")
+                ?: throw GradleException("KEYSTORE_PATH is not set.")
+
+            val keystorePassword = System.getenv("KEYSTORE_PASSWORD")
+                ?: localProps.getProperty("KEYSTORE_PASSWORD")
+                ?: throw GradleException("KEYSTORE_PASSWORD is not set.")
+
+            val keyAliasValue = System.getenv("KEY_ALIAS")
+                ?: localProps.getProperty("KEY_ALIAS")
+                ?: throw GradleException("KEY_ALIAS is not set.")
+
+            val keyPasswordValue = System.getenv("KEY_PASSWORD")
+                ?: localProps.getProperty("KEY_PASSWORD")
+                ?: throw GradleException("KEY_PASSWORD is not set.")
 
             storeFile = file(keystorePath)
             storePassword = keystorePassword
@@ -57,7 +74,13 @@ android {
         }
         create("minified") {
             initWith(buildTypes.getByName("release"))
+            isMinifyEnabled = true
+            isShrinkResources = true
             isDebuggable = false
+            proguardFiles(
+                getDefaultProguardFile("proguard-android-optimize.txt"),
+                "proguard-rules.pro"
+            )
             matchingFallbacks.add("release")
         }
         getByName("debug") {
