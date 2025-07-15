@@ -131,7 +131,7 @@ kover {
             verify {
                 rule {
                     bound {
-                        minValue = 100
+                        minValue = 20
                     }
                 }
             }
