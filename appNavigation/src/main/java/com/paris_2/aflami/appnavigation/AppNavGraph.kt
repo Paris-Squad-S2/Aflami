@@ -6,14 +6,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsApi.fromJsonToMediaDetailsDestination
 import com.feature.search.searchApi.SearchFeatureAPI
-import com.feature.search.searchApi.fromJson
+import com.feature.search.searchApi.fromJsonToSearchDestination
 import org.koin.compose.koinInject
 
 @Composable
 fun AppNavGraph(navigator: AppNavigator = koinInject()) {
     val navController = rememberNavController()
     val searchFeature: SearchFeatureAPI = koinInject()
+    val mediaDetailsFeature: MediaDetailsFeatureAPI = koinInject()
 
     ObserveAsEvents(navigator.navigationEvent) { event ->
         when (event) {
@@ -35,7 +38,12 @@ fun AppNavGraph(navigator: AppNavigator = koinInject()) {
             composable<AppDestinations.SearchFeature> {
                 val searchDestination =
                     it.toRoute<AppDestinations.SearchFeature>().searchDestination
-                searchFeature(searchDestination?.fromJson())()
+                searchFeature(searchDestination?.fromJsonToSearchDestination())()
+            }
+            composable<AppDestinations.MediaDetailsFeature> {
+                val mediaDetailsDestination =
+                    it.toRoute<AppDestinations.MediaDetailsFeature>().mediaDetailsDestination
+                mediaDetailsFeature(mediaDetailsDestination?.fromJsonToMediaDetailsDestination())()
             }
         }
     }

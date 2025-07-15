@@ -12,5 +12,5 @@ sealed interface AppDestinations : AppGraph {
     data class SearchFeature(val searchDestination: String? = null) : AppDestination
 
     @Serializable
-    data object DetailsFeature : AppDestination
+    data class MediaDetailsFeature(val mediaDetailsDestination: String? = null) : AppDestination
 }

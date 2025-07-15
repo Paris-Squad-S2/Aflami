@@ -110,6 +110,8 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
 
     implementation(project(Modules.FEATURE_SEARCH_API))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
     implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))

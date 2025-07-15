@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.domain.search.model.CategoryModel
 import com.domain.search.model.Media
@@ -13,8 +14,12 @@ import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -67,6 +72,8 @@ class SearchViewModel(
             errorMessage = null
         )
     ) {
+
+    val appNavigator: AppNavigator = getKoin().get()
 
     init {
         loadRecentSearches()
@@ -153,8 +160,7 @@ class SearchViewModel(
                 delay(1000)
                 searchQuery(query)
             }
-        }
-        else {
+        } else {
             emitState(
                 screenState.value.copy(
                     isLoading = false,
@@ -404,6 +410,23 @@ class SearchViewModel(
     }
 
     override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        MediaDetailsDestinations.MediaDetailsScreen(
+                            mediaId = id
+                        ).toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 }

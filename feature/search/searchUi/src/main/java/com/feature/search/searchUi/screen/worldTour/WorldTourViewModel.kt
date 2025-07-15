@@ -8,8 +8,12 @@ import com.domain.search.model.Media
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -43,6 +47,7 @@ class WorldTourViewModel(
             errorMessage = null
         )
     ) {
+    val appNavigator: AppNavigator = getKoin().get()
 
     init {
         val initialQuery = savedStateHandle.toRoute<SearchDestinations.WorldTourScreen>().name
@@ -137,6 +142,23 @@ class WorldTourViewModel(
     }
 
     override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        MediaDetailsDestinations.MediaDetailsScreen(
+                            mediaId = id
+                        ).toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 }

@@ -1,4 +1,4 @@
 package com.feature.mediaDetails.mediaDetailsApi
 
-class MyClass {
-}
+
+interface MediaDetailsGraph

@@ -57,4 +57,5 @@ dependencies {
     implementation(libs.koin.compose)
 
     implementation(project(Modules.FEATURE_SEARCH_API))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
 }
