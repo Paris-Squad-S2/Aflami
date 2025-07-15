@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.common.cast
+package com.feature.mediaDetails.mediaDetailsUi.common.components.cast
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

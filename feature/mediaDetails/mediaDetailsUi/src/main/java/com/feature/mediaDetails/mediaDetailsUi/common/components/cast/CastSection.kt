@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.common.cast
+package com.feature.mediaDetails.mediaDetailsUi.common.components.cast
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,7 +11,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.domain.mediaDetails.model.Cast
 import com.paris_2.aflami.designsystem.theme.Theme

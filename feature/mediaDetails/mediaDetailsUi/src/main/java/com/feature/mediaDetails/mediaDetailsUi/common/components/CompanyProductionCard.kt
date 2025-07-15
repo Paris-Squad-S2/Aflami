@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.common
+package com.feature.mediaDetails.mediaDetailsUi.common.components
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.border

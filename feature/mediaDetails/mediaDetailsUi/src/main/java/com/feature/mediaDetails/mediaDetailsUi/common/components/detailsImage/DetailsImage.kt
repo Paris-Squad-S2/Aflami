@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.common.detailsImage
+package com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -102,14 +102,14 @@ fun DetailsImage(
                     backGroundColor = Theme.colors.surfaceHigh
                 )
             }
-                ImagePageIndicator(
-                    pageSize = if (imageUris.size == 1) 3 else imageUris.size,
-                    currentPage = if (imageUris.size == 1) 2 else pagerState.currentPage,
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        .padding(end = 4.dp)
-                        .padding(bottom = 4.dp)
-                )
+            ImagePageIndicator(
+                pageSize = if (imageUris.size == 1) 3 else imageUris.size,
+                currentPage = if (imageUris.size == 1) 2 else pagerState.currentPage,
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(end = 4.dp)
+                    .padding(bottom = 4.dp)
+            )
         }
     }
 }
