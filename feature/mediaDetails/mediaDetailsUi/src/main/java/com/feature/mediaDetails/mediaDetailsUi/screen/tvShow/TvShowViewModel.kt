@@ -1,8 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.screen.tvShow
 
 import com.domain.mediaDetails.model.Image
-import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
-import com.domain.mediaDetails.useCases.tvShows.AddTvShowToListUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetSeasonsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
@@ -57,8 +55,6 @@ data class EpisodeUi(
 
 
 class TvShowViewModel(
-    private val addTvShowToFavoriteUseCase: AddTvShowToFavoriteUseCase,
-    private val addTvShowToListUseCase: AddTvShowToListUseCase,
     private val getSeasonsUseCase : GetSeasonsUseCase,
     private val getTvShowCastUseCase: GetTvShowCastUseCase,
     private val getTvShowDetailsUseCase: GetTvShowDetailsUseCase,
