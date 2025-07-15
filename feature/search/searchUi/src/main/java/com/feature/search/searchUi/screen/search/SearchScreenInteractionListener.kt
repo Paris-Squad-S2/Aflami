@@ -1,8 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import com.domain.search.model.CategoryModel
-import com.domain.search.model.SearchType
-
 interface SearchScreenInteractionListener {
     fun onNavigateToWorldTourScreen()
     fun onNavigateToFindByActorScreen()
@@ -11,7 +8,7 @@ interface SearchScreenInteractionListener {
     fun onFilterButtonClick()
     fun onClearFilterClick()
     fun onClearAllRecentSearches()
-    fun onClearRecentSearch(id: String, searchType: SearchType)
+    fun onClearRecentSearch(id: String, searchTypeUi: SearchTypeUi)
     fun onRetryRecentSearches()
     fun onRetrySearchQuery()
     fun onMediaCardClick(id: Int)
@@ -19,7 +16,7 @@ interface SearchScreenInteractionListener {
     fun onApplyFilterButtonClick(
         selectedRating: Float,
         isAllCategories: Boolean,
-        selectedCategories: List<CategoryModel>
+        selectedCategories: List<CategoryUiState>
     )
-    fun onRecentSearchClick(searchTitle: String, searchType: SearchType)
+    fun onRecentSearchClick(searchTitle: String, searchTypeUi: SearchTypeUi)
 }

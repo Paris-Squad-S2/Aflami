@@ -246,7 +246,6 @@ fun TextField(
                             .fillMaxWidth()
                             .clickable {
                                 onSuggestionSelected(suggestion)
-                                onValueChange(suggestion)
                                 expanded = false
                             }
                             .padding(16.dp),

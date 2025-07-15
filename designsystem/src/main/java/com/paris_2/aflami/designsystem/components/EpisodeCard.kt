@@ -22,7 +22,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun EpisodeCard(
     modifier: Modifier = Modifier,
-    episodeRating: String,
+    episodeRating: Float,
     episodeNumber: String,
     episodeTitle: String,
     episodeDuration: String,
@@ -85,7 +85,7 @@ fun PreviewEpisodeCard() {
             episodeDescription = "In 1935, corrections officer Paul Edgecomb oversees The Green Mile, the death row...",
             episodeDuration = "58 m",
             episodeNumber = "1",
-            episodeRating = "8",
+            episodeRating = 8f,
             episodeTitle = "Recovering a body",
             episodeDate = "3 Sep 2020"
         )
