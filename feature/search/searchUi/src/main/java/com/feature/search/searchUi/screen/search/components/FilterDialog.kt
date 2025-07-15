@@ -69,7 +69,7 @@ fun FilterDialog(
                 modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
             )
             LazyRow(
-                contentPadding = PaddingValues(horizontal = 12.dp),
+                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 24.dp),
             ) {
                 item {
                     Chips(
