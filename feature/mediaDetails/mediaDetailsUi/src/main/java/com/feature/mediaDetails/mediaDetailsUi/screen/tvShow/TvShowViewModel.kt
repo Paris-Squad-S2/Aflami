@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.screen.tvShow
 
-import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.useCases.tvShows.GetSeasonsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
@@ -21,7 +20,7 @@ data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
     val cast: List<CastUi>,
     val reviews: List<ReviewUi>,
-    val gallery: List<Image>,
+    val gallery: List<String>
 )
 
 data class TvShowUi(
@@ -35,7 +34,6 @@ data class TvShowUi(
     val description: String,
     val productionCompanies: List<ProductionCompanyUi>
 )
-
 data class SeasonUi(
     val id: String,
     val name: String,

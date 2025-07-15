@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.screen.movie
 
-import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieMediaUseCase
@@ -17,7 +16,7 @@ data class MovieDetailsUiState(
     val movie: MovieUi,
     val cast: List<CastUi>,
     val reviews: List<ReviewUi>,
-    val gallery: List<Image>,
+    val gallery: List<String>
 )
 
 data class MovieUi(
