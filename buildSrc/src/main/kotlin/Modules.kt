@@ -36,6 +36,7 @@ object Modules {
     const val DATASOURCE_LOCAL_CATEGORIES = ":datasource:local:categories"
     const val DATASOURCE_LOCAL_SEARCH = ":datasource:local:search"
     const val DATASOURCE_REMOTE_SEARCH = ":datasource:remote:search"
+    const val DATASOURCE_REMOTE_MEDIA_DETAILS = ":datasource:remote:mediaDetails"
 
     const val FEATURE = ":feature"
     const val FEATURE_ONBOARDING = ":feature:onboarding"

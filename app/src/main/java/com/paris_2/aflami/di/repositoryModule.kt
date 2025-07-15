@@ -1,4 +1,4 @@
-package com.feature.search.searchUi.di
+package com.paris_2.aflami.di
 
 import com.domain.search.repository.CategoriesRepository
 import com.domain.search.repository.CountryRepository

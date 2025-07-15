@@ -1,4 +1,4 @@
-package com.feature.search.searchUi.di
+package com.paris_2.aflami.di
 
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase

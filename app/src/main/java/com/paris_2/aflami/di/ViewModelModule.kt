@@ -1,4 +1,4 @@
-package com.feature.search.searchUi.di
+package com.paris_2.aflami.di
 
 import com.feature.search.searchUi.navigation.Destinations
 import com.feature.search.searchUi.navigation.Navigator

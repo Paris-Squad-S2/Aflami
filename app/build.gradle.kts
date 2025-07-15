@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.google.gms.google.services) apply true
     id("com.google.firebase.crashlytics")
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -97,12 +98,25 @@ dependencies {
     testImplementation(libs.junit.platform.launcher)
 
     //Koin
+    implementation(libs.koin.workmanager)
     implementation(libs.koin.core)
     implementation(libs.koin.compose)
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.android)
 
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
+
     implementation(libs.androidx.startup.runtime)
+
+    implementation(project(Modules.FEATURE_SEARCH_API))
+    implementation(project(Modules.REPOSITORY_SEARCH))
+    implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
+    implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
+    implementation(project(Modules.DATASOURCE_REMOTE_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_SEARCH))
+    implementation(libs.androidx.room.runtime)
+    ksp(libs.room.compiler)
 }
 
 kover {
