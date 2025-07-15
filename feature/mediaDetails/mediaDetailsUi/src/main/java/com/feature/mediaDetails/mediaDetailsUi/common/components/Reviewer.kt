@@ -36,23 +36,26 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ReviewCard(
-    modifier: Modifier = Modifier,
     name: String,
     createdAt: LocalDate,
     avatarUrl: String,
     username: String,
     rating: Double,
     description: String,
+    modifier: Modifier = Modifier,
 ) {
-    val formattedDate = createdAt.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+    val formattedDate = remember(createdAt) {
+        createdAt.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
+    }
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .background(Theme.colors.primaryVariant, RoundedCornerShape(16.dp))
+            .background(Theme.colors.surface, RoundedCornerShape(16.dp))
             .padding(16.dp)
     ) {
         Column {
+
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
                     model = avatarUrl,
@@ -80,8 +83,7 @@ fun ReviewCard(
 
                 RatingCard(
                     rating = rating.toString(),
-                    modifier = Modifier
-                        .padding(start = 8.dp)
+                    modifier = Modifier.padding(start = 8.dp)
                 )
             }
 
@@ -91,21 +93,16 @@ fun ReviewCard(
             val maxLines = if (expanded) Int.MAX_VALUE else 4
 
             val annotatedText = buildAnnotatedString {
-                withStyle(style = SpanStyle(color = Theme.colors.text.body)) {
+                withStyle(SpanStyle(color = Theme.colors.text.body)) {
                     append(description)
                 }
                 if (!expanded) {
                     append(" ")
-                    withStyle(
-                        style = SpanStyle(
-                            color = Theme.colors.primary,
-                        )
-                    ) {
+                    withStyle(SpanStyle(color = Theme.colors.primary)) {
                         append("Read more")
                     }
                 }
             }
-
 
             ClickableText(
                 text = annotatedText,
@@ -135,6 +132,6 @@ fun ReviewCardPreview() {
         avatarUrl = "https://yourcdn.com/avatar.jpg",
         username = "@msbreviews",
         rating = 9.9,
-        description = "Hmmm! I wasn’t sure if I was watching a sentimental edition of “Hawaii Five-O” here or a collection of outtakes from a “Sonic” movie as this rather "
+        description = "Hmmm! I wasn’t sure if I was watching a sentimental edition of “Hawaii Five-O” here or a collection of outtakes from a “Sonic” movie as this "
     )
 }
