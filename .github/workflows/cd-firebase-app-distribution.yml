@@ -40,6 +40,15 @@ jobs:
           echo "KEY_ALIAS=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
           echo "KEY_PASSWORD=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
 
+      - name: Check if keystore file exists
+        run: |
+          if [ -f "$GITHUB_WORKSPACE/appkey/aflami-release-key.jks" ]; then
+            echo "✅ Keystore file restored successfully."
+          else
+            echo "❌ Keystore file is missing!"
+            exit 1
+          fi
+
       - name: Give gradlew permission to execute
         run: chmod +x ./gradlew
 
