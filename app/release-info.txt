@@ -1,2 +1,8 @@
-versionName=0.1.17
-- enhance some code lines
+versionName=0.1.18
+- Major refactor: restructured modules, renamed SearchApp to AflamiApplication, updated package to com.paris_2.aflami
+- Moved and renamed DI files to align with new structure
+- Updated dependencies: added Koin WorkManager, Room, ksp, and new project modules
+- Introduced appNavigation module for centralized navigation with Jetpack Compose and Koin
+- Added FeatureAPIModule for feature-specific navigation APIs
+- Removed old theme files, migrated to design system module
+- Updated MainActivity to use Jetpack Compose navigation and theming
