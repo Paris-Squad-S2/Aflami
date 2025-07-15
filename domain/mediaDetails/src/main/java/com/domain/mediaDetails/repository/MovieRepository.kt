@@ -9,9 +9,9 @@ import com.domain.mediaDetails.model.Review
 interface MovieRepository {
     suspend fun getMovieDetails(movieId: Int): Movie
     suspend fun getMovieCast(movieId: Int): List<Cast>
-    suspend fun getMovieRecommendations(movieId: Int): List<Movie>
+    suspend fun getMovieRecommendations(movieId: Int,page: Int): List<Movie>
     suspend fun getMovieGallery(movieId: Int): Gallery
     suspend fun getCompanyProducts(movieId: Int): List<ProductionCompany>
-    suspend fun getMovieReview(movieId: Int): List<Review>
+    suspend fun getMovieReview(movieId: Int,page: Int): List<Review>
     suspend fun addMovieToFavorite(movieId: Int)
 }

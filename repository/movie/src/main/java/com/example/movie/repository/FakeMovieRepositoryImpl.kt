@@ -196,7 +196,7 @@ class FakeMovieRepositoryImpl(
         return fakeCast
     }
 
-    override suspend fun getMovieRecommendations(movieId: Int): List<Movie> {
+    override suspend fun getMovieRecommendations(movieId: Int,page: Int): List<Movie> {
         return fakeMovies.filter { it.id != movieId }
     }
 
@@ -208,7 +208,7 @@ class FakeMovieRepositoryImpl(
         return fakeMovies.find { it.id == movieId }?.productionCompanies ?: emptyList()
     }
 
-    override suspend fun getMovieReview(movieId: Int): List<Review> {
+    override suspend fun getMovieReview(movieId: Int,page: Int): List<Review> {
         return fakeReviews
     }
 
