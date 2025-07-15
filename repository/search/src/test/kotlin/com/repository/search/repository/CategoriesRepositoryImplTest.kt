@@ -7,8 +7,8 @@ import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.dto.GenreDto
 import com.repository.search.dto.GenresDto
 import com.repository.search.entity.GenreEntity
-import com.repository.search.exception.NoCategoriesFoundException
-import com.repository.search.exception.NoInternetConnectionException
+import com.domain.search.exception.NoCategoriesFoundException
+import com.domain.search.exception.NoInternetConnectionException
 import io.mockk.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest

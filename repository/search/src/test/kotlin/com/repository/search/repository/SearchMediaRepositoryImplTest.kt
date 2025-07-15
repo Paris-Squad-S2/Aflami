@@ -8,10 +8,10 @@ import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.entity.SearchHistoryEntity
 import com.repository.search.entity.SearchType
-import com.repository.search.exception.NoDataForActorException
-import com.repository.search.exception.NoDataForCountryException
-import com.repository.search.exception.NoDataForSearchException
-import com.repository.search.exception.NoInternetConnectionException
+import com.domain.search.exception.NoDataForActorException
+import com.domain.search.exception.NoDataForCountryException
+import com.domain.search.exception.NoDataForSearchException
+import com.domain.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMedia
 import com.repository.search.mapper.toMedias
 import io.mockk.Runs

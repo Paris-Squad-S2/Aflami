@@ -1,5 +1,9 @@
 package com.repository.search.repository
 
+import com.domain.search.exception.NoDataForActorException
+import com.domain.search.exception.NoDataForCountryException
+import com.domain.search.exception.NoDataForSearchException
+import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.search.NetworkConnectionChecker
@@ -7,16 +11,13 @@ import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.entity.SearchType
-import com.repository.search.exception.NoDataForActorException
-import com.repository.search.exception.NoDataForCountryException
-import com.repository.search.exception.NoDataForSearchException
-import com.repository.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMediaEntities
 import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
 import com.repository.search.util.detectLanguage
 import com.repository.search.util.getCurrentDate
 import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
@@ -29,32 +30,31 @@ class SearchMediaRepositoryImpl(
     private val searchHistoryLocalDataSource: HistoryLocalDataSource
 ) : SearchMediaRepository {
 
-    @OptIn(ExperimentalTime::class)
     override suspend fun getMediaByActor(actorName: String): List<Media> {
-        try {
-            val media = mediaLocalDataSource.getMediaByActor(actor = actorName)
-            if (media.isNotEmpty()) {
-                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor)?.searchDate
-                val timeZone = TimeZone.currentSystemDefault()
-                if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
-                ) {
-                    return media.toMedias()
-                }
+        return try {
+            val localMedia = mediaLocalDataSource.getMediaByActor(actor = actorName)
+            val queryDate = searchHistoryLocalDataSource
+                .getSearchHistoryQuery(actorName, SearchType.Actor)
+                ?.searchDate
+            if (localMedia.isNotEmpty() && queryDate != null && isDataFresh(date = queryDate)) {
+                return localMedia.toMedias()
             }
 
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
-                val searchDto =
+                val remoteDto =
                     searchRemoteDataSource.searchPerson(query = actorName, language = language)
-                val mediaEntities = searchDto.toMediaEntitiesForActors(query = actorName)
-                searchHistoryLocalDataSource.addSearchQuery(actorName, SearchType.Actor)
-                mediaLocalDataSource.addAllMedia(mediaEntities)
+                val entities = remoteDto.toMediaEntitiesForActors(query = actorName)
+                searchHistoryLocalDataSource.addSearchQuery(
+                    title = actorName,
+                    searchType = SearchType.Actor
+                )
+                mediaLocalDataSource.addAllMedia(media = entities)
             } else {
                 throw NoInternetConnectionException()
             }
 
-            return mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
+            mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
@@ -62,38 +62,36 @@ class SearchMediaRepositoryImpl(
         }
     }
 
-
-    @OptIn(ExperimentalTime::class)
     override suspend fun getMoviesByCountry(countryName: String): List<Media> {
-        try {
-            val media = mediaLocalDataSource.getMediaByCountry(country = countryName)
-            if (media.isNotEmpty()) {
-                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country)?.searchDate
-                val timeZone = TimeZone.Companion.currentSystemDefault()
-                if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
-                ) {
-                    return media.toMedias()
-                }
+        return try {
+            val localMedia = mediaLocalDataSource.getMediaByCountry(country = countryName)
+
+            val queryDate = searchHistoryLocalDataSource
+                .getSearchHistoryQuery(query = countryName, searchType = SearchType.Country)
+                ?.searchDate
+            if (localMedia.isNotEmpty() && queryDate != null && isDataFresh(date = queryDate)) {
+                return localMedia.toMedias()
             }
 
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
-                val searchDto = searchRemoteDataSource.searchCountryCode(
+                val remoteDto = searchRemoteDataSource.searchCountryCode(
                     query = countryName,
                     countryCode = countryName,
                     language = language
                 )
-                val mediaEntities = searchDto.toMediaEntities(query = countryName,
+                val mediaEntities =
+                    remoteDto.toMediaEntities(query = countryName, searchType = SearchType.Country)
+                searchHistoryLocalDataSource.addSearchQuery(
+                    title = countryName,
                     searchType = SearchType.Country
                 )
-                searchHistoryLocalDataSource.addSearchQuery(countryName, SearchType.Country)
-                mediaLocalDataSource.addAllMedia(mediaEntities)
+                mediaLocalDataSource.addAllMedia(media = mediaEntities)
             } else {
                 throw NoInternetConnectionException()
             }
 
-            return mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+            mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
@@ -101,36 +99,44 @@ class SearchMediaRepositoryImpl(
         }
     }
 
-
-    @OptIn(ExperimentalTime::class)
     override suspend fun getMediaByQuery(query: String): List<Media> {
-        try {
-            val media = mediaLocalDataSource.getMediaByTitleQuery(query = query)
-            if (media.isNotEmpty()) {
-                val queryDate = searchHistoryLocalDataSource.getSearchHistoryQuery(query, SearchType.Query)?.searchDate
-                val timeZone = TimeZone.Companion.currentSystemDefault()
-                if (queryDate != null && queryDate.toInstant(timeZone)
-                        .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
-                ) {
-                    return media.toMedias()
-                }
+        return try {
+            val localMedia = mediaLocalDataSource.getMediaByTitleQuery(query = query)
+
+            val queryDate = searchHistoryLocalDataSource
+                .getSearchHistoryQuery(query, SearchType.Query)
+                ?.searchDate
+            if (localMedia.isNotEmpty() && queryDate != null && isDataFresh(date = queryDate)) {
+                return localMedia.toMedias()
             }
 
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
-                val searchDto = searchRemoteDataSource.searchMulti(query = query, language = language)
-                val mediaEntities = searchDto.toMediaEntities(query = query, searchType = SearchType.Query)
-                searchHistoryLocalDataSource.addSearchQuery(query, searchType = SearchType.Query)
-                mediaLocalDataSource.addAllMedia(mediaEntities)
+                val remoteDto =
+                    searchRemoteDataSource.searchMulti(query = query, language = language)
+                val entities =
+                    remoteDto.toMediaEntities(query = query, searchType = SearchType.Query)
+                searchHistoryLocalDataSource.addSearchQuery(
+                    title = query,
+                    searchType = SearchType.Query
+                )
+                mediaLocalDataSource.addAllMedia(entities)
             } else {
                 throw NoInternetConnectionException()
             }
 
-            return mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+            mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
             throw NoDataForSearchException()
         }
+    }
+
+    @OptIn(ExperimentalTime::class)
+    private fun isDataFresh(date: LocalDateTime): Boolean {
+        val timeZone = TimeZone.currentSystemDefault()
+        return date.toInstant(timeZone)
+            .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
     }
 }
