@@ -77,7 +77,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -89,6 +89,9 @@ dependencies {
     implementation(project(Modules.FIREBASE))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
     implementation(project(Modules.FEATURE_SEARCH_UI))
+
+    //Navigation
+    implementation(libs.navigation.compose)
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)

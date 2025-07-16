@@ -1,6 +1,10 @@
-package com.paris_2.aflami.appnavigation
+package com.paris_2.aflami
 
 import androidx.navigation.NavOptions
+import com.paris_2.aflami.appnavigation.AppDestination
+import com.paris_2.aflami.appnavigation.AppGraph
+import com.paris_2.aflami.appnavigation.AppNavigationEvent
+import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex
@@ -15,7 +19,7 @@ class AppNavigatorImpl(override val startGraph: AppGraph) : AppNavigator {
     override suspend fun navigate(destination: AppDestination, navOptions: NavOptions?) {
         mutex.withLock {
             val now = System.currentTimeMillis()
-            if (now - lastNavigateTime >= 1000) {
+            if (now - lastNavigateTime >= 300) {
                 lastNavigateTime = now
                 _navigateEvent.send(
                     AppNavigationEvent.Navigate(destination = destination, navOptions = navOptions)
