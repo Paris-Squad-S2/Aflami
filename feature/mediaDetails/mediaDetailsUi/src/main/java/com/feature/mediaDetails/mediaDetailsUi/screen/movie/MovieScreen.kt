@@ -16,6 +16,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.DescriptionSection
+import com.feature.mediaDetails.mediaDetailsUi.common.components.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.cast.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage.DetailsImage
 import com.paris_2.aflami.designsystem.R
@@ -33,6 +34,12 @@ fun MovieDetailsScreenContent(
     //  movieScreenInteractionListener: MovieScreenInteractionListener
 ) {
     val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
+    val chips = listOf(
+        "More like this" to R.drawable.ic_camera_video,
+        "Reviews" to R.drawable.ic_starr,
+        "Gallery" to R.drawable.ic_album,
+        "Production" to R.drawable.ic_city
+    )
     Box(
         Modifier
             .fillMaxSize()
@@ -72,15 +79,28 @@ fun MovieDetailsScreenContent(
             }
             item {
                 ChipsRowSection(
-                    items =listOf(
-                        "More like this" to R.drawable.ic_camera_video,
-                        "Reviews" to R.drawable.ic_starr,
-                        "Gallery" to R.drawable.ic_album,
-                        "Production" to R.drawable.ic_city
-                    ),
+                    items = chips,
                     selectedIndex = selectedIndex.value,
                     onItemSelected = { selectedIndex.value = it }
                 )
+            }
+            selectedIndex.value?.let { index ->
+                when (chips[index].first) {
+                    "Reviews" -> item {
+                        ReviewsSection(
+                            reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
+                        )
+                    }
+                    "Gallery" -> item {
+                      //  GallerySection(state.movieDetailsUiState.gallery)
+                    }
+                    "Production" -> item {
+                      //  ProductionSection(state.movieDetailsUiState.movie.productionCompanies)
+                    }
+                    "More like this" -> item {
+                        //MoreLikeThisSection()
+                    }
+                }
             }
         }
 
