@@ -4,15 +4,9 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
-        android:name=".SearchApp"
         android:allowBackup="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.Aflami">
-        <activity
-            android:name="com.feature.search.searchUi.MainActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Aflami">
-        </activity>
     </application>
 
 </manifest>

@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -20,7 +21,7 @@ import com.paris_2.aflami.designsystem.components.MediaCardType
 @Composable
 fun SearchResultContent(
     searchResult: List<MediaUiState>,
-    onMediaCardClick: (Int) -> Unit,
+    onMediaCardClick: (Int, MediaTypeUi) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
     val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
@@ -39,7 +40,7 @@ fun SearchResultContent(
                 modifier = Modifier
                     .padding(8.dp)
                     .clickable {
-                        onMediaCardClick(media.id)
+                        onMediaCardClick(media.id, media.type)
                     },
                 imageUri = media.imageUri,
                 rating = media.rating.toFloat(),

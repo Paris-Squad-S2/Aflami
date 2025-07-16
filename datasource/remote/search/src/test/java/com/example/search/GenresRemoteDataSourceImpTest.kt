@@ -16,6 +16,7 @@ class GenresRemoteDataSourceImpTest {
     private val mockGenresApiServices = mockk<GenresApiServices>()
 
     private lateinit var genresRemoteDataSource: GenresRemoteDataSourceImp
+    private val language = "en"
 
     @Before
     fun setUp() {
@@ -33,11 +34,11 @@ class GenresRemoteDataSourceImpTest {
                 )
             )
             // When
-            coEvery { mockGenresApiServices.getAllGenres() } returns expectedGenres
-            val actualGenres = genresRemoteDataSource.getAllGenres()
+            coEvery { mockGenresApiServices.getAllGenres(language) } returns expectedGenres
+            val actualGenres = genresRemoteDataSource.getAllGenres(language)
             // Then
             assertThat(actualGenres).isEqualTo(expectedGenres)
-            coVerify(exactly = 1) { mockGenresApiServices.getAllGenres() }
+            coVerify(exactly = 1) { mockGenresApiServices.getAllGenres(language) }
         }
 
     @Test
@@ -45,12 +46,12 @@ class GenresRemoteDataSourceImpTest {
         runTest {
             // Given
             val expectedGenres = GenresDto(genreDto = emptyList())
-            coEvery { mockGenresApiServices.getAllGenres() } returns expectedGenres
+            coEvery { mockGenresApiServices.getAllGenres(language) } returns expectedGenres
             // When
-            val actualGenres = genresRemoteDataSource.getAllGenres()
+            val actualGenres = genresRemoteDataSource.getAllGenres(language)
             // Then
             assertThat(actualGenres.genreDto).isEmpty()
-            coVerify(exactly = 1) { mockGenresApiServices.getAllGenres() }
+            coVerify(exactly = 1) { mockGenresApiServices.getAllGenres(language) }
         }
 
     @Test
@@ -58,15 +59,15 @@ class GenresRemoteDataSourceImpTest {
         runTest {
             // Given
             val apiException = RuntimeException("API Error")
-            coEvery { mockGenresApiServices.getAllGenres() } throws apiException
+            coEvery { mockGenresApiServices.getAllGenres(language) } throws apiException
 
             // When and Then
             try {
-                genresRemoteDataSource.getAllGenres()
+                genresRemoteDataSource.getAllGenres(language)
                 throw AssertionError("Should have propagated the exception")
             } catch (e: Exception) {
                 assertThat(e).isEqualTo(apiException)
             }
-            coVerify(exactly = 1) { mockGenresApiServices.getAllGenres() }
+            coVerify(exactly = 1) { mockGenresApiServices.getAllGenres(language) }
         }
 }

@@ -3,8 +3,8 @@ package com.feature.search.searchUi.comon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.feature.search.searchUi.navigation.Destination
-import com.feature.search.searchUi.navigation.Navigator
+import com.feature.search.searchApi.SearchDestination
+import com.feature.search.searchUi.navigation.SearchNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -14,16 +14,16 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.java.KoinJavaComponent
+import org.koin.core.component.inject
 
 open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
 
-    private val navigator: Navigator by KoinJavaComponent.inject(Navigator::class.java)
+    private val navigator: SearchNavigator by inject()
 
-    protected fun navigate(destination: Destination, navOptions: NavOptions? = null) =
+    protected fun navigate(destination: SearchDestination, navOptions: NavOptions? = null) =
         viewModelScope.launch {
             navigator.navigate(destination = destination, navOptions = navOptions)
         }

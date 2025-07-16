@@ -5,6 +5,7 @@ import com.domain.search.model.MediaType
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.aflami.appnavigation.AppNavigator
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -20,6 +21,7 @@ import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.koin.mp.KoinPlatform.getKoin
 import kotlin.test.assertEquals
 
 class FindByActorViewModelTest {
@@ -36,7 +38,8 @@ class FindByActorViewModelTest {
         getMediaByActorNameUseCase = mockk(relaxed = true)
         viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
-            getMediaByActorNameUseCase = getMediaByActorNameUseCase
+            getMediaByActorNameUseCase = getMediaByActorNameUseCase,
+            appNavigator=  mockk(relaxed = true)
         )
     }
 

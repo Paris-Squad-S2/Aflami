@@ -42,6 +42,7 @@ class WorldTourViewModelTest {
             getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
             savedStateHandle = mockk(relaxed = true),
+            appNavigator=  mockk(relaxed = true)
             )
     }
 
