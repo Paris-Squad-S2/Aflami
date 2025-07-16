@@ -1,4 +1,4 @@
-package com.repository.datasorce.local
+package com.repository.datasource.local
 
 import com.repository.entity.ImageEntity
 

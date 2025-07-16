@@ -1,7 +1,7 @@
 package com.datasource.local.datasource
 
 import com.datasource.local.dao.CastDao
-import com.repository.datasorce.local.CastLocalDataSource
+import com.repository.datasource.local.CastLocalDataSource
 import com.repository.entity.CastEntity
 
 class CastLocalDataSourceImp(private val dao: CastDao) : CastLocalDataSource {

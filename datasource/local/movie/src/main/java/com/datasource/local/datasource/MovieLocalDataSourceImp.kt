@@ -1,7 +1,7 @@
 package com.datasource.local.datasource
 
 import com.datasource.local.dao.MovieDao
-import com.repository.datasorce.local.MovieLocalDataSource
+import com.repository.datasource.local.MovieLocalDataSource
 import com.repository.entity.MovieEntity
 
 class MovieLocalDataSourceImp(private val dao: MovieDao) : MovieLocalDataSource {

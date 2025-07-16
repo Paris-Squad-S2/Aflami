@@ -1,7 +1,7 @@
 package com.datasource.local.datasource
 
 import com.datasource.local.dao.GalleryDao
-import com.repository.datasorce.local.GalleryLocalDataSource
+import com.repository.datasource.local.GalleryLocalDataSource
 import com.repository.entity.GalleryEntity
 
 class GalleryLocalDataSourceImp(private val dao: GalleryDao) : GalleryLocalDataSource {
