@@ -27,6 +27,7 @@ koinAndroid = "4.1.0"
 koinCompose = "4.1.0"
 koinComposeViewmodel = "4.1.0"
 koinCore = "4.1.0"
+pagingRuntime = "3.3.6"
 startupRuntime = "1.2.0"
 tensorflowLite = "2.13.0"
 tensorflowLiteSupport = "0.4.4"
@@ -53,6 +54,8 @@ workKtx = "2.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
