@@ -1,11 +1,9 @@
 package com.repository.entity
 
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
-@Entity(tableName = "images_table")
+@Serializable
 data class ImageEntity(
-    @PrimaryKey
     val id: Int,
     val url: String,
 )

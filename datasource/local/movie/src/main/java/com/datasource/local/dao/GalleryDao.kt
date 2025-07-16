@@ -9,7 +9,8 @@ import com.repository.entity.GalleryEntity
 @Dao
 interface GalleryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addGallery(gallery: List<GalleryEntity>)
-    @Query("SELECT * FROM gallery_table")
-    suspend fun getGallery(): List<GalleryEntity>
+    suspend fun addGallery(gallery: GalleryEntity)
+
+    @Query("SELECT * FROM gallery_table WHERE movieId = :movieId")
+    suspend fun getGallery(movieId: Int): GalleryEntity
 }

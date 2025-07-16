@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import com.datasource.local.dao.CastDao
 import com.datasource.local.dao.GalleryDao
-import com.datasource.local.dao.ImageDao
 import com.datasource.local.dao.MovieDao
 import com.datasource.local.dao.ReviewDao
 import com.repository.entity.CastEntity
@@ -18,11 +18,11 @@ import com.repository.entity.ReviewEntity
     entities = [MovieEntity::class, CastEntity::class, ReviewEntity::class, GalleryEntity::class],
     version = 1
 )
+@TypeConverters(MovieDetailConverter::class)
 abstract class MovieDetailDataBase : RoomDatabase() {
 
     abstract fun castDao(): CastDao
     abstract fun galleryDao(): GalleryDao
-    abstract fun imageDao(): ImageDao
     abstract fun movieDao(): MovieDao
     abstract fun reviewDao(): ReviewDao
 

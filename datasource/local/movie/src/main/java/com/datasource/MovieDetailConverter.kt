@@ -3,6 +3,7 @@ package com.datasource
 import androidx.room.TypeConverter
 import com.repository.entity.CountryEntity
 import com.repository.entity.GenreEntity
+import com.repository.entity.ImageEntity
 import com.repository.entity.ProductionCompanyEntity
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
@@ -57,5 +58,27 @@ class MovieDetailConverter {
             return null
         }
         return json.decodeFromString<CountryEntity>(countryString)
+    }
+
+
+    @TypeConverter
+    fun fromImageList(images: List<ImageEntity>?): String? {
+        if (images == null) {
+            return null
+        }
+        return json.encodeToString(
+            ListSerializer(
+                serializer<ImageEntity>()
+            ),
+            images
+        )
+    }
+
+    @TypeConverter
+    fun toImageList(imagesString: String?): List<ImageEntity>? {
+        if (imagesString == null) {
+            return null
+        }
+        return json.decodeFromString<List<ImageEntity>>(imagesString)
     }
 }
