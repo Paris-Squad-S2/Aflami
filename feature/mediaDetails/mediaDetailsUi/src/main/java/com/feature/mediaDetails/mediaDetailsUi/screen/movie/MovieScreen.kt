@@ -8,10 +8,13 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import com.feature.mediaDetails.mediaDetailsUi.common.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.cast.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage.DetailsImage
@@ -29,6 +32,7 @@ fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
     //  movieScreenInteractionListener: MovieScreenInteractionListener
 ) {
+    val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
     Box(
         Modifier
             .fillMaxSize()
@@ -64,6 +68,18 @@ fun MovieDetailsScreenContent(
                 CastSection(
                     castList = state.movieDetailsUiState.cast,
                     onSeeAllClick = {}
+                )
+            }
+            item {
+                ChipsRowSection(
+                    items =listOf(
+                        "More like this" to R.drawable.ic_camera_video,
+                        "Reviews" to R.drawable.ic_starr,
+                        "Gallery" to R.drawable.ic_album,
+                        "Production" to R.drawable.ic_city
+                    ),
+                    selectedIndex = selectedIndex.value,
+                    onItemSelected = { selectedIndex.value = it }
                 )
             }
         }
