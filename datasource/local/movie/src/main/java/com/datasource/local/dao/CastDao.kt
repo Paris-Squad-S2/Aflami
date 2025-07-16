@@ -12,5 +12,5 @@ interface CastDao {
     suspend fun addCast(casts: List<CastEntity>)
 
     @Query("SELECT * FROM cast_table WHERE movieId = :movieId")
-    suspend fun getCastByMovieId(movieId: Int): List<CastEntity>?
+    suspend fun getCastByMovieId(movieId: Int): List<CastEntity>
 }

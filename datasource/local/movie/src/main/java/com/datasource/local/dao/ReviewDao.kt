@@ -12,5 +12,5 @@ interface ReviewDao {
     suspend fun addReviews(reviews: List<ReviewEntity>)
 
     @Query("SELECT * FROM Reviews_Table WHERE movieId = :movieId")
-    suspend fun getReviewsByMovieId(movieId: Int): List<ReviewEntity>?
+    suspend fun getReviewsByMovieId(movieId: Int): List<ReviewEntity>
 }

@@ -7,6 +7,6 @@ import com.repository.entity.ReviewEntity
 class ReviewLocalDataSourceImp(private val dao: ReviewDao) : ReviewLocalDataSource {
     override suspend fun addReview(reviews: List<ReviewEntity>) = dao.addReviews(reviews)
 
-    override suspend fun getReviewsForMovie(movieId: Int): List<ReviewEntity>? =
+    override suspend fun getReviewsForMovie(movieId: Int): List<ReviewEntity> =
         dao.getReviewsByMovieId(movieId)
 }
