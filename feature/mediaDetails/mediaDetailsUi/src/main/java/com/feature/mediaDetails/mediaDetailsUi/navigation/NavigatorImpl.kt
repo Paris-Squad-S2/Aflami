@@ -1,6 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.navigation
 
 import androidx.navigation.NavOptions
+import com.feature.mediaDetails.mediaDetailsUi.navigation.NavigationEvent
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex
