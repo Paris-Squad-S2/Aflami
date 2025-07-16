@@ -16,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.feature.mediaDetails.mediaDetailsUi.screen.cast.components.CastScreenItem
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.CastUi
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -60,7 +59,7 @@ fun CastSection(
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(castList.size) { index ->
-                CastScreenItem(
+                CastItem(
                     imageUrl = castList[index].imageUrl,
                     name = castList[index].name,
                     modifier = Modifier,

@@ -17,7 +17,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
-import com.feature.mediaDetails.mediaDetailsUi.screen.cast.components.CastScreenItem
+import com.feature.mediaDetails.mediaDetailsUi.common.components.cast.CastItem
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.CastUi
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -59,7 +59,7 @@ fun CastScreenContent(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 rowItems.forEach { cast ->
-                    CastScreenItem(
+                    CastItem(
                         imageUrl = cast.imageUrl,
                         name = cast.name,
                         modifier = Modifier.weight(1f)
