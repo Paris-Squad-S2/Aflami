@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.paris_2.aflami.appnavigation"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
         minSdk = 26
