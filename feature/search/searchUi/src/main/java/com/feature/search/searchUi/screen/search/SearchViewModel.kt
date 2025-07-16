@@ -34,7 +34,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import androidx.paging.map
 
 data class SearchScreenState(
     val searchUiState: SearchUiState,
@@ -499,10 +498,10 @@ class SearchViewModel(
     }
 
     class NoopListUpdateCallback : ListUpdateCallback {
-        override fun onInserted(position: Int, count: Int)
-        override fun onRemoved(position: Int, count: Int)
-        override fun onMoved(fromPosition: Int, toPosition: Int)
-        override fun onChanged(position: Int, count: Int, payload: Any?)
+        override fun onInserted(position: Int, count: Int){}
+        override fun onRemoved(position: Int, count: Int){}
+        override fun onMoved(fromPosition: Int, toPosition: Int){}
+        override fun onChanged(position: Int, count: Int, payload: Any?){}
     }
 
 
