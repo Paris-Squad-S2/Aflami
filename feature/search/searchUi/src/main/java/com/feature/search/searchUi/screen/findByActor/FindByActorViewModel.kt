@@ -16,6 +16,7 @@ import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.mp.KoinPlatform.getKoin
 
 data class FindByActorScreenState(
     val uiState: FindByActorUiState,
@@ -30,6 +31,7 @@ data class FindByActorUiState(
 class FindByActorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -41,7 +43,6 @@ class FindByActorViewModel(
     )
 ) {
 
-    val appNavigator: AppNavigator = getKoin().get()
 
     init {
         val initialQuery = savedStateHandle.toRoute<SearchDestinations.FindByActorScreen>().name

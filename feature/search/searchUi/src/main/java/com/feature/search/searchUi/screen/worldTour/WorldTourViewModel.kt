@@ -19,6 +19,7 @@ import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.mp.KoinPlatform.getKoin
 
 data class WorldTourScreenState(
     val uiState: WorldTourUiState,
@@ -37,6 +38,7 @@ class WorldTourViewModel(
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
     private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
         WorldTourScreenState(
@@ -49,7 +51,6 @@ class WorldTourViewModel(
             errorMessage = null
         )
     ) {
-    val appNavigator: AppNavigator = getKoin().get()
 
     init {
         val initialQuery = savedStateHandle.toRoute<SearchDestinations.WorldTourScreen>().name

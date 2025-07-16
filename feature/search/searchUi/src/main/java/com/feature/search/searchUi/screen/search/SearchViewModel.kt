@@ -23,6 +23,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.koin.mp.KoinPlatform.getKoin
 
 data class SearchScreenState(
     val searchUiState: SearchUiState,
@@ -86,6 +87,7 @@ class SearchViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -106,8 +108,6 @@ class SearchViewModel(
             errorMessage = null
         )
     ) {
-
-    val appNavigator: AppNavigator = getKoin().get()
 
     init {
         loadRecentSearches()
