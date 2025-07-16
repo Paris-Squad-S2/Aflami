@@ -1,10 +1,11 @@
-package com.repository.entity
+package com.example.movie.models.local
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.movie.util.getCurrentDate
 import kotlinx.datetime.LocalDate
-import kotlinx.serialization.Serializable
+import kotlinx.datetime.LocalDateTime
 
 @Entity(
     tableName = "Reviews_Table",
@@ -17,12 +18,14 @@ import kotlinx.serialization.Serializable
     ]
 )
 data class ReviewEntity(
-    @PrimaryKey
-    val id: String,
+    @PrimaryKey(autoGenerate = true)
+    val id: Int,
     val movieId: Int,
     val name: String,
     val createdAt: LocalDate,
     val avatarUrl: String,
     val username: String,
     val rating: Double,
-)
+    val reviewCacheDate: LocalDateTime = getCurrentDate(),
+
+    )

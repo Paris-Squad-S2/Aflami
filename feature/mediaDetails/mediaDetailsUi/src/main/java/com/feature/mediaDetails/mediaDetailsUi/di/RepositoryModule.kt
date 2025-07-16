@@ -7,6 +7,6 @@ import com.example.tvshow.repository.TvShowRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<MovieRepository> { MovieRepositoryImpl(get()) }
+    single<MovieRepository> { MovieRepositoryImpl(get(),get(),get(),get(),get()) }
     single<TvShowRepository> { TvShowRepositoryImpl(get()) }
 }

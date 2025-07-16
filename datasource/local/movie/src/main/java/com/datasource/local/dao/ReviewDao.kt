@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.entity.ReviewEntity
+import com.example.movie.models.local.ReviewEntity
 
 @Dao
 interface ReviewDao {

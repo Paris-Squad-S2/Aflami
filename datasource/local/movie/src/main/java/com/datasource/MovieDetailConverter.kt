@@ -1,10 +1,10 @@
 package com.datasource
 
 import androidx.room.TypeConverter
-import com.repository.entity.CountryEntity
-import com.repository.entity.GenreEntity
-import com.repository.entity.ImageEntity
-import com.repository.entity.ProductionCompanyEntity
+import com.example.movie.models.local.CountryEntity
+import com.example.movie.models.local.GenreEntity
+import com.example.movie.models.local.ImageEntity
+import com.example.movie.models.local.ProductionCompanyEntity
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString

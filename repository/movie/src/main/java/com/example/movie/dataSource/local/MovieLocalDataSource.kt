@@ -1,6 +1,6 @@
-package com.repository.datasource.local
+package com.example.movie.dataSource.local
 
-import com.repository.entity.MovieEntity
+import com.example.movie.models.local.MovieEntity
 
 interface MovieLocalDataSource {
     suspend fun addMovie(movie: MovieEntity)

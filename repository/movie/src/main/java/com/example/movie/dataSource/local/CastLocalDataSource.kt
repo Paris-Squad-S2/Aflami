@@ -1,6 +1,6 @@
-package com.repository.datasource.local
+package com.example.movie.dataSource.local
 
-import com.repository.entity.CastEntity
+import com.example.movie.models.local.CastEntity
 
 interface CastLocalDataSource {
     suspend fun addCast(cast: List<CastEntity>)

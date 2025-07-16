@@ -1,4 +1,4 @@
-package com.repository.util
+package com.example.movie.util
 
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone

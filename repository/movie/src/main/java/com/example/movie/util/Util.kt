@@ -1,6 +1,6 @@
-package com.repository.util
+package com.example.movie.util
 
-import com.repository.entity.CountryEntity
+import com.example.movie.models.local.CountryEntity
 
 object Util {
 

@@ -1,4 +1,4 @@
-package com.repository.entity
+package com.example.movie.models.local
 
 import kotlinx.serialization.Serializable
 

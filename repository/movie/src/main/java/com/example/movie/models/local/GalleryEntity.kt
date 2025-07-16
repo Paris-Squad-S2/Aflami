@@ -1,8 +1,10 @@
-package com.repository.entity
+package com.example.movie.models.local
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.movie.util.getCurrentDate
+import kotlinx.datetime.LocalDateTime
 
 @Entity(
     tableName = "gallery_table",
@@ -18,4 +20,5 @@ data class GalleryEntity(
     val id: Int,
     val movieId: Int,
     val images: List<ImageEntity>,
-)
+    val galleryCacheDate: LocalDateTime = getCurrentDate(),
+    )
