@@ -8,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
@@ -45,7 +46,7 @@ fun WithSearchQueryContent(
             )
             val searchResult =
                 if (state.searchUiState.selectedTabIndex == 0) state.searchUiState.filteredMoviesResult else state.searchUiState.filteredTvShowsResult
-            if (searchResult.isEmpty()) {
+            if (searchResult.collectAsLazyPagingItems().itemCount == 0) {
                 PlaceholderView(
                     modifier = Modifier.fillMaxSize(),
                     image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_no_search_result),
@@ -55,7 +56,7 @@ fun WithSearchQueryContent(
                 )
             } else {
                 SearchResultContent(
-                    searchResult = searchResult,
+                    searchResult = searchResult.collectAsLazyPagingItems(),
                     onMediaCardClick = searchScreenInteractionListener::onMediaCardClick
                 )
             }

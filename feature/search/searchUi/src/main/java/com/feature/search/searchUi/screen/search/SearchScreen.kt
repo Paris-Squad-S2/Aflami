@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

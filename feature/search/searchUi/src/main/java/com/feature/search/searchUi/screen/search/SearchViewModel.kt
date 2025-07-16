@@ -1,6 +1,14 @@
 package com.feature.search.searchUi.screen.search
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -9,16 +17,24 @@ import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
-import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import androidx.paging.map
 
 data class SearchScreenState(
     val searchUiState: SearchUiState,
@@ -32,10 +48,10 @@ data class SearchUiState(
     val showFilterDialog: Boolean,
     val recentSearches: List<SearchHistoryUiState>,
     val selectedTabIndex: Int,
-    val moviesResult: List<MediaUiState>,
-    val tvShowsResult: List<MediaUiState>,
-    val filteredMoviesResult: List<MediaUiState>,
-    val filteredTvShowsResult: List<MediaUiState>,
+    val moviesResult: Flow<PagingData<MediaUiState>>,
+    val tvShowsResult: Flow<PagingData<MediaUiState>>,
+    val filteredMoviesResult: Flow<PagingData<MediaUiState>>,
+    val filteredTvShowsResult: Flow<PagingData<MediaUiState>>,
     val categories: Map<CategoryUiState, Boolean>,
     val selectedRating: Float,
     val isAllCategories: Boolean
@@ -89,13 +105,13 @@ class SearchViewModel(
                 searchQuery = "",
                 showFilterDialog = false,
                 recentSearches = listOf(),
-                filteredMoviesResult = listOf(),
-                filteredTvShowsResult = listOf(),
+                filteredMoviesResult = flowOf(PagingData.empty()),
+                filteredTvShowsResult = flowOf(PagingData.empty()),
                 selectedTabIndex = 0,
                 categories = mapOf(),
                 selectedRating = 0f,
-                moviesResult = listOf(),
-                tvShowsResult = listOf(),
+                moviesResult = flowOf(PagingData.empty()),
+                tvShowsResult = flowOf(PagingData.empty()),
                 isAllCategories = true
             ),
             isLoading = false,
@@ -208,27 +224,40 @@ class SearchViewModel(
                         errorMessage = null
                     )
                 )
-                searchByQueryUseCase(query)
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        SearchByQueryPagingSource(
+                            query = query,
+                            searchByQueryUseCase = searchByQueryUseCase
+                        )
+                    }
+                ).flow
+                    .map { pagingData ->
+                        val seenIds = mutableSetOf<Int>()
+                        pagingData.filter { media ->
+                            seenIds.add(media.id)
+                        }
+                    }
+                    .cachedIn(viewModelScope)
             },
             onSuccess = { searchResult ->
-                val moviesResult = searchResult.toMediaUiList().filter { it.type == MediaTypeUi.MOVIE }
-                val tvShowsResult = searchResult.toMediaUiList().filter { it.type == MediaTypeUi.TVSHOW }
-
-                val filteredMediaByRating = filterMediaByRatingUseCase(
+                val moviesResult = searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.MOVIE } }
+                val tvShowsResult = searchResult.map { pagingData -> pagingData .filter { it.type == MediaTypeUi.TVSHOW } }
+                val filteredMediaByRating = flowOf(PagingData.from(filterMediaByRatingUseCase(
                     screenState.value.searchUiState.selectedRating,
-                    searchResult
-                )
+                    searchResult.collectAllItems().map { it.toDomainModel() }
+                )))
                 val filteredMediaByCategories =
-                    if (!screenState.value.searchUiState.isAllCategories) filterMedByListOfCategoriesUseCase(
-                        screenState.value.searchUiState.categories.filter { it.value }.keys.toList()
-                            .map { it.id },
-                        filteredMediaByRating
-                    ) else searchResult
+                    if (!screenState.value.searchUiState.isAllCategories) flowOf (PagingData.from(filterMedByListOfCategoriesUseCase(
+                        screenState.value.searchUiState.categories.filter { it.value }.keys.toList().map { it.id },
+                        filteredMediaByRating.collectAllItems()
+                    ).toMediaUiList())) else searchResult
 
                 val filteredMoviesResult =
-                    filteredMediaByCategories.toMediaUiList().filter { it.type == MediaTypeUi.MOVIE }
+                    filteredMediaByCategories.map { pagingData  -> pagingData .filter{ it.type == MediaTypeUi.MOVIE }}
                 val filteredTvShowsResult =
-                    filteredMediaByCategories.toMediaUiList().filter { it.type == MediaTypeUi.TVSHOW }
+                    filteredMediaByCategories.map { pagingData  -> pagingData .filter{ it.type == MediaTypeUi.TVSHOW }}
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
@@ -294,11 +323,11 @@ class SearchViewModel(
 
                 val filteredMovies = filterMediaByRatingUseCase(
                     selectedRating,
-                    screenState.value.searchUiState.moviesResult.toDomainList()
+                    screenState.value.searchUiState.moviesResult.collectAllItems().toDomainList()
                 )
                 val filteredTvShows = filterMediaByRatingUseCase(
                     selectedRating,
-                    screenState.value.searchUiState.tvShowsResult.toDomainList()
+                    screenState.value.searchUiState.tvShowsResult.collectAllItems().toDomainList()
                 )
                 val filteredByCategoriesMovies = if (isAllCategories) {
                     filteredMovies
@@ -323,8 +352,8 @@ class SearchViewModel(
                     screenState.value.copy(
                         isLoading = false,
                         searchUiState = screenState.value.searchUiState.copy(
-                            filteredMoviesResult = filteredByCategoriesMovies.toMediaUiList(),
-                            filteredTvShowsResult = filteredByCategoriesTvShows.toMediaUiList()
+                            filteredMoviesResult = flowOf(PagingData.from(filteredByCategoriesMovies.toMediaUiList())),
+                            filteredTvShowsResult = flowOf(PagingData.from(filteredByCategoriesTvShows.toMediaUiList()))
                         )
                     )
                 )
@@ -441,4 +470,41 @@ class SearchViewModel(
     override fun onMediaCardClick(id: Int) {
         //TODO: Navigate to media details screen
     }
+
+
+    suspend fun <T : Any> Flow<PagingData<T>>.collectAllItems(): List<T> {
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = object : DiffUtil.ItemCallback<T>() {
+                override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
+                    oldItem == newItem
+
+                override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
+                    oldItem == newItem
+            },
+            updateCallback = NoopListUpdateCallback(),
+            mainDispatcher = Dispatchers.Main,
+            workerDispatcher = Dispatchers.Default
+        )
+
+        val job = CoroutineScope(Dispatchers.Main).launch {
+            collectLatest { pagingData ->
+                differ.submitData(pagingData)
+            }
+        }
+
+        delay(1000)
+        job.cancel()
+
+        return differ.snapshot().items
+    }
+
+    class NoopListUpdateCallback : ListUpdateCallback {
+        override fun onInserted(position: Int, count: Int)
+        override fun onRemoved(position: Int, count: Int)
+        override fun onMoved(fromPosition: Int, toPosition: Int)
+        override fun onChanged(position: Int, count: Int, payload: Any?)
+    }
+
+
+
 }
