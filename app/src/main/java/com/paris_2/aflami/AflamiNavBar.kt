@@ -15,8 +15,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -40,9 +41,9 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 @Composable
 fun AflamiNavBar(
     modifier: Modifier = Modifier,
-    selectedIndex: Int,
+    selectedItem: AflamiNavBarItem,
     destinations: List<AflamiNavBarItem> = AflamiNavBarItem.destinations,
-    onItemClick: (Int) -> Unit = {},
+    onItemClick: (AppDestination) -> Unit = {},
 ) {
     val strokeColor = Theme.colors.stroke
 
@@ -60,11 +61,10 @@ fun AflamiNavBar(
     ) {
         destinations.forEachIndexed { index, item ->
             AflamiNavBarItem(
-                currentIndex = index,
-                selectedDestinationIndex = selectedIndex,
+                isSelected = item == selectedItem,
                 currentItem = item,
                 onItemClick = {
-                    onItemClick(index)
+                    onItemClick(item.destination)
                 }
             )
         }
@@ -73,18 +73,16 @@ fun AflamiNavBar(
 
 @Composable
 private fun RowScope.AflamiNavBarItem(
-    currentIndex: Int,
-    selectedDestinationIndex: Int,
+    isSelected: Boolean,
     currentItem: AflamiNavBarItem,
     onItemClick: () -> Unit
 ) {
-    val selected = selectedDestinationIndex == currentIndex
 
     Box(
         modifier = Modifier
             .weight(1f)
             .clickable(
-                enabled = !selected,
+                enabled = !isSelected,
                 onClick = onItemClick,
                 indication = null,
                 interactionSource = remember { MutableInteractionSource() }
@@ -97,13 +95,13 @@ private fun RowScope.AflamiNavBarItem(
         ) {
             AflamiNavBarIcon(
                 currentItem = currentItem,
-                selected = selected
+                selected = isSelected
             )
             AflamiText(
                 text = stringResource(currentItem.label),
                 style = Theme.textStyle.label.small,
                 color = animateColorAsState(
-                    targetValue = if (selected) Theme.colors.text.body else Theme.colors.text.hint,
+                    targetValue = if (isSelected) Theme.colors.text.body else Theme.colors.text.hint,
                     label = "NavBarItemTextColor"
                 ).value,
                 textAlign = TextAlign.Center,
@@ -185,10 +183,10 @@ sealed class AflamiNavBarItem(
 @Composable
 @PreviewMultiDevices
 private fun AflamiNavigationBarPreview() {
-    val selectedIndex by remember { mutableIntStateOf(0) }
+    var selectedItem by remember { mutableStateOf(AflamiNavBarItem.destinations[0]) }
     BasePreview {
         AflamiNavBar(
-            selectedIndex = selectedIndex,
+            selectedItem = selectedItem,
             onItemClick = { }
         )
     }

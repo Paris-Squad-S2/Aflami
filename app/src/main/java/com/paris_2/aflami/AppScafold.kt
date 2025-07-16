@@ -6,63 +6,20 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination.Companion.hasRoute
-import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.aflami.designsystem.components.AflamiScafold
+import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
 fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
-    var currentDestination by remember { mutableIntStateOf(0) }
-
-    LaunchedEffect(currentDestination) {
-        when (currentDestination) {
-            0 -> appNavigator.navigate(
-                AppDestinations.HomeFeature(),
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(AppDestinations.AppGraph1, inclusive = true)
-                    .build()
-            )
-
-            1 -> appNavigator.navigate(
-                AppDestinations.ListsFeature(),
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(AppDestinations.AppGraph1, inclusive = true)
-                    .build()
-            )
-
-            2 -> appNavigator.navigate(
-                AppDestinations.CategoriesFeature(),
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(AppDestinations.AppGraph1, inclusive = true)
-                    .build()
-            )
-
-            3 -> appNavigator.navigate(
-                AppDestinations.LetsPlayFeature(),
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(AppDestinations.AppGraph1, inclusive = true)
-                    .build()
-            )
-
-            4 -> appNavigator.navigate(
-                AppDestinations.ProfileFeature(),
-                navOptions = NavOptions.Builder()
-                    .setPopUpTo(AppDestinations.AppGraph1, inclusive = true)
-                    .build()
-            )
-        }
-    }
 
     val navController = rememberNavController()
 
@@ -84,6 +41,8 @@ fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
         }
     }
 
+    val scope = rememberCoroutineScope()
+
 
     AflamiScafold(
         content = {
@@ -96,9 +55,11 @@ fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
                 exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
             ) {
                 AflamiNavBar(
-                    selectedIndex = selectedDestinationIndex,
-                    onItemClick = {
-                        currentDestination = it
+                    selectedItem = AflamiNavBarItem.destinations[selectedDestinationIndex],
+                    onItemClick = { destination ->
+                        scope.launch {
+                            appNavigator.navigate(destination)
+                        }
                     }
                 )
             }
