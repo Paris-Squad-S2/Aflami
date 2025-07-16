@@ -1,3 +1,4 @@
+/*
 package com.feature.mediaDetails.mediaDetailsUi.di
 
 import com.feature.mediaDetails.mediaDetailsUi.navigation.Destinations
@@ -9,9 +10,12 @@ import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.module
 
 val viewModelModule = module {
-   /* val viewModelModule = module{
+   */
+/* val viewModelModule = module{
         viewModelOf(::MovieViewModel)
         viewModelOf(::TvShowViewModel)
-    }*/
+    }*//*
+
    single<Navigator> { NavigatorImpl(startGraph = Destinations.MediaDetailsGraph) }
 }
+*/

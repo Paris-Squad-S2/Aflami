@@ -17,6 +17,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.common.components.MoreLikeThisSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.cast.CastSection
@@ -102,7 +103,14 @@ fun MovieDetailsScreenContent(
                         )
                     }
                     "More like this" -> item {
-                        //MoreLikeThisSection()
+                        MoreLikeThisSection(
+                            movies = listOf(
+                                state.movieDetailsUiState.movie,
+                                state.movieDetailsUiState.movie.copy(title = "Another Movie")
+                            ),
+                            onClick = {},
+                            mediaType = "Movie"
+                        )
                     }
                 }
             }
