@@ -4,13 +4,19 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.domain.search.useCases.GetMediaByActorNameUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
+import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toMediaUiList
-import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.search.MediaUiState
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.mp.KoinPlatform.getKoin
 
 data class FindByActorScreenState(
     val uiState: FindByActorUiState,
@@ -25,6 +31,7 @@ data class FindByActorUiState(
 class FindByActorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -36,8 +43,9 @@ class FindByActorViewModel(
     )
 ) {
 
+
     init {
-        val initialQuery = savedStateHandle.toRoute<Destinations.FindByActorScreen>().name
+        val initialQuery = savedStateHandle.toRoute<SearchDestinations.FindByActorScreen>().name
         if (initialQuery != null) {
             onSearchQueryChange(initialQuery)
         }
@@ -118,8 +126,30 @@ class FindByActorViewModel(
         searchQuery(screenState.value.uiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        when (mediaType) {
+                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = id
+                            )
+                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = id
+                            )
+                        }.toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
 

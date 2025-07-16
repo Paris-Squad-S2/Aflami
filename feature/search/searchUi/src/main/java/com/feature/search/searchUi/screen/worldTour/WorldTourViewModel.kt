@@ -7,13 +7,19 @@ import com.domain.search.model.Country
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
+import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toMediaUiList
-import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.search.MediaUiState
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import org.koin.mp.KoinPlatform.getKoin
 
 data class WorldTourScreenState(
     val uiState: WorldTourUiState,
@@ -32,6 +38,7 @@ class WorldTourViewModel(
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
     private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
         WorldTourScreenState(
@@ -46,7 +53,7 @@ class WorldTourViewModel(
     ) {
 
     init {
-        val initialQuery = savedStateHandle.toRoute<Destinations.WorldTourScreen>().name
+        val initialQuery = savedStateHandle.toRoute<SearchDestinations.WorldTourScreen>().name
         if (initialQuery != null) {
             onSearchQueryChange(initialQuery)
         }
@@ -137,7 +144,29 @@ class WorldTourViewModel(
         searchQuery(screenState.value.uiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        when (mediaType) {
+                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = id
+                            )
+                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = id
+                            )
+                        }.toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 }
