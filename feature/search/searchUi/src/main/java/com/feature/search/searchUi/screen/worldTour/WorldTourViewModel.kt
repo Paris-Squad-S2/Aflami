@@ -3,16 +3,22 @@ package com.feature.search.searchUi.screen.worldTour
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.domain.search.model.Country
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.pagging.WorldTourPagingSource
 import com.feature.search.searchUi.screen.search.MediaUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 data class WorldTourScreenState(
@@ -23,7 +29,7 @@ data class WorldTourScreenState(
 
 data class WorldTourUiState(
     val searchQuery: String,
-    val searchResult: List<MediaUiState>,
+    val searchResult: Flow<PagingData<MediaUiState>>,
     val hints: List<Country>
 )
 
@@ -37,7 +43,7 @@ class WorldTourViewModel(
         WorldTourScreenState(
             uiState = WorldTourUiState(
                 searchQuery = "",
-                searchResult = listOf(),
+                searchResult = flowOf(PagingData.empty()),
                 hints = listOf()
             ),
             isLoading = false,
@@ -91,7 +97,7 @@ class WorldTourViewModel(
                         screenState.value.copy(
                             isLoading = false,
                             uiState = screenState.value.uiState.copy(
-                                searchResult = listOf(),
+                                searchResult = flowOf(PagingData.empty()),
                             )
                         )
                     )
@@ -110,14 +116,22 @@ class WorldTourViewModel(
                         errorMessage = null
                     )
                 )
-                getMoviesByCountryUseCase(query)
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        WorldTourPagingSource(
+                            countryName = query,
+                            getMoviesByCountryUseCase = getMoviesByCountryUseCase
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
             },
             onSuccess = { searchResult ->
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
                         uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult.toMediaUiList(),
+                            searchResult = searchResult,
                         )
                     )
                 )
