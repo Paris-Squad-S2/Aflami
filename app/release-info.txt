@@ -1,2 +1,5 @@
 versionName=0.1.18
-- add movie details local data source
+- Localized Genres Support:
+- Genres fetched using device language (e.g., "ar", "en")
+- Local caching of genres by language
+- Improved integration with remote API & Room
