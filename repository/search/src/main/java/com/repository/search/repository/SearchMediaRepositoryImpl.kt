@@ -32,7 +32,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByActor(actorName: String,page:Int): List<Media> {
         return try {
-            val localMedia = mediaLocalDataSource.getMediaByActor(actor = actorName)
+            val localMedia = mediaLocalDataSource.getMediaByActor(actor = actorName,page)
             val queryDate = searchHistoryLocalDataSource
                 .getSearchHistoryQuery(actorName, SearchType.Actor)
                 ?.searchDate
@@ -44,7 +44,7 @@ class SearchMediaRepositoryImpl(
                 val language = detectLanguage()
                 val remoteDto =
                     searchRemoteDataSource.searchPerson(query = actorName, language = language , page = page)
-                val entities = remoteDto.toMediaEntitiesForActors(query = actorName)
+                val entities = remoteDto.toMediaEntitiesForActors(query = actorName,page = page)
                 searchHistoryLocalDataSource.addSearchQuery(
                     title = actorName,
                     searchType = SearchType.Actor
@@ -54,7 +54,7 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
 
-            mediaLocalDataSource.getMediaByActor(actor = actorName).toMedias()
+            mediaLocalDataSource.getMediaByActor(actor = actorName, page = page).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
@@ -64,7 +64,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMoviesByCountry(countryName: String,page: Int): List<Media> {
         return try {
-            val localMedia = mediaLocalDataSource.getMediaByCountry(country = countryName)
+            val localMedia = mediaLocalDataSource.getMediaByCountry(country = countryName,page = page)
 
             val queryDate = searchHistoryLocalDataSource
                 .getSearchHistoryQuery(query = countryName, searchType = SearchType.Country)
@@ -82,7 +82,7 @@ class SearchMediaRepositoryImpl(
                     page = page,
                 )
                 val mediaEntities =
-                    remoteDto.toMediaEntities(query = countryName, searchType = SearchType.Country)
+                    remoteDto.toMediaEntities(query = countryName, searchType = SearchType.Country,page=page)
                 searchHistoryLocalDataSource.addSearchQuery(
                     title = countryName,
                     searchType = SearchType.Country
@@ -92,7 +92,7 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
 
-            mediaLocalDataSource.getMediaByCountry(country = countryName).toMedias()
+            mediaLocalDataSource.getMediaByCountry(country = countryName,page).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
@@ -102,7 +102,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByQuery(query: String,page: Int): List<Media> {
         return try {
-            val localMedia = mediaLocalDataSource.getMediaByTitleQuery(query = query)
+            val localMedia = mediaLocalDataSource.getMediaByTitleQuery(query = query, page = page)
 
             val queryDate = searchHistoryLocalDataSource
                 .getSearchHistoryQuery(query, SearchType.Query)
@@ -116,7 +116,7 @@ class SearchMediaRepositoryImpl(
                 val remoteDto =
                     searchRemoteDataSource.searchMulti(query = query, language = language, page = page)
                 val entities =
-                    remoteDto.toMediaEntities(query = query, searchType = SearchType.Query)
+                    remoteDto.toMediaEntities(query = query, searchType = SearchType.Query, page = page)
                 searchHistoryLocalDataSource.addSearchQuery(
                     title = query,
                     searchType = SearchType.Query
@@ -126,7 +126,7 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
 
-            mediaLocalDataSource.getMediaByTitleQuery(query = query).toMedias()
+            mediaLocalDataSource.getMediaByTitleQuery(query = query, page = page).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {

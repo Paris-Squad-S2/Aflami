@@ -16,14 +16,14 @@ interface MediaDao {
     @Query("SELECT * FROM media_table")
     suspend fun getAllMedia(): List<MediaEntity>
 
-    @Query("SELECT * FROM media_table WHERE searchQuery = :country AND searchType = 'Country'")
-    suspend fun getMediaByCountry(country: String): List<MediaEntity>
+    @Query("SELECT * FROM media_table WHERE searchQuery = :country AND searchType = 'Country' And page = :page")
+    suspend fun getMediaByCountry(country: String,page: Int): List<MediaEntity>
 
-    @Query("SELECT * FROM media_table WHERE searchQuery = :actor AND searchType = 'Actor'")
-    suspend fun getMediaByActor(actor: String): List<MediaEntity>
+    @Query("SELECT * FROM media_table WHERE searchQuery = :actor AND searchType = 'Actor' And page = :page")
+    suspend fun getMediaByActor(actor: String,page:Int): List<MediaEntity>
 
-    @Query("SELECT * FROM media_table WHERE searchQuery = :query AND searchType = 'Query'")
-    suspend fun getMediaByTitleQuery(query: String): List<MediaEntity>
+    @Query("SELECT * FROM media_table WHERE searchQuery = :query AND searchType = 'Query' And page = :page")
+    suspend fun getMediaByTitleQuery(query: String,page: Int): List<MediaEntity>
 
     @Query("SELECT media_table.* FROM media_table INNER JOIN search_history_table ON media_table.searchQuery = search_history_table.search_query")
     suspend fun getCachedMedia(): List<MediaEntity>

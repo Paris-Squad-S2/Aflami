@@ -26,7 +26,8 @@ data class MediaEntity(
     val yearOfRelease: LocalDate,
     val rating: Double,
     val searchQuery: String,
-    val searchType: SearchType
+    val searchType: SearchType,
+    val page:Int,
 )
 
 enum class MediaTypeEntity {

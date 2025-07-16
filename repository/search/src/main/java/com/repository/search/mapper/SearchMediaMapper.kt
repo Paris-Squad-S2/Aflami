@@ -35,7 +35,8 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 
 fun ResultDto.toMediaEntity(
     searchQuery: String,
-    searchType: SearchType
+    searchType: SearchType,
+    page:Int
 ): MediaEntity? {
     val title = this.title ?: this.name ?: return null
     val image = this.posterPath ?: this.profilePath ?: ""
@@ -55,7 +56,8 @@ fun ResultDto.toMediaEntity(
             category = this.genreIds ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage ?: 0.0,
-            searchType = searchType
+            searchType = searchType,
+            page = page
         )
     } catch (_: Exception) {
         null
@@ -64,6 +66,7 @@ fun ResultDto.toMediaEntity(
 
 fun KnownForDto.toMediaEntity(
     searchQuery: String,
+    page: Int
 ): MediaEntity? {
     val title = this.title ?: return null
     val image = this.posterPath ?: ""
@@ -82,7 +85,8 @@ fun KnownForDto.toMediaEntity(
             category = this.genreIds ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage ?: 0.0,
-            searchType = SearchType.Actor
+            searchType = SearchType.Actor,
+            page = page
         )
     } catch (_: Exception) {
         return null
@@ -92,9 +96,10 @@ fun KnownForDto.toMediaEntity(
 
 fun ResultDto.toMediaEntityForActors(
     searchQuery: String,
+    page:Int
 ): List<MediaEntity?> {
     return this.knownForDTO?.map {
-        it.toMediaEntity(searchQuery)?.let { mediaEntity ->
+        it.toMediaEntity(searchQuery,page)?.let { mediaEntity ->
             return listOf(mediaEntity)
         }
     } ?: emptyList()
@@ -103,17 +108,19 @@ fun ResultDto.toMediaEntityForActors(
 
 fun SearchDto.toMediaEntities(
     query: String,
-    searchType: SearchType
+    searchType: SearchType,
+    page: Int
 ): List<MediaEntity> {
     return results?.mapNotNull {
-        it.toMediaEntity(query, searchType)
+        it.toMediaEntity(query, searchType,page)
     } ?: emptyList()
 }
 
 fun SearchDto.toMediaEntitiesForActors(
     query: String,
+    page:Int
 ): List<MediaEntity> {
     return results?.flatMap {
-        it.toMediaEntityForActors(query)
+        it.toMediaEntityForActors(query,page)
     }?.filterNotNull() ?: emptyList()
 }

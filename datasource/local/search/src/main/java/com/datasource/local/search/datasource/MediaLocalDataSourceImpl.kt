@@ -14,14 +14,14 @@ class MediaLocalDataSourceImpl(
 
     override suspend fun getAllMedia(): List<MediaEntity> = dao.getAllMedia()
 
-    override suspend fun getMediaByCountry(country: String): List<MediaEntity> =
-        dao.getMediaByCountry(country)
+    override suspend fun getMediaByCountry(country: String,page: Int): List<MediaEntity> =
+        dao.getMediaByCountry(country,page)
 
-    override suspend fun getMediaByActor(actor: String): List<MediaEntity> =
-        dao.getMediaByActor(actor)
+    override suspend fun getMediaByActor(actor: String,page:Int): List<MediaEntity> =
+        dao.getMediaByActor(actor,page)
 
-    override suspend fun getMediaByTitleQuery(query: String): List<MediaEntity> =
-        dao.getMediaByTitleQuery(query)
+    override suspend fun getMediaByTitleQuery(query: String,page: Int): List<MediaEntity> =
+        dao.getMediaByTitleQuery(query, page)
 
     override suspend fun getCachedMedia(): List<MediaEntity> =
         dao.getCachedMedia()
