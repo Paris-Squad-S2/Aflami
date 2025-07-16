@@ -58,7 +58,7 @@ dependencies{
     implementation(libs.kotlinx.serialization.json)
 
 
-    implementation(Modules.REPOSITORY_MOVIE)
+    implementation(project(Modules.REPOSITORY_MOVIE))
 }
 kotlin {
     compilerOptions {
