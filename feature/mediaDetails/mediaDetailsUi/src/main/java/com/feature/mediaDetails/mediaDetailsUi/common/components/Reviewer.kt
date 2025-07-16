@@ -79,7 +79,7 @@ fun ReviewCard(
                 }
 
                 RatingCard(
-                    rating = rating.toString(),
+                    rating = rating.toFloat(),
                     modifier = Modifier.padding(start = 8.dp)
                 )
             }

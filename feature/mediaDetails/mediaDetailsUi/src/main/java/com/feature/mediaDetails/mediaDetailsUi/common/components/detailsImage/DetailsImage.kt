@@ -97,7 +97,7 @@ fun DetailsImage(
                 }
             }
             RatingCard(
-                rating = rating,
+                rating = rating.toFloat(),
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(start = 4.dp)

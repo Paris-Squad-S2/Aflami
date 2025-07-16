@@ -88,7 +88,7 @@ fun SeasonHeader(
             ) {
                 items(episodes) { episode ->
                     EpisodeCard(
-                        episodeRating = episode.voteAverage.toString(),
+                        episodeRating = episode.voteAverage.toFloat(),
                         episodeNumber = episode.episodeNumber.toString(),
                         episodeTitle = "Episode ${episode.episodeNumber}",
                         episodeDuration = "${episode.runtime} min",
