@@ -1,2 +1,2 @@
-versionName=0.1.17
-- enhance some code lines
+versionName=0.1.18
+- add movie details local data source

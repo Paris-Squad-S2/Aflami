@@ -12,5 +12,5 @@ interface GalleryDao {
     suspend fun addGallery(gallery: GalleryEntity)
 
     @Query("SELECT * FROM gallery_table WHERE movieId = :movieId")
-    suspend fun getGallery(movieId: Int): GalleryEntity
+    suspend fun getGallery(movieId: Int): GalleryEntity?
 }
