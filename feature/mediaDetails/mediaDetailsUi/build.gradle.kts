@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -67,6 +68,12 @@ dependencies {
 
     //Kotlinx DateTime
     implementation(libs.kotlinx.datetime)
+
+    //Navigation
+    implementation(libs.navigation.compose)
+
+    //kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
 
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
