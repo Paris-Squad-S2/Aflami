@@ -1,4 +1,4 @@
-versionName=0.1.18
+versionName=0.1.19
 - Major refactor: restructured modules, renamed SearchApp to AflamiApplication, updated package to com.paris_2.aflami
 - Moved and renamed DI files to align with new structure
 - Updated dependencies: added Koin WorkManager, Room, ksp, and new project modules
