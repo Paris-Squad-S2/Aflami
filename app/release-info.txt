@@ -1,8 +1,2 @@
-versionName=0.1.15
-- improve Media card shadow
-- fix illustration size
-- fix Filter dialog padding
-- fix genres colors in filter dialog
-- fix ration card problem
-- animate chip color changes
-- fix on click on hint in WorldTourScreen
+versionName=0.1.17
+- enhance some code lines

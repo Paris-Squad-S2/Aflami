@@ -36,9 +36,9 @@ fun FilterDialog(
     searchScreenInteractionListener: SearchScreenInteractionListener,
     state: SearchScreenState,
 ) {
-    var currentRating by remember { mutableFloatStateOf(state.uiState.selectedRating) }
-    var currentCategories by remember { mutableStateOf(state.uiState.categories) }
-    var isAllCategories by remember { mutableStateOf(state.uiState.isAllCategories) }
+    var currentRating by remember { mutableFloatStateOf(state.searchUiState.selectedRating) }
+    var currentCategories by remember { mutableStateOf(state.searchUiState.categories) }
+    var isAllCategories by remember { mutableStateOf(state.searchUiState.isAllCategories) }
     AflamiDialog(
         onDismiss = searchScreenInteractionListener::onFilterButtonClick,
         title = R.string.filter_result,
@@ -79,7 +79,7 @@ fun FilterDialog(
                         onClick = {
                             isAllCategories = !isAllCategories
                             if (isAllCategories) {
-                                currentCategories = state.uiState.categories.mapValues { false }
+                                currentCategories = state.searchUiState.categories.mapValues { false }
                             }
                         }
                     )

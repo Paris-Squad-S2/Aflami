@@ -13,13 +13,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.domain.search.model.Media
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 
 @Composable
 fun SearchResultContent(
-    searchResult: List<Media>,
+    searchResult: List<MediaUiState>,
     onMediaCardClick: (Int) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
@@ -44,7 +44,7 @@ fun SearchResultContent(
                 imageUri = media.imageUri,
                 rating = media.rating.toFloat(),
                 movieName = media.title,
-                mediaType = media.type.displayName,
+                mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,

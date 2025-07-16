@@ -13,10 +13,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.domain.search.model.SearchType
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.feature.search.searchUi.screen.search.SearchScreenState
+import com.feature.search.searchUi.screen.search.SearchTypeUi
 import com.paris_2.aflami.designsystem.components.AflamiButton
 import com.paris_2.aflami.designsystem.components.AflamiHorizontalDivider
 import com.paris_2.aflami.designsystem.components.AflamiText
@@ -69,7 +69,7 @@ fun NoSearchQueryContent(
         }
         item {
             AnimatedVisibility(
-                visible = state.uiState.recentSearches.isNotEmpty(),
+                visible = state.searchUiState.recentSearches.isNotEmpty(),
                 enter = androidx.compose.animation.expandVertically(),
                 exit = androidx.compose.animation.shrinkVertically()
             ) {
@@ -112,7 +112,7 @@ fun NoSearchQueryContent(
 
                 )
             }
-        } else if (state.uiState.recentSearches.isEmpty()) {
+        } else if (state.searchUiState.recentSearches.isEmpty()) {
             item {
                 PlaceholderView(
                     modifier = Modifier
@@ -125,13 +125,13 @@ fun NoSearchQueryContent(
             }
         } else {
             items(
-                count = state.uiState.recentSearches.size,
-                key = { index -> state.uiState.recentSearches[index].searchTitle + state.uiState.recentSearches[index].searchType.name }
+                count = state.searchUiState.recentSearches.size,
+                key = { index -> state.searchUiState.recentSearches[index].searchTitle + state.searchUiState.recentSearches[index].searchType.name }
             ) { index ->
-                val recentSearch = state.uiState.recentSearches[index]
+                val recentSearch = state.searchUiState.recentSearches[index]
                 RecentSearchItem(
                     modifier = Modifier.animateItem(),
-                    recentSearchTitle = recentSearch.searchTitle + if (recentSearch.searchType != SearchType.Query) " (${recentSearch.searchType.name})" else "",
+                    recentSearchTitle = recentSearch.searchTitle + if (recentSearch.searchType!= SearchTypeUi.Query) " (${recentSearch.searchType.name})" else "",
                     onRecentSearchClick = {
                         searchScreenInteractionListener.onRecentSearchClick(
                             recentSearch.searchTitle,
@@ -146,7 +146,7 @@ fun NoSearchQueryContent(
                         searchScreenInteractionListener.onRetryRecentSearches()
                     }
                 )
-                if (index < state.uiState.recentSearches.size - 1) {
+                if (index < state.searchUiState.recentSearches.size - 1) {
                     AflamiHorizontalDivider(
                         modifier = Modifier.padding(
                             horizontal = 16.dp,

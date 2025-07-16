@@ -1,14 +1,12 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import com.domain.search.model.Country
-import com.domain.search.model.Media
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
