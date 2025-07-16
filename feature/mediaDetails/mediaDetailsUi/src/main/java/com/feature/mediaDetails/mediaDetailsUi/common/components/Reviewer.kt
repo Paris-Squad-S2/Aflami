@@ -33,6 +33,7 @@ import coil.compose.AsyncImage
 import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.mediaDetails.mediaDetailsUi.R
+
 @Composable
 fun ReviewCard(
     name: String,
@@ -43,15 +44,16 @@ fun ReviewCard(
     description: String,
     modifier: Modifier = Modifier,
 ) {
-
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .background(Theme.colors.surface, RoundedCornerShape(16.dp))
-            .padding(16.dp)
+            .background(
+                Theme.colors.surface,
+                RoundedCornerShape(16.dp)
+            )
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Column {
-
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
                     model = avatarUrl,

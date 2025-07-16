@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,14 +32,22 @@ fun ReviewsSection(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 reviews.forEach { review ->
-                    ReviewCard(
-                        name = review.name,
-                        createdAt = review.createdAt,
-                        avatarUrl = review.avatarUrl,
-                        username = review.username,
-                        rating = review.rating,
-                        description = "Hmmm! I wasn’t sure if I was watching a sentimental edition of “Hawaii Five-O” here or a collection of outtakes from a “Sonic” movie as this "
-                    )
+                    Column {
+                        ReviewCard(
+                            name = review.name,
+                            createdAt = review.createdAt,
+                            avatarUrl = review.avatarUrl,
+                            username = review.username,
+                            rating = review.rating,
+                            description = "Hmmm! I wasn’t sure if I was watching a sentimental edition of “Hawaii Five-O” here or a collection of outtakes from a “Sonic” movie as this "
+                        )
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .background(Theme.colors.stroke)
+                                .then(Modifier.height(1.dp))
+                        )
+                    }
                 }
             }
         } else {
