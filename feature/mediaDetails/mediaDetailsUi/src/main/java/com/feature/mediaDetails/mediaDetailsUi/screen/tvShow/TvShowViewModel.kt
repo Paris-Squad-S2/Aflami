@@ -6,6 +6,7 @@ import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowMediaUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.feature.mediaDetails.mediaDetailsUi.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.ReviewUi
@@ -20,20 +21,21 @@ data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
     val cast: List<CastUi>,
     val reviews: List<ReviewUi>,
-    val gallery: List<String>
+    val gallery: List<String>,
+    val seasons: List<SeasonUi>
 )
 
 data class TvShowUi(
-    val posterUrl: String,
-    val rating: String,
-    val title: String,
+   override val posterUrl: String,
+   override val rating: String,
+   override val title: String,
     val genres: List<String>,
-    val releaseDate: String,
+   override val releaseDate: String,
     val runtime: String,
     val country: String,
     val description: String,
     val productionCompanies: List<ProductionCompanyUi>
-)
+): MediaUi
 data class SeasonUi(
     val id: String,
     val name: String,

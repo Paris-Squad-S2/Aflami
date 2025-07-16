@@ -103,7 +103,7 @@ fun MovieDetailsScreenContent(
                     }
                     "More like this" -> item {
                         MoreLikeThisSection(
-                            movies = listOf(
+                            mediaList = listOf(
                                 state.movieDetailsUiState.movie,
                                 state.movieDetailsUiState.movie.copy(title = "Another Movie")
                             ),

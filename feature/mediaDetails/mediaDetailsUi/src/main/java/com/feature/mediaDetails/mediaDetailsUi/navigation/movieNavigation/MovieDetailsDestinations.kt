@@ -26,9 +26,9 @@ sealed interface MovieDetailsDestinations : Graph {
 }
 
 fun NavGraphBuilder.buildMovieDetailsGraph() {
-    navigation<MovieDetailsDestinations.MovieDetailsGraph>(startDestination = MovieDetailsDestinations.MovieDetailsScreen) {
-        composable<MovieDetailsDestinations.MovieDetailsScreen> { MovieDetailsScreen() }
-        composable<MovieDetailsDestinations.CastScreen> { CastScreen() }
-        dialog<MovieDetailsDestinations.LoginDialog> { LoginDialog() }
-    }
+//    navigation<MovieDetailsDestinations.MovieDetailsGraph>(startDestination = MovieDetailsDestinations.MovieDetailsScreen) {
+//        composable<MovieDetailsDestinations.MovieDetailsScreen> { MovieDetailsScreen() }
+//        composable<MovieDetailsDestinations.CastScreen> { CastScreen() }
+//        dialog<MovieDetailsDestinations.LoginDialog> { LoginDialog() }
+//    }
 }

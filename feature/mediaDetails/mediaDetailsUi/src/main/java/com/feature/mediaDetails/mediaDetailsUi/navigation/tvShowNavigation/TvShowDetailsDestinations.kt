@@ -1,10 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.navigation.tvShowNavigation
 
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.dialog
 import androidx.navigation.compose.navigation
-import com.feature.mediaDetails.mediaDetailsUi.common.components.LoginDialog
 import com.feature.mediaDetails.mediaDetailsUi.navigation.Destination
 import com.feature.mediaDetails.mediaDetailsUi.navigation.Graph
 import kotlinx.serialization.Serializable
@@ -26,8 +23,8 @@ sealed interface TvShowDetailsDestinations {
 
 fun NavGraphBuilder.buildTvShowDetailsGraph() {
     navigation<TvShowDetailsDestinations.TvShowDetailsGraph>(startDestination = TvShowDetailsDestinations.TvShowDetailsScreen) {
-        composable<TvShowDetailsDestinations.TvShowDetailsScreen> { TvShowDetailsScreen() }
-        composable<TvShowDetailsDestinations.CastScreen> { CastScreen() }
-        dialog<TvShowDetailsDestinations.LoginDialog> { LoginDialog() }
+//        composable<TvShowDetailsDestinations.TvShowDetailsScreen> { TvShowDetailsScreen() }
+//        composable<TvShowDetailsDestinations.CastScreen> { CastScreen() }
+//        dialog<TvShowDetailsDestinations.LoginDialog> { LoginDialog() }
     }
 }

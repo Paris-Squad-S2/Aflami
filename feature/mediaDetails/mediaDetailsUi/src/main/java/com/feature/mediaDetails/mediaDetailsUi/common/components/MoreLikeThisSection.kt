@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.feature.mediaDetails.mediaDetailsUi.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.MovieUi
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -14,22 +15,22 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 
 @Composable
 fun MoreLikeThisSection(
-    movies: List<MovieUi>,
-    onClick:() -> Unit,
-    mediaType : String ,
+    mediaList: List<MediaUi>,
+    onClick: () -> Unit,
+    mediaType: String,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        movies.forEach { movie ->
+        mediaList.forEach { media ->
             AflamiMediaCard(
-                imageUri = movie.posterUrl,
-                rating = movie.rating.toFloat(),
-                movieName = movie.title,
+                imageUri = media.posterUrl,
+                rating = media.rating.toFloat(),
+                movieName = media.title,
                 mediaType = mediaType,
-                year = movie.releaseDate.takeLast(4),
+                year = media.releaseDate.takeLast(4),
                 mediaCardType = MediaCardType.UP_COMING,
                 showGradientFilter = true,
                 clickable = true,
@@ -45,7 +46,7 @@ fun MoreLikeThisSection(
 fun PreviewMoreLikeThisSection() {
     AflamiTheme {
         MoreLikeThisSection(
-            movies = listOf(
+            mediaList = listOf(
                 MovieUi(
                     posterUrl = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
                     rating = "8.5",
@@ -74,3 +75,4 @@ fun PreviewMoreLikeThisSection() {
         )
     }
 }
+

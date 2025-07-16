@@ -72,7 +72,8 @@ fun SeasonHeader(
                     painter = painterResource(
                         id = if (isExpanded) R.drawable.ic_not_expanded else R.drawable.ic_expanded
                     ),
-                    contentDescription = "Expand/Collapse"
+                    contentDescription = "Expand/Collapse",
+                    alignment = Alignment.Center
                 )
             }
         }
@@ -82,11 +83,13 @@ fun SeasonHeader(
             enter = expandVertically(animationSpec = tween(300)) + fadeIn(),
             exit = shrinkVertically(animationSpec = tween(300)) + fadeOut()
         ) {
-            LazyColumn(
+            Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(horizontal = 8.dp, vertical = 12.dp)
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 12.dp)
             ) {
-                items(episodes) { episode ->
+                episodes.forEach { episode ->
                     EpisodeCard(
                         episodeRating = episode.voteAverage.toFloat(),
                         episodeNumber = episode.episodeNumber.toString(),

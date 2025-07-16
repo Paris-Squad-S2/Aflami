@@ -5,6 +5,7 @@ import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieMediaUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
+import com.feature.mediaDetails.mediaDetailsUi.screen.MediaUi
 
 data class MovieDetailsScreenState(
     val movieDetailsUiState: MovieDetailsUiState,
@@ -20,16 +21,16 @@ data class MovieDetailsUiState(
 )
 
 data class MovieUi(
-    val posterUrl: String,
-    val rating: String,
-    val title: String,
+    override val posterUrl: String,
+    override val rating: String,
+    override val title: String,
     val genres: List<String>,
-    val releaseDate: String,
+    override val releaseDate: String,
     val runtime: String,
     val country: String,
     val description: String,
     val productionCompanies: List<ProductionCompanyUi>
-)
+): MediaUi
 
 data class ProductionCompanyUi(
     val logoUrl: String,
