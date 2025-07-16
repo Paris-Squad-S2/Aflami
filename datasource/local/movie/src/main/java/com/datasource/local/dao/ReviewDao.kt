@@ -11,6 +11,6 @@ interface ReviewDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addReviews(reviews: List<ReviewEntity>)
 
-    @Query("SELECT * FROM Reviews_Table")
-    suspend fun getReviews(): List<ReviewEntity>
+    @Query("SELECT * FROM Reviews_Table WHERE movieId = :movieId")
+    suspend fun getReviewsByMovieId(movieId: Int): List<ReviewEntity>
 }

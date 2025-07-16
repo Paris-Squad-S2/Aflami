@@ -2,10 +2,10 @@ package com.repository.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
-@Entity(tableName = "countries_table")
+@Serializable
 data class CountryEntity(
-    @PrimaryKey
     val countryCode: String,
     val name: String,
 )
