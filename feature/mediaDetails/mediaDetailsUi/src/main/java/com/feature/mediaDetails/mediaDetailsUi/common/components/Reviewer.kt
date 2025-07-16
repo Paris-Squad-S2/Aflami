@@ -32,22 +32,17 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.Theme
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import com.feature.mediaDetails.mediaDetailsUi.R
 @Composable
 fun ReviewCard(
     name: String,
-    createdAt: LocalDate,
+    createdAt: String,
     avatarUrl: String,
     username: String,
     rating: Double,
     description: String,
     modifier: Modifier = Modifier,
 ) {
-    val formattedDate = remember(createdAt) {
-        createdAt.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
-    }
 
     Box(
         modifier = modifier
@@ -117,7 +112,7 @@ fun ReviewCard(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                text = formattedDate,
+                text = createdAt,
                 style = Theme.textStyle.label.small,
                 color = Theme.colors.text.hint
             )
@@ -130,7 +125,7 @@ fun ReviewCard(
 fun ReviewCardPreview() {
     ReviewCard(
         name = "Manuel São Bento",
-        createdAt = LocalDate.of(2016, 9, 10),
+        createdAt = "10-09-2016",
         avatarUrl = "https://yourcdn.com/avatar.jpg",
         username = "@msbreviews",
         rating = 9.9,
