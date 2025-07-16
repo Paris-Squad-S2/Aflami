@@ -30,7 +30,7 @@ class SearchMediaRepositoryImpl(
     private val searchHistoryLocalDataSource: HistoryLocalDataSource
 ) : SearchMediaRepository {
 
-    override suspend fun getMediaByActor(actorName: String): List<Media> {
+    override suspend fun getMediaByActor(actorName: String,page:Int): List<Media> {
         return try {
             val localMedia = mediaLocalDataSource.getMediaByActor(actor = actorName)
             val queryDate = searchHistoryLocalDataSource
@@ -43,7 +43,7 @@ class SearchMediaRepositoryImpl(
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto =
-                    searchRemoteDataSource.searchPerson(query = actorName, language = language)
+                    searchRemoteDataSource.searchPerson(query = actorName, language = language , page = page)
                 val entities = remoteDto.toMediaEntitiesForActors(query = actorName)
                 searchHistoryLocalDataSource.addSearchQuery(
                     title = actorName,
@@ -62,7 +62,7 @@ class SearchMediaRepositoryImpl(
         }
     }
 
-    override suspend fun getMoviesByCountry(countryName: String): List<Media> {
+    override suspend fun getMoviesByCountry(countryName: String,page: Int): List<Media> {
         return try {
             val localMedia = mediaLocalDataSource.getMediaByCountry(country = countryName)
 
@@ -78,7 +78,8 @@ class SearchMediaRepositoryImpl(
                 val remoteDto = searchRemoteDataSource.searchCountryCode(
                     query = countryName,
                     countryCode = countryName,
-                    language = language
+                    language = language,
+                    page = page,
                 )
                 val mediaEntities =
                     remoteDto.toMediaEntities(query = countryName, searchType = SearchType.Country)
@@ -99,7 +100,7 @@ class SearchMediaRepositoryImpl(
         }
     }
 
-    override suspend fun getMediaByQuery(query: String): List<Media> {
+    override suspend fun getMediaByQuery(query: String,page: Int): List<Media> {
         return try {
             val localMedia = mediaLocalDataSource.getMediaByTitleQuery(query = query)
 
@@ -113,7 +114,7 @@ class SearchMediaRepositoryImpl(
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto =
-                    searchRemoteDataSource.searchMulti(query = query, language = language)
+                    searchRemoteDataSource.searchMulti(query = query, language = language, page = page)
                 val entities =
                     remoteDto.toMediaEntities(query = query, searchType = SearchType.Query)
                 searchHistoryLocalDataSource.addSearchQuery(
