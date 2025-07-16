@@ -1,7 +1,6 @@
 package com.feature.search.searchUi.screen.search.components
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -13,7 +12,6 @@ import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.feature.search.searchUi.screen.search.SearchScreenState
-import com.paris_2.aflami.designsystem.components.CustomTab
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
@@ -42,11 +40,11 @@ fun WithSearchQueryContent(
             TabRow(
                 modifier = Modifier.fillMaxWidth(),
                 onTabSelected = searchScreenInteractionListener::onSelectTab,
-                selectedIndex = state.uiState.selectedTabIndex,
+                selectedIndex = state.searchUiState.selectedTabIndex,
                 tabItems = tabs
             )
             val searchResult =
-                if (state.uiState.selectedTabIndex == 0) state.uiState.filteredMoviesResult else state.uiState.filteredTvShowsResult
+                if (state.searchUiState.selectedTabIndex == 0) state.searchUiState.filteredMoviesResult else state.searchUiState.filteredTvShowsResult
             if (searchResult.isEmpty()) {
                 PlaceholderView(
                     modifier = Modifier.fillMaxSize(),

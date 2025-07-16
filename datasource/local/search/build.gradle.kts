@@ -57,6 +57,9 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
+
     // test
     testImplementation(libs.androidx.room.testing)
     testImplementation(libs.mockk)

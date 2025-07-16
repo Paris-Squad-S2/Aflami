@@ -1,12 +1,12 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.GenresDao
+import com.google.common.truth.Truth.assertThat
 import com.repository.search.entity.GenreEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -27,21 +27,37 @@ class GenresLocalDataSourceImplTest {
     @Test
     fun `getGenres should return genres when getAll in GenresDao called successfully`() =
         runTest {
+            // Given
             coEvery { genresDao.getGenres() } returns listOf(sampleGenre)
-
+            // When
             val result = genresLocalDataSource.getGenres()
-
-            assertEquals(sampleGenre.name, result[0].name)
+            // Then
+            assertThat(result).containsExactly(sampleGenre)
         }
 
     @Test
-    fun `addGenres should add Genres when add in GenresDao called successfully`() = runTest {
-        coEvery { genresDao.addGenres(any()) } returns Unit
+    fun `getGenres should return empty list when GenresDao returns nothing`() =
+        runTest {
+            // Given
+            coEvery { genresDao.getGenres() } returns emptyList()
+            // When
+            val result = genresLocalDataSource.getGenres()
+            // Then
+            assertThat(result).isEmpty()
+        }
 
-        genresLocalDataSource.addGenres(listOf(sampleGenre))
-
-        coVerify { genresDao.addGenres(any()) }
-
-    }
-
+    @Test
+    fun `addGenres should add Genres when add in GenresDao called successfully`() =
+        runTest {
+            // Given
+            coEvery { genresDao.addGenres(any()) } returns Unit
+            // When
+            genresLocalDataSource.addGenres(listOf(sampleGenre))
+            // Then
+            coVerify {
+                genresDao.addGenres(withArg {
+                    assertThat(it).isEqualTo(listOf(sampleGenre))
+                })
+            }
+        }
 }

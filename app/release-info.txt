@@ -1,2 +1,2 @@
-versionName=0.1.12
-- Update build configuration to use debug signing config for release APK
+versionName=0.1.17
+- enhance some code lines

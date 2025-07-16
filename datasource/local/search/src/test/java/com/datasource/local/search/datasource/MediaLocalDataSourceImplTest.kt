@@ -1,6 +1,7 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.MediaDao
+import com.google.common.truth.Truth.assertThat
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.entity.SearchType
@@ -9,7 +10,6 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -38,70 +38,82 @@ class MediaLocalDataSourceImplTest {
     @Test
     fun `getAllMedia should return media when getAll in MediaDao called successfully`() =
         runTest {
+            // Given
             coEvery { mediaDao.getAllMedia() } returns listOf(sampleMedia)
-
+            // When
             val result = mediaLocalDataSourceImpl.getAllMedia()
-
-            assertEquals(sampleMedia.searchQuery, result[0].searchQuery)
+            // Then
+            assertThat(result).containsExactly(sampleMedia)
         }
 
     @Test
     fun `addAllMedia should add AllMedia when add in MediaDao called successfully`() =
         runTest {
+            // Given
+
             coEvery { mediaDao.addAllMedia(any()) } returns Unit
-
+            // When
             mediaLocalDataSourceImpl.addAllMedia(listOf(sampleMedia))
-
-            coVerify { mediaDao.addAllMedia(any()) }
+            // Then
+            coVerify {
+                mediaDao.addAllMedia(withArg {
+                    assertThat(it).containsExactly(sampleMedia)
+                })
+            }
         }
 
     @Test
     fun `getCachedMedia should get CachedMedia when get in MediaDao called successfully`() =
         runTest {
+            // Given
             coEvery { mediaDao.getCachedMedia() } returns listOf(sampleMedia)
-
+            // When
             val result = mediaLocalDataSourceImpl.getCachedMedia()
-
-            assertEquals(sampleMedia, result.first())
+            // Then
+            assertThat(result).containsExactly(sampleMedia)
         }
 
     @Test
     fun `getMediaByActor should get MediaByActor when get in MediaDao called successfully`() =
         runTest {
+            // Given
             coEvery { mediaDao.getMediaByActor("aaa") } returns listOf(sampleMedia)
-
+            // When
             val result = mediaLocalDataSourceImpl.getMediaByActor("aaa")
-
-            assertEquals(sampleMedia.searchQuery, result[0].searchQuery)
+            // Then
+            assertThat(result).containsExactly(sampleMedia)
         }
 
     @Test
     fun `getMediaByCountry should get MediaByCountry when get in MediaDao called successfully`() =
         runTest {
+            // Given
             coEvery { mediaDao.getMediaByCountry("usa") } returns listOf(sampleMedia)
-
+            // When
             val result = mediaLocalDataSourceImpl.getMediaByCountry("usa")
-
-            assertEquals(sampleMedia.searchQuery, result[0].searchQuery)
+            // Then
+            assertThat(result).containsExactly(sampleMedia)
         }
 
     @Test
     fun `getMediaByTitleQuery should get MediaByTitleQuery when get in MediaDao called successfully`() =
         runTest {
+            // Given
             coEvery { mediaDao.getMediaByTitleQuery("batman") } returns listOf(sampleMedia)
-
+            // When
             val result = mediaLocalDataSourceImpl.getMediaByTitleQuery("batman")
-
-            assertEquals(sampleMedia.title, result[0].title)
+            // Then
+            assertThat(result).containsExactly(sampleMedia)
         }
 
     @Test
     fun `clearAllMediaBySearchQuery should clear AllMediaBySearchQuery when clear in MediaDao called successfully`() =
         runTest {
+            // Given
             coEvery { mediaDao.clearAllMediaBySearchQuery("aa", SearchType.Query) } returns Unit
-
+            // When
             mediaLocalDataSourceImpl.clearAllMediaBySearchQuery("aa", SearchType.Query)
-
+            // Then
             coVerify { mediaDao.clearAllMediaBySearchQuery("aa", SearchType.Query) }
         }
 
