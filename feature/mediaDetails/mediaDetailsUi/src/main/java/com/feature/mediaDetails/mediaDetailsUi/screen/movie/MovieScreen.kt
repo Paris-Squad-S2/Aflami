@@ -16,6 +16,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.DescriptionSection
+import com.feature.mediaDetails.mediaDetailsUi.common.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.cast.CastSection
@@ -39,7 +40,7 @@ fun MovieDetailsScreenContent(
         "More like this" to R.drawable.ic_camera_video,
         "Reviews" to R.drawable.ic_starr,
         "Gallery" to R.drawable.ic_album,
-        "Production" to R.drawable.ic_city
+        "Company Production" to R.drawable.ic_city
     )
     Box(
         Modifier
@@ -93,9 +94,9 @@ fun MovieDetailsScreenContent(
                         )
                     }
                     "Gallery" -> item {
-                      //  GallerySection(state.movieDetailsUiState.gallery)
+                        GallerySection(state.movieDetailsUiState.gallery)
                     }
-                    "Production" -> item {
+                    "Company Production" -> item {
                         ProductionCompanySection(
                             companies = state.movieDetailsUiState.movie.productionCompanies
                         )
@@ -196,6 +197,9 @@ fun fakeMovieDetailsScreenState(): MovieDetailsScreenState {
                 )
             ),
             gallery = listOf(
+                "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
+                "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
+                "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
                 "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
                 "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg"
             )
