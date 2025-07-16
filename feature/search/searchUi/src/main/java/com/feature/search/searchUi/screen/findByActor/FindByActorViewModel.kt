@@ -3,13 +3,19 @@ package com.feature.search.searchUi.screen.findByActor
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.search.MediaUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 data class FindByActorScreenState(
@@ -19,7 +25,7 @@ data class FindByActorScreenState(
 )
 data class FindByActorUiState(
     val searchQuery: String,
-    val searchResult: List<MediaUiState>,
+    val searchResult: Flow<PagingData<MediaUiState>>,
 )
 
 class FindByActorViewModel(
@@ -29,12 +35,13 @@ class FindByActorViewModel(
     FindByActorScreenState(
         uiState = FindByActorUiState(
             searchQuery = "",
-            searchResult = listOf()
+            searchResult = flowOf(PagingData.empty()),
         ),
         isLoading = false,
         errorMessage = null
     )
 ) {
+
 
     init {
         val initialQuery = savedStateHandle.toRoute<Destinations.FindByActorScreen>().name
@@ -74,7 +81,7 @@ class FindByActorViewModel(
                 screenState.value.copy(
                     isLoading = false,
                     uiState = screenState.value.uiState.copy(
-                        searchResult = listOf(),
+                        searchResult = flowOf(PagingData.empty()),
                     )
                 )
             )
@@ -91,14 +98,21 @@ class FindByActorViewModel(
                         errorMessage = null
                     )
                 )
-                getMediaByActorNameUseCase(query)
+                Pager(
+                 config = PagingConfig(pageSize = 10),
+                 pagingSourceFactory = {
+                     FindByActorPagingSource(query,getMediaByActorNameUseCase)
+                 }
+                ).flow.cachedIn(viewModelScope)
+
             },
             onSuccess = { searchResult ->
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
                         uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult.toMediaUiList(),
+                            searchResult = searchResult
+                            ,
                         )
                     )
                 )
