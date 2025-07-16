@@ -15,9 +15,10 @@ fun GenreEntity.toCategoryModel(): CategoryModel {
     )
 }
 
-fun GenreDto.toEntity(): GenreEntity {
+fun GenreDto.toEntity(language: String): GenreEntity {
     return GenreEntity(
         id = this.id ?: 0,
-        name = this.name.orEmpty()
+        name = this.name.orEmpty(),
+        language = language
     )
 }

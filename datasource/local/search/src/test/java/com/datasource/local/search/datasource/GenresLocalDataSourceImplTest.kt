@@ -14,13 +14,14 @@ class GenresLocalDataSourceImplTest {
     private lateinit var genresLocalDataSource: GenresLocalDataSourceImpl
     private val genresDao: GenresDao = mockk(relaxed = false)
     private lateinit var sampleGenre: GenreEntity
-
+    private val language = "en"
     @BeforeEach
     fun setUp() {
         genresLocalDataSource = GenresLocalDataSourceImpl(genresDao)
         sampleGenre = GenreEntity(
             id = 1,
-            name = "all"
+            name = "all",
+            language = language
         )
     }
 
@@ -28,9 +29,9 @@ class GenresLocalDataSourceImplTest {
     fun `getGenres should return genres when getAll in GenresDao called successfully`() =
         runTest {
             // Given
-            coEvery { genresDao.getGenres() } returns listOf(sampleGenre)
+            coEvery { genresDao.getGenres(language) } returns listOf(sampleGenre)
             // When
-            val result = genresLocalDataSource.getGenres()
+            val result = genresLocalDataSource.getGenres(language)
             // Then
             assertThat(result).containsExactly(sampleGenre)
         }
@@ -39,9 +40,9 @@ class GenresLocalDataSourceImplTest {
     fun `getGenres should return empty list when GenresDao returns nothing`() =
         runTest {
             // Given
-            coEvery { genresDao.getGenres() } returns emptyList()
+            coEvery { genresDao.getGenres(language) } returns emptyList()
             // When
-            val result = genresLocalDataSource.getGenres()
+            val result = genresLocalDataSource.getGenres(language)
             // Then
             assertThat(result).isEmpty()
         }

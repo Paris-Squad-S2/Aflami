@@ -139,7 +139,7 @@ class SearchViewModel(
         )
     }
 
-    private fun loadCategories() {
+    fun loadCategories() {
         tryToExecute(
             execute = getAllCategoriesUseCase::invoke,
             onSuccess = { categories ->
