@@ -16,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.feature.mediaDetails.mediaDetailsUi.screen.cast.components.CastScreenItem
 import com.feature.mediaDetails.mediaDetailsUi.screen.movie.CastUi
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -56,13 +57,15 @@ fun CastSection(
         }
         LazyRow(
             modifier = Modifier.padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(castList.size) { index ->
-                CastItem(
+                CastScreenItem(
                     imageUrl = castList[index].imageUrl,
                     name = castList[index].name,
-                    modifier = Modifier
+                    modifier = Modifier,
+                    height = 78.dp,
+                    width = 80.dp
                 )
             }
         }

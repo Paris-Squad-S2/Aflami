@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -27,10 +28,14 @@ fun CastScreenItem(
     name: String,
     height: Dp = 104.dp,
     cornerRadius: Dp = 16.dp,
+    width: Dp? = null,
     modifier: Modifier = Modifier,
 ){
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .then(
+                if (width != null) Modifier.width(width) else TODO()
+            ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AsyncImage(
