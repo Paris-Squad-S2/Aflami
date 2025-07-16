@@ -16,6 +16,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.DescriptionSection
+import com.feature.mediaDetails.mediaDetailsUi.common.components.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.cast.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.common.components.detailsImage.DetailsImage
@@ -95,7 +96,9 @@ fun MovieDetailsScreenContent(
                       //  GallerySection(state.movieDetailsUiState.gallery)
                     }
                     "Production" -> item {
-                      //  ProductionSection(state.movieDetailsUiState.movie.productionCompanies)
+                        ProductionCompanySection(
+                            companies = state.movieDetailsUiState.movie.productionCompanies
+                        )
                     }
                     "More like this" -> item {
                         //MoreLikeThisSection()
@@ -152,6 +155,16 @@ fun fakeMovieDetailsScreenState(): MovieDetailsScreenState {
                     ProductionCompanyUi(
                         logoUrl = "https://upload.wikimedia.org/wikipedia/en/thumb/5/5a/Castle_Rock_Entertainment.svg/1200px-Castle_Rock_Entertainment.svg.png",
                         name = "Castle Rock Entertainment",
+                        originCountry = "US"
+                    ),
+                    ProductionCompanyUi(
+                        logoUrl = "https://upload.wikimedia.org/wikipedia/commons/4/4f/Paramount_Pictures_2022_logo.svg",
+                        name = "Paramount Pictures",
+                        originCountry = "US"
+                    ),
+                    ProductionCompanyUi(
+                        logoUrl = "https://upload.wikimedia.org/wikipedia/commons/a/af/20th_Century_Studios_Logo.svg",
+                        name = "20th Century Studios",
                         originCountry = "US"
                     )
                 )
