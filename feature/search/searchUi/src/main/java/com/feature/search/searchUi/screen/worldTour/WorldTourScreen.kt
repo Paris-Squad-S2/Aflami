@@ -75,7 +75,7 @@ fun WorldTourScreenContent(
                 subTitle = stringResource(R.string.start_exploring_the_world_movie),
                 spacer = 16.dp
             )
-        } else if (state.errorMessage != null) {
+        } else if (state.errorMessage != null||state.uiState.searchResult.collectAsLazyPagingItems().loadState.hasError) {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = worldTourScreenInteractionListener::onRetrySearchQuery

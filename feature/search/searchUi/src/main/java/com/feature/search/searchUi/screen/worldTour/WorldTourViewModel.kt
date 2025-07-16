@@ -23,7 +23,6 @@ import kotlinx.coroutines.launch
 
 data class WorldTourScreenState(
     val uiState: WorldTourUiState,
-    val isLoading: Boolean,
     val errorMessage: String?
 )
 
@@ -46,7 +45,6 @@ class WorldTourViewModel(
                 searchResult = flowOf(PagingData.empty()),
                 hints = listOf()
             ),
-            isLoading = false,
             errorMessage = null
         )
     ) {
@@ -78,7 +76,6 @@ class WorldTourViewModel(
                 val hints = autoCompleteCountryUseCase(query)
                 emitState(
                     screenState.value.copy(
-                        isLoading = true,
                         uiState = screenState.value.uiState.copy(
                             hints = hints
                         )
@@ -95,7 +92,6 @@ class WorldTourViewModel(
                 else {
                     emitState(
                         screenState.value.copy(
-                            isLoading = false,
                             uiState = screenState.value.uiState.copy(
                                 searchResult = flowOf(PagingData.empty()),
                             )
@@ -112,7 +108,6 @@ class WorldTourViewModel(
             execute = {
                 emitState(
                     screenState.value.copy(
-                        isLoading = true,
                         errorMessage = null
                     )
                 )
@@ -129,7 +124,6 @@ class WorldTourViewModel(
             onSuccess = { searchResult ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         uiState = screenState.value.uiState.copy(
                             searchResult = searchResult,
                         )
@@ -139,7 +133,6 @@ class WorldTourViewModel(
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         errorMessage = errorMessage
                     )
                 )

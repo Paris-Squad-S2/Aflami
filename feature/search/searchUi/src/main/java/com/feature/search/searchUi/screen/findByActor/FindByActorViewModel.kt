@@ -20,7 +20,6 @@ import kotlinx.coroutines.launch
 
 data class FindByActorScreenState(
     val uiState: FindByActorUiState,
-    val isLoading: Boolean,
     val errorMessage: String?
 )
 data class FindByActorUiState(
@@ -37,7 +36,6 @@ class FindByActorViewModel(
             searchQuery = "",
             searchResult = flowOf(PagingData.empty()),
         ),
-        isLoading = false,
         errorMessage = null
     )
 ) {
@@ -68,18 +66,12 @@ class FindByActorViewModel(
         if (query.isNotBlank()) {
             debounceJob = viewModelScope.launch {
                 delay(1000)
-                emitState(
-                    screenState.value.copy(
-                        isLoading = true,
-                    )
-                )
                 searchQuery(query)
             }
         }
         else {
             emitState(
                 screenState.value.copy(
-                    isLoading = false,
                     uiState = screenState.value.uiState.copy(
                         searchResult = flowOf(PagingData.empty()),
                     )
@@ -94,7 +86,6 @@ class FindByActorViewModel(
             execute = {
                 emitState(
                     screenState.value.copy(
-                        isLoading = true,
                         errorMessage = null
                     )
                 )
@@ -109,7 +100,6 @@ class FindByActorViewModel(
             onSuccess = { searchResult ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         uiState = screenState.value.uiState.copy(
                             searchResult = searchResult
                             ,
@@ -120,7 +110,6 @@ class FindByActorViewModel(
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         errorMessage = errorMessage
                     )
                 )

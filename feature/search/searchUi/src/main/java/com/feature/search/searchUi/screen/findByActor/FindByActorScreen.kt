@@ -73,7 +73,7 @@ fun FindByActorScreenContent(
                 subTitle = stringResource(R.string.start_exploring_your_favorite_actor_s_movies),
                 spacer = 16.dp
             )
-        } else if (state.errorMessage != null) {
+        } else if (state.errorMessage != null||state.uiState.searchResult.collectAsLazyPagingItems().loadState.hasError) {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = findByActorScreenInteractionListener::onRetrySearchQuery

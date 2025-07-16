@@ -194,22 +194,11 @@ class SearchViewModel(
         )
         debounceJob?.cancel()
         if (query.isNotBlank()) {
-            emitState(
-                screenState.value.copy(
-                    isLoading = true,
-                )
-            )
+
             debounceJob = viewModelScope.launch {
                 delay(1000)
                 searchQuery(query)
             }
-        }
-        else {
-            emitState(
-                screenState.value.copy(
-                    isLoading = false,
-                )
-            )
         }
     }
 
@@ -219,7 +208,6 @@ class SearchViewModel(
             execute = {
                 emitState(
                     screenState.value.copy(
-                        isLoading = true,
                         errorMessage = null
                     )
                 )
@@ -259,7 +247,6 @@ class SearchViewModel(
                     filteredMediaByCategories.map { pagingData  -> pagingData .filter{ it.type == MediaTypeUi.TVSHOW }}
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         searchUiState = screenState.value.searchUiState.copy(
                             moviesResult = moviesResult,
                             tvShowsResult = tvShowsResult,
@@ -272,7 +259,6 @@ class SearchViewModel(
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         errorMessage = errorMessage
                     )
                 )
@@ -309,7 +295,6 @@ class SearchViewModel(
             execute = {
                 emitState(
                     screenState.value.copy(
-                        isLoading = true,
                         searchUiState = screenState.value.searchUiState.copy(
                             showFilterDialog = false,
                             selectedRating = selectedRating,
@@ -349,7 +334,6 @@ class SearchViewModel(
             onSuccess = { (filteredByCategoriesMovies, filteredByCategoriesTvShows) ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         searchUiState = screenState.value.searchUiState.copy(
                             filteredMoviesResult = flowOf(PagingData.from(filteredByCategoriesMovies.toMediaUiList())),
                             filteredTvShowsResult = flowOf(PagingData.from(filteredByCategoriesTvShows.toMediaUiList()))
@@ -471,7 +455,7 @@ class SearchViewModel(
     }
 
 
-    suspend fun <T : Any> Flow<PagingData<T>>.collectAllItems(): List<T> {
+    private suspend fun <T : Any> Flow<PagingData<T>>.collectAllItems(): List<T> {
         val differ = AsyncPagingDataDiffer(
             diffCallback = object : DiffUtil.ItemCallback<T>() {
                 override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
