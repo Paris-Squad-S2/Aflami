@@ -4,6 +4,6 @@ import com.repository.entity.TvShowEntity
 
 
 interface TvShowLocalDataSource {
-    suspend fun addMovie(tvShow: TvShowEntity)
-    suspend fun getMovie(tvShowId: Int): TvShowEntity??
+    suspend fun addTvShow(tvShow: TvShowEntity)
+    suspend fun getTvShowId(tvShowId: Int): TvShowEntity?
 }
