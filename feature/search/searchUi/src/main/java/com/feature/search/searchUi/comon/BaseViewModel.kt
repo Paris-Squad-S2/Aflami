@@ -14,14 +14,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
-import org.koin.java.KoinJavaComponent
+import org.koin.core.component.inject
 
 open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
 
-    private val navigator: SearchNavigator by KoinJavaComponent.inject(SearchNavigator::class.java)
+    private val navigator: SearchNavigator by inject()
 
     protected fun navigate(destination: SearchDestination, navOptions: NavOptions? = null) =
         viewModelScope.launch {
