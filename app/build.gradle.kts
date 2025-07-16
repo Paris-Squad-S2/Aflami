@@ -24,7 +24,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        resConfigs("en")
         vectorDrawables.useSupportLibrary = true
     }
 

@@ -1,2 +1,2 @@
-versionName=0.1.14
-- implement details remote datasource
+versionName=0.1.17
+- enhance some code lines

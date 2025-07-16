@@ -28,10 +28,10 @@ object GenreResourceMapper {
         10762 to R.drawable.ic_category_kids,
         10763 to R.drawable.ic_category_news,
         10764 to R.drawable.ic_category_reality,
-//        10765 to R.drawable.ic_category_sci_fi_and_fantasy,
+        10765 to R.drawable.ic_category_fantasy,
         10766 to R.drawable.ic_category_soap,
         10767 to R.drawable.ic_category_talk,
-//        10768 to R.drawable.ic_category_war_and_politics
+        10768 to R.drawable.ic_category_war
     )
 
     fun getResourceId(genreId: Int): Int {
