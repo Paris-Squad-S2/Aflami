@@ -27,7 +27,6 @@ import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
-import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -119,7 +118,7 @@ fun MovieDetailsScreenContent(
         TopAppBar(
             leadingIcons = listOf(
                 iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                    icon = ImageVector.vectorResource(R.drawable.ic_back),
                     onClick = {}
                 )
             ),
