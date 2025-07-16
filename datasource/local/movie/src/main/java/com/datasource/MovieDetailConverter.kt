@@ -5,6 +5,7 @@ import com.repository.entity.CountryEntity
 import com.repository.entity.GenreEntity
 import com.repository.entity.ImageEntity
 import com.repository.entity.ProductionCompanyEntity
+import kotlinx.datetime.LocalDate
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -81,4 +82,10 @@ class MovieDetailConverter {
         }
         return json.decodeFromString<List<ImageEntity>>(imagesString)
     }
+
+    @TypeConverter
+    fun fromLocalDate(value: LocalDate?): String? = value?.toString()
+
+    @TypeConverter
+    fun toLocalDate(value: String?): LocalDate? = value?.let { LocalDate.parse(it) }
 }
