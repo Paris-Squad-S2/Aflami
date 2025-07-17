@@ -23,6 +23,7 @@ import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
+import java.util.Locale
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
@@ -57,11 +58,18 @@ fun WorldTourScreenContent(
                 )
             ),
         )
+        val isArabic = Locale.getDefault().language == "ar"
         TextField(
             value = state.uiState.searchQuery,
             onValueChange = worldTourScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(R.string.search),
-            suggestions = state.uiState.hints.map { it.countryName + " (${it.countryCode})" },
+            suggestions = state.uiState.hints.map {
+                val name = if (isArabic) {
+                    it.arabicName
+                } else {
+                    it.englishName
+                }
+                name + " (${it.countryCode})" },
             onSuggestionSelected = { worldTourScreenInteractionListener.onSearchQueryChange(it.substringBefore("(").trim()) },
         )
         if (state.uiState.searchQuery.isEmpty()) {

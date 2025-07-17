@@ -131,7 +131,7 @@ fun NoSearchQueryContent(
                 val recentSearch = state.searchUiState.recentSearches[index]
                 RecentSearchItem(
                     modifier = Modifier.animateItem(),
-                    recentSearchTitle = recentSearch.searchTitle + if (recentSearch.searchType!= SearchTypeUi.Query) " (${recentSearch.searchType.name})" else "",
+                    recentSearchTitle = recentSearch.searchTitle + if (recentSearch.searchType!= SearchTypeUi.Query) " (${stringResource(recentSearch.searchType.displayNameResId)})" else "",
                     onRecentSearchClick = {
                         searchScreenInteractionListener.onRecentSearchClick(
                             recentSearch.searchTitle,

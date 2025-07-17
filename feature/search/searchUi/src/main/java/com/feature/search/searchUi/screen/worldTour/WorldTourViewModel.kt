@@ -64,7 +64,6 @@ class WorldTourViewModel(
     }
 
     private var debounceJob: Job? = null
-
     override fun onSearchQueryChange(query: String) {
         emitState(
             screenState.value.copy(
@@ -91,7 +90,7 @@ class WorldTourViewModel(
                     searchQuery(countryCode)
                 }
                 else if (screenState.value.uiState.hints.isNotEmpty()){
-                    searchQuery(screenState.value.uiState.hints.first().countryName)
+                    searchQuery(screenState.value.uiState.hints.first().countryCode)
                 }
                 else {
                     emitState(

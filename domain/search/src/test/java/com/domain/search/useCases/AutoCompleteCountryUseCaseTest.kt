@@ -43,7 +43,7 @@ class AutoCompleteCountryUseCaseTest {
         val result = autoCompleteCountryUseCase("united")
 
         // Then
-        assertThat(result.map { it.countryName }).containsExactly(
+        assertThat(result.map { it.englishName }).containsExactly(
             "United States",
             "United Kingdom"
         )
@@ -71,7 +71,7 @@ class AutoCompleteCountryUseCaseTest {
         val result = autoCompleteCountryUseCase("CANADA")
 
         // Then
-        assertThat(result.first().countryName).isEqualTo("Canada")
+        assertThat(result.first().englishName).isEqualTo("Canada")
     }
 
     @Test
@@ -95,7 +95,7 @@ class AutoCompleteCountryUseCaseTest {
         val result = autoCompleteCountryUseCase("an")
 
         // Then
-        assertThat(result.map { it.countryName }).containsExactly(
+        assertThat(result.map { it.englishName }).containsExactly(
             "Canada",
             "Germany",
             "France",
