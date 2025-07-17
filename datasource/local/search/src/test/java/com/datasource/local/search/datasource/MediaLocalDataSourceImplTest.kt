@@ -18,6 +18,7 @@ class MediaLocalDataSourceImplTest {
     private val mediaDao: MediaDao = mockk(relaxed = true)
 
     private lateinit var sampleMedia: MediaEntity
+    private val language = "en"
 
     @BeforeEach
     fun setUp() {
@@ -31,7 +32,8 @@ class MediaLocalDataSourceImplTest {
             category = listOf(1, 2),
             yearOfRelease = LocalDate.parse("2023-01-01"),
             rating = 4.5,
-            searchType = SearchType.Query
+            searchType = SearchType.Query,
+            language = language
         )
     }
 
@@ -77,9 +79,9 @@ class MediaLocalDataSourceImplTest {
     fun `getMediaByActor should get MediaByActor when get in MediaDao called successfully`() =
         runTest {
             // Given
-            coEvery { mediaDao.getMediaByActor("aaa") } returns listOf(sampleMedia)
+            coEvery { mediaDao.getMediaByActor("aaa" , language) } returns listOf(sampleMedia)
             // When
-            val result = mediaLocalDataSourceImpl.getMediaByActor("aaa")
+            val result = mediaLocalDataSourceImpl.getMediaByActor("aaa" , language)
             // Then
             assertThat(result).containsExactly(sampleMedia)
         }
@@ -88,9 +90,9 @@ class MediaLocalDataSourceImplTest {
     fun `getMediaByCountry should get MediaByCountry when get in MediaDao called successfully`() =
         runTest {
             // Given
-            coEvery { mediaDao.getMediaByCountry("usa") } returns listOf(sampleMedia)
+            coEvery { mediaDao.getMediaByCountry("usa" , language) } returns listOf(sampleMedia)
             // When
-            val result = mediaLocalDataSourceImpl.getMediaByCountry("usa")
+            val result = mediaLocalDataSourceImpl.getMediaByCountry("usa" , language)
             // Then
             assertThat(result).containsExactly(sampleMedia)
         }
@@ -99,9 +101,9 @@ class MediaLocalDataSourceImplTest {
     fun `getMediaByTitleQuery should get MediaByTitleQuery when get in MediaDao called successfully`() =
         runTest {
             // Given
-            coEvery { mediaDao.getMediaByTitleQuery("batman") } returns listOf(sampleMedia)
+            coEvery { mediaDao.getMediaByTitleQuery("batman" , language) } returns listOf(sampleMedia)
             // When
-            val result = mediaLocalDataSourceImpl.getMediaByTitleQuery("batman")
+            val result = mediaLocalDataSourceImpl.getMediaByTitleQuery("batman" , language)
             // Then
             assertThat(result).containsExactly(sampleMedia)
         }
