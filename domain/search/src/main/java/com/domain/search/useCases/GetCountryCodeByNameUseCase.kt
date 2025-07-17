@@ -9,8 +9,9 @@ class GetCountryCodeByNameUseCase(
         val allCountries = countryRepository.getAllCountries()
 
         return allCountries.firstOrNull {
-            it.countryCode.equals(countryName, ignoreCase = true) ||
-                    it.englishName.contains(countryName, ignoreCase = true) ||
+            it.countryCode.equals(countryName, ignoreCase = true)
+        }?.countryCode ?: allCountries.firstOrNull {
+            it.englishName.contains(countryName, ignoreCase = true) ||
                     it.arabicName.contains(countryName, ignoreCase = true)
         }?.countryCode
     }
