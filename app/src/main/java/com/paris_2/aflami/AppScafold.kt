@@ -52,8 +52,8 @@ fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
         bottomBar = {
             AnimatedVisibility(
                 visible = isVisible,
-                enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
-                exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it }),
             ) {
                 AflamiNavBar(
                     selectedItem = AflamiNavBarItem.destinations[selectedDestinationIndex],
