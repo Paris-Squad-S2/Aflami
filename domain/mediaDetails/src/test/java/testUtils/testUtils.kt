@@ -7,10 +7,12 @@ import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
+import com.domain.mediaDetails.model.MovieSimilar
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
+import com.domain.mediaDetails.model.TvShowSimilar
 import kotlinx.datetime.LocalDate
 
 val fakeGenres = listOf(
@@ -24,15 +26,6 @@ val fakeGenres = listOf(
     Genre(8, "Romance"),
     Genre(9, "Thriller"),
     Genre(10, "Mystery")
-)
-
-val fakeCountries = listOf(
-    Country("US", "United States", "الولايات المتحدة"),
-    Country("GB", "United Kingdom", "المملكة المتحدة"),
-    Country("CA", "Canada", "كندا"),
-    Country("KR", "South Korea", "كوريا الجنوبية"),
-    Country("DE", "Germany", "ألمانيا"),
-    Country("JP", "Japan", "اليابان")
 )
 
 val fakeProductionCompanies = listOf(
@@ -53,7 +46,7 @@ val fakeTvShow = TvShow(
     genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
     releaseDate = "2008-01-20",
     runtime = 47,
-    country = fakeCountries[0],
+    country = "US",
     productionCompanies = listOf(fakeProductionCompanies[2])
 )
 
@@ -67,7 +60,7 @@ val fakeTvShows = listOf(
         genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
         releaseDate = "2008-01-20",
         runtime = 47,
-        country = fakeCountries[0],
+        country = "US",
         productionCompanies = listOf(fakeProductionCompanies[2])
     ),
     TvShow(
@@ -79,7 +72,7 @@ val fakeTvShows = listOf(
         genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[2]),
         releaseDate = "2011-04-17",
         runtime = 57,
-        country = fakeCountries[0],
+        country = "US",
         productionCompanies = listOf(fakeProductionCompanies[0])
     ),
     TvShow(
@@ -91,7 +84,7 @@ val fakeTvShows = listOf(
         genres = listOf(fakeGenres[0], fakeGenres[5], fakeGenres[6]),
         releaseDate = "2016-07-15",
         runtime = 51,
-        country = fakeCountries[0],
+        country = "US",
         productionCompanies = listOf(fakeProductionCompanies[1])
     ),
     TvShow(
@@ -103,7 +96,7 @@ val fakeTvShows = listOf(
         genres = listOf(fakeGenres[1]),
         releaseDate = "2005-03-24",
         runtime = 22,
-        country = fakeCountries[0],
+        country = "US",
         productionCompanies = listOf(fakeProductionCompanies[1])
     ),
     TvShow(
@@ -115,8 +108,49 @@ val fakeTvShows = listOf(
         genres = listOf(fakeGenres[0], fakeGenres[9], fakeGenres[3]),
         releaseDate = "2010-07-25",
         runtime = 90,
-        country = fakeCountries[1],
+        country = "GB",
         productionCompanies = listOf(fakeProductionCompanies[3])
+    )
+)
+
+val fakeTvShowsSimilar = listOf(
+    TvShowSimilar(
+        id = 1,
+        title = "Breaking Bad",
+        voteAverage = 9.5,
+        posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
+        releaseDate = "2008-01-20",
+
+    ),
+    TvShowSimilar(
+        id = 2,
+        title = "Game of Thrones",
+        voteAverage = 9.2,
+        posterPath = "https://image.tmdb.org/t/p/w500/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
+        releaseDate = "2011-04-17",
+    ),
+    TvShowSimilar(
+        id = 3,
+        title = "Stranger Things",
+        voteAverage = 8.7,
+        posterPath = "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
+        releaseDate = "2016-07-15",
+
+    ),
+    TvShowSimilar(
+        id = 4,
+        title = "The Office",
+        voteAverage = 8.9,
+        posterPath = "https://image.tmdb.org/t/p/w500/7DJKHzAi83PmGuHjrEfQ1S9y4LF.jpg",
+        releaseDate = "2005-03-24",
+
+    ),
+    TvShowSimilar(
+        id = 5,
+        title = "Sherlock",
+        voteAverage = 9.1,
+        posterPath = "https://image.tmdb.org/t/p/w500/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
+        releaseDate = "2010-07-25",
     )
 )
 
@@ -316,7 +350,7 @@ val fakeMovie = Movie(
     genres = listOf(fakeGenres[1], fakeGenres[6]),
     releaseDate = "1994-10-14",
     runtime = 154,
-    country = fakeCountries[0],
+    country = "US",
     productionCompanies = listOf(fakeProductionCompanies[3])
 )
 val fakeMovies = listOf(
@@ -329,7 +363,7 @@ val fakeMovies = listOf(
         genres = listOf(fakeGenres[0], fakeGenres[1], fakeGenres[6]),
         releaseDate = "2008-07-18",
         runtime = 152,
-        country = fakeCountries[0],
+        country = "US",
         productionCompanies = listOf(fakeProductionCompanies[0])
     ),
     Movie(
@@ -341,7 +375,7 @@ val fakeMovies = listOf(
         genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[6]),
         releaseDate = "2010-07-16",
         runtime = 148,
-        country = fakeCountries[1],
+        country = "GB",
         productionCompanies = listOf(fakeProductionCompanies[0])
     ),
     Movie(
@@ -353,7 +387,31 @@ val fakeMovies = listOf(
         genres = listOf(fakeGenres[1], fakeGenres[6]),
         releaseDate = "1994-10-14",
         runtime = 154,
-        country = fakeCountries[0],
+        country = "US",
         productionCompanies = listOf(fakeProductionCompanies[3])
+    )
+)
+
+val fakeMovieSimilar = listOf(
+    MovieSimilar(
+        id = 1,
+        title = "The Dark Knight",
+        voteAverage = 9.0,
+        posterPath = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+        releaseDate = "2008-07-18",
+    ),
+    MovieSimilar(
+        id = 2,
+        title = "Inception",
+        voteAverage = 8.8,
+        posterPath = "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+        releaseDate = "2010-07-16",
+    ),
+    MovieSimilar(
+        id = 3,
+        title = "Pulp Fiction",
+        voteAverage = 8.9,
+        posterPath = "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
+        releaseDate = "1994-10-14",
     )
 )

@@ -17,6 +17,6 @@ data class TvShowEntity(
     val releaseDate: String,
     val tvShowCacheDate: LocalDateTime = getCurrentDate(),
     val runtime: Int,
-    val country: CountryEntity,
+    val country: String,
     val productionCompanies: List<ProductionCompanyEntity>,
 )

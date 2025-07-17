@@ -18,6 +18,6 @@ data class MovieEntity(
     val releaseDate: String,
     val movieCacheDate: LocalDateTime = getCurrentDate(),
     val runtime: Int,
-    val country: CountryEntity,
+    val country: String,
     val productionCompanies: List<ProductionCompanyEntity>,
 )

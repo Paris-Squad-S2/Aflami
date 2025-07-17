@@ -6,10 +6,10 @@ import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
+import com.domain.mediaDetails.model.MovieSimilar
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.repository.movie.models.local.CastEntity
-import com.repository.movie.models.local.CountryEntity
 import com.repository.movie.models.local.GalleryEntity
 import com.repository.movie.models.local.GenreEntity
 import com.repository.movie.models.local.ImageEntity
@@ -36,12 +36,7 @@ fun MovieDto.toEntity(): Movie {
         genres = this.movieGenreDto?.map { it.toEntity() } ?: emptyList(),
         releaseDate = this.releaseDate.orEmpty(),
         runtime = this.runtime ?: 0,
-        country = Country(
-            // TODO: get country name from local
-            countryCode = this.originCountry?.firstOrNull().orEmpty(),
-            countryNameEN = "en",
-            countryNameAR = "en"
-        ),
+        country = this.originCountry?.firstOrNull().orEmpty(),
         productionCompanies = this.productionCompanies?.map { it.toEntity() } ?: emptyList(),
     )
 }
@@ -94,23 +89,13 @@ fun CastEntity.toEntity(): Cast {
     )
 }
 
-fun MovieSimilarDto.toEntity(): Movie {
-    return Movie(
+fun MovieSimilarDto.toEntity(): MovieSimilar {
+    return MovieSimilar(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
         posterPath = this.posterPath.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
-        description = this.overview.orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
-        genres = this.genreIds?.map { it.toEntity() } ?: emptyList(),
-        runtime = 0,
-        country = Country(
-            // TODO: get country name from local
-            countryCode = "",
-            countryNameEN = "en",
-            countryNameAR = "ar"
-        ),
-        productionCompanies = emptyList(),
     )
 }
 
@@ -155,7 +140,7 @@ fun Movie.toLocalDto(): MovieEntity {
         genres = this.genres.map { it.toLocalDto() },
         releaseDate = this.releaseDate,
         runtime = this.runtime,
-        country = this.country.toLocalDto(),
+        country = this.country,
         productionCompanies = this.productionCompanies.map { it.toLocalDto() }
     )
 }
@@ -170,11 +155,7 @@ fun MovieDto.toLocalDto(): MovieEntity {
         genres = this.movieGenreDto?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.releaseDate.orEmpty(),
         runtime = this.runtime ?: 0,
-        country = CountryEntity(
-            // TODO: get country name from local
-            countryCode = this.originCountry?.firstOrNull().orEmpty(),
-            name = "en",
-        ),
+        country = this.originCountry?.firstOrNull().orEmpty(),
         productionCompanies = this.productionCompanies?.map { it.toLocalDto() } ?: emptyList(),
     )
 }
@@ -189,7 +170,7 @@ fun MovieEntity.toEntity(): Movie {
         genres = this.genres.map { it.toEntity() },
         releaseDate = this.releaseDate,
         runtime = this.runtime,
-        country = this.country.toEntity(),
+        country = this.country,
         productionCompanies = this.productionCompanies.map { it.toEntity() }
     )
 }
@@ -262,20 +243,6 @@ private fun GenreEntity.toEntity(): Genre {
     )
 }
 
-private fun Country.toLocalDto(): CountryEntity {
-    return CountryEntity(
-        countryCode = this.countryCode,
-        name = this.countryNameEN
-    )
-}
-
-private fun CountryEntity.toEntity(): Country {
-    return Country(
-        countryCode = this.countryCode,
-        countryNameEN = this.name,
-        countryNameAR = this.name,
-    )
-}
 
 private fun ProductionCompany.toLocalDto(): ProductionCompanyEntity {
     return ProductionCompanyEntity(

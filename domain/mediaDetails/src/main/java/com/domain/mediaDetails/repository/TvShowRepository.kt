@@ -6,11 +6,12 @@ import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
+import com.domain.mediaDetails.model.TvShowSimilar
 
 interface TvShowRepository {
     suspend fun getTvShowDetails(tvShowId: Int): TvShow
     suspend fun getTvShowCast(tvShowId: Int): List<Cast>
-    suspend fun getTvShowRecommendations(tvShowId: Int,page: Int): List<TvShow>
+    suspend fun getTvShowRecommendations(tvShowId: Int,page: Int): List<TvShowSimilar>
     suspend fun getTvShowGallery(tvShowId: Int): Gallery
     suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany>
     suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season

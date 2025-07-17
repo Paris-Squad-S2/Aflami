@@ -13,6 +13,7 @@ import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
+import com.domain.mediaDetails.model.TvShowSimilar
 import com.domain.mediaDetails.repository.TvShowRepository
 import com.repository.dataSource.local.CastLocalDataSource
 import com.repository.dataSource.local.GalleryLocalDataSource
@@ -71,7 +72,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getTvShowRecommendations(tvShowId: Int, page: Int): List<TvShow> {
+    override suspend fun getTvShowRecommendations(tvShowId: Int, page: Int): List<TvShowSimilar> {
         return safeCall {
             tvShowDetailsRemoteDataSource.getSimilarTvShows(tvShowId, page, language)
                 .tvShowSimilarDto

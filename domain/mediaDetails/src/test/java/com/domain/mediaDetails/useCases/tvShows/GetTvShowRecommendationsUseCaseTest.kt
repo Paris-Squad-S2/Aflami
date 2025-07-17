@@ -9,6 +9,7 @@ import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import testUtils.fakeTvShows
+import testUtils.fakeTvShowsSimilar
 
 class GetTvShowRecommendationsUseCaseTest {
     private lateinit var getTvShowRecommendationsUseCase: GetTvShowRecommendationsUseCase
@@ -25,11 +26,11 @@ class GetTvShowRecommendationsUseCaseTest {
         val tvShowId = 1
         val page = 1
         // when
-        coEvery { tvShowRepository.getTvShowRecommendations(tvShowId,page) } returns fakeTvShows
+        coEvery { tvShowRepository.getTvShowRecommendations(tvShowId,page) } returns fakeTvShowsSimilar
 
         // Then
         val result = getTvShowRecommendationsUseCase(tvShowId,page)
-        assertEquals(result, fakeTvShows)
+        assertEquals(result, fakeTvShowsSimilar)
 
     }
 

@@ -1,7 +1,6 @@
 package com.repository.mapper
 
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Country
 import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
@@ -10,8 +9,8 @@ import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
+import com.domain.mediaDetails.model.TvShowSimilar
 import com.repository.model.local.CastEntity
-import com.repository.model.local.CountryEntity
 import com.repository.model.local.EpisodeEntity
 import com.repository.model.local.GalleryEntity
 import com.repository.model.local.GenreEntity
@@ -42,12 +41,7 @@ fun TvShowDto.toEntity(): TvShow {
         genres = this.genres?.map { it.toEntity() } ?: emptyList(),
         releaseDate = this.firstAirDate.orEmpty(),
         runtime = this.episodeRunTime?.firstOrNull() ?: 0,
-        country = Country(
-            // TODO: get country name from local
-            countryCode = this.originCountry?.firstOrNull().orEmpty(),
-            countryNameEN = "en",
-            countryNameAR = "ar"
-        ),
+        country = this.originCountry?.firstOrNull().orEmpty(),
         productionCompanies = this.productionCompanies?.map { it.toEntity() } ?: emptyList(),
     )
 }
@@ -62,11 +56,7 @@ fun TvShowDto.toLocalDto(): TvShowEntity {
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.firstAirDate.orEmpty(),
         runtime = this.episodeRunTime?.firstOrNull() ?: 0,
-        country = CountryEntity(
-            // TODO: get country name from local
-            countryCode = this.originCountry?.firstOrNull().orEmpty(),
-            name = "en",
-        ),
+        country = this.originCountry?.firstOrNull().orEmpty(),
         productionCompanies = this.productionCompanies?.map { it.toLocalDto() } ?: emptyList()
     )
 }
@@ -104,7 +94,7 @@ fun TvShowEntity.toEntity(): TvShow {
         genres = this.genres.map { it.toEntity() },
         releaseDate = this.releaseDate,
         runtime = this.runtime,
-        country = this.country.toEntity(),
+        country = this.country,
         productionCompanies = this.productionCompanies.map { it.toEntity() }
     )
 }
@@ -137,14 +127,6 @@ private fun GenreEntity.toEntity(): Genre {
     return Genre(
         id = this.id,
         name = this.name
-    )
-}
-
-private fun CountryEntity.toEntity(): Country {
-    return Country(
-        countryCode = this.countryCode,
-        countryNameEN = this.name,
-        countryNameAR = this.name,
     )
 }
 
@@ -191,23 +173,13 @@ fun TvShowCastDto.toEntity(): Cast {
     )
 }
 
-fun TvShowSimilarDto.toEntity(): TvShow {
-    return TvShow(
+fun TvShowSimilarDto.toEntity(): TvShowSimilar {
+    return TvShowSimilar(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
         posterPath = this.posterPath.orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
-        description = this.overview.orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
-        genres = this.genreIds?.map { it.toEntity() } ?: emptyList(),
-        runtime = 0,
-        country = Country(
-            // TODO: get country name from local
-            countryCode = "",
-            countryNameEN = "en",
-            countryNameAR = "ar"
-        ),
-        productionCompanies = emptyList(),
+        voteAverage = this.voteAverage ?: 0.0,
     )
 }
 

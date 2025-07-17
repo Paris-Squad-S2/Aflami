@@ -1,7 +1,6 @@
 package com.datasource
 
 import androidx.room.TypeConverter
-import com.repository.movie.models.local.CountryEntity
 import com.repository.movie.models.local.GenreEntity
 import com.repository.movie.models.local.ImageEntity
 import com.repository.movie.models.local.ProductionCompanyEntity
@@ -43,24 +42,6 @@ class MovieDetailConverter {
         }
         return json.decodeFromString<List<GenreEntity>>(genresString)
     }
-
-    @TypeConverter
-    fun fromCountryEntity(country: CountryEntity?): String? {
-        if (country == null) {
-            return null
-        }
-
-        return json.encodeToString(country)
-    }
-
-    @TypeConverter
-    fun toCountryEntity(countryString: String?): CountryEntity? {
-        if (countryString == null) {
-            return null
-        }
-        return json.decodeFromString<CountryEntity>(countryString)
-    }
-
 
     @TypeConverter
     fun fromImageList(images: List<ImageEntity>?): String? {

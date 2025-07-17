@@ -30,9 +30,14 @@ android {
     kotlinOptions {
         jvmTarget = Configurations.JVM_TARGET
     }
+    sourceSets["main"].assets.srcDir("schemas")
 }
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {

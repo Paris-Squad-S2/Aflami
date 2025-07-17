@@ -12,6 +12,7 @@ import com.domain.mediaDetails.exception.RequestTimeoutException
 import com.domain.mediaDetails.exception.ServerException
 import com.domain.mediaDetails.exception.UnauthorizedException
 import com.domain.mediaDetails.exception.UnknownException
+import com.domain.mediaDetails.model.MovieSimilar
 import com.repository.movie.dataSource.local.CastLocalDataSource
 import com.repository.movie.dataSource.local.GalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -66,7 +67,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getMovieRecommendations(movieId: Int, page: Int): List<Movie> {
+    override suspend fun getMovieRecommendations(movieId: Int, page: Int): List<MovieSimilar> {
         return safeCall {
             movieDetailsRemoteDataSource.getSimilarMovies(
                 movieId,

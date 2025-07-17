@@ -6,6 +6,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
+import testUtils.fakeMovieSimilar
 import testUtils.fakeMovies
 import kotlin.test.assertEquals
 
@@ -25,11 +26,11 @@ class GetMovieRecommendationsUseCaseTest {
         val page = 1
 
         // when
-        coEvery { movieRepository.getMovieRecommendations(movieId,page) } returns fakeMovies
+        coEvery { movieRepository.getMovieRecommendations(movieId,page) } returns fakeMovieSimilar
 
         // Then
         val result = getMovieRecommendationsUseCase(movieId,page)
-        assertEquals(result, fakeMovies)
+        assertEquals(result, fakeMovieSimilar)
 
     }
 
