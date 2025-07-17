@@ -1,7 +1,6 @@
-package testUtils
+package com.datasource.local.datasource
 
 import com.datasource.local.dao.GalleryDao
-import com.datasource.local.datasource.GalleryLocalDataSourceImp
 import com.google.common.truth.Truth.assertThat
 import com.repository.entity.GalleryEntity
 import com.repository.entity.ImageEntity
@@ -9,8 +8,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Test
 import org.junit.jupiter.api.BeforeEach
+import kotlin.test.Test
+
 
 class GalleryLocalDataSourceImpTest {
 
