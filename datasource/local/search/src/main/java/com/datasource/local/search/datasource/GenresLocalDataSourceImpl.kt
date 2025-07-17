@@ -8,5 +8,5 @@ class GenresLocalDataSourceImpl(
     private val dao: GenresDao
 ) : GenresLocalDataSource {
     override suspend fun addGenres(genres: List<GenreEntity>) = dao.addGenres(genres)
-    override suspend fun getGenres(): List<GenreEntity> = dao.getGenres()
+    override suspend fun getGenres(language: String): List<GenreEntity> = dao.getGenres(language)
 }

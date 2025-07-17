@@ -1,2 +1,3 @@
-versionName=0.1.18
-- add movie details local data source
+versionName=0.1.20
+- solve bug saving the media id
+- enhance DTOs with image URL and update mappers

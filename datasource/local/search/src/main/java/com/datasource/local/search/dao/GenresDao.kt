@@ -12,8 +12,7 @@ interface GenresDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addGenres(genres: List<GenreEntity>)
 
-    @Query("SELECT * FROM Genres_table")
-    suspend fun getGenres(): List<GenreEntity>
-
+    @Query("SELECT * FROM Genres_table WHERE language = :language")
+    suspend fun getGenres(language: String): List<GenreEntity>
 
 }

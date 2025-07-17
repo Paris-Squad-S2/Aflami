@@ -27,6 +27,7 @@ val koverExcludedPackages = listOf(
     "**.mapper.**",
     "**.util.**",
     "**.di.**",
+    "**.navigation.**",
     "**.implementation.**",
     "**.dao.**",
     "**.SearchConverter*",

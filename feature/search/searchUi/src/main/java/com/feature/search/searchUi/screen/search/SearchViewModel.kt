@@ -8,17 +8,22 @@ import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
+import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.mapper.toCategoryUiList
-import com.feature.search.searchUi.navigation.Destinations
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.koin.mp.KoinPlatform.getKoin
 
 data class SearchScreenState(
     val searchUiState: SearchUiState,
@@ -82,6 +87,7 @@ class SearchViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -133,7 +139,7 @@ class SearchViewModel(
         )
     }
 
-    private fun loadCategories() {
+    fun loadCategories() {
         tryToExecute(
             execute = getAllCategoriesUseCase::invoke,
             onSuccess = { categories ->
@@ -157,13 +163,13 @@ class SearchViewModel(
 
     override fun onNavigateToWorldTourScreen() {
         navigate(
-            Destinations.WorldTourScreen()
+            SearchDestinations.WorldTourScreen()
         )
     }
 
     override fun onNavigateToFindByActorScreen() {
         navigate(
-            Destinations.FindByActorScreen()
+            SearchDestinations.FindByActorScreen()
         )
     }
 
@@ -188,8 +194,7 @@ class SearchViewModel(
                 delay(1000)
                 searchQuery(query)
             }
-        }
-        else {
+        } else {
             emitState(
                 screenState.value.copy(
                     isLoading = false,
@@ -362,7 +367,7 @@ class SearchViewModel(
                 tryToExecute(
                     execute = {
                         navigate(
-                            Destinations.WorldTourScreen(
+                            SearchDestinations.WorldTourScreen(
                                 name = searchTitle
                             )
                         )
@@ -381,7 +386,7 @@ class SearchViewModel(
                 tryToExecute(
                     execute = {
                         navigate(
-                            Destinations.FindByActorScreen(
+                            SearchDestinations.FindByActorScreen(
                                 name = searchTitle
                             )
                         )
@@ -438,7 +443,29 @@ class SearchViewModel(
         searchQuery(screenState.value.searchUiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        when (mediaType) {
+                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = id
+                            )
+                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = id
+                            )
+                        }.toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 }
