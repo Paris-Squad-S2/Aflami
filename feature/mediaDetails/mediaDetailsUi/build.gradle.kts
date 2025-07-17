@@ -56,20 +56,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Navigation
-    implementation(libs.navigation.compose)
-
     implementation(libs.androidx.material3)
-
-
-    //Koin
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
-    implementation(libs.koin.compose.viewmodel)
-    implementation(libs.koin.android)
-
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
-    implementation(project(Modules.DESIGN_SYSTEM))
 
     //Koin
     implementation(libs.koin.core)
@@ -91,4 +78,6 @@ dependencies {
 
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    
 }
