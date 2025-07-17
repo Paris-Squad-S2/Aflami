@@ -8,8 +8,5 @@ sealed interface HomeDestinations : HomeGraph {
     data object HomeGraph1 : HomeGraph
 
     @Serializable
-    data class MovieDetailsScreen(val movieId: Int) : HomeDestination
-
-    @Serializable
-    data class TvShowDetailsScreen(val tvShowId: Int) : HomeDestination
+    data object HomeScreen : HomeDestination
 }
