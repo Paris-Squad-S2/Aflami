@@ -1,2 +1,3 @@
-versionName=0.1.21
-- add tv show local with room data base
+versionName=0.1.22
+- add domain for movie and tv show details
+- add repository for movie and tv show details
