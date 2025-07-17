@@ -113,6 +113,20 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
 
     implementation(project(Modules.FEATURE_SEARCH_API))
+
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_LISTS_API))
+    implementation(project(Modules.FEATURE_PROFILE_API))
+    implementation(project(Modules.FEATURE_CATEGORIES_API))
+    implementation(project(Modules.FEATURE_GUESS_GAME_API))
+
+    implementation(project(Modules.FEATURE_HOME_UI))
+    implementation(project(Modules.FEATURE_LISTS_UI))
+    implementation(project(Modules.FEATURE_PROFILE_UI))
+    implementation(project(Modules.FEATURE_CATEGORIES_UI))
+    implementation(project(Modules.FEATURE_GUESS_GAME_UI))
+
+
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
     implementation(project(Modules.REPOSITORY_SEARCH))

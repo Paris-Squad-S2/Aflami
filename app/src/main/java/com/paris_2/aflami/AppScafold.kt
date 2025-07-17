@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.paris_2.aflami.appnavigation.AppNavigator
@@ -58,7 +59,15 @@ fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
                     selectedItem = AflamiNavBarItem.destinations[selectedDestinationIndex],
                     onItemClick = { destination ->
                         scope.launch {
-                            appNavigator.navigate(destination)
+                            appNavigator.navigate(
+                                destination,
+                                navOptions = NavOptions.Builder()
+                                    .setPopUpTo(
+                                        appNavigator.startGraph,
+                                        inclusive = false,
+                                    )
+                                    .build()
+                            )
                         }
                     }
                 )

@@ -6,8 +6,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.feature.categories.categoriesApi.CategoriesFeatureAPI
+import com.feature.categories.categoriesApi.fromJsonToCategoriesDestination
+import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
+import com.feature.guessGame.guessGameApi.fromJsonToGuessGameDestination
+import com.feature.home.homeApi.HomeFeatureAPI
+import com.feature.home.homeApi.fromJsonToHomeDestination
+import com.feature.lists.listsApi.ListsFeatureAPI
+import com.feature.lists.listsApi.fromJsonToListsDestination
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsApi.fromJsonToMediaDetailsDestination
+import com.feature.profile.profileApi.ProfileFeatureAPI
+import com.feature.profile.profileApi.fromJsonToProfileDestination
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchApi.fromJsonToSearchDestination
 import com.paris_2.aflami.appnavigation.AppDestinations
@@ -19,6 +29,12 @@ import org.koin.compose.koinInject
 fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
     val searchFeature: SearchFeatureAPI = koinInject()
     val mediaDetailsFeature: MediaDetailsFeatureAPI = koinInject()
+
+    val homeFeature: HomeFeatureAPI = koinInject()
+    val listsFeature: ListsFeatureAPI = koinInject()
+    val categoriesFeature: CategoriesFeatureAPI = koinInject()
+    val letsPlayFeature: GuessGameFeatureAPI = koinInject()
+    val profileFeature: ProfileFeatureAPI = koinInject()
 
     ObserveAsEvents(navigator.navigationEvent) { event ->
         when (event) {
@@ -40,29 +56,29 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
             composable<AppDestinations.HomeFeature> {
                 val homeDestination =
                     it.toRoute<AppDestinations.HomeFeature>().homeDestination
-                searchFeature(homeDestination?.fromJsonToSearchDestination())()
+                homeFeature(homeDestination?.fromJsonToHomeDestination())()
             }
 
             composable<AppDestinations.ListsFeature> {
                 val listsDestination =
                     it.toRoute<AppDestinations.ListsFeature>().listsDestination
-                searchFeature(listsDestination?.fromJsonToSearchDestination())()
+                listsFeature(listsDestination?.fromJsonToListsDestination())()
             }
             composable<AppDestinations.CategoriesFeature> {
                 val categoriesDestination =
                     it.toRoute<AppDestinations.CategoriesFeature>().categoriesDestination
-                searchFeature(categoriesDestination?.fromJsonToSearchDestination())()
+                categoriesFeature(categoriesDestination?.fromJsonToCategoriesDestination())()
             }
 
             composable<AppDestinations.LetsPlayFeature> {
                 val letsPlayDestination =
                     it.toRoute<AppDestinations.LetsPlayFeature>().letsPlayDestination
-                searchFeature(letsPlayDestination?.fromJsonToSearchDestination())()
+                letsPlayFeature(letsPlayDestination?.fromJsonToGuessGameDestination())()
             }
             composable<AppDestinations.ProfileFeature> {
                 val profileDestination =
                     it.toRoute<AppDestinations.ProfileFeature>().profileDestination
-                searchFeature(profileDestination?.fromJsonToSearchDestination())()
+                profileFeature(profileDestination?.fromJsonToProfileDestination())()
             }
 
             composable<AppDestinations.SearchFeature> {
