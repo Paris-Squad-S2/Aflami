@@ -28,4 +28,7 @@ data class ResultDto(
     @SerialName("video") val video: Boolean? = null,
     @SerialName("vote_average") val voteAverage: Double? = null,
     @SerialName("vote_count") val voteCount: Int? = null
-)
+){
+    val imageUrl: String?
+        get() = posterPath?.let { "https://image.tmdb.org/t/p/w500/$it" } ?: profilePath?.let { "https://image.tmdb.org/t/p/w500/$it" }
+}
