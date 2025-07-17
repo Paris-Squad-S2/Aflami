@@ -41,7 +41,7 @@ fun LoginDialog(
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
     content: String = "Please login to access your account details and other features!",
-    image: Painter = painterResource(R.drawable.ic_aflami_logo),
+    image: Painter = painterResource(com.feature.mediaDetails.mediaDetailsUi.R.drawable.profile_placholder),
     @StringRes buttonTextResId: Int = R.string.login,
 ) {
     Box(
@@ -90,7 +90,6 @@ fun LoginDialog(
                     .padding(bottom = 12.dp)
                     .size(80.dp)
                     .clip(RoundedCornerShape(24.dp))
-                    .background(Theme.colors.primary)
                     .border(
                         width = 1.dp,
                         color = Theme.colors.stroke.copy(alpha = 0.08f),
@@ -101,7 +100,8 @@ fun LoginDialog(
                         spotColor = Color(0xFFD85895).copy(alpha = 0.24f),
                         ambientColor = Color(0xFFD85895).copy(alpha = 0.24f),
                         shape = RoundedCornerShape(24.dp)
-                    )
+                    ),
+                tint = Color.Unspecified
             )
             Text(
                 text = content,
