@@ -1,6 +1,6 @@
-package com.repository.datasource.local
+package com.repository.dataSource.local
 
-import com.repository.entity.GalleryEntity
+import com.repository.model.local.GalleryEntity
 
 interface GalleryLocalDataSource {
     suspend fun addGallery(gallery: GalleryEntity)

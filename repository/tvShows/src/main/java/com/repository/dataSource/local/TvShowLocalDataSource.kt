@@ -1,6 +1,6 @@
-package com.repository.datasource.local
+package com.repository.dataSource.local
 
-import com.repository.entity.TvShowEntity
+import com.repository.model.local.TvShowEntity
 
 
 interface TvShowLocalDataSource {

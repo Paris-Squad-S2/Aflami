@@ -1,8 +1,8 @@
 package com.datasource.local.datasource
 
 import com.datasource.local.dao.TvShowDao
-import com.repository.datasource.local.TvShowLocalDataSource
-import com.repository.entity.TvShowEntity
+import com.repository.dataSource.local.TvShowLocalDataSource
+import com.repository.model.local.TvShowEntity
 
 
 class TvShowLocalDataSourceImp(private val dao: TvShowDao) : TvShowLocalDataSource {

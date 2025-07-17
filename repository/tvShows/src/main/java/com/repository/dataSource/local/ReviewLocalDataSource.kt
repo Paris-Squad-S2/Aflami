@@ -1,6 +1,6 @@
-package com.repository.datasource.local
+package com.repository.dataSource.local
 
-import com.repository.entity.ReviewEntity
+import com.repository.model.local.ReviewEntity
 
 interface ReviewLocalDataSource {
     suspend fun addReview(reviews: List<ReviewEntity>)
