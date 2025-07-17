@@ -49,7 +49,7 @@ jobs:
       - name: Give gradlew permission to execute
         run: chmod +x ./gradlew
 
-      - name: Build minified APK
+      - name: Build release singed APK
         run: ./gradlew app:assembleRelease
 
       - name: Upload artifact to Firebase App Distribution
