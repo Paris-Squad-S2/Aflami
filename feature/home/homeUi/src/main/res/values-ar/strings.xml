@@ -1,4 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="title_activity_main">MainActivity</string>
     <string name="go_to_search">Go to Search</string>
 </resources>

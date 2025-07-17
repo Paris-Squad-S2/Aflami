@@ -432,7 +432,18 @@ class SearchViewModel(
     }
 
     override fun onNavigateBack() {
-        //TODO: Implement navigation back to home feature
+        tryToExecute(
+            execute = {
+                appNavigator.navigateUp()
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     override fun onRetryRecentSearches() {
