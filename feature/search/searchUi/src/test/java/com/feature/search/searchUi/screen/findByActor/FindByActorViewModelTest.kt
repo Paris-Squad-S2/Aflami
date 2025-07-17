@@ -1,15 +1,20 @@
 package com.feature.search.searchUi.screen.findByActor
 
+import androidx.paging.PagingSource
+import androidx.paging.map
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -21,11 +26,11 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
 class FindByActorViewModelTest {
     private lateinit var viewModel: FindByActorViewModel
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
-
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -47,12 +52,11 @@ class FindByActorViewModelTest {
     }
 
     @Test
-    fun `initial state should be correct`() {
+    fun `initial state should be correct`() = runTest{
         val initialState = viewModel.screenState.value
 
         assertThat(initialState.uiState.searchQuery).isEqualTo("")
-        assertThat(initialState.uiState.searchResult).isEmpty()
-        assertThat(initialState.isLoading).isFalse()
+        assertThat(initialState.uiState.searchResult.collectAllItems()).isEmpty()
         assertThat(initialState.errorMessage).isNull()
     }
 
@@ -74,7 +78,7 @@ class FindByActorViewModelTest {
         viewModel.onSearchQueryChange(emptyQuery)
         advanceUntilIdle()
 
-        coVerify(exactly = 0) { getMediaByActorNameUseCase(any()) }
+        coVerify(exactly = 0) { getMediaByActorNameUseCase(any(),any()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -88,8 +92,8 @@ class FindByActorViewModelTest {
         viewModel.onSearchQueryChange(query2)
         advanceTimeBy(1100)
 
-        coVerify(exactly = 1) { getMediaByActorNameUseCase(query2) }
-        coVerify(exactly = 0) { getMediaByActorNameUseCase(query1) }
+        coVerify(exactly = 0) { getMediaByActorNameUseCase(query2,any()) }
+        coVerify(exactly = 0) { getMediaByActorNameUseCase(query1,any()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -116,14 +120,13 @@ class FindByActorViewModelTest {
                 rating = 2.7,
             ),
         )
-        coEvery { getMediaByActorNameUseCase(testQuery) } returns mockMediaLists
+        coEvery { getMediaByActorNameUseCase(testQuery,any()) } returns mockMediaLists
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
 
         val currentState = viewModel.screenState.value
-        assertEquals(mockMediaLists.toMediaUiList().map { it.title },currentState.uiState.searchResult.map { it.title })
-        assertThat(currentState.isLoading).isFalse()
+        assertEquals(mockMediaLists.toMediaUiList().map { it.title },currentState.uiState.searchResult.collectAllItems().map { it.title })
         assertThat(currentState.errorMessage).isNull()
     }
 
@@ -132,15 +135,23 @@ class FindByActorViewModelTest {
     fun `searchQuery should handle error and update state`() = runTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
-        coEvery { getMediaByActorNameUseCase(testQuery) } throws Exception(errorMessage)
+        coEvery { getMediaByActorNameUseCase(testQuery,any()) } throws Exception(errorMessage)
+        val pagingSource = FindByActorPagingSource(testQuery, getMediaByActorNameUseCase)
+        val result = pagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 10,
+                placeholdersEnabled = false
+            )
+        )
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
 
         val currentState = viewModel.screenState.value
-        assertThat(currentState.uiState.searchResult).isEmpty()
-        assertThat(currentState.isLoading).isFalse()
-        assertThat(currentState.errorMessage).isEqualTo(errorMessage)
+        assertThat(currentState.uiState.searchResult.collectAllItems()).isEmpty()
+        assertTrue(result is PagingSource.LoadResult.Error)
+        assertEquals(errorMessage,(result as PagingSource.LoadResult.Error).throwable.message)
     }
 
 }
