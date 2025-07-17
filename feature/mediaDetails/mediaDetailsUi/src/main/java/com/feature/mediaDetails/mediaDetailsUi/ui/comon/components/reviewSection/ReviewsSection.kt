@@ -10,7 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -52,7 +54,7 @@ fun ReviewsSection(
             }
         } else {
             Text(
-                text = "There is no reviews!",
+                text = stringResource(R.string.there_is_no_reviews),
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.text.body.copy(alpha = 0.6f)
             )

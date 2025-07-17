@@ -117,7 +117,8 @@ fun MovieDetailsScreenContent(
 
                     "Company Production" -> item {
                         ProductionCompanySection(
-                            companies = state.movieDetailsUiState.movie.productionCompanies
+                            companies = state.movieDetailsUiState.movie.productionCompanies,
+                            modifier = Modifier.padding(horizontal = 16.dp).padding(top =12.dp)
                         )
                     }
 

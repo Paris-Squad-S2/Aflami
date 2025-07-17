@@ -14,10 +14,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @Composable
 fun CastSection(
@@ -39,17 +42,17 @@ fun CastSection(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Cast",
+                text = stringResource(R.string.cast),
                 style = Theme.textStyle.headline.small,
                 color = Theme.colors.text.title
             )
             Text(
-                text = "All",
+                text = stringResource(R.string.all),
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
                 modifier = Modifier
                     .padding(start = 8.dp)
-                    .clickable{
+                    .clickable {
                         onSeeAllClick()
                     }
             )
@@ -64,7 +67,7 @@ fun CastSection(
                     name = castList[index].name,
                     modifier = Modifier,
                     height = 78.dp,
-                    width = 80.dp
+                    width = 78.dp
                 )
             }
         }
@@ -82,12 +85,16 @@ fun CastSection(
 @PreviewLightDark
 @Composable
 fun PreviewCastSection() {
-    val sampleCast = listOf(
-        CastUi("Tom Hanks", "https://upload.wikimedia.org/wikipedia/commons/a/a9/Tom_Hanks_TIFF_2019.jpg"),
-        CastUi("Michael Clarke", "https://upload.wikimedia.org/wikipedia/commons/e/e1/Michael_Clarke_Duncan.jpg"),
-        CastUi("David Morse", "https://upload.wikimedia.org/wikipedia/commons/d/d6/David_Morse_2007.jpg"),
-        CastUi("Bonnie Hunt", "https://upload.wikimedia.org/wikipedia/commons/f/fa/Bonnie_Hunt_2011.jpg")
-    )
+    BasePreview {
 
-    CastSection(castList = sampleCast, onSeeAllClick = {})
+        val sampleCast = listOf(
+            CastUi("Tom Hanks", "https://upload.wikimedia.org/wikipedia/commons/a/a9/Tom_Hanks_TIFF_2019.jpg"),
+            CastUi("Michael Clarke", "https://upload.wikimedia.org/wikipedia/commons/e/e1/Michael_Clarke_Duncan.jpg"),
+            CastUi("David Morse", "https://upload.wikimedia.org/wikipedia/commons/d/d6/David_Morse_2007.jpg"),
+            CastUi("Bonnie Hunt", "https://upload.wikimedia.org/wikipedia/commons/f/fa/Bonnie_Hunt_2011.jpg")
+        )
+
+        CastSection(castList = sampleCast, onSeeAllClick = {})
+
+    }
 }

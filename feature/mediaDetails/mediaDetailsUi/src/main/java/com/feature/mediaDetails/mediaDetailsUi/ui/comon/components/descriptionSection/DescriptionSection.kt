@@ -56,7 +56,6 @@ fun DescriptionSection(
                 textColor = Theme.colors.text.body
             )
             DescriptionSeparator(
-                firstText = "",
                 secondText = country,
                 textColor = Theme.colors.text.body
             )

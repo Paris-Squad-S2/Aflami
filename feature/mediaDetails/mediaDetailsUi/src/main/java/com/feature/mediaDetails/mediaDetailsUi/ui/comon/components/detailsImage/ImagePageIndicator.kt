@@ -38,7 +38,7 @@ fun ImagePageIndicator(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             repeat(pageSize) { pageIndex ->
-                val isSelected = pageIndex == currentPage
+                val isSelected = pageIndex == currentPage -1
                 Box(
                     modifier = Modifier
                         .width(4.dp)

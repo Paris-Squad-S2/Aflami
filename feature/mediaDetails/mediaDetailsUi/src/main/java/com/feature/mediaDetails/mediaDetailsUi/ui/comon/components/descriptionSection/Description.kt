@@ -6,8 +6,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -24,7 +26,7 @@ fun Description(description: String) {
 @Composable
 fun DescriptionTitle() {
     Text(
-        text = "Description",
+        text = stringResource(R.string.description),
         style = Theme.textStyle.headline.small,
         color = Theme.colors.text.title
     )

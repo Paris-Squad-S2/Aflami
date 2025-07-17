@@ -49,5 +49,3 @@ fun SeasonEpisodesSection(
         }
     }
 }
-
-
