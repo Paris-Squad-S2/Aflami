@@ -1,3 +1,2 @@
-versionName=0.1.24
-- add bottom navigation bar
-- improve AflamiNavBar navigation logic
+versionName=0.1.25
+- connect bottom navigation bar with the feature APIs
