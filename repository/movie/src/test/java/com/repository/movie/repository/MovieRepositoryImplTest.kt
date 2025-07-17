@@ -3,12 +3,11 @@ package com.repository.movie.repository
 import com.domain.mediaDetails.exception.NoGalleryMovieDetailsFoundException
 import com.domain.mediaDetails.exception.NoMovieDetailsFoundException
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Review
-import com.repository.movie.dataSource.local.CastLocalDataSource
-import com.repository.movie.dataSource.local.GalleryLocalDataSource
+import com.repository.movie.dataSource.local.MovieCastLocalDataSource
+import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.local.ReviewLocalDataSource
+import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
@@ -34,22 +33,22 @@ class MovieRepositoryImplTest {
     private lateinit var movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource
     private lateinit var movieRepository: MovieRepositoryImpl
     private lateinit var movieLocalDataSource: MovieLocalDataSource
-    private lateinit var castLocalDataSource: CastLocalDataSource
-    private lateinit var galleryLocalDataSource: GalleryLocalDataSource
-    private lateinit var reviewLocalDataSource: ReviewLocalDataSource
+    private lateinit var movieCastLocalDataSource: MovieCastLocalDataSource
+    private lateinit var movieGalleryLocalDataSource: MovieGalleryLocalDataSource
+    private lateinit var movieReviewLocalDataSource: MovieReviewLocalDataSource
 
     @BeforeEach
     fun setUp() {
         movieDetailsRemoteDataSource = mockk<MovieDetailsRemoteDataSource>()
         movieLocalDataSource = mockk<MovieLocalDataSource>()
-        castLocalDataSource = mockk<CastLocalDataSource>()
-        galleryLocalDataSource = mockk<GalleryLocalDataSource>()
-        reviewLocalDataSource = mockk<ReviewLocalDataSource>()
+        movieCastLocalDataSource = mockk<MovieCastLocalDataSource>()
+        movieGalleryLocalDataSource = mockk<MovieGalleryLocalDataSource>()
+        movieReviewLocalDataSource = mockk<MovieReviewLocalDataSource>()
         movieRepository = MovieRepositoryImpl(
             movieLocalDataSource,
-            castLocalDataSource,
-            galleryLocalDataSource,
-            reviewLocalDataSource,
+            movieCastLocalDataSource,
+            movieGalleryLocalDataSource,
+            movieReviewLocalDataSource,
             movieDetailsRemoteDataSource
         )
     }
@@ -114,12 +113,12 @@ class MovieRepositoryImplTest {
                 language
             )
         } returns mockMovieCreditsDto
-        coEvery { castLocalDataSource.addCast(any()) } returns Unit
+        coEvery { movieCastLocalDataSource.addCast(any()) } returns Unit
 
         val castLocal =
             mockMovieCreditsDto.cast?.map { it.toEntity() }?.map { it.toLocalDto() } ?: emptyList()
 
-        coEvery { castLocalDataSource.getCastByMovieId(movieId) } returns castLocal
+        coEvery { movieCastLocalDataSource.getCastByMovieId(movieId) } returns castLocal
 
         val result = movieRepository.getMovieCast(movieId)
 
@@ -137,7 +136,7 @@ class MovieRepositoryImplTest {
 
         // When
         coEvery {
-            castLocalDataSource.getCastByMovieId(movieId)
+            movieCastLocalDataSource.getCastByMovieId(movieId)
         } returns emptyList() andThen emptyList()
 
         coEvery {
@@ -147,13 +146,13 @@ class MovieRepositoryImplTest {
             )
         } returns mockMovieCreditsDto
 
-        coEvery { castLocalDataSource.addCast(any()) } returns Unit
+        coEvery { movieCastLocalDataSource.addCast(any()) } returns Unit
 
         val result = movieRepository.getMovieCast(movieId)
 
         // Then
         coVerify {
-            castLocalDataSource.addCast(any())
+            movieCastLocalDataSource.addCast(any())
         }
         assertEquals(emptyList<Cast>(), result)
     }
@@ -197,13 +196,13 @@ class MovieRepositoryImplTest {
             )
         } returns mockMovieImagesDto
 
-        coEvery { galleryLocalDataSource.addGallery(any()) } returns Unit
+        coEvery { movieGalleryLocalDataSource.addGallery(any()) } returns Unit
 
         val imageLocal =
             mockMovieImagesDto.logos?.map { it.toEntity(movieId) }?.map { it.toLocalDto() }
                 ?: emptyList()
         coEvery {
-            galleryLocalDataSource.getGalleryByMovieId(movieId)
+            movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
         } returns GalleryEntity(
             images = imageLocal,
             id = 0,
@@ -227,7 +226,7 @@ class MovieRepositoryImplTest {
 
             // When && Then
             coEvery {
-                galleryLocalDataSource.getGalleryByMovieId(movieId)
+                movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
             } returns null andThen GalleryEntity(
                 images = expectedImages.map { it.toLocalDto() },
                 id = 0,
@@ -236,7 +235,7 @@ class MovieRepositoryImplTest {
 
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
 
-            coEvery { galleryLocalDataSource.addGallery(any()) } returns Unit
+            coEvery { movieGalleryLocalDataSource.addGallery(any()) } returns Unit
 
             assertThrows<NoGalleryMovieDetailsFoundException> {
                 movieRepository.getMovieGallery(movieId)
@@ -287,12 +286,12 @@ class MovieRepositoryImplTest {
                 )
             } returns mockMovieReviewsDto
 
-            coEvery { reviewLocalDataSource.addReview(any()) } returns Unit
+            coEvery { movieReviewLocalDataSource.addReview(any()) } returns Unit
 
             val reviewLocal =
                 mockMovieReviewsDto.results?.map { it.toEntity().toLocalDto() } ?: emptyList()
 
-            coEvery { reviewLocalDataSource.getReviewsForMovie(movieId) } returns reviewLocal
+            coEvery { movieReviewLocalDataSource.getReviewsForMovie(movieId) } returns reviewLocal
 
             val result = movieRepository.getMovieReview(movieId, page)
 
@@ -311,7 +310,7 @@ class MovieRepositoryImplTest {
 
         // When
         coEvery {
-            reviewLocalDataSource.getReviewsForMovie(movieId)
+            movieReviewLocalDataSource.getReviewsForMovie(movieId)
         } returns emptyList() andThen emptyList()
 
         coEvery {
@@ -322,12 +321,12 @@ class MovieRepositoryImplTest {
             )
         } returns mockMovieReviewsDto
 
-        coEvery { reviewLocalDataSource.addReview(any()) } returns Unit
+        coEvery { movieReviewLocalDataSource.addReview(any()) } returns Unit
 
         val result = movieRepository.getMovieReview(movieId, page)
 
         // Then
-        coVerify { reviewLocalDataSource.addReview(any()) }
+        coVerify { movieReviewLocalDataSource.addReview(any()) }
         assertEquals(emptyList<Review>(), result)
     }
 

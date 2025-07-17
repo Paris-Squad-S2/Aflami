@@ -13,14 +13,15 @@ import com.feature.search.searchUi.navigation.SearchNavigatorImpl
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.aflami.appnavigation.AppNavigatorImpl
+import org.koin.core.module.dsl.factoryOf
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val FeatureAPIModule = module {
     single<AppNavigator> { AppNavigatorImpl(startGraph = AppDestinations.AppGraph1) }
-
     single<SearchNavigator> { SearchNavigatorImpl(startGraph = SearchDestinations.SearchGraph1) }
-    factory<SearchFeatureAPI> { SearchFeatureAPIImpl() }
-
     single<MediaDetailsNavigator> { MediaDetailsNavigatorImpl(startGraph = MediaDetailsDestinations.MediaDetailsGraph1) }
-    factory< MediaDetailsFeatureAPI> { MediaDetailsFeatureAPIImpl() }
+
+    factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
+    factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI ::class
 }

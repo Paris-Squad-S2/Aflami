@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.datasource.local.dao.TvShowCastDao
-import com.datasource.local.dao.TvShowCastGalleryDao
-import com.datasource.local.dao.TvShowCastReviewDao
+import com.datasource.local.dao.TvShowGalleryDao
+import com.datasource.local.dao.TvShowReviewDao
 import com.datasource.local.dao.SeasonDao
 import com.datasource.local.dao.TvShowDao
 import com.repository.model.local.CastEntity
@@ -27,9 +27,9 @@ import com.repository.model.local.TvShowEntity
 abstract class TvShowDetailDataBase : RoomDatabase() {
 
     abstract fun castDao(): TvShowCastDao
-    abstract fun galleryDao(): TvShowCastGalleryDao
+    abstract fun galleryDao(): TvShowGalleryDao
     abstract fun movieDao(): TvShowDao
-    abstract fun reviewDao(): TvShowCastReviewDao
+    abstract fun reviewDao(): TvShowReviewDao
     abstract fun seasonDao(): SeasonDao
 
     companion object {
