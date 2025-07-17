@@ -219,14 +219,7 @@ class SearchViewModel(
                             searchByQueryUseCase = searchByQueryUseCase
                         )
                     }
-                ).flow
-                    .map { pagingData ->
-                        val seenIds = mutableSetOf<Int>()
-                        pagingData.filter { media ->
-                            seenIds.add(media.id)
-                        }
-                    }
-                    .cachedIn(viewModelScope)
+                ).flow.cachedIn(viewModelScope)
             },
             onSuccess = { searchResult ->
                 val moviesResult = searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.MOVIE } }
@@ -301,7 +294,8 @@ class SearchViewModel(
                             categories = screenState.value.searchUiState.categories.mapValues { it.key in selectedCategories }
                                 .toMutableMap(),
                             isAllCategories = isAllCategories
-                        )
+                        ),
+                        isLoading = true
                     )
                 )
 
@@ -337,14 +331,16 @@ class SearchViewModel(
                         searchUiState = screenState.value.searchUiState.copy(
                             filteredMoviesResult = flowOf(PagingData.from(filteredByCategoriesMovies.toMediaUiList())),
                             filteredTvShowsResult = flowOf(PagingData.from(filteredByCategoriesTvShows.toMediaUiList()))
-                        )
+                        ),
+                        isLoading = false
                     )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }

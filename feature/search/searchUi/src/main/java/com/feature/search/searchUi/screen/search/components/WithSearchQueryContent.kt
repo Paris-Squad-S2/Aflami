@@ -36,8 +36,8 @@ fun WithSearchQueryContent(
             onRetry = searchScreenInteractionListener::onRetrySearchQuery
         )//TODO: Ask if it always will be a network error or how to handle other types of errors
     } else if (state.searchUiState.filteredMoviesResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
-        || state.searchUiState.filteredTvShowsResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
-        ) {
+        && state.searchUiState.filteredTvShowsResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
+        && state.isLoading) {
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()
         )
