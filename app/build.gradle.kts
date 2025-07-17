@@ -118,6 +118,10 @@ dependencies {
     implementation(project(Modules.DATASOURCE_REMOTE_MEDIA_DETAILS))
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.REPOSITORY_MOVIE))
+    implementation(project(Modules.REPOSITORY_TV_SHOWS))
+    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
+    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 
