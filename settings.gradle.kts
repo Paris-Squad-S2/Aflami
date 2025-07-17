@@ -61,10 +61,10 @@ include(":feature:home")
 include(":feature:home:homeApi")
 include(":feature:onboarding:onboardingUi")
 include(":feature:authentication:authenticationUi")
-include(":feature:home:homeUi")/*
+include(":feature:home:homeUi")
 include(":feature:profile")
-include(":feature:profile:profileApi")
-include(":feature:profile:profileUi")*/
+//include(":feature:profile:profileApi")
+//include(":feature:profile:profileUi")
 include(":feature:search")
 include(":feature:search:searchApi")
 include(":feature:search:searchUi")
