@@ -10,11 +10,11 @@ import com.datasource.local.dao.GalleryDao
 import com.datasource.local.dao.ReviewDao
 import com.datasource.local.dao.SeasonDao
 import com.datasource.local.dao.TvShowDao
-import com.repository.entity.CastEntity
-import com.repository.entity.GalleryEntity
-import com.repository.entity.ReviewEntity
-import com.repository.entity.SeasonEntity
-import com.repository.entity.TvShowEntity
+import com.repository.model.local.CastEntity
+import com.repository.model.local.GalleryEntity
+import com.repository.model.local.ReviewEntity
+import com.repository.model.local.SeasonEntity
+import com.repository.model.local.TvShowEntity
 
 @Database(
     entities = [
