@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import android.annotation.SuppressLint
 import androidx.lifecycle.viewModelScope
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
@@ -486,9 +485,8 @@ class SearchViewModel(
                 override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
                     oldItem == newItem
 
-                @SuppressLint("DiffUtilEquals")
                 override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
-                    oldItem == newItem
+                    oldItem.equals(newItem)
             },
             updateCallback = NoopListUpdateCallback(),
             mainDispatcher = Dispatchers.Main,
