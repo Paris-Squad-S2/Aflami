@@ -50,7 +50,7 @@ fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
         },
         bottomBar = {
             AnimatedVisibility(
-                visible = isVisible,
+                visible = /*isVisible*/ false, // Temporarily until finishing the remaining features APIs
                 enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
                 exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),
             ) {
