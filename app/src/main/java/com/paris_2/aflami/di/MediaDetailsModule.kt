@@ -14,8 +14,8 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val mediaDetailsModule: Module = module {
-    single<KtorMovieDetailsApiService> { KtorMovieDetailsApiServiceImpl(httpClient = get()) }
-    single<KtorTvShowDetailsApiService> { KtorTvShowDetailsApiServiceImpl(httpClient = get()) }
+    singleOf(::KtorMovieDetailsApiServiceImpl) { bind<KtorMovieDetailsApiService>() }
+    singleOf(::KtorTvShowDetailsApiServiceImpl) { bind<KtorTvShowDetailsApiService>() }
     singleOf(::MovieDetailsRemoteDataSourceImpl) { bind<MovieDetailsRemoteDataSource>() }
     singleOf(::TvShowDetailsRemoteDataSourceImpl) { bind<TvShowDetailsRemoteDataSource>() }
 }

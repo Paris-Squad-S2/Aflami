@@ -15,10 +15,10 @@ import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowSimilar
 import com.domain.mediaDetails.repository.TvShowRepository
-import com.repository.dataSource.local.CastLocalDataSource
-import com.repository.dataSource.local.GalleryLocalDataSource
-import com.repository.dataSource.local.ReviewLocalDataSource
-import com.repository.dataSource.local.SeasonLocalDataSource
+import com.repository.dataSource.local.TvShowCastLocalDataSource
+import com.repository.dataSource.local.TvShowGalleryLocalDataSource
+import com.repository.dataSource.local.TvShowReviewLocalDataSource
+import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
@@ -35,10 +35,10 @@ import kotlin.time.ExperimentalTime
 
 class TvShowRepositoryImpl(
     private val tvShowLocalDataSource: TvShowLocalDataSource,
-    private val seasonLocalDataSource: SeasonLocalDataSource,
-    private val reviewLocalDataSource: ReviewLocalDataSource,
-    private val galleryLocalDataSource: GalleryLocalDataSource,
-    private val castLocalDataSource: CastLocalDataSource,
+    private val tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource,
+    private val tvShowReviewLocalDataSource: TvShowReviewLocalDataSource,
+    private val tvShowGalleryLocalDataSource: TvShowGalleryLocalDataSource,
+    private val tvShowCastLocalDataSource: TvShowCastLocalDataSource,
     private val tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource,
 ) : TvShowRepository {
 
@@ -63,10 +63,10 @@ class TvShowRepositoryImpl(
                 tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
                     .cast?.map { it.toEntity() } ?: emptyList()
 
-            castLocalDataSource.getCastByTvShowId(tvShowId)
+            tvShowCastLocalDataSource.getCastByTvShowId(tvShowId)
                 .filter { isDataFresh(it.castCacheDate) }
                 .takeIf { it.isNotEmpty() }
-                .also { castLocalDataSource.addCast(movieCast.map { it.toLocalDto() }) }
+                .also { tvShowCastLocalDataSource.addCast(movieCast.map { it.toLocalDto() }) }
                 ?.map { it.toEntity() } ?: emptyList()
 
         }
@@ -86,10 +86,10 @@ class TvShowRepositoryImpl(
             val movieImage =
                 tvShowDetailsRemoteDataSource.getTvShowImages(tvShowId).toEntity().images
 
-            galleryLocalDataSource.getGalleryByTvShowId(tvShowId)
+            tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
                 .takeIf { it != null && isDataFresh(it.galleryCacheDate) }
                 .also {
-                    galleryLocalDataSource.addGallery(
+                    tvShowGalleryLocalDataSource.addGallery(
                         GalleryEntity(
                             tvShowId = tvShowId,
                             images = movieImage.map { it.toLocalDto() },
@@ -118,9 +118,9 @@ class TvShowRepositoryImpl(
                 language
             )
 
-            seasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
                 .takeIf { it != null && isDataFresh(it.seasonCacheDate) }
-                .also { seasonLocalDataSource.addSeasonDetails(seasonRemote.toLocalDto()) }
+                .also { tvShowSeasonLocalDataSource.addSeasonDetails(seasonRemote.toLocalDto()) }
                 ?.toEntity()
                 ?: throw NoSeasonDetailsFoundException()
 
@@ -133,10 +133,10 @@ class TvShowRepositoryImpl(
                 tvShowDetailsRemoteDataSource.getTvShowReviews(tvShowId, page, language)
                     .results?.map { it.toEntity() } ?: emptyList()
 
-            reviewLocalDataSource.getReviewsByTvShowId(tvShowId)
+            tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId)
                 .filter { isDataFresh(it.reviewCacheDate) }
                 .takeIf { it.isNotEmpty() }
-                .also { reviewLocalDataSource.addReview(movieCast.map { it.toLocalDto() }) }
+                .also { tvShowReviewLocalDataSource.addReview(movieCast.map { it.toLocalDto() }) }
                 ?.map { it.toEntity() }
                 ?: emptyList()
 

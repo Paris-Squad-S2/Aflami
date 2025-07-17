@@ -14,7 +14,6 @@ import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.module
 
 val SearchRemoteDataSourceModule: Module = module {
-
     single<SearchApiService> { KtorSearchApiService(httpClient = get()) }
     single<GenresApiServices> { KtorGenresApiServices(httpClient = get()) }
     singleOf(::SearchRemoteDataSourceImpl) { bind<SearchRemoteDataSource>() }

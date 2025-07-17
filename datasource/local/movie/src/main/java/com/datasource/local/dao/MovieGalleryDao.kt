@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.repository.movie.models.local.GalleryEntity
 
 @Dao
-interface GalleryDao {
+interface MovieGalleryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addGallery(gallery: GalleryEntity)
 

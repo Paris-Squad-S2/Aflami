@@ -1,9 +1,9 @@
 package com.repository.tvshow.repository
 
-import com.repository.dataSource.local.CastLocalDataSource
-import com.repository.dataSource.local.GalleryLocalDataSource
-import com.repository.dataSource.local.ReviewLocalDataSource
-import com.repository.dataSource.local.SeasonLocalDataSource
+import com.repository.dataSource.local.TvShowCastLocalDataSource
+import com.repository.dataSource.local.TvShowGalleryLocalDataSource
+import com.repository.dataSource.local.TvShowReviewLocalDataSource
+import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
@@ -29,27 +29,27 @@ import kotlin.test.Test
 class TvShowRepositoryImplTest {
     private lateinit var tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource
     private lateinit var tvShowLocalDataSource: TvShowLocalDataSource
-    private lateinit var seasonLocalDataSource: SeasonLocalDataSource
-    private lateinit var reviewLocalDataSource: ReviewLocalDataSource
-    private lateinit var galleryLocalDataSource: GalleryLocalDataSource
-    private lateinit var castLocalDataSource: CastLocalDataSource
+    private lateinit var tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource
+    private lateinit var tvShowReviewLocalDataSource: TvShowReviewLocalDataSource
+    private lateinit var tvShowGalleryLocalDataSource: TvShowGalleryLocalDataSource
+    private lateinit var tvShowCastLocalDataSource: TvShowCastLocalDataSource
     private lateinit var tvShowRepository: TvShowRepositoryImpl
 
     @BeforeEach
     fun setUp() {
         tvShowDetailsRemoteDataSource = mockk<TvShowDetailsRemoteDataSource>()
         tvShowLocalDataSource = mockk<TvShowLocalDataSource>()
-        seasonLocalDataSource = mockk<SeasonLocalDataSource>()
-        reviewLocalDataSource = mockk<ReviewLocalDataSource>()
-        galleryLocalDataSource = mockk<GalleryLocalDataSource>()
-        castLocalDataSource = mockk<CastLocalDataSource>()
+        tvShowSeasonLocalDataSource = mockk<TvShowSeasonLocalDataSource>()
+        tvShowReviewLocalDataSource = mockk<TvShowReviewLocalDataSource>()
+        tvShowGalleryLocalDataSource = mockk<TvShowGalleryLocalDataSource>()
+        tvShowCastLocalDataSource = mockk<TvShowCastLocalDataSource>()
 
         tvShowRepository = TvShowRepositoryImpl(
             tvShowLocalDataSource,
-            seasonLocalDataSource,
-            reviewLocalDataSource,
-            galleryLocalDataSource,
-            castLocalDataSource,
+            tvShowSeasonLocalDataSource,
+            tvShowReviewLocalDataSource,
+            tvShowGalleryLocalDataSource,
+            tvShowCastLocalDataSource,
             tvShowDetailsRemoteDataSource
         )
     }
@@ -93,11 +93,11 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowCreditsDto
 
         coEvery {
-            castLocalDataSource.getCastByTvShowId(tvShowId)
+            tvShowCastLocalDataSource.getCastByTvShowId(tvShowId)
         } returns expectedTvShowCast.map { it.toLocalDto() }
 
         coEvery {
-            castLocalDataSource.addCast(any())
+            tvShowCastLocalDataSource.addCast(any())
         } returns Unit
 
         // When
@@ -144,7 +144,7 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowLogoDto
 
         coEvery {
-            galleryLocalDataSource.getGalleryByTvShowId(tvShowId)
+            tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
         } returns GalleryEntity(
             id = 0,
             tvShowId = 123,
@@ -152,7 +152,7 @@ class TvShowRepositoryImplTest {
         )
 
         coEvery {
-            galleryLocalDataSource.addGallery(any())
+            tvShowGalleryLocalDataSource.addGallery(any())
         } returns Unit
 
         // When
@@ -202,11 +202,11 @@ class TvShowRepositoryImplTest {
             val dto =
                 mockTvShowReviewsDto.results?.map { it.toEntity().toLocalDto() } ?: emptyList()
             coEvery {
-                reviewLocalDataSource.getReviewsByTvShowId(tvShowId)
+                tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId)
             } returns dto
 
             coEvery {
-                reviewLocalDataSource.addReview(any())
+                tvShowReviewLocalDataSource.addReview(any())
             } just Runs
 
             // When
@@ -238,11 +238,11 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSeasonDto
 
             coEvery {
-                seasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
             } returns mockTvShowSeasonDto.toLocalDto()
 
             coEvery {
-                seasonLocalDataSource.addSeasonDetails(any())
+                tvShowSeasonLocalDataSource.addSeasonDetails(any())
             } returns Unit
 
             // When

@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.repository.model.local.ReviewEntity
 
 @Dao
-interface TvShowCastReviewDao {
+interface TvShowReviewDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addReviews(reviews: List<ReviewEntity>)
 

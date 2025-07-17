@@ -15,8 +15,10 @@ import com.domain.mediaDetails.exception.UnknownException
 import com.domain.mediaDetails.model.MovieSimilar
 import com.repository.movie.dataSource.local.CastLocalDataSource
 import com.repository.movie.dataSource.local.GalleryLocalDataSource
+import com.repository.movie.dataSource.local.MovieCastLocalDataSource
+import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.local.ReviewLocalDataSource
+import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
@@ -32,9 +34,9 @@ import kotlin.time.ExperimentalTime
 
 class MovieRepositoryImpl(
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val castLocalDataSource: CastLocalDataSource,
-    private val galleryLocalDataSource: GalleryLocalDataSource,
-    private val reviewLocalDataSource: ReviewLocalDataSource,
+    private val movieCastLocalDataSource: MovieCastLocalDataSource,
+    private val movieGalleryLocalDataSource: MovieGalleryLocalDataSource,
+    private val movieReviewLocalDataSource: MovieReviewLocalDataSource,
     private val movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
 ) : MovieRepository {
     private val language = detectLanguage()
@@ -58,10 +60,10 @@ class MovieRepositoryImpl(
                 movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
                     .cast?.map { it.toEntity() } ?: emptyList()
 
-            castLocalDataSource.getCastByMovieId(movieId)
+            movieCastLocalDataSource.getCastByMovieId(movieId)
                 .filter { isDataFresh(it.castCacheDate) }
                 .takeIf { it.isNotEmpty() }
-                .also { castLocalDataSource.addCast(movieCast.map { it.toLocalDto() }) }
+                .also { movieCastLocalDataSource.addCast(movieCast.map { it.toLocalDto() }) }
                 ?.map { it.toEntity() }
                 ?: emptyList()
         }
@@ -82,10 +84,10 @@ class MovieRepositoryImpl(
             val movieImage =
                 movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity().images
 
-            galleryLocalDataSource.getGalleryByMovieId(movieId)
+            movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
                 .takeIf { it != null && isDataFresh(it.galleryCacheDate) }
                 .also {
-                    galleryLocalDataSource.addGallery(
+                    movieGalleryLocalDataSource.addGallery(
                         GalleryEntity(
                             movieId = movieId,
                             images = movieImage.map { it.toLocalDto() },
@@ -115,10 +117,10 @@ class MovieRepositoryImpl(
                 movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
                     .results?.map { it.toEntity() } ?: emptyList()
 
-            reviewLocalDataSource.getReviewsForMovie(movieId)
+            movieReviewLocalDataSource.getReviewsForMovie(movieId)
                 .filter { isDataFresh(it.reviewCacheDate) }
                 .takeIf { it.isNotEmpty() }
-                .also { reviewLocalDataSource.addReview(movieCast.map { it.toLocalDto() }) }
+                .also { movieReviewLocalDataSource.addReview(movieCast.map { it.toLocalDto() }) }
                 ?.map { it.toEntity() }
                 ?: emptyList()
         }
@@ -151,4 +153,3 @@ class MovieRepositoryImpl(
             .plus(1, DateTimeUnit.HOUR) >= getCurrentDate().toInstant(timeZone)
     }
 }
-
