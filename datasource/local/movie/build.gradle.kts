@@ -36,11 +36,11 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-dependencies{
+dependencies {
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.common.jvm)
-    implementation(project(":repository:movie"))
+    implementation(project(Modules.REPOSITORY_MOVIE))
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -56,9 +56,6 @@ dependencies{
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
-
-
-    implementation(project(Modules.REPOSITORY_MOVIE))
 }
 kotlin {
     compilerOptions {

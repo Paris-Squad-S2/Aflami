@@ -1,17 +1,19 @@
-package com.datasource
+package com.datasource.local
 
 import androidx.room.TypeConverter
-import com.repository.movie.models.local.CountryEntity
-import com.repository.movie.models.local.GenreEntity
-import com.repository.movie.models.local.ImageEntity
-import com.repository.movie.models.local.ProductionCompanyEntity
+import com.repository.entity.CountryEntity
+import com.repository.entity.EpisodeEntity
+import com.repository.entity.GenreEntity
+import com.repository.entity.ImageEntity
+import com.repository.entity.ProductionCompanyEntity
 import kotlinx.datetime.LocalDate
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
-class MovieDetailConverter {
+class TvShowDetailConverter {
+
     private val json = Json { ignoreUnknownKeys = true }
 
     @TypeConverter
@@ -48,7 +50,6 @@ class MovieDetailConverter {
         if (country == null) {
             return null
         }
-
         return json.encodeToString(country)
     }
 
@@ -75,16 +76,22 @@ class MovieDetailConverter {
     }
 
     @TypeConverter
-    fun toImageList(imagesString: String?): List<ImageEntity>? {
-        if (imagesString == null) {
-            return null
-        }
-        return json.decodeFromString<List<ImageEntity>>(imagesString)
-    }
+    fun toImageList(imagesString: String?): List<ImageEntity>? =
+        imagesString?.let { json.decodeFromString<List<ImageEntity>>(it) }
+
 
     @TypeConverter
     fun fromLocalDate(value: LocalDate?): String? = value?.toString()
 
     @TypeConverter
     fun toLocalDate(value: String?): LocalDate? = value?.let { LocalDate.parse(it) }
+
+    @TypeConverter
+    fun fromEpisodeList(episodes: List<EpisodeEntity>?): String? =
+        json.encodeToString(episodes)
+
+    @TypeConverter
+    fun toEpisodeList(episodesJson: String?): List<EpisodeEntity>? =
+        episodesJson?.let { json.decodeFromString<List<EpisodeEntity>>(it) }
+
 }

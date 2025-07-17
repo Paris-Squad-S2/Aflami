@@ -1,4 +1,4 @@
-package com.repository.movie.models.local
+package com.repository.entity
 
 import androidx.room.PrimaryKey
 import kotlinx.serialization.Serializable
