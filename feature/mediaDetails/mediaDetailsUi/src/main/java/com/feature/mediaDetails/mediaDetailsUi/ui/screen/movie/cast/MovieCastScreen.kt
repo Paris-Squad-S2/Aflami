@@ -54,7 +54,7 @@ fun MovieScreenContent(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_back),
-                        onClick = { movieCastScreenInteractionListener::onNavigateBack}
+                        onClick = { movieCastScreenInteractionListener.onNavigateBack()}
                     )
                 )
             )

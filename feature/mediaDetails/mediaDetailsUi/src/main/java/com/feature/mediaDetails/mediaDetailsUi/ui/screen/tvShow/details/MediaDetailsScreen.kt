@@ -175,7 +175,7 @@ fun TvShowDetailsScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = { tvShowScreenInteractionListener::onNavigateBack}
+                    onClick = { tvShowScreenInteractionListener.onNavigateBack()}
                 )
             ),
             trailingIcons = listOf(

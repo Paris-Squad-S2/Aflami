@@ -110,14 +110,6 @@ class TvShowDetailsViewModelViewModel(
         )
     }
 
-    fun onNavigate() {
-        navigate(
-            MediaDetailsDestinations.MovieDetailsScreen(
-                movieId = 123
-            )
-        )
-    }
-
     override fun onNavigateBack() {
         navigateUp()
     }

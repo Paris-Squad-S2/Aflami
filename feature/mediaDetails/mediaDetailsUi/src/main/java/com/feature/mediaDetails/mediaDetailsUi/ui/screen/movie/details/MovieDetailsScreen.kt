@@ -22,7 +22,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScreenInteractionListener
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -131,7 +130,7 @@ fun MovieDetailsScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = {movieDetailsScreenInteractionListener::onNavigateBack}
+                    onClick = {movieDetailsScreenInteractionListener.onNavigateBack()}
                 )
             ),
             trailingIcons = listOf(

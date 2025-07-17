@@ -15,12 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastItem
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -58,7 +56,7 @@ fun TvShowCastScreenContent(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_back),
-                        onClick = { tvShowCastScreenInteractionListener::onNavigateBack}
+                        onClick = { tvShowCastScreenInteractionListener.onNavigateBack()}
                     )
                 )
             )
@@ -83,32 +81,6 @@ fun TvShowCastScreenContent(
             }
         }
     }
-}
-
-
-fun fakeCastUiState(): TvShowCastUiState {
-    return TvShowCastUiState(
-        cast = listOf(
-            CastUi(
-                name = "Tom Hanks",
-                imageUrl = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg"
-            ),
-            CastUi(
-                name = "Michael Clarke Duncan",
-                imageUrl = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg"
-            ),
-            CastUi(
-                name = "Michael Clarke Duncan",
-                imageUrl = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg"
-            ),
-            CastUi(
-                name = "Michael Clarke Duncan",
-                imageUrl = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg"
-            )
-        ),
-        isLoading = false,
-        errorMessage = null
-    )
 }
 
 
