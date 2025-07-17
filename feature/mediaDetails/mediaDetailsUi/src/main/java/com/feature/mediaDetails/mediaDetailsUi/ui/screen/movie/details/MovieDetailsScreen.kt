@@ -142,11 +142,12 @@ fun MovieDetailsScreenContent(
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = { movieDetailsScreenInteractionListener.onAddToListClick("Rate") }
+                    onClick = { movieDetailsScreenInteractionListener.onFavouriteClick("Rate") }
+
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = { movieDetailsScreenInteractionListener.onFavouriteClick("Add to list") }
+                    onClick = { movieDetailsScreenInteractionListener.onAddToListClick("Add to list") }
                 )
             )
         )

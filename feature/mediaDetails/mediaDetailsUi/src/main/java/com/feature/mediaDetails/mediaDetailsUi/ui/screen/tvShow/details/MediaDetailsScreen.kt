@@ -18,12 +18,12 @@ import com.domain.mediaDetails.model.Episode
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -43,7 +43,7 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModelViewModel = koinViewMod
 @Composable
 fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
-    tvShowScreenInteractionListener: TvShowScreenInteractionListener
+    tvShowScreenInteractionListener: TvShowScreenInteractionListener,
 ) {
     val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
     val chips = listOf(
@@ -175,17 +175,17 @@ fun TvShowDetailsScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = { tvShowScreenInteractionListener.onNavigateBack()}
+                    onClick = { tvShowScreenInteractionListener.onNavigateBack() }
                 )
             ),
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = {}
+                    onClick = { tvShowScreenInteractionListener.onFavouriteClick("Rate") }
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = {}
+                    onClick = { tvShowScreenInteractionListener.onAddToListClick("Add to list") }
                 )
             )
         )

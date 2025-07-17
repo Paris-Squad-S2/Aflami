@@ -114,12 +114,13 @@ class TvShowDetailsViewModelViewModel(
         navigateUp()
     }
 
-    override fun onFavouriteClick() {
-        TODO("Not yet implemented")
+    override fun onFavouriteClick(title:String) {
+        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+
     }
 
-    override fun onAddToListClick() {
-        TODO("Not yet implemented")
+    override fun onAddToListClick(title: String) {
+        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
 
     override fun onShowAllCastClick(tvShowId: Int) {
