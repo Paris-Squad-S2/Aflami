@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.repository.search"
+    namespace = "com.datasource.remote.tvShow"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
@@ -18,10 +18,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
+            proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
     compileOptions {
@@ -34,35 +31,20 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
-    implementation(project(Modules.REPOSITORY_SEARCH))
 
-    api(libs.ktor.client.android)
-    api(libs.ktor.client.core)
-    api(libs.ktor.client.content.negotiation)
-    api(libs.ktor.client.logging)
-    api(libs.ktor.serialization.kotlinx.json)
-    api(libs.ktor.client.auth)
+    implementation(project(Modules.REPOSITORY_MOVIE))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+
+    implementation(libs.androidx.core.ktx)
+
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.serialization.kotlinx.json)
 
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
-}
-
-val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
-
-kover {
-    reports {
-        total {
-            verify {
-                rule {
-                    bound {
-                        minValue = coverageMinValue
-                    }
-                }
-            }
-        }
-    }
 }

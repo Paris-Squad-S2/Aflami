@@ -8,7 +8,6 @@ import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.repository.MovieRepository
-import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.domain.mediaDetails.exception.RequestTimeoutException
 import com.domain.mediaDetails.exception.ServerException
 import com.domain.mediaDetails.exception.UnauthorizedException
@@ -17,6 +16,7 @@ import com.repository.movie.dataSource.local.CastLocalDataSource
 import com.repository.movie.dataSource.local.GalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.ReviewLocalDataSource
+import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
 import com.repository.movie.models.local.GalleryEntity
