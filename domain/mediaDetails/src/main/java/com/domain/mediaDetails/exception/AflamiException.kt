@@ -10,3 +10,7 @@ class RequestTimeoutException : NetworkConnectionException("Request timed out: P
 class ServerException : NetworkConnectionException("Server error: Please try again later or contact support")
 class UnknownException : NetworkConnectionException("An unknown error occurred: Please try again or contact support")
 class NoMovieDetailsFoundException : LocalDataSourceException("No movie details found in the local database")
+class NoTvShowDetailsFoundException : LocalDataSourceException("No tv show details found in the local database")
+class NoSeasonDetailsFoundException : LocalDataSourceException("No season details found in the local database")
+class NoGalleryTvShowFoundException : LocalDataSourceException("No gallery tv show found in the local database")
+class NoGalleryMovieDetailsFoundException : LocalDataSourceException("No gallery movie found in the local database")
