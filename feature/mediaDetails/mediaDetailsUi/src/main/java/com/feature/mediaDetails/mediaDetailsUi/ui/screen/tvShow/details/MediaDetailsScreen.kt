@@ -92,7 +92,11 @@ fun TvShowDetailsScreenContent(
             item {
                 CastSection(
                     castList = state.tvShowDetailsUiState.cast,
-                    onSeeAllClick = { tvShowScreenInteractionListener::onShowAllCastClick}
+                    onSeeAllClick = {
+                        tvShowScreenInteractionListener.onShowAllCastClick(
+                            state.tvShowDetailsUiState.tvShowUi.id
+                        )
+                    }
                 )
             }
             item {

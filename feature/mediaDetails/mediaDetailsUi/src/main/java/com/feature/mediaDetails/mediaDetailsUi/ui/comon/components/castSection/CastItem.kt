@@ -34,7 +34,7 @@ fun CastItem(
     Column(
         modifier = modifier
             .then(
-                if (width != null) Modifier.width(width) else TODO()
+                if (width != null) Modifier.width(width) else Modifier.fillMaxWidth()
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

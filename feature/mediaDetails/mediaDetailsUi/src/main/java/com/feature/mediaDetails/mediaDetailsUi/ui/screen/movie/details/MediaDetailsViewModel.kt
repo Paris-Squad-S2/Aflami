@@ -118,7 +118,7 @@ class MovieDetailsViewModelViewModel(
         TODO("Not yet implemented")
     }
 
-    override fun onShowAllCastClick() {
-        navigate(MediaDetailsDestinations.MovieCastScreen(movieId = 123))
+    override fun onShowAllCastClick(movieId: Int) {
+        navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
     }
 }

@@ -4,5 +4,5 @@ interface TvShowScreenInteractionListener {
     fun onNavigateBack()
     fun onFavouriteClick()
     fun onAddToListClick()
-    fun onShowAllCastClick()
+    fun onShowAllCastClick(tvShowId: Int)
 }

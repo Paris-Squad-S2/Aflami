@@ -84,7 +84,11 @@ fun MovieDetailsScreenContent(
             item {
                 CastSection(
                     castList = state.movieDetailsUiState.cast,
-                    onSeeAllClick = { movieDetailsScreenInteractionListener::onShowAllCastClick}
+                    onSeeAllClick = {
+                        movieDetailsScreenInteractionListener.onShowAllCastClick(
+                            state.movieDetailsUiState.movie.id
+                        )
+                    }
                 )
             }
             item {

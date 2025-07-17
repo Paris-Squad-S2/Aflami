@@ -130,7 +130,7 @@ class TvShowDetailsViewModelViewModel(
         TODO("Not yet implemented")
     }
 
-    override fun onShowAllCastClick() {
-        navigate(MediaDetailsDestinations.TvShowCastScreen(tvShowId = 123))
+    override fun onShowAllCastClick(tvShowId: Int) {
+        navigate(MediaDetailsDestinations.TvShowCastScreen(tvShowId = tvShowId))
     }
 }

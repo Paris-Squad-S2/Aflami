@@ -4,5 +4,5 @@ interface MovieDetailsScreenInteractionListener {
     fun onNavigateBack()
     fun onFavouriteClick()
     fun onAddToListClick()
-    fun onShowAllCastClick()
+    fun onShowAllCastClick(movieId: Int)
 }
