@@ -81,8 +81,6 @@ dependencies {
     kover(project((":repository:guessGame")))
     kover(project((":repository:search")))
     kover(project((":datasource:remote:user")))
-    kover(project((":datasource:remote:movie")))
-    kover(project((":datasource:remote:tvShow")))
     kover(project((":datasource:remote:lists")))
     kover(project((":datasource:remote:categories")))
     kover(project((":datasource:remote:search")))
