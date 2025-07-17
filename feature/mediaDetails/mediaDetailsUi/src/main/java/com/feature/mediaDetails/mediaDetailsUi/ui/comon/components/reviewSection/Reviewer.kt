@@ -11,28 +11,20 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.ExpandableText
 import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.Theme
-import com.feature.mediaDetails.mediaDetailsUi.R
 
 @Composable
 fun ReviewCard(
@@ -88,28 +80,7 @@ fun ReviewCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            var expanded by remember { mutableStateOf(false) }
-            val maxLines = if (expanded) Int.MAX_VALUE else 4
-
-            val annotatedText = buildAnnotatedString {
-                withStyle(SpanStyle(color = Theme.colors.text.body)) {
-                    append(description)
-                }
-                if (!expanded) {
-                    append(" ")
-                    withStyle(SpanStyle(color = Theme.colors.primary)) {
-                        append("Read more")
-                    }
-                }
-            }
-
-            ClickableText(
-                text = annotatedText,
-                maxLines = maxLines,
-                overflow = TextOverflow.Ellipsis,
-                style = Theme.textStyle.body.small,
-                onClick = { expanded = true }
-            )
+            ExpandableText(description)
 
             Spacer(modifier = Modifier.height(12.dp))
 
@@ -131,6 +102,6 @@ fun ReviewCardPreview() {
         avatarUrl = "https://yourcdn.com/avatar.jpg",
         username = "@msbreviews",
         rating = 9.9,
-        description = "Hmmm! I wasn’t sure if I was watching a sentimental edition of “Hawaii Five-O” here or a collection of outtakes from a “Sonic” movie as this "
+        description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
     )
 }

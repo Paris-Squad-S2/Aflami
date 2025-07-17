@@ -51,7 +51,7 @@ class TvShowDetailsViewModelViewModel(
                         releaseDate = "2022-09-10",
                         runtime = "60",
                         country = "USA",
-                        description = "This is a mocked TV show used for development. ID: $mediaId",
+                        description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
                         productionCompanies = listOf(
                             ProductionCompanyUi(
                                 logoUrl = "https://via.placeholder.com/100",
@@ -88,7 +88,7 @@ class TvShowDetailsViewModelViewModel(
                                     voteAverage = 7.9,
                                     airDate = "2022-09-10",
                                     runtime = "58",
-                                    description = "Pilot episode with a thrilling mystery.",
+                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
                                     stillUrl = "https://via.placeholder.com/300"
                                 ),
                                 EpisodeUi(
@@ -97,7 +97,7 @@ class TvShowDetailsViewModelViewModel(
                                     voteAverage = 8.2,
                                     airDate = "2022-09-17",
                                     runtime = "61",
-                                    description = "Second episode continues the tension.",
+                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
                                     stillUrl = "https://via.placeholder.com/300"
                                 )
                             )
