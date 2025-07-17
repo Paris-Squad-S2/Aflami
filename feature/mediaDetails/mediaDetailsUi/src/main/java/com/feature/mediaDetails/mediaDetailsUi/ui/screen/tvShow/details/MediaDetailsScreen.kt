@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.domain.mediaDetails.model.Episode
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
@@ -76,7 +78,8 @@ fun TvShowDetailsScreenContent(
                         state.tvShowDetailsUiState.tvShowUi.posterUrl,
                     ),
                     rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                    onPlayClick = {}
+                    onPlayClick = {},
+                    modifier = Modifier.padding(bottom = 12.dp)
                 )
             }
             item {
