@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -52,7 +53,8 @@ fun SeasonHeader(
                     id = if (isExpanded) R.drawable.ic_not_expanded else R.drawable.ic_expanded
                 ),
                 contentDescription = "Expand/Collapse",
-                alignment = Alignment.Center
+                alignment = Alignment.Center,
+                colorFilter = ColorFilter.tint(Theme.colors.text.title)
             )
         }
     }
