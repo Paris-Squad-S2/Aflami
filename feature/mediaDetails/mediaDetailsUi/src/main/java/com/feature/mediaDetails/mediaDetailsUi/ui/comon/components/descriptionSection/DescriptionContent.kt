@@ -29,7 +29,6 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun DescriptionCard(content: @Composable () -> Unit) {
     Box(
         modifier = Modifier
-            .clip(RoundedCornerShape(12.dp))
             .background(Theme.colors.surface)
             .padding(16.dp)
     ) {

@@ -41,7 +41,6 @@ fun ReviewCard(
             .fillMaxWidth()
             .background(
                 Theme.colors.surface,
-                RoundedCornerShape(16.dp)
             )
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
