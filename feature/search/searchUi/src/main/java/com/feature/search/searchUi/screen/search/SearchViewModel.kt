@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import android.annotation.SuppressLint
 import androidx.lifecycle.viewModelScope
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
@@ -479,13 +480,13 @@ class SearchViewModel(
         )
     }
 
-
     private suspend fun <T : Any> Flow<PagingData<T>>.collectAllItems(): List<T> {
         val differ = AsyncPagingDataDiffer(
             diffCallback = object : DiffUtil.ItemCallback<T>() {
                 override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
                     oldItem == newItem
 
+                @SuppressLint("DiffUtilEquals")
                 override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
                     oldItem == newItem
             },
