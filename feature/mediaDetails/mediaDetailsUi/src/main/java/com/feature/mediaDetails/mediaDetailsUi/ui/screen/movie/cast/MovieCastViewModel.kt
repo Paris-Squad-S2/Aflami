@@ -16,12 +16,10 @@ class MovieCastViewModel
         isLoading = false,
         errorMessage = null
     ),
-
 ) {
     override fun onNavigateBack() {
         navigateUp()
     }
-
     init {
         val mediaId = savedStateHandle
             .toRoute<MediaDetailsDestinations.MovieCastScreen>()
@@ -38,6 +36,4 @@ class MovieCastViewModel
             )
         )
     }
-
-
 }

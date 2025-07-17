@@ -19,7 +19,7 @@ dependencies{
     implementation(libs.kotlinx.serialization.json)
 
 
-    implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
 }
 kotlin {
     compilerOptions {
