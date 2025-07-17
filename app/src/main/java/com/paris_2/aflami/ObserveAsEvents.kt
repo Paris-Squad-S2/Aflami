@@ -1,4 +1,4 @@
-package com.paris_2.aflami.appnavigation
+package com.paris_2.aflami
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
