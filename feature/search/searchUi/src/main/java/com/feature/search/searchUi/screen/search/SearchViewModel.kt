@@ -1,6 +1,14 @@
 package com.feature.search.searchUi.screen.search
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.AsyncPagingDataDiffer
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import androidx.paging.filter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListUpdateCallback
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -8,17 +16,29 @@ import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
+import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
-import com.feature.search.searchUi.mapper.toCategoryUiList
-import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
+import org.koin.java.KoinJavaComponent.getKoin
 
 data class SearchScreenState(
     val searchUiState: SearchUiState,

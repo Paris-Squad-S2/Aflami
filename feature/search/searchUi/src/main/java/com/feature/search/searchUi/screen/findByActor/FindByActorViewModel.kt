@@ -3,14 +3,26 @@ package com.feature.search.searchUi.screen.findByActor
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.domain.search.useCases.GetMediaByActorNameUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
+import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.mapper.toMediaUiList
-import com.feature.search.searchUi.navigation.Destinations
+import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.search.MediaUiState
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import org.koin.java.KoinJavaComponent.getKoin
 
 data class FindByActorScreenState(
     val uiState: FindByActorUiState,
@@ -24,6 +36,7 @@ data class FindByActorUiState(
 class FindByActorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
