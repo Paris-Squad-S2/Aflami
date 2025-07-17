@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
@@ -11,6 +12,7 @@ import com.domain.search.useCases.SearchByQueryUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
+import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
@@ -73,10 +75,10 @@ data class SearchHistoryUiState(
     val searchType: SearchTypeUi
 )
 
-enum class SearchTypeUi{
-    Query,
-    Country,
-    Actor
+enum class SearchTypeUi(val displayNameResId: Int) {
+    Query(R.string.query),
+    Country(R.string.country),
+    Actor(R.string.actor);
 }
 
 class SearchViewModel(

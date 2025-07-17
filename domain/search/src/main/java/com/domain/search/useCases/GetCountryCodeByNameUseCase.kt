@@ -7,11 +7,11 @@ class GetCountryCodeByNameUseCase(
 ) {
     suspend operator fun invoke(countryName: String): String? {
         val allCountries = countryRepository.getAllCountries()
-        if (allCountries.any { it.countryCode.equals(countryName, ignoreCase = true) }) {
-            return countryName.uppercase()
-        }
-        return allCountries
-            .firstOrNull { it.countryName.contains(countryName, ignoreCase = true) }
-            ?.countryCode
+
+        return allCountries.firstOrNull {
+            it.countryCode.equals(countryName, ignoreCase = true) ||
+                    it.englishName.contains(countryName, ignoreCase = true) ||
+                    it.arabicName.contains(countryName, ignoreCase = true)
+        }?.countryCode
     }
 }
