@@ -27,10 +27,11 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns mediaList
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
         // When
-        val result = getMediaByActorNameUseCase(actorName)
+        val result = getMediaByActorNameUseCase(actorName, page)
 
         // Then
         assertEquals(3, result.size)
@@ -41,10 +42,11 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns mediaList
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
         // When
-        val result = getMediaByActorNameUseCase(actorName)
+        val result = getMediaByActorNameUseCase(actorName, page)
 
         // Then
         assertEquals(listOf("Movie 1", "Movie 2", "Movie 3"), result.map { it.title })
@@ -55,13 +57,14 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns mediaList
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
         // When
-        getMediaByActorNameUseCase(actorName)
+        getMediaByActorNameUseCase(actorName, page)
 
         // Then
-        coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName) }
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName, page) }
     }
 
     @Test
@@ -69,10 +72,11 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "Wael"
-        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns emptyList()
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns emptyList()
 
         // When
-        val result = getMediaByActorNameUseCase.invoke(actorName)
+        val result = getMediaByActorNameUseCase.invoke(actorName, page)
 
         // Then
         assertTrue(result.isEmpty())
@@ -83,14 +87,15 @@ class GetMediaByActorNameUseCaseTest {
     fun `should verify repository is called when no media returned`() = runTest {
 
         // Given
+        val page = 1
         val actorName = "Wael"
-        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns emptyList()
+        coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns emptyList()
 
         // When
-        getMediaByActorNameUseCase(actorName)
+        getMediaByActorNameUseCase(actorName, page)
 
         // Then
-        coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName) }
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName, page) }
     }
 
     @Test
@@ -98,10 +103,11 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns tvOnlyMedia
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns tvOnlyMedia
 
         // When
-        val result = getMediaByActorNameUseCase(actorName)
+        val result = getMediaByActorNameUseCase(actorName, page)
 
         // Then
         assertTrue(result.isEmpty())
@@ -112,13 +118,14 @@ class GetMediaByActorNameUseCaseTest {
 
         // Given
         val actorName = "actor"
-        coEvery { searchMediaRepository.getMediaByActor(actorName) } returns tvOnlyMedia
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns tvOnlyMedia
 
         // When
-        getMediaByActorNameUseCase(actorName)
+        getMediaByActorNameUseCase(actorName, page)
 
         // Then
-        coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName) }
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName, page) }
     }
 
     companion object {
