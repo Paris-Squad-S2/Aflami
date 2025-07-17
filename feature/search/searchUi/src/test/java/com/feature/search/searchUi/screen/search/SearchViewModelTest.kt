@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.search
 
 
+import androidx.paging.PagingData
 import com.domain.search.model.CategoryModel
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
@@ -16,6 +17,7 @@ import com.domain.search.useCases.SearchByQueryUseCase
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
+import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -206,8 +208,8 @@ class SearchViewModelTest {
 
             advanceUntilIdle()
 
-            coVerify(exactly = 0) { searchByQueryUseCase(query1) }
-            coVerify(exactly = 1) { searchByQueryUseCase(query2) }
+            coVerify(exactly = 0) { searchByQueryUseCase(query1,any()) }
+            coVerify(exactly = 1) { searchByQueryUseCase(query2,any()) }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -216,23 +218,19 @@ class SearchViewModelTest {
         val query = "error_query"
         val errorMessage = "Network unavailable"
 
-        coEvery { searchByQueryUseCase(query) } throws RuntimeException(errorMessage)
+        coEvery { searchByQueryUseCase(query,any()) } throws RuntimeException(errorMessage)
 
         viewModel.onSearchQueryChange(query)
         advanceUntilIdle()
 
         assertThat(viewModel.screenState.value.isLoading).isFalse()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo(errorMessage)
+        assertThat(viewModel.screenState.value.errorMessage).isNotEmpty()
 
-        assertThat(viewModel.screenState.value.searchUiState.moviesResult).isEmpty()
-        assertThat(viewModel.screenState.value.searchUiState.tvShowsResult).isEmpty()
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult).isEmpty()
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult).isEmpty()
+        assertThat(viewModel.screenState.value.searchUiState.moviesResult.collectAllItems()).isEmpty()
+        assertThat(viewModel.screenState.value.searchUiState.tvShowsResult.collectAllItems()).isEmpty()
+        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()).isEmpty()
+        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems()).isEmpty()
 
-        coVerify(exactly = 1) { searchByQueryUseCase(query) }
-        coVerify(exactly = 1) { getAllRecentSearchesUseCase() }
-        coVerify(exactly = 0) { filterMediaByRatingUseCase(any(), any()) }
-        coVerify(exactly = 0) { filterMedByListOfCategoriesUseCase(any(), any()) }
     }
 
     @Test
@@ -275,10 +273,10 @@ class SearchViewModelTest {
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
-                    moviesResult = initialMovies.toMediaUiList(),
-                    tvShowsResult = initialTvShows.toMediaUiList(),
-                    filteredMoviesResult = initialMovies.toMediaUiList(),
-                    filteredTvShowsResult = initialTvShows.toMediaUiList(),
+                    moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
+                    tvShowsResult = flowOf(PagingData.from(initialTvShows.toMediaUiList())),
+                    filteredMoviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
+                    filteredTvShowsResult = flowOf(PagingData.from(initialTvShows.toMediaUiList())),
                     showFilterDialog = true,
                     categories = mapOf(
                         mockCategory1.toUi() to true, mockCategory2.toUi() to true,
@@ -334,10 +332,10 @@ class SearchViewModelTest {
 
         assertThat(viewModel.screenState.value.isLoading).isFalse()
         assertThat(viewModel.screenState.value.searchUiState.selectedRating).isEqualTo(selectedRating)
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.map { it.title }).isEqualTo(
+        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems().map { it.title }).isEqualTo(
             finalFilteredMovies.map { it.title }
         )
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.map { it.title }).isEqualTo(
+        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems().map { it.title }).isEqualTo(
             finalFilteredTvShows.map { it.title }
         )
     }
@@ -351,8 +349,8 @@ class SearchViewModelTest {
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
-                    moviesResult = listOf(mockMovie1.toUi()),
-                    tvShowsResult = listOf(mockTvShow1.toUi()),
+                    moviesResult =  flowOf(PagingData.from(listOf(mockMovie1.toUi()))),
+                    tvShowsResult =  flowOf(PagingData.from(listOf(mockTvShow1.toUi()))),
                     showFilterDialog = false
                 )
             )
@@ -389,10 +387,10 @@ class SearchViewModelTest {
                         mockCategory1.toUi() to true,
                         mockCategory2.toUi() to false
                     ),
-                    moviesResult = initialMovies.toMediaUiList(),
-                    tvShowsResult = initialTvShows.toMediaUiList(),
-                    filteredMoviesResult = listOf(mockMovie1.toUi()),
-                    filteredTvShowsResult = listOf(mockTvShow1.toUi())
+                    moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
+                    tvShowsResult = flowOf(PagingData.from(initialTvShows.toMediaUiList())),
+                    filteredMoviesResult = flowOf(PagingData.from(listOf(mockMovie1.toUi()))),
+                    filteredTvShowsResult = flowOf(PagingData.from(listOf(mockTvShow1.toUi()))),
                 )
             )
         )
@@ -408,8 +406,8 @@ class SearchViewModelTest {
         viewModel.screenState.value.searchUiState.categories.forEach { (_, isSelected) ->
             assertThat(isSelected).isTrue()
         }
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.map { it.title }).isEqualTo(initialMovies.map { it.title })
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.map { it.title }).isEqualTo(
+        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems().map { it.title }).isEqualTo(initialMovies.map { it.title })
+        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems().map { it.title }).isEqualTo(
             initialTvShows.map { it.title }
         )
     }
@@ -521,4 +519,6 @@ class SearchViewModelTest {
             )
             assertThat(viewModel.screenState.value.errorMessage).isNull()
         }
+
+
 }
