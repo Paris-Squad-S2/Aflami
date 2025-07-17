@@ -9,10 +9,10 @@ import com.datasource.local.dao.CastDao
 import com.datasource.local.dao.GalleryDao
 import com.datasource.local.dao.MovieDao
 import com.datasource.local.dao.ReviewDao
-import com.example.movie.models.local.CastEntity
-import com.example.movie.models.local.GalleryEntity
-import com.example.movie.models.local.MovieEntity
-import com.example.movie.models.local.ReviewEntity
+import com.repository.movie.models.local.CastEntity
+import com.repository.movie.models.local.GalleryEntity
+import com.repository.movie.models.local.MovieEntity
+import com.repository.movie.models.local.ReviewEntity
 
 @Database(
     entities = [MovieEntity::class, CastEntity::class, ReviewEntity::class, GalleryEntity::class],

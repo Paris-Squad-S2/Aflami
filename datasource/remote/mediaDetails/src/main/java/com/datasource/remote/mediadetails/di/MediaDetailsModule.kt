@@ -6,8 +6,8 @@ import com.datasource.remote.mediadetails.service.KtorMovieDetailsApiService
 import com.datasource.remote.mediadetails.service.KtorTvShowDetailsApiService
 import com.datasource.remote.mediadetails.service.implementation.KtorMediaDetailsApiServiceImpl
 import com.datasource.remote.mediadetails.service.implementation.KtorTvShowDetailsApiServiceImpl
-import com.example.movie.dataSource.remote.MovieDetailsRemoteDataSource
-import com.example.tvshow.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
+import com.repository.tvshow.dataSource.remote.TvShowDetailsRemoteDataSource
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.singleOf

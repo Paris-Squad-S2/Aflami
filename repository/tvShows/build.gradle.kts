@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.tvshow"
+    namespace = "com.repository.tvshow"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

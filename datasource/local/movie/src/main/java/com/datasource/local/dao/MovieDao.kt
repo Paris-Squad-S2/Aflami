@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.movie.models.local.MovieEntity
+import com.repository.movie.models.local.MovieEntity
 
 @Dao
 interface MovieDao {

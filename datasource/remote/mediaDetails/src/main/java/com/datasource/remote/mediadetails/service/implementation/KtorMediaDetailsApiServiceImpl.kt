@@ -2,11 +2,11 @@ package com.datasource.remote.mediadetails.service.implementation
 
 import com.datasource.remote.mediadetails.service.KtorMovieDetailsApiService
 import com.datasource.remote.mediadetails.utils.safeApiCall
-import com.example.movie.models.remote.MovieCreditsDto
-import com.example.movie.models.remote.MovieDto
-import com.example.movie.models.remote.MovieImagesDto
-import com.example.movie.models.remote.MovieReviewsDto
-import com.example.movie.models.remote.MovieSimilarsDto
+import com.repository.movie.models.remote.MovieCreditsDto
+import com.repository.movie.models.remote.MovieDto
+import com.repository.movie.models.remote.MovieImagesDto
+import com.repository.movie.models.remote.MovieReviewsDto
+import com.repository.movie.models.remote.MovieSimilarsDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter

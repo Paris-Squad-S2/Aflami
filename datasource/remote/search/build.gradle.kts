@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.search"
+    namespace = "com.repository.search"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

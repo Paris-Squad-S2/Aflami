@@ -2,12 +2,12 @@ package com.datasource.remote.mediadetails
 
 
 import com.datasource.remote.mediadetails.service.KtorMovieDetailsApiService
-import com.example.movie.dataSource.remote.MovieDetailsRemoteDataSource
-import com.example.movie.models.remote.MovieCreditsDto
-import com.example.movie.models.remote.MovieDto
-import com.example.movie.models.remote.MovieImagesDto
-import com.example.movie.models.remote.MovieReviewsDto
-import com.example.movie.models.remote.MovieSimilarsDto
+import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
+import com.repository.movie.models.remote.MovieCreditsDto
+import com.repository.movie.models.remote.MovieDto
+import com.repository.movie.models.remote.MovieImagesDto
+import com.repository.movie.models.remote.MovieReviewsDto
+import com.repository.movie.models.remote.MovieSimilarsDto
 
 class MovieDetailsRemoteDataSourceImpl(
     private val ktorMovieDetailsApiService: KtorMovieDetailsApiService

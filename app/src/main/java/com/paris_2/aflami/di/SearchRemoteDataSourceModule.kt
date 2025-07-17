@@ -1,11 +1,11 @@
 package com.paris_2.aflami.di
 
-import com.example.search.GenresRemoteDataSourceImp
-import com.example.search.SearchRemoteDataSourceImpl
-import com.example.search.service.contract.GenresApiServices
-import com.example.search.service.contract.SearchApiService
-import com.example.search.service.implementation.KtorGenresApiServices
-import com.example.search.service.implementation.KtorSearchApiService
+import com.repository.search.GenresRemoteDataSourceImp
+import com.repository.search.SearchRemoteDataSourceImpl
+import com.repository.search.service.contract.GenresApiServices
+import com.repository.search.service.contract.SearchApiService
+import com.repository.search.service.implementation.KtorGenresApiServices
+import com.repository.search.service.implementation.KtorSearchApiService
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import org.koin.core.module.Module
