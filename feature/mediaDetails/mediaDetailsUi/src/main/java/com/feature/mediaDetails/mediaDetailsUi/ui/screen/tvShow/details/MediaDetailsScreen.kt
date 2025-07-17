@@ -35,7 +35,7 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModelViewModel = koinViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    TvShowDetailsScreenContent(state = state.value)
+    TvShowDetailsScreenContent(state = state.value, tvShowScreenInteractionListener = viewModel)
 }
 
 
@@ -43,6 +43,7 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModelViewModel = koinViewMod
 @Composable
 fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
+    tvShowScreenInteractionListener: TvShowScreenInteractionListener
 ) {
     val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
     val chips = listOf(
@@ -91,7 +92,7 @@ fun TvShowDetailsScreenContent(
             item {
                 CastSection(
                     castList = state.tvShowDetailsUiState.cast,
-                    onSeeAllClick = {}
+                    onSeeAllClick = { tvShowScreenInteractionListener::onShowAllCastClick}
                 )
             }
             item {
@@ -170,7 +171,7 @@ fun TvShowDetailsScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = {}
+                    onClick = { tvShowScreenInteractionListener::onNavigateBack}
                 )
             ),
             trailingIcons = listOf(

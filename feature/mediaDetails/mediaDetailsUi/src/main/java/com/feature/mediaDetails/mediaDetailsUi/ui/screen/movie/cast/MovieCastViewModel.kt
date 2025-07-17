@@ -9,13 +9,19 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 class MovieCastViewModel
     (
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<MovieCastUiState>(
+) : MovieCastScreenInteractionListener,
+    BaseViewModel<MovieCastUiState>(
     MovieCastUiState(
         cast = emptyList(),
         isLoading = false,
         errorMessage = null
-    )
+    ),
+
 ) {
+    override fun onNavigateBack() {
+        navigateUp()
+    }
+
     init {
         val mediaId = savedStateHandle
             .toRoute<MediaDetailsDestinations.MovieCastScreen>()
@@ -32,4 +38,6 @@ class MovieCastViewModel
             )
         )
     }
+
+
 }

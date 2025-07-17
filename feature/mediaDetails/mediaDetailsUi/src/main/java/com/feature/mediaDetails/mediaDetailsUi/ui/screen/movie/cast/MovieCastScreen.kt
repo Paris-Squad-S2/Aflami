@@ -31,13 +31,14 @@ fun MovieCastScreen(
     viewModel: MovieCastViewModel = koinViewModel()
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    MovieScreenContent(state = state.value)
+    MovieScreenContent(state = state.value, movieCastScreenInteractionListener = viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieScreenContent(
     state: MovieCastUiState,
+    movieCastScreenInteractionListener: MovieCastScreenInteractionListener
 ) {
     LazyColumn(
         modifier = Modifier
@@ -53,7 +54,7 @@ fun MovieScreenContent(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_back),
-                        onClick = {}
+                        onClick = { movieCastScreenInteractionListener::onNavigateBack}
                     )
                 )
             )

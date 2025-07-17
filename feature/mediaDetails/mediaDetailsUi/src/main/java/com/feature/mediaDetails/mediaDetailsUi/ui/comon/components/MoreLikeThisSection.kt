@@ -48,6 +48,7 @@ fun PreviewMoreLikeThisSection() {
         MoreLikeThisSection(
             mediaList = listOf(
                 MovieUi(
+                    id =123,
                     posterUrl = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
                     rating = "8.5",
                     title = "The Green Mile",
@@ -59,6 +60,7 @@ fun PreviewMoreLikeThisSection() {
                     productionCompanies = emptyList()
                 ),
                 MovieUi(
+                    id = 258,
                     posterUrl = "https://xl.movieposterdb.com/07_10/2001/266543/xl_266543_fcf33950.jpg",
                     rating = "7.9",
                     title = "A Beautiful Mind",

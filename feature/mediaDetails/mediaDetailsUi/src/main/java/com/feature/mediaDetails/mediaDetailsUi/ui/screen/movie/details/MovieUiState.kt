@@ -15,6 +15,7 @@ data class MovieDetailsUiState(
     val gallery: List<String>
 )
 data class MovieUi(
+    val id :Int,
     override val posterUrl: String,
     override val rating: String,
     override val title: String,

@@ -18,6 +18,7 @@ import kotlinx.datetime.LocalDate
 
 fun Movie.toUi(): MovieUi {
     return MovieUi(
+        id=this.id,
         posterUrl = this.posterPath,
         rating = this.voteAverage.toString(),
         title = this.title,
@@ -32,6 +33,7 @@ fun Movie.toUi(): MovieUi {
 
 fun TvShow.toUi(): TvShowUi {
     return TvShowUi(
+        id= this.id,
         posterUrl = this.posterPath,
         rating = this.voteAverage.toString(),
         title = this.title,

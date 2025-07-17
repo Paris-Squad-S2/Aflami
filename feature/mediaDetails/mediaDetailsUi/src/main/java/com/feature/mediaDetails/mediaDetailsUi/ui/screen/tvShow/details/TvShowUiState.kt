@@ -19,6 +19,7 @@ data class TvShowDetailsUiState(
 )
 
 data class TvShowUi(
+    val id :Int,
     override val posterUrl: String,
     override val rating: String,
     override val title: String,

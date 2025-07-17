@@ -22,6 +22,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScreenInteractionListener
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -33,13 +34,14 @@ fun MovieDetailsScreen(
     viewModel: MovieDetailsViewModelViewModel = koinViewModel()
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    MovieDetailsScreenContent(state = state.value)
+    MovieDetailsScreenContent(state = state.value, movieDetailsScreenInteractionListener = viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
+    movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener
 ) {
     val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
     val chips = listOf(
@@ -82,7 +84,7 @@ fun MovieDetailsScreenContent(
             item {
                 CastSection(
                     castList = state.movieDetailsUiState.cast,
-                    onSeeAllClick = {}
+                    onSeeAllClick = { movieDetailsScreenInteractionListener::onShowAllCastClick}
                 )
             }
             item {
@@ -125,7 +127,7 @@ fun MovieDetailsScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = {}
+                    onClick = {movieDetailsScreenInteractionListener::onNavigateBack}
                 )
             ),
             trailingIcons = listOf(

@@ -35,13 +35,14 @@ fun TvShowCastScreen(
     viewModel: TvShowCastViewModel = koinViewModel()
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    TvShowCastScreenContent(state = state.value)
+    TvShowCastScreenContent(state = state.value, tvShowCastScreenInteractionListener = viewModel)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TvShowCastScreenContent(
     state: TvShowCastUiState,
+    tvShowCastScreenInteractionListener: TvShowCastScreenInteractionListener
     ) {
     LazyColumn(
         modifier = Modifier
@@ -57,7 +58,7 @@ fun TvShowCastScreenContent(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_back),
-                        onClick = {}
+                        onClick = { tvShowCastScreenInteractionListener::onNavigateBack}
                     )
                 )
             )
@@ -110,10 +111,4 @@ fun fakeCastUiState(): TvShowCastUiState {
     )
 }
 
-@PreviewLightDark
-@Composable
-fun CastScreenPreview() {
-    TvShowCastScreenContent(
-        state = fakeCastUiState()
-    )
-}
+

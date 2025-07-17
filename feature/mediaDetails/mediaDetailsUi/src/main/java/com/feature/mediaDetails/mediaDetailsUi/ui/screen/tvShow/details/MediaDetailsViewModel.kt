@@ -10,30 +10,30 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 
 class TvShowDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
-) :
-    BaseViewModel<TvShowDetailsScreenState>(
-        TvShowDetailsScreenState(
-            TvShowDetailsUiState(
-                tvShowUi = TvShowUi(
-                    posterUrl = "",
-                    rating = "",
-                    title = "",
-                    genres = emptyList(),
-                    releaseDate = "",
-                    runtime = "",
-                    country = "",
-                    description = "",
-                    productionCompanies = emptyList()
-                ),
-                cast = emptyList(),
-                reviews = emptyList(),
-                gallery = emptyList(),
-                seasons = emptyList()
+) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
+    TvShowDetailsScreenState(
+        TvShowDetailsUiState(
+            tvShowUi = TvShowUi(
+                id =0,
+                posterUrl = "",
+                rating = "",
+                title = "",
+                genres = emptyList(),
+                releaseDate = "",
+                runtime = "",
+                country = "",
+                description = "",
+                productionCompanies = emptyList()
             ),
-            isLoading = false,
-            errorMessage = null
-        )
-    ) {
+            cast = emptyList(),
+            reviews = emptyList(),
+            gallery = emptyList(),
+            seasons = emptyList()
+        ),
+        isLoading = false,
+        errorMessage = null
+    )
+) {
 
     init {
         val mediaId =
@@ -43,6 +43,7 @@ class TvShowDetailsViewModelViewModel(
             TvShowDetailsScreenState(
                 tvShowDetailsUiState = TvShowDetailsUiState(
                     tvShowUi = TvShowUi(
+                        id =123,
                         posterUrl = "https://via.placeholder.com/300x450",
                         rating = "8.7",
                         title = "Mock Show $mediaId",
@@ -115,5 +116,21 @@ class TvShowDetailsViewModelViewModel(
                 movieId = 123
             )
         )
+    }
+
+    override fun onNavigateBack() {
+        navigateUp()
+    }
+
+    override fun onFavouriteClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onAddToListClick() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onShowAllCastClick() {
+        navigate(MediaDetailsDestinations.TvShowCastScreen(tvShowId = 123))
     }
 }
