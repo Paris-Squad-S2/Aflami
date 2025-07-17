@@ -1,13 +1,13 @@
 package com.datasource.remote.mediadetails
 
 import com.datasource.remote.mediadetails.service.KtorTvShowDetailsApiService
-import com.repository.tvshow.dataSource.remote.TvShowDetailsRemoteDataSource
-import com.repository.tvshow.model.remote.TvShowCreditsDto
-import com.repository.tvshow.model.remote.TvShowDto
-import com.repository.tvshow.model.remote.TvShowImagesDto
-import com.repository.tvshow.model.remote.TvShowReviewsDto
-import com.repository.tvshow.model.remote.TvShowSeasonDto
-import com.repository.tvshow.model.remote.TvShowSimilarsDto
+import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.model.remote.TvShowCreditsDto
+import com.repository.model.remote.TvShowDto
+import com.repository.model.remote.TvShowImagesDto
+import com.repository.model.remote.TvShowReviewsDto
+import com.repository.model.remote.TvShowSeasonDto
+import com.repository.model.remote.TvShowSimilarsDto
 
 class TvShowDetailsRemoteDataSourceImpl(
     private val ktorTvShowDetailsApiService: KtorTvShowDetailsApiService

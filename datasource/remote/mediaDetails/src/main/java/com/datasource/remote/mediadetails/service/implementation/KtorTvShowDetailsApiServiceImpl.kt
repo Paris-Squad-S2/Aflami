@@ -2,12 +2,12 @@ package com.datasource.remote.mediadetails.service.implementation
 
 import com.datasource.remote.mediadetails.service.KtorTvShowDetailsApiService
 import com.datasource.remote.mediadetails.utils.safeApiCall
-import com.repository.tvshow.model.remote.TvShowCreditsDto
-import com.repository.tvshow.model.remote.TvShowDto
-import com.repository.tvshow.model.remote.TvShowImagesDto
-import com.repository.tvshow.model.remote.TvShowReviewsDto
-import com.repository.tvshow.model.remote.TvShowSeasonDto
-import com.repository.tvshow.model.remote.TvShowSimilarsDto
+import com.repository.model.remote.TvShowCreditsDto
+import com.repository.model.remote.TvShowDto
+import com.repository.model.remote.TvShowImagesDto
+import com.repository.model.remote.TvShowReviewsDto
+import com.repository.model.remote.TvShowSeasonDto
+import com.repository.model.remote.TvShowSimilarsDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter

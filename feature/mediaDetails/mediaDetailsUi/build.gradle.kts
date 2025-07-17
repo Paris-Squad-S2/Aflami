@@ -68,4 +68,8 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.android)
 
+
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.DESIGN_SYSTEM))
+
 }
