@@ -1,5 +1,6 @@
 package com.paris_2.aflami.di
 
+import android.util.Log
 import com.feature.search.searchUi.BuildConfig
 import com.repository.search.NetworkConnectionChecker
 import io.ktor.client.*
@@ -12,7 +13,6 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import org.koin.android.ext.koin.androidApplication
-import org.koin.core.scope.Scope
 import org.koin.dsl.module
 
 val NetworkModule = module {
@@ -21,10 +21,14 @@ val NetworkModule = module {
     single {
         HttpClient(Android) {
             install(Logging) {
-                logger = Logger.ANDROID
+                logger = object : Logger {
+                    private val TAG = "KtorHttpClient"
+                    override fun log(message: String) {
+                        Log.i(TAG, message)
+                    }
+                }
                 level = LogLevel.ALL
             }
-
             install(ContentNegotiation) {
                 json(Json { ignoreUnknownKeys = true })
             }

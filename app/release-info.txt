@@ -1,2 +1,2 @@
-versionName=0.1.21
-- add tv show local with room data base
+versionName=0.1.25
+- connect bottom navigation bar with the feature APIs

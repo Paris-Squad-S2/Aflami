@@ -77,7 +77,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -89,6 +89,9 @@ dependencies {
     implementation(project(Modules.FIREBASE))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
     implementation(project(Modules.FEATURE_SEARCH_UI))
+
+    //Navigation
+    implementation(libs.navigation.compose)
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)
@@ -110,12 +113,27 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
 
     implementation(project(Modules.FEATURE_SEARCH_API))
+
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_LISTS_API))
+    implementation(project(Modules.FEATURE_PROFILE_API))
+    implementation(project(Modules.FEATURE_CATEGORIES_API))
+    implementation(project(Modules.FEATURE_GUESS_GAME_API))
+
+    implementation(project(Modules.FEATURE_HOME_UI))
+    implementation(project(Modules.FEATURE_LISTS_UI))
+    implementation(project(Modules.FEATURE_PROFILE_UI))
+    implementation(project(Modules.FEATURE_CATEGORIES_UI))
+    implementation(project(Modules.FEATURE_GUESS_GAME_UI))
+
+
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
     implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
-    implementation(project(Modules.DATASOURCE_REMOTE_MEDIA_DETAILS))
+    implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
+    implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.REPOSITORY_MOVIE))
@@ -126,6 +144,11 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(project(Modules.APP_NAVIGATION))
+
+
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
 
 }
 

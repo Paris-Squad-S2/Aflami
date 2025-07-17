@@ -140,7 +140,7 @@ class GetCountryCodeByNameUseCaseTest {
     @Test
     fun `should verify repository is called once when input is country code`() = runTest {
         // Given
-        val countries = listOf(Country("EG", "Egypt"))
+        val countries = listOf(Country("EG", "Egypt" , "مصر" ))
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -152,8 +152,8 @@ class GetCountryCodeByNameUseCaseTest {
 
     companion object{
         val countries = listOf(
-            Country("EG", "Egypt"),
-            Country("FR", "France")
+            Country("EG", "Egypt" , "مصر"),
+            Country("FR", "France", "فرنسا")
         )
     }
 
