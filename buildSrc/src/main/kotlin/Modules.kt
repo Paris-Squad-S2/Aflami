@@ -11,6 +11,7 @@ object Modules {
     const val DOMAIN_LISTS = ":domain:lists"
     const val DOMAIN_HOME = ":domain:home"
     const val DOMAIN_CATEGORIES = ":domain:categories"
+    const val DOMAIN_MEDIA_DETAILS = ":domain:mediaDetails"
 
     const val REPOSITORY = ":repository"
     const val REPOSITORY_MOVIE = ":repository:movie"
@@ -37,7 +38,6 @@ object Modules {
     const val DATASOURCE_LOCAL_CATEGORIES = ":datasource:local:categories"
     const val DATASOURCE_LOCAL_SEARCH = ":datasource:local:search"
     const val DATASOURCE_REMOTE_SEARCH = ":datasource:remote:search"
-    const val DATASOURCE_REMOTE_MEDIA_DETAILS = ":datasource:remote:mediaDetails"
 
     const val FEATURE = ":feature"
     const val FEATURE_ONBOARDING = ":feature:onboarding"

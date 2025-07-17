@@ -32,7 +32,6 @@ class MovieDetailConverter {
         if (genres == null) {
             return null
         }
-        // Using explicit ListSerializer for robustness, similar to ProductionCompanyEntity
         return json.encodeToString(ListSerializer(serializer<GenreEntity>()), genres)
     }
 

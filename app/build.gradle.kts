@@ -161,13 +161,19 @@ dependencies {
     implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
-    implementation(project(Modules.DATASOURCE_REMOTE_MEDIA_DETAILS))
+    implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
+    implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 
     implementation(project(Modules.APP_NAVIGATION))
+
+
+    implementation(libs.ktor.client.android)
+    implementation(libs.ktor.client.core)
+    implementation(libs.ktor.client.logging)
 
 }
 

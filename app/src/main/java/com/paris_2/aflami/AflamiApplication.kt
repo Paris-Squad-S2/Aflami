@@ -3,7 +3,7 @@ package com.paris_2.aflami
 import android.app.Application
 import android.util.Log
 import androidx.work.WorkerFactory
-import com.datasource.remote.mediadetails.di.mediaDetailsModule
+import com.paris_2.aflami.di.mediaDetailsModule
 import com.paris_2.aflami.di.SearchRemoteDataSourceModule
 import com.paris_2.aflami.di.NetworkModule
 import com.paris_2.aflami.di.dataSourceModule
