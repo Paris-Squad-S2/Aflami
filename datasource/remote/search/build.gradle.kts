@@ -34,14 +34,9 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(project(Modules.REPOSITORY_SEARCH))
 
-
-    // Ktor dependencies for networking - using api to make them transitively available
     api(libs.ktor.client.android)
     api(libs.ktor.client.core)
     api(libs.ktor.client.content.negotiation)
@@ -49,19 +44,11 @@ dependencies {
     api(libs.ktor.serialization.kotlinx.json)
     api(libs.ktor.client.auth)
 
-    // Koin dependency injection - using api to make it transitively available
-    implementation(libs.koin.android)
-    implementation(libs.koin.core)
-
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-    //To Ask About
-    implementation(libs.kotlinx.datetime)
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
