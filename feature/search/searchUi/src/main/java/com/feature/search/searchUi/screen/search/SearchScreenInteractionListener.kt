@@ -11,7 +11,7 @@ interface SearchScreenInteractionListener {
     fun onClearRecentSearch(id: String, searchTypeUi: SearchTypeUi)
     fun onRetryRecentSearches()
     fun onRetrySearchQuery()
-    fun onMediaCardClick(id: Int)
+    fun onMediaCardClick(id: Int, mediaType: MediaTypeUi)
     fun onSelectTab(tabIndex: Int)
     fun onApplyFilterButtonClick(
         selectedRating: Float,

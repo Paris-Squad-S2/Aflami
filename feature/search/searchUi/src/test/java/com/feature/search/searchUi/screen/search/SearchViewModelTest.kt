@@ -120,7 +120,8 @@ class SearchViewModelTest {
                 searchByQueryUseCase,
                 getAllCategoriesUseCase,
                 filterMediaByRatingUseCase,
-                filterMedByListOfCategoriesUseCase
+                filterMedByListOfCategoriesUseCase,
+                appNavigator=  mockk(relaxed = true)
             )
         )
     }
@@ -141,7 +142,8 @@ class SearchViewModelTest {
             searchByQueryUseCase,
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
-            filterMedByListOfCategoriesUseCase
+            filterMedByListOfCategoriesUseCase,
+            appNavigator=  mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -162,7 +164,8 @@ class SearchViewModelTest {
             searchByQueryUseCase,
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
-            filterMedByListOfCategoriesUseCase
+            filterMedByListOfCategoriesUseCase,
+            appNavigator=  mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -182,7 +185,8 @@ class SearchViewModelTest {
             searchByQueryUseCase,
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
-            filterMedByListOfCategoriesUseCase
+            filterMedByListOfCategoriesUseCase,
+            appNavigator=  mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -433,7 +437,8 @@ class SearchViewModelTest {
             searchByQueryUseCase,
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
-            filterMedByListOfCategoriesUseCase
+            filterMedByListOfCategoriesUseCase,
+            appNavigator=  mockk(relaxed = true)
         )
         advanceUntilIdle()
 
@@ -460,7 +465,8 @@ class SearchViewModelTest {
             searchByQueryUseCase,
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
-            filterMedByListOfCategoriesUseCase
+            filterMedByListOfCategoriesUseCase,
+            appNavigator=  mockk(relaxed = true)
         )
         advanceUntilIdle()
 
@@ -502,7 +508,8 @@ class SearchViewModelTest {
                 searchByQueryUseCase,
                 getAllCategoriesUseCase,
                 filterMediaByRatingUseCase,
-                filterMedByListOfCategoriesUseCase
+                filterMedByListOfCategoriesUseCase,
+                appNavigator=  mockk(relaxed = true)
             )
             advanceUntilIdle()
 
