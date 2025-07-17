@@ -1,2 +1,2 @@
-versionName=0.1.23
+versionName=0.1.26
 - add pagination for search feature

@@ -1,31 +1,24 @@
 package com.repository.search.repository
 
-import com.domain.search.exception.NoDataForActorException
-import com.domain.search.exception.NoDataForCountryException
-import com.domain.search.exception.NoDataForSearchException
-import com.domain.search.exception.NoInternetConnectionException
 import com.repository.search.NetworkConnectionChecker
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
-import com.repository.search.dto.ResultDto
-import com.repository.search.dto.SearchDto
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.entity.SearchHistoryEntity
 import com.repository.search.entity.SearchType
+import com.domain.search.exception.NoDataForActorException
+import com.domain.search.exception.NoDataForCountryException
+import com.domain.search.exception.NoDataForSearchException
+import com.domain.search.exception.NoInternetConnectionException
 import com.repository.search.mapper.toMedia
-import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
 import io.mockk.Runs
 import io.mockk.coEvery
-import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -46,6 +39,7 @@ class SearchMediaRepositoryImplTest {
     private val mediaLocalDataSource = mockk<MediaLocalDataSource>()
     private val searchRemoteDataSource = mockk<SearchRemoteDataSource>()
     private val historyLocalDataSource = mockk<HistoryLocalDataSource>()
+    private val language = "en"
 
     @BeforeEach
     fun setup() {
@@ -74,6 +68,7 @@ class SearchMediaRepositoryImplTest {
                 yearOfRelease = LocalDate(2024, 1, 1),
                 rating = 8.5,
                 searchType = SearchType.Actor,
+                language = language,
                 page = 1
             )
         )
@@ -81,7 +76,7 @@ class SearchMediaRepositoryImplTest {
             .minus(30, DateTimeUnit.MINUTE)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page = 1) } returns cachedMedia
+        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page = 1, language = language) } returns cachedMedia
         coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns SearchHistoryEntity(
             actorName,
            SearchType.Query, oldDate
@@ -96,7 +91,7 @@ class SearchMediaRepositoryImplTest {
         val actorName = "Tom"
         val page = 1
 
-        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page) } returns emptyList()
+        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
 
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
@@ -123,6 +118,7 @@ class SearchMediaRepositoryImplTest {
                 searchQuery = actorName,
                 searchType = SearchType.Actor,
                 page = 1,
+                language = "en"
             )
         )
         coEvery { searchRemoteDataSource.searchPerson(actorName, page = page, language = any()) } returns mockDto
@@ -131,7 +127,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { historyLocalDataSource.addSearchQuery(actorName, SearchType.Actor) } just Runs
         coEvery { mediaLocalDataSource.addAllMedia(mockEntities) } just Runs
-        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page) } returns mockEntities
+        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } returns mockEntities
 
         val result = repository.getMediaByActor(actorName, page)
         advanceUntilIdle()
@@ -150,7 +146,7 @@ class SearchMediaRepositoryImplTest {
         val actorName = "Will Smith"
         val page = 1
 
-        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page) } returns emptyList()
+        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
@@ -166,7 +162,7 @@ class SearchMediaRepositoryImplTest {
         val actorName = "Jim Carrey"
         val page = 1
 
-        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page) } throws RuntimeException()
+        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } throws RuntimeException()
 
         assertFailsWith<NoDataForActorException> {
             repository.getMediaByActor(actorName, page)
@@ -191,14 +187,15 @@ class SearchMediaRepositoryImplTest {
                 yearOfRelease = LocalDate(2022, 5, 20),
                 rating = 7.8,
                 searchType = SearchType.Country,
-                page = 1
+                page = 1,
+                language = language
             )
         )
         val validDate = Clock.System.now()
             .minus(30, DateTimeUnit.MINUTE)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page) } returns cachedMedia
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } returns cachedMedia
         coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country) } returns SearchHistoryEntity(
             countryName,
            SearchType.Country, validDate
@@ -226,11 +223,12 @@ class SearchMediaRepositoryImplTest {
                 yearOfRelease = LocalDate(2020, 1, 1),
                 rating = 6.0,
                 searchType = SearchType.Country,
-                page = 1
+                page = 1,
+                language = language
             )
         )
 
-        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page) } returns oldMedia
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } returns oldMedia
         coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country) } returns SearchHistoryEntity(
             countryName,
            SearchType.Country, expiredDate
@@ -247,7 +245,7 @@ class SearchMediaRepositoryImplTest {
         } returns mockk(relaxed = true)
         coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
         coEvery { historyLocalDataSource.addSearchQuery(countryName, SearchType.Country) } just Runs
-        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page) } returns emptyList()
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } returns emptyList()
 
         val result = repository.getMoviesByCountry(countryName, page)
         assertEquals(emptyList(), result)
@@ -258,7 +256,7 @@ class SearchMediaRepositoryImplTest {
         val countryName = "France"
         val page = 1
 
-        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page) } returns emptyList()
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
@@ -274,7 +272,7 @@ class SearchMediaRepositoryImplTest {
         val countryName = "Spain"
         val page = 1
 
-        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page) } throws RuntimeException("DB error")
+        coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } throws RuntimeException("DB error")
 
         assertFailsWith<NoDataForCountryException> {
             repository.getMoviesByCountry(countryName, page)
@@ -298,14 +296,15 @@ class SearchMediaRepositoryImplTest {
                 yearOfRelease = LocalDate(2010, 7, 16),
                 rating = 8.8,
                 searchType = SearchType.Query,
-                page = 1
+                page = 1,
+                language = language
             )
         )
         val validDate = Clock.System.now()
             .minus(30, DateTimeUnit.MINUTE)
             .toLocalDateTime(TimeZone.currentSystemDefault())
 
-        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page) } returns cachedMedia
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page,language) } returns cachedMedia
         coEvery { historyLocalDataSource.getSearchHistoryQuery(query, SearchType.Query) } returns SearchHistoryEntity(
             query,
            SearchType.Query, validDate
@@ -329,10 +328,11 @@ class SearchMediaRepositoryImplTest {
             listOf(1),
             LocalDate(2000, 1, 1),
             8.0, query, SearchType.Query,
-            page
+            page,
+            language,
         )
 
-        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page) } returns listOf(entity) andThen emptyList()
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page,language) } returns listOf(entity) andThen emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(query, SearchType.Query) } returns SearchHistoryEntity(
             query,
            SearchType.Query, expiredDate
@@ -354,7 +354,7 @@ class SearchMediaRepositoryImplTest {
         val page = 1
         val query = "Titanic"
 
-        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page) } returns emptyList()
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(query, SearchType.Query) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
@@ -370,7 +370,7 @@ class SearchMediaRepositoryImplTest {
         val page = 1
         val query = "Avatar"
 
-        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page) } throws RuntimeException("DB error")
+        coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page,language) } throws RuntimeException("DB error")
 
         assertFailsWith<NoDataForSearchException> {
             repository.getMediaByQuery(query, page)

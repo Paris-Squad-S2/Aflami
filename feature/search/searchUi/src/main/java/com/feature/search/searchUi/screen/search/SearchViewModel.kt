@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
@@ -19,6 +20,7 @@ import com.domain.search.useCases.SearchByQueryUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
+import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toDomainList
@@ -88,10 +90,10 @@ data class SearchHistoryUiState(
     val searchType: SearchTypeUi
 )
 
-enum class SearchTypeUi{
-    Query,
-    Country,
-    Actor
+enum class SearchTypeUi(val displayNameResId: Int) {
+    Query(R.string.query),
+    Country(R.string.country),
+    Actor(R.string.actor);
 }
 
 class SearchViewModel(
@@ -442,7 +444,18 @@ class SearchViewModel(
     }
 
     override fun onNavigateBack() {
-        //TODO: Implement navigation back to home feature
+        tryToExecute(
+            execute = {
+                appNavigator.navigateUp()
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     override fun onRetryRecentSearches() {

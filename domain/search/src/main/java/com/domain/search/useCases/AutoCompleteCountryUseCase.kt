@@ -7,6 +7,10 @@ class AutoCompleteCountryUseCase(
     private val countryRepository: CountryRepository,
 ) {
     suspend operator fun invoke(query: String): List<Country> {
-        return countryRepository.getAllCountries().filter { it.countryName.contains(query, ignoreCase = true) }
+        return countryRepository.getAllCountries()
+            .filter {
+                it.englishName.contains(query, ignoreCase = true) ||
+                        it.arabicName.contains(query, ignoreCase = true)
+            }
     }
 }

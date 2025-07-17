@@ -31,8 +31,9 @@ class SearchMediaRepositoryImpl(
 ) : SearchMediaRepository {
 
     override suspend fun getMediaByActor(actorName: String,page:Int): List<Media> {
+        val language = detectLanguage()
         return try {
-            val localMedia = mediaLocalDataSource.getMediaByActor(actor = actorName,page)
+            val localMedia = mediaLocalDataSource.getMediaByActor(actor = actorName,page=page , language = language)
             val queryDate = searchHistoryLocalDataSource
                 .getSearchHistoryQuery(actorName, SearchType.Actor)
                 ?.searchDate
@@ -43,8 +44,8 @@ class SearchMediaRepositoryImpl(
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto =
-                    searchRemoteDataSource.searchPerson(query = actorName, language = language , page = page)
-                val entities = remoteDto.toMediaEntitiesForActors(query = actorName,page = page)
+                    searchRemoteDataSource.searchPerson(query = actorName, language = language, page = page)
+                val entities = remoteDto.toMediaEntitiesForActors(query = actorName , language = language, page = page)
                 searchHistoryLocalDataSource.addSearchQuery(
                     title = actorName,
                     searchType = SearchType.Actor
@@ -54,7 +55,7 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
 
-            mediaLocalDataSource.getMediaByActor(actor = actorName, page = page).toMedias()
+            mediaLocalDataSource.getMediaByActor(actor = actorName, page = page,language=language).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
@@ -63,8 +64,9 @@ class SearchMediaRepositoryImpl(
     }
 
     override suspend fun getMoviesByCountry(countryName: String,page: Int): List<Media> {
+        val language = detectLanguage()
         return try {
-            val localMedia = mediaLocalDataSource.getMediaByCountry(country = countryName,page = page)
+            val localMedia = mediaLocalDataSource.getMediaByCountry(country = countryName,page = page, language = language)
 
             val queryDate = searchHistoryLocalDataSource
                 .getSearchHistoryQuery(query = countryName, searchType = SearchType.Country)
@@ -82,7 +84,7 @@ class SearchMediaRepositoryImpl(
                     page = page,
                 )
                 val mediaEntities =
-                    remoteDto.toMediaEntities(query = countryName, searchType = SearchType.Country,page=page)
+                    remoteDto.toMediaEntities(query = countryName, searchType = SearchType.Country,page=page,language=language)
                 searchHistoryLocalDataSource.addSearchQuery(
                     title = countryName,
                     searchType = SearchType.Country
@@ -92,7 +94,7 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
 
-            mediaLocalDataSource.getMediaByCountry(country = countryName,page).toMedias()
+            mediaLocalDataSource.getMediaByCountry(country = countryName,page,language=language).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
@@ -101,8 +103,9 @@ class SearchMediaRepositoryImpl(
     }
 
     override suspend fun getMediaByQuery(query: String,page: Int): List<Media> {
+        val language = detectLanguage()
         return try {
-            val localMedia = mediaLocalDataSource.getMediaByTitleQuery(query = query, page = page)
+            val localMedia = mediaLocalDataSource.getMediaByTitleQuery(query = query, page = page,language=language)
 
             val queryDate = searchHistoryLocalDataSource
                 .getSearchHistoryQuery(query, SearchType.Query)
@@ -116,7 +119,7 @@ class SearchMediaRepositoryImpl(
                 val remoteDto =
                     searchRemoteDataSource.searchMulti(query = query, language = language, page = page)
                 val entities =
-                    remoteDto.toMediaEntities(query = query, searchType = SearchType.Query, page = page)
+                    remoteDto.toMediaEntities(query = query, searchType = SearchType.Query,language=language , page = page)
                 searchHistoryLocalDataSource.addSearchQuery(
                     title = query,
                     searchType = SearchType.Query
@@ -126,7 +129,7 @@ class SearchMediaRepositoryImpl(
                 throw NoInternetConnectionException()
             }
 
-            mediaLocalDataSource.getMediaByTitleQuery(query = query, page = page).toMedias()
+            mediaLocalDataSource.getMediaByTitleQuery(query = query, page = page,language=language).toMedias()
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
