@@ -28,14 +28,14 @@ fun createMedia(
 }
 
 val sampleCountries = listOf(
-    Country(countryCode = "1612", countryName = "United States"),
-    Country(countryCode = "2113", countryName = "United Kingdom"),
-    Country(countryCode = "1213", countryName = "Canada"),
-    Country(countryCode = "3478", countryName = "Australia"),
-    Country(countryCode = "3462", countryName = "Germany"),
-    Country(countryCode = "1237", countryName = "France"),
-    Country(countryCode = "9872", countryName = "Japan"),
-    Country(countryCode = "2434", countryName = "Brazil"),
-    Country(countryCode = "2312", countryName = "India"),
-    Country(countryCode = "7484", countryName = "China")
+    Country(countryCode = "1612", englishName = "United States", arabicName = "الولايات المتحدة"),
+    Country(countryCode = "2113", englishName = "United Kingdom", arabicName = "المملكة المتحدة"),
+    Country(countryCode = "1213", englishName = "Canada", arabicName = "كندا"),
+    Country(countryCode = "3478", englishName = "Australia", arabicName = "أستراليا"),
+    Country(countryCode = "3462", englishName = "Germany", arabicName = "ألمانيا"),
+    Country(countryCode = "1237", englishName = "France", arabicName = "فرنسا"),
+    Country(countryCode = "9872", englishName = "Japan", arabicName = "اليابان"),
+    Country(countryCode = "2434", englishName = "Brazil", arabicName = "البرازيل"),
+    Country(countryCode = "2312", englishName = "India", arabicName = "الهند"),
+    Country(countryCode = "7484", englishName = "China", arabicName = "الصين")
 )
