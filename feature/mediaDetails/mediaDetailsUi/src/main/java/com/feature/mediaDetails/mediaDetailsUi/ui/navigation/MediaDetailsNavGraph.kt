@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestination
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.cast.CastScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.MovieDetailsScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.TvShowDetailsScreen
 import org.koin.compose.koinInject
@@ -33,13 +34,14 @@ fun MediaDetailsNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        buildSearchNavGraph(mediaDetailsDestination)
+        buildDetailsNavGraph(mediaDetailsDestination)
     }
 }
 
-fun NavGraphBuilder.buildSearchNavGraph(startDestination: MediaDetailsDestination? = null) {
+fun NavGraphBuilder.buildDetailsNavGraph(startDestination: MediaDetailsDestination? = null) {
     navigation<MediaDetailsDestinations.MediaDetailsGraph1>(startDestination = startDestination ?: MediaDetailsDestinations.MovieDetailsScreen) {
         composable<MediaDetailsDestinations.MovieDetailsScreen> { MovieDetailsScreen() }
         composable<MediaDetailsDestinations.TvShowDetailsScreen> { TvShowDetailsScreen() }
+        composable<MediaDetailsDestinations.CastScreen> { CastScreen() }
     }
 }

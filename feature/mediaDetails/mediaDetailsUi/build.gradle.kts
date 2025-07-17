@@ -59,6 +59,9 @@ dependencies {
     //Navigation
     implementation(libs.navigation.compose)
 
+    implementation(libs.androidx.material3)
+
+
     //Koin
     implementation(libs.koin.core)
     implementation(libs.koin.compose)

@@ -1,5 +1,6 @@
 package com.paris_2.aflami.di
 
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.cast.CastViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.MovieDetailsViewModelViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.TvShowDetailsViewModelViewModel
 import com.feature.search.searchUi.screen.findByActor.FindByActorViewModel
@@ -14,4 +15,5 @@ val viewModelModule = module{
     viewModelOf(::WorldTourViewModel)
     viewModelOf(::MovieDetailsViewModelViewModel)
     viewModelOf(::TvShowDetailsViewModelViewModel)
+    viewModelOf(::CastViewModel)
 }
