@@ -76,8 +76,8 @@ class WorldTourViewModelTest {
     fun `onSearchQueryChange should trigger autocomplete and update hints`() = runTest {
         val query = "United"
         val mockHints = listOf(
-            Country(countryName = "United States", countryCode = "US"),
-            Country(countryName = "United Kingdom", countryCode = "UK")
+            Country(englishName = "United States", countryCode = "US" , arabicName = "الولايات المتحدة"),
+            Country(englishName = "United Kingdom", countryCode = "UK" , arabicName = "المملكة المتحدة")
         )
         coEvery { autoCompleteCountryUseCase(query) } returns mockHints
 

@@ -1,3 +1,6 @@
-versionName=0.1.22
-- add tv show and movies to remote ds
-- fix the ktor logger
+versionName=0.1.23
+- Cached search results are now saved with the device's language.
+- When the device language changes, outdated results are ignored.
+- Fresh data is fetched in the current language to ensure proper localization.
+- Fixed AutoComplete, Now it work with arabic and english.
+- Fixed Search Country by arabic language.
