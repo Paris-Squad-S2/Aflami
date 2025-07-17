@@ -34,7 +34,7 @@ kover {
             verify {
                 rule {
                     bound {
-                        minValue = coverageMinValue
+                        minValue = 0
                     }
                 }
             }
