@@ -12,7 +12,7 @@ class MovieDetailsViewModelViewModel(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
             movie = MovieUi(
-                id =0,
+                id = 0,
                 posterUrl = "",
                 rating = "",
                 title = "",
@@ -39,7 +39,7 @@ class MovieDetailsViewModelViewModel(
             MovieDetailsScreenState(
                 movieDetailsUiState = MovieDetailsUiState(
                     movie = MovieUi(
-                        id =123,
+                        id = 123,
                         posterUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
                         rating = "8.2",
                         title = "Inception (ID: $mediaId)",
@@ -102,12 +102,12 @@ class MovieDetailsViewModelViewModel(
         navigateUp()
     }
 
-    override fun onFavouriteClick() {
-        TODO("Not yet implemented")
+    override fun onFavouriteClick(title: String) {
+        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
 
-    override fun onAddToListClick() {
-        TODO("Not yet implemented")
+    override fun onAddToListClick(title: String) {
+        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
 
     override fun onShowAllCastClick(movieId: Int) {

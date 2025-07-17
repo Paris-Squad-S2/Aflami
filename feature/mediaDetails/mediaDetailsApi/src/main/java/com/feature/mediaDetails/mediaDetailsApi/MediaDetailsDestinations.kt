@@ -19,4 +19,6 @@ sealed interface MediaDetailsDestinations : MediaDetailsGraph {
     @Serializable
     data class TvShowCastScreen(val tvShowId: Int) : MediaDetailsDestination
 
+    @Serializable
+    data class LoginDialogDestination(val title: String) : MediaDetailsDestination
 }

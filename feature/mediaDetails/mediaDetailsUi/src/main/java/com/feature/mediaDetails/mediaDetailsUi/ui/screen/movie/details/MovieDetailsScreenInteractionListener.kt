@@ -2,7 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 interface MovieDetailsScreenInteractionListener {
     fun onNavigateBack()
-    fun onFavouriteClick()
-    fun onAddToListClick()
+    fun onFavouriteClick(title:String)
+    fun onAddToListClick(title:String)
     fun onShowAllCastClick(movieId: Int)
 }

@@ -26,23 +26,23 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AflamiButton
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.aflami.designsystem.theme.Theme
 
 
 @Composable
 fun LoginDialog(
-    modifier: Modifier = Modifier,
     title: String,
-    content : String,
-    image : Painter,
-    @StringRes buttonTextResId : Int,
     onDismiss: () -> Unit,
-    onLoginClick: () -> Unit
+    onLoginClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    content: String = "Please login to access your account details and other features!",
+    image: Painter = painterResource(R.drawable.ic_aflami_logo),
+    @StringRes buttonTextResId: Int = R.string.login,
 ) {
     Box(
         modifier = modifier

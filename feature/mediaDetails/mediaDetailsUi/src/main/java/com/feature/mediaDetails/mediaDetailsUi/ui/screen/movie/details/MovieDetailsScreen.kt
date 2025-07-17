@@ -17,11 +17,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -30,17 +30,20 @@ import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsViewModelViewModel = koinViewModel()
+    viewModel: MovieDetailsViewModelViewModel = koinViewModel(),
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    MovieDetailsScreenContent(state = state.value, movieDetailsScreenInteractionListener = viewModel)
+    MovieDetailsScreenContent(
+        state = state.value,
+        movieDetailsScreenInteractionListener = viewModel
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
-    movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener
+    movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
     val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
     val chips = listOf(
@@ -104,14 +107,17 @@ fun MovieDetailsScreenContent(
                             reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
                         )
                     }
+
                     "Gallery" -> item {
                         GallerySection(state.movieDetailsUiState.gallery)
                     }
+
                     "Company Production" -> item {
                         ProductionCompanySection(
                             companies = state.movieDetailsUiState.movie.productionCompanies
                         )
                     }
+
                     "More like this" -> item {
                         MoreLikeThisSection(
                             mediaList = listOf(
@@ -130,17 +136,17 @@ fun MovieDetailsScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = {movieDetailsScreenInteractionListener.onNavigateBack()}
+                    onClick = { movieDetailsScreenInteractionListener.onNavigateBack() }
                 )
             ),
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = {}
+                    onClick = { movieDetailsScreenInteractionListener.onAddToListClick("Rate") }
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = {}
+                    onClick = { movieDetailsScreenInteractionListener.onFavouriteClick("Add to list") }
                 )
             )
         )
