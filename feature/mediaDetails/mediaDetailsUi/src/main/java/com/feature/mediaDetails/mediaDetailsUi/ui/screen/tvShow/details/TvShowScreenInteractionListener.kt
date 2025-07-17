@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 interface TvShowScreenInteractionListener {
     fun onNavigateBack()

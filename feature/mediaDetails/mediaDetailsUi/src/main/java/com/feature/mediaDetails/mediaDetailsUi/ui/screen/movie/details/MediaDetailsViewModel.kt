@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute

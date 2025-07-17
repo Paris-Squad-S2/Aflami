@@ -1,13 +1,13 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.CastUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.ProductionCompanyUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.ReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 
 data class TvShowDetailsScreenState(
     val tvShowDetailsUiState : TvShowDetailsUiState,

@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.MovieUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.theme.AflamiTheme

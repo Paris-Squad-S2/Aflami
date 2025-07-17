@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

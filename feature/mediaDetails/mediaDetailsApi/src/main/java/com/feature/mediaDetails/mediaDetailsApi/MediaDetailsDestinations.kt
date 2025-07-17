@@ -14,6 +14,9 @@ sealed interface MediaDetailsDestinations : MediaDetailsGraph {
     data class TvShowDetailsScreen(val tvShowId: Int) : MediaDetailsDestination
 
     @Serializable
-    data class CastScreen(val destination: MediaDetailsDestination) : MediaDetailsDestination
+    data class MovieCastScreen(val movieId: Int) : MediaDetailsDestination
+
+    @Serializable
+    data class TvShowCastScreen(val tvShowId: Int) : MediaDetailsDestination
 
 }

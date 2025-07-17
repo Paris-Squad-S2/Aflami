@@ -8,9 +8,10 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestination
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.cast.CastScreen
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.MovieDetailsScreen
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.TvShowDetailsScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreen
 import org.koin.compose.koinInject
 
 @Composable
@@ -42,6 +43,7 @@ fun NavGraphBuilder.buildDetailsNavGraph(startDestination: MediaDetailsDestinati
     navigation<MediaDetailsDestinations.MediaDetailsGraph1>(startDestination = startDestination ?: MediaDetailsDestinations.MovieDetailsScreen) {
         composable<MediaDetailsDestinations.MovieDetailsScreen> { MovieDetailsScreen() }
         composable<MediaDetailsDestinations.TvShowDetailsScreen> { TvShowDetailsScreen() }
-        composable<MediaDetailsDestinations.CastScreen> { CastScreen() }
+        composable<MediaDetailsDestinations.MovieCastScreen> { MovieCastScreen() }
+        composable<MediaDetailsDestinations.TvShowCastScreen> { TvShowCastScreen() }
     }
 }

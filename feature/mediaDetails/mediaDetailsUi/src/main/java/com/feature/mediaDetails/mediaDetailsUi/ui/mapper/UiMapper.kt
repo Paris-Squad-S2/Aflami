@@ -7,13 +7,13 @@ import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.CastUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.MovieUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.ProductionCompanyUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.ReviewUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.EpisodeUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.SeasonUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.TvShowUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.SeasonUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import kotlinx.datetime.LocalDate
 
 fun Movie.toUi(): MovieUi {

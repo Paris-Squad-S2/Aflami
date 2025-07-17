@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.CastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
