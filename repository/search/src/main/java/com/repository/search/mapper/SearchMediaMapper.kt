@@ -39,14 +39,14 @@ fun ResultDto.toMediaEntity(
     page:Int
 ): MediaEntity? {
     val title = this.title ?: this.name ?: return null
-    val image = this.posterPath ?: this.profilePath ?: ""
     val releaseDateStr = (this.releaseDate?.takeIf { it.isNotBlank() }
         ?: this.firstAirDate?.takeIf { it.isNotBlank() }) ?: return null
 
     return try {
         MediaEntity(
+            id = this.id ?: return null,
             searchQuery = searchQuery,
-            imageUri = "https://image.tmdb.org/t/p/w500/$image",
+            imageUri = imageUrl ?: "",
             title = title,
             type = when (this.mediaType) {
                 "movie" -> MediaTypeEntity.MOVIE
@@ -69,13 +69,13 @@ fun KnownForDto.toMediaEntity(
     page: Int
 ): MediaEntity? {
     val title = this.title ?: return null
-    val image = this.posterPath ?: ""
     val releaseDateStr = this.releaseDate ?: return null
 
     try {
         return MediaEntity(
+            id = this.id ?: return null,
             searchQuery = searchQuery,
-            imageUri = "https://image.tmdb.org/t/p/w500/$image",
+            imageUri = imageUrl ?: "",
             title = title,
             type = when (this.mediaType) {
                 "movie" -> MediaTypeEntity.MOVIE

@@ -1,14 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
 import androidx.lifecycle.viewModelScope
-import androidx.paging.AsyncPagingDataDiffer
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
-import androidx.paging.filter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -17,21 +9,14 @@ import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
+import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.navigation.Destinations
-import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
 
@@ -97,6 +82,7 @@ class SearchViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -172,13 +158,13 @@ class SearchViewModel(
 
     override fun onNavigateToWorldTourScreen() {
         navigate(
-            Destinations.WorldTourScreen()
+            SearchDestinations.WorldTourScreen()
         )
     }
 
     override fun onNavigateToFindByActorScreen() {
         navigate(
-            Destinations.FindByActorScreen()
+            SearchDestinations.FindByActorScreen()
         )
     }
 
@@ -240,6 +226,7 @@ class SearchViewModel(
                     filteredMediaByCategories.map { pagingData  -> pagingData .filter{ it.type == MediaTypeUi.TVSHOW }}
                 emitState(
                     screenState.value.copy(
+                        isLoading = false,
                         searchUiState = screenState.value.searchUiState.copy(
                             moviesResult = moviesResult,
                             tvShowsResult = tvShowsResult,
@@ -370,7 +357,7 @@ class SearchViewModel(
                 tryToExecute(
                     execute = {
                         navigate(
-                            Destinations.WorldTourScreen(
+                            SearchDestinations.WorldTourScreen(
                                 name = searchTitle
                             )
                         )
@@ -389,7 +376,7 @@ class SearchViewModel(
                 tryToExecute(
                     execute = {
                         navigate(
-                            Destinations.FindByActorScreen(
+                            SearchDestinations.FindByActorScreen(
                                 name = searchTitle
                             )
                         )
@@ -446,8 +433,30 @@ class SearchViewModel(
         searchQuery(screenState.value.searchUiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        when (mediaType) {
+                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = id
+                            )
+                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = id
+                            )
+                        }.toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
 

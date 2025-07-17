@@ -2,29 +2,25 @@ package com.feature.search.searchUi.comon.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.paging.LoadState
-import androidx.paging.compose.LazyPagingItems
 import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-
 
 @Composable
 fun SearchResultContent(
     searchResult: LazyPagingItems<MediaUiState>,
-    onMediaCardClick: (Int) -> Unit,
+    onMediaCardClick: (Int, MediaTypeUi) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
     val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
@@ -41,14 +37,16 @@ fun SearchResultContent(
             }
         }
 
-        items(count = searchResult.itemCount) { index ->
+        items(
+            count = searchResult.itemCount,
+        ) { index ->
             val media = searchResult[index]
             media?.let { media->
                 AflamiMediaCard(
                     modifier = Modifier
                         .padding(8.dp)
                         .clickable {
-                            onMediaCardClick(media.id)
+                            onMediaCardClick(media.id,media.type)
                         },
                     imageUri = media.imageUri,
                     rating = media.rating.toFloat(),
@@ -61,7 +59,5 @@ fun SearchResultContent(
                 )
             }
         }
-
     }
-
 }

@@ -3,19 +3,13 @@ package com.feature.search.searchUi.screen.findByActor
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import androidx.paging.cachedIn
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.Destinations
-import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.search.MediaUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
 data class FindByActorScreenState(
@@ -42,7 +36,7 @@ class FindByActorViewModel(
 
 
     init {
-        val initialQuery = savedStateHandle.toRoute<Destinations.FindByActorScreen>().name
+        val initialQuery = savedStateHandle.toRoute<SearchDestinations.FindByActorScreen>().name
         if (initialQuery != null) {
             onSearchQueryChange(initialQuery)
         }
@@ -121,8 +115,30 @@ class FindByActorViewModel(
         searchQuery(screenState.value.uiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int) {
-        //TODO: Navigate to media details screen
+    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        when (mediaType) {
+                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = id
+                            )
+                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = id
+                            )
+                        }.toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
 
