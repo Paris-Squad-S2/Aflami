@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.cast.CastItem
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastItem
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults

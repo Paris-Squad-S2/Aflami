@@ -15,12 +15,12 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ProductionCompanySection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ReviewsSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.cast.CastSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar

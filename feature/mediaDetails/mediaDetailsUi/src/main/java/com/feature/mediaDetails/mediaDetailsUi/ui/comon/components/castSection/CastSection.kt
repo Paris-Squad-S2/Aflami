@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.cast
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

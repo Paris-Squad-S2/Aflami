@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

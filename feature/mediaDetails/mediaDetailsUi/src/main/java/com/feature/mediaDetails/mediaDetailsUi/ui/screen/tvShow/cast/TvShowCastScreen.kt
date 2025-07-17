@@ -19,7 +19,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.lazy.items
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.cast.CastItem
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastItem
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar

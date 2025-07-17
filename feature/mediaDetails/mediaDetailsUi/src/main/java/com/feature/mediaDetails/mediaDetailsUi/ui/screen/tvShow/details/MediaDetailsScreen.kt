@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
-import SeasonHeader
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,13 +16,14 @@ import androidx.compose.ui.res.vectorResource
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.domain.mediaDetails.model.Episode
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ProductionCompanySection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ReviewsSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.cast.CastSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -110,7 +110,7 @@ fun TvShowDetailsScreenContent(
                             val season = state.tvShowDetailsUiState.seasons[seasonIndex]
                             val isExpanded = expandedStates.value[seasonIndex]
 
-                            SeasonHeader(
+                            SeasonSection(
                                 seasonNumber = seasonIndex + 1,
                                 numberOfEpisodes = season.episodes.size,
                                 episodes = season.episodes.map {

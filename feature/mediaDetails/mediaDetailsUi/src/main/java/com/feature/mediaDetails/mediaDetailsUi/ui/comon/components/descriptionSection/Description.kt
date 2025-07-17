@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

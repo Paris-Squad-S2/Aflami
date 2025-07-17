@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
@@ -30,6 +31,7 @@ class MovieDetailsViewModelViewModel(
                 errorMessage = null
             )
     ) {
+
     init {
         val mediaId =
             savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId

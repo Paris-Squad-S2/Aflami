@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.cast
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Column
