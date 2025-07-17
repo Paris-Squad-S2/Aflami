@@ -1,7 +1,6 @@
 package com.feature.search.searchUi.screen.findByActor
 
 import androidx.paging.PagingSource
-import androidx.paging.map
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.useCases.GetMediaByActorNameUseCase
@@ -9,13 +8,11 @@ import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.aflami.appnavigation.AppNavigator
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -26,7 +23,6 @@ import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.koin.mp.KoinPlatform.getKoin
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 

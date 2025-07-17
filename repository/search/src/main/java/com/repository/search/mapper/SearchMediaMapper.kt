@@ -36,8 +36,7 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 fun ResultDto.toMediaEntity(
     searchQuery: String,
     searchType: SearchType,
-    page:Int
-    searchType: SearchType,
+    page:Int,
     language: String
 ): MediaEntity? {
     val title = this.title ?: this.name ?: return null
@@ -101,7 +100,7 @@ fun KnownForDto.toMediaEntity(
 
 fun ResultDto.toMediaEntityForActors(
     searchQuery: String,
-    page:Int
+    page:Int,
     language: String
 ): List<MediaEntity?> {
     return this.knownForDTO?.map {

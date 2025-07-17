@@ -12,13 +12,20 @@ import com.domain.search.exception.NoDataForActorException
 import com.domain.search.exception.NoDataForCountryException
 import com.domain.search.exception.NoDataForSearchException
 import com.domain.search.exception.NoInternetConnectionException
+import com.repository.search.dto.ResultDto
+import com.repository.search.dto.SearchDto
 import com.repository.search.mapper.toMedia
+import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
 import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -123,7 +130,7 @@ class SearchMediaRepositoryImplTest {
         )
         coEvery { searchRemoteDataSource.searchPerson(actorName, page = page, language = any()) } returns mockDto
         mockkStatic("com.repository.search.mapper.SearchMediaMapperKt")
-        every { mockDto.toMediaEntitiesForActors(actorName, page) } returns mockEntities
+        every { mockDto.toMediaEntitiesForActors(actorName, page,language) } returns mockEntities
 
         coEvery { historyLocalDataSource.addSearchQuery(actorName, SearchType.Actor) } just Runs
         coEvery { mediaLocalDataSource.addAllMedia(mockEntities) } just Runs
@@ -134,7 +141,7 @@ class SearchMediaRepositoryImplTest {
 
         assertEquals("madrid", result.first().title)
 
-        coVerify {
+        coVerify{
             searchRemoteDataSource.searchPerson(actorName, page = page, language = any())
             mediaLocalDataSource.addAllMedia(mockEntities)
             historyLocalDataSource.addSearchQuery(actorName, SearchType.Actor)

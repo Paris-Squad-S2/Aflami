@@ -28,7 +28,6 @@ data class MediaEntity(
     val searchQuery: String,
     val searchType: SearchType,
     val page:Int,
-    val searchType: SearchType,
     val language: String
 )
 

@@ -18,7 +18,7 @@ suspend fun <T : Any> Flow<PagingData<T>>.collectAllItems(): List<T> {
                 oldItem == newItem
 
             override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
-                oldItem == newItem
+                oldItem.equals(newItem)
         },
         updateCallback = NoopListUpdateCallback(),
         mainDispatcher = Dispatchers.Main,
