@@ -2,6 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -26,6 +27,7 @@ fun MoreLikeThisSection(
     ) {
         mediaList.forEach { media ->
             AflamiMediaCard(
+                modifier = modifier.fillMaxWidth(),
                 imageUri = media.posterUrl,
                 rating = media.rating.toFloat(),
                 movieName = media.title,
@@ -34,7 +36,8 @@ fun MoreLikeThisSection(
                 mediaCardType = MediaCardType.UP_COMING,
                 showGradientFilter = true,
                 clickable = true,
-                onClick = onClick
+                onClick = onClick,
+                cardWidth = null
             )
         }
     }
