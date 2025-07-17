@@ -22,7 +22,8 @@ class CountriesLocalDataSourceImplTest {
         countriesLocalDataSource = CountriesLocalDataSourceImpl(countryDao)
         sampleCountry = CountryEntity(
             countryCode = "ps",
-            name = "palestine"
+            englishName = "palestine",
+            arabicName = "فلسطين"
         )
     }
 
