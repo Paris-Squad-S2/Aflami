@@ -16,11 +16,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -47,7 +45,7 @@ fun CompanyProductionCard(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
-            contentScale = ContentScale.Fit,
+            contentScale = ContentScale.Crop,
             placeholder = painterResource(id = R.drawable.ic_film_roll),
             error = painterResource(id = R.drawable.img_disconnect)
         )
@@ -75,17 +73,5 @@ fun CompanyProductionCard(
                 maxLines = 1,
             )
         }
-    }
-}
-
-@PreviewLightDark
-@Composable
-fun CompanyProductionCardPreview() {
-    AflamiTheme {
-        CompanyProductionCard(
-            imageUrl = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
-            companyName = "Universal",
-            countryName = "US"
-        )
     }
 }
