@@ -1,6 +1,10 @@
 package com.repository.movie.repository
 
+import com.domain.mediaDetails.exception.NoGalleryMovieDetailsFoundException
+import com.domain.mediaDetails.exception.NoMovieDetailsFoundException
+import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
+import com.domain.mediaDetails.model.Review
 import com.repository.movie.dataSource.local.CastLocalDataSource
 import com.repository.movie.dataSource.local.GalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -23,6 +27,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 
 class MovieRepositoryImplTest {
@@ -64,6 +69,7 @@ class MovieRepositoryImplTest {
         } returns mockMovieDto
 
         coEvery { movieLocalDataSource.getMovie(movieId) } returns mockMovieDto.toLocalDto()
+        coEvery { movieLocalDataSource.addMovie(any()) } returns Unit
 
         // When
         val result = movieRepository.getMovieDetails(movieId)
@@ -73,14 +79,13 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun `getMovieDetails - should return movie details from remote when local is empty`() =
+    fun `getMovieDetails - should throw MovieDetailsFoundException when local is empty`() =
         runTest {
             // Given
             val movieId = 550
             val language = "en"
-            val expectedMovie = mockMovieDto.toEntity()
 
-            // When
+            // When && Then
             coEvery { movieLocalDataSource.getMovie(movieId) } returns null andThen mockMovieDto.toLocalDto()
 
             coEvery {
@@ -88,12 +93,9 @@ class MovieRepositoryImplTest {
             } returns mockMovieDto
 
             coEvery { movieLocalDataSource.addMovie(any()) } returns Unit
-
-            val result = movieRepository.getMovieDetails(movieId)
-
-            // Then
-            assertEquals(expectedMovie, result)
-            coVerify { movieLocalDataSource.addMovie(mockMovieDto.toLocalDto()) }
+            assertThrows<NoMovieDetailsFoundException> {
+                movieRepository.getMovieDetails(movieId)
+            }
 
         }
 
@@ -112,6 +114,7 @@ class MovieRepositoryImplTest {
                 language
             )
         } returns mockMovieCreditsDto
+        coEvery { castLocalDataSource.addCast(any()) } returns Unit
 
         val castLocal =
             mockMovieCreditsDto.cast?.map { it.toEntity() }?.map { it.toLocalDto() } ?: emptyList()
@@ -131,12 +134,11 @@ class MovieRepositoryImplTest {
         val movieId = 550
         val language = "en"
 
-        val expectedMovieCast = mockMovieCreditsDto.cast?.map { it.toEntity() } ?: emptyList()
 
         // When
         coEvery {
             castLocalDataSource.getCastByMovieId(movieId)
-        } returns emptyList() andThen expectedMovieCast.map { it.toLocalDto() }
+        } returns emptyList() andThen emptyList()
 
         coEvery {
             movieDetailsRemoteDataSource.getMovieCredits(
@@ -153,7 +155,7 @@ class MovieRepositoryImplTest {
         coVerify {
             castLocalDataSource.addCast(any())
         }
-        assertEquals(expectedMovieCast, result)
+        assertEquals(emptyList<Cast>(), result)
     }
 
     @Test
@@ -195,6 +197,8 @@ class MovieRepositoryImplTest {
             )
         } returns mockMovieImagesDto
 
+        coEvery { galleryLocalDataSource.addGallery(any()) } returns Unit
+
         val imageLocal =
             mockMovieImagesDto.logos?.map { it.toEntity(movieId) }?.map { it.toLocalDto() }
                 ?: emptyList()
@@ -220,11 +224,8 @@ class MovieRepositoryImplTest {
 
             val expectedImages =
                 mockMovieImagesDto.logos?.map { it.toEntity(movieId) } ?: emptyList()
-            val expectedGallery = Gallery(
-                images = expectedImages,
-            )
 
-            // When
+            // When && Then
             coEvery {
                 galleryLocalDataSource.getGalleryByMovieId(movieId)
             } returns null andThen GalleryEntity(
@@ -237,12 +238,9 @@ class MovieRepositoryImplTest {
 
             coEvery { galleryLocalDataSource.addGallery(any()) } returns Unit
 
-            val result = movieRepository.getMovieGallery(movieId)
-
-            // Then
-            assertEquals(expectedGallery, result)
-
-            coVerify { galleryLocalDataSource.addGallery(any()) }
+            assertThrows<NoGalleryMovieDetailsFoundException> {
+                movieRepository.getMovieGallery(movieId)
+            }
         }
 
     @Test
@@ -277,7 +275,8 @@ class MovieRepositoryImplTest {
             val page = 1
 
 
-            val mockMovieReviewsDto = MovieReviewsDto(results = listOf(review.toRemoteDto()))
+            val mockMovieReviewsDto =
+                MovieReviewsDto(results = listOf(review.toEntity().toRemoteDto()))
 
             val expectedCast = mockMovieReviewsDto.results?.map { it.toEntity() }
 
@@ -287,6 +286,8 @@ class MovieRepositoryImplTest {
                     movieId, page, language
                 )
             } returns mockMovieReviewsDto
+
+            coEvery { reviewLocalDataSource.addReview(any()) } returns Unit
 
             val reviewLocal =
                 mockMovieReviewsDto.results?.map { it.toEntity().toLocalDto() } ?: emptyList()
@@ -306,13 +307,12 @@ class MovieRepositoryImplTest {
         val language = "en"
         val page = 1
 
-        val mockMovieReviewsDto = MovieReviewsDto(results = listOf(review.toRemoteDto()))
-        val expectedReview = mockMovieReviewsDto.results?.map { it.toEntity() } ?: emptyList()
+        val mockMovieReviewsDto = MovieReviewsDto(results = listOf(review.toEntity().toRemoteDto()))
 
         // When
         coEvery {
             reviewLocalDataSource.getReviewsForMovie(movieId)
-        } returns emptyList() andThen expectedReview.map { it.toLocalDto() }
+        } returns emptyList() andThen emptyList()
 
         coEvery {
             movieDetailsRemoteDataSource.getMovieReviews(
@@ -328,7 +328,7 @@ class MovieRepositoryImplTest {
 
         // Then
         coVerify { reviewLocalDataSource.addReview(any()) }
-        assertEquals(expectedReview, result)
+        assertEquals(emptyList<Review>(), result)
     }
 
 }

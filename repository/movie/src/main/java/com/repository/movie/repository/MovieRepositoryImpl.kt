@@ -1,5 +1,6 @@
 package com.repository.movie.repository
 
+import com.domain.mediaDetails.exception.NoGalleryMovieDetailsFoundException
 import com.domain.mediaDetails.exception.NoMovieDetailsFoundException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
@@ -39,34 +40,29 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieDetails(movieId: Int): Movie {
         return safeCall {
-            val localMovie = movieLocalDataSource.getMovie(movieId)
-            val lastUpdate = movieLocalDataSource.getMovie(movieId)?.movieCacheDate
-            lastUpdate?.let {
-                if (localMovie == null && !isDataFresh(it)) {
-                    val movieRemote =
-                        movieDetailsRemoteDataSource.getMovieDetails(movieId, language).toLocalDto()
-                    movieLocalDataSource.addMovie(movieRemote)
-                }
-            }
+            val movieRemote =
+                movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
 
-            localMovie?.toEntity()
+            movieLocalDataSource.getMovie(movieId)
+                .takeIf { it != null && isDataFresh(it.movieCacheDate) }
+                .also { movieLocalDataSource.addMovie(movieRemote.toLocalDto()) }
+                ?.toEntity()
                 ?: throw NoMovieDetailsFoundException()
         }
     }
 
     override suspend fun getMovieCast(movieId: Int): List<Cast> {
         return safeCall {
-            val localCast = castLocalDataSource.getCastByMovieId(movieId)
-            val castFilter = localCast.filter {
-                !isDataFresh(it.castCacheDate)
-            }
-            if (castFilter.isEmpty()) {
-                val movieCast =
-                    movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
-                        .cast?.map { it.toEntity() } ?: emptyList()
-                castLocalDataSource.addCast(movieCast.map { it.toLocalDto() })
-            }
-            localCast.map { it.toEntity() }
+            val movieCast =
+                movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
+                    .cast?.map { it.toEntity() } ?: emptyList()
+
+            castLocalDataSource.getCastByMovieId(movieId)
+                .filter { isDataFresh(it.castCacheDate) }
+                .takeIf { it.isNotEmpty() }
+                .also { castLocalDataSource.addCast(movieCast.map { it.toLocalDto() }) }
+                ?.map { it.toEntity() }
+                ?: emptyList()
         }
     }
 
@@ -82,25 +78,22 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieGallery(movieId: Int): Gallery {
         return safeCall {
-            val localGallery = galleryLocalDataSource.getGalleryByMovieId(movieId)
-            val lastUpdate = galleryLocalDataSource.getGalleryByMovieId(movieId)?.galleryCacheDate
-           lastUpdate?.let {
-               if (localGallery == null && !isDataFresh(it)) {
-                   val movieImage =
-                       movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity().images
+            val movieImage =
+                movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity().images
 
-                   galleryLocalDataSource.addGallery(
-                       GalleryEntity(
-                           movieId = movieId,
-                           images = movieImage.map { it.toLocalDto() },
-                           id = 0
-                       )
-                   )
-               }
-           }
-
-            localGallery?.toEntity()
-                ?: throw NoMovieDetailsFoundException()
+            galleryLocalDataSource.getGalleryByMovieId(movieId)
+                .takeIf { it != null && isDataFresh(it.galleryCacheDate) }
+                .also {
+                    galleryLocalDataSource.addGallery(
+                        GalleryEntity(
+                            movieId = movieId,
+                            images = movieImage.map { it.toLocalDto() },
+                            id = 0
+                        )
+                    )
+                }
+                ?.toEntity()
+                ?: throw NoGalleryMovieDetailsFoundException()
         }
     }
 
@@ -117,17 +110,16 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieReview(movieId: Int, page: Int): List<Review> {
         return safeCall {
-            val localReview = reviewLocalDataSource.getReviewsForMovie(movieId)
-            val reviewFilter = localReview.filter {
-                !isDataFresh(it.reviewCacheDate)
-            }
-            if (reviewFilter.isEmpty()) {
-                val movieCast =
-                    movieDetailsRemoteDataSource.getMovieReviews(movieId,page, language)
-                        .results?.map { it.toEntity() } ?: emptyList()
-                reviewLocalDataSource.addReview(movieCast.map { it.toLocalDto() })
-            }
-            localReview.map { it.toEntity() }
+            val movieCast =
+                movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
+                    .results?.map { it.toEntity() } ?: emptyList()
+
+            reviewLocalDataSource.getReviewsForMovie(movieId)
+                .filter { isDataFresh(it.reviewCacheDate) }
+                .takeIf { it.isNotEmpty() }
+                .also { reviewLocalDataSource.addReview(movieCast.map { it.toLocalDto() }) }
+                ?.map { it.toEntity() }
+                ?: emptyList()
         }
     }
 

@@ -1,6 +1,7 @@
 package com.repository.movie.testUtils
 
 import com.repository.movie.mapper.toEntity
+import com.repository.movie.models.local.MovieEntity
 import com.repository.movie.models.local.ReviewEntity
 import com.repository.movie.models.remote.MovieCastDto
 import com.repository.movie.models.remote.MovieCreditsDto
@@ -50,4 +51,4 @@ val review = ReviewEntity(
     avatarUrl = "",
     username = "",
     rating = 2.2
-).toEntity()
+)
