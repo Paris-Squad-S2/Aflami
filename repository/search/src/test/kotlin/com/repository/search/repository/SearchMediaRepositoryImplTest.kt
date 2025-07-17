@@ -12,13 +12,25 @@ import com.domain.search.exception.NoDataForActorException
 import com.domain.search.exception.NoDataForCountryException
 import com.domain.search.exception.NoDataForSearchException
 import com.domain.search.exception.NoInternetConnectionException
+import com.domain.search.model.Media
+import com.domain.search.model.MediaType
+import com.repository.search.dto.ResultDto
+import com.repository.search.dto.SearchDto
 import com.repository.search.mapper.toMedia
+import com.repository.search.mapper.toMediaEntitiesForActors
+import com.repository.search.mapper.toMediaEntityForActors
 import com.repository.search.mapper.toMedias
+import com.repository.search.util.getCurrentDate
 import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
+import io.mockk.mockkStatic
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.DateTimeUnit
 import kotlinx.datetime.LocalDate
@@ -84,36 +96,57 @@ class SearchMediaRepositoryImplTest {
         assertEquals(cachedMedia.toMedias(), result)
     }
 
-    @OptIn(ExperimentalTime::class)
     @Test
-    fun `getMediaByActor should fetch remotely if cache is expired`() = runTest {
-        val actorName = "Tom Cruise"
+    fun `getMediaByActor should fetch from remote and save to local when online and cache expired`() = runTest {
+        val actorName = "Tom"
         val page = 1
 
-        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page) } returns listOf(
+        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page) } returns emptyList()
+        coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
+
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+
+        val mockDto = SearchDto(
+            page = 1,
+            results =listOf(
+                ResultDto(
+                    title = "madrid"
+                )
+            ),
+            totalPages = 1,
+            totalResults = 1
+        )
+        val mockEntities = listOf(
             MediaEntity(
                 id = 1,
-                searchQuery = actorName,
-                imageUri = "old.jpg",
-                title = "Old Movie",
+                imageUri = "",
+                title = "madrid",
                 type = MediaTypeEntity.MOVIE,
-                category = listOf(1),
-                yearOfRelease = LocalDate(2023, 1, 1),
-                rating = 7.8,
+                category = listOf(),
+                yearOfRelease = LocalDate(2022, 1, 1),
+                rating = 2.2,
+                searchQuery = actorName,
                 searchType = SearchType.Actor,
-                page = 1
+                page = 1,
             )
-        ) andThen emptyList()
+        )
+        coEvery { searchRemoteDataSource.searchPerson(actorName, page = page, language = any()) } returns mockDto
+        mockkStatic("com.repository.search.mapper.SearchMediaMapperKt")
+        every { mockDto.toMediaEntitiesForActors(actorName, page) } returns mockEntities
 
-        coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(actorName, SearchType.Actor) } just Runs
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { searchRemoteDataSource.searchPerson(actorName, page = page, language = any()) } returns mockk(relaxed = true)
-        coEvery { mediaLocalDataSource.addAllMedia(any()) } just Runs
         coEvery { historyLocalDataSource.addSearchQuery(actorName, SearchType.Actor) } just Runs
+        coEvery { mediaLocalDataSource.addAllMedia(mockEntities) } just Runs
+        coEvery { mediaLocalDataSource.getMediaByActor(actorName, page) } returns mockEntities
 
+        val result = repository.getMediaByActor(actorName, page)
+        advanceUntilIdle()
 
-        assertFailsWith<NoDataForActorException> {
-            repository.getMediaByActor(actorName, page)
+        assertEquals("madrid", result.first().title)
+
+        coVerify {
+            searchRemoteDataSource.searchPerson(actorName, page = page, language = any())
+            mediaLocalDataSource.addAllMedia(mockEntities)
+            historyLocalDataSource.addSearchQuery(actorName, SearchType.Actor)
         }
     }
 
