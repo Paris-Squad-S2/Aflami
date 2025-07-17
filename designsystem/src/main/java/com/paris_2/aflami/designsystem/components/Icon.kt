@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
 fun Icon(
@@ -19,5 +21,16 @@ fun Icon(
         contentDescription = contentDescription,
         modifier = modifier,
         tint = tint
+    )
+}
+
+@Composable
+@Preview
+fun IconPreview() {
+    Icon(
+        imageVector = ImageVector.vectorResource(id = com.paris_2.aflami.designsystem.R.drawable.ic_launcher_foreground),
+        contentDescription = "Preview Icon",
+        modifier = Modifier,
+        tint = Color.Unspecified
     )
 }

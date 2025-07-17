@@ -7,6 +7,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
 fun AflamiScafold(
@@ -25,4 +26,13 @@ fun AflamiScafold(
             content()
         }
     }
+}
+
+@Composable
+@PreviewMultiDevices
+fun AflamiScafoldPreview() {
+    AflamiScafold(
+        bottomBar = { },
+        content = { }
+    )
 }
