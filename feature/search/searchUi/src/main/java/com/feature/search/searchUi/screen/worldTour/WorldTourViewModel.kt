@@ -124,7 +124,8 @@ class WorldTourViewModel(
                     pagingSourceFactory = {
                         WorldTourPagingSource(
                             countryName = query,
-                            getMoviesByCountryUseCase = getMoviesByCountryUseCase
+                            getMoviesByCountryUseCase = getMoviesByCountryUseCase,
+                            sortingMediaByCategoriesInteractionUseCase
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
