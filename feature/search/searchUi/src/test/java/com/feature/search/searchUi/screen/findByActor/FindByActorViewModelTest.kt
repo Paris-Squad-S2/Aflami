@@ -147,7 +147,7 @@ class FindByActorViewModelTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
         coEvery { getMediaByActorNameUseCase(testQuery, any()) } throws Exception(errorMessage)
-        val pagingSource = FindByActorPagingSource(testQuery, getMediaByActorNameUseCase)
+        val pagingSource = FindByActorPagingSource(testQuery, getMediaByActorNameUseCase,sortingMediaByCategoriesInteractionUseCase)
         val result = pagingSource.load(
             PagingSource.LoadParams.Refresh(
                 key = null,
