@@ -13,8 +13,6 @@ import com.domain.mediaDetails.exception.ServerException
 import com.domain.mediaDetails.exception.UnauthorizedException
 import com.domain.mediaDetails.exception.UnknownException
 import com.domain.mediaDetails.model.MovieSimilar
-import com.repository.movie.dataSource.local.CastLocalDataSource
-import com.repository.movie.dataSource.local.GalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
