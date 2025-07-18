@@ -58,6 +58,36 @@ class MovieDetailsViewModelViewModel(
                                 logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
                                 name = "Syncopy",
                                 originCountry = "UK"
+                            ),
+                            ProductionCompanyUi(
+                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
+                                name = "Syncopy",
+                                originCountry = "UK"
+                            ),
+                            ProductionCompanyUi(
+                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
+                                name = "Syncopy",
+                                originCountry = "UK"
+                            ),
+                            ProductionCompanyUi(
+                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
+                                name = "Syncopy",
+                                originCountry = "UK"
+                            ),
+                            ProductionCompanyUi(
+                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
+                                name = "Syncopy",
+                                originCountry = "UK"
+                            ),
+                            ProductionCompanyUi(
+                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
+                                name = "Syncopy",
+                                originCountry = "UK"
+                            ),
+                            ProductionCompanyUi(
+                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
+                                name = "Syncopy",
+                                originCountry = "UK"
                             )
                         )
                     ),

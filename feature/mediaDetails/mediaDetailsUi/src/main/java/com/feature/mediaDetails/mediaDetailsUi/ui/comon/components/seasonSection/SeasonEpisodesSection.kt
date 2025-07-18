@@ -39,9 +39,9 @@ fun SeasonEpisodesSection(
                 EpisodeCard(
                     episodeRating = episode.voteAverage.toFloat(),
                     episodeNumber = episode.episodeNumber.toString(),
-                    episodeTitle = "Episode ${episode.episodeNumber}",
-                    episodeDuration = "${episode.runtime} min",
-                    episodeDate = episode.airDate.toJavaLocalDate().toString(),
+                    episodeTitle = episode.episodeNumber.toString(),
+                    episodeDuration = episode.runtime.toString(),
+                    episodeDate = episode.airDate.toString(),
                     episodeDescription = episode.description,
                     modifier = Modifier.fillMaxWidth()
                 )

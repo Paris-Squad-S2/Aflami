@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,12 +49,11 @@ fun MovieDetailsScreenContent(
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
     val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
-    val chips = listOf(
-        "More like this" to R.drawable.ic_camera_video,
-        "Reviews" to R.drawable.ic_starr,
-        "Gallery" to R.drawable.ic_album,
-        "Company Production" to R.drawable.ic_city
-    )
+    val movieChips = MovieChips.entries
+
+    val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
+    val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
+
     Box(
         Modifier
             .fillMaxSize()
@@ -98,42 +98,50 @@ fun MovieDetailsScreenContent(
             }
             item {
                 ChipsRowSection(
-                    items = chips,
+                    items = movieChips.map { chip ->
+                        stringResource(chip.titleResId) to chip.iconResId
+                    },
                     selectedIndex = selectedIndex.value,
                     onItemSelected = { selectedIndex.value = it }
                 )
+
             }
+
             selectedIndex.value?.let { index ->
-                when (chips[index].first) {
-                    "Reviews" -> item {
+                when (movieChips[index]) {
+
+                    MovieChips.MORE_LIKE_THIS -> item {
+                        MoreLikeThisSection(
+                            mediaList = listOf(
+                                state.movieDetailsUiState.movie,
+                                state.movieDetailsUiState.movie.copy(title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.another_movie))
+                            ),
+                            onClick = {},
+                            mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie)
+                        )
+                    }
+
+                    MovieChips.REVIEWS -> item {
                         ReviewsSection(
                             reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
                         )
                     }
 
-                    "Gallery" -> item {
+                    MovieChips.GALLERY -> item {
                         GallerySection(state.movieDetailsUiState.gallery)
                     }
 
-                    "Company Production" -> item {
+                    MovieChips.COMPANY_PRODUCTION -> item {
                         ProductionCompanySection(
                             companies = state.movieDetailsUiState.movie.productionCompanies,
-                            modifier = Modifier.padding(horizontal = 16.dp).padding(top =12.dp)
-                        )
-                    }
-
-                    "More like this" -> item {
-                        MoreLikeThisSection(
-                            mediaList = listOf(
-                                state.movieDetailsUiState.movie,
-                                state.movieDetailsUiState.movie.copy(title = "Another Movie")
-                            ),
-                            onClick = {},
-                            mediaType = "Movie"
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .padding(top = 12.dp)
                         )
                     }
                 }
             }
+
         }
 
         TopAppBar(
@@ -146,12 +154,16 @@ fun MovieDetailsScreenContent(
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = { movieDetailsScreenInteractionListener.onFavouriteClick("Rate") }
+                    onClick = {
+                        movieDetailsScreenInteractionListener.onFavouriteClick(rate)
+                    }
 
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = { movieDetailsScreenInteractionListener.onAddToListClick("Add to list") }
+                    onClick = {
+                        movieDetailsScreenInteractionListener.onAddToListClick(addToList)
+                    }
                 )
             )
         )

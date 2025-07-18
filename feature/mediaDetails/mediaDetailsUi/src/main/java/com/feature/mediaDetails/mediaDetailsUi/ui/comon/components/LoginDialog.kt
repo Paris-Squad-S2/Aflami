@@ -23,6 +23,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -40,7 +41,7 @@ fun LoginDialog(
     onDismiss: () -> Unit,
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
-    content: String = "Please login to access your account details and other features!",
+    content: String = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.please_login_to_access_your_account_details_and_other_features),
     image: Painter = painterResource(com.feature.mediaDetails.mediaDetailsUi.R.drawable.profile_placholder),
     @StringRes buttonTextResId: Int = R.string.login,
 ) {

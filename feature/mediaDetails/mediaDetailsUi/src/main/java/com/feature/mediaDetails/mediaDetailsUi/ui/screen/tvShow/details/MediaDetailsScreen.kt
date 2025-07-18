@@ -13,6 +13,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -26,6 +27,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowChips
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -48,13 +50,9 @@ fun TvShowDetailsScreenContent(
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
 ) {
     val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
-    val chips = listOf(
-        "Seasons" to R.drawable.ic_season,
-        "More like this" to R.drawable.ic_camera_video,
-        "Reviews" to R.drawable.ic_starr,
-        "Gallery" to R.drawable.ic_album,
-        "Company Production" to R.drawable.ic_city
-    )
+    val tvChips = TvShowChips.entries
+    val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
+    val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
 
     val expandedStates = rememberSaveable(state.tvShowDetailsUiState.seasons.size) {
         mutableStateOf(List(state.tvShowDetailsUiState.seasons.size) { false })
@@ -104,16 +102,18 @@ fun TvShowDetailsScreenContent(
             }
             item {
                 ChipsRowSection(
-                    items = chips,
+                    items = tvChips.map {
+                        stringResource(it.titleResId) to it.iconResId
+                    },
                     selectedIndex = selectedIndex.value,
                     onItemSelected = { selectedIndex.value = it }
                 )
             }
 
             selectedIndex.value?.let { index ->
-                when (chips[index].first) {
+                when (tvChips[index]) {
 
-                    "Seasons" -> {
+                    TvShowChips.SEASONS -> {
                         items(state.tvShowDetailsUiState.seasons.size) { seasonIndex ->
                             val season = state.tvShowDetailsUiState.seasons[seasonIndex]
                             val isExpanded = expandedStates.value[seasonIndex]
@@ -144,30 +144,30 @@ fun TvShowDetailsScreenContent(
                         }
                     }
 
-                    "Reviews" -> item {
+                    TvShowChips.MORE_LIKE_THIS -> item {
+                        MoreLikeThisSection(
+                            mediaList = listOf(
+                                state.tvShowDetailsUiState.tvShowUi,
+                                state.tvShowDetailsUiState.tvShowUi.copy(title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.another_tvshow))
+                            ),
+                            onClick = {},
+                            mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
+                        )
+                    }
+
+                    TvShowChips.REVIEWS -> item {
                         ReviewsSection(
                             reviews = state.tvShowDetailsUiState.reviews.takeIf { it.isNotEmpty() }
                         )
                     }
 
-                    "Gallery" -> item {
+                    TvShowChips.GALLERY -> item {
                         GallerySection(state.tvShowDetailsUiState.gallery)
                     }
 
-                    "Company Production" -> item {
+                    TvShowChips.COMPANY_PRODUCTION -> item {
                         ProductionCompanySection(
                             companies = state.tvShowDetailsUiState.tvShowUi.productionCompanies
-                        )
-                    }
-
-                    "More like this" -> item {
-                        MoreLikeThisSection(
-                            mediaList = listOf(
-                                state.tvShowDetailsUiState.tvShowUi,
-                                state.tvShowDetailsUiState.tvShowUi.copy(title = "Another TvShow")
-                            ),
-                            onClick = {},
-                            mediaType = "TvShow"
                         )
                     }
                 }
@@ -184,11 +184,11 @@ fun TvShowDetailsScreenContent(
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = { tvShowScreenInteractionListener.onFavouriteClick("Rate") }
+                    onClick = { tvShowScreenInteractionListener.onFavouriteClick(rate) }
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = { tvShowScreenInteractionListener.onAddToListClick("Add to list") }
+                    onClick = { tvShowScreenInteractionListener.onAddToListClick(addToList) }
                 )
             )
         )
