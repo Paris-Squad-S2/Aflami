@@ -123,7 +123,7 @@ class SearchViewModelTest {
                 getAllCategoriesUseCase,
                 filterMediaByRatingUseCase,
                 filterMedByListOfCategoriesUseCase,
-                appNavigator=  mockk(relaxed = true)
+                appNavigator = mockk(relaxed = true)
             )
         )
     }
@@ -145,12 +145,13 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
-            appNavigator=  mockk(relaxed = true)
+            appNavigator = mockk(relaxed = true)
         )
 
         advanceUntilIdle()
 
-        assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(recentSearches.map { it.searchTitle })
+        assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(
+            recentSearches.map { it.searchTitle })
         assertThat(viewModel.screenState.value.errorMessage).isNull()
     }
 
@@ -167,7 +168,7 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
-            appNavigator=  mockk(relaxed = true)
+            appNavigator = mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -188,7 +189,7 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
-            appNavigator=  mockk(relaxed = true)
+            appNavigator = mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -212,8 +213,8 @@ class SearchViewModelTest {
 
             advanceUntilIdle()
 
-            coVerify(exactly = 0) { searchByQueryUseCase(query1,any()) }
-            coVerify(exactly = 1) { searchByQueryUseCase(query2,any()) }
+            coVerify(exactly = 0) { searchByQueryUseCase(query1, any()) }
+            coVerify(exactly = 1) { searchByQueryUseCase(query2, any()) }
         }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -222,7 +223,7 @@ class SearchViewModelTest {
         val query = "error_query"
         val errorMessage = "Network unavailable"
 
-        coEvery { searchByQueryUseCase(query,any()) } throws RuntimeException(errorMessage)
+        coEvery { searchByQueryUseCase(query, any()) } throws RuntimeException(errorMessage)
 
         viewModel.onSearchQueryChange(query)
         advanceUntilIdle()
@@ -230,10 +231,18 @@ class SearchViewModelTest {
         assertThat(viewModel.screenState.value.isLoading).isFalse()
         assertThat(viewModel.screenState.value.errorMessage).isNotEmpty()
 
-        assertThat(viewModel.screenState.value.searchUiState.moviesResult.collectAllItems()).isEmpty()
-        assertThat(viewModel.screenState.value.searchUiState.tvShowsResult.collectAllItems()).isEmpty()
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()).isEmpty()
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems()).isEmpty()
+        val moviesResult = viewModel.screenState.value.searchUiState.moviesResult.collectAllItems()
+        val tvShowsResult =
+            viewModel.screenState.value.searchUiState.tvShowsResult.collectAllItems()
+        val filteredMoviesResult =
+            viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
+        val filteredTvShowsResult =
+            viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems()
+
+        assertThat(moviesResult).isEmpty()
+        assertThat(tvShowsResult).isEmpty()
+        assertThat(filteredMoviesResult).isEmpty()
+        assertThat(filteredTvShowsResult).isEmpty()
 
     }
 
@@ -243,15 +252,21 @@ class SearchViewModelTest {
 
         val newTabIndex1 = 1
         viewModel.onSelectTab(newTabIndex1)
-        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(newTabIndex1)
+        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(
+            newTabIndex1
+        )
 
         val newTabIndex2 = 2
         viewModel.onSelectTab(newTabIndex2)
-        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(newTabIndex2)
+        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(
+            newTabIndex2
+        )
 
         val newTabIndex0 = 0
         viewModel.onSelectTab(newTabIndex0)
-        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(newTabIndex0)
+        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(
+            newTabIndex0
+        )
     }
 
     @Test
@@ -335,11 +350,15 @@ class SearchViewModelTest {
         advanceUntilIdle()
 
         assertThat(viewModel.screenState.value.isLoading).isFalse()
-        assertThat(viewModel.screenState.value.searchUiState.selectedRating).isEqualTo(selectedRating)
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems().map { it.title }).isEqualTo(
-            finalFilteredMovies.map { it.title }
+        assertThat(viewModel.screenState.value.searchUiState.selectedRating).isEqualTo(
+            selectedRating
         )
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems().map { it.title }).isEqualTo(
+        val filteredMovies =
+            viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
+        val filteredTvShows =
+            viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems()
+        assertThat(filteredMovies.map { it.title }).isEqualTo(finalFilteredMovies.map { it.title })
+        assertThat(filteredTvShows.map { it.title }).isEqualTo(
             finalFilteredTvShows.map { it.title }
         )
     }
@@ -353,8 +372,8 @@ class SearchViewModelTest {
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
-                    moviesResult =  flowOf(PagingData.from(listOf(mockMovie1.toUi()))),
-                    tvShowsResult =  flowOf(PagingData.from(listOf(mockTvShow1.toUi()))),
+                    moviesResult = flowOf(PagingData.from(listOf(mockMovie1.toUi()))),
+                    tvShowsResult = flowOf(PagingData.from(listOf(mockTvShow1.toUi()))),
                     showFilterDialog = false
                 )
             )
@@ -410,45 +429,51 @@ class SearchViewModelTest {
         viewModel.screenState.value.searchUiState.categories.forEach { (_, isSelected) ->
             assertThat(isSelected).isTrue()
         }
-        assertThat(viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems().map { it.title }).isEqualTo(initialMovies.map { it.title })
-        assertThat(viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems().map { it.title }).isEqualTo(
+        val filteredMovies =
+            viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
+        val filteredTvShows =
+            viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems()
+        assertThat(filteredMovies.map { it.title }).isEqualTo(initialMovies.map { it.title })
+        assertThat(filteredTvShows.map { it.title }).isEqualTo(
             initialTvShows.map { it.title }
         )
     }
 
     @Test
-    fun `onClearAllRecentSearches calls use case and reloads recent searches on success`() = runTest {
-        val initialRecentSearches = listOf(mockSearchHistory1, mockSearchHistory2)
+    fun `onClearAllRecentSearches calls use case and reloads recent searches on success`() =
+        runTest {
+            val initialRecentSearches = listOf(mockSearchHistory1, mockSearchHistory2)
 
-        // Always emit the current state of recent searches, which will be updated after clear
-        val recentSearchesFlow = MutableStateFlow(initialRecentSearches)
-        coEvery { getAllRecentSearchesUseCase() } returns recentSearchesFlow
+            // Always emit the current state of recent searches, which will be updated after clear
+            val recentSearchesFlow = MutableStateFlow(initialRecentSearches)
+            coEvery { getAllRecentSearchesUseCase() } returns recentSearchesFlow
 
-        coEvery { clearAllRecentSearchesUseCase() } answers {
-            recentSearchesFlow.value = emptyList()
+            coEvery { clearAllRecentSearchesUseCase() } answers {
+                recentSearchesFlow.value = emptyList()
+            }
+
+            viewModel = SearchViewModel(
+                getAllRecentSearchesUseCase,
+                clearAllRecentSearchesUseCase,
+                clearRecentSearchUseCase,
+                searchByQueryUseCase,
+                getAllCategoriesUseCase,
+                filterMediaByRatingUseCase,
+                filterMedByListOfCategoriesUseCase,
+                appNavigator = mockk(relaxed = true)
+            )
+            advanceUntilIdle()
+
+            assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(
+                initialRecentSearches.map { it.searchTitle })
+
+            viewModel.onClearAllRecentSearches()
+            advanceUntilIdle()
+
+            coVerify(exactly = 1) { clearAllRecentSearchesUseCase() }
+            assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEmpty()
+            assertThat(viewModel.screenState.value.errorMessage).isNull()
         }
-
-        viewModel = SearchViewModel(
-            getAllRecentSearchesUseCase,
-            clearAllRecentSearchesUseCase,
-            clearRecentSearchUseCase,
-            searchByQueryUseCase,
-            getAllCategoriesUseCase,
-            filterMediaByRatingUseCase,
-            filterMedByListOfCategoriesUseCase,
-            appNavigator=  mockk(relaxed = true)
-        )
-        advanceUntilIdle()
-
-        assertThat(viewModel.screenState.value.searchUiState.recentSearches.map { it.searchTitle }).isEqualTo(initialRecentSearches.map { it.searchTitle })
-
-        viewModel.onClearAllRecentSearches()
-        advanceUntilIdle()
-
-        coVerify(exactly = 1) { clearAllRecentSearchesUseCase() }
-        assertThat(viewModel.screenState.value.searchUiState.recentSearches).isEmpty()
-        assertThat(viewModel.screenState.value.errorMessage).isNull()
-    }
 
     @Test
     fun `onClearAllRecentSearches handles error and updates error message`() = runTest {
@@ -464,7 +489,7 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
-            appNavigator=  mockk(relaxed = true)
+            appNavigator = mockk(relaxed = true)
         )
         advanceUntilIdle()
 
@@ -507,7 +532,7 @@ class SearchViewModelTest {
                 getAllCategoriesUseCase,
                 filterMediaByRatingUseCase,
                 filterMedByListOfCategoriesUseCase,
-                appNavigator=  mockk(relaxed = true)
+                appNavigator = mockk(relaxed = true)
             )
             advanceUntilIdle()
 
@@ -527,5 +552,68 @@ class SearchViewModelTest {
             assertThat(viewModel.screenState.value.errorMessage).isNull()
         }
 
+    @Test
+    fun `apply filter with empty categories and isAllCategories false yields empty list`() =
+        runTest {
+            val initialMovies = listOf(mockMovie1, mockMovie2)
+            viewModel.emitState(
+                viewModel.screenState.value.copy(
+                    searchUiState = viewModel.screenState.value.searchUiState.copy(
+                        moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
+                        showFilterDialog = true,
+                        categories = emptyMap(),
+                        isAllCategories = false
+                    )
+                )
+            )
+            every { filterMediaByRatingUseCase(any(), any()) } returns initialMovies
+            every { filterMedByListOfCategoriesUseCase(emptyList(), any()) } returns emptyList()
+            viewModel.onApplyFilterButtonClick(7.0f, false, listOf(mockCategory1.toUi()))
+            advanceUntilIdle()
+            val items =
+                viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
+            assertThat(items).isEmpty()
+        }
 
+    @Test
+    fun `apply filter with too high rating yields empty results`() = runTest {
+        val initialMovies = listOf(mockMovie1, mockMovie2)
+        viewModel.emitState(
+            viewModel.screenState.value.copy(
+                searchUiState = viewModel.screenState.value.searchUiState.copy(
+                    moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
+                    showFilterDialog = true,
+                    categories = mapOf(mockCategory1.toUi() to true),
+                    isAllCategories = false
+                )
+            )
+        )
+        every { filterMediaByRatingUseCase(99.9f, any()) } returns emptyList()
+        every { filterMedByListOfCategoriesUseCase(any(), emptyList()) } returns emptyList()
+        viewModel.onApplyFilterButtonClick(99.9f, false, listOf(mockCategory1.toUi()))
+        advanceUntilIdle()
+        val items = viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
+        assertThat(items).isEmpty()
+    }
+
+    @Test
+    fun `onSearchQueryChange with blank string does not trigger search`() = runTest {
+        viewModel.onSearchQueryChange("   ")
+        assertThat(viewModel.screenState.value.searchUiState.searchQuery).isEqualTo("   ")
+    }
+
+    @Test
+    fun `onSelectTab with out of bounds index does not crash`() = runTest {
+        viewModel.onSelectTab(-1)
+        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(-1)
+        viewModel.onSelectTab(999)
+        assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(999)
+    }
+
+    @Test
+    fun `onRecentSearchClick with Query triggers query search`() = runTest {
+        val spy = spyk(viewModel)
+        spy.onRecentSearchClick("Some Query", SearchTypeUi.Query)
+        io.mockk.verify { spy.onSearchQueryChange("Some Query") }
+    }
 }
