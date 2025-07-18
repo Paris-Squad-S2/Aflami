@@ -1,6 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 
 data class MovieDetailsScreenState(
     val movieDetailsUiState: MovieDetailsUiState,
@@ -10,6 +11,7 @@ data class MovieDetailsScreenState(
 
 data class MovieDetailsUiState(
     val movie: MovieUi,
+    val recommendations: List<SimilarMediaUI>,
     val cast: List<CastUi>,
     val reviews: List<ReviewUi>,
     val gallery: List<String>
@@ -17,7 +19,7 @@ data class MovieDetailsUiState(
 data class MovieUi(
     val id :Int,
     override val posterUrl: String,
-    override val rating: String,
+    override val rating: Float,
     override val title: String,
     val genres: List<String>,
     override val releaseDate: String,
@@ -45,3 +47,4 @@ data class ReviewUi(
     val rating: Double,
     val createdAt : String,
 )
+

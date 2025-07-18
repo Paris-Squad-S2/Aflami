@@ -2,11 +2,14 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.mapper
 
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
+import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
+import com.domain.mediaDetails.model.MovieSimilar
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
@@ -20,7 +23,7 @@ fun Movie.toUi(): MovieUi {
     return MovieUi(
         id=this.id,
         posterUrl = this.posterPath,
-        rating = this.voteAverage.toString(),
+        rating = this.voteAverage.toFloat(),
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate,
@@ -35,7 +38,7 @@ fun TvShow.toUi(): TvShowUi {
     return TvShowUi(
         id= this.id,
         posterUrl = this.posterPath,
-        rating = this.voteAverage.toString(),
+        rating = this.voteAverage.toFloat(),
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate,
@@ -61,6 +64,10 @@ fun Cast.toUi(): CastUi {
         name = this.name,
         imageUrl = this.imageUrl
     )
+}
+
+fun List<Cast>.toListOfCastUi(): List<CastUi> {
+    return this.map { it.toUi() }
 }
 
 
@@ -102,5 +109,28 @@ fun LocalDate.formatToUi(): String {
     return "$day-$month-$year"
 }
 
+fun Gallery.toUi(): List<String> {
+    return this.images.map { it.url }
+}
 
+fun MovieSimilar.toUi(): SimilarMediaUI {
+    return SimilarMediaUI(
+        id = this.id,
+        title = this.title,
+        voteAverage = this.voteAverage,
+        posterPath = this.posterPath,
+        releaseDate = this.releaseDate
+    )
+}
 
+fun List<MovieSimilar>.toListOfMovieSimilarUI(): List<SimilarMediaUI> {
+    return this.map { it.toUi() }
+}
+
+fun List<Review>.toListOfReviewUi(): List<ReviewUi> {
+    return this.map { it.toUi() }
+}
+
+fun List<ProductionCompany>.toListOfProductionCompanyUi(): List<ProductionCompanyUi> {
+    return this.map { it.toUi() }
+}

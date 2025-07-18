@@ -36,7 +36,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun DetailsImage(
     modifier: Modifier = Modifier,
     imageUris: List<String>,
-    rating: String,
+    rating: Float,
     onPlayClick: () -> Unit
 ) {
     val pagerState = rememberPagerState(pageCount = { imageUris.size })
@@ -157,7 +157,7 @@ fun DetailsImagePreview() {
             imageUris = listOf(
                 "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
             ),
-            rating = "9.9",
+            rating = 9.9f,
             onPlayClick = {}
         )
     }

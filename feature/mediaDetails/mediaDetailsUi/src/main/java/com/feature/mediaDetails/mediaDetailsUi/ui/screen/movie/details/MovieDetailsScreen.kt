@@ -112,10 +112,7 @@ fun MovieDetailsScreenContent(
 
                     MovieChips.MORE_LIKE_THIS -> item {
                         MoreLikeThisSection(
-                            mediaList = listOf(
-                                state.movieDetailsUiState.movie,
-                                state.movieDetailsUiState.movie.copy(title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.another_movie))
-                            ),
+                            mediaList = state.movieDetailsUiState.recommendations,
                             onClick = {},
                             mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie)
                         )

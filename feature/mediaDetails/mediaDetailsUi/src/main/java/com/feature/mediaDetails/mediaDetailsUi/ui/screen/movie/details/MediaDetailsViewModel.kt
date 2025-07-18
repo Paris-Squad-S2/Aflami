@@ -2,24 +2,40 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 
 import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
+import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.paris_2.aflami.appnavigation.AppNavigator
-import kotlinx.coroutines.launch
-import org.koin.mp.KoinPlatform.getKoin
 
 class MovieDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
-    private val appNavigator: AppNavigator = getKoin().get()
+    private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
+    private val getMovieCastUseCase: GetMovieCastUseCase,
+    private val getMovieGalleryUseCase: GetMovieGalleryUseCase,
+    private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
+    private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
+    private val getMovieProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase,
+    private val addMovieToFavoriteUseCase: AddMovieToFavoriteUseCase,
+    private val appNavigator: AppNavigator
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
             movie = MovieUi(
                 id = 0,
                 posterUrl = "",
-                rating = "",
+                rating = 0f,
                 title = "",
                 genres = emptyList(),
                 releaseDate = "",
@@ -30,113 +46,172 @@ class MovieDetailsViewModelViewModel(
             ),
             cast = emptyList(),
             reviews = emptyList(),
-            gallery = emptyList()
+            gallery = emptyList(),
+            recommendations = emptyList()
         ),
-        isLoading = false,
+        isLoading = true,
         errorMessage = null
     )
 ) {
 
     init {
-        val mediaId =
+        val movieId =
             savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
-        emitState(
-            MovieDetailsScreenState(
-                movieDetailsUiState = MovieDetailsUiState(
-                    movie = MovieUi(
-                        id = 123,
-                        posterUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                        rating = "8.2",
-                        title = "Inception (ID: $mediaId)",
-                        genres = listOf("Action", "Science Fiction", "Thriller"),
-                        releaseDate = "2010-07-16",
-                        runtime = "2h 28m",
-                        country = "USA",
-                        description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                        productionCompanies = listOf(
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Legendary Pictures",
-                                originCountry = "USA"
-                            ),
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Syncopy",
-                                originCountry = "UK"
-                            ),
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Syncopy",
-                                originCountry = "UK"
-                            ),
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Syncopy",
-                                originCountry = "UK"
-                            ),
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Syncopy",
-                                originCountry = "UK"
-                            ),
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Syncopy",
-                                originCountry = "UK"
-                            ),
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Syncopy",
-                                originCountry = "UK"
-                            ),
-                            ProductionCompanyUi(
-                                logoUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                                name = "Syncopy",
-                                originCountry = "UK"
+        loadedMovieDetails(movieId)
+    }
+
+    private fun loadedMovieDetails(mediaId: Int) {
+        tryToExecute(
+            execute = { getMovieDetailsUseCase(mediaId) },
+            onSuccess = {
+                emitState(
+                    screenState.value.copy(
+                        isLoading = false,
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            movie = it.toUi(),
+                        )
+                    )
+                )
+                loadCastDetails(mediaId)
+                loadMovieGallery(mediaId)
+                loadMovieRecommendations(mediaId)
+                loadMovieReviews(mediaId)
+                loadMovieProductionCompanies(mediaId)
+            },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        isLoading = false,
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
+
+    private fun loadMovieProductionCompanies(mediaId: Int) {
+        tryToExecute(
+            execute = { getMovieProductionCompaniesUseCase(mediaId) },
+            onSuccess = {
+                emitState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            movie = screenState.value.movieDetailsUiState.movie.copy(
+                                productionCompanies = it.toListOfProductionCompanyUi()
                             )
                         )
-                    ),
-                    cast = listOf(
-                        CastUi(
-                            name = "Leonardo DiCaprio",
-                            imageUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg"
-                        ),
-                        CastUi(
-                            name = "Joseph Gordon-Levitt",
-                            imageUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg"
-                        )
-                    ),
-                    reviews = listOf(
-                        ReviewUi(
-                            avatarUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                            username = "movie_buff_91",
-                            name = "Amazing Movie!",
-                            rating = 9.0,
-                            createdAt = "2023-04-12"
-                        ),
-                        ReviewUi(
-                            avatarUrl = "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                            username = "cinema_fanatic",
-                            name = "Mind-blowing!",
-                            rating = 8.5,
-                            createdAt = "2023-05-20"
-                        )
-                    ),
-                    gallery = listOf(
-                        "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg",
-                        "https://image.tmdb.org/t/p/original/iaSA91XEY01hAcftOe9Vc9qfCNa.jpg"
                     )
-                ),
-                isLoading = false,
-                errorMessage = null
-            )
+                )
+            },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
+
+    private fun loadMovieReviews(mediaId: Int) {
+        tryToExecute(
+            execute = { getMovieReviewsUseCase(mediaId, 1) }, //TODO handle pagination
+            onSuccess = {
+                emitState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            reviews = it.toListOfReviewUi()
+                        )
+                    )
+                )
+            },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
+
+    private fun loadMovieRecommendations(mediaId: Int) {
+        tryToExecute(
+            execute = { getMovieRecommendationsUseCase(mediaId, 1) }, //TODO handle pagination
+            onSuccess = {
+                emitState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            recommendations = it.toListOfMovieSimilarUI()
+                        )
+                    )
+                )
+            },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
+
+    private fun loadCastDetails(mediaId: Int) {
+        tryToExecute(
+            execute = { getMovieCastUseCase(mediaId) },
+            onSuccess = {
+                emitState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            cast = it.toListOfCastUi()
+                        )
+                    )
+                )
+            },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
+
+    private fun loadMovieGallery(mediaId: Int) {
+        tryToExecute(
+            execute = { getMovieGalleryUseCase(mediaId) },
+            onSuccess = {
+                emitState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            gallery = it.toUi()
+                        )
+                    )
+                )
+            },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
         )
     }
 
     override fun onNavigateBack() {
-        viewModelScope.launch {
-            appNavigator.navigateUp()
-        }
+        tryToExecute(
+            execute = { appNavigator.navigateUp() },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
     }
 
     override fun onFavouriteClick(title: String) {

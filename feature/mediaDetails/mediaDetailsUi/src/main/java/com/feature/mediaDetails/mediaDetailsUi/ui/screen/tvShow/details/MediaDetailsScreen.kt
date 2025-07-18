@@ -146,10 +146,7 @@ fun TvShowDetailsScreenContent(
 
                     TvShowChips.MORE_LIKE_THIS -> item {
                         MoreLikeThisSection(
-                            mediaList = listOf(
-                                state.tvShowDetailsUiState.tvShowUi,
-                                state.tvShowDetailsUiState.tvShowUi.copy(title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.another_tvshow))
-                            ),
+                            mediaList = state.tvShowDetailsUiState.recommendations,
                             onClick = {},
                             mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
                         )

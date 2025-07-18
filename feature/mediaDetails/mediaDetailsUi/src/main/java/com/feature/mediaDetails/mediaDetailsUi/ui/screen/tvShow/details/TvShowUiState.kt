@@ -1,6 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
@@ -12,6 +13,7 @@ data class TvShowDetailsScreenState(
 )
 data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
+    val recommendations: List<SimilarMediaUI>,
     val cast: List<CastUi>,
     val reviews: List<ReviewUi>,
     val gallery: List<String>,
@@ -21,7 +23,7 @@ data class TvShowDetailsUiState(
 data class TvShowUi(
     val id :Int,
     override val posterUrl: String,
-    override val rating: String,
+    override val rating: Float,
     override val title: String,
     val genres: List<String>,
     override val releaseDate: String,

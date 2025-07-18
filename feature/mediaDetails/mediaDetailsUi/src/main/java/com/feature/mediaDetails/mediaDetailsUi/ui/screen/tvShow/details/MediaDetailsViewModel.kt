@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
@@ -21,7 +22,7 @@ class TvShowDetailsViewModelViewModel(
             tvShowUi = TvShowUi(
                 id = 0,
                 posterUrl = "",
-                rating = "",
+                rating = 0f,
                 title = "",
                 genres = emptyList(),
                 releaseDate = "",
@@ -33,7 +34,8 @@ class TvShowDetailsViewModelViewModel(
             cast = emptyList(),
             reviews = emptyList(),
             gallery = emptyList(),
-            seasons = emptyList()
+            seasons = emptyList(),
+            recommendations = emptyList()
         ),
         isLoading = false,
         errorMessage = null
@@ -50,7 +52,7 @@ class TvShowDetailsViewModelViewModel(
                     tvShowUi = TvShowUi(
                         id = 123,
                         posterUrl = "https://via.placeholder.com/300x450",
-                        rating = "8.7",
+                        rating = 8.7f,
                         title = "Mock Show $mediaId",
                         genres = listOf("Drama", "Sci-Fi"),
                         releaseDate = "2022-09-10",
@@ -178,6 +180,22 @@ class TvShowDetailsViewModelViewModel(
                                     stillUrl = "https://via.placeholder.com/300"
                                 )
                             )
+                        )
+                    ),
+                    recommendations = listOf(
+                        SimilarMediaUI(
+                            id = 456,
+                            posterPath = "https://via.placeholder.com/300x450",
+                            voteAverage = 8.5,
+                            title = "Mock Recommendation 1",
+                            releaseDate = "2023-01-01"
+                        ),
+                        SimilarMediaUI(
+                            id = 789,
+                            posterPath = "https://via.placeholder.com/300x450",
+                            voteAverage = 7.9,
+                            title = "Mock Recommendation 2",
+                            releaseDate = "2023-02-01"
                         )
                     )
                 ),
