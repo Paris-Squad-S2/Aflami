@@ -1,2 +1,2 @@
-versionName=0.1.25
-- connect bottom navigation bar with the feature APIs
+versionName=0.1.26
+- Fix bug in search by code
