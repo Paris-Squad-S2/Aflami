@@ -239,7 +239,7 @@ class SearchViewModel(
                 val filteredMediaByCategories =
                     if (!screenState.value.searchUiState.isAllCategories) flowOf (PagingData.from(filterMedByListOfCategoriesUseCase(
                         screenState.value.searchUiState.categories.filter { it.value }.keys.toList().map { it.id },
-                        filteredMediaByRating.collectAllItems()
+                        filteredMediaByRating.collectItems()
                     ).toMediaUiList())) else searchResult
 
                 val filteredMoviesResult =
@@ -492,7 +492,7 @@ class SearchViewModel(
         )
     }
 
-    private suspend fun Flow<PagingData<Media>>.collectAllItems(): List<Media> {
+    private suspend fun Flow<PagingData<Media>>.collectItems(): List<Media> {
         val differ = AsyncPagingDataDiffer(
             diffCallback = object : DiffUtil.ItemCallback<Media>() {
                 override fun areItemsTheSame(oldItem: Media, newItem: Media): Boolean =
