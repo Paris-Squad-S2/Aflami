@@ -3,19 +3,39 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.launch
-import org.koin.mp.KoinPlatform.getKoin
 
 class TvShowDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
-    private val appNavigator: AppNavigator = getKoin().get(),
+    private val getTvShowDetailsUseCase: GetTvShowDetailsUseCase,
+    private val getTvShowCastUseCase: GetTvShowCastUseCase,
+    private val getTvShowGalleryUseCase: GetTvShowGalleryUseCase,
+    private val getTvShowRecommendationsUseCase: GetTvShowRecommendationsUseCase,
+    private val getTvShowReviewsUseCase: GetTvShowReviewsUseCase,
+    private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase,
+    private val addTvShowToFavoriteUseCase: AddTvShowToFavoriteUseCase,
+    private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
+    private val appNavigator: AppNavigator,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
@@ -29,12 +49,12 @@ class TvShowDetailsViewModelViewModel(
                 runtime = "",
                 country = "",
                 description = "",
+                seasons = emptyList(),
                 productionCompanies = emptyList()
             ),
             cast = emptyList(),
             reviews = emptyList(),
             gallery = emptyList(),
-            seasons = emptyList(),
             recommendations = emptyList()
         ),
         isLoading = false,
@@ -45,170 +65,158 @@ class TvShowDetailsViewModelViewModel(
     init {
         val mediaId =
             savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
+        loadTvShowDetails(mediaId)
+    }
 
-        emitState(
-            TvShowDetailsScreenState(
-                tvShowDetailsUiState = TvShowDetailsUiState(
-                    tvShowUi = TvShowUi(
-                        id = 123,
-                        posterUrl = "https://via.placeholder.com/300x450",
-                        rating = 8.7f,
-                        title = "Mock Show $mediaId",
-                        genres = listOf("Drama", "Sci-Fi"),
-                        releaseDate = "2022-09-10",
-                        runtime = "60",
-                        country = "USA",
-                        description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                        productionCompanies = listOf(
-                            ProductionCompanyUi(
-                                logoUrl = "https://via.placeholder.com/100",
-                                name = "Mock Studio",
-                                originCountry = "US"
-                            )
-                        )
-                    ),
-                    cast = listOf(
-                        CastUi(name = "Mock Actor 1", imageUrl = "https://via.placeholder.com/150"),
-                        CastUi(name = "Mock Actor 2", imageUrl = "https://via.placeholder.com/150")
-                    ),
-                    reviews = listOf(
-                        ReviewUi(
-                            avatarUrl = "https://via.placeholder.com/50",
-                            username = "mockuser1",
-                            name = "Mock Reviewer",
-                            rating = 4.0,
-                            createdAt = "2024-11-01"
-                        )
-                    ),
-                    gallery = listOf(
-                        "https://via.placeholder.com/300x200",
-                        "https://via.placeholder.com/300x200"
-                    ),
-                    seasons = listOf(
-                        SeasonUi(
-                            id = "s1",
-                            name = "Season 1",
-                            episodes = listOf(
-                                EpisodeUi(
-                                    episodeNumber = 1,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 7.9,
-                                    airDate = "2022-09-10",
-                                    runtime = "58",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                ),
-                                EpisodeUi(
-                                    episodeNumber = 2,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 8.2,
-                                    airDate = "2022-09-17",
-                                    runtime = "61",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                )
-                            )
+    private fun loadTvShowDetails(mediaId: Int) {
+        tryToExecute(
+            execute = { getTvShowDetailsUseCase(mediaId) },
+            onSuccess = { tvShow ->
+                updateState (
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            tvShowUi = tvShow.toUi()
                         ),
-                        SeasonUi(
-                            id = "s2",
-                            name = "Season 2",
-                            episodes = listOf(
-                                EpisodeUi(
-                                    episodeNumber = 1,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 7.9,
-                                    airDate = "2022-09-10",
-                                    runtime = "58",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                ),
-                                EpisodeUi(
-                                    episodeNumber = 2,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 8.2,
-                                    airDate = "2022-09-17",
-                                    runtime = "61",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                )
-                            )
-                        ),
-                        SeasonUi(
-                            id = "s3",
-                            name = "Season 3",
-                            episodes = listOf(
-                                EpisodeUi(
-                                    episodeNumber = 1,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 7.9,
-                                    airDate = "2022-09-10",
-                                    runtime = "58",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                ),
-                                EpisodeUi(
-                                    episodeNumber = 2,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 8.2,
-                                    airDate = "2022-09-17",
-                                    runtime = "61",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                )
-                            )
-                        ),
-                        SeasonUi(
-                            id = "s1",
-                            name = "Season 1",
-                            episodes = listOf(
-                                EpisodeUi(
-                                    episodeNumber = 1,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 7.9,
-                                    airDate = "2022-09-10",
-                                    runtime = "58",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                ),
-                                EpisodeUi(
-                                    episodeNumber = 2,
-                                    posterUrl = "https://via.placeholder.com/150",
-                                    voteAverage = 8.2,
-                                    airDate = "2022-09-17",
-                                    runtime = "61",
-                                    description = "In 1935, corrections officer Paul Edgecomb oversees \"The Green Mile,\" the death row section of Cold Mountain Penitentiary, alongside officers Brutus Howell, Dean Stanton, Harry Terwilliger. When John Coffey, a giant African-American man convicted of brutally murdering two little white girls, arrives on death row, Paul begins to notice something unusual about him. Coffey seems to possess a supernatural power to heal people's ailments. As Paul and his fellow officers investigate further, they discover that Coffey may be innocent of the crimes he was convicted of. The story explores themes of justice, redemption, and the supernatural within the confines of a Depression-era prison.",
-                                    stillUrl = "https://via.placeholder.com/300"
-                                )
-                            )
-                        )
-                    ),
-                    recommendations = listOf(
-                        SimilarMediaUI(
-                            id = 456,
-                            posterPath = "https://via.placeholder.com/300x450",
-                            voteAverage = 8.5,
-                            title = "Mock Recommendation 1",
-                            releaseDate = "2023-01-01"
-                        ),
-                        SimilarMediaUI(
-                            id = 789,
-                            posterPath = "https://via.placeholder.com/300x450",
-                            voteAverage = 7.9,
-                            title = "Mock Recommendation 2",
-                            releaseDate = "2023-02-01"
+                        isLoading = false,
+                        errorMessage = null
+                    )
+                )
+                loadTvShowCast(mediaId)
+                loadTvShowGallery(mediaId)
+                loadTvShowRecommendations(mediaId)
+                loadTvShowReviews(mediaId)
+                loadTvShowsProductionCompanies(mediaId)
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        isLoading = false,
+                        errorMessage = error
+                    )
+                )
+            }
+        )
+    }
+    private fun loadTvShowCast(mediaId: Int) {
+        tryToExecute(
+            execute = { getTvShowCastUseCase(mediaId) },
+            onSuccess = { cast ->
+                updateState(
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            cast = cast.map { it.toUi() }
                         )
                     )
-                ),
-                isLoading = false,
-                errorMessage = null
-            )
+                )
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
+            }
+        )
+    }
+    private fun loadTvShowGallery(mediaId: Int) {
+        tryToExecute(
+            execute = { getTvShowGalleryUseCase(mediaId) },
+            onSuccess = { gallery ->
+                updateState(
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            gallery = gallery.toUi()
+                        )
+                    )
+                )
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
+            }
+        )
+    }
+    private fun loadTvShowRecommendations(mediaId: Int) {
+        tryToExecute(
+            execute = { getTvShowRecommendationsUseCase(mediaId, 1) }, //TODO handle pagination
+            onSuccess = { recommendations ->
+                updateState(
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            recommendations = recommendations.toListOfMTvShowSimilarUI()
+                        )
+                    )
+                )
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
+            }
+        )
+    }
+    private fun loadTvShowReviews(mediaId: Int) {
+        tryToExecute(
+            execute = { getTvShowReviewsUseCase(mediaId, 1) }, //TODO handle pagination
+            onSuccess = { reviews ->
+                updateState(
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            reviews = reviews.toListOfReviewUi()
+                        )
+                    )
+                )
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
+            }
+        )
+    }
+
+    private fun loadTvShowsProductionCompanies(mediaId: Int) {
+        tryToExecute(
+            execute = { getTvShowProductionCompaniesUseCase(mediaId) },
+            onSuccess = { productionCompanies ->
+                updateState(
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
+                                productionCompanies = productionCompanies.toListOfProductionCompanyUi()
+                            )
+                        )
+                    )
+                )
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
+            }
         )
     }
 
     override fun onNavigateBack() {
-            viewModelScope.launch {
-                appNavigator.navigateUp()
-        }
+        tryToExecute(
+            execute = { appNavigator.navigateUp() },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
     }
 
     override fun onFavouriteClick(title: String) {

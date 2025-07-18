@@ -25,7 +25,7 @@ class MovieCastViewModel
             .toRoute<MediaDetailsDestinations.MovieCastScreen>()
             .movieId
 
-        emitState(
+        updateState(
             MovieCastUiState(
                 cast = listOf(
                     CastUi("Tom Hanks", "https://example.com/tom.jpg"),

@@ -3,7 +3,6 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsApi.fromJsonToMediaDetailsDestination
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 
@@ -25,7 +24,7 @@ class TvShowCastViewModel(
             .toRoute<MediaDetailsDestinations.TvShowCastScreen>()
             .tvShowId
 
-        emitState(
+        updateState(
             TvShowCastUiState(
                 cast = listOf(
                     CastUi("Tom Hanks", "https://example.com/tom.jpg"),

@@ -43,6 +43,7 @@ fun TvShowDto.toEntity(): TvShow {
         runtime = this.episodeRunTime?.firstOrNull() ?: 0,
         country = this.originCountry?.firstOrNull().orEmpty(),
         productionCompanies = this.productionCompanies?.map { it.toEntity() } ?: emptyList(),
+        seasons = this.seasonDto?.map { it.toEntity() } ?: emptyList()
     )
 }
 
@@ -54,6 +55,7 @@ fun TvShowDto.toLocalDto(): TvShowEntity {
         description = this.overview.orEmpty(),
         posterPath = this.posterPath.orEmpty(),
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
+        seasons = this.seasonDto?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.firstAirDate.orEmpty(),
         runtime = this.episodeRunTime?.firstOrNull() ?: 0,
         country = this.originCountry?.firstOrNull().orEmpty(),
@@ -95,7 +97,8 @@ fun TvShowEntity.toEntity(): TvShow {
         releaseDate = this.releaseDate,
         runtime = this.runtime,
         country = this.country,
-        productionCompanies = this.productionCompanies.map { it.toEntity() }
+        productionCompanies = this.productionCompanies.map { it.toEntity() },
+        seasons = this.seasons.map { it.toEntity() }
     )
 }
 

@@ -17,7 +17,7 @@ data class TvShowDetailsUiState(
     val cast: List<CastUi>,
     val reviews: List<ReviewUi>,
     val gallery: List<String>,
-    val seasons: List<SeasonUi>
+//    val seasons: List<SeasonUi>
 )
 
 data class TvShowUi(
@@ -30,6 +30,7 @@ data class TvShowUi(
     val runtime: String,
     val country: String,
     val description: String,
+    val seasons: List<SeasonUi>,
     val productionCompanies: List<ProductionCompanyUi>
 ): MediaUi
 data class SeasonUi(

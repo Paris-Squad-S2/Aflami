@@ -9,6 +9,7 @@ import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
+import com.domain.mediaDetails.model.TvShowSimilar
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
@@ -44,11 +45,11 @@ fun TvShow.toUi(): TvShowUi {
         releaseDate = this.releaseDate,
         runtime = "${this.runtime} min",
         country = this.country,
+        seasons = this.seasons.toListOfSeasonUi(),
         description = this.description,
         productionCompanies = this.productionCompanies.map { it.toUi() }
     )
 }
-
 
 
 fun ProductionCompany.toUi(): ProductionCompanyUi {
@@ -123,7 +124,21 @@ fun MovieSimilar.toUi(): SimilarMediaUI {
     )
 }
 
+fun TvShowSimilar.toUi(): SimilarMediaUI {
+    return SimilarMediaUI(
+        id = this.id,
+        title = this.title,
+        voteAverage = this.voteAverage,
+        posterPath = this.posterPath,
+        releaseDate = this.releaseDate
+    )
+}
+
 fun List<MovieSimilar>.toListOfMovieSimilarUI(): List<SimilarMediaUI> {
+    return this.map { it.toUi() }
+}
+
+fun List<TvShowSimilar>.toListOfMTvShowSimilarUI(): List<SimilarMediaUI> {
     return this.map { it.toUi() }
 }
 
@@ -132,5 +147,9 @@ fun List<Review>.toListOfReviewUi(): List<ReviewUi> {
 }
 
 fun List<ProductionCompany>.toListOfProductionCompanyUi(): List<ProductionCompanyUi> {
+    return this.map { it.toUi() }
+}
+
+fun List<Season>.toListOfSeasonUi(): List<SeasonUi> {
     return this.map { it.toUi() }
 }

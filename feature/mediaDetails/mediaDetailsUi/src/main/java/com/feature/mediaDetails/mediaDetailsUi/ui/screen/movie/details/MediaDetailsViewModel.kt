@@ -64,7 +64,7 @@ class MovieDetailsViewModelViewModel(
         tryToExecute(
             execute = { getMovieDetailsUseCase(mediaId) },
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isLoading = false,
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
@@ -79,7 +79,7 @@ class MovieDetailsViewModelViewModel(
                 loadMovieProductionCompanies(mediaId)
             },
             onError = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isLoading = false,
                         errorMessage = it
@@ -93,7 +93,7 @@ class MovieDetailsViewModelViewModel(
         tryToExecute(
             execute = { getMovieProductionCompaniesUseCase(mediaId) },
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
                             movie = screenState.value.movieDetailsUiState.movie.copy(
@@ -104,7 +104,7 @@ class MovieDetailsViewModelViewModel(
                 )
             },
             onError = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = it
                     )
@@ -117,7 +117,7 @@ class MovieDetailsViewModelViewModel(
         tryToExecute(
             execute = { getMovieReviewsUseCase(mediaId, 1) }, //TODO handle pagination
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
                             reviews = it.toListOfReviewUi()
@@ -126,7 +126,7 @@ class MovieDetailsViewModelViewModel(
                 )
             },
             onError = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = it
                     )
@@ -139,7 +139,7 @@ class MovieDetailsViewModelViewModel(
         tryToExecute(
             execute = { getMovieRecommendationsUseCase(mediaId, 1) }, //TODO handle pagination
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
                             recommendations = it.toListOfMovieSimilarUI()
@@ -148,7 +148,7 @@ class MovieDetailsViewModelViewModel(
                 )
             },
             onError = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = it
                     )
@@ -161,7 +161,7 @@ class MovieDetailsViewModelViewModel(
         tryToExecute(
             execute = { getMovieCastUseCase(mediaId) },
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
                             cast = it.toListOfCastUi()
@@ -170,7 +170,7 @@ class MovieDetailsViewModelViewModel(
                 )
             },
             onError = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = it
                     )
@@ -183,7 +183,7 @@ class MovieDetailsViewModelViewModel(
         tryToExecute(
             execute = { getMovieGalleryUseCase(mediaId) },
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
                             gallery = it.toUi()
@@ -192,7 +192,7 @@ class MovieDetailsViewModelViewModel(
                 )
             },
             onError = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = it
                     )
@@ -205,7 +205,7 @@ class MovieDetailsViewModelViewModel(
         tryToExecute(
             execute = { appNavigator.navigateUp() },
             onError = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = it
                     )

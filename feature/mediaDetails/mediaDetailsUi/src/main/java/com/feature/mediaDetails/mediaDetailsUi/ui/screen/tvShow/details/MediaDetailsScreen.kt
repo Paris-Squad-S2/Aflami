@@ -54,8 +54,8 @@ fun TvShowDetailsScreenContent(
     val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
     val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
 
-    val expandedStates = rememberSaveable(state.tvShowDetailsUiState.seasons.size) {
-        mutableStateOf(List(state.tvShowDetailsUiState.seasons.size) { false })
+    val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
+        mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
 
     Box(
@@ -114,8 +114,8 @@ fun TvShowDetailsScreenContent(
                 when (tvChips[index]) {
 
                     TvShowChips.SEASONS -> {
-                        items(state.tvShowDetailsUiState.seasons.size) { seasonIndex ->
-                            val season = state.tvShowDetailsUiState.seasons[seasonIndex]
+                        items(state.tvShowDetailsUiState.tvShowUi.seasons.size) { seasonIndex ->
+                            val season = state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
                             val isExpanded = expandedStates.value[seasonIndex]
 
                             SeasonSection(
