@@ -50,7 +50,11 @@ class AflamiApplication : Application() {
 
         WorkManager.initialize(this, configuration)
 
-        val networkChecker: NetworkConnectionChecker = getKoin().get()
-        networkChecker.startChecker()
+        val networkChecker1: NetworkConnectionChecker = getKoin().get()
+        val networkChecker2: com.repository.movie.util.NetworkConnectionChecker = getKoin().get()
+        val networkChecker3: com.repository.util.NetworkConnectionChecker = getKoin().get()
+        networkChecker1.startChecker()
+        networkChecker2.startChecker()
+        networkChecker3.startChecker()
     }
 }

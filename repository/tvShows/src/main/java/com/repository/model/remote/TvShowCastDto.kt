@@ -9,5 +9,7 @@ data class TvShowCastDto(
     @SerialName("name") val name: String? = null,
     @SerialName("profile_path") val profilePath: String? = null,
     @SerialName("character") val character: String? = null
-)
-
+){
+    val imageUrl: String?
+        get() = profilePath?.let { "https://image.tmdb.org/t/p/w500/$it" }
+}

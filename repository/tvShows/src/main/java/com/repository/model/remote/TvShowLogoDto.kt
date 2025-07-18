@@ -12,4 +12,7 @@ data class TvShowLogoDto(
     @SerialName("vote_average") val voteAverage: Double? = null,
     @SerialName("vote_count") val voteCount: Int? = null,
     @SerialName("width") val width: Int? = null
-)
+){
+    val imageUrl: String?
+        get() = filePath?.let { "https://image.tmdb.org/t/p/w500/$it" }
+}

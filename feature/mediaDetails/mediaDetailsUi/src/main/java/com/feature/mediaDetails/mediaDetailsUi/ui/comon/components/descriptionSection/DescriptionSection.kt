@@ -29,7 +29,7 @@ fun DescriptionSection(
     country: String,
     description: String,
     modifier: Modifier = Modifier
-){
+) {
     Column(
         horizontalAlignment = Alignment.Start,
         modifier = modifier
@@ -43,8 +43,10 @@ fun DescriptionSection(
                 .padding(bottom = 12.dp)
                 .padding(start = 16.dp)
         )
-        GenreChipRow(genres = genres)
-        Spacer(Modifier.height(8.dp))
+        if (genres.isNotEmpty()) {
+            GenreChipRow(genres = genres)
+            Spacer(Modifier.height(8.dp))
+        }
         Row(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -60,7 +62,9 @@ fun DescriptionSection(
                 textColor = Theme.colors.text.body
             )
         }
-        Description(description = description)
+        if (description.isNotBlank()) {
+            Description(description = description)
+        }
     }
 
 }

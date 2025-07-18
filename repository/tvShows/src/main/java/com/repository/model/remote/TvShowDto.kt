@@ -36,4 +36,7 @@ data class TvShowDto(
     @SerialName("type") val type: String? = null,
     @SerialName("vote_average") val voteAverage: Double? = null,
     @SerialName("vote_count") val voteCount: Int? = null
-)
+){
+    val imageUrl: String?
+        get() = posterPath?.let { "https://image.tmdb.org/t/p/w500/$it" }
+}

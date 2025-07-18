@@ -35,7 +35,7 @@ fun TvShowDto.toEntity(): TvShow {
     return TvShow(
         id = this.id ?: 0,
         title = this.name.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.imageUrl.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
         genres = this.genres?.map { it.toEntity() } ?: emptyList(),
@@ -53,7 +53,7 @@ fun TvShowDto.toLocalDto(): TvShowEntity {
         title = this.name.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.imageUrl.orEmpty(),
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
         seasons = this.seasonDto?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.firstAirDate.orEmpty(),
@@ -172,7 +172,7 @@ fun TvShowCastDto.toEntity(): Cast {
     return Cast(
         id = this.id ?: 0,
         name = this.name.orEmpty(),
-        imageUrl = this.profilePath.orEmpty()
+        imageUrl = this.imageUrl.orEmpty()
     )
 }
 
@@ -216,7 +216,7 @@ fun ImageEntity.toEntity(): Image {
 fun TvShowLogoDto.toEntity(id: Int): Image {
     return Image(
         id = id,
-        url = this.filePath.orEmpty()
+        url = this.imageUrl.orEmpty()
     )
 }
 
