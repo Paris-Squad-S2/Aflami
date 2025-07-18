@@ -21,4 +21,6 @@
     <string name="seasons">Seasons</string>
     <string name="another_tvshow">Another TvShow</string>
     <string name="tvshow">TvShow</string>
+    <string name="no_cast_available">No Cast Available</string>
+    <string name="cast_information_not_available">Cast information is not available for this movie</string>
 </resources>

@@ -10,23 +10,28 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 class MovieCastViewModel
     (
     savedStateHandle: SavedStateHandle,
-    private val getMovieCastUseCase: GetMovieCastUseCase
+    private val getMovieCastUseCase: GetMovieCastUseCase,
 ) : MovieCastScreenInteractionListener,
     BaseViewModel<MovieCastUiState>(
-    MovieCastUiState(
-        cast = emptyList(),
-        isLoading = false,
-        errorMessage = null
-    ),
-) {
+        MovieCastUiState(
+            cast = emptyList(),
+            isLoading = false,
+            errorMessage = null
+        ),
+    ) {
+    private val mediaId by lazy {
+        savedStateHandle.toRoute<MediaDetailsDestinations.MovieCastScreen>().movieId
+    }
+
+    init {
+        loadMovieCast(mediaId)
+    }
+
     override fun onNavigateBack() {
         navigateUp()
     }
 
-    init {
-        val mediaId = savedStateHandle
-            .toRoute<MediaDetailsDestinations.MovieCastScreen>()
-            .movieId
+    override fun onRetryLoadCast() {
         loadMovieCast(mediaId)
     }
 
@@ -53,4 +58,5 @@ class MovieCastViewModel
             }
         )
     }
+
 }

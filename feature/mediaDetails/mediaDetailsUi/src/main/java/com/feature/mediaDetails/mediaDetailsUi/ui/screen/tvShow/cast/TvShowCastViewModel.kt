@@ -17,14 +17,19 @@ class TvShowCastViewModel(
         errorMessage = null
     )
 ) {
+    private val mediaId by lazy {
+        savedStateHandle.toRoute<MediaDetailsDestinations.TvShowCastScreen>().tvShowId
+    }
+
+    init {
+        loadTvShowCast(mediaId)
+    }
+
     override fun onNavigateBack() {
         navigateUp()
     }
 
-    init {
-        val mediaId = savedStateHandle
-            .toRoute<MediaDetailsDestinations.TvShowCastScreen>()
-            .tvShowId
+    override fun onRetryLoadCast() {
         loadTvShowCast(mediaId)
     }
 
