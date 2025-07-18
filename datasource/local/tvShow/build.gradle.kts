@@ -6,6 +6,7 @@ plugins {
 }
 android {
     namespace = "com.datasource.local.tvshow"
+
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
