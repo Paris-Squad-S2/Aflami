@@ -30,16 +30,21 @@ android {
     kotlinOptions {
         jvmTarget = Configurations.JVM_TARGET
     }
+    sourceSets["main"].assets.srcDir("schemas")
 }
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+ksp {
+    arg("room.schemaLocation", "$projectDir/schemas")
 }
 
 dependencies {
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.common.jvm)
-    implementation(project(Modules.REPOSITORY_TV_SHOWS))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)

@@ -5,14 +5,14 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.datasource.local.dao.CastDao
-import com.datasource.local.dao.GalleryDao
+import com.datasource.local.dao.MovieCastDao
+import com.datasource.local.dao.MovieGalleryDao
 import com.datasource.local.dao.MovieDao
-import com.datasource.local.dao.ReviewDao
-import com.repository.entity.CastEntity
-import com.repository.entity.GalleryEntity
-import com.repository.entity.MovieEntity
-import com.repository.entity.ReviewEntity
+import com.datasource.local.dao.MovieReviewDao
+import com.repository.movie.models.local.CastEntity
+import com.repository.movie.models.local.GalleryEntity
+import com.repository.movie.models.local.MovieEntity
+import com.repository.movie.models.local.ReviewEntity
 
 @Database(
     entities = [MovieEntity::class, CastEntity::class, ReviewEntity::class, GalleryEntity::class],
@@ -21,11 +21,10 @@ import com.repository.entity.ReviewEntity
 @TypeConverters(MovieDetailConverter::class)
 abstract class MovieDetailDataBase : RoomDatabase() {
 
-    abstract fun castDao(): CastDao
-    abstract fun galleryDao(): GalleryDao
+    abstract fun castDao(): MovieCastDao
+    abstract fun galleryDao(): MovieGalleryDao
     abstract fun movieDao(): MovieDao
-    abstract fun reviewDao(): ReviewDao
-
+    abstract fun reviewDao(): MovieReviewDao
 
     companion object {
         const val DATABASE_NAME = "movie_detail_db"

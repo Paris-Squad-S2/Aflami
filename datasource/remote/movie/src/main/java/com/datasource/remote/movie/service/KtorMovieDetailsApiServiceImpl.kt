@@ -1,11 +1,11 @@
 package com.datasource.remote.movie.service
 
-import com.datasource.remote.movie.model.MovieCreditsDto
-import com.datasource.remote.movie.model.MovieDto
-import com.datasource.remote.movie.model.MovieImagesDto
-import com.datasource.remote.movie.model.MovieReviewsDto
-import com.datasource.remote.movie.model.MovieSimilarsDto
 import com.datasource.remote.movie.utils.safeApiCall
+import com.repository.movie.models.remote.MovieCreditsDto
+import com.repository.movie.models.remote.MovieDto
+import com.repository.movie.models.remote.MovieImagesDto
+import com.repository.movie.models.remote.MovieReviewsDto
+import com.repository.movie.models.remote.MovieSimilarsDto
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 import io.ktor.client.request.parameter
