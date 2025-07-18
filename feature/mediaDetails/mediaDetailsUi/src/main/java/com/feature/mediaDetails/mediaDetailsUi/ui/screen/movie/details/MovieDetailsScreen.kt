@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -48,8 +48,10 @@ fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
-    val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
     val movieChips = MovieChips.entries
+
+    val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
+    val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
     val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
     val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
@@ -97,17 +99,17 @@ fun MovieDetailsScreenContent(
                 )
             }
             item {
+
                 ChipsRowSection(
                     items = movieChips.map { chip ->
                         stringResource(chip.titleResId) to chip.iconResId
                     },
-                    selectedIndex = selectedIndex.value,
-                    onItemSelected = { selectedIndex.value = it }
+                    selectedIndex = selectedIndex.intValue,
+                    onItemSelected = { selectedIndex.intValue = it }
                 )
-
             }
 
-            selectedIndex.value?.let { index ->
+            selectedIndex.intValue.let { index ->
                 when (movieChips[index]) {
 
                     MovieChips.MORE_LIKE_THIS -> item {

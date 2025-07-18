@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -17,7 +18,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.domain.mediaDetails.model.Episode
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
@@ -27,12 +27,10 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowChips
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import kotlinx.datetime.LocalDate
 import org.koin.compose.viewmodel.koinViewModel
 
 
@@ -49,8 +47,9 @@ fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
 ) {
-    val selectedIndex = rememberSaveable { mutableStateOf<Int?>(null) }
     val tvChips = TvShowChips.entries
+    val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
+    val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
     val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
 
@@ -101,16 +100,17 @@ fun TvShowDetailsScreenContent(
                 )
             }
             item {
+
                 ChipsRowSection(
                     items = tvChips.map {
                         stringResource(it.titleResId) to it.iconResId
                     },
-                    selectedIndex = selectedIndex.value,
-                    onItemSelected = { selectedIndex.value = it }
+                    selectedIndex = selectedIndex.intValue,
+                    onItemSelected = { selectedIndex.intValue = it } // Always one selected
                 )
             }
 
-            selectedIndex.value?.let { index ->
+            selectedIndex.intValue.let { index ->
                 when (tvChips[index]) {
 
                     TvShowChips.SEASONS -> {
