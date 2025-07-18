@@ -67,7 +67,7 @@ class MovieRepositoryImplTest {
             )
         } returns mockMovieDto
 
-        coEvery { movieLocalDataSource.getMovie(movieId) } returns mockMovieDto.toLocalDto()
+        coEvery { movieLocalDataSource.getMovieById(movieId) } returns mockMovieDto.toLocalDto()
         coEvery { movieLocalDataSource.addMovie(any()) } returns Unit
 
         // When
@@ -85,7 +85,7 @@ class MovieRepositoryImplTest {
             val language = "en"
 
             // When && Then
-            coEvery { movieLocalDataSource.getMovie(movieId) } returns null andThen mockMovieDto.toLocalDto()
+            coEvery { movieLocalDataSource.getMovieById(movieId) } returns null andThen mockMovieDto.toLocalDto()
 
             coEvery {
                 movieDetailsRemoteDataSource.getMovieDetails(movieId, language)

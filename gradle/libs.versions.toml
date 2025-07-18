@@ -47,6 +47,7 @@ coroutines-test = "1.7.3"
 kover = "0.9.1"
 roomCommonJvm = "2.7.2"
 workKtx = "2.10.2"
+junitJupiterVersion = "5.8.1"
 
 
 [libraries]
@@ -110,6 +111,7 @@ junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.r
 androidx-room-common-jvm = { group = "androidx.room", name = "room-common-jvm", version.ref = "roomCommonJvm" }
 work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workKtx" }
 koin-workmanager = { module = "io.insert-koin:koin-androidx-workmanager", version.ref = "koinAndroid" }
+jupiter-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiterVersion" }
 
 
 [plugins]
