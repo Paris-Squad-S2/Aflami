@@ -23,7 +23,6 @@ import com.feature.search.searchUi.navigation.SearchNavigatorImpl
 import com.paris_2.aflami.AppNavigatorImpl
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
-import com.paris_2.aflami.appnavigation.AppNavigatorImpl
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
