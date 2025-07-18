@@ -1,8 +1,8 @@
 package com.datasource.local.datasource
 
-import com.datasource.local.dao.CastDao
-import com.repository.entity.CastEntity
-import io.mockk.coEvery
+
+import com.datasource.local.dao.MovieCastDao
+import com.repository.movie.models.local.CastEntity
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -13,8 +13,8 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class CastLocalDataSourceImpTest {
-    private lateinit var castLocalDataSourceImp: CastLocalDataSourceImp
-    private lateinit var castDao: CastDao
+    private lateinit var castLocalDataSourceImp: MovieCastLocalDataSourceImp
+    private lateinit var castDao: MovieCastDao
     private lateinit var sampleCast: CastEntity
     private lateinit var sampleCast2: CastEntity
     private lateinit var sampleCastList: List<CastEntity>
@@ -22,7 +22,7 @@ class CastLocalDataSourceImpTest {
     @BeforeEach
     fun setUp() {
         castDao = mockk(relaxed = true)
-        castLocalDataSourceImp = CastLocalDataSourceImp(castDao)
+        castLocalDataSourceImp = MovieCastLocalDataSourceImp(castDao)
         sampleCast = CastEntity(
             id = 1,
             movieId = 2,

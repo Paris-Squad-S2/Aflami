@@ -1,10 +1,9 @@
 package com.datasource.local.datasource
 
 import com.datasource.local.dao.TvShowDao
-import com.repository.entity.CountryEntity
-import com.repository.entity.GenreEntity
-import com.repository.entity.ProductionCompanyEntity
-import com.repository.entity.TvShowEntity
+import com.repository.model.local.GenreEntity
+import com.repository.model.local.ProductionCompanyEntity
+import com.repository.model.local.TvShowEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,7 +35,7 @@ class TvShowLocalDataSourceImpTest {
             ),
             releaseDate = "2016-07-15",
             runtime = 50,
-            country = CountryEntity(countryCode = "US", name = "United States"),
+            country = "Egypt",
             productionCompanies = listOf(
                 ProductionCompanyEntity(
                     id = 1001,

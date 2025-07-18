@@ -1,10 +1,9 @@
 package com.datasource.local.datasource
 
 import com.datasource.local.dao.MovieDao
-import com.repository.entity.CountryEntity
-import com.repository.entity.GenreEntity
-import com.repository.entity.MovieEntity
-import com.repository.entity.ProductionCompanyEntity
+import com.repository.movie.models.local.GenreEntity
+import com.repository.movie.models.local.MovieEntity
+import com.repository.movie.models.local.ProductionCompanyEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -35,10 +34,7 @@ class MovieLocalDataSourceImpTest {
             ),
             releaseDate = "2010-07-16",
             runtime = 148,
-            country = CountryEntity(
-                countryCode = "US",
-                name = "United States"
-            ),
+            country = "Egypt",
             productionCompanies = listOf(
                 ProductionCompanyEntity(
                     id = 923,
@@ -67,10 +63,7 @@ class MovieLocalDataSourceImpTest {
             ),
             releaseDate = "2010-07-16",
             runtime = 148,
-            country = CountryEntity(
-                countryCode = "US",
-                name = "United States"
-            ),
+            country = "US",
             productionCompanies = listOf(
                 ProductionCompanyEntity(
                     id = 923,

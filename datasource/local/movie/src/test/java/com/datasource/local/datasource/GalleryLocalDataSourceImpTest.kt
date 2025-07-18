@@ -1,9 +1,10 @@
 package com.datasource.local.datasource
 
-import com.datasource.local.dao.GalleryDao
+
+import com.datasource.local.dao.MovieGalleryDao
 import com.google.common.truth.Truth.assertThat
-import com.repository.entity.GalleryEntity
-import com.repository.entity.ImageEntity
+import com.repository.movie.models.local.GalleryEntity
+import com.repository.movie.models.local.ImageEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -14,13 +15,13 @@ import kotlin.test.Test
 
 
 class GalleryLocalDataSourceImpTest {
-    private lateinit var galleryLocalDataSource: GalleryLocalDataSourceImp
-    private val galleryDao: GalleryDao = mockk(relaxed = true)
+    private lateinit var galleryLocalDataSource: MovieGalleryLocalDataSourceImp
+    private val galleryDao: MovieGalleryDao = mockk(relaxed = true)
     private lateinit var sampleGallery: GalleryEntity
 
     @BeforeEach
     fun setUp() {
-        galleryLocalDataSource = GalleryLocalDataSourceImp(galleryDao)
+        galleryLocalDataSource = MovieGalleryLocalDataSourceImp(galleryDao)
         sampleGallery = GalleryEntity(
             id = 1,
             movieId = 1,

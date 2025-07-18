@@ -1,9 +1,9 @@
 package com.paris_2.aflami.di
 
-import com.datasource.local.datasource.MovieMovieCastLocalDataSourceImp
-import com.datasource.local.datasource.MovieMovieGalleryLocalDataSourceImp
+import com.datasource.local.datasource.MovieCastLocalDataSourceImp
+import com.datasource.local.datasource.MovieGalleryLocalDataSourceImp
 import com.datasource.local.datasource.MovieLocalDataSourceImp
-import com.datasource.local.datasource.MovieMovieReviewLocalDataSourceImp
+import com.datasource.local.datasource.MovieReviewLocalDataSourceImp
 import com.datasource.local.datasource.TvShowGalleryLocalDataSourceImp
 import com.datasource.local.datasource.TvShowLocalDataSourceImp
 import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
@@ -35,10 +35,10 @@ val dataSourceModule = module {
     singleOf(::MediaLocalDataSourceImpl) bind MediaLocalDataSource::class
     singleOf(::CountriesLocalDataSourceImpl) bind CountriesLocalDataSource::class
     singleOf(::GenresLocalDataSourceImpl) bind GenresLocalDataSource::class
-    singleOf(::MovieMovieGalleryLocalDataSourceImp) bind MovieGalleryLocalDataSource::class
-    singleOf(::MovieMovieCastLocalDataSourceImp) bind MovieCastLocalDataSource::class
+    singleOf(::MovieGalleryLocalDataSourceImp) bind MovieGalleryLocalDataSource::class
+    singleOf(::MovieCastLocalDataSourceImp) bind MovieCastLocalDataSource::class
     singleOf(::MovieLocalDataSourceImp) bind MovieLocalDataSource::class
-    singleOf(::MovieMovieReviewLocalDataSourceImp) bind MovieReviewLocalDataSource::class
+    singleOf(::MovieReviewLocalDataSourceImp) bind MovieReviewLocalDataSource::class
     singleOf(::TvShowCastLocalDataSourceImp) bind TvShowCastLocalDataSource::class
     singleOf(::TvShowGalleryLocalDataSourceImp) bind TvShowGalleryLocalDataSource::class
     singleOf(::TvShowLocalDataSourceImp) bind TvShowLocalDataSource::class

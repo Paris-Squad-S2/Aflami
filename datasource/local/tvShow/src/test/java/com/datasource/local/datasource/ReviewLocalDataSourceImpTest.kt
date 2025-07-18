@@ -1,8 +1,8 @@
 package com.datasource.local.datasource
 
-import com.datasource.local.dao.ReviewDao
-import com.datasource.local.datasource.ReviewLocalDataSourceImp
-import com.repository.entity.ReviewEntity
+
+import com.datasource.local.dao.TvShowReviewDao
+import com.repository.model.local.ReviewEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -12,17 +12,17 @@ import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 
 class ReviewLocalDataSourceImpTest {
-    private lateinit var reviewLocalDataSourceImp: ReviewLocalDataSourceImp
-    private lateinit var reviewDao: ReviewDao
+    private lateinit var reviewLocalDataSourceImp: TvShowReviewLocalDataSourceImp
+    private lateinit var reviewDao: TvShowReviewDao
     private lateinit var sampleReview: ReviewEntity
 
     @BeforeEach
     fun setUp() {
         reviewDao = mockk(relaxed = true)
-        reviewLocalDataSourceImp = ReviewLocalDataSourceImp(reviewDao)
+        reviewLocalDataSourceImp = TvShowReviewLocalDataSourceImp(reviewDao)
         sampleReview = ReviewEntity(
-            id = "1",
-            tvShowId = 2,
+            id = 1,
+            tvShowId = "2",
             name = "الاسطوره",
             createdAt = LocalDate(year = 2020, month = 2, day = 2),
             avatarUrl = "path",
