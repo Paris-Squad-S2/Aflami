@@ -10,7 +10,9 @@ import com.domain.search.useCases.GetAllRecentSearchesUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import org.koin.dsl.module
 
 val useCaseModule = module {
@@ -25,5 +27,7 @@ val useCaseModule = module {
     factory { GetMediaByActorNameUseCase(get()) }
     factory { GetMoviesOnlyByCountryNameUseCase(get()) }
     factory { SearchByQueryUseCase(get()) }
+    factory { IncrementCategoryInteractionUseCase(get()) }
+    factory { SortingMediaByCategoriesInteractionUseCase(get()) }
 }
 
