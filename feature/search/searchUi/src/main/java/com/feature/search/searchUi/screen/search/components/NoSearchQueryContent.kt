@@ -109,7 +109,6 @@ fun NoSearchQueryContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 70.dp)
-
                 )
             }
         } else if (state.searchUiState.recentSearches.isEmpty()) {

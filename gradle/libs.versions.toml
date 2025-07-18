@@ -27,11 +27,11 @@ koinAndroid = "4.1.0"
 koinCompose = "4.1.0"
 koinComposeViewmodel = "4.1.0"
 koinCore = "4.1.0"
+pagingRuntime = "3.3.6"
 startupRuntime = "1.2.0"
 tensorflowLite = "2.13.0"
 tensorflowLiteSupport = "0.4.4"
 tensorflowLiteMetadata = "0.1.0"
-tensorflowLiteGpu = "2.3.0"
 lifecycleViewmodelCompose = "2.9.1"
 roomKtx = "2.7.2"
 roomRuntime = "2.7.2"
@@ -41,8 +41,6 @@ ksp  = "2.2.0-2.0.2"
 serializationJson ="1.6.3"
 navigationCompose = "2.9.0"
 ktor = "2.3.5"
-coroutines = "1.7.3"
-kotlinxCoroutinesTest = "1.10.1"
 truth = "1.4.4"
 junitJupiter = "5.13.2"
 coroutines-test = "1.7.3"
@@ -53,12 +51,13 @@ workKtx = "2.10.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
+androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
-google-firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -97,7 +96,6 @@ navigation-compose = { group = "androidx.navigation", name = "navigation-compose
 tensorflow-lite = { module = "org.tensorflow:tensorflow-lite", version.ref = "tensorflowLite" }
 tensorflow-lite-support = { group = "org.tensorflow", name = "tensorflow-lite-support", version.ref = "tensorflowLiteSupport" }
 tensorflow-lite-metadata = { group = "org.tensorflow", name = "tensorflow-lite-metadata", version.ref = "tensorflowLiteMetadata" }
-tensorflow-lite-gpu = { group = "org.tensorflow", name = "tensorflow-lite-gpu", version.ref = "tensorflowLiteGpu" }
 androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "roomKtx" }
 androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "roomRuntime" }
 androidx-room-testing = { module = "androidx.room:room-testing", version.ref = "roomTesting" }

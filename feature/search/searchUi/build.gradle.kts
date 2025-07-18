@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -93,6 +91,9 @@ dependencies {
     //coil
     implementation(libs.coil.compose)
 
+    // paging 3
+    implementation(libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
 
     //test
     testImplementation(libs.junit)

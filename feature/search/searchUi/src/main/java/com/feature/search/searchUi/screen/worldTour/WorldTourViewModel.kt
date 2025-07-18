@@ -3,6 +3,10 @@ package com.feature.search.searchUi.screen.worldTour
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.domain.search.model.Country
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
@@ -11,25 +15,26 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.pagging.WorldTourPagingSource
 import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.java.KoinJavaComponent.getKoin
 
 data class WorldTourScreenState(
     val uiState: WorldTourUiState,
-    val isLoading: Boolean,
     val errorMessage: String?
 )
 
 data class WorldTourUiState(
     val searchQuery: String,
-    val searchResult: List<MediaUiState>,
+    val searchResult: Flow<PagingData<MediaUiState>>,
     val hints: List<Country>
 )
 
@@ -44,10 +49,9 @@ class WorldTourViewModel(
         WorldTourScreenState(
             uiState = WorldTourUiState(
                 searchQuery = "",
-                searchResult = listOf(),
+                searchResult = flowOf(PagingData.empty()),
                 hints = listOf()
             ),
-            isLoading = false,
             errorMessage = null
         )
     ) {
@@ -78,7 +82,6 @@ class WorldTourViewModel(
                 val hints = autoCompleteCountryUseCase(query)
                 emitState(
                     screenState.value.copy(
-                        isLoading = true,
                         uiState = screenState.value.uiState.copy(
                             hints = hints
                         )
@@ -95,9 +98,8 @@ class WorldTourViewModel(
                 else {
                     emitState(
                         screenState.value.copy(
-                            isLoading = false,
                             uiState = screenState.value.uiState.copy(
-                                searchResult = listOf(),
+                                searchResult = flowOf(PagingData.empty()),
                             )
                         )
                     )
@@ -112,18 +114,24 @@ class WorldTourViewModel(
             execute = {
                 emitState(
                     screenState.value.copy(
-                        isLoading = true,
                         errorMessage = null
                     )
                 )
-                getMoviesByCountryUseCase(query)
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        WorldTourPagingSource(
+                            countryName = query,
+                            getMoviesByCountryUseCase = getMoviesByCountryUseCase
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
             },
             onSuccess = { searchResult ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult.toMediaUiList(),
+                            searchResult = searchResult,
                         )
                     )
                 )
@@ -131,7 +139,6 @@ class WorldTourViewModel(
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        isLoading = false,
                         errorMessage = errorMessage
                     )
                 )

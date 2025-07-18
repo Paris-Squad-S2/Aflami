@@ -27,6 +27,7 @@ data class MediaEntity(
     val rating: Double,
     val searchQuery: String,
     val searchType: SearchType,
+    val page:Int,
     val language: String
 )
 
