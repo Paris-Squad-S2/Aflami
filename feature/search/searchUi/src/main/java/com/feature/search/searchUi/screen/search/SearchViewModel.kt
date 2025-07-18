@@ -229,7 +229,8 @@ class SearchViewModel(
                     pagingSourceFactory = {
                         SearchByQueryPagingSource(
                             query = query,
-                            searchByQueryUseCase = searchByQueryUseCase
+                            searchByQueryUseCase = searchByQueryUseCase,
+                            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
