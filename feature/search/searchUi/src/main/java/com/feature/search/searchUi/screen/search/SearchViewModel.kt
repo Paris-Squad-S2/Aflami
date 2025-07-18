@@ -38,6 +38,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -62,7 +63,8 @@ data class SearchUiState(
     val filteredTvShowsResult: Flow<PagingData<MediaUiState>>,
     val categories: Map<CategoryUiState, Boolean>,
     val selectedRating: Float,
-    val isAllCategories: Boolean
+    val isAllCategories: Boolean,
+    val isApplyFilter:Boolean,
 )
 
 
@@ -123,7 +125,8 @@ class SearchViewModel(
                 selectedRating = 0f,
                 moviesResult = flowOf(PagingData.empty()),
                 tvShowsResult = flowOf(PagingData.empty()),
-                isAllCategories = true
+                isAllCategories = true,
+                isApplyFilter = false
             ),
             isLoading = false,
             errorMessage = null
@@ -312,7 +315,8 @@ class SearchViewModel(
                             selectedRating = selectedRating,
                             categories = screenState.value.searchUiState.categories.mapValues { it.key in selectedCategories }
                                 .toMutableMap(),
-                            isAllCategories = isAllCategories
+                            isAllCategories = isAllCategories,
+                            isApplyFilter = false
                         ),
                         isLoading = true
                     )
@@ -348,8 +352,9 @@ class SearchViewModel(
                 emitState(
                     screenState.value.copy(
                         searchUiState = screenState.value.searchUiState.copy(
-                            filteredMoviesResult = flowOf(PagingData.from(filteredByCategoriesMovies.toMediaUiList())),
-                            filteredTvShowsResult = flowOf(PagingData.from(filteredByCategoriesTvShows.toMediaUiList()))
+                            filteredMoviesResult = flow{emit(PagingData.from(filteredByCategoriesMovies.toMediaUiList()))},
+                            filteredTvShowsResult = flow{emit(PagingData.from(filteredByCategoriesTvShows.toMediaUiList()))},
+                            isApplyFilter = true
                         ),
                         isLoading = false
                     )
@@ -359,7 +364,10 @@ class SearchViewModel(
                 emitState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
-                        isLoading = false
+                        isLoading = false,
+                        searchUiState = screenState.value.searchUiState.copy(
+                            isApplyFilter = false
+                        )
                     )
                 )
             }
@@ -376,7 +384,8 @@ class SearchViewModel(
                     categories = screenState.value.searchUiState.categories.mapValues { false }
                         .toMutableMap(),
                     filteredMoviesResult = screenState.value.searchUiState.moviesResult,
-                    filteredTvShowsResult = screenState.value.searchUiState.tvShowsResult
+                    filteredTvShowsResult = screenState.value.searchUiState.tvShowsResult,
+                    isApplyFilter = false
                 )
             )
         )
