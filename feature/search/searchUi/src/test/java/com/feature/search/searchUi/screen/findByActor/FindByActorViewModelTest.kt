@@ -152,7 +152,7 @@ class FindByActorViewModelTest {
         val currentState = viewModel.screenState.value
         assertThat(currentState.uiState.searchResult.collectAllItems()).isEmpty()
         assertTrue(result is PagingSource.LoadResult.Error)
-        assertEquals(errorMessage, (result as PagingSource.LoadResult.Error).throwable.message)
+        assertEquals(errorMessage, (result).throwable.message)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
