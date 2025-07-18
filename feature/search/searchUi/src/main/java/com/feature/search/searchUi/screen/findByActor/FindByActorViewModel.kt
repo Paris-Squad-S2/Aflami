@@ -4,6 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.domain.search.useCases.GetMediaByActorNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
@@ -16,13 +18,14 @@ import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import org.koin.mp.KoinPlatform.getKoin
+import org.koin.java.KoinJavaComponent.getKoin
 
 data class FindByActorScreenState(
     val uiState: FindByActorUiState,
     val isLoading: Boolean,
     val errorMessage: String?
 )
+
 data class FindByActorUiState(
     val searchQuery: String,
     val searchResult: List<MediaUiState>,
@@ -31,6 +34,8 @@ data class FindByActorUiState(
 class FindByActorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val appNavigator: AppNavigator = getKoin().get()
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
@@ -76,8 +81,7 @@ class FindByActorViewModel(
                 )
                 searchQuery(query)
             }
-        }
-        else {
+        } else {
             emitState(
                 screenState.value.copy(
                     isLoading = false,
@@ -99,7 +103,7 @@ class FindByActorViewModel(
                         errorMessage = null
                     )
                 )
-                getMediaByActorNameUseCase(query)
+                sortingMediaByCategoriesInteractionUseCase(getMediaByActorNameUseCase(query))
             },
             onSuccess = { searchResult ->
                 emitState(
@@ -126,17 +130,19 @@ class FindByActorViewModel(
         searchQuery(screenState.value.uiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+    override fun onMediaCardClick(media: MediaUiState) {
         tryToExecute(
             execute = {
+                incrementCategoryInteractionUseCase.invoke(media.categories)
                 appNavigator.navigate(
                     AppDestinations.MediaDetailsFeature(
-                        when (mediaType) {
+                        when (media.type) {
                             MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = id
+                                movieId = media.id
                             )
+
                             MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = id
+                                tvShowId = media.id
                             )
                         }.toJson()
                     )
