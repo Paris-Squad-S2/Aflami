@@ -103,7 +103,10 @@ class FindByActorViewModel(
                 Pager(
                  config = PagingConfig(pageSize = 10),
                  pagingSourceFactory = {
-                     FindByActorPagingSource(query,getMediaByActorNameUseCase)
+                     FindByActorPagingSource(
+                         query,
+                         getMediaByActorNameUseCase,
+                         sortingMediaByCategoriesInteractionUseCase)
                  }
                 ).flow.cachedIn(viewModelScope)
 
