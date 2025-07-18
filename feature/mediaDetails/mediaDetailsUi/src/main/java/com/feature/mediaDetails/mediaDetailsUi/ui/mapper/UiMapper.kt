@@ -25,7 +25,7 @@ fun Movie.toUi(): MovieUi {
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate,
         runtime = "${this.runtime} min",
-        country = this.country.countryCode,
+        country = this.country,
         description = this.description,
         productionCompanies = this.productionCompanies.map { it.toUi() }
     )
@@ -40,7 +40,7 @@ fun TvShow.toUi(): TvShowUi {
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate,
         runtime = "${this.runtime} min",
-        country = this.country.countryCode,
+        country = this.country,
         description = this.description,
         productionCompanies = this.productionCompanies.map { it.toUi() }
     )
