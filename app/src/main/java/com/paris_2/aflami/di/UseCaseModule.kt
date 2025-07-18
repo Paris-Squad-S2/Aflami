@@ -32,19 +32,6 @@ import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
 val useCaseModule = module {
-    factory { GetAllRecentSearchesUseCase(get()) }
-    factory { ClearRecentSearchUseCase(get()) }
-    factory { ClearAllRecentSearchesUseCase(get()) }
-    factory { AutoCompleteCountryUseCase(get()) }
-    factory { GetCountryCodeByNameUseCase(get()) }
-    factory { FilterByListOfCategoriesUseCase() }
-    factory { FilterMediaByRatingUseCase() }
-    factory { GetAllCategoriesUseCase(get()) }
-    factory { GetMediaByActorNameUseCase(get()) }
-    factory { GetMoviesOnlyByCountryNameUseCase(get()) }
-    factory { SearchByQueryUseCase(get()) }
-    factory { IncrementCategoryInteractionUseCase(get()) }
-    factory { SortingMediaByCategoriesInteractionUseCase(get()) }
     factoryOf(::GetAllRecentSearchesUseCase)
     factoryOf(::ClearRecentSearchUseCase)
     factoryOf(::ClearAllRecentSearchesUseCase)
@@ -71,5 +58,7 @@ val useCaseModule = module {
     factoryOf(::GetTvShowRecommendationsUseCase)
     factoryOf(::GetTvShowReviewsUseCase)
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
+    factoryOf(::IncrementCategoryInteractionUseCase)
+    factoryOf(::SortingMediaByCategoriesInteractionUseCase)
 }
 

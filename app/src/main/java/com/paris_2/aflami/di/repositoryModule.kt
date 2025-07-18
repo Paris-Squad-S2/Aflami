@@ -25,9 +25,5 @@ val repositoryModule = module {
     singleOf(::SearchMediaRepositoryImpl) bind SearchMediaRepository::class
     singleOf(::TvShowRepositoryImpl) bind TvShowRepository::class
     singleOf(::MovieRepositoryImpl) bind MovieRepository::class
-    single<SearchHistoryRepository> { SearchHistoryRepositoryImpl(get()) }
-    single<CategoriesRepository> { CategoriesRepositoryImpl(get(), get(), get()) }
-    single<CountryRepository> { CountryRepositoryImpl(get()) }
-    single<SearchMediaRepository> { SearchMediaRepositoryImpl(get(), get(), get(), get()) }
-    single<GenresInteractionRepository> { GenresInteractionRepositoryImpl(get()) }
+    singleOf(::GenresInteractionRepositoryImpl) bind GenresInteractionRepository::class
 }
