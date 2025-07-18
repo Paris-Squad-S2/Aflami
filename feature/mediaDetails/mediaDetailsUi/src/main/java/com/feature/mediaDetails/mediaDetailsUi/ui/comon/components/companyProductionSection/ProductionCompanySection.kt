@@ -2,6 +2,9 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProdu
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,26 +31,32 @@ fun ProductionCompanySection(
     modifier: Modifier = Modifier
 ) {
     if (!companies.isNullOrEmpty()) {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = 145.dp),
-            modifier = modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        Column(
+            modifier = modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(companies) { company ->
-                CompanyProductionCard(
-                    imageUrl = company.logoUrl,
-                    companyName = company.name,
-                    countryName = company.originCountry,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                )
+            companies.chunked(2).forEach { rowItems ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    rowItems.forEach { company ->
+                        CompanyProductionCard(
+                            imageUrl = company.logoUrl,
+                            companyName = company.name,
+                            countryName = company.originCountry,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    if (rowItems.size == 1) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
         }
     } else {
         Box(
-            modifier = modifier
-                .fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             contentAlignment = Alignment.Center
         ) {
             Text(
