@@ -1,2 +1,2 @@
-versionName=0.1.31
-- enhance search sorting according to user interaction
+versionName=0.1.32
+- solved the room build
