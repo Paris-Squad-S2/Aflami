@@ -3,9 +3,10 @@ package com.feature.search.searchUi.screen.findByActor
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.useCases.GetMediaByActorNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.aflami.appnavigation.AppNavigator
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -21,12 +22,13 @@ import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.koin.mp.KoinPlatform.getKoin
 import kotlin.test.assertEquals
 
 class FindByActorViewModelTest {
     private lateinit var viewModel: FindByActorViewModel
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
+    private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
+    private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
 
 
     private val testDispatcher = StandardTestDispatcher()
@@ -36,10 +38,14 @@ class FindByActorViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         getMediaByActorNameUseCase = mockk(relaxed = true)
+        incrementCategoryInteractionUseCase = mockk(relaxed = true)
+        sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
         viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
-            appNavigator=  mockk(relaxed = true)
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
+            appNavigator = mockk(relaxed = true)
         )
     }
 
@@ -105,8 +111,8 @@ class FindByActorViewModelTest {
                 imageUri = "",
                 title = "Cast Away",
                 type = MediaType.MOVIE,
-                categories = listOf(12,11),
-                yearOfRelease = LocalDate(2023,1,1),
+                categories = listOf(12, 11),
+                yearOfRelease = LocalDate(2023, 1, 1),
                 rating = 2.3,
             ),
             Media(
@@ -114,18 +120,21 @@ class FindByActorViewModelTest {
                 imageUri = "",
                 title = "Forrest Gump",
                 type = MediaType.MOVIE,
-                categories = listOf(12,11),
-                yearOfRelease = LocalDate(2023,1,1),
+                categories = listOf(12, 11),
+                yearOfRelease = LocalDate(2023, 1, 1),
                 rating = 2.7,
             ),
         )
         coEvery { getMediaByActorNameUseCase(testQuery) } returns mockMediaLists
+        coEvery { sortingMediaByCategoriesInteractionUseCase(mockMediaLists) } returns mockMediaLists
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
 
         val currentState = viewModel.screenState.value
-        assertEquals(mockMediaLists.toMediaUiList().map { it.title },currentState.uiState.searchResult.map { it.title })
+        assertEquals(
+            mockMediaLists.toMediaUiList().map { it.title },
+            currentState.uiState.searchResult.map { it.title })
         assertThat(currentState.isLoading).isFalse()
         assertThat(currentState.errorMessage).isNull()
     }
