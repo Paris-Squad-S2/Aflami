@@ -28,10 +28,11 @@ class SearchByQueryUseCaseTest {
 
         //Given
         val query = "chance"
-        coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByQuery(query,page) } returns mediaList
 
         //When
-        val result = searchByQueryUseCase(query)
+        val result = searchByQueryUseCase(query, page)
 
         //Then
         assertEquals(2, result.size)
@@ -42,10 +43,11 @@ class SearchByQueryUseCaseTest {
 
         // Given
         val query = "chance"
-        coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByQuery(query, page) } returns mediaList
 
         // When
-        val result = searchByQueryUseCase(query)
+        val result = searchByQueryUseCase(query, page)
 
         // Then
         assertEquals(mediaList, result)
@@ -56,24 +58,26 @@ class SearchByQueryUseCaseTest {
 
         // Given
         val query = "chance"
-        coEvery { searchMediaRepository.getMediaByQuery(query) } returns mediaList
+        val page = 1
+        coEvery { searchMediaRepository.getMediaByQuery(query, page) } returns mediaList
 
         // When
-        searchByQueryUseCase(query)
+        searchByQueryUseCase(query, page)
 
         // Then
-        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query, page) }
     }
 
     @Test
     fun `should return empty list when no media matches query`() = runTest {
 
         //Given
+        val page = 1
         val query = "unknown title"
-        coEvery { searchMediaRepository.getMediaByQuery(query) } returns emptyList()
+        coEvery { searchMediaRepository.getMediaByQuery(query, page) } returns emptyList()
 
         //When
-        val result = searchByQueryUseCase(query)
+        val result = searchByQueryUseCase(query, page)
 
         //Then
         assertTrue { result.isEmpty() }
@@ -83,14 +87,15 @@ class SearchByQueryUseCaseTest {
     @Test
     fun `should verify repository is called once for unmatched query`() = runTest {
         // Given
+        val page = 1
         val query = "unknown title"
-        coEvery { searchMediaRepository.getMediaByQuery(query) } returns emptyList()
+        coEvery { searchMediaRepository.getMediaByQuery(query, page) } returns emptyList()
 
         // When
-        searchByQueryUseCase(query)
+        searchByQueryUseCase(query, page)
 
         // Then
-        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query) }
+        coVerify(exactly = 1) { searchMediaRepository.getMediaByQuery(query, page) }
     }
 
     companion object {
