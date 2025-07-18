@@ -24,13 +24,14 @@ import com.repository.movie.models.remote.MovieLogoDto
 import com.repository.movie.models.remote.MovieProductionCompanyDto
 import com.repository.movie.models.remote.MovieReviewDto
 import com.repository.movie.models.remote.MovieSimilarDto
+import com.repository.movie.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
 fun MovieDto.toEntity(): Movie {
     return Movie(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
         genres = this.movieGenreDto?.map { it.toEntity() } ?: emptyList(),
@@ -58,7 +59,7 @@ private fun MovieGenreDto.toLocalDto(): GenreEntity {
 fun MovieProductionCompanyDto.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id ?: 0,
-        logoPath = this.logoPath.orEmpty(),
+        logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
         originCountry = this.originCountry.orEmpty()
     )
@@ -93,7 +94,7 @@ fun MovieSimilarDto.toEntity(): MovieSimilar {
     return MovieSimilar(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         releaseDate = this.releaseDate.orEmpty(),
     )
@@ -108,7 +109,7 @@ fun MovieImagesDto.toEntity(): Gallery {
 fun MovieLogoDto.toEntity(id: Int): Image {
     return Image(
         id = id,
-        url = this.filePath.orEmpty()
+        url = this.filePath.toImageUrl().orEmpty()
     )
 }
 
@@ -117,7 +118,7 @@ fun MovieReviewDto.toEntity(): Review {
         id = this.id.orEmpty(),
         name = this.authorDetails?.name.orEmpty(),
         createdAt = LocalDate.parse(this.createdAt ?: "2025-01-01"),
-        avatarUrl = this.authorDetails?.avatarPath.orEmpty(),
+        avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
         rating = this.authorDetails?.rating ?: 0.0
     )
@@ -256,7 +257,7 @@ private fun ProductionCompany.toLocalDto(): ProductionCompanyEntity {
 private fun MovieProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     return ProductionCompanyEntity(
         id = this.id ?: 0,
-        logoPath = this.logoPath.orEmpty(),
+        logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
         originCountry = this.originCountry.orEmpty()
     )

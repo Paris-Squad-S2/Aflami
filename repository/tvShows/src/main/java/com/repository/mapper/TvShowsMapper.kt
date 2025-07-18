@@ -29,13 +29,14 @@ import com.repository.model.remote.TvShowProductionCompanyDto
 import com.repository.model.remote.TvShowReviewDto
 import com.repository.model.remote.TvShowSeasonDto
 import com.repository.model.remote.TvShowSimilarDto
+import com.repository.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
 fun TvShowDto.toEntity(): TvShow {
     return TvShow(
         id = this.id ?: 0,
         title = this.name.orEmpty(),
-        posterPath = this.imageUrl.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
         genres = this.genres?.map { it.toEntity() } ?: emptyList(),
@@ -53,7 +54,7 @@ fun TvShowDto.toLocalDto(): TvShowEntity {
         title = this.name.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
-        posterPath = this.imageUrl.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
         seasons = this.seasonDto?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.firstAirDate.orEmpty(),
@@ -136,7 +137,7 @@ private fun GenreEntity.toEntity(): Genre {
 private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     return ProductionCompanyEntity(
         id = this.id ?: 0,
-        logoPath = this.logoPath.orEmpty(),
+        logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
         originCountry = this.originCountry.orEmpty()
     )
@@ -162,7 +163,7 @@ fun TvShowGenreDto.toEntity(): Genre {
 fun TvShowProductionCompanyDto.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id ?: 0,
-        logoPath = this.logoPath.orEmpty(),
+        logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
         originCountry = this.originCountry.orEmpty()
     )
@@ -172,7 +173,7 @@ fun TvShowCastDto.toEntity(): Cast {
     return Cast(
         id = this.id ?: 0,
         name = this.name.orEmpty(),
-        imageUrl = this.imageUrl.orEmpty()
+        imageUrl = this.profilePath.toImageUrl().orEmpty()
     )
 }
 
@@ -180,7 +181,7 @@ fun TvShowSimilarDto.toEntity(): TvShowSimilar {
     return TvShowSimilar(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
     )
@@ -216,7 +217,7 @@ fun ImageEntity.toEntity(): Image {
 fun TvShowLogoDto.toEntity(id: Int): Image {
     return Image(
         id = id,
-        url = this.imageUrl.orEmpty()
+        url = this.filePath.toImageUrl().orEmpty()
     )
 }
 
@@ -225,7 +226,7 @@ fun TvShowReviewDto.toEntity(): Review {
         id = this.id.orEmpty(),
         name = this.authorDetails?.name.orEmpty(),
         createdAt = LocalDate.parse(this.createdAt ?: "2025-01-01"),
-        avatarUrl = this.authorDetails?.avatarPath.orEmpty(),
+        avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
         rating = this.authorDetails?.rating ?: 0.0
     )
@@ -247,9 +248,10 @@ fun TvShowSeasonDto.toEntity(): Season {
     return Season(
         id = this.id.toString(),
         name = this.name.orEmpty(),
-        episodes = this.episodesDto?.map { it.toEntity(this.posterPath.orEmpty()) } ?: emptyList()
+        episodes = this.episodesDto?.map { it.toEntity(this.posterPath.toImageUrl().orEmpty()) } ?: emptyList()
     )
 }
+
 fun SeasonEntity.toEntity(): Season {
     return Season(
         id = this.id.toString(),
@@ -290,7 +292,7 @@ fun TvShowEpisodeDto.toEntity(posterPath: String): Episode {
         airDate = LocalDate.parse(this.airDate.orEmpty()),
         runtime = this.runtime ?: 0,
         description = this.overview.orEmpty(),
-        stillUrl = this.stillPath.orEmpty()
+        stillUrl = this.stillPath.toImageUrl().orEmpty()
     )
 }
 
