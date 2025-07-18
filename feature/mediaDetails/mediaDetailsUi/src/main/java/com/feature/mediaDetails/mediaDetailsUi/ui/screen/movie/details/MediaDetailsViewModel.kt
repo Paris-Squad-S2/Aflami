@@ -2,12 +2,17 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.paris_2.aflami.appnavigation.AppNavigator
+import kotlinx.coroutines.launch
+import org.koin.mp.KoinPlatform.getKoin
 
 class MovieDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
+    private val appNavigator: AppNavigator = getKoin().get()
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
@@ -129,7 +134,9 @@ class MovieDetailsViewModelViewModel(
     }
 
     override fun onNavigateBack() {
-        navigateUp()
+        viewModelScope.launch {
+            appNavigator.navigateUp()
+        }
     }
 
     override fun onFavouriteClick(title: String) {

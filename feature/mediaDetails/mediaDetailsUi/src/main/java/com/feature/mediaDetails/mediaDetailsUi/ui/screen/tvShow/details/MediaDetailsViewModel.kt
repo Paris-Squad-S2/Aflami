@@ -1,20 +1,25 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
+import com.paris_2.aflami.appnavigation.AppNavigator
+import kotlinx.coroutines.launch
+import org.koin.mp.KoinPlatform.getKoin
 
 class TvShowDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
+    private val appNavigator: AppNavigator = getKoin().get(),
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
             tvShowUi = TvShowUi(
-                id =0,
+                id = 0,
                 posterUrl = "",
                 rating = "",
                 title = "",
@@ -43,7 +48,7 @@ class TvShowDetailsViewModelViewModel(
             TvShowDetailsScreenState(
                 tvShowDetailsUiState = TvShowDetailsUiState(
                     tvShowUi = TvShowUi(
-                        id =123,
+                        id = 123,
                         posterUrl = "https://via.placeholder.com/300x450",
                         rating = "8.7",
                         title = "Mock Show $mediaId",
@@ -183,10 +188,12 @@ class TvShowDetailsViewModelViewModel(
     }
 
     override fun onNavigateBack() {
-        navigateUp()
+            viewModelScope.launch {
+                appNavigator.navigateUp()
+        }
     }
 
-    override fun onFavouriteClick(title:String) {
+    override fun onFavouriteClick(title: String) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
 
     }
