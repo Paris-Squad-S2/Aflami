@@ -72,7 +72,13 @@ fun WorldTourScreenContent(
                     it.englishName
                 }
                 name + " (${it.countryCode})" },
-            onSuggestionSelected = { worldTourScreenInteractionListener.onSearchQueryChange(it.substringBefore("(").trim()) },
+            onSuggestionSelected = {
+                worldTourScreenInteractionListener.onSearchQueryChange(
+                    it.substringBefore(
+                        "("
+                    ).trim()
+                )
+            },
         )
         if (state.uiState.searchQuery.isEmpty()) {
             PlaceholderView(

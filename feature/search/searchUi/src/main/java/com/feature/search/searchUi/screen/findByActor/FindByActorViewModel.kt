@@ -8,6 +8,8 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.domain.search.useCases.GetMediaByActorNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
@@ -28,6 +30,7 @@ data class FindByActorScreenState(
     val uiState: FindByActorUiState,
     val errorMessage: String?
 )
+
 data class FindByActorUiState(
     val searchQuery: String,
     val searchResult: Flow<PagingData<MediaUiState>>,
@@ -36,6 +39,8 @@ data class FindByActorUiState(
 class FindByActorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val appNavigator: AppNavigator = getKoin().get()
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
@@ -75,8 +80,7 @@ class FindByActorViewModel(
                 delay(1000)
                 searchQuery(query)
             }
-        }
-        else {
+        } else {
             emitState(
                 screenState.value.copy(
                     uiState = screenState.value.uiState.copy(
@@ -99,7 +103,10 @@ class FindByActorViewModel(
                 Pager(
                  config = PagingConfig(pageSize = 10),
                  pagingSourceFactory = {
-                     FindByActorPagingSource(query,getMediaByActorNameUseCase)
+                     FindByActorPagingSource(
+                         query,
+                         getMediaByActorNameUseCase,
+                         sortingMediaByCategoriesInteractionUseCase)
                  }
                 ).flow.cachedIn(viewModelScope)
 
@@ -128,17 +135,19 @@ class FindByActorViewModel(
         searchQuery(screenState.value.uiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+    override fun onMediaCardClick(media: MediaUiState) {
         tryToExecute(
             execute = {
+                incrementCategoryInteractionUseCase.invoke(media.categories)
                 appNavigator.navigate(
                     AppDestinations.MediaDetailsFeature(
-                        when (mediaType) {
+                        when (media.type) {
                             MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = id
+                                movieId = media.id
                             )
+
                             MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = id
+                                tvShowId = media.id
                             )
                         }.toJson()
                     )
