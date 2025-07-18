@@ -12,14 +12,14 @@ import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 
 class SeasonLocalDataSourceImpTest {
-    private lateinit var seasonLocalDataSourceImp: TvShowTvShowSeasonLocalDataSourceImp
+    private lateinit var seasonLocalDataSourceImp: TvShowSeasonLocalDataSourceImp
     private lateinit var seasonDao: SeasonDao
     private lateinit var sampleSeason: SeasonEntity
 
     @BeforeEach
     fun setUp() {
         seasonDao = mockk(relaxed = true)
-        seasonLocalDataSourceImp = TvShowTvShowSeasonLocalDataSourceImp(seasonDao)
+        seasonLocalDataSourceImp = TvShowSeasonLocalDataSourceImp(seasonDao)
         sampleSeason = SeasonEntity(
             id = 1,
             tvShowId = 10,

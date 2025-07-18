@@ -44,7 +44,7 @@ class MovieRepositoryImpl(
             val movieRemote =
                 movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
 
-            movieLocalDataSource.getMovie(movieId)
+            movieLocalDataSource.getMovieById(movieId)
                 .takeIf { it != null && isDataFresh(it.movieCacheDate) }
                 .also { movieLocalDataSource.addMovie(movieRemote.toLocalDto()) }
                 ?.toEntity()

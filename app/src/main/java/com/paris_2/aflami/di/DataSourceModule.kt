@@ -8,7 +8,7 @@ import com.datasource.local.datasource.TvShowGalleryLocalDataSourceImp
 import com.datasource.local.datasource.TvShowLocalDataSourceImp
 import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
 import com.datasource.local.datasource.TvShowReviewLocalDataSourceImp
-import com.datasource.local.datasource.TvShowTvShowSeasonLocalDataSourceImp
+import com.datasource.local.datasource.TvShowSeasonLocalDataSourceImp
 import com.datasource.local.search.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.search.datasource.GenresLocalDataSourceImpl
 import com.datasource.local.search.datasource.HistoryLocalDataSourceImpl
@@ -43,5 +43,5 @@ val dataSourceModule = module {
     singleOf(::TvShowGalleryLocalDataSourceImp) bind TvShowGalleryLocalDataSource::class
     singleOf(::TvShowLocalDataSourceImp) bind TvShowLocalDataSource::class
     singleOf(::TvShowReviewLocalDataSourceImp) bind TvShowReviewLocalDataSource::class
-    singleOf(::TvShowTvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
+    singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
 }
