@@ -249,6 +249,7 @@ class TvShowDetailsViewModelViewModel(
                 )
             },
             onSuccess = { seasons ->
+                Log.d("TAG111", "onClickOnSeason: ${seasons.episodes}")
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
