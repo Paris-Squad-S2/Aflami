@@ -36,6 +36,7 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 fun ResultDto.toMediaEntity(
     searchQuery: String,
     searchType: SearchType,
+    page:Int,
     language: String
 ): MediaEntity? {
     val title = this.title ?: this.name ?: return null
@@ -57,6 +58,7 @@ fun ResultDto.toMediaEntity(
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage ?: 0.0,
             searchType = searchType,
+            page = page,
             language = language
         )
     } catch (_: Exception) {
@@ -66,6 +68,7 @@ fun ResultDto.toMediaEntity(
 
 fun KnownForDto.toMediaEntity(
     searchQuery: String,
+    page: Int,
     language: String
 ): MediaEntity? {
     val title = this.title ?: return null
@@ -86,6 +89,7 @@ fun KnownForDto.toMediaEntity(
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage ?: 0.0,
             searchType = SearchType.Actor,
+            page = page,
             language = language
         )
     } catch (_: Exception) {
@@ -96,10 +100,11 @@ fun KnownForDto.toMediaEntity(
 
 fun ResultDto.toMediaEntityForActors(
     searchQuery: String,
+    page:Int,
     language: String
 ): List<MediaEntity?> {
     return this.knownForDTO?.map {
-        it.toMediaEntity(searchQuery , language)?.let { mediaEntity ->
+        it.toMediaEntity(searchQuery,page,language)?.let { mediaEntity ->
             return listOf(mediaEntity)
         }
     } ?: emptyList()
@@ -109,18 +114,20 @@ fun ResultDto.toMediaEntityForActors(
 fun SearchDto.toMediaEntities(
     query: String,
     searchType: SearchType,
+    page: Int,
     language: String
 ): List<MediaEntity> {
     return results?.mapNotNull {
-        it.toMediaEntity(query, searchType , language)
+        it.toMediaEntity(query, searchType , page,language)
     } ?: emptyList()
 }
 
 fun SearchDto.toMediaEntitiesForActors(
     query: String,
+    page:Int,
     language: String
 ): List<MediaEntity> {
     return results?.flatMap {
-        it.toMediaEntityForActors(query , language)
+        it.toMediaEntityForActors(query,page,language)
     }?.filterNotNull() ?: emptyList()
 }
