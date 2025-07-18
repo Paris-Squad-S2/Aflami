@@ -2,12 +2,14 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 
 class TvShowCastViewModel(
     savedStateHandle: SavedStateHandle,
+    private val getTvShowCastUseCase: GetTvShowCastUseCase,
 ) : TvShowCastScreenInteractionListener, BaseViewModel<TvShowCastUiState>(
     TvShowCastUiState(
         cast = emptyList(),
@@ -23,16 +25,31 @@ class TvShowCastViewModel(
         val mediaId = savedStateHandle
             .toRoute<MediaDetailsDestinations.TvShowCastScreen>()
             .tvShowId
+        loadTvShowCast(mediaId)
+    }
 
-        updateState(
-            TvShowCastUiState(
-                cast = listOf(
-                    CastUi("Tom Hanks", "https://example.com/tom.jpg"),
-                    CastUi("Michael Clarke Duncan", "https://example.com/michael.jpg")
-                ),
-                isLoading = false,
-                errorMessage = null
-            )
+    private fun loadTvShowCast(mediaId: Int) {
+        updateState(screenState.value.copy(isLoading = true))
+
+        tryToExecute(
+            execute = { getTvShowCastUseCase(mediaId) },
+            onSuccess = { castList ->
+                updateState(
+                    screenState.value.copy(
+                        cast = castList.toListOfCastUi(),
+                        isLoading = false,
+                        errorMessage = null
+                    )
+                )
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        isLoading = false,
+                        errorMessage = error
+                    )
+                )
+            }
         )
     }
 }
