@@ -134,9 +134,20 @@ class WorldTourViewModelTest {
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
             getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             appNavigator = navMock
         )
-        viewModel.onMediaCardClick(12, com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE)
+        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+            id = 12,
+            imageUri = "",
+            title = "Test Movie",
+            type = com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE,
+            categories = listOf(1, 2),
+            yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
+            rating = 4.5
+        )
+        viewModel.onMediaCardClick(mediaUiState)
         advanceUntilIdle()
         coVerify { navMock.navigate(any()) }
     }
