@@ -44,4 +44,5 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
+    implementation(project((":repository:movie")))
 }

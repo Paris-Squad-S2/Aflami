@@ -9,6 +9,6 @@ data class Movie(
     val genres: List<Genre>,
     val releaseDate: String,
     val runtime: Int,
-    val country: Country,
+    val country: String,
     val productionCompanies: List<ProductionCompany>,
 )

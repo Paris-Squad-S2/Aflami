@@ -30,8 +30,8 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -42,8 +42,8 @@ android {
         }
         create("minified") {
             initWith(getByName("debug"))
-            isMinifyEnabled = true
-            isShrinkResources = true
+            isMinifyEnabled = false
+            isShrinkResources = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -130,11 +130,16 @@ dependencies {
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
     implementation(project(Modules.REPOSITORY_SEARCH))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+    implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
     implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))
     implementation(project(Modules.DOMAIN_SEARCH))
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
+    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
@@ -145,7 +150,6 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
-
 }
 
 kover {
