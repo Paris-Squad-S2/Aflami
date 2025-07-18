@@ -5,6 +5,8 @@ import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -25,6 +27,8 @@ class WorldTourViewModelTest {
     private lateinit var autoCompleteCountryUseCase: AutoCompleteCountryUseCase
     private lateinit var getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase
     private lateinit var getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase
+    private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
+    private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -36,14 +40,18 @@ class WorldTourViewModelTest {
         autoCompleteCountryUseCase = mockk(relaxed = true)
         getMoviesByCountryUseCase = mockk(relaxed = true)
         getCountryCodeByNameUseCase = mockk(relaxed = true)
+        incrementCategoryInteractionUseCase = mockk(relaxed = true)
+        sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
 
         viewModel = WorldTourViewModel(
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
             getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
-            appNavigator=  mockk(relaxed = true)
-            )
+            appNavigator = mockk(relaxed = true)
+        )
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -76,8 +84,16 @@ class WorldTourViewModelTest {
     fun `onSearchQueryChange should trigger autocomplete and update hints`() = runTest {
         val query = "United"
         val mockHints = listOf(
-            Country(englishName = "United States", countryCode = "US" , arabicName = "الولايات المتحدة"),
-            Country(englishName = "United Kingdom", countryCode = "UK" , arabicName = "المملكة المتحدة")
+            Country(
+                englishName = "United States",
+                countryCode = "US",
+                arabicName = "الولايات المتحدة"
+            ),
+            Country(
+                englishName = "United Kingdom",
+                countryCode = "UK",
+                arabicName = "المملكة المتحدة"
+            )
         )
         coEvery { autoCompleteCountryUseCase(query) } returns mockHints
 
