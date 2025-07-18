@@ -1,3 +1,2 @@
-versionName=0.1.29
-- handle ci and cd with key store and upload signed release
-- Reduce app size
+versionName=0.1.30
+- Handled roomDb fro local
