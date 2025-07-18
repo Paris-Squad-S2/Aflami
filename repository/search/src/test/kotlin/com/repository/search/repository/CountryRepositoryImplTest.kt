@@ -22,7 +22,7 @@ class CountryRepositoryImplTest {
     @Test
     fun `getAllCountries should return local countries if not empty`() = runTest {
         // Given
-        val localCountries = listOf(CountryEntity("1", "Egypt"))
+        val localCountries = listOf(CountryEntity("1", "Egypt" , "مصر"))
         coEvery { countriesLocalDataSource.getCountries() } returns localCountries
 
         // When
@@ -37,7 +37,7 @@ class CountryRepositoryImplTest {
     fun `getAllCountries should call addCountries when local is empty`() = runTest {
         // Given
         val empty = emptyList<CountryEntity>()
-        val populated = listOf(CountryEntity("2", "France"))
+        val populated = listOf(CountryEntity("2", "France" , "فرنسا"))
 
         coEvery { countriesLocalDataSource.getCountries() } returnsMany listOf(empty, populated)
         coEvery { countriesLocalDataSource.addCountries() } just Runs
