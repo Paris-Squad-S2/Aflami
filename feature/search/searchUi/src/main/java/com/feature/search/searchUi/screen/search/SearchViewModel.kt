@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
@@ -10,6 +9,7 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
+import com.domain.search.model.Media
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
 import com.domain.search.useCases.FilterByListOfCategoriesUseCase
@@ -492,14 +492,40 @@ class SearchViewModel(
         )
     }
 
-    private suspend fun <T : Any> Flow<PagingData<T>>.collectAllItems(): List<T> {
+    private suspend fun Flow<PagingData<Media>>.collectAllItems(): List<Media> {
         val differ = AsyncPagingDataDiffer(
-            diffCallback = object : DiffUtil.ItemCallback<T>() {
-                override fun areItemsTheSame(oldItem: T, newItem: T): Boolean =
-                    oldItem == newItem
+            diffCallback = object : DiffUtil.ItemCallback<Media>() {
+                override fun areItemsTheSame(oldItem: Media, newItem: Media): Boolean =
+                    oldItem.id == newItem.id
 
-                override fun areContentsTheSame(oldItem: T, newItem: T): Boolean =
-                    oldItem.equals(newItem)
+                override fun areContentsTheSame(oldItem: Media, newItem: Media): Boolean =
+                    oldItem == newItem
+            },
+            updateCallback = NoopListUpdateCallback(),
+            mainDispatcher = Dispatchers.Main,
+            workerDispatcher = Dispatchers.Default
+        )
+
+        val job = CoroutineScope(Dispatchers.Main).launch {
+            collectLatest { pagingData ->
+                differ.submitData(pagingData)
+            }
+        }
+
+        delay(1000)
+        job.cancel()
+
+        return differ.snapshot().items
+    }
+
+    private suspend fun Flow<PagingData<MediaUiState>>.collectAllItems(): List<MediaUiState> {
+        val differ = AsyncPagingDataDiffer(
+            diffCallback = object : DiffUtil.ItemCallback<MediaUiState>() {
+                override fun areItemsTheSame(oldItem: MediaUiState, newItem: MediaUiState): Boolean =
+                    oldItem.id == newItem.id
+
+                override fun areContentsTheSame(oldItem: MediaUiState, newItem: MediaUiState): Boolean =
+                    oldItem == newItem
             },
             updateCallback = NoopListUpdateCallback(),
             mainDispatcher = Dispatchers.Main,
