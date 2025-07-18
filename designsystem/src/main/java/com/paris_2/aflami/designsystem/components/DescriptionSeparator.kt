@@ -43,7 +43,7 @@ fun DescriptionSeparator(
             )
         }
 
-        if (secondText.isNotBlank()) return
+        if (!secondText.isBlank()) return
             Text(
             text = secondText,
             style = Theme.textStyle.label.small,
