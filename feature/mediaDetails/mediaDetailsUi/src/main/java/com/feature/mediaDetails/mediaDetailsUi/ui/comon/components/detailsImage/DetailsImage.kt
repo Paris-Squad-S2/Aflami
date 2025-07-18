@@ -23,8 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImagePainter
-import coil.compose.rememberAsyncImagePainter
+import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.MediaButtonType
 import com.paris_2.aflami.designsystem.components.MediaPlayButton
@@ -43,7 +42,6 @@ fun DetailsImage(
 ) {
     val displayImages = imageUris.take(10)
     val pagerState = rememberPagerState(pageCount = { displayImages.size })
-
     LaunchedEffect(Unit) {
         if (displayImages.size > 1) {
             while (true) {
@@ -53,7 +51,6 @@ fun DetailsImage(
             }
         }
     }
-
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -69,17 +66,19 @@ fun DetailsImage(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
             ) { page ->
-
-                val painter = rememberAsyncImagePainter(model = displayImages[page])
-                val painterState = painter.state
-
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
                         .align(Alignment.Center)
                 ) {
-                    when (painterState) {
-                        is AsyncImagePainter.State.Loading -> {
+                    SafeImageViewer(
+                        model = displayImages[page],
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.Center),
+                        contentScale = ContentScale.Crop,
+                        contentDescription = "poster",
+                        placeholder = {
                             Image(
                                 painter = painterResource(id = R.drawable.ic_film_roll),
                                 contentDescription = null,
@@ -87,28 +86,17 @@ fun DetailsImage(
                                     .size(48.dp)
                                     .align(Alignment.Center)
                             )
-                        }
-                        is AsyncImagePainter.State.Error -> {
+                        },
+                        errorPlaceholder = {
                             Image(
-                                painter = painterResource(id = R.drawable.ic_film_roll),
+                                painter = painterResource(id = R.drawable.img_disconnect),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(48.dp)
                                     .align(Alignment.Center)
                             )
                         }
-                        is AsyncImagePainter.State.Success -> {
-                            Image(
-                                painter = painter,
-                                contentDescription = "poster",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .align(Alignment.Center),
-                                contentScale = ContentScale.Fit
-                            )
-                        }
-                        else -> {}
-                    }
+                    )
                 }
             }
             RatingCard(
