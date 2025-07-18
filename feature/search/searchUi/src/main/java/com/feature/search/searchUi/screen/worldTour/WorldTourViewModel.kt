@@ -11,6 +11,8 @@ import com.domain.search.model.Country
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
@@ -43,6 +45,8 @@ class WorldTourViewModel(
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
     private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val appNavigator: AppNavigator = getKoin().get()
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
@@ -91,11 +95,9 @@ class WorldTourViewModel(
                 val countryCode = getCountryCodeByNameUseCase(query)
                 if (countryCode != null) {
                     searchQuery(countryCode)
-                }
-                else if (screenState.value.uiState.hints.isNotEmpty()){
+                } else if (screenState.value.uiState.hints.isNotEmpty()) {
                     searchQuery(screenState.value.uiState.hints.first().countryCode)
-                }
-                else {
+                } else {
                     emitState(
                         screenState.value.copy(
                             uiState = screenState.value.uiState.copy(
@@ -122,7 +124,8 @@ class WorldTourViewModel(
                     pagingSourceFactory = {
                         WorldTourPagingSource(
                             countryName = query,
-                            getMoviesByCountryUseCase = getMoviesByCountryUseCase
+                            getMoviesByCountryUseCase = getMoviesByCountryUseCase,
+                            sortingMediaByCategoriesInteractionUseCase
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -150,17 +153,19 @@ class WorldTourViewModel(
         searchQuery(screenState.value.uiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+    override fun onMediaCardClick(media: MediaUiState) {
         tryToExecute(
             execute = {
+                incrementCategoryInteractionUseCase.invoke(media.categories)
                 appNavigator.navigate(
                     AppDestinations.MediaDetailsFeature(
-                        when (mediaType) {
+                        when (media.type) {
                             MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = id
+                                movieId = media.id
                             )
+
                             MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = id
+                                tvShowId = media.id
                             )
                         }.toJson()
                     )

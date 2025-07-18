@@ -5,6 +5,8 @@ import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.GetCountryCodeByNameUseCase
 import com.domain.search.useCases.GetMediaByActorNameUseCase
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -28,6 +30,8 @@ class WorldTourViewModelTest {
     private lateinit var autoCompleteCountryUseCase: AutoCompleteCountryUseCase
     private lateinit var getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase
     private lateinit var getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase
+    private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
+    private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -39,11 +43,15 @@ class WorldTourViewModelTest {
         autoCompleteCountryUseCase = mockk(relaxed = true)
         getMoviesByCountryUseCase = mockk(relaxed = true)
         getCountryCodeByNameUseCase = mockk(relaxed = true)
+        incrementCategoryInteractionUseCase = mockk(relaxed = true)
+        sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
 
         viewModel = WorldTourViewModel(
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
             getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
             appNavigator = mockk(relaxed = true)
         )
@@ -126,9 +134,20 @@ class WorldTourViewModelTest {
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
             getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             appNavigator = navMock
         )
-        viewModel.onMediaCardClick(12, com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE)
+        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+            id = 12,
+            imageUri = "",
+            title = "Test Movie",
+            type = com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE,
+            categories = listOf(1, 2),
+            yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
+            rating = 4.5
+        )
+        viewModel.onMediaCardClick(mediaUiState)
         advanceUntilIdle()
         coVerify { navMock.navigate(any()) }
     }

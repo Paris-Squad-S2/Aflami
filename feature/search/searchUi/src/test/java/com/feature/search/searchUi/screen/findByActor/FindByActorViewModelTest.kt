@@ -4,8 +4,11 @@ import androidx.paging.PagingSource
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.useCases.GetMediaByActorNameUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -29,6 +32,8 @@ import kotlin.test.assertTrue
 class FindByActorViewModelTest {
     private lateinit var viewModel: FindByActorViewModel
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
+    private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
+    private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -37,9 +42,13 @@ class FindByActorViewModelTest {
     fun setup() {
         Dispatchers.setMain(testDispatcher)
         getMediaByActorNameUseCase = mockk(relaxed = true)
+        incrementCategoryInteractionUseCase = mockk(relaxed = true)
+        sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
         viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             appNavigator = mockk(relaxed = true)
         )
     }
@@ -120,6 +129,7 @@ class FindByActorViewModelTest {
             ),
         )
         coEvery { getMediaByActorNameUseCase(testQuery, any()) } returns mockMediaLists
+        coEvery { sortingMediaByCategoriesInteractionUseCase(mockMediaLists) } returns mockMediaLists
 
         viewModel.onSearchQueryChange(testQuery)
         advanceUntilIdle()
@@ -137,7 +147,7 @@ class FindByActorViewModelTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
         coEvery { getMediaByActorNameUseCase(testQuery, any()) } throws Exception(errorMessage)
-        val pagingSource = FindByActorPagingSource(testQuery, getMediaByActorNameUseCase)
+        val pagingSource = FindByActorPagingSource(testQuery, getMediaByActorNameUseCase,sortingMediaByCategoriesInteractionUseCase)
         val result = pagingSource.load(
             PagingSource.LoadParams.Refresh(
                 key = null,
@@ -162,9 +172,20 @@ class FindByActorViewModelTest {
         val viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             appNavigator = navMock
         )
-        viewModel.onMediaCardClick(42, com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE)
+        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+            id = 42,
+            imageUri = "",
+            title = "Test Movie",
+            type = MediaTypeUi.MOVIE,
+            categories = listOf(1, 2),
+            yearOfRelease = LocalDate(2023, 1, 1),
+            rating = 4.5,
+        )
+        viewModel.onMediaCardClick(mediaUiState)
         advanceUntilIdle()
         coVerify { navMock.navigate(any()) }
     }
