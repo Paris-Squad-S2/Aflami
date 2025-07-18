@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
@@ -8,17 +7,19 @@ import com.domain.search.useCases.FilterByListOfCategoriesUseCase
 import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
-import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
@@ -59,7 +60,7 @@ data class MediaUiState(
     val rating: Double,
 )
 
-enum class MediaTypeUi(val mediaName: String){
+enum class MediaTypeUi(val mediaName: String) {
     TVSHOW("TV Show"),
     MOVIE("Movie")
 }
@@ -71,7 +72,7 @@ data class CategoryUiState(
 
 data class SearchHistoryUiState(
     val searchTitle: String,
-    val searchDate:String,
+    val searchDate: String,
     val searchType: SearchTypeUi
 )
 
@@ -89,6 +90,8 @@ class SearchViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val appNavigator: AppNavigator = getKoin().get()
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
@@ -148,7 +151,8 @@ class SearchViewModel(
                 emitState(
                     screenState.value.copy(
                         searchUiState = screenState.value.searchUiState.copy(
-                            categories = categories.toCategoryUiList().associateWith { false }.toMutableMap()
+                            categories = categories.toCategoryUiList().associateWith { false }
+                                .toMutableMap()
                         )
                     )
                 )
@@ -215,11 +219,13 @@ class SearchViewModel(
                         errorMessage = null
                     )
                 )
-                searchByQueryUseCase(query)
+                sortingMediaByCategoriesInteractionUseCase(searchByQueryUseCase(query))
             },
             onSuccess = { searchResult ->
-                val moviesResult = searchResult.toMediaUiList().filter { it.type == MediaTypeUi.MOVIE }
-                val tvShowsResult = searchResult.toMediaUiList().filter { it.type == MediaTypeUi.TVSHOW }
+                val moviesResult =
+                    searchResult.toMediaUiList().filter { it.type == MediaTypeUi.MOVIE }
+                val tvShowsResult =
+                    searchResult.toMediaUiList().filter { it.type == MediaTypeUi.TVSHOW }
 
                 val filteredMediaByRating = filterMediaByRatingUseCase(
                     screenState.value.searchUiState.selectedRating,
@@ -233,9 +239,11 @@ class SearchViewModel(
                     ) else searchResult
 
                 val filteredMoviesResult =
-                    filteredMediaByCategories.toMediaUiList().filter { it.type == MediaTypeUi.MOVIE }
+                    filteredMediaByCategories.toMediaUiList()
+                        .filter { it.type == MediaTypeUi.MOVIE }
                 val filteredTvShowsResult =
-                    filteredMediaByCategories.toMediaUiList().filter { it.type == MediaTypeUi.TVSHOW }
+                    filteredMediaByCategories.toMediaUiList()
+                        .filter { it.type == MediaTypeUi.TVSHOW }
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
@@ -456,17 +464,20 @@ class SearchViewModel(
         searchQuery(screenState.value.searchUiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+    override fun onMediaCardClick(mediaUiState: MediaUiState) {
         tryToExecute(
             execute = {
+                incrementCategoryInteractionUseCase.invoke(mediaUiState.categories)
+
                 appNavigator.navigate(
                     AppDestinations.MediaDetailsFeature(
-                        when (mediaType) {
+                        when (mediaUiState.type) {
                             MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = id
+                                movieId = mediaUiState.id
                             )
+
                             MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = id
+                                tvShowId = mediaUiState.id
                             )
                         }.toJson()
                     )
