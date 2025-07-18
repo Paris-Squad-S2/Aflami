@@ -2,6 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -13,6 +14,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -25,11 +27,15 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProduc
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
-import com.paris_2.aflami.designsystem.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
+import com.paris_2.aflami.designsystem.components.NetworkError
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
+import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun MovieDetailsScreen(
@@ -49,7 +55,6 @@ fun MovieDetailsScreenContent(
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
     val movieChips = MovieChips.entries
-
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
@@ -63,108 +68,216 @@ fun MovieDetailsScreenContent(
             .navigationBarsPadding()
             .statusBarsPadding()
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding()
-        ) {
-            item {
-                DetailsImage(
-                    imageUris = listOf(
-                        state.movieDetailsUiState.movie.posterUrl,
-                    ),
-                    rating = state.movieDetailsUiState.movie.rating,
-                    onPlayClick = {},
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-            }
-            item {
-                DescriptionSection(
-                    title = state.movieDetailsUiState.movie.title,
-                    genres = state.movieDetailsUiState.movie.genres,
-                    releaseDate = state.movieDetailsUiState.movie.releaseDate,
-                    runtime = state.movieDetailsUiState.movie.runtime,
-                    country = state.movieDetailsUiState.movie.country,
-                    description = state.movieDetailsUiState.movie.description
-                )
-            }
-            item {
-                CastSection(
-                    castList = state.movieDetailsUiState.cast,
-                    onSeeAllClick = {
-                        movieDetailsScreenInteractionListener.onShowAllCastClick(
-                            state.movieDetailsUiState.movie.id
+        when {
+            state.errorMessage != null -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TopAppBar(
+                        leadingIcons = listOf(
+                            iconItemWithDefaults(
+                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                            )
                         )
-                    }
-                )
-            }
-            item {
-
-                ChipsRowSection(
-                    items = movieChips.map { chip ->
-                        stringResource(chip.titleResId) to chip.iconResId
-                    },
-                    selectedIndex = selectedIndex.intValue,
-                    onItemSelected = { selectedIndex.intValue = it }
-                )
-            }
-
-            selectedIndex.intValue.let { index ->
-                when (movieChips[index]) {
-
-                    MovieChips.MORE_LIKE_THIS -> item {
-                        MoreLikeThisSection(
-                            mediaList = state.movieDetailsUiState.recommendations,
-                            onClick = {},
-                            mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie)
-                        )
-                    }
-
-                    MovieChips.REVIEWS -> item {
-                        ReviewsSection(
-                            reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
-                        )
-                    }
-
-                    MovieChips.GALLERY -> item {
-                        GallerySection(state.movieDetailsUiState.gallery)
-                    }
-
-                    MovieChips.COMPANY_PRODUCTION -> item {
-                        ProductionCompanySection(
-                            companies = state.movieDetailsUiState.movie.productionCompanies,
-                            modifier = Modifier
-                                .padding(horizontal = 16.dp)
-                                .padding(top = 12.dp)
-                        )
-                    }
+                    )
+                    NetworkError(
+                        modifier = Modifier.fillMaxSize(),
+                        onRetry = movieDetailsScreenInteractionListener::onRetryLoadMovieDetails
+                    )
                 }
             }
 
+            state.isLoading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TopAppBar(
+                        leadingIcons = listOf(
+                            iconItemWithDefaults(
+                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                            )
+                        )
+                    )
+                    PageLoadingPlaceHolder(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            state.movieDetailsUiState.movie.title.isEmpty() -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TopAppBar(
+                        leadingIcons = listOf(
+                            iconItemWithDefaults(
+                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                            )
+                        )
+                    )
+                    PlaceholderView(
+                        modifier = Modifier.fillMaxSize(),
+                        image = painterResource(RDesignSystem.drawable.ic_network_error),
+                        title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.no_movie_details),
+                        subTitle = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie_details_not_available),
+                        spacer = 16.dp
+                    )
+                }
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .navigationBarsPadding()
+                ) {
+                    item {
+                        if (state.isImageLoading) {
+                            PageLoadingPlaceHolder(
+                                modifier = Modifier.padding(bottom = 12.dp)
+                            )
+                        } else {
+                            DetailsImage(
+                                imageUris = listOf(
+                                    state.movieDetailsUiState.movie.posterUrl,
+                                ),
+                                rating = state.movieDetailsUiState.movie.rating,
+                                onPlayClick = {},
+                                modifier = Modifier.padding(bottom = 12.dp)
+                            )
+                        }
+                    }
+
+                    if (state.isDescriptionLoading) {
+                        item {
+                            PageLoadingPlaceHolder(
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    } else if (hasDescriptionContent(state.movieDetailsUiState.movie)) {
+                        item {
+                            DescriptionSection(
+                                title = state.movieDetailsUiState.movie.title,
+                                genres = state.movieDetailsUiState.movie.genres,
+                                releaseDate = state.movieDetailsUiState.movie.releaseDate,
+                                runtime = state.movieDetailsUiState.movie.runtime,
+                                country = state.movieDetailsUiState.movie.country,
+                                description = state.movieDetailsUiState.movie.description
+                            )
+                        }
+                    }
+
+                    if (state.isCastLoading) {
+                        item {
+                            PageLoadingPlaceHolder(
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    } else if (state.movieDetailsUiState.cast.isNotEmpty()) {
+                        item {
+                            CastSection(
+                                castList = state.movieDetailsUiState.cast,
+                                onSeeAllClick = {
+                                    movieDetailsScreenInteractionListener.onShowAllCastClick(
+                                        state.movieDetailsUiState.movie.id
+                                    )
+                                }
+                            )
+                        }
+                    }
+
+                    item {
+                        ChipsRowSection(
+                            items = movieChips.map { chip ->
+                                stringResource(chip.titleResId) to chip.iconResId
+                            },
+                            selectedIndex = selectedIndex.intValue,
+                            onItemSelected = { selectedIndex.intValue = it }
+                        )
+                    }
+
+                    selectedIndex.intValue.let { index ->
+                        when (movieChips[index]) {
+                            MovieChips.MORE_LIKE_THIS -> item {
+                                if (state.isRecommendationsLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    MoreLikeThisSection(
+                                        mediaList = state.movieDetailsUiState.recommendations,
+                                        onClick = {},
+                                        mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie)
+                                    )
+                                }
+                            }
+
+                            MovieChips.REVIEWS -> item {
+                                if (state.isReviewsLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    ReviewsSection(
+                                        reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
+                                    )
+                                }
+                            }
+
+                            MovieChips.GALLERY -> item {
+                                if (state.isGalleryLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    GallerySection(state.movieDetailsUiState.gallery)
+                                }
+                            }
+
+                            MovieChips.COMPANY_PRODUCTION -> item {
+                                if (state.isProductionCompaniesLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    ProductionCompanySection(
+                                        companies = state.movieDetailsUiState.movie.productionCompanies,
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .padding(top = 12.dp)
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+
+                TopAppBar(
+                    leadingIcons = listOf(
+                        iconItemWithDefaults(
+                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                            onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                        )
+                    ),
+                    trailingIcons = listOf(
+                        iconItemWithDefaults(
+                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
+                            onClick = {
+                                movieDetailsScreenInteractionListener.onFavouriteClick(rate)
+                            }
+                        ),
+                        iconItemWithDefaults(
+                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_heart_add),
+                            onClick = {
+                                movieDetailsScreenInteractionListener.onAddToListClick(addToList)
+                            }
+                        )
+                    )
+                )
+            }
         }
-
-        TopAppBar(
-            leadingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = { movieDetailsScreenInteractionListener.onNavigateBack() }
-                )
-            ),
-            trailingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = {
-                        movieDetailsScreenInteractionListener.onFavouriteClick(rate)
-                    }
-
-                ),
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = {
-                        movieDetailsScreenInteractionListener.onAddToListClick(addToList)
-                    }
-                )
-            )
-        )
     }
 }

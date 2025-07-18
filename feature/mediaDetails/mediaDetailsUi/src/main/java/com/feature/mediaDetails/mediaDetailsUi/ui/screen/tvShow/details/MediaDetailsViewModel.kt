@@ -233,7 +233,7 @@ class TvShowDetailsViewModelViewModel(
     }
 
     override fun onClickOnSeason(seasonNumber: Int) {
-        if (screenState.value.tvShowDetailsUiState.tvShowUi.seasons.any { it.id == seasonNumber.toString() && it.isExpanded }) {
+        if (screenState.value.tvShowDetailsUiState.tvShowUi.seasons.any { it.seasonNumber == seasonNumber && it.isExpanded }) {
             return
         }
         tryToExecute(
@@ -254,7 +254,7 @@ class TvShowDetailsViewModelViewModel(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
                             tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
                                 seasons = screenState.value.tvShowDetailsUiState.tvShowUi.seasons.map {
-                                    if (it.id == seasonNumber.toString()) {
+                                    if (it.seasonNumber == seasonNumber) {
                                         it.copy(
                                             isExpanded = true,
                                             episodes = seasons.episodes.toListOfEpisodeUi()

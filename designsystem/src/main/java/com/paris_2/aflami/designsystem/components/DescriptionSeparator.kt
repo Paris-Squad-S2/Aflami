@@ -2,7 +2,6 @@ package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,50 +14,86 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @Composable
 fun DescriptionSeparator(
     modifier: Modifier = Modifier,
-    firstText: String = "",
-    secondText: String = "",
+    texts: List<String> = emptyList(),
     textColor: Color,
     separatorColor: Color = textColor
 ) {
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
-        if (!firstText.isBlank()) {
+        texts.filter { it.isNotBlank() }.forEachIndexed { index, text ->
+            if (index > 0) {
+                Image(
+                    painter = painterResource(R.drawable.media_year_separator),
+                    contentDescription = "separator",
+                    modifier = Modifier.padding(horizontal = 4.dp),
+                    colorFilter = ColorFilter.tint(separatorColor)
+                )
+            }
             Text(
-                text = firstText,
+                text = text,
                 style = Theme.textStyle.label.small,
                 color = textColor,
-                modifier = Modifier
+                modifier = if (index == texts.lastIndex) Modifier.padding(end = 4.dp) else Modifier
             )
         }
+    }
+}
 
-        if (firstText.isNotBlank() && secondText.isNotBlank()) {
-            Image(
-                painter = painterResource(R.drawable.media_year_separator),
-                contentDescription = "separator",
-                modifier = Modifier.padding(horizontal = 4.dp),
-                colorFilter = ColorFilter.tint(separatorColor)
-            )
-        }
-
-        if (secondText.isNotBlank()) return
-            Text(
-            text = secondText,
-            style = Theme.textStyle.label.small,
-            color = textColor,
-            modifier = Modifier.padding(end = 4.dp)
+@Preview
+@Composable
+fun PreviewDescriptionSeparator1() {
+    BasePreview {
+        DescriptionSeparator(
+            texts = listOf("TV show", "2016"),
+            textColor = Theme.colors.text.hint
         )
     }
 }
 
 @Preview
 @Composable
-fun PreviewDescriptionSeparator() {
-    DescriptionSeparator(
-        firstText = "TV show",
-        secondText = "2016",
-        textColor = Theme.colors.onPrimaryColors.onPrimaryBody
-    )
+fun PreviewDescriptionSeparator2() {
+    BasePreview {
+        DescriptionSeparator(
+            texts = listOf(),
+            textColor = Theme.colors.text.hint
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewDescriptionSeparator3() {
+    BasePreview {
+        DescriptionSeparator(
+            texts = listOf("Action", "Adventure", "Drama"),
+            textColor = Theme.colors.text.hint
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewDescriptionSeparator4() {
+    BasePreview {
+        DescriptionSeparator(
+            texts = listOf("Action", "", "Drama"),
+            textColor = Theme.colors.text.hint
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewDescriptionSeparator5() {
+    BasePreview {
+        DescriptionSeparator(
+            texts = listOf("Action", "", ""),
+            textColor = Theme.colors.text.hint
+        )
+    }
 }

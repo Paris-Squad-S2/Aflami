@@ -28,7 +28,7 @@ class MovieDetailsViewModelViewModel(
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
     private val getMovieProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase,
     private val addMovieToFavoriteUseCase: AddMovieToFavoriteUseCase,
-    private val appNavigator: AppNavigator
+    private val appNavigator: AppNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
@@ -54,11 +54,14 @@ class MovieDetailsViewModelViewModel(
     )
 ) {
 
-    init {
-        val movieId =
-            savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
-        loadedMovieDetails(movieId)
+    private val movieId by lazy {
+        savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
     }
+
+    init {
+        loadedMovieDetails(mediaId = movieId)
+    }
+
 
     private fun loadedMovieDetails(mediaId: Int) {
         tryToExecute(
@@ -224,5 +227,16 @@ class MovieDetailsViewModelViewModel(
 
     override fun onShowAllCastClick(movieId: Int) {
         navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
+    }
+
+
+    override fun onRetryLoadMovieDetails() {
+        updateState(
+            screenState.value.copy(
+                isLoading = true,
+                errorMessage = null
+            )
+        )
+        loadedMovieDetails(mediaId = movieId)
     }
 }

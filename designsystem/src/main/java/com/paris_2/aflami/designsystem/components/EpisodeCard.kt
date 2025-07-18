@@ -11,7 +11,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -25,6 +24,7 @@ fun EpisodeCard(
     episodeRating: Float,
     episodeNumber: String,
     episodeTitle: String,
+    imageUri: String,
     episodeDuration: String,
     episodeDate: String,
     episodeDescription: String,
@@ -39,7 +39,7 @@ fun EpisodeCard(
             AflamiMediaCard(
                 rating = episodeRating,
                 mediaCardType = MediaCardType.EPISODE,
-                imageUri = R.drawable.attack_on_titan.toString(),
+                imageUri = imageUri,
                 modifier = Modifier.padding(bottom = 8.dp, end = 12.dp),
                 clickable = true
             )
@@ -55,8 +55,7 @@ fun EpisodeCard(
                     color = Theme.colors.text.hint
                 )
                 DescriptionSeparator(
-                    firstText = episodeDuration,
-                    secondText = episodeDate,
+                    texts = listOf(episodeDuration, episodeDate),
                     textColor = Theme.colors.text.hint,
                     separatorColor = Theme.colors.stroke
                 )
@@ -87,7 +86,8 @@ fun PreviewEpisodeCard() {
             episodeNumber = "1",
             episodeRating = 8f,
             episodeTitle = "Recovering a body",
-            episodeDate = "3 Sep 2020"
+            episodeDate = "3 Sep 2020",
+            imageUri = "https://image.tmdb.org/t/p/w500//3BHWR7mney46vFhG4lQrsso3p1m.jpg",
         )
     }
 }

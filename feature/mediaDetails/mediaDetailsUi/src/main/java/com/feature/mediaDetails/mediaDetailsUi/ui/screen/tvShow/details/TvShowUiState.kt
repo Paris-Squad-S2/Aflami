@@ -35,9 +35,10 @@ data class TvShowUi(
 ): MediaUi
 
 data class SeasonUi(
-    val id: String,
+    val id: Int,
     val name: String,
     val episodeCount: Int,
+    val seasonNumber: Int,
     val isExpanded: Boolean = false,
     val episodes: List<EpisodeUi>
 )

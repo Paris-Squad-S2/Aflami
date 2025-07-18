@@ -5,4 +5,5 @@ interface MovieDetailsScreenInteractionListener {
     fun onFavouriteClick(title:String)
     fun onAddToListClick(title:String)
     fun onShowAllCastClick(movieId: Int)
+    fun onRetryLoadMovieDetails()
 }

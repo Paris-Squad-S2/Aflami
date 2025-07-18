@@ -53,12 +53,7 @@ fun DescriptionSection(
             modifier = modifier.padding(start = 16.dp)
         ) {
             DescriptionSeparator(
-                firstText = releaseDate,
-                secondText = runtime,
-                textColor = Theme.colors.text.body
-            )
-            DescriptionSeparator(
-                secondText = country,
+                texts = listOf(releaseDate, runtime, country),
                 textColor = Theme.colors.text.body
             )
         }
