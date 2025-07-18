@@ -7,6 +7,7 @@ import com.domain.search.repository.CountryRepository
 import com.domain.search.repository.SearchHistoryRepository
 import com.domain.search.repository.SearchMediaRepository
 import com.repository.movie.repository.MovieRepositoryImpl
+import com.repository.movie.util.NetworkConnectionChecker
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.search.repository.CategoriesRepositoryImpl
 import com.repository.search.repository.CountryRepositoryImpl
@@ -23,4 +24,5 @@ val repositoryModule = module {
     singleOf(::SearchMediaRepositoryImpl) bind SearchMediaRepository::class
     singleOf(::TvShowRepositoryImpl) bind TvShowRepository::class
     singleOf(::MovieRepositoryImpl) bind MovieRepository::class
+    singleOf(::NetworkConnectionChecker)
 }

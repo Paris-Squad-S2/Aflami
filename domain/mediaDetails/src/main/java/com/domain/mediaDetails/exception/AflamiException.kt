@@ -14,3 +14,4 @@ class NoTvShowDetailsFoundException : LocalDataSourceException("No tv show detai
 class NoSeasonDetailsFoundException : LocalDataSourceException("No season details found in the local database")
 class NoGalleryTvShowFoundException : LocalDataSourceException("No gallery tv show found in the local database")
 class NoGalleryMovieDetailsFoundException : LocalDataSourceException("No gallery movie found in the local database")
+class NoInternetConnectionException: NetworkConnectionException("Please connect your device to the internet")
