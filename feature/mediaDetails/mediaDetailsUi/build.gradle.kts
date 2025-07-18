@@ -39,6 +39,10 @@ android {
 
 dependencies {
 
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+    implementation(project(Modules.REPOSITORY_MOVIE))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -63,6 +67,8 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.android)
 
+
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     //coil
     implementation(libs.coil.compose)
 
@@ -76,7 +82,8 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     implementation(project(Modules.DESIGN_SYSTEM))
+
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
-    
+
 }
