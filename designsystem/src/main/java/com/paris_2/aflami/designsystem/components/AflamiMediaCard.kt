@@ -146,8 +146,7 @@ fun AflamiMediaCard(
                 maxLines = 1,
             )
             DescriptionSeparator(
-                firstText = mediaType,
-                secondText = year,
+                texts = listOf(mediaType, year),
                 textColor = Theme.colors.onPrimaryColors.onPrimaryBody
             )
 

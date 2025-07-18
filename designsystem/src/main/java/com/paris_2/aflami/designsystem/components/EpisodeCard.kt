@@ -55,8 +55,7 @@ fun EpisodeCard(
                     color = Theme.colors.text.hint
                 )
                 DescriptionSeparator(
-                    firstText = episodeDuration,
-                    secondText = episodeDate,
+                    texts = listOf(episodeDuration, episodeDate),
                     textColor = Theme.colors.text.hint,
                     separatorColor = Theme.colors.stroke
                 )
