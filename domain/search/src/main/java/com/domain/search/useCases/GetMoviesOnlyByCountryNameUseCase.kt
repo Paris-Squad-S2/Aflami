@@ -7,7 +7,7 @@ import com.domain.search.repository.SearchMediaRepository
 class GetMoviesOnlyByCountryNameUseCase(
     private val searchMediaRepository: SearchMediaRepository,
 ) {
-    suspend operator fun invoke(countryName: String): List<Media> {
-        return searchMediaRepository.getMoviesByCountry(countryName).filter { it.type == MediaType.MOVIE }
+    suspend operator fun invoke(countryName: String,page: Int): List<Media> {
+        return searchMediaRepository.getMoviesByCountry(countryName,page).filter { it.type == MediaType.MOVIE }
     }
 }

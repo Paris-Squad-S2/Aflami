@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
@@ -20,18 +22,25 @@ import com.paris_2.aflami.designsystem.components.TabRow
 @Composable
 fun WithSearchQueryContent(
     state: SearchScreenState,
-    searchScreenInteractionListener: SearchScreenInteractionListener
+    searchScreenInteractionListener: SearchScreenInteractionListener,
 ) {
     val tabs = listOf(
         stringResource(R.string.movies),
         stringResource(R.string.tv_shows)
     )
-    if (state.errorMessage != null) {
+    if (state.errorMessage != null
+        || state.searchUiState.filteredMoviesResult.collectAsLazyPagingItems().loadState.hasError
+        || state.searchUiState.filteredTvShowsResult.collectAsLazyPagingItems().loadState.hasError) {
         NetworkError(
             modifier = Modifier.fillMaxSize(),
             onRetry = searchScreenInteractionListener::onRetrySearchQuery
         )//TODO: Ask if it always will be a network error or how to handle other types of errors
     } else if (state.isLoading) {
+        PageLoadingPlaceHolder(
+            modifier = Modifier.fillMaxSize()
+        )
+    } else if (state.searchUiState.filteredMoviesResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
+        && state.searchUiState.filteredTvShowsResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()
         )
@@ -45,7 +54,7 @@ fun WithSearchQueryContent(
             )
             val searchResult =
                 if (state.searchUiState.selectedTabIndex == 0) state.searchUiState.filteredMoviesResult else state.searchUiState.filteredTvShowsResult
-            if (searchResult.isEmpty()) {
+            if (searchResult.collectAsLazyPagingItems().itemCount == 0) {
                 PlaceholderView(
                     modifier = Modifier.fillMaxSize(),
                     image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_no_search_result),
@@ -55,7 +64,7 @@ fun WithSearchQueryContent(
                 )
             } else {
                 SearchResultContent(
-                    searchResult = searchResult,
+                    searchResult = searchResult.collectAsLazyPagingItems(),
                     onMediaCardClick = searchScreenInteractionListener::onMediaCardClick
                 )
             }

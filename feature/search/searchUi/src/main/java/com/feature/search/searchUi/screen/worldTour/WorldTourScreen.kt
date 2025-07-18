@@ -13,6 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.paris_2.aflami.designsystem.components.NetworkError
@@ -87,16 +89,16 @@ fun WorldTourScreenContent(
                 subTitle = stringResource(R.string.start_exploring_the_world_movie),
                 spacer = 16.dp
             )
-        } else if (state.errorMessage != null) {
+        } else if (state.errorMessage != null||state.uiState.searchResult.collectAsLazyPagingItems().loadState.hasError) {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = worldTourScreenInteractionListener::onRetrySearchQuery
             )
-        } else if (state.isLoading) {
+        } else if (state.uiState.searchResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
             PageLoadingPlaceHolder(
                 modifier = Modifier.fillMaxSize()
             )
-        } else if (state.uiState.searchResult.isEmpty()) {
+        } else if (state.uiState.searchResult.collectAsLazyPagingItems().itemCount==0) {
             PlaceholderView(
                 modifier = Modifier.fillMaxSize(),
                 image = painterResource(RDesignSystem.drawable.img_no_search_result),
@@ -106,7 +108,7 @@ fun WorldTourScreenContent(
             )
         } else {
             SearchResultContent(
-                searchResult = state.uiState.searchResult,
+                searchResult = state.uiState.searchResult.collectAsLazyPagingItems(),
                 onMediaCardClick = worldTourScreenInteractionListener::onMediaCardClick
             )
         }
