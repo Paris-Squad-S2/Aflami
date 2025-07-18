@@ -23,4 +23,6 @@
     <string name="tvshow">مسلسل</string>
     <string name="no_cast_available">لا يوجد طاقم تمثيل متاح</string>
     <string name="cast_information_not_available">معلومات طاقم التمثيل غير متوفرة لهذا الفيلم</string>
+    <string name="no_movie_details">تفاصيل الفيلم غير متوفرة</string>
+    <string name="movie_details_not_available">تعذر تحميل تفاصيل الفيلم</string>
 </resources>

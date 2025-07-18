@@ -6,7 +6,14 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 data class MovieDetailsScreenState(
     val movieDetailsUiState: MovieDetailsUiState,
     val isLoading: Boolean,
-    val errorMessage: String?
+    val errorMessage: String?,
+    val isImageLoading: Boolean = false,
+    val isDescriptionLoading: Boolean = false,
+    val isCastLoading: Boolean = false,
+    val isRecommendationsLoading: Boolean = false,
+    val isReviewsLoading: Boolean = false,
+    val isGalleryLoading: Boolean = false,
+    val isProductionCompaniesLoading: Boolean = false,
 )
 
 data class MovieDetailsUiState(
