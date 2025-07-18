@@ -3,11 +3,9 @@ package com.repository.movie.models.local
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.repository.movie.util.getCurrentDate
-import kotlinx.datetime.LocalDateTime
 
 @Entity(
-    tableName = "gallery_table",
+    tableName = "movies_similar_table",
     foreignKeys = [ForeignKey(
         entity = MovieEntity::class,
         parentColumns = ["id"],
@@ -15,10 +13,14 @@ import kotlinx.datetime.LocalDateTime
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class GalleryEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+data class MovieSimilarEntity(
+    @PrimaryKey()
+    val id: Int,
     val movieId: Int,
-    val images: List<ImageEntity>,
-    val galleryCacheDate: LocalDateTime = getCurrentDate(),
-    )
+    val title: String,
+    val voteAverage: Double,
+    val posterPath: String,
+    val releaseDate: String,
+    val language: String,
+    val page: Int
+)

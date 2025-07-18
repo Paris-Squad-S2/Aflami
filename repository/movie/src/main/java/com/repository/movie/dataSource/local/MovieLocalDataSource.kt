@@ -4,5 +4,5 @@ import com.repository.movie.models.local.MovieEntity
 
 interface MovieLocalDataSource {
     suspend fun addMovie(movie: MovieEntity)
-    suspend fun getMovie(movieId:Int): MovieEntity?
+    suspend fun getMovie(movieId:Int,language: String): MovieEntity?
 }

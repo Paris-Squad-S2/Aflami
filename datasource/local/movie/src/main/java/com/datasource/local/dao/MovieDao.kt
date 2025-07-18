@@ -11,6 +11,6 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMovies(movies: MovieEntity)
 
-    @Query("SELECT * FROM movies_table WHERE id = :movieId")
-    suspend fun getMovies(movieId: Int): MovieEntity?
+    @Query("SELECT * FROM movies_table WHERE id = :movieId AND language = :language")
+    suspend fun getMovies(movieId: Int, language: String): MovieEntity?
 }

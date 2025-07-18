@@ -20,4 +20,5 @@ data class MovieEntity(
     val runtime: Int,
     val country: String,
     val productionCompanies: List<ProductionCompanyEntity>,
+    val language: String
 )

@@ -1,9 +1,10 @@
 package com.paris_2.aflami.di
 
-import com.datasource.local.datasource.MovieLocalDataSourceImp
-import com.datasource.local.datasource.MovieMovieCastLocalDataSourceImp
-import com.datasource.local.datasource.MovieMovieGalleryLocalDataSourceImp
-import com.datasource.local.datasource.MovieMovieReviewLocalDataSourceImp
+import com.datasource.local.datasource.MovieLocalDataSourceImpl
+import com.datasource.local.datasource.MovieMovieCastLocalDataSourceImpl
+import com.datasource.local.datasource.MovieMovieGalleryLocalDataSourceImpl
+import com.datasource.local.datasource.MovieMovieReviewLocalDataSourceImpl
+import com.datasource.local.datasource.MovieSimilarDataSourceImpl
 import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
 import com.datasource.local.datasource.TvShowGalleryLocalDataSourceImp
 import com.datasource.local.datasource.TvShowLocalDataSourceImp
@@ -23,6 +24,7 @@ import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
+import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.dataSource.local.GenresInteractionDataSource
 import com.repository.search.dataSource.local.GenresLocalDataSource
@@ -37,10 +39,11 @@ val dataSourceModule = module {
     singleOf(::MediaLocalDataSourceImpl) bind MediaLocalDataSource::class
     singleOf(::CountriesLocalDataSourceImpl) bind CountriesLocalDataSource::class
     singleOf(::GenresLocalDataSourceImpl) bind GenresLocalDataSource::class
-    singleOf(::MovieMovieGalleryLocalDataSourceImp) bind MovieGalleryLocalDataSource::class
-    singleOf(::MovieMovieCastLocalDataSourceImp) bind MovieCastLocalDataSource::class
-    singleOf(::MovieLocalDataSourceImp) bind MovieLocalDataSource::class
-    singleOf(::MovieMovieReviewLocalDataSourceImp) bind MovieReviewLocalDataSource::class
+    singleOf(::MovieMovieGalleryLocalDataSourceImpl) bind MovieGalleryLocalDataSource::class
+    singleOf(::MovieMovieCastLocalDataSourceImpl) bind MovieCastLocalDataSource::class
+    singleOf(::MovieLocalDataSourceImpl) bind MovieLocalDataSource::class
+    singleOf(::MovieSimilarDataSourceImpl) bind MovieSimilarLocalDataSource::class
+    singleOf(::MovieMovieReviewLocalDataSourceImpl) bind MovieReviewLocalDataSource::class
     singleOf(::TvShowCastLocalDataSourceImp) bind TvShowCastLocalDataSource::class
     singleOf(::TvShowGalleryLocalDataSourceImp) bind TvShowGalleryLocalDataSource::class
     singleOf(::TvShowLocalDataSourceImp) bind TvShowLocalDataSource::class
