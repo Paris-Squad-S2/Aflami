@@ -1,11 +1,11 @@
 package com.datasource
 
 import androidx.room.TypeConverter
-import com.repository.entity.CountryEntity
-import com.repository.entity.GenreEntity
-import com.repository.entity.ImageEntity
-import com.repository.entity.ProductionCompanyEntity
+import com.repository.movie.models.local.GenreEntity
+import com.repository.movie.models.local.ImageEntity
+import com.repository.movie.models.local.ProductionCompanyEntity
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -44,24 +44,6 @@ class MovieDetailConverter {
     }
 
     @TypeConverter
-    fun fromCountryEntity(country: CountryEntity?): String? {
-        if (country == null) {
-            return null
-        }
-
-        return json.encodeToString(country)
-    }
-
-    @TypeConverter
-    fun toCountryEntity(countryString: String?): CountryEntity? {
-        if (countryString == null) {
-            return null
-        }
-        return json.decodeFromString<CountryEntity>(countryString)
-    }
-
-
-    @TypeConverter
     fun fromImageList(images: List<ImageEntity>?): String? {
         if (images == null) {
             return null
@@ -87,4 +69,14 @@ class MovieDetailConverter {
 
     @TypeConverter
     fun toLocalDate(value: String?): LocalDate? = value?.let { LocalDate.parse(it) }
+
+    @TypeConverter
+    fun fromLocalDateTime(date: LocalDateTime?): String? {
+        return date?.toString()
+    }
+
+    @TypeConverter
+    fun toLocalDateTime(dateString: String?): LocalDateTime? {
+        return dateString?.let { LocalDateTime.Companion.parse(it) }
+    }
 }
