@@ -123,7 +123,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -135,6 +135,9 @@ dependencies {
     implementation(project(Modules.FIREBASE))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
     implementation(project(Modules.FEATURE_SEARCH_UI))
+
+    //Navigation
+    implementation(libs.navigation.compose)
 
     // JUnit 5
     testImplementation(libs.junit.jupiter.api)
@@ -156,6 +159,20 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
 
     implementation(project(Modules.FEATURE_SEARCH_API))
+
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_LISTS_API))
+    implementation(project(Modules.FEATURE_PROFILE_API))
+    implementation(project(Modules.FEATURE_CATEGORIES_API))
+    implementation(project(Modules.FEATURE_GUESS_GAME_API))
+
+    implementation(project(Modules.FEATURE_HOME_UI))
+    implementation(project(Modules.FEATURE_LISTS_UI))
+    implementation(project(Modules.FEATURE_PROFILE_UI))
+    implementation(project(Modules.FEATURE_CATEGORIES_UI))
+    implementation(project(Modules.FEATURE_GUESS_GAME_UI))
+
+
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
     implementation(project(Modules.REPOSITORY_SEARCH))

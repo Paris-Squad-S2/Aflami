@@ -35,7 +35,8 @@ fun MediaTypeEntity.toMediaType(): MediaType {
 
 fun ResultDto.toMediaEntity(
     searchQuery: String,
-    searchType: SearchType
+    searchType: SearchType,
+    language: String
 ): MediaEntity? {
     val title = this.title ?: this.name ?: return null
     val releaseDateStr = (this.releaseDate?.takeIf { it.isNotBlank() }
@@ -55,7 +56,8 @@ fun ResultDto.toMediaEntity(
             category = this.genreIds ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage ?: 0.0,
-            searchType = searchType
+            searchType = searchType,
+            language = language
         )
     } catch (_: Exception) {
         null
@@ -64,6 +66,7 @@ fun ResultDto.toMediaEntity(
 
 fun KnownForDto.toMediaEntity(
     searchQuery: String,
+    language: String
 ): MediaEntity? {
     val title = this.title ?: return null
     val releaseDateStr = this.releaseDate ?: return null
@@ -82,7 +85,8 @@ fun KnownForDto.toMediaEntity(
             category = this.genreIds ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage ?: 0.0,
-            searchType = SearchType.Actor
+            searchType = SearchType.Actor,
+            language = language
         )
     } catch (_: Exception) {
         return null
@@ -92,9 +96,10 @@ fun KnownForDto.toMediaEntity(
 
 fun ResultDto.toMediaEntityForActors(
     searchQuery: String,
+    language: String
 ): List<MediaEntity?> {
     return this.knownForDTO?.map {
-        it.toMediaEntity(searchQuery)?.let { mediaEntity ->
+        it.toMediaEntity(searchQuery , language)?.let { mediaEntity ->
             return listOf(mediaEntity)
         }
     } ?: emptyList()
@@ -103,17 +108,19 @@ fun ResultDto.toMediaEntityForActors(
 
 fun SearchDto.toMediaEntities(
     query: String,
-    searchType: SearchType
+    searchType: SearchType,
+    language: String
 ): List<MediaEntity> {
     return results?.mapNotNull {
-        it.toMediaEntity(query, searchType)
+        it.toMediaEntity(query, searchType , language)
     } ?: emptyList()
 }
 
 fun SearchDto.toMediaEntitiesForActors(
     query: String,
+    language: String
 ): List<MediaEntity> {
     return results?.flatMap {
-        it.toMediaEntityForActors(query)
+        it.toMediaEntityForActors(query , language)
     }?.filterNotNull() ?: emptyList()
 }

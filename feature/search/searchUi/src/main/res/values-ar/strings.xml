@@ -26,4 +26,7 @@
     <string name="genre">النوع</string>
     <string name="all">الكل</string>
     <string name="start_exploring_search_for_your_favorite_movies_series_and_shows">ابدأ الاستكشاف! ابحث عن أفلامك ومسلسلاتك وعروضك المفضلة</string>
+    <string name="query">استعلام</string>
+    <string name="country">بلد</string>
+    <string name="actor">ممثل</string>
 </resources>
