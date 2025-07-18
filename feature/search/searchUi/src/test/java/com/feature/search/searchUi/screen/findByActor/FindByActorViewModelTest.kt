@@ -8,6 +8,7 @@ import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -171,9 +172,20 @@ class FindByActorViewModelTest {
         val viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             appNavigator = navMock
         )
-        viewModel.onMediaCardClick(42, com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE)
+        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+            id = 42,
+            imageUri = "",
+            title = "Test Movie",
+            type = MediaTypeUi.MOVIE,
+            categories = listOf(1, 2),
+            yearOfRelease = LocalDate(2023, 1, 1),
+            rating = 4.5,
+        )
+        viewModel.onMediaCardClick(mediaUiState)
         advanceUntilIdle()
         coVerify { navMock.navigate(any()) }
     }
