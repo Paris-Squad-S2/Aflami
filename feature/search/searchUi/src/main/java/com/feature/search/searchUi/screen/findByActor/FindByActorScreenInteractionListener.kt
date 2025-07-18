@@ -1,10 +1,10 @@
 package com.feature.search.searchUi.screen.findByActor
 
-import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.feature.search.searchUi.screen.search.MediaUiState
 
 interface FindByActorScreenInteractionListener {
     fun onNavigateBack()
     fun onSearchQueryChange(query: String)
-    fun onMediaCardClick(id: Int, mediaType: MediaTypeUi)
+    fun onMediaCardClick(media: MediaUiState)
     fun onRetrySearchQuery()
 }

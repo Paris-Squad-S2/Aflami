@@ -16,6 +16,7 @@ import com.datasource.local.dao.TvShowReviewDao
 import com.datasource.local.search.SearchDatabase
 import com.datasource.local.search.dao.CountryDao
 import com.datasource.local.search.dao.GenresDao
+import com.datasource.local.search.dao.GenresUserInteractionDao
 import com.datasource.local.search.dao.MediaDao
 import com.datasource.local.search.dao.SearchHistoryDao
 import com.paris_2.aflami.di.DatabaseConstants.MOVIE_DATABASE_NAME
@@ -53,11 +54,11 @@ val roomModule = module {
         )
             .build()
     }
-
     single<SearchHistoryDao> { get<SearchDatabase>().searchHistoryDao() }
     single<MediaDao> { get<SearchDatabase>().mediaDao() }
     single<CountryDao> { get<SearchDatabase>().countryDao() }
     single<GenresDao> { get<SearchDatabase>().genresDao() }
+    single<GenresUserInteractionDao> { get<SearchDatabase>().genreUserInteractionDao() }
     single<MovieCastDao> { get<MovieDetailDataBase>().castDao() }
     single<MovieGalleryDao> { get<MovieDetailDataBase>().galleryDao() }
     single<MovieDao> { get<MovieDetailDataBase>().movieDao() }

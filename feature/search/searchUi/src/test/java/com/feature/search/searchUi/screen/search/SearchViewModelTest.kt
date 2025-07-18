@@ -13,7 +13,9 @@ import com.domain.search.useCases.FilterByListOfCategoriesUseCase
 import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
@@ -46,6 +48,8 @@ class SearchViewModelTest {
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase = mockk()
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase = mockk()
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase = mockk()
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase = mockk()
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase = mockk()
 
     private lateinit var viewModel: SearchViewModel
 
@@ -91,11 +95,11 @@ class SearchViewModelTest {
         rating = 7.9
     )
 
-    val mockSearchHistory1 = SearchHistoryModel(
+    private val mockSearchHistory1 = SearchHistoryModel(
         searchTitle = "Lord of the Rings", searchDate = "2023-10-26", SearchType.Query
     )
 
-    val mockSearchHistory2 = SearchHistoryModel(
+    private val mockSearchHistory2 = SearchHistoryModel(
         searchTitle = "Inception", searchDate = "2023-11-15", SearchType.Query
     )
 
@@ -123,6 +127,8 @@ class SearchViewModelTest {
                 getAllCategoriesUseCase,
                 filterMediaByRatingUseCase,
                 filterMedByListOfCategoriesUseCase,
+                incrementCategoryInteractionUseCase,
+                sortingMediaByCategoriesInteractionUseCase,
                 appNavigator = mockk(relaxed = true)
             )
         )
@@ -145,6 +151,8 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
+            incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase,
             appNavigator = mockk(relaxed = true)
         )
 
@@ -168,6 +176,8 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
+            incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase,
             appNavigator = mockk(relaxed = true)
         )
 
@@ -189,6 +199,8 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
+            incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase,
             appNavigator = mockk(relaxed = true)
         )
 
@@ -351,6 +363,7 @@ class SearchViewModelTest {
 
         assertThat(viewModel.screenState.value.isLoading).isFalse()
         assertThat(viewModel.screenState.value.searchUiState.selectedRating).isEqualTo(
+
             selectedRating
         )
         val filteredMovies =
@@ -433,7 +446,8 @@ class SearchViewModelTest {
             viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
         val filteredTvShows =
             viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems()
-        assertThat(filteredMovies.map { it.title }).isEqualTo(initialMovies.map { it.title })
+        assertThat(filteredMovies.map { it.title }).isEqualTo(
+            initialMovies.map { it.title })
         assertThat(filteredTvShows.map { it.title }).isEqualTo(
             initialTvShows.map { it.title }
         )
@@ -460,6 +474,8 @@ class SearchViewModelTest {
                 getAllCategoriesUseCase,
                 filterMediaByRatingUseCase,
                 filterMedByListOfCategoriesUseCase,
+                incrementCategoryInteractionUseCase,
+                sortingMediaByCategoriesInteractionUseCase,
                 appNavigator = mockk(relaxed = true)
             )
             advanceUntilIdle()
@@ -489,6 +505,8 @@ class SearchViewModelTest {
             getAllCategoriesUseCase,
             filterMediaByRatingUseCase,
             filterMedByListOfCategoriesUseCase,
+            incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase,
             appNavigator = mockk(relaxed = true)
         )
         advanceUntilIdle()
@@ -532,6 +550,8 @@ class SearchViewModelTest {
                 getAllCategoriesUseCase,
                 filterMediaByRatingUseCase,
                 filterMedByListOfCategoriesUseCase,
+                incrementCategoryInteractionUseCase,
+                sortingMediaByCategoriesInteractionUseCase,
                 appNavigator = mockk(relaxed = true)
             )
             advanceUntilIdle()

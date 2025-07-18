@@ -4,20 +4,20 @@ import com.datasource.local.datasource.MovieCastLocalDataSourceImp
 import com.datasource.local.datasource.MovieGalleryLocalDataSourceImp
 import com.datasource.local.datasource.MovieLocalDataSourceImp
 import com.datasource.local.datasource.MovieReviewLocalDataSourceImp
+import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
 import com.datasource.local.datasource.TvShowGalleryLocalDataSourceImp
 import com.datasource.local.datasource.TvShowLocalDataSourceImp
-import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
 import com.datasource.local.datasource.TvShowReviewLocalDataSourceImp
 import com.datasource.local.datasource.TvShowSeasonLocalDataSourceImp
 import com.datasource.local.search.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.search.datasource.GenresLocalDataSourceImpl
 import com.datasource.local.search.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.search.datasource.MediaLocalDataSourceImpl
-import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.local.TvShowReviewLocalDataSource
+import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -43,5 +43,6 @@ val dataSourceModule = module {
     singleOf(::TvShowGalleryLocalDataSourceImp) bind TvShowGalleryLocalDataSource::class
     singleOf(::TvShowLocalDataSourceImp) bind TvShowLocalDataSource::class
     singleOf(::TvShowReviewLocalDataSourceImp) bind TvShowReviewLocalDataSource::class
+    singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
     singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
 }

@@ -2,15 +2,18 @@ package com.feature.search.searchUi.pagging
 
 import androidx.paging.PagingState
 import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.screen.search.MediaUiState
 
 class WorldTourPagingSource(
     countryName: String,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
+
 ): BasePagingSource<MediaUiState>(
     searchUseCase = { query, page ->
-        getMoviesByCountryUseCase(query,page).toMediaUiList()
+        sortingMediaByCategoriesInteractionUseCase(getMoviesByCountryUseCase(query,page)).toMediaUiList()
     },
     query = countryName
 ) {

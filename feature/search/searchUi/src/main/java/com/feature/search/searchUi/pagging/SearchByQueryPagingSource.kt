@@ -2,15 +2,17 @@ package com.feature.search.searchUi.pagging
 
 import androidx.paging.PagingState
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.screen.search.MediaUiState
 
 class SearchByQueryPagingSource(
     query: String,
     private val searchByQueryUseCase: SearchByQueryUseCase,
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
 ): BasePagingSource<MediaUiState>(
     searchUseCase = { query, page ->
-        searchByQueryUseCase(query,page).toMediaUiList()
+        sortingMediaByCategoriesInteractionUseCase(searchByQueryUseCase(query,page)).toMediaUiList()
     },
     query = query
 ) {

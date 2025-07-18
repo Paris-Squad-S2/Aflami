@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -21,7 +23,7 @@ import com.paris_2.aflami.designsystem.components.MediaCardType
 @Composable
 fun SearchResultContent(
     searchResult: LazyPagingItems<MediaUiState>,
-    onMediaCardClick: (Int, MediaTypeUi) -> Unit,
+    onMediaCardClick: (MediaUiState) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
     val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
@@ -41,7 +43,7 @@ fun SearchResultContent(
                     modifier = Modifier
                         .padding(8.dp)
                         .clickable {
-                            onMediaCardClick(media.id,media.type)
+                            onMediaCardClick(media)
                         },
                     imageUri = media.imageUri,
                     rating = media.rating.toFloat(),

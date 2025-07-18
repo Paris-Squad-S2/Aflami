@@ -16,7 +16,9 @@ import com.domain.search.useCases.FilterByListOfCategoriesUseCase
 import com.domain.search.useCases.FilterMediaByRatingUseCase
 import com.domain.search.useCases.GetAllCategoriesUseCase
 import com.domain.search.useCases.GetAllRecentSearchesUseCase
+import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
+import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
@@ -74,7 +76,7 @@ data class MediaUiState(
     val rating: Double,
 )
 
-enum class MediaTypeUi(val mediaName: String){
+enum class MediaTypeUi(val mediaName: String) {
     TVSHOW("TV Show"),
     MOVIE("Movie")
 }
@@ -86,7 +88,7 @@ data class CategoryUiState(
 
 data class SearchHistoryUiState(
     val searchTitle: String,
-    val searchDate:String,
+    val searchDate: String,
     val searchType: SearchTypeUi
 )
 
@@ -104,6 +106,8 @@ class SearchViewModel(
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
     private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val appNavigator: AppNavigator = getKoin().get()
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
@@ -163,7 +167,8 @@ class SearchViewModel(
                 emitState(
                     screenState.value.copy(
                         searchUiState = screenState.value.searchUiState.copy(
-                            categories = categories.toCategoryUiList().associateWith { false }.toMutableMap()
+                            categories = categories.toCategoryUiList().associateWith { false }
+                                .toMutableMap()
                         )
                     )
                 )
@@ -224,14 +229,17 @@ class SearchViewModel(
                     pagingSourceFactory = {
                         SearchByQueryPagingSource(
                             query = query,
-                            searchByQueryUseCase = searchByQueryUseCase
+                            searchByQueryUseCase = searchByQueryUseCase,
+                            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
             },
             onSuccess = { searchResult ->
-                val moviesResult = searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.MOVIE } }
-                val tvShowsResult = searchResult.map { pagingData -> pagingData .filter { it.type == MediaTypeUi.TVSHOW } }
+                val moviesResult =
+                    searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.MOVIE } }
+                val tvShowsResult =
+                    searchResult.map { pagingData -> pagingData .filter { it.type == MediaTypeUi.TVSHOW } }
                 val filteredMediaByRating = flowOf(PagingData.from(filterMediaByRatingUseCase(
                     screenState.value.searchUiState.selectedRating,
                     searchResult.collectAllItems().map { it.toDomainModel() }
@@ -243,9 +251,11 @@ class SearchViewModel(
                     ).toMediaUiList())) else searchResult
 
                 val filteredMoviesResult =
-                    filteredMediaByCategories.map { pagingData  -> pagingData .filter{ it.type == MediaTypeUi.MOVIE }}
+                    filteredMediaByCategories.map { pagingData  -> pagingData
+                        .filter { it.type == MediaTypeUi.MOVIE }}
                 val filteredTvShowsResult =
-                    filteredMediaByCategories.map { pagingData  -> pagingData .filter{ it.type == MediaTypeUi.TVSHOW }}
+                    filteredMediaByCategories.map { pagingData  -> pagingData
+                        .filter { it.type == MediaTypeUi.TVSHOW }}
                 emitState(
                     screenState.value.copy(
                         isLoading = false,
@@ -466,17 +476,20 @@ class SearchViewModel(
         searchQuery(screenState.value.searchUiState.searchQuery)
     }
 
-    override fun onMediaCardClick(id: Int, mediaType: MediaTypeUi) {
+    override fun onMediaCardClick(mediaUiState: MediaUiState) {
         tryToExecute(
             execute = {
+                incrementCategoryInteractionUseCase.invoke(mediaUiState.categories)
+
                 appNavigator.navigate(
                     AppDestinations.MediaDetailsFeature(
-                        when (mediaType) {
+                        when (mediaUiState.type) {
                             MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = id
+                                movieId = mediaUiState.id
                             )
+
                             MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = id
+                                tvShowId = mediaUiState.id
                             )
                         }.toJson()
                     )
