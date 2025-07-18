@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.entity.TvShowEntity
+import com.repository.model.local.TvShowEntity
 
 @Dao
 interface TvShowDao {
@@ -12,6 +12,6 @@ interface TvShowDao {
     suspend fun addTvShow(tvShow: TvShowEntity)
 
     @Query("SELECT * FROM tv_shows_table WHERE id = :tvShowId")
-    suspend fun getTvShowById(tvShowId: Int): TvShowEntity
+    suspend fun getTvShowById(tvShowId: Int): TvShowEntity?
 
 }
