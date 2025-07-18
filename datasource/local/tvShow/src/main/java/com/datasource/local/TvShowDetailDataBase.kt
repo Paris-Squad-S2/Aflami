@@ -5,16 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.datasource.local.dao.CastDao
-import com.datasource.local.dao.GalleryDao
-import com.datasource.local.dao.ReviewDao
+import com.datasource.local.dao.TvShowCastDao
+import com.datasource.local.dao.TvShowGalleryDao
+import com.datasource.local.dao.TvShowReviewDao
 import com.datasource.local.dao.SeasonDao
 import com.datasource.local.dao.TvShowDao
-import com.repository.entity.CastEntity
-import com.repository.entity.GalleryEntity
-import com.repository.entity.ReviewEntity
-import com.repository.entity.SeasonEntity
-import com.repository.entity.TvShowEntity
+import com.repository.model.local.CastEntity
+import com.repository.model.local.GalleryEntity
+import com.repository.model.local.ReviewEntity
+import com.repository.model.local.SeasonEntity
+import com.repository.model.local.TvShowEntity
 
 @Database(
     entities = [
@@ -26,10 +26,10 @@ import com.repository.entity.TvShowEntity
 @TypeConverters(TvShowDetailConverter::class)
 abstract class TvShowDetailDataBase : RoomDatabase() {
 
-    abstract fun castDao(): CastDao
-    abstract fun galleryDao(): GalleryDao
+    abstract fun castDao(): TvShowCastDao
+    abstract fun galleryDao(): TvShowGalleryDao
     abstract fun movieDao(): TvShowDao
-    abstract fun reviewDao(): ReviewDao
+    abstract fun reviewDao(): TvShowReviewDao
     abstract fun seasonDao(): SeasonDao
 
     companion object {

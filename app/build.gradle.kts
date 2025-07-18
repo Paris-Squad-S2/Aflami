@@ -14,6 +14,38 @@ android {
     namespace = "com.paris_2.aflami"
     compileSdk = Configurations.COMPILE_SDK
 
+    signingConfigs {
+        create("release") {
+            val localProps = Properties().apply {
+                val localFile = rootProject.file("local.properties")
+                if (localFile.exists()) {
+                    load(localFile.inputStream())
+                }
+            }
+
+            val keystorePath = System.getenv("KEYSTORE_PATH")
+                ?: localProps.getProperty("KEYSTORE_PATH")
+                ?: throw GradleException("KEYSTORE_PATH is not set.")
+
+            val keystorePassword = System.getenv("KEYSTORE_PASSWORD")
+                ?: localProps.getProperty("KEYSTORE_PASSWORD")
+                ?: throw GradleException("KEYSTORE_PASSWORD is not set.")
+
+            val keyAliasValue = System.getenv("KEY_ALIAS")
+                ?: localProps.getProperty("KEY_ALIAS")
+                ?: throw GradleException("KEY_ALIAS is not set.")
+
+            val keyPasswordValue = System.getenv("KEY_PASSWORD")
+                ?: localProps.getProperty("KEY_PASSWORD")
+                ?: throw GradleException("KEY_PASSWORD is not set.")
+
+            storeFile = file(keystorePath)
+            storePassword = keystorePassword
+            keyAlias = keyAliasValue
+            keyPassword = keyPasswordValue
+        }
+    }
+
     defaultConfig {
         applicationId = "com.paris_2.aflami"
         minSdk = Configurations.MIN_SDK_26
@@ -28,7 +60,15 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
 
+
+
     buildTypes {
+        getByName("release") {
+            ndk {
+                abiFilters.clear()
+                abiFilters += listOf("armeabi-v7a", "arm64-v8a")
+            }
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -36,24 +76,30 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            signingConfig = signingConfigs.getByName("debug")
+            signingConfig = signingConfigs.getByName("release")
             isDebuggable = false
             isCrunchPngs = true
+
         }
         create("minified") {
-            initWith(getByName("debug"))
+            initWith(buildTypes.getByName("release"))
             isMinifyEnabled = true
             isShrinkResources = true
+            isDebuggable = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            matchingFallbacks.add("debug")
+            matchingFallbacks.add("release")
         }
         getByName("debug") {
             enableUnitTestCoverage = true
             isMinifyEnabled = false
             isShrinkResources = false
+            ndk {
+                abiFilters.clear()
+                abiFilters += listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a")
+            }
         }
     }
     compileOptions {
@@ -130,11 +176,16 @@ dependencies {
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
     implementation(project(Modules.REPOSITORY_SEARCH))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+    implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
     implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))
     implementation(project(Modules.DOMAIN_SEARCH))
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
+    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.REPOSITORY_TV_SHOWS))
@@ -149,7 +200,6 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
-
 }
 
 kover {
