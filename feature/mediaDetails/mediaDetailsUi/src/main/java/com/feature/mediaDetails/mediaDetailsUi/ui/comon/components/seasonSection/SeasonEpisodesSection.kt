@@ -41,6 +41,7 @@ fun SeasonEpisodesSection(
                     episodeNumber = episode.episodeNumber.toString(),
                     episodeTitle = episode.episodeNumber.toString(),
                     episodeDuration = episode.runtime,
+                    imageUri = episode.stillUrl,
                     episodeDate = episode.airDate,
                     episodeDescription = episode.description,
                     modifier = Modifier.fillMaxWidth()

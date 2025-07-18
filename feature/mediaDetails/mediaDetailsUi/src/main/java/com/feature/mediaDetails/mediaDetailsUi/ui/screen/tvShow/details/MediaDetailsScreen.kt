@@ -90,6 +90,7 @@ fun TvShowDetailsScreenContent(
                 )
             }
             item {
+                if (state.tvShowDetailsUiState.cast.isNotEmpty())
                 CastSection(
                     castList = state.tvShowDetailsUiState.cast,
                     onSeeAllClick = {
@@ -129,7 +130,7 @@ fun TvShowDetailsScreenContent(
                                             it[seasonIndex] = !it[seasonIndex]
                                         }
                                     tvShowScreenInteractionListener.onClickOnSeason(
-                                        seasonNumber = seasonIndex + 1
+                                        seasonNumber = season.seasonNumber
                                     )
                                 }
                             )

@@ -69,7 +69,7 @@ fun MovieCastDto.toEntity(): Cast {
     return Cast(
         id = this.id ?: 0,
         name = this.name.orEmpty(),
-        imageUrl = this.profilePath.orEmpty()
+        imageUrl = this.profilePath.toImageUrl().orEmpty()
     )
 }
 

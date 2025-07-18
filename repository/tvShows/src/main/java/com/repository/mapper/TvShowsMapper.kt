@@ -70,6 +70,7 @@ fun TvShowSeasonDto.toLocalDto(): SeasonEntity {
         tvShowId = this.id ?: 0,
         name = this.name.orEmpty(),
         episodeCount = this.episodeCount ?: 0,
+        seasonNumber = this.seasonNumber ?: 0,
         episodes = this.episodesDto?.map { it.toLocalDto(this.posterPath.orEmpty()) }
             ?: emptyList()
     )
@@ -247,8 +248,9 @@ fun Review.toLocalDto(): ReviewEntity {
 
 fun TvShowSeasonDto.toEntity(): Season {
     return Season(
-        id = this.id.toString(),
+        id = this.id ?: 0,
         name = this.name.orEmpty(),
+        seasonNumber = this.seasonNumber ?: 0,
         episodeCount = this.episodeCount ?: 0,
         episodes = this.episodesDto?.map { it.toEntity(this.posterPath.toImageUrl().orEmpty()) } ?: emptyList()
     )
@@ -256,8 +258,9 @@ fun TvShowSeasonDto.toEntity(): Season {
 
 fun SeasonEntity.toEntity(): Season {
     return Season(
-        id = this.id.toString(),
+        id = this.id,
         name = this.name,
+        seasonNumber = this.seasonNumber,
         episodeCount = this.episodeCount,
         episodes = this.episodes.map { it.toEntity() }
     )
@@ -287,12 +290,17 @@ fun ReviewEntity.toEntity(): Review {
 }
 
 fun TvShowEpisodeDto.toEntity(posterPath: String): Episode {
+    val airDateParsed = try {
+        LocalDate.parse(this.airDate.orEmpty())
+    } catch (_: Exception) {
+        LocalDate(9999, 1, 1)
+    }
     return Episode(
         id = this.id ?: 0,
         episodeNumber = this.episodeNumber ?: 0,
         posterUrl = posterPath,
         voteAverage = this.voteAverage ?: 0.0,
-        airDate = LocalDate.parse(this.airDate.orEmpty()),
+        airDate = airDateParsed,
         runtime = this.runtime ?: 0,
         description = this.overview.orEmpty(),
         stillUrl = this.stillPath.toImageUrl().orEmpty()
