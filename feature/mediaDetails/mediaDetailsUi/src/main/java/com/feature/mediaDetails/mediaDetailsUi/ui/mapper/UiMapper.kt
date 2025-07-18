@@ -86,6 +86,7 @@ fun Season.toUi(): SeasonUi {
     return SeasonUi(
         id = this.id,
         name = this.name,
+        seasonNumber = this.seasonNumber,
         episodeCount = this.episodeCount,
         episodes = this.episodes.map { it.toUi() }
     )
@@ -105,6 +106,9 @@ fun Episode.toUi(): EpisodeUi {
 
 
 fun LocalDate.formatToUi(): String {
+    if (this.year == 9999) {
+        return ""
+    }
     val day = this.dayOfMonth.toString().padStart(2, '0')
     val month = this.month.toString().padStart(2, '0')
     val year = this.year.toString()
