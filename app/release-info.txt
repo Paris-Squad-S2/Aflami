@@ -1,3 +1,2 @@
-versionName=0.1.22
-- add tv show and movies to remote ds
-- fix the ktor logger
+versionName=0.1.26
+- Fix bug in search by code

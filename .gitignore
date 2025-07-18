@@ -55,7 +55,6 @@ tmp/
 *.bak
 *.swp
 *~.nib
-profile
 
 # Android Studio
 captures/
