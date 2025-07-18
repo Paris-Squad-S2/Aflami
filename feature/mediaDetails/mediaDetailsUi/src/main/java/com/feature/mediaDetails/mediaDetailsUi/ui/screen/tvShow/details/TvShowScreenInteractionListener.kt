@@ -5,4 +5,5 @@ interface TvShowScreenInteractionListener {
     fun onFavouriteClick(title:String)
     fun onAddToListClick(title: String)
     fun onShowAllCastClick(tvShowId: Int)
+    fun onClickOnSeason(seasonNumber: Int)
 }

@@ -9,7 +9,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 data class TvShowDetailsScreenState(
     val tvShowDetailsUiState : TvShowDetailsUiState,
     val isLoading: Boolean,
-    val errorMessage: String?
+    val errorMessage: String?,
+    val isEpisodesLoading: Boolean,
 )
 data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
@@ -17,7 +18,6 @@ data class TvShowDetailsUiState(
     val cast: List<CastUi>,
     val reviews: List<ReviewUi>,
     val gallery: List<String>,
-//    val seasons: List<SeasonUi>
 )
 
 data class TvShowUi(
@@ -33,9 +33,12 @@ data class TvShowUi(
     val seasons: List<SeasonUi>,
     val productionCompanies: List<ProductionCompanyUi>
 ): MediaUi
+
 data class SeasonUi(
     val id: String,
     val name: String,
+    val episodeCount: Int,
+    val isExpanded: Boolean = false,
     val episodes: List<EpisodeUi>
 )
 

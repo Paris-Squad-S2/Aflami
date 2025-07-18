@@ -86,6 +86,7 @@ fun Season.toUi(): SeasonUi {
     return SeasonUi(
         id = this.id,
         name = this.name,
+        episodeCount = this.episodeCount,
         episodes = this.episodes.map { it.toUi() }
     )
 }
@@ -151,5 +152,9 @@ fun List<ProductionCompany>.toListOfProductionCompanyUi(): List<ProductionCompan
 }
 
 fun List<Season>.toListOfSeasonUi(): List<SeasonUi> {
+    return this.map { it.toUi() }
+}
+
+fun List<Episode>.toListOfEpisodeUi(): List<EpisodeUi> {
     return this.map { it.toUi() }
 }

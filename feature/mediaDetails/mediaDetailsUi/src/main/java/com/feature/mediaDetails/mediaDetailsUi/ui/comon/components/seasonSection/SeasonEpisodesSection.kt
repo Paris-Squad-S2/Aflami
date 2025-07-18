@@ -14,15 +14,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.domain.mediaDetails.model.Episode
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import kotlinx.datetime.toJavaLocalDate
 
 
 @Composable
-
 fun SeasonEpisodesSection(
     isVisible: Boolean,
-    episodes: List<Episode>,
+    episodes: List<EpisodeUi>,
 ) {
     AnimatedVisibility(
         visible = isVisible,
@@ -40,8 +40,8 @@ fun SeasonEpisodesSection(
                     episodeRating = episode.voteAverage.toFloat(),
                     episodeNumber = episode.episodeNumber.toString(),
                     episodeTitle = episode.episodeNumber.toString(),
-                    episodeDuration = episode.runtime.toString(),
-                    episodeDate = episode.airDate.toString(),
+                    episodeDuration = episode.runtime,
+                    episodeDate = episode.airDate,
                     episodeDescription = episode.description,
                     modifier = Modifier.fillMaxWidth()
                 )

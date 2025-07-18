@@ -69,6 +69,7 @@ fun TvShowSeasonDto.toLocalDto(): SeasonEntity {
         id = 0,
         tvShowId = this.id ?: 0,
         name = this.name.orEmpty(),
+        episodeCount = this.episodeCount ?: 0,
         episodes = this.episodesDto?.map { it.toLocalDto(this.posterPath.orEmpty()) }
             ?: emptyList()
     )
@@ -248,6 +249,7 @@ fun TvShowSeasonDto.toEntity(): Season {
     return Season(
         id = this.id.toString(),
         name = this.name.orEmpty(),
+        episodeCount = this.episodeCount ?: 0,
         episodes = this.episodesDto?.map { it.toEntity(this.posterPath.toImageUrl().orEmpty()) } ?: emptyList()
     )
 }
@@ -256,6 +258,7 @@ fun SeasonEntity.toEntity(): Season {
     return Season(
         id = this.id.toString(),
         name = this.name,
+        episodeCount = this.episodeCount,
         episodes = this.episodes.map { it.toEntity() }
     )
 }

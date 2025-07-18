@@ -11,15 +11,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import com.domain.mediaDetails.model.Episode
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
 import com.paris_2.aflami.designsystem.theme.Theme
-import kotlinx.datetime.LocalDate
 
 @Composable
 fun SeasonSection(
     seasonNumber: Int,
     numberOfEpisodes: Int,
-    episodes: List<Episode>,
+    episodes: List<EpisodeUi>,
     isExpanded: Boolean,
     onToggleExpand: () -> Unit,
 ) {
@@ -55,25 +54,23 @@ fun PreviewSeasonSection() {
     )
 }
 
-fun sampleEpisodes(): List<Episode> {
+fun sampleEpisodes(): List<EpisodeUi> {
     return listOf(
-        Episode(
-            id = 1,
+        EpisodeUi(
             episodeNumber = 1,
             posterUrl = "",
             voteAverage = 8.2,
-            airDate = LocalDate(2023, 5, 12),
-            runtime = 50,
+            airDate = "2023-05-12",
+            runtime = "50",
             description = "An exciting start to the season.",
             stillUrl = ""
         ),
-        Episode(
-            id = 2,
+        EpisodeUi(
             episodeNumber = 2,
             posterUrl = "",
             voteAverage = 9.0,
-            airDate = LocalDate(2023, 5, 19),
-            runtime = 52,
+            airDate = "2023-05-19",
+            runtime = "52",
             description = "The story deepens with new characters.",
             stillUrl = ""
         )

@@ -120,25 +120,17 @@ fun TvShowDetailsScreenContent(
 
                             SeasonSection(
                                 seasonNumber = seasonIndex + 1,
-                                numberOfEpisodes = season.episodes.size,
-                                episodes = season.episodes.map {
-                                    Episode(
-                                        id = it.episodeNumber,
-                                        episodeNumber = it.episodeNumber,
-                                        posterUrl = it.posterUrl,
-                                        voteAverage = it.voteAverage,
-                                        airDate = LocalDate.parse(it.airDate),
-                                        runtime = it.runtime.toInt(),
-                                        description = it.description,
-                                        stillUrl = it.stillUrl
-                                    )
-                                },
+                                numberOfEpisodes = season.episodeCount,
+                                episodes = season.episodes,
                                 isExpanded = isExpanded,
                                 onToggleExpand = {
                                     expandedStates.value =
                                         expandedStates.value.toMutableList().also {
                                             it[seasonIndex] = !it[seasonIndex]
                                         }
+                                    tvShowScreenInteractionListener.onClickOnSeason(
+                                        seasonNumber = seasonIndex + 1
+                                    )
                                 }
                             )
                         }
