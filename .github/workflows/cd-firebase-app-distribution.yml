@@ -4,7 +4,9 @@ on:
   push:
     branches:
       - develop
-
+  pull_request:
+    branches:
+      - develop
 jobs:
   build-and-distribute:
     runs-on: ubuntu-latest
@@ -57,7 +59,7 @@ jobs:
         with:
           appId: ${{ secrets.FIREBASE_APP_ID }}
           serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: testers
+          groups: paris_squad_testers
           file: app/build/outputs/apk/release/app-release.apk
           releaseNotesFile: app/release-info.txt
           debug: false
