@@ -15,7 +15,7 @@ import com.paris_2.aflami.di.workManagerModule
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.paris_2.aflami.di.FeatureAPIModule
-import com.repository.search.NetworkConnectionChecker
+import com.repository.search.util.NetworkConnectionChecker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
