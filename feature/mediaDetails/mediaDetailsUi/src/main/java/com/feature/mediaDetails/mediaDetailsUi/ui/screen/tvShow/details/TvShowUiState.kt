@@ -7,11 +7,21 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.Productio
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 
 data class TvShowDetailsScreenState(
-    val tvShowDetailsUiState : TvShowDetailsUiState,
+    val tvShowDetailsUiState: TvShowDetailsUiState,
     val isLoading: Boolean,
     val errorMessage: String?,
     val isEpisodesLoading: Boolean,
+    val isImageLoading: Boolean = false,
+    val isDescriptionLoading: Boolean = false,
+    val isCastLoading: Boolean = false,
+    val isSeasonsLoading: Boolean = false,
+    val isRecommendationsLoading: Boolean = false,
+    val isReviewsLoading: Boolean = false,
+    val isGalleryLoading: Boolean = false,
+    val isProductionCompaniesLoading: Boolean = false,
+    val seasonsLoadingStates: Map<Int, Boolean> = emptyMap(),
 )
+
 data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
     val recommendations: List<SimilarMediaUI>,
@@ -21,7 +31,7 @@ data class TvShowDetailsUiState(
 )
 
 data class TvShowUi(
-    val id :Int,
+    val id: Int,
     override val posterUrl: String,
     override val rating: Float,
     override val title: String,
@@ -31,8 +41,8 @@ data class TvShowUi(
     val country: String,
     val description: String,
     val seasons: List<SeasonUi>,
-    val productionCompanies: List<ProductionCompanyUi>
-): MediaUi
+    val productionCompanies: List<ProductionCompanyUi>,
+) : MediaUi
 
 data class SeasonUi(
     val id: Int,
@@ -40,7 +50,7 @@ data class SeasonUi(
     val episodeCount: Int,
     val seasonNumber: Int,
     val isExpanded: Boolean = false,
-    val episodes: List<EpisodeUi>
+    val episodes: List<EpisodeUi>,
 )
 
 data class EpisodeUi(
@@ -50,5 +60,5 @@ data class EpisodeUi(
     val airDate: String,
     val runtime: String,
     val description: String,
-    val stillUrl: String
+    val stillUrl: String,
 )

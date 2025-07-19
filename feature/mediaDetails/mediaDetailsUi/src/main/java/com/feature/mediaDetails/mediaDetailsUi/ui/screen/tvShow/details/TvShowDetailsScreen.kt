@@ -18,6 +18,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -31,6 +32,9 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
+import com.paris_2.aflami.designsystem.components.NetworkError
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.R as designsystemR
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -69,106 +73,128 @@ fun TvShowDetailsScreenContent(
             .navigationBarsPadding()
             .statusBarsPadding()
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding()
-        ) {
-            item {
-                DetailsImage(
-                    imageUris = listOf(
-                        state.tvShowDetailsUiState.tvShowUi.posterUrl,
-                    ),
-                    rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                    onPlayClick = {},
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-            }
-            item {
-                DescriptionSection(
-                    title = state.tvShowDetailsUiState.tvShowUi.title,
-                    genres = state.tvShowDetailsUiState.tvShowUi.genres,
-                    releaseDate = state.tvShowDetailsUiState.tvShowUi.releaseDate,
-                    runtime = state.tvShowDetailsUiState.tvShowUi.runtime,
-                    country = state.tvShowDetailsUiState.tvShowUi.country,
-                    description = state.tvShowDetailsUiState.tvShowUi.description
-                )
-            }
-            item {
-                if (state.tvShowDetailsUiState.cast.isNotEmpty())
-                    CastSection(
-                        castList = state.tvShowDetailsUiState.cast,
-                        onSeeAllClick = {
-                            tvShowScreenInteractionListener.onShowAllCastClick(
-                                state.tvShowDetailsUiState.tvShowUi.id
-                            )
-                        }
-                    )
-            }
-            item {
+        when {
+//            state.errorMessage != null -> {
+//                NetworkError(
+//                    modifier = Modifier.fillMaxSize(),
+//                    onRetry = tvShowScreenInteractionListener::onRetryLoadTvShowDetails
+//                )
+//            }
 
-                ChipsRowSection(
-                    items = tvChips.map {
-                        stringResource(it.titleResId) to it.iconResId
-                    },
-                    selectedIndex = selectedIndex.intValue,
-                    onItemSelected = { selectedIndex.intValue = it } // Always one selected
+            state.isLoading -> {
+                PageLoadingPlaceHolder(
+                    modifier = Modifier.fillMaxSize()
                 )
             }
 
-            selectedIndex.intValue.let { index ->
-                when (tvChips[index]) {
+            state.tvShowDetailsUiState.tvShowUi.title.isBlank() -> {
+                PlaceholderView(
+                    modifier = Modifier.fillMaxSize(),
+                    image = painterResource(designsystemR.drawable.ic_network_error),
+                    title = stringResource(featureMediaDetailsUiR.string.no_tvshow_details),
+                    subTitle = stringResource(featureMediaDetailsUiR.string.tvshow_details_not_available),
+                    spacer = 16.dp
+                )
+            }
 
-                    TvShowChips.SEASONS -> {
-                        items(state.tvShowDetailsUiState.tvShowUi.seasons.size) { seasonIndex ->
-                            val season = state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
-                            val isExpanded = expandedStates.value[seasonIndex]
-
-                            SeasonSection(
-                                maxHeight = windowHeight * 0.7f,
-                                seasonNumber = seasonIndex + 1,
-                                numberOfEpisodes = season.episodeCount,
-                                episodes = season.episodes,
-                                isExpanded = isExpanded,
-                                onToggleExpand = {
-                                    expandedStates.value =
-                                        expandedStates.value.toMutableList().also {
-                                            it[seasonIndex] = !it[seasonIndex]
-                                        }
-                                    tvShowScreenInteractionListener.onClickOnSeason(
-                                        seasonNumber = season.seasonNumber
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .navigationBarsPadding()
+                ) {
+                    item {
+                        DetailsImage(
+                            imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl),
+                            rating = state.tvShowDetailsUiState.tvShowUi.rating,
+                            onPlayClick = {},
+                            modifier = Modifier.padding(bottom = 12.dp)
+                        )
+                    }
+                    item {
+                        DescriptionSection(
+                            title = state.tvShowDetailsUiState.tvShowUi.title,
+                            genres = state.tvShowDetailsUiState.tvShowUi.genres,
+                            releaseDate = state.tvShowDetailsUiState.tvShowUi.releaseDate,
+                            runtime = state.tvShowDetailsUiState.tvShowUi.runtime,
+                            country = state.tvShowDetailsUiState.tvShowUi.country,
+                            description = state.tvShowDetailsUiState.tvShowUi.description
+                        )
+                    }
+                    item {
+                        if (state.tvShowDetailsUiState.cast.isNotEmpty()) {
+                            CastSection(
+                                castList = state.tvShowDetailsUiState.cast,
+                                onSeeAllClick = {
+                                    tvShowScreenInteractionListener.onShowAllCastClick(
+                                        state.tvShowDetailsUiState.tvShowUi.id
                                     )
                                 }
                             )
                         }
                     }
+                    item {
+                        ChipsRowSection(
+                            items = tvChips.map {
+                                stringResource(it.titleResId) to it.iconResId
+                            },
+                            selectedIndex = selectedIndex.intValue,
+                            onItemSelected = { selectedIndex.intValue = it }
+                        )
+                    }
 
-                    TvShowChips.MORE_LIKE_THIS -> item {
-                        Box(
-                            modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f),
-                        ) {
-                            MoreLikeThisSection(
-                                mediaList = state.tvShowDetailsUiState.recommendations,
-                                onClick = {},
-                                mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
-                            )
+                    selectedIndex.intValue.let { index ->
+                        when (tvChips[index]) {
+                            TvShowChips.SEASONS -> {
+                                items(state.tvShowDetailsUiState.tvShowUi.seasons.size) { seasonIndex ->
+                                    val season = state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
+                                    val isExpanded = expandedStates.value[seasonIndex]
+                                    val isSeasonLoading = state.seasonsLoadingStates[season.seasonNumber] == true
+
+                                    SeasonSection(
+                                        maxHeight = windowHeight * 0.7f,
+                                        seasonNumber = seasonIndex + 1,
+                                        numberOfEpisodes = season.episodeCount,
+                                        episodes = season.episodes,
+                                        isExpanded = isExpanded,
+                                        isLoading = isSeasonLoading,
+                                        onToggleExpand = {
+                                            expandedStates.value =
+                                                expandedStates.value.toMutableList().also {
+                                                    it[seasonIndex] = !it[seasonIndex]
+                                                }
+                                            tvShowScreenInteractionListener.onClickOnSeason(season.seasonNumber)
+                                        }
+                                    )
+                                }
+                            }
+
+                            TvShowChips.MORE_LIKE_THIS -> item {
+                                Box(modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f)) {
+                                    MoreLikeThisSection(
+                                        mediaList = state.tvShowDetailsUiState.recommendations,
+                                        onClick = {},
+                                        mediaType = stringResource(featureMediaDetailsUiR.string.tvshow)
+                                    )
+                                }
+                            }
+
+                            TvShowChips.REVIEWS -> item {
+                                ReviewsSection(
+                                    reviews = state.tvShowDetailsUiState.reviews.takeIf { it.isNotEmpty() }
+                                )
+                            }
+
+                            TvShowChips.GALLERY -> item {
+                                GallerySection(state.tvShowDetailsUiState.gallery)
+                            }
+
+                            TvShowChips.COMPANY_PRODUCTION -> item {
+                                ProductionCompanySection(
+                                    companies = state.tvShowDetailsUiState.tvShowUi.productionCompanies
+                                )
+                            }
                         }
-                    }
-
-                    TvShowChips.REVIEWS -> item {
-                        ReviewsSection(
-                            reviews = state.tvShowDetailsUiState.reviews.takeIf { it.isNotEmpty() }
-                        )
-                    }
-
-                    TvShowChips.GALLERY -> item {
-                        GallerySection(state.tvShowDetailsUiState.gallery)
-                    }
-
-                    TvShowChips.COMPANY_PRODUCTION -> item {
-                        ProductionCompanySection(
-                            companies = state.tvShowDetailsUiState.tvShowUi.productionCompanies
-                        )
                     }
                 }
             }

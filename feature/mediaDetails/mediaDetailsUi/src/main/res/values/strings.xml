@@ -26,4 +26,6 @@
     <string name="login">Login</string>
     <string name="no_movie_details">Movie Details Not Available</string>
     <string name="movie_details_not_available">Movie details could not be loaded</string>
+    <string name="no_tvshow_details">No TV Show Details</string>
+    <string name="tvshow_details_not_available">TV show details are not available</string>
 </resources>
