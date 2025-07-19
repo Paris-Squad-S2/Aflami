@@ -23,6 +23,7 @@
     <string name="tvshow">TvShow</string>
     <string name="no_cast_available">No Cast Available</string>
     <string name="cast_information_not_available">Cast information is not available for this movie</string>
+    <string name="login">Login</string>
     <string name="no_movie_details">Movie Details Not Available</string>
     <string name="movie_details_not_available">Movie details could not be loaded</string>
 </resources>

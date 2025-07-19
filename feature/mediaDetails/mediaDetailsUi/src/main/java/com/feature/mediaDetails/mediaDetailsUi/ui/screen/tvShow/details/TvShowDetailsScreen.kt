@@ -27,7 +27,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
-import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.R as designsystemR
+import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -35,7 +36,7 @@ import org.koin.compose.viewmodel.koinViewModel
 
 
 @Composable
-fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModelViewModel = koinViewModel()) {
+fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = koinViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     TvShowDetailsScreenContent(state = state.value, tvShowScreenInteractionListener = viewModel)
 }
@@ -50,8 +51,6 @@ fun TvShowDetailsScreenContent(
     val tvChips = TvShowChips.entries
     val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
-    val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
-    val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
 
     val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
@@ -91,14 +90,14 @@ fun TvShowDetailsScreenContent(
             }
             item {
                 if (state.tvShowDetailsUiState.cast.isNotEmpty())
-                CastSection(
-                    castList = state.tvShowDetailsUiState.cast,
-                    onSeeAllClick = {
-                        tvShowScreenInteractionListener.onShowAllCastClick(
-                            state.tvShowDetailsUiState.tvShowUi.id
-                        )
-                    }
-                )
+                    CastSection(
+                        castList = state.tvShowDetailsUiState.cast,
+                        onSeeAllClick = {
+                            tvShowScreenInteractionListener.onShowAllCastClick(
+                                state.tvShowDetailsUiState.tvShowUi.id
+                            )
+                        }
+                    )
             }
             item {
 
@@ -167,18 +166,26 @@ fun TvShowDetailsScreenContent(
         TopAppBar(
             leadingIcons = listOf(
                 iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_back),
+                    icon = ImageVector.vectorResource(designsystemR.drawable.ic_back),
                     onClick = { tvShowScreenInteractionListener.onNavigateBack() }
                 )
             ),
             trailingIcons = listOf(
                 iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = { tvShowScreenInteractionListener.onFavouriteClick(rate) }
+                    icon = ImageVector.vectorResource(designsystemR.drawable.ic_star),
+                    onClick = {
+                        tvShowScreenInteractionListener.onFavouriteClick(
+                            featureMediaDetailsUiR.string.rate
+                        )
+                    }
                 ),
                 iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = { tvShowScreenInteractionListener.onAddToListClick(addToList) }
+                    icon = ImageVector.vectorResource(designsystemR.drawable.ic_heart_add),
+                    onClick = {
+                        tvShowScreenInteractionListener.onAddToListClick(
+                            featureMediaDetailsUiR.string.add_to_list
+                        )
+                    }
                 )
             )
         )
