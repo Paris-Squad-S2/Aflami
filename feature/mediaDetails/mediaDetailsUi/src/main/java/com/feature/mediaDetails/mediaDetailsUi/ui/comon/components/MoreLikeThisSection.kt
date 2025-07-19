@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
@@ -20,11 +21,12 @@ fun MoreLikeThisSection(
     mediaType: String,
     modifier: Modifier = Modifier
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        mediaList.forEach { media ->
+        items(mediaList.size) { mediaIndex ->
+            val media = mediaList[mediaIndex]
             AflamiMediaCard(
                 modifier = modifier.fillMaxWidth(),
                 imageUri = media.posterPath,

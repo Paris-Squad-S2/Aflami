@@ -2,7 +2,9 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -14,6 +16,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -55,6 +58,8 @@ fun TvShowDetailsScreenContent(
     val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
+
+    val windowHeight = LocalConfiguration.current.screenHeightDp.dp
 
     Box(
         Modifier
@@ -119,6 +124,7 @@ fun TvShowDetailsScreenContent(
                             val isExpanded = expandedStates.value[seasonIndex]
 
                             SeasonSection(
+                                maxHeight = windowHeight * 0.7f,
                                 seasonNumber = seasonIndex + 1,
                                 numberOfEpisodes = season.episodeCount,
                                 episodes = season.episodes,
@@ -137,11 +143,15 @@ fun TvShowDetailsScreenContent(
                     }
 
                     TvShowChips.MORE_LIKE_THIS -> item {
-                        MoreLikeThisSection(
-                            mediaList = state.tvShowDetailsUiState.recommendations,
-                            onClick = {},
-                            mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
-                        )
+                        Box(
+                            modifier = Modifier.height(windowHeight * 0.8f),
+                        ) {
+                            MoreLikeThisSection(
+                                mediaList = state.tvShowDetailsUiState.recommendations,
+                                onClick = {},
+                                mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
+                            )
+                        }
                     }
 
                     TvShowChips.REVIEWS -> item {
