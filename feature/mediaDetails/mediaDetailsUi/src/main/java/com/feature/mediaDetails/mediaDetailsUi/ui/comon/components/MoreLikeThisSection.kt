@@ -8,14 +8,18 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun MoreLikeThisSection(
-    mediaList: List<SimilarMediaUI>,
+    mediaList: LazyPagingItems<SimilarMediaUI>,
     onClick: () -> Unit,
     mediaType: String,
     modifier: Modifier = Modifier
@@ -24,7 +28,7 @@ fun MoreLikeThisSection(
         modifier = modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        mediaList.forEach { media ->
+        mediaList.itemSnapshotList.items.forEach { media ->
             AflamiMediaCard(
                 modifier = modifier.fillMaxWidth(),
                 imageUri = media.posterPath,
@@ -48,23 +52,26 @@ fun MoreLikeThisSection(
 fun PreviewMoreLikeThisSection() {
     AflamiTheme {
         MoreLikeThisSection(
-            mediaList = listOf(
-                SimilarMediaUI(
-                    id =123,
-                    posterPath = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
-                    voteAverage = 8.5,
-                    title = "The Green Mile",
-                    releaseDate = "10-09-1999",
+            mediaList = flowOf(PagingData.from(
+                listOf(
+                    SimilarMediaUI(
+                        id =123,
+                        posterPath = "https://xl.movieposterdb.com/12_03/1999/120689/xl_120689_c927b987.jpg",
+                        voteAverage = 8.5,
+                        title = "The Green Mile",
+                        releaseDate = "10-09-1999",
 
-                ),
-                SimilarMediaUI(
-                    id = 258,
-                    posterPath = "https://xl.movieposterdb.com/07_10/2001/266543/xl_266543_fcf33950.jpg",
-                    voteAverage = 7.9,
-                    title = "A Beautiful Mind",
-                    releaseDate = "10-09-1999",
+                        ),
+                    SimilarMediaUI(
+                        id = 258,
+                        posterPath = "https://xl.movieposterdb.com/07_10/2001/266543/xl_266543_fcf33950.jpg",
+                        voteAverage = 7.9,
+                        title = "A Beautiful Mind",
+                        releaseDate = "10-09-1999",
+                    )
                 )
-            ),
+            )).collectAsLazyPagingItems()
+            ,
             mediaType = "Movie",
             onClick = {}
         )

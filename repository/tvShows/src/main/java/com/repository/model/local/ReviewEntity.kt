@@ -27,5 +27,5 @@ data class ReviewEntity(
     val username: String,
     val rating: Double,
     val reviewCacheDate: LocalDateTime = getCurrentDate(),
-
-    )
+    val description: String
+)

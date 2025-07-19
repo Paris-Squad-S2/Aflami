@@ -78,7 +78,8 @@ fun Review.toUi(): ReviewUi {
         username = this.username,
         name = this.name,
         rating = this.rating,
-        createdAt = this.createdAt.formatToUi()
+        createdAt = this.createdAt.formatToUi(),
+        description = this.description
     )
 }
 

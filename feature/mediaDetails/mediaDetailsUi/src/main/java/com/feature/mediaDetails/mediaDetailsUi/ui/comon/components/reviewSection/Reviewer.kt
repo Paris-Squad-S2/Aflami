@@ -47,7 +47,7 @@ fun ReviewCard(
         Column {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 AsyncImage(
-                    model = avatarUrl,
+                    model = if (avatarUrl.isNotEmpty()) avatarUrl else R.drawable.profile_placholder,
                     contentDescription = "Profile picture",
                     contentScale = ContentScale.Crop,
                     placeholder = painterResource(id = R.drawable.profile_placholder),

@@ -18,6 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
@@ -138,7 +139,7 @@ fun TvShowDetailsScreenContent(
 
                     TvShowChips.MORE_LIKE_THIS -> item {
                         MoreLikeThisSection(
-                            mediaList = state.tvShowDetailsUiState.recommendations,
+                            mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems(),
                             onClick = {},
                             mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
                         )
@@ -146,7 +147,7 @@ fun TvShowDetailsScreenContent(
 
                     TvShowChips.REVIEWS -> item {
                         ReviewsSection(
-                            reviews = state.tvShowDetailsUiState.reviews.takeIf { it.isNotEmpty() }
+                            reviews = state.tvShowDetailsUiState.reviews.collectAsLazyPagingItems()
                         )
                     }
 

@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
@@ -209,7 +210,7 @@ fun MovieDetailsScreenContent(
                                     )
                                 } else {
                                     MoreLikeThisSection(
-                                        mediaList = state.movieDetailsUiState.recommendations,
+                                        mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems(),
                                         onClick = {},
                                         mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie)
                                     )
@@ -223,7 +224,7 @@ fun MovieDetailsScreenContent(
                                     )
                                 } else {
                                     ReviewsSection(
-                                        reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
+                                        reviews = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
                                     )
                                 }
                             }

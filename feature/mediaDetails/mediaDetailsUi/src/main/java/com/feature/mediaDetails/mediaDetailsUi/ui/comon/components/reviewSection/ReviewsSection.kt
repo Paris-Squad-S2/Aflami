@@ -12,13 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.paging.compose.LazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun ReviewsSection(
-    reviews: List<ReviewUi>?,
+    reviews: LazyPagingItems<ReviewUi>,
     modifier: Modifier = Modifier
 ) {
     Box(
@@ -27,21 +28,21 @@ fun ReviewsSection(
             .background(Theme.colors.surface),
         contentAlignment = Alignment.Center
     ) {
-        if (!reviews.isNullOrEmpty()) {
+        if (reviews.itemSnapshotList.isNotEmpty()) {
             Column(
                 modifier = modifier
                     .fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                reviews.forEach { review ->
+                reviews.itemSnapshotList.forEach { review ->
                     Column {
                         ReviewCard(
-                            name = review.name,
+                            name = review!!.name,
                             createdAt = review.createdAt,
                             avatarUrl = review.avatarUrl,
                             username = review.username,
                             rating = review.rating,
-                            description = "Hmmm! I wasn’t sure if I was watching a sentimental edition of “Hawaii Five-O” here or a collection of outtakes from a “Sonic” movie as this "
+                            description = review.description
                         )
                         Box(
                             modifier = Modifier
