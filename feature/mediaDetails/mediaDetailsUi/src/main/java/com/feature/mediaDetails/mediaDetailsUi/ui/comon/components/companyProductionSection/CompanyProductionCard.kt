@@ -45,7 +45,7 @@ fun CompanyProductionCard(
             modifier = Modifier
                 .fillMaxSize()
                 .align(Alignment.Center),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.FillBounds,
             placeholder = painterResource(id = R.drawable.ic_film_roll),
             error = painterResource(id = R.drawable.img_disconnect)
         )
