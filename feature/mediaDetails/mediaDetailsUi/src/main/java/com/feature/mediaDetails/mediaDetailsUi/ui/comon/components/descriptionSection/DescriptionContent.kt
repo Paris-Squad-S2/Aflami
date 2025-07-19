@@ -39,6 +39,7 @@ fun ExpandableText(description: String) {
     var shouldShowReadMore by remember { mutableStateOf(false) }
     var truncatedText by remember { mutableStateOf("") }
 
+
     val maxLines = if (expanded) Int.MAX_VALUE else 5
 
     val displayText = if (expanded) {
@@ -75,7 +76,8 @@ fun ExpandableText(description: String) {
                 val hasOverflow = textLayoutResult.hasVisualOverflow
                 if (hasOverflow) {
                     shouldShowReadMore = true
-                    val lastCharIndex = textLayoutResult.getLineEnd(maxLines - 1, visibleEnd = true)
+                    val lineIndex = minOf(maxLines - 1, textLayoutResult.lineCount - 1)
+                    val lastCharIndex = textLayoutResult.getLineEnd(lineIndex, visibleEnd = true)
                     val availableText = description.substring(0, lastCharIndex)
 
                     val readMoreSpace = 10
