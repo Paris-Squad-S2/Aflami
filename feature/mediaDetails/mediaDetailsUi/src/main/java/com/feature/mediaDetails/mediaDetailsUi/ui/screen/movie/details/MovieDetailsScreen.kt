@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
@@ -69,24 +70,24 @@ fun MovieDetailsScreenContent(
             .statusBarsPadding()
     ) {
         when {
-            state.errorMessage != null -> {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    TopAppBar(
-                        leadingIcons = listOf(
-                            iconItemWithDefaults(
-                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
-                            )
-                        )
-                    )
-                    NetworkError(
-                        modifier = Modifier.fillMaxSize(),
-                        onRetry = movieDetailsScreenInteractionListener::onRetryLoadMovieDetails
-                    )
-                }
-            }
+//            state.errorMessage != null -> {
+//                Column(
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    TopAppBar(
+//                        leadingIcons = listOf(
+//                            iconItemWithDefaults(
+//                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+//                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+//                            )
+//                        )
+//                    )
+//                    NetworkError(
+//                        modifier = Modifier.fillMaxSize(),
+//                        onRetry = movieDetailsScreenInteractionListener::onRetryLoadMovieDetails
+//                    )
+//                }
+//            }
 
             state.isLoading -> {
                 Column(
@@ -266,13 +267,13 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onFavouriteClick(rate)
+                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate)
                             }
                         ),
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_heart_add),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onAddToListClick(addToList)
+                                movieDetailsScreenInteractionListener.onAddToListClick(R.string.add_to_list)
                             }
                         )
                     )

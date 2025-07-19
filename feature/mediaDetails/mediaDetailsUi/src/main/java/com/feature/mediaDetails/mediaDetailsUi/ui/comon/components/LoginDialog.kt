@@ -6,14 +6,12 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,8 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.R
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.paris_2.aflami.designsystem.components.AflamiButton
+import com.paris_2.aflami.designsystem.components.AflamiDialog
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -37,81 +36,61 @@ import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun LoginDialog(
-    title: String,
+    @StringRes title: Int,
     onDismiss: () -> Unit,
     onLoginClick: () -> Unit,
     modifier: Modifier = Modifier,
-    content: String = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.please_login_to_access_your_account_details_and_other_features),
-    image: Painter = painterResource(com.feature.mediaDetails.mediaDetailsUi.R.drawable.profile_placholder),
+    content: Int = R.string.please_login_to_access_your_account_details_and_other_features,
+    image: Painter = painterResource(R.drawable.profile_placholder),
     @StringRes buttonTextResId: Int = R.string.login,
 ) {
-    Box(
+    AflamiDialog(
+        onDismiss = onDismiss,
+        title = title,
         modifier = modifier
-            .clip(RoundedCornerShape(12.dp))
-            .background(Theme.colors.surface)
-            .fillMaxWidth()
     ) {
+
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 12.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(12.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Row(
+            Box(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 24.dp),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = title,
-                    style = Theme.textStyle.title.large,
-                    color = Theme.colors.text.title,
-                    textAlign = TextAlign.Start
-                )
-                IconButton(
-                    onClick = onDismiss,
-                    modifier = Modifier
-                        .clip(RoundedCornerShape(12))
-                        .size(40.dp)
-                        .background(Theme.colors.surfaceHigh)
-                ) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_cancel),
-                        contentDescription = "Close",
-                        tint = Theme.colors.text.title
-                    )
-                }
-            }
-            Icon(
-                painter = image,
-                contentDescription = "Profile Icon",
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
                     .size(80.dp)
+                    .shadow(
+                        elevation = 12.dp, // reasonable shadow
+                        shape = RoundedCornerShape(24.dp),
+                        ambientColor = Color(0xFFD85895),
+                        spotColor = Color(0xFFD85895)
+                    )
                     .clip(RoundedCornerShape(24.dp))
+                    .background(Color.White) // Required for shadow to appear
                     .border(
                         width = 1.dp,
                         color = Theme.colors.stroke.copy(alpha = 0.08f),
                         shape = RoundedCornerShape(24.dp)
-                    )
-                    .shadow(
-                        elevation = 12.dp,
-                        spotColor = Color(0xFFD85895).copy(alpha = 0.24f),
-                        ambientColor = Color(0xFFD85895).copy(alpha = 0.24f),
-                        shape = RoundedCornerShape(24.dp)
                     ),
-                tint = Color.Unspecified
-            )
+                contentAlignment = Alignment.Center
+            ) {
+                Icon(
+                    painter = image,
+                    contentDescription = "Profile Icon",
+                    modifier = Modifier.size(80.dp),
+                    tint = Color.Unspecified
+                )
+            }
+
             Text(
-                text = content,
+                text = stringResource(content),
                 style = Theme.textStyle.body.small,
                 color = Theme.colors.text.body,
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 24.dp)
+                    .padding(top = 12.dp, bottom = 24.dp)
             )
             AflamiButton(
                 onClick = onLoginClick,
@@ -119,10 +98,13 @@ fun LoginDialog(
                     .fillMaxWidth()
                     .height(55.dp),
                 text = buttonTextResId,
-                type = ButtonType.Primary,
+                type = ButtonType.Secondary,
                 state = ButtonState.Normal
             )
+
         }
+
+
     }
 }
 
@@ -131,9 +113,7 @@ fun LoginDialog(
 fun LoginRequiredDialogPreview() {
     AflamiTheme {
         LoginDialog(
-            title = "Rate",
-            content = "Please login to access your account details and other features!",
-            image = painterResource(R.drawable.ic_aflami_logo),
+            title = R.string.rate,
             onDismiss = {},
             onLoginClick = {},
             buttonTextResId = R.string.login,

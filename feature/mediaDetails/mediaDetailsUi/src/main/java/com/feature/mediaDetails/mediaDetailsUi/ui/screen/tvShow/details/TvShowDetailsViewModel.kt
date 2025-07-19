@@ -20,7 +20,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.paris_2.aflami.appnavigation.AppNavigator
 
-class TvShowDetailsViewModelViewModel(
+class TvShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getTvShowDetailsUseCase: GetTvShowDetailsUseCase,
     private val getTvShowCastUseCase: GetTvShowCastUseCase,
@@ -223,12 +223,12 @@ class TvShowDetailsViewModelViewModel(
         )
     }
 
-    override fun onFavouriteClick(title: String) {
+    override fun onFavouriteClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
 
     }
 
-    override fun onAddToListClick(title: String) {
+    override fun onAddToListClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
 
