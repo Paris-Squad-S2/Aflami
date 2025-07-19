@@ -28,6 +28,7 @@ class ReviewLocalDataSourceImpTest {
             avatarUrl = "path",
             username = "username",
             rating = 1.9,
+            description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
         )
     }
 
