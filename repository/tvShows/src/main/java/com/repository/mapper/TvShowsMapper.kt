@@ -29,13 +29,14 @@ import com.repository.model.remote.TvShowProductionCompanyDto
 import com.repository.model.remote.TvShowReviewDto
 import com.repository.model.remote.TvShowSeasonDto
 import com.repository.model.remote.TvShowSimilarDto
+import com.repository.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
 fun TvShowDto.toEntity(): TvShow {
     return TvShow(
         id = this.id ?: 0,
         title = this.name.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
         genres = this.genres?.map { it.toEntity() } ?: emptyList(),
@@ -43,6 +44,7 @@ fun TvShowDto.toEntity(): TvShow {
         runtime = this.episodeRunTime?.firstOrNull() ?: 0,
         country = this.originCountry?.firstOrNull().orEmpty(),
         productionCompanies = this.productionCompanies?.map { it.toEntity() } ?: emptyList(),
+        seasons = this.seasonDto?.map { it.toEntity() } ?: emptyList()
     )
 }
 
@@ -52,8 +54,9 @@ fun TvShowDto.toLocalDto(): TvShowEntity {
         title = this.name.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
+        seasons = this.seasonDto?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.firstAirDate.orEmpty(),
         runtime = this.episodeRunTime?.firstOrNull() ?: 0,
         country = this.originCountry?.firstOrNull().orEmpty(),
@@ -66,6 +69,8 @@ fun TvShowSeasonDto.toLocalDto(): SeasonEntity {
         id = 0,
         tvShowId = this.id ?: 0,
         name = this.name.orEmpty(),
+        episodeCount = this.episodeCount ?: 0,
+        seasonNumber = this.seasonNumber ?: 0,
         episodes = this.episodesDto?.map { it.toLocalDto(this.posterPath.orEmpty()) }
             ?: emptyList()
     )
@@ -95,7 +100,8 @@ fun TvShowEntity.toEntity(): TvShow {
         releaseDate = this.releaseDate,
         runtime = this.runtime,
         country = this.country,
-        productionCompanies = this.productionCompanies.map { it.toEntity() }
+        productionCompanies = this.productionCompanies.map { it.toEntity() },
+        seasons = this.seasons.map { it.toEntity() }
     )
 }
 
@@ -133,7 +139,7 @@ private fun GenreEntity.toEntity(): Genre {
 private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     return ProductionCompanyEntity(
         id = this.id ?: 0,
-        logoPath = this.logoPath.orEmpty(),
+        logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
         originCountry = this.originCountry.orEmpty()
     )
@@ -159,7 +165,7 @@ fun TvShowGenreDto.toEntity(): Genre {
 fun TvShowProductionCompanyDto.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id ?: 0,
-        logoPath = this.logoPath.orEmpty(),
+        logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
         originCountry = this.originCountry.orEmpty()
     )
@@ -169,7 +175,7 @@ fun TvShowCastDto.toEntity(): Cast {
     return Cast(
         id = this.id ?: 0,
         name = this.name.orEmpty(),
-        imageUrl = this.profilePath.orEmpty()
+        imageUrl = this.profilePath.toImageUrl().orEmpty()
     )
 }
 
@@ -177,7 +183,7 @@ fun TvShowSimilarDto.toEntity(): TvShowSimilar {
     return TvShowSimilar(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
     )
@@ -213,7 +219,7 @@ fun ImageEntity.toEntity(): Image {
 fun TvShowLogoDto.toEntity(id: Int): Image {
     return Image(
         id = id,
-        url = this.filePath.orEmpty()
+        url = this.filePath.toImageUrl().orEmpty()
     )
 }
 
@@ -221,10 +227,11 @@ fun TvShowReviewDto.toEntity(): Review {
     return Review(
         id = this.id.orEmpty(),
         name = this.authorDetails?.name.orEmpty(),
-        createdAt = LocalDate.parse(this.createdAt ?: "2025-01-01"),
-        avatarUrl = this.authorDetails?.avatarPath.orEmpty(),
+        createdAt = LocalDate.parse(this.createdAt?.substring(0,10) ?: "2025-01-01"),
+        avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
-        rating = this.authorDetails?.rating ?: 0.0
+        rating = this.authorDetails?.rating ?: 0.0,
+        description = this.content.orEmpty()
     )
 }
 
@@ -236,21 +243,27 @@ fun Review.toLocalDto(): ReviewEntity {
         avatarUrl = this.avatarUrl,
         username = this.username,
         rating = this.rating,
-        tvShowId = this.id
+        tvShowId = this.id,
+        description = this.description
     )
 }
 
 fun TvShowSeasonDto.toEntity(): Season {
     return Season(
-        id = this.id.toString(),
+        id = this.id ?: 0,
         name = this.name.orEmpty(),
-        episodes = this.episodesDto?.map { it.toEntity(this.posterPath.orEmpty()) } ?: emptyList()
+        seasonNumber = this.seasonNumber ?: 0,
+        episodeCount = this.episodeCount ?: 0,
+        episodes = this.episodesDto?.map { it.toEntity(this.posterPath.toImageUrl().orEmpty()) } ?: emptyList()
     )
 }
+
 fun SeasonEntity.toEntity(): Season {
     return Season(
-        id = this.id.toString(),
+        id = this.id,
         name = this.name,
+        seasonNumber = this.seasonNumber,
+        episodeCount = this.episodeCount,
         episodes = this.episodes.map { it.toEntity() }
     )
 }
@@ -275,19 +288,25 @@ fun ReviewEntity.toEntity(): Review {
         avatarUrl = this.avatarUrl,
         username = this.username,
         rating = this.rating,
+        description = this.description
     )
 }
 
 fun TvShowEpisodeDto.toEntity(posterPath: String): Episode {
+    val airDateParsed = try {
+        LocalDate.parse(this.airDate.orEmpty())
+    } catch (_: Exception) {
+        LocalDate(9999, 1, 1)
+    }
     return Episode(
         id = this.id ?: 0,
         episodeNumber = this.episodeNumber ?: 0,
         posterUrl = posterPath,
         voteAverage = this.voteAverage ?: 0.0,
-        airDate = LocalDate.parse(this.airDate.orEmpty()),
+        airDate = airDateParsed,
         runtime = this.runtime ?: 0,
         description = this.overview.orEmpty(),
-        stillUrl = this.stillPath.orEmpty()
+        stillUrl = this.stillPath.toImageUrl().orEmpty()
     )
 }
 

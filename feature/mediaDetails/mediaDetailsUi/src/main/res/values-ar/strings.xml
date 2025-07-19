@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cast">طاقم التمثيل</string>
+    <string name="all">الكل</string>
+    <string name="there_is_no_production_company">لا توجد شركة إنتاج!</string>
+    <string name="description">الوصف</string>
+    <string name="read_more">قراءة المزيد</string>
+    <string name="there_is_no_reviews">لا توجد تعليقات!</string>
+    <string name="read_less">قراءة أقل</string>
+    <string name="season">الموسم</string>
+    <string name="episodes">حلقات</string>
+    <string name="please_login_to_access_your_account_details_and_other_features">يرجى تسجيل الدخول للوصول إلى تفاصيل حسابك والميزات الأخرى!</string>
+    <string name="more_like_this">مشابه لهذا</string>
+    <string name="reviews">التعليقات</string>
+    <string name="gallery">المعرض</string>
+    <string name="company_production">شركة الإنتاج</string>
+    <string name="another_movie">فيلم آخر</string>
+    <string name="movie">فيلم</string>
+    <string name="rate">التقييم</string>
+    <string name="add_to_list">أضف إلى القائمة</string>
+    <string name="seasons">المواسم</string>
+    <string name="another_tvshow">مسلسل آخر</string>
+    <string name="tvshow">مسلسل</string>
+    <string name="no_cast_available">لا يوجد طاقم تمثيل متاح</string>
+    <string name="cast_information_not_available">معلومات طاقم التمثيل غير متوفرة لهذا الفيلم</string>
+    <string name="no_movie_details">تفاصيل الفيلم غير متوفرة</string>
+    <string name="movie_details_not_available">تعذر تحميل تفاصيل الفيلم</string>
+    <string name="no_tvshow_details">تفاصيل المسلسل غير متوفرة</string>
+    <string name="tvshow_details_not_available">تفاصيل المسلسل غير متاحة</string>
+</resources>

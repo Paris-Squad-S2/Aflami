@@ -1,3 +1,31 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="cast">Cast</string>
+    <string name="all">All</string>
+    <string name="there_is_no_production_company">There is no production company!</string>
+    <string name="description">Description</string>
+    <string name="read_more">Read more</string>
+    <string name="there_is_no_reviews">There is no reviews!</string>
+    <string name="read_less">Read less</string>
+    <string name="season">"Season"</string>
+    <string name="episodes">episodes</string>
+    <string name="please_login_to_access_your_account_details_and_other_features">Please login to access your account details and other features!</string>
+    <string name="more_like_this">More like this</string>
+    <string name="reviews">Reviews</string>
+    <string name="gallery">Gallery</string>
+    <string name="company_production">Company Production</string>
+    <string name="another_movie">Another Movie</string>
+    <string name="movie">Movie</string>
+    <string name="rate">Rate</string>
+    <string name="add_to_list">Add to list</string>
+    <string name="seasons">Seasons</string>
+    <string name="another_tvshow">Another TvShow</string>
+    <string name="tvshow">TvShow</string>
+    <string name="no_cast_available">No Cast Available</string>
+    <string name="cast_information_not_available">Cast information is not available for this movie</string>
+    <string name="login">Login</string>
+    <string name="no_movie_details">Movie Details Not Available</string>
+    <string name="movie_details_not_available">Movie details could not be loaded</string>
+    <string name="no_tvshow_details">No TV Show Details</string>
+    <string name="tvshow_details_not_available">TV show details are not available</string>
 </resources>

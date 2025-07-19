@@ -1,6 +1,7 @@
 package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,8 +12,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -25,6 +27,7 @@ fun EpisodeCard(
     episodeRating: Float,
     episodeNumber: String,
     episodeTitle: String,
+    imageUri: String,
     episodeDuration: String,
     episodeDate: String,
     episodeDescription: String,
@@ -39,11 +42,15 @@ fun EpisodeCard(
             AflamiMediaCard(
                 rating = episodeRating,
                 mediaCardType = MediaCardType.EPISODE,
-                imageUri = R.drawable.attack_on_titan.toString(),
+                imageUri = imageUri,
                 modifier = Modifier.padding(bottom = 8.dp, end = 12.dp),
                 clickable = true
             )
-            Column {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth(0.8f),
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(
                     text = "${stringResource(R.string.episode)} $episodeNumber",
                     style = Theme.textStyle.label.large,
@@ -52,11 +59,12 @@ fun EpisodeCard(
                 Text(
                     text = episodeTitle,
                     style = Theme.textStyle.label.small,
-                    color = Theme.colors.text.hint
+                    color = Theme.colors.text.hint,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
                 )
                 DescriptionSeparator(
-                    firstText = episodeDuration,
-                    secondText = episodeDate,
+                    texts = listOf(episodeDuration, episodeDate),
                     textColor = Theme.colors.text.hint,
                     separatorColor = Theme.colors.stroke
                 )
@@ -87,7 +95,8 @@ fun PreviewEpisodeCard() {
             episodeNumber = "1",
             episodeRating = 8f,
             episodeTitle = "Recovering a body",
-            episodeDate = "3 Sep 2020"
+            episodeDate = "3 Sep 2020",
+            imageUri = "https://image.tmdb.org/t/p/w500//3BHWR7mney46vFhG4lQrsso3p1m.jpg",
         )
     }
 }

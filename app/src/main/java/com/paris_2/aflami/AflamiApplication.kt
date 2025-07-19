@@ -15,7 +15,7 @@ import com.paris_2.aflami.di.workManagerModule
 import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.paris_2.aflami.di.FeatureAPIModule
-import com.repository.search.NetworkConnectionChecker
+import com.repository.search.util.NetworkConnectionChecker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -50,7 +50,11 @@ class AflamiApplication : Application() {
 
         WorkManager.initialize(this, configuration)
 
-        val networkChecker: NetworkConnectionChecker = getKoin().get()
-        networkChecker.startChecker()
+        val networkChecker1: NetworkConnectionChecker = getKoin().get()
+        val networkChecker2: com.repository.movie.util.NetworkConnectionChecker = getKoin().get()
+        val networkChecker3: com.repository.util.NetworkConnectionChecker = getKoin().get()
+        networkChecker1.startChecker()
+        networkChecker2.startChecker()
+        networkChecker3.startChecker()
     }
 }

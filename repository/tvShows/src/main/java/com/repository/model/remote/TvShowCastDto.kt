@@ -10,4 +10,3 @@ data class TvShowCastDto(
     @SerialName("profile_path") val profilePath: String? = null,
     @SerialName("character") val character: String? = null
 )
-

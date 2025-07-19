@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -53,14 +54,12 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    //Navigation
-    implementation(libs.navigation.compose)
+    implementation(project(Modules.APP_NAVIGATION))
+    implementation(libs.androidx.material3)
 
     //Koin
     implementation(libs.koin.core)
@@ -70,6 +69,26 @@ dependencies {
 
 
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    //coil
+    implementation(libs.coil.compose)
+
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
+    //Navigation
+    implementation(libs.navigation.compose)
+
+    //kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    // paging 3
+    implementation(libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
+
     implementation(project(Modules.DESIGN_SYSTEM))
+
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
 }

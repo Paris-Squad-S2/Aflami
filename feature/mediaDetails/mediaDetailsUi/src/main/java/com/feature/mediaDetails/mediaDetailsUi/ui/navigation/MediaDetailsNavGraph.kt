@@ -1,21 +1,27 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestination
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.MovieDetailsScreen
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.TvShowDetailsScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.LoginDialog
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreen
 import org.koin.compose.koinInject
 
 @Composable
 fun MediaDetailsNavGraph(
     navigator: MediaDetailsNavigator = koinInject(),
-    mediaDetailsDestination: MediaDetailsDestination? = null
+    mediaDetailsDestination: MediaDetailsDestination? = null,
 ) {
     val navController = rememberNavController()
 
@@ -33,13 +39,29 @@ fun MediaDetailsNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        buildSearchNavGraph(mediaDetailsDestination)
+
+        buildDetailsNavGraph(mediaDetailsDestination, navController)
     }
 }
 
-fun NavGraphBuilder.buildSearchNavGraph(startDestination: MediaDetailsDestination? = null) {
-    navigation<MediaDetailsDestinations.MediaDetailsGraph1>(startDestination = startDestination ?: MediaDetailsDestinations.MovieDetailsScreen) {
+fun NavGraphBuilder.buildDetailsNavGraph(
+    startDestination: MediaDetailsDestination? = null, navController: NavController,
+) {
+    navigation<MediaDetailsDestinations.MediaDetailsGraph1>(
+        startDestination = startDestination ?: MediaDetailsDestinations.MovieDetailsScreen,
+    ) {
         composable<MediaDetailsDestinations.MovieDetailsScreen> { MovieDetailsScreen() }
         composable<MediaDetailsDestinations.TvShowDetailsScreen> { TvShowDetailsScreen() }
+        composable<MediaDetailsDestinations.MovieCastScreen> { MovieCastScreen() }
+        composable<MediaDetailsDestinations.TvShowCastScreen> { TvShowCastScreen() }
+        dialog<MediaDetailsDestinations.LoginDialogDestination> { backStackEntry ->
+            val destination =
+                backStackEntry.toRoute<MediaDetailsDestinations.LoginDialogDestination>()
+            LoginDialog(
+                title = destination.title,
+                onDismiss = { navController.navigateUp() },
+                onLoginClick = {}
+            )
+        }
     }
 }

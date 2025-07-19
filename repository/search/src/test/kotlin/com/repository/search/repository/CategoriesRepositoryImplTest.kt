@@ -1,7 +1,7 @@
 package com.repository.search.repository
 
 import com.domain.search.model.CategoryModel
-import com.repository.search.NetworkConnectionChecker
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.dto.GenreDto

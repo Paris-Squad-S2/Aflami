@@ -69,3 +69,5 @@ gradle.properties.user
 
 # VS Code
 .vscode/
+
+schemas/
