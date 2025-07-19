@@ -39,7 +39,8 @@ fun WithSearchQueryContent(
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()
         )
-    } else if (state.searchUiState.filteredMoviesResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
+    } else if ( !state.searchUiState.isApplyFilter
+        &&state.searchUiState.filteredMoviesResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
         && state.searchUiState.filteredTvShowsResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()

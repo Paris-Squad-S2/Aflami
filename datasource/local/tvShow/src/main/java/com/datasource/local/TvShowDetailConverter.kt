@@ -5,6 +5,7 @@ import com.repository.model.local.EpisodeEntity
 import com.repository.model.local.GenreEntity
 import com.repository.model.local.ImageEntity
 import com.repository.model.local.ProductionCompanyEntity
+import com.repository.model.local.SeasonEntity
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
@@ -104,4 +105,13 @@ class TvShowDetailConverter {
         return dateString?.let { LocalDateTime.Companion.parse(it) }
     }
 
+    @TypeConverter
+    fun fronListOfSeasonEntity(seasons: List<SeasonEntity>?): String? {
+        return seasons?.let { json.encodeToString(it) }
+    }
+
+    @TypeConverter
+    fun toListOfSeasonEntity(seasonsString: String?): List<SeasonEntity>? {
+        return seasonsString?.let { json.decodeFromString<List<SeasonEntity>>(it) }
+    }
 }

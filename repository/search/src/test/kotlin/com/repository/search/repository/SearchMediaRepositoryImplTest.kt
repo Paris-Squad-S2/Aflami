@@ -1,6 +1,6 @@
 package com.repository.search.repository
 
-import com.repository.search.NetworkConnectionChecker
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource

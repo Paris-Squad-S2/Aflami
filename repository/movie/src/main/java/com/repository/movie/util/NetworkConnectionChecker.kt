@@ -1,4 +1,4 @@
-package com.repository.search
+package com.repository.movie.util
 
 import android.Manifest
 import android.content.Context

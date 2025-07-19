@@ -13,5 +13,6 @@ data class TvShowSeasonDto(
     @SerialName("overview") val overview: String? = null,
     @SerialName("poster_path") val posterPath: String? = null,
     @SerialName("season_number") val seasonNumber: Int? = null,
+    @SerialName("episode_count") val episodeCount: Int? = null,
     @SerialName("vote_average") val voteAverage: Double? = null
 )

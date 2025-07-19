@@ -28,90 +28,6 @@ val fakeGenres = listOf(
     Genre(10, "Mystery")
 )
 
-val fakeProductionCompanies = listOf(
-    ProductionCompany(1, "https://image.tmdb.org/t/p/w500/hbo.png", "HBO", "US"),
-    ProductionCompany(2, "https://image.tmdb.org/t/p/w500/netflix.png", "Netflix", "US"),
-    ProductionCompany(3, "https://image.tmdb.org/t/p/w500/amc.png", "AMC", "US"),
-    ProductionCompany(4, "https://image.tmdb.org/t/p/w500/bbc.png", "BBC", "GB"),
-    ProductionCompany(5, "https://image.tmdb.org/t/p/w500/disney.png", "Disney+", "US"),
-    ProductionCompany(6, "https://image.tmdb.org/t/p/w500/amazon.png", "Amazon Prime", "US")
-)
-
-val fakeTvShow = TvShow(
-    id = 1,
-    title = "Breaking Bad",
-    voteAverage = 9.5,
-    description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
-    posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
-    genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
-    releaseDate = "2008-01-20",
-    runtime = 47,
-    country = "US",
-    productionCompanies = listOf(fakeProductionCompanies[2])
-)
-
-val fakeTvShows = listOf(
-    TvShow(
-        id = 1,
-        title = "Breaking Bad",
-        voteAverage = 9.5,
-        description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
-        posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
-        releaseDate = "2008-01-20",
-        runtime = 47,
-        country = "US",
-        productionCompanies = listOf(fakeProductionCompanies[2])
-    ),
-    TvShow(
-        id = 2,
-        title = "Game of Thrones",
-        voteAverage = 9.2,
-        description = "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.",
-        posterPath = "https://image.tmdb.org/t/p/w500/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[2]),
-        releaseDate = "2011-04-17",
-        runtime = 57,
-        country = "US",
-        productionCompanies = listOf(fakeProductionCompanies[0])
-    ),
-    TvShow(
-        id = 3,
-        title = "Stranger Things",
-        voteAverage = 8.7,
-        description = "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces.",
-        posterPath = "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[5], fakeGenres[6]),
-        releaseDate = "2016-07-15",
-        runtime = 51,
-        country = "US",
-        productionCompanies = listOf(fakeProductionCompanies[1])
-    ),
-    TvShow(
-        id = 4,
-        title = "The Office",
-        voteAverage = 8.9,
-        description = "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium.",
-        posterPath = "https://image.tmdb.org/t/p/w500/7DJKHzAi83PmGuHjrEfQ1S9y4LF.jpg",
-        genres = listOf(fakeGenres[1]),
-        releaseDate = "2005-03-24",
-        runtime = 22,
-        country = "US",
-        productionCompanies = listOf(fakeProductionCompanies[1])
-    ),
-    TvShow(
-        id = 5,
-        title = "Sherlock",
-        voteAverage = 9.1,
-        description = "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.",
-        posterPath = "https://image.tmdb.org/t/p/w500/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[9], fakeGenres[3]),
-        releaseDate = "2010-07-25",
-        runtime = 90,
-        country = "GB",
-        productionCompanies = listOf(fakeProductionCompanies[3])
-    )
-)
 
 val fakeTvShowsSimilar = listOf(
     TvShowSimilar(
@@ -121,7 +37,7 @@ val fakeTvShowsSimilar = listOf(
         posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
         releaseDate = "2008-01-20",
 
-    ),
+        ),
     TvShowSimilar(
         id = 2,
         title = "Game of Thrones",
@@ -136,7 +52,7 @@ val fakeTvShowsSimilar = listOf(
         posterPath = "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
         releaseDate = "2016-07-15",
 
-    ),
+        ),
     TvShowSimilar(
         id = 4,
         title = "The Office",
@@ -144,7 +60,7 @@ val fakeTvShowsSimilar = listOf(
         posterPath = "https://image.tmdb.org/t/p/w500/7DJKHzAi83PmGuHjrEfQ1S9y4LF.jpg",
         releaseDate = "2005-03-24",
 
-    ),
+        ),
     TvShowSimilar(
         id = 5,
         title = "Sherlock",
@@ -253,33 +169,27 @@ val fakeEpisodes = listOf(
     )
 )
 
-val fakeSeasons = listOf(
+val fakeSeasons:List<Season> = listOf(
     Season(
-        id = "1",
+        id = 1,
         name = "Season 1",
-        episodes = fakeEpisodes.take(5)
+        episodes = fakeEpisodes.take(5),
+        seasonNumber = 1,
+        episodeCount = 10,
     ),
     Season(
-        id = "2",
-        name = "Season 2",
-        episodes = fakeEpisodes.map { episode ->
-            episode.copy(
-                id = episode.id + 100,
-                episodeNumber = episode.episodeNumber,
-                airDate = episode.airDate
-            )
-        }
+        id = 2,
+        name = "Season 1",
+        episodes = fakeEpisodes.take(5),
+        seasonNumber = 1,
+        episodeCount = 10,
     ),
     Season(
-        id = "3",
-        name = "Season 3",
-        episodes = fakeEpisodes.map { episode ->
-            episode.copy(
-                id = episode.id + 200,
-                episodeNumber = episode.episodeNumber,
-                airDate = episode.airDate
-            )
-        }
+        id = 3,
+        name = "Season 1",
+        episodes = fakeEpisodes.take(5),
+        seasonNumber = 1,
+        episodeCount = 10,
     )
 )
 
@@ -325,6 +235,99 @@ val fakeReviews = listOf(
         rating = 9.0
     )
 )
+
+val fakeProductionCompanies = listOf(
+    ProductionCompany(1, "https://image.tmdb.org/t/p/w500/hbo.png", "HBO", "US"),
+    ProductionCompany(2, "https://image.tmdb.org/t/p/w500/netflix.png", "Netflix", "US"),
+    ProductionCompany(3, "https://image.tmdb.org/t/p/w500/amc.png", "AMC", "US"),
+    ProductionCompany(4, "https://image.tmdb.org/t/p/w500/bbc.png", "BBC", "GB"),
+    ProductionCompany(5, "https://image.tmdb.org/t/p/w500/disney.png", "Disney+", "US"),
+    ProductionCompany(6, "https://image.tmdb.org/t/p/w500/amazon.png", "Amazon Prime", "US")
+)
+
+val fakeTvShow = TvShow(
+    id = 1,
+    title = "Breaking Bad",
+    voteAverage = 9.5,
+    description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
+    posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
+    genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
+    releaseDate = "2008-01-20",
+    runtime = 47,
+    country = "US",
+    productionCompanies = listOf(fakeProductionCompanies[2]),
+    seasons = fakeSeasons
+
+)
+
+val fakeTvShows = listOf(
+    TvShow(
+        id = 1,
+        title = "Breaking Bad",
+        voteAverage = 9.5,
+        description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
+        posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
+        genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
+        releaseDate = "2008-01-20",
+        runtime = 47,
+        country = "US",
+        productionCompanies = listOf(fakeProductionCompanies[2]),
+        seasons = listOf(fakeSeasons[0])
+    ),
+    TvShow(
+        id = 2,
+        title = "Game of Thrones",
+        voteAverage = 9.2,
+        description = "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.",
+        posterPath = "https://image.tmdb.org/t/p/w500/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
+        genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[2]),
+        releaseDate = "2011-04-17",
+        runtime = 57,
+        country = "US",
+        productionCompanies = listOf(fakeProductionCompanies[0]),
+        seasons = listOf(fakeSeasons[0])
+    ),
+    TvShow(
+        id = 3,
+        title = "Stranger Things",
+        voteAverage = 8.7,
+        description = "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces.",
+        posterPath = "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
+        genres = listOf(fakeGenres[0], fakeGenres[5], fakeGenres[6]),
+        releaseDate = "2016-07-15",
+        runtime = 51,
+        country = "US",
+        productionCompanies = listOf(fakeProductionCompanies[1]),
+        seasons = listOf(fakeSeasons[0])
+    ),
+    TvShow(
+        id = 4,
+        title = "The Office",
+        voteAverage = 8.9,
+        description = "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium.",
+        posterPath = "https://image.tmdb.org/t/p/w500/7DJKHzAi83PmGuHjrEfQ1S9y4LF.jpg",
+        genres = listOf(fakeGenres[1]),
+        releaseDate = "2005-03-24",
+        runtime = 22,
+        country = "US",
+        productionCompanies = listOf(fakeProductionCompanies[1]),
+        seasons = listOf(fakeSeasons[0])
+    ),
+    TvShow(
+        id = 5,
+        title = "Sherlock",
+        voteAverage = 9.1,
+        description = "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.",
+        posterPath = "https://image.tmdb.org/t/p/w500/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
+        genres = listOf(fakeGenres[0], fakeGenres[9], fakeGenres[3]),
+        releaseDate = "2010-07-25",
+        runtime = 90,
+        country = "GB",
+        productionCompanies = listOf(fakeProductionCompanies[3]),
+        seasons = listOf(fakeSeasons[1])
+    )
+)
+
 
 val fakeImages = listOf(
     Image(1, "https://image.tmdb.org/t/p/w500/tvbackdrop1.jpg"),

@@ -1,7 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -73,7 +72,7 @@ fun TopAppBar(
         modifier = modifier
             .then(scrollModifier)
             .fillMaxWidth()
-            .background(Theme.colors.surface)
+            .background(Color.Transparent)
             .padding(horizontal = 16.dp, vertical = 8.dp)
             .height(56.dp),
         contentAlignment = Alignment.CenterStart

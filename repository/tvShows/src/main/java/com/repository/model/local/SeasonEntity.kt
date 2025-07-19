@@ -20,6 +20,8 @@ data class SeasonEntity(
     val id: Int,
     val tvShowId: Int,
     val name: String,
+    val episodeCount: Int,
+    val seasonNumber: Int,
     val episodes: List<EpisodeEntity>,
     val seasonCacheDate: LocalDateTime = getCurrentDate(),
 )

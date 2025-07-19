@@ -4,7 +4,7 @@ import com.domain.search.exception.NoCategoriesFoundException
 import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.CategoryModel
 import com.domain.search.repository.CategoriesRepository
-import com.repository.search.NetworkConnectionChecker
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.mapper.toCategories

@@ -6,7 +6,7 @@ import com.domain.search.exception.NoDataForSearchException
 import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
-import com.repository.search.NetworkConnectionChecker
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource

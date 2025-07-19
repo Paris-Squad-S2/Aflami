@@ -2,7 +2,6 @@ package com.paris_2.aflami.di
 
 import android.util.Log
 import com.feature.search.searchUi.BuildConfig
-import com.repository.search.NetworkConnectionChecker
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.DefaultRequest
@@ -17,7 +16,9 @@ import org.koin.dsl.module
 
 val NetworkModule = module {
 
-    single { NetworkConnectionChecker(androidApplication().applicationContext) }
+    single { com.repository.search.util.NetworkConnectionChecker(androidApplication().applicationContext) }
+    single { com.repository.util.NetworkConnectionChecker(androidApplication().applicationContext) }
+    single { com.repository.movie.util.NetworkConnectionChecker(androidApplication().applicationContext) }
     single {
         HttpClient(Android) {
             install(Logging) {
