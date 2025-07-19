@@ -16,9 +16,6 @@ import androidx.work.Configuration
 import androidx.work.WorkManager
 import com.paris_2.aflami.di.FeatureAPIModule
 import com.repository.search.util.NetworkConnectionChecker
-import com.paris_2.aflami.di.movieDetailModule
-import com.paris_2.aflami.di.tvShowDetailsModule
-import com.repository.search.NetworkConnectionChecker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -42,8 +39,6 @@ class AflamiApplication : Application() {
                 NetworkModule,
                 SearchRemoteDataSourceModule,
                 mediaDetailsModule,
-                tvShowDetailsModule,
-                movieDetailModule
             )
         }
 

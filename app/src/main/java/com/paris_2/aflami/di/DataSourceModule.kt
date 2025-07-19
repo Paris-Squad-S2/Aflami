@@ -44,5 +44,4 @@ val dataSourceModule = module {
     singleOf(::TvShowLocalDataSourceImp) bind TvShowLocalDataSource::class
     singleOf(::TvShowReviewLocalDataSourceImp) bind TvShowReviewLocalDataSource::class
     singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
-    singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
 }
