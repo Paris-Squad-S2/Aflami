@@ -2,9 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -37,15 +35,14 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
-import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.R as designsystemR
-import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
+import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
+import com.paris_2.aflami.designsystem.R as designsystemR
 
 
 @Composable
@@ -125,7 +122,7 @@ fun TvShowDetailsScreenContent(
                 ) {
                     item {
                         DetailsImage(
-                            imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl),
+                            imageUris = state.tvShowDetailsUiState.gallery,
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
                             onPlayClick = {},
                             modifier = Modifier.padding(bottom = 12.dp)
@@ -167,9 +164,11 @@ fun TvShowDetailsScreenContent(
                         when (tvChips[index]) {
                             TvShowChips.SEASONS -> {
                                 items(state.tvShowDetailsUiState.tvShowUi.seasons.size) { seasonIndex ->
-                                    val season = state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
+                                    val season =
+                                        state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
                                     val isExpanded = expandedStates.value[seasonIndex]
-                                    val isSeasonLoading = state.seasonsLoadingStates[season.seasonNumber] == true
+                                    val isSeasonLoading =
+                                        state.seasonsLoadingStates[season.seasonNumber] == true
 
                                     SeasonSection(
                                         maxHeight = windowHeight * 0.7f,
