@@ -123,7 +123,7 @@ fun TvShowDetailsScreenContent(
                 ) {
                     item {
                         DetailsImage(
-                            imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl),
+                            imageUris = state.tvShowDetailsUiState.gallery,
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
                             onPlayClick = {},
                             modifier = Modifier.padding(bottom = 12.dp)
@@ -165,9 +165,11 @@ fun TvShowDetailsScreenContent(
                         when (tvChips[index]) {
                             TvShowChips.SEASONS -> {
                                 items(state.tvShowDetailsUiState.tvShowUi.seasons.size) { seasonIndex ->
-                                    val season = state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
+                                    val season =
+                                        state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
                                     val isExpanded = expandedStates.value[seasonIndex]
-                                    val isSeasonLoading = state.seasonsLoadingStates[season.seasonNumber] == true
+                                    val isSeasonLoading =
+                                        state.seasonsLoadingStates[season.seasonNumber] == true
 
                                     SeasonSection(
                                         maxHeight = windowHeight * 0.7f,
