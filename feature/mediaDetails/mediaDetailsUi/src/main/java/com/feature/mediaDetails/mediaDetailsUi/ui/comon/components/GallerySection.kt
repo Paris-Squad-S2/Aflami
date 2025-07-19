@@ -33,7 +33,7 @@ fun GallerySection(
                     AsyncImage(
                         model = imageUrl,
                         contentDescription = "Gallery image",
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .weight(1f)
                             .height(145.dp)
