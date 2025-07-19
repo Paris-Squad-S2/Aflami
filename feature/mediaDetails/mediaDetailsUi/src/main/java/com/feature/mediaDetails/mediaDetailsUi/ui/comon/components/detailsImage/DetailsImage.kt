@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -42,12 +43,15 @@ fun DetailsImage(
 ) {
     val displayImages = imageUris.take(10)
     val pagerState = rememberPagerState(pageCount = { displayImages.size })
-    LaunchedEffect(Unit) {
+    LaunchedEffect(displayImages) {
         if (displayImages.size > 1) {
             while (true) {
                 delay(4000)
                 val nextPage = (pagerState.currentPage + 1) % displayImages.size
-                pagerState.animateScrollToPage(nextPage)
+                pagerState.animateScrollToPage(
+                    nextPage,
+                    animationSpec = tween(durationMillis = 200)
+                )
             }
         }
     }
@@ -76,7 +80,7 @@ fun DetailsImage(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.Center),
-                        contentScale = ContentScale.Crop,
+                        contentScale = ContentScale.FillBounds,
                         contentDescription = "poster",
                         placeholder = {
                             Image(
@@ -138,10 +142,10 @@ fun DetailsImage(
                     backGroundColor = Theme.colors.surfaceHigh
                 )
             }
-            if (displayImages.isNotEmpty()) {
+            if (displayImages.size > 1) {
                 ImagePageIndicator(
-                    pageSize = if (displayImages.size == 1) 3 else displayImages.size,
-                    currentPage = if (displayImages.size == 1) 2 else pagerState.currentPage,
+                    pageSize = displayImages.size,
+                    currentPage = pagerState.currentPage,
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(end = 4.dp)
