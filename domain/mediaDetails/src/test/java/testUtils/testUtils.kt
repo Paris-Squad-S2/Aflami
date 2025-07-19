@@ -201,7 +201,7 @@ val fakeReviews = listOf(
         avatarUrl = "https://image.tmdb.org/t/p/w500/avatar1.jpg",
         username = "tvaddict99",
         rating = 9.5,
-        description = "description"
+        description = "An absolute masterpiece! The character development and storytelling are top-notch. Breaking Bad is a must-watch for any TV fan."
     ),
     Review(
         id = "2",
@@ -210,7 +210,7 @@ val fakeReviews = listOf(
         avatarUrl = "https://image.tmdb.org/t/p/w500/avatar2.jpg",
         username = "bingewatcher",
         rating = 8.8,
-        description = "description"
+        description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
     ),
     Review(
         id = "3",
@@ -219,7 +219,7 @@ val fakeReviews = listOf(
         avatarUrl = "https://image.tmdb.org/t/p/w500/avatar3.jpg",
         username = "seriescritic",
         rating = 9.2,
-        description = "description"
+        description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
     ),
     Review(
         id = "4",
@@ -228,7 +228,7 @@ val fakeReviews = listOf(
         avatarUrl = "https://image.tmdb.org/t/p/w500/avatar4.jpg",
         username = "dramalover",
         rating = 8.9,
-        description = "description"
+        description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
     ),
     Review(
         id = "5",
@@ -237,7 +237,7 @@ val fakeReviews = listOf(
         avatarUrl = "https://image.tmdb.org/t/p/w500/avatar5.jpg",
         username = "showreviewer",
         rating = 9.0,
-        description = "description"
+        description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
     )
 )
 

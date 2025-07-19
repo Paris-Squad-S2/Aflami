@@ -1,7 +1,5 @@
 package com.repository.movie.testUtils
 
-import com.repository.movie.mapper.toEntity
-import com.repository.movie.models.local.MovieEntity
 import com.repository.movie.models.local.ReviewEntity
 import com.repository.movie.models.remote.MovieCastDto
 import com.repository.movie.models.remote.MovieCreditsDto
@@ -51,6 +49,6 @@ val review = ReviewEntity(
     avatarUrl = "",
     username = "",
     rating = 2.2,
-    description = "description",
+    description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White.",
     language = "AR"
 )

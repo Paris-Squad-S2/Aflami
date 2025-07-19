@@ -35,7 +35,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieDetails(movieId: Int): Movie {
         return safeCall {
-            val localMovie = movieLocalDataSource.getMovie(movieId, language)
+            val localMovie = movieLocalDataSource.getMovieById(movieId, language)
 
             if (localMovie != null) {
                 localMovie.toEntity()
@@ -121,7 +121,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getCompanyProducts(movieId: Int): List<ProductionCompany> {
         return safeCall {
-            val localMovie = movieLocalDataSource.getMovie(movieId, language)
+            val localMovie = movieLocalDataSource.getMovieById(movieId, language)
             val localProductionCompanies = localMovie?.productionCompanies
             if (!localProductionCompanies.isNullOrEmpty()) {
                 localProductionCompanies.map { it.toEntity() }

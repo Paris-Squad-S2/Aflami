@@ -12,5 +12,5 @@ interface MovieDao {
     suspend fun addMovies(movies: MovieEntity)
 
     @Query("SELECT * FROM movies_table WHERE id = :movieId AND language = :language")
-    suspend fun getMovies(movieId: Int, language: String): MovieEntity?
+    suspend fun getMovieById(movieId: Int,language: String): MovieEntity?
 }
