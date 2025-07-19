@@ -31,6 +31,7 @@ import com.paris_2.aflami.designsystem.components.MediaPlayButton
 import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import dropShadow
 import kotlinx.coroutines.delay
 
 
@@ -39,7 +40,7 @@ fun DetailsImage(
     modifier: Modifier = Modifier,
     imageUris: List<String>,
     rating: Float,
-    onPlayClick: () -> Unit
+    onPlayClick: () -> Unit,
 ) {
     val displayImages = imageUris.take(10)
     val pagerState = rememberPagerState(pageCount = { displayImages.size })
@@ -122,11 +123,12 @@ fun DetailsImage(
                             center = center
                         )
                     }
-                    .shadow(
-                        elevation = 12.dp,
-                        spotColor = Color(0xFFD85895).copy(alpha = 0.12f),
-                        ambientColor = Color(0xFFD85895).copy(alpha = 0.12f),
-                        shape = CircleShape
+                    .dropShadow(
+                        shape = CircleShape,
+                        color = Color(0x1FD85895),
+                        spread = 12.dp,
+                        offsetX = (-5).dp,
+                        alpha = 0.08F
                     )
                     .border(
                         width = 2.dp,
