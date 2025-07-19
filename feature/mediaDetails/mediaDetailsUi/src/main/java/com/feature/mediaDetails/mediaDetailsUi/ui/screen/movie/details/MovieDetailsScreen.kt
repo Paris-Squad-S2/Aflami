@@ -9,13 +9,19 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -57,11 +63,26 @@ fun MovieDetailsScreenContent(
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
     val movieChips = MovieChips.entries
+    val listState = rememberLazyListState()
+    val density = LocalDensity.current
+    val maxScrollPx = with(density) { 56.dp.toPx() }
+
+    val alpha by remember {
+        derivedStateOf {
+            val scroll =
+                if (listState.firstVisibleItemIndex > 0) maxScrollPx else listState.firstVisibleItemScrollOffset.toFloat()
+            (scroll / maxScrollPx).coerceIn(0f, 1f)
+        }
+    }
+
+    val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
+
+
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
-    val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
-    val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
+    val rate = stringResource(R.string.rate)
+    val addToList = stringResource(R.string.add_to_list)
 
     val windowHeight = LocalConfiguration.current.screenHeightDp.dp
 
@@ -126,8 +147,8 @@ fun MovieDetailsScreenContent(
                     PlaceholderView(
                         modifier = Modifier.fillMaxSize(),
                         image = painterResource(RDesignSystem.drawable.ic_network_error),
-                        title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.no_movie_details),
-                        subTitle = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie_details_not_available),
+                        title = stringResource(R.string.no_movie_details),
+                        subTitle = stringResource(R.string.movie_details_not_available),
                         spacer = 16.dp
                     )
                 }
@@ -135,6 +156,7 @@ fun MovieDetailsScreenContent(
 
             else -> {
                 LazyColumn(
+                    state = listState,
                     modifier = Modifier
                         .fillMaxSize()
                         .navigationBarsPadding()
@@ -146,9 +168,7 @@ fun MovieDetailsScreenContent(
                             )
                         } else {
                             DetailsImage(
-                                imageUris = listOf(
-                                    state.movieDetailsUiState.movie.posterUrl,
-                                ),
+                                imageUris = state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
                                 onPlayClick = {},
                                 modifier = Modifier.padding(bottom = 12.dp)
@@ -284,7 +304,8 @@ fun MovieDetailsScreenContent(
                                 movieDetailsScreenInteractionListener.onAddToListClick(R.string.add_to_list)
                             }
                         )
-                    )
+                    ),
+                    modifier = Modifier.background(backgroundColor)
                 )
             }
         }
