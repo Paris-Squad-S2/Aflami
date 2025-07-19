@@ -8,6 +8,7 @@ import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
+import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
@@ -20,6 +21,7 @@ import com.repository.movie.testUtils.mockMovieDto
 import com.repository.movie.testUtils.mockMovieImagesDto
 import com.repository.movie.testUtils.mockMovieSimilarsDto
 import com.repository.movie.testUtils.review
+import com.repository.movie.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,6 +38,8 @@ class MovieRepositoryImplTest {
     private lateinit var movieCastLocalDataSource: MovieCastLocalDataSource
     private lateinit var movieGalleryLocalDataSource: MovieGalleryLocalDataSource
     private lateinit var movieReviewLocalDataSource: MovieReviewLocalDataSource
+    private var networkConnectionChecker : NetworkConnectionChecker = mockk(relaxed = true)
+    private var movieSimilarLocalDataSource : MovieSimilarLocalDataSource = mockk()
 
     @BeforeEach
     fun setUp() {
@@ -45,11 +49,13 @@ class MovieRepositoryImplTest {
         movieGalleryLocalDataSource = mockk<MovieGalleryLocalDataSource>()
         movieReviewLocalDataSource = mockk<MovieReviewLocalDataSource>()
         movieRepository = MovieRepositoryImpl(
+            networkConnectionChecker,
             movieLocalDataSource,
             movieCastLocalDataSource,
             movieGalleryLocalDataSource,
             movieReviewLocalDataSource,
-            movieDetailsRemoteDataSource
+            movieDetailsRemoteDataSource,
+            movieSimilarLocalDataSource
         )
     }
 

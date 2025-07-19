@@ -73,11 +73,11 @@ fun MovieCastDto.toEntity(): Cast {
     )
 }
 
-fun Cast.toLocalDto(language: String): CastEntity {
+fun Cast.toLocalDto(movieIds: Int, language: String): CastEntity {
     return CastEntity(
-        movieId = this.id,
+        movieId = movieIds,
         name = this.name,
-        id = 0,
+        id = this.id,
         imageUri = this.imageUrl,
         language = language
     )
@@ -118,7 +118,7 @@ fun MovieReviewDto.toEntity(): Review {
     return Review(
         id = this.id.orEmpty(),
         name = this.authorDetails?.name.orEmpty(),
-        createdAt = LocalDate.parse(this.createdAt?.substring(0,10) ?: "2025-01-01"),
+        createdAt = LocalDate.parse(this.createdAt?.substring(0, 10) ?: "2025-01-01"),
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
         rating = this.authorDetails?.rating ?: 0.0,
@@ -180,9 +180,9 @@ fun MovieEntity.toEntity(): Movie {
     )
 }
 
-fun MovieSimilarDto.toLocalDto(movieId: Int,page: Int,language: String): MovieSimilarEntity{
+fun MovieSimilarDto.toLocalDto(movieId: Int, page: Int, language: String): MovieSimilarEntity {
     return MovieSimilarEntity(
-        id =this.id ?: 0,
+        id = this.id ?: 0,
         movieId = movieId,
         title = this.title.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
@@ -213,7 +213,7 @@ fun GalleryEntity.toEntity(): Gallery {
     )
 }
 
-fun Review.toLocalDto(): ReviewEntity {
+fun Review.toLocalDto(movieId: Int, language: String): ReviewEntity {
     return ReviewEntity(
         id = 0,
         name = this.name,
@@ -221,7 +221,8 @@ fun Review.toLocalDto(): ReviewEntity {
         avatarUrl = this.avatarUrl,
         username = this.username,
         rating = this.rating,
-        movieId = this.id.toInt(),
+        movieId = movieId,
+        language = language,
         description = this.description
     )
 }
@@ -248,7 +249,7 @@ fun MovieSimilarEntity.toEntity(): MovieSimilar {
     )
 }
 
-fun MovieSimilar.toLocalDto( movieId: Int,pager: Int, language: String): MovieSimilarEntity {
+fun MovieSimilar.toLocalDto(movieId: Int, pager: Int, language: String): MovieSimilarEntity {
     return MovieSimilarEntity(
         id = this.id,
         title = this.title,
@@ -263,11 +264,11 @@ fun MovieSimilar.toLocalDto( movieId: Int,pager: Int, language: String): MovieSi
 
 fun Review.toRemoteDto(): MovieReviewDto {
     return MovieReviewDto(
-         author = this.name,
-         createdAt = this.createdAt.toString(),
-         id = this.id,
-         updatedAt = this.createdAt.toString(),
-         url = this.avatarUrl
+        author = this.name,
+        createdAt = this.createdAt.toString(),
+        id = this.id,
+        updatedAt = this.createdAt.toString(),
+        url = this.avatarUrl
     )
 }
 

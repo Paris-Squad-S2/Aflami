@@ -50,5 +50,7 @@ val review = ReviewEntity(
     createdAt = LocalDate.parse("2025-01-01"),
     avatarUrl = "",
     username = "",
-    rating = 2.2
+    rating = 2.2,
+    description = "description",
+    language = "AR"
 )
