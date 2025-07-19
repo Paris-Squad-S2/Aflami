@@ -58,7 +58,7 @@ fun ImagePageIndicator(
 fun ImagePageIndicatorPreview() {
     AflamiTheme {
         ImagePageIndicator(
-            pageSize = 3,
+            pageSize = 5,
             currentPage = 0,
             modifier = Modifier
                 .padding(16.dp)
