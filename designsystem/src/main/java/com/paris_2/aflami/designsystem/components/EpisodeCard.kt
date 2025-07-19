@@ -78,7 +78,7 @@ fun EpisodeCard(
             text = episodeDescription,
             style = Theme.textStyle.label.small,
             color = Theme.colors.text.hint,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
         )
 
     }

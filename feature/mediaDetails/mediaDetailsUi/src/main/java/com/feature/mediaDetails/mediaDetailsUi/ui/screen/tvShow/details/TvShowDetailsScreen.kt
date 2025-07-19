@@ -1,7 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
-//import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
-//import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -236,7 +234,7 @@ fun TvShowDetailsScreenContent(
                             items(mediaList.itemCount) { mediaIndex ->
                                 mediaList[mediaIndex]?.let { media ->
                                     AflamiMediaCard(
-                                        modifier = Modifier.fillMaxWidth(),
+                                        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
                                         imageUri = media.posterPath,
                                         rating = media.voteAverage.toFloat(),
                                         movieName = media.title,
