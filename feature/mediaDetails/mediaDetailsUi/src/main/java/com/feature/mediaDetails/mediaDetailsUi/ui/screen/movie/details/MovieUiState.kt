@@ -1,7 +1,9 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import androidx.paging.PagingData
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import kotlinx.coroutines.flow.Flow
 
 data class MovieDetailsScreenState(
     val movieDetailsUiState: MovieDetailsUiState,
@@ -18,9 +20,9 @@ data class MovieDetailsScreenState(
 
 data class MovieDetailsUiState(
     val movie: MovieUi,
-    val recommendations: List<SimilarMediaUI>,
+    val recommendations: Flow<PagingData<SimilarMediaUI>>,
     val cast: List<CastUi>,
-    val reviews: List<ReviewUi>,
+    val reviews: Flow<PagingData<ReviewUi>>,
     val gallery: List<String>
 )
 data class MovieUi(
@@ -53,5 +55,6 @@ data class ReviewUi(
     val name: String,
     val rating: Double,
     val createdAt : String,
+    val description: String
 )
 

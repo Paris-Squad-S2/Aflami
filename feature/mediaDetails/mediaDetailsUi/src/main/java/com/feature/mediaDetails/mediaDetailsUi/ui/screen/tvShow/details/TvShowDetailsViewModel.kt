@@ -2,7 +2,12 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
@@ -14,13 +19,14 @@ import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUse
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.paris_2.aflami.appnavigation.AppNavigator
+import kotlinx.coroutines.flow.flowOf
 
-class TvShowDetailsViewModelViewModel(
+class TvShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getTvShowDetailsUseCase: GetTvShowDetailsUseCase,
     private val getTvShowCastUseCase: GetTvShowCastUseCase,
@@ -48,19 +54,23 @@ class TvShowDetailsViewModelViewModel(
                 productionCompanies = emptyList()
             ),
             cast = emptyList(),
-            reviews = emptyList(),
+            reviews = flowOf(PagingData.empty()),
             gallery = emptyList(),
-            recommendations = emptyList(),
+            recommendations = flowOf(PagingData.empty()),
         ),
-        isLoading = false,
+        isLoading = true,
         errorMessage = null,
-        isEpisodesLoading = false
+        isEpisodesLoading = true,
+        seasonsLoadingStates = emptyMap()
     )
 ) {
 
+
+    private val mediaId by lazy {
+        savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
+
+    }
     init {
-        val mediaId =
-            savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
         loadTvShowDetails(mediaId)
     }
 
@@ -140,12 +150,21 @@ class TvShowDetailsViewModelViewModel(
 
     private fun loadTvShowRecommendations(mediaId: Int) {
         tryToExecute(
-            execute = { getTvShowRecommendationsUseCase(mediaId, 1) }, //TODO handle pagination
-            onSuccess = { recommendations ->
+            execute = {
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        SimilarTvShowPageSource(
+                            movieId = mediaId,
+                            getTvShowRecommendationsUseCase = getTvShowRecommendationsUseCase
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
+            },            onSuccess = { recommendations ->
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            recommendations = recommendations.toListOfMTvShowSimilarUI()
+                            recommendations = recommendations
                         )
                     )
                 )
@@ -162,12 +181,21 @@ class TvShowDetailsViewModelViewModel(
 
     private fun loadTvShowReviews(mediaId: Int) {
         tryToExecute(
-            execute = { getTvShowReviewsUseCase(mediaId, 1) }, //TODO handle pagination
+            execute = {
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        ReviewTvShowPagingSource(
+                            mediaId = mediaId,
+                            getTvShowReviewsUseCase = getTvShowReviewsUseCase
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope) },
             onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            reviews = reviews.toListOfReviewUi()
+                            reviews = reviews
                         )
                     )
                 )
@@ -219,12 +247,12 @@ class TvShowDetailsViewModelViewModel(
         )
     }
 
-    override fun onFavouriteClick(title: String) {
+    override fun onFavouriteClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
 
     }
 
-    override fun onAddToListClick(title: String) {
+    override fun onAddToListClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
 
@@ -233,16 +261,21 @@ class TvShowDetailsViewModelViewModel(
     }
 
     override fun onClickOnSeason(seasonNumber: Int) {
-        if (screenState.value.tvShowDetailsUiState.tvShowUi.seasons.any { it.seasonNumber == seasonNumber && it.isExpanded }) {
+        val currentSeason = screenState.value.tvShowDetailsUiState.tvShowUi.seasons
+            .find { it.seasonNumber == seasonNumber }
+
+        if (currentSeason?.isExpanded == true && currentSeason.episodes.isNotEmpty()) {
             return
         }
+
         tryToExecute(
             execute = {
                 updateState(
                     screenState.value.copy(
-                        isEpisodesLoading = true
+                        seasonsLoadingStates = screenState.value.seasonsLoadingStates + (seasonNumber to true)
                     )
                 )
+
                 getSeasonDetailsUseCase(
                     screenState.value.tvShowDetailsUiState.tvShowUi.id,
                     seasonNumber
@@ -265,7 +298,7 @@ class TvShowDetailsViewModelViewModel(
                                 }
                             ),
                         ),
-                        isEpisodesLoading = false,
+                        seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
                     )
                 )
             },
@@ -274,10 +307,20 @@ class TvShowDetailsViewModelViewModel(
                 updateState(
                     screenState.value.copy(
                         errorMessage = error,
-                        isEpisodesLoading = false
+                        seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
                     )
                 )
             }
         )
+    }
+
+    override fun onRetryLoadTvShowDetails() {
+        updateState(
+            screenState.value.copy(
+                isLoading = true,
+                errorMessage = null
+            )
+        )
+        loadTvShowDetails(mediaId = mediaId)
     }
 }

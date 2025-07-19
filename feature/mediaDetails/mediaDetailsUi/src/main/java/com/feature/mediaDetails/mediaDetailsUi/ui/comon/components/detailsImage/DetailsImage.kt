@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage
 
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -30,6 +31,7 @@ import com.paris_2.aflami.designsystem.components.MediaPlayButton
 import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import dropShadow
 import kotlinx.coroutines.delay
 
 
@@ -38,16 +40,19 @@ fun DetailsImage(
     modifier: Modifier = Modifier,
     imageUris: List<String>,
     rating: Float,
-    onPlayClick: () -> Unit
+    onPlayClick: () -> Unit,
 ) {
     val displayImages = imageUris.take(10)
     val pagerState = rememberPagerState(pageCount = { displayImages.size })
-    LaunchedEffect(Unit) {
+    LaunchedEffect(displayImages) {
         if (displayImages.size > 1) {
             while (true) {
                 delay(4000)
                 val nextPage = (pagerState.currentPage + 1) % displayImages.size
-                pagerState.animateScrollToPage(nextPage)
+                pagerState.animateScrollToPage(
+                    nextPage,
+                    animationSpec = tween(durationMillis = 200)
+                )
             }
         }
     }
@@ -76,7 +81,7 @@ fun DetailsImage(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.Center),
-                        contentScale = ContentScale.Crop,
+                        contentScale = ContentScale.FillBounds,
                         contentDescription = "poster",
                         placeholder = {
                             Image(
@@ -118,11 +123,12 @@ fun DetailsImage(
                             center = center
                         )
                     }
-                    .shadow(
-                        elevation = 12.dp,
-                        spotColor = Color(0xFFD85895).copy(alpha = 0.12f),
-                        ambientColor = Color(0xFFD85895).copy(alpha = 0.12f),
-                        shape = CircleShape
+                    .dropShadow(
+                        shape = CircleShape,
+                        color = Color(0x1FD85895),
+                        spread = 12.dp,
+                        offsetX = (-5).dp,
+                        alpha = 0.08F
                     )
                     .border(
                         width = 2.dp,
@@ -138,10 +144,10 @@ fun DetailsImage(
                     backGroundColor = Theme.colors.surfaceHigh
                 )
             }
-            if (displayImages.isNotEmpty()) {
+            if (displayImages.size > 1) {
                 ImagePageIndicator(
-                    pageSize = if (displayImages.size == 1) 3 else displayImages.size,
-                    currentPage = if (displayImages.size == 1) 2 else pagerState.currentPage,
+                    pageSize = displayImages.size,
+                    currentPage = pagerState.currentPage,
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
                         .padding(end = 4.dp)

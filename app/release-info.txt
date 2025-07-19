@@ -1,2 +1,2 @@
-versionName=0.1.31
-- enhance search sorting according to user interaction
+versionName=0.2.0
+- add movie and tv show details ui

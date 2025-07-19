@@ -22,7 +22,7 @@ import kotlinx.datetime.LocalDate
 
 fun Movie.toUi(): MovieUi {
     return MovieUi(
-        id=this.id,
+        id = this.id,
         posterUrl = this.posterPath,
         rating = this.voteAverage.toFloat(),
         title = this.title,
@@ -37,7 +37,7 @@ fun Movie.toUi(): MovieUi {
 
 fun TvShow.toUi(): TvShowUi {
     return TvShowUi(
-        id= this.id,
+        id = this.id,
         posterUrl = this.posterPath,
         rating = this.voteAverage.toFloat(),
         title = this.title,
@@ -78,7 +78,8 @@ fun Review.toUi(): ReviewUi {
         username = this.username,
         name = this.name,
         rating = this.rating,
-        createdAt = this.createdAt.formatToUi()
+        createdAt = this.createdAt.formatToUi(),
+        description = this.description
     )
 }
 
@@ -109,7 +110,7 @@ fun LocalDate.formatToUi(): String {
     if (this.year == 9999) {
         return ""
     }
-    val day = this.dayOfMonth.toString().padStart(2, '0')
+    val day = this.day.toString().padStart(2, '0')
     val month = this.month.toString().padStart(2, '0')
     val year = this.year.toString()
     return "$day-$month-$year"

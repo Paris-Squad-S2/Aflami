@@ -4,21 +4,30 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
@@ -28,7 +37,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -55,11 +63,27 @@ fun MovieDetailsScreenContent(
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
     val movieChips = MovieChips.entries
+    val listState = rememberLazyListState()
+    val density = LocalDensity.current
+    val maxScrollPx = with(density) { 56.dp.toPx() }
+
+    val alpha by remember {
+        derivedStateOf {
+            val scroll =
+                if (listState.firstVisibleItemIndex > 0) maxScrollPx else listState.firstVisibleItemScrollOffset.toFloat()
+            (scroll / maxScrollPx).coerceIn(0f, 1f)
+        }
+    }
+
+    val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
+
+
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
-    val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
-    val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
+
+    val windowHeight = LocalConfiguration.current.screenHeightDp.dp
+
 
     Box(
         Modifier
@@ -69,25 +93,6 @@ fun MovieDetailsScreenContent(
             .statusBarsPadding()
     ) {
         when {
-            state.errorMessage != null -> {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    TopAppBar(
-                        leadingIcons = listOf(
-                            iconItemWithDefaults(
-                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
-                            )
-                        )
-                    )
-                    NetworkError(
-                        modifier = Modifier.fillMaxSize(),
-                        onRetry = movieDetailsScreenInteractionListener::onRetryLoadMovieDetails
-                    )
-                }
-            }
-
             state.isLoading -> {
                 Column(
                     modifier = Modifier.fillMaxSize()
@@ -121,8 +126,8 @@ fun MovieDetailsScreenContent(
                     PlaceholderView(
                         modifier = Modifier.fillMaxSize(),
                         image = painterResource(RDesignSystem.drawable.ic_network_error),
-                        title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.no_movie_details),
-                        subTitle = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie_details_not_available),
+                        title = stringResource(R.string.no_movie_details),
+                        subTitle = stringResource(R.string.movie_details_not_available),
                         spacer = 16.dp
                     )
                 }
@@ -130,6 +135,7 @@ fun MovieDetailsScreenContent(
 
             else -> {
                 LazyColumn(
+                    state = listState,
                     modifier = Modifier
                         .fillMaxSize()
                         .navigationBarsPadding()
@@ -141,9 +147,7 @@ fun MovieDetailsScreenContent(
                             )
                         } else {
                             DetailsImage(
-                                imageUris = listOf(
-                                    state.movieDetailsUiState.movie.posterUrl,
-                                ),
+                                imageUris = state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
                                 onPlayClick = {},
                                 modifier = Modifier.padding(bottom = 12.dp)
@@ -207,11 +211,15 @@ fun MovieDetailsScreenContent(
                                         modifier = Modifier.padding(16.dp)
                                     )
                                 } else {
-                                    MoreLikeThisSection(
-                                        mediaList = state.movieDetailsUiState.recommendations,
-                                        onClick = {},
-                                        mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie)
-                                    )
+                                    Box(
+                                        modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f),
+                                    ) {
+                                        MoreLikeThisSection(
+                                            mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems(),
+                                            onClick = {},
+                                            mediaType = stringResource(R.string.movie)
+                                        )
+                                    }
                                 }
                             }
 
@@ -221,9 +229,13 @@ fun MovieDetailsScreenContent(
                                         modifier = Modifier.padding(16.dp)
                                     )
                                 } else {
-                                    ReviewsSection(
-                                        reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
-                                    )
+                                    Box(
+                                        modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f),
+                                    ) {
+                                        ReviewsSection(
+                                            reviews = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
+                                        )
+                                    }
                                 }
                             }
 
@@ -266,16 +278,17 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onFavouriteClick(rate)
+                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate)
                             }
                         ),
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_heart_add),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onAddToListClick(addToList)
+                                movieDetailsScreenInteractionListener.onAddToListClick(R.string.add_to_list)
                             }
                         )
-                    )
+                    ),
+                    modifier = Modifier.background(backgroundColor)
                 )
             }
         }

@@ -25,4 +25,6 @@
     <string name="cast_information_not_available">معلومات طاقم التمثيل غير متوفرة لهذا الفيلم</string>
     <string name="no_movie_details">تفاصيل الفيلم غير متوفرة</string>
     <string name="movie_details_not_available">تعذر تحميل تفاصيل الفيلم</string>
+    <string name="no_tvshow_details">تفاصيل المسلسل غير متوفرة</string>
+    <string name="tvshow_details_not_available">تفاصيل المسلسل غير متاحة</string>
 </resources>

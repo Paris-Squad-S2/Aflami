@@ -81,6 +81,10 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
+    // paging 3
+    implementation(libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
+
     implementation(project(Modules.DESIGN_SYSTEM))
 
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
