@@ -221,7 +221,7 @@ fun TvShowDetailsScreenContent(
                                                         imageUri = episode.stillUrl,
                                                         episodeDate = episode.airDate,
                                                         episodeDescription = episode.description,
-                                                        modifier = Modifier.fillMaxWidth()
+                                                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
                                                     )
                                                 }
                                             }
@@ -234,7 +234,7 @@ fun TvShowDetailsScreenContent(
                             items(mediaList.itemCount) { mediaIndex ->
                                 mediaList[mediaIndex]?.let { media ->
                                     AflamiMediaCard(
-                                        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
+                                        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                         imageUri = media.posterPath,
                                         rating = media.voteAverage.toFloat(),
                                         movieName = media.title,

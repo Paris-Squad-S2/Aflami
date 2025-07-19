@@ -216,7 +216,7 @@ fun MovieDetailsScreenContent(
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
                                             AflamiMediaCard(
-                                                modifier = Modifier.fillMaxWidth(),
+                                                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                                 imageUri = media.posterPath,
                                                 rating = media.voteAverage.toFloat(),
                                                 movieName = media.title,
