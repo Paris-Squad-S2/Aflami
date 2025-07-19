@@ -16,6 +16,7 @@ import com.repository.movie.models.local.MovieEntity
 import com.repository.movie.models.local.MovieSimilarEntity
 import com.repository.movie.models.local.ProductionCompanyEntity
 import com.repository.movie.models.local.ReviewEntity
+import com.repository.movie.models.remote.MovieAuthorDetailsDto
 import com.repository.movie.models.remote.MovieCastDto
 import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieGenreDto
@@ -116,9 +117,13 @@ fun MovieLogoDto.toEntity(id: Int): Image {
 
 fun MovieReviewDto.toEntity(): Review {
     return Review(
+        createdAt = try {
+            LocalDate.parse(this.createdAt.orEmpty())
+        } catch (_: Exception) {
+            LocalDate(9999, 1, 1)
+        },
         id = this.id.orEmpty(),
         name = this.authorDetails?.name.orEmpty(),
-        createdAt = LocalDate.parse(this.createdAt?.substring(0, 10) ?: "2025-01-01"),
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
         rating = this.authorDetails?.rating ?: 0.0,
@@ -267,8 +272,13 @@ fun Review.toRemoteDto(): MovieReviewDto {
         author = this.name,
         createdAt = this.createdAt.toString(),
         id = this.id,
-        updatedAt = this.createdAt.toString(),
-        url = this.avatarUrl
+        authorDetails = MovieAuthorDetailsDto(
+            name = this.name,
+            username = this.username,
+            avatarPath = this.avatarUrl,
+            rating = this.rating
+        ),
+        content = this.description,
     )
 }
 

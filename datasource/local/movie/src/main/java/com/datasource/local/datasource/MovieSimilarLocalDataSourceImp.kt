@@ -4,7 +4,7 @@ import com.datasource.local.dao.MovieSimilarDao
 import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.models.local.MovieSimilarEntity
 
-class MovieSimilarDataSourceImpl(
+class MovieSimilarLocalDataSourceImp(
     val similarDao: MovieSimilarDao
 ) : MovieSimilarLocalDataSource {
 

@@ -46,6 +46,7 @@ dependencies {
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.kotlinx.datetime)
+    testImplementation(libs.truth)
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
