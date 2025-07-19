@@ -8,6 +8,7 @@ class MovieMovieCastLocalDataSourceImpl(private val dao: MovieCastDao) : MovieCa
 
     override suspend fun addCast(cast: List<CastEntity>) = dao.addCast(cast)
 
-    override suspend fun getCastByMovieId(movieId: Int): List<CastEntity> = dao.getCastByMovieId(movieId)
+    override suspend fun getCastByMovieId(movieId: Int,language: String): List<CastEntity>? = dao.getCastByMovieId(movieId,language)
+
 
 }

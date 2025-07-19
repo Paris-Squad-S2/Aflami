@@ -1,7 +1,6 @@
 package com.repository.movie.mapper
 
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Country
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
@@ -74,12 +73,13 @@ fun MovieCastDto.toEntity(): Cast {
     )
 }
 
-fun Cast.toLocalDto(): CastEntity {
+fun Cast.toLocalDto(language: String): CastEntity {
     return CastEntity(
         movieId = this.id,
         name = this.name,
         id = 0,
-        imageUri = this.imageUrl
+        imageUri = this.imageUrl,
+        language = language
     )
 }
 

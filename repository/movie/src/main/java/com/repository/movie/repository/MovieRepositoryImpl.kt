@@ -49,15 +49,26 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieCast(movieId: Int): List<Cast> {
         return safeCall {
-            val localCast = movieCastLocalDataSource.getCastByMovieId(movieId)
+            val movie = movieLocalDataSource.getMovie(movieId, language)
 
-            if (localCast.isNotEmpty()) {
-                localCast.map { it.toEntity() }
-            } else {
+            if (movie == null) {
                 val remoteCast = movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
                     .cast?.map { it.toEntity() } ?: emptyList()
-                movieCastLocalDataSource.addCast(remoteCast.map { it.toLocalDto() })
+
+                movieCastLocalDataSource.addCast(remoteCast.map { it.toLocalDto(language) })
                 remoteCast
+            } else {
+                val localCast = movieCastLocalDataSource.getCastByMovieId(movieId, language)
+
+                if (!localCast.isNullOrEmpty()) {
+                    localCast.map { it.toEntity() }
+                } else {
+                    val remoteCast = movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
+                        .cast?.map { it.toEntity() } ?: emptyList()
+
+                    movieCastLocalDataSource.addCast(remoteCast.map { it.toLocalDto(language) })
+                    remoteCast
+                }
             }
         }
     }
@@ -134,18 +145,36 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieReview(movieId: Int, page: Int): List<Review> {
         return safeCall {
-            val localReviews = movieReviewLocalDataSource.getReviewsForMovie(movieId)
-            if (localReviews.isNotEmpty()) {
-                localReviews.map { it.toEntity() }
-            } else {
+            val movie = movieLocalDataSource.getMovie(movieId, language)
+
+            if (movie == null) {
                 val remoteReviewsResponse =
                     movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
-                val remoteReviews = remoteReviewsResponse.results?.map { it.toEntity() } ?: emptyList()
+                val remoteReviews =
+                    remoteReviewsResponse.results?.map { it.toEntity() } ?: emptyList()
 
                 if (remoteReviews.isNotEmpty()) {
                     movieReviewLocalDataSource.addReview(remoteReviews.map { it.toLocalDto() })
                 }
+
                 remoteReviews
+            } else {
+                val localReviews = movieReviewLocalDataSource.getReviewsForMovie(movieId)
+
+                if (!localReviews.isNullOrEmpty()) {
+                    localReviews.map { it.toEntity() }
+                } else {
+                    val remoteReviewsResponse =
+                        movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
+                    val remoteReviews =
+                        remoteReviewsResponse.results?.map { it.toEntity() } ?: emptyList()
+
+                    if (remoteReviews.isNotEmpty()) {
+                        movieReviewLocalDataSource.addReview(remoteReviews.map { it.toLocalDto() })
+                    }
+
+                    remoteReviews
+                }
             }
         }
     }

@@ -4,5 +4,5 @@ import com.repository.movie.models.local.CastEntity
 
 interface MovieCastLocalDataSource {
     suspend fun addCast(cast: List<CastEntity>)
-    suspend fun getCastByMovieId(movieId:Int): List<CastEntity>
+    suspend fun getCastByMovieId(movieId:Int,language: String): List<CastEntity>?
 }

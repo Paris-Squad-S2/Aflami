@@ -11,6 +11,6 @@ interface MovieCastDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addCast(casts: List<CastEntity>)
 
-    @Query("SELECT * FROM cast_table WHERE movieId = :movieId")
-    suspend fun getCastByMovieId(movieId: Int): List<CastEntity>
+    @Query("SELECT * FROM cast_table WHERE movieId= :movieId AND language= :language")
+    suspend fun getCastByMovieId(movieId: Int,language: String): List<CastEntity>?
 }
