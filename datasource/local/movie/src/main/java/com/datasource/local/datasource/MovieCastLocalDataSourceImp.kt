@@ -4,7 +4,7 @@ import com.datasource.local.dao.MovieCastDao
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.models.local.CastEntity
 
-class MovieMovieCastLocalDataSourceImp(private val dao: MovieCastDao) : MovieCastLocalDataSource {
+class MovieCastLocalDataSourceImp(private val dao: MovieCastDao) : MovieCastLocalDataSource {
 
     override suspend fun addCast(cast: List<CastEntity>) = dao.addCast(cast)
 

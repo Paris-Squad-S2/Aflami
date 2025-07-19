@@ -187,6 +187,10 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.REPOSITORY_MOVIE))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
+    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 

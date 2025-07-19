@@ -7,6 +7,6 @@ import com.repository.movie.models.local.MovieEntity
 class MovieLocalDataSourceImp(private val dao: MovieDao) : MovieLocalDataSource {
     override suspend fun addMovie(movie: MovieEntity) = dao.addMovies(movie)
 
-    override suspend fun getMovie(movieId: Int): MovieEntity? = dao.getMovies(movieId)
+    override suspend fun getMovieById(movieId: Int): MovieEntity? = dao.getMovieById(movieId)
 
 }

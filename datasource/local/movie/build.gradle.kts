@@ -41,6 +41,9 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.common.jvm)
     implementation(project(Modules.REPOSITORY_MOVIE))
+    testImplementation(libs.jupiter.junit.jupiter)
+    testImplementation(libs.jupiter.junit.jupiter)
+    testImplementation(libs.jupiter.junit.jupiter)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -56,6 +59,16 @@ dependencies {
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
+
+    // test
+    testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.mockk)
+    implementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.kotlin.test.junit5)
 }
 kotlin {
     compilerOptions {
