@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -144,7 +145,7 @@ fun TvShowDetailsScreenContent(
 
                     TvShowChips.MORE_LIKE_THIS -> item {
                         Box(
-                            modifier = Modifier.height(windowHeight * 0.8f),
+                            modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f),
                         ) {
                             MoreLikeThisSection(
                                 mediaList = state.tvShowDetailsUiState.recommendations,

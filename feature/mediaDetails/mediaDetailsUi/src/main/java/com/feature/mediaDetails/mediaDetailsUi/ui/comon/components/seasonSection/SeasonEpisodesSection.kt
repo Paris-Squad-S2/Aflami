@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -27,7 +28,7 @@ fun SeasonEpisodesSection(
     episodes: List<EpisodeUi>,
 ) {
     AnimatedVisibility(
-        modifier = Modifier.height(maxHeight),
+        modifier = Modifier.heightIn(min = 0.dp, max = maxHeight),
         visible = isVisible,
         enter = expandVertically(animationSpec = tween(300)) + fadeIn(),
         exit = shrinkVertically(animationSpec = tween(300)) + fadeOut()

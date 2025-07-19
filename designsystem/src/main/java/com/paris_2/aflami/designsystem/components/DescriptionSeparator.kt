@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -37,6 +38,8 @@ fun DescriptionSeparator(
                 text = text,
                 style = Theme.textStyle.label.small,
                 color = textColor,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = if (index == texts.lastIndex) Modifier.padding(end = 4.dp) else Modifier
             )
         }
