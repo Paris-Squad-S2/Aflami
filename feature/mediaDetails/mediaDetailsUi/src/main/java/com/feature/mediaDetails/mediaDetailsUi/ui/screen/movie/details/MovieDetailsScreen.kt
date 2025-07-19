@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -29,7 +31,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -61,6 +62,9 @@ fun MovieDetailsScreenContent(
 
     val rate = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.rate)
     val addToList = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.add_to_list)
+
+    val windowHeight = LocalConfiguration.current.screenHeightDp.dp
+
 
     Box(
         Modifier
@@ -208,11 +212,15 @@ fun MovieDetailsScreenContent(
                                         modifier = Modifier.padding(16.dp)
                                     )
                                 } else {
-                                    MoreLikeThisSection(
-                                        mediaList = state.movieDetailsUiState.recommendations,
-                                        onClick = {},
-                                        mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.movie)
-                                    )
+                                    Box(
+                                        modifier = Modifier.height(windowHeight * 0.8f),
+                                    ) {
+                                        MoreLikeThisSection(
+                                            mediaList = state.movieDetailsUiState.recommendations,
+                                            onClick = {},
+                                            mediaType = stringResource(R.string.movie)
+                                        )
+                                    }
                                 }
                             }
 

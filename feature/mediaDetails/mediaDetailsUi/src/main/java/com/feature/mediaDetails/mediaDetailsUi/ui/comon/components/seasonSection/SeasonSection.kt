@@ -11,11 +11,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun SeasonSection(
+    maxHeight: Dp,
+    modifier: Modifier = Modifier,
     seasonNumber: Int,
     numberOfEpisodes: Int,
     episodes: List<EpisodeUi>,
@@ -23,7 +27,7 @@ fun SeasonSection(
     onToggleExpand: () -> Unit,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .background(Theme.colors.surface)
             .fillMaxWidth()
     ) {
@@ -34,6 +38,7 @@ fun SeasonSection(
             onToggleExpand = onToggleExpand
         )
         SeasonEpisodesSection(
+            maxHeight = maxHeight,
             isVisible = isExpanded,
             episodes = episodes
         )
@@ -50,7 +55,8 @@ fun PreviewSeasonSection() {
         numberOfEpisodes = 2,
         episodes = sampleEpisodes(),
         isExpanded = isExpanded,
-        onToggleExpand = { isExpanded = !isExpanded }
+        onToggleExpand = { isExpanded = !isExpanded },
+        maxHeight = 700.dp,
     )
 }
 
