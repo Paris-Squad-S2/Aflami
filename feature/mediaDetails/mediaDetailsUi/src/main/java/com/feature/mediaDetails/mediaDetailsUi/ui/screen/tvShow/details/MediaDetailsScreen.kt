@@ -2,6 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -14,6 +15,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -27,19 +29,21 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.NetworkError
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
-
 
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModelViewModel = koinViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     TvShowDetailsScreenContent(state = state.value, tvShowScreenInteractionListener = viewModel)
 }
-
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,123 +68,249 @@ fun TvShowDetailsScreenContent(
             .navigationBarsPadding()
             .statusBarsPadding()
     ) {
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .navigationBarsPadding()
-        ) {
-            item {
-                DetailsImage(
-                    imageUris = listOf(
-                        state.tvShowDetailsUiState.tvShowUi.posterUrl,
-                    ),
-                    rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                    onPlayClick = {},
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-            }
-            item {
-                DescriptionSection(
-                    title = state.tvShowDetailsUiState.tvShowUi.title,
-                    genres = state.tvShowDetailsUiState.tvShowUi.genres,
-                    releaseDate = state.tvShowDetailsUiState.tvShowUi.releaseDate,
-                    runtime = state.tvShowDetailsUiState.tvShowUi.runtime,
-                    country = state.tvShowDetailsUiState.tvShowUi.country,
-                    description = state.tvShowDetailsUiState.tvShowUi.description
-                )
-            }
-            item {
-                if (state.tvShowDetailsUiState.cast.isNotEmpty())
-                CastSection(
-                    castList = state.tvShowDetailsUiState.cast,
-                    onSeeAllClick = {
-                        tvShowScreenInteractionListener.onShowAllCastClick(
-                            state.tvShowDetailsUiState.tvShowUi.id
+        when {
+            state.errorMessage != null -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TopAppBar(
+                        leadingIcons = listOf(
+                            iconItemWithDefaults(
+                                icon = ImageVector.vectorResource(R.drawable.ic_back),
+                                onClick = tvShowScreenInteractionListener::onNavigateBack
+                            )
                         )
+                    )
+                    NetworkError(
+                        modifier = Modifier.fillMaxSize(),
+                        onRetry = tvShowScreenInteractionListener::onRetryLoadTvShowDetails
+                    )
+                }
+            }
+
+            state.isLoading -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TopAppBar(
+                        leadingIcons = listOf(
+                            iconItemWithDefaults(
+                                icon = ImageVector.vectorResource(R.drawable.ic_back),
+                                onClick = tvShowScreenInteractionListener::onNavigateBack
+                            )
+                        )
+                    )
+                    PageLoadingPlaceHolder(
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
+            }
+
+            !state.isLoading && state.tvShowDetailsUiState.tvShowUi.title.isEmpty() -> {
+                Column(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    TopAppBar(
+                        leadingIcons = listOf(
+                            iconItemWithDefaults(
+                                icon = ImageVector.vectorResource(R.drawable.ic_back),
+                                onClick = tvShowScreenInteractionListener::onNavigateBack
+                            )
+                        )
+                    )
+                    PlaceholderView(
+                        modifier = Modifier.fillMaxSize(),
+                        image = painterResource(R.drawable.ic_network_error),
+                        title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.no_tvshow_details),
+                        subTitle = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow_details_not_available),
+                        spacer = 16.dp
+                    )
+                }
+            }
+
+            else -> {
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .navigationBarsPadding()
+                ) {
+                    item {
+                        if (state.isImageLoading) {
+                            PageLoadingPlaceHolder(
+                                modifier = Modifier.padding(bottom = 12.dp)
+                            )
+                        } else {
+                            DetailsImage(
+                                imageUris = listOf(
+                                    state.tvShowDetailsUiState.tvShowUi.posterUrl,
+                                ),
+                                rating = state.tvShowDetailsUiState.tvShowUi.rating,
+                                onPlayClick = {},
+                                modifier = Modifier.padding(bottom = 12.dp)
+                            )
+                        }
                     }
-                )
-            }
-            item {
 
-                ChipsRowSection(
-                    items = tvChips.map {
-                        stringResource(it.titleResId) to it.iconResId
-                    },
-                    selectedIndex = selectedIndex.intValue,
-                    onItemSelected = { selectedIndex.intValue = it } // Always one selected
-                )
-            }
+                    if (state.isDescriptionLoading) {
+                        item {
+                            PageLoadingPlaceHolder(
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    } else if (hasDescriptionContent(state.tvShowDetailsUiState.tvShowUi)) {
+                        item {
+                            DescriptionSection(
+                                title = state.tvShowDetailsUiState.tvShowUi.title,
+                                genres = state.tvShowDetailsUiState.tvShowUi.genres,
+                                releaseDate = state.tvShowDetailsUiState.tvShowUi.releaseDate,
+                                runtime = state.tvShowDetailsUiState.tvShowUi.runtime,
+                                country = state.tvShowDetailsUiState.tvShowUi.country,
+                                description = state.tvShowDetailsUiState.tvShowUi.description
+                            )
+                        }
+                    }
 
-            selectedIndex.intValue.let { index ->
-                when (tvChips[index]) {
-
-                    TvShowChips.SEASONS -> {
-                        items(state.tvShowDetailsUiState.tvShowUi.seasons.size) { seasonIndex ->
-                            val season = state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
-                            val isExpanded = expandedStates.value[seasonIndex]
-
-                            SeasonSection(
-                                seasonNumber = seasonIndex + 1,
-                                numberOfEpisodes = season.episodeCount,
-                                episodes = season.episodes,
-                                isExpanded = isExpanded,
-                                onToggleExpand = {
-                                    expandedStates.value =
-                                        expandedStates.value.toMutableList().also {
-                                            it[seasonIndex] = !it[seasonIndex]
-                                        }
-                                    tvShowScreenInteractionListener.onClickOnSeason(
-                                        seasonNumber = season.seasonNumber
+                    if (state.isCastLoading) {
+                        item {
+                            PageLoadingPlaceHolder(
+                                modifier = Modifier.padding(16.dp)
+                            )
+                        }
+                    } else if (state.tvShowDetailsUiState.cast.isNotEmpty()) {
+                        item {
+                            CastSection(
+                                castList = state.tvShowDetailsUiState.cast,
+                                onSeeAllClick = {
+                                    tvShowScreenInteractionListener.onShowAllCastClick(
+                                        state.tvShowDetailsUiState.tvShowUi.id
                                     )
                                 }
                             )
                         }
                     }
 
-                    TvShowChips.MORE_LIKE_THIS -> item {
-                        MoreLikeThisSection(
-                            mediaList = state.tvShowDetailsUiState.recommendations,
-                            onClick = {},
-                            mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
+                    item {
+                        ChipsRowSection(
+                            items = tvChips.map {
+                                stringResource(it.titleResId) to it.iconResId
+                            },
+                            selectedIndex = selectedIndex.intValue,
+                            onItemSelected = { selectedIndex.intValue = it }
                         )
                     }
 
-                    TvShowChips.REVIEWS -> item {
-                        ReviewsSection(
-                            reviews = state.tvShowDetailsUiState.reviews.takeIf { it.isNotEmpty() }
-                        )
-                    }
+                    selectedIndex.intValue.let { index ->
+                        when (tvChips[index]) {
+                            TvShowChips.SEASONS -> {
+                                if (state.isSeasonsLoading) {
+                                    item {
+                                        PageLoadingPlaceHolder(
+                                            modifier = Modifier.padding(16.dp)
+                                        )
+                                    }
+                                } else {
+                                    items(state.tvShowDetailsUiState.tvShowUi.seasons.size) { seasonIndex ->
+                                        val season = state.tvShowDetailsUiState.tvShowUi.seasons[seasonIndex]
+                                        val isExpanded = expandedStates.value[seasonIndex]
 
-                    TvShowChips.GALLERY -> item {
-                        GallerySection(state.tvShowDetailsUiState.gallery)
-                    }
+                                        val isSeasonLoading = state.seasonsLoadingStates[season.seasonNumber] ?: false
 
-                    TvShowChips.COMPANY_PRODUCTION -> item {
-                        ProductionCompanySection(
-                            companies = state.tvShowDetailsUiState.tvShowUi.productionCompanies
-                        )
+                                        SeasonSection(
+                                            seasonNumber = seasonIndex + 1,
+                                            numberOfEpisodes = season.episodeCount,
+                                            episodes = season.episodes,
+                                            isExpanded = isExpanded,
+                                            isLoading = isSeasonLoading,
+                                            onToggleExpand = {
+                                                expandedStates.value =
+                                                    expandedStates.value.toMutableList().also {
+                                                        it[seasonIndex] = !it[seasonIndex]
+                                                    }
+
+                                                if (!isExpanded) {
+                                                    tvShowScreenInteractionListener.onClickOnSeason(
+                                                        seasonNumber = season.seasonNumber
+                                                    )
+                                                }
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+
+                            TvShowChips.MORE_LIKE_THIS -> item {
+                                if (state.isRecommendationsLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    MoreLikeThisSection(
+                                        mediaList = state.tvShowDetailsUiState.recommendations,
+                                        onClick = {},
+                                        mediaType = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.tvshow)
+                                    )
+                                }
+                            }
+
+                            TvShowChips.REVIEWS -> item {
+                                if (state.isReviewsLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    ReviewsSection(
+                                        reviews = state.tvShowDetailsUiState.reviews.takeIf { it.isNotEmpty() }
+                                    )
+                                }
+                            }
+
+                            TvShowChips.GALLERY -> item {
+                                if (state.isGalleryLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    GallerySection(state.tvShowDetailsUiState.gallery)
+                                }
+                            }
+
+                            TvShowChips.COMPANY_PRODUCTION -> item {
+                                if (state.isProductionCompaniesLoading) {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                } else {
+                                    ProductionCompanySection(
+                                        companies = state.tvShowDetailsUiState.tvShowUi.productionCompanies,
+                                        modifier = Modifier
+                                            .padding(horizontal = 16.dp)
+                                            .padding(top = 12.dp)
+                                    )
+                                }
+                            }
+                        }
                     }
                 }
+
+                TopAppBar(
+                    leadingIcons = listOf(
+                        iconItemWithDefaults(
+                            icon = ImageVector.vectorResource(R.drawable.ic_back),
+                            onClick = { tvShowScreenInteractionListener.onNavigateBack() }
+                        )
+                    ),
+                    trailingIcons = listOf(
+                        iconItemWithDefaults(
+                            icon = ImageVector.vectorResource(R.drawable.ic_star),
+                            onClick = { tvShowScreenInteractionListener.onFavouriteClick(rate) }
+                        ),
+                        iconItemWithDefaults(
+                            icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
+                            onClick = { tvShowScreenInteractionListener.onAddToListClick(addToList) }
+                        )
+                    )
+                )
             }
         }
-
-        TopAppBar(
-            leadingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_back),
-                    onClick = { tvShowScreenInteractionListener.onNavigateBack() }
-                )
-            ),
-            trailingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = { tvShowScreenInteractionListener.onFavouriteClick(rate) }
-                ),
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = { tvShowScreenInteractionListener.onAddToListClick(addToList) }
-                )
-            )
-        )
     }
 }

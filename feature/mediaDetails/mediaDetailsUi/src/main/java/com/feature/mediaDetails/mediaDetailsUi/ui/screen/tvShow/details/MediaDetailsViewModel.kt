@@ -52,15 +52,19 @@ class TvShowDetailsViewModelViewModel(
             gallery = emptyList(),
             recommendations = emptyList(),
         ),
-        isLoading = false,
+        isLoading = true,
         errorMessage = null,
-        isEpisodesLoading = false
+        isEpisodesLoading = true,
+        seasonsLoadingStates = emptyMap()
     )
 ) {
 
+
+    private val mediaId by lazy {
+        savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
+
+    }
     init {
-        val mediaId =
-            savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
         loadTvShowDetails(mediaId)
     }
 
@@ -233,16 +237,21 @@ class TvShowDetailsViewModelViewModel(
     }
 
     override fun onClickOnSeason(seasonNumber: Int) {
-        if (screenState.value.tvShowDetailsUiState.tvShowUi.seasons.any { it.seasonNumber == seasonNumber && it.isExpanded }) {
+        val currentSeason = screenState.value.tvShowDetailsUiState.tvShowUi.seasons
+            .find { it.seasonNumber == seasonNumber }
+
+        if (currentSeason?.isExpanded == true && currentSeason.episodes.isNotEmpty()) {
             return
         }
+
         tryToExecute(
             execute = {
                 updateState(
                     screenState.value.copy(
-                        isEpisodesLoading = true
+                        seasonsLoadingStates = screenState.value.seasonsLoadingStates + (seasonNumber to true)
                     )
                 )
+
                 getSeasonDetailsUseCase(
                     screenState.value.tvShowDetailsUiState.tvShowUi.id,
                     seasonNumber
@@ -265,7 +274,7 @@ class TvShowDetailsViewModelViewModel(
                                 }
                             ),
                         ),
-                        isEpisodesLoading = false,
+                        seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
                     )
                 )
             },
@@ -274,10 +283,20 @@ class TvShowDetailsViewModelViewModel(
                 updateState(
                     screenState.value.copy(
                         errorMessage = error,
-                        isEpisodesLoading = false
+                        seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
                     )
                 )
             }
         )
+    }
+
+    override fun onRetryLoadTvShowDetails() {
+        updateState(
+            screenState.value.copy(
+                isLoading = true,
+                errorMessage = null
+            )
+        )
+        loadTvShowDetails(mediaId = mediaId)
     }
 }

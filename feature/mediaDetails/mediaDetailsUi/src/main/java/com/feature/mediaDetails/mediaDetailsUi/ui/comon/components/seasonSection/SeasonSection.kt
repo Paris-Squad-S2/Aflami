@@ -2,16 +2,21 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSectio
 
 import SeasonHeader
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -21,6 +26,7 @@ fun SeasonSection(
     episodes: List<EpisodeUi>,
     isExpanded: Boolean,
     onToggleExpand: () -> Unit,
+    isLoading: Boolean = false,
 ) {
     Column(
         modifier = Modifier
@@ -33,10 +39,25 @@ fun SeasonSection(
             isExpanded = isExpanded,
             onToggleExpand = onToggleExpand
         )
-        SeasonEpisodesSection(
-            isVisible = isExpanded,
-            episodes = episodes
-        )
+
+        if (isExpanded) {
+            if (isLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    PageLoadingPlaceHolder()
+                }
+            }
+            else {
+                SeasonEpisodesSection(
+                    isVisible = true,
+                    episodes = episodes
+                )
+            }
+        }
     }
 }
 
@@ -44,13 +65,28 @@ fun SeasonSection(
 @Composable
 fun PreviewSeasonSection() {
     var isExpanded by remember { mutableStateOf(true) }
+    var isLoading by remember { mutableStateOf(false) }
 
     SeasonSection(
         seasonNumber = 1,
         numberOfEpisodes = 2,
         episodes = sampleEpisodes(),
         isExpanded = isExpanded,
-        onToggleExpand = { isExpanded = !isExpanded }
+        onToggleExpand = { isExpanded = !isExpanded },
+        isLoading = isLoading
+    )
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewSeasonSectionLoading() {
+    SeasonSection(
+        seasonNumber = 1,
+        numberOfEpisodes = 8,
+        episodes = emptyList(),
+        isExpanded = true,
+        onToggleExpand = { },
+        isLoading = true
     )
 }
 

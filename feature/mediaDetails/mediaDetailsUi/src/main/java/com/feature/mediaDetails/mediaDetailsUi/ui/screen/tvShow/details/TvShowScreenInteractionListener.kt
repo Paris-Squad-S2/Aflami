@@ -6,4 +6,7 @@ interface TvShowScreenInteractionListener {
     fun onAddToListClick(title: String)
     fun onShowAllCastClick(tvShowId: Int)
     fun onClickOnSeason(seasonNumber: Int)
+
+    fun onRetryLoadTvShowDetails()
+
 }
