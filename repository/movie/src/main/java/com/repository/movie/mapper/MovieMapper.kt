@@ -1,7 +1,6 @@
 package com.repository.movie.mapper
 
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Country
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
@@ -117,10 +116,11 @@ fun MovieReviewDto.toEntity(): Review {
     return Review(
         id = this.id.orEmpty(),
         name = this.authorDetails?.name.orEmpty(),
-        createdAt = LocalDate.parse(this.createdAt ?: "2025-01-01"),
+        createdAt = LocalDate.parse(this.createdAt?.substring(0,10) ?: "2025-01-01"),
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
-        rating = this.authorDetails?.rating ?: 0.0
+        rating = this.authorDetails?.rating ?: 0.0,
+        description = this.content.orEmpty()
     )
 }
 
@@ -204,7 +204,8 @@ fun Review.toLocalDto(): ReviewEntity {
         avatarUrl = this.avatarUrl,
         username = this.username,
         rating = this.rating,
-        movieId = this.id.toInt()
+        movieId = this.id.toInt(),
+        description = this.description
     )
 }
 
@@ -216,6 +217,7 @@ fun ReviewEntity.toEntity(): Review {
         avatarUrl = this.avatarUrl,
         username = this.username,
         rating = this.rating,
+        description = this.description
     )
 }
 

@@ -1,10 +1,12 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
+import androidx.paging.PagingData
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
+import kotlinx.coroutines.flow.Flow
 
 data class TvShowDetailsScreenState(
     val tvShowDetailsUiState: TvShowDetailsUiState,
@@ -24,9 +26,9 @@ data class TvShowDetailsScreenState(
 
 data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
-    val recommendations: List<SimilarMediaUI>,
+    val recommendations: Flow<PagingData<SimilarMediaUI>>,
     val cast: List<CastUi>,
-    val reviews: List<ReviewUi>,
+    val reviews: Flow<PagingData<ReviewUi>>,
     val gallery: List<String>,
 )
 
