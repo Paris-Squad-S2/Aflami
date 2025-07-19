@@ -70,24 +70,24 @@ fun MovieDetailsScreenContent(
             .statusBarsPadding()
     ) {
         when {
-            state.errorMessage != null -> {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    TopAppBar(
-                        leadingIcons = listOf(
-                            iconItemWithDefaults(
-                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
-                            )
-                        )
-                    )
-                    NetworkError(
-                        modifier = Modifier.fillMaxSize(),
-                        onRetry = movieDetailsScreenInteractionListener::onRetryLoadMovieDetails
-                    )
-                }
-            }
+//            state.errorMessage != null -> {
+//                Column(
+//                    modifier = Modifier.fillMaxSize()
+//                ) {
+//                    TopAppBar(
+//                        leadingIcons = listOf(
+//                            iconItemWithDefaults(
+//                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+//                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+//                            )
+//                        )
+//                    )
+//                    NetworkError(
+//                        modifier = Modifier.fillMaxSize(),
+//                        onRetry = movieDetailsScreenInteractionListener::onRetryLoadMovieDetails
+//                    )
+//                }
+//            }
 
             state.isLoading -> {
                 Column(
