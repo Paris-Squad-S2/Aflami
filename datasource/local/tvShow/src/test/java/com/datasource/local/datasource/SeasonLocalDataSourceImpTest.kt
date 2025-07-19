@@ -35,7 +35,9 @@ class SeasonLocalDataSourceImpTest {
                     description = "GGGGGG",
                     stillUrl = "path"
                 )
-            )
+            ),
+            episodeCount = 0,
+            seasonNumber = 0
         )
     }
 

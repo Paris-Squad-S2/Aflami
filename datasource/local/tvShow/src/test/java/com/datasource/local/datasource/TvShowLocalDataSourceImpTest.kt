@@ -49,7 +49,8 @@ class TvShowLocalDataSourceImpTest {
                     name = "21 Laps Entertainment",
                     originCountry = "US"
                 )
-            )
+            ),
+            seasons = listOf()
         )
     }
 
