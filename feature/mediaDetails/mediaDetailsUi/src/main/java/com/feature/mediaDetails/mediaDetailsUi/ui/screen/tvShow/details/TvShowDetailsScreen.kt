@@ -2,9 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -28,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MoreLikeThisSection
@@ -37,15 +36,14 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonSection
-import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.R as designsystemR
-import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
+import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
+import com.paris_2.aflami.designsystem.R as designsystemR
 
 
 @Composable
@@ -192,7 +190,7 @@ fun TvShowDetailsScreenContent(
                             TvShowChips.MORE_LIKE_THIS -> item {
                                 Box(modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f)) {
                                     MoreLikeThisSection(
-                                        mediaList = state.tvShowDetailsUiState.recommendations,
+                                        mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems(),
                                         onClick = {},
                                         mediaType = stringResource(featureMediaDetailsUiR.string.tvshow)
                                     )
@@ -201,7 +199,7 @@ fun TvShowDetailsScreenContent(
 
                             TvShowChips.REVIEWS -> item {
                                 ReviewsSection(
-                                    reviews = state.tvShowDetailsUiState.reviews.takeIf { it.isNotEmpty() }
+                                    reviews = state.tvShowDetailsUiState.reviews.collectAsLazyPagingItems()
                                 )
                             }
 

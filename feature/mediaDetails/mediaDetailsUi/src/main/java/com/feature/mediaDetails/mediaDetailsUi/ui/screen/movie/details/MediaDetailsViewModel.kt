@@ -2,7 +2,12 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
 import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
@@ -13,11 +18,12 @@ import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCas
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.aflami.appnavigation.AppNavigator
+import kotlinx.coroutines.flow.flowOf
 
 class MovieDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
@@ -45,9 +51,9 @@ class MovieDetailsViewModelViewModel(
                 productionCompanies = emptyList()
             ),
             cast = emptyList(),
-            reviews = emptyList(),
+            reviews = flowOf(PagingData.empty()),
             gallery = emptyList(),
-            recommendations = emptyList()
+            recommendations = flowOf(PagingData.empty())
         ),
         isLoading = true,
         errorMessage = null
@@ -118,12 +124,22 @@ class MovieDetailsViewModelViewModel(
 
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
-            execute = { getMovieReviewsUseCase(mediaId, 1) }, //TODO handle pagination
+            execute = {
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        ReviewMoviePagingSource(
+                            mediaId = mediaId,
+                            getMovieReviewsUseCase = getMovieReviewsUseCase
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
+                      },
             onSuccess = {
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            reviews = it.toListOfReviewUi()
+                            reviews = it
                         )
                     )
                 )
@@ -140,12 +156,22 @@ class MovieDetailsViewModelViewModel(
 
     private fun loadMovieRecommendations(mediaId: Int) {
         tryToExecute(
-            execute = { getMovieRecommendationsUseCase(mediaId, 1) }, //TODO handle pagination
+            execute = {
+                Pager(
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        SimilarMoviePageSource(
+                            movieId = mediaId,
+                            getMovieRecommendationsUseCase = getMovieRecommendationsUseCase,
+                        )
+                    }
+                ).flow.cachedIn(viewModelScope)
+                      },
             onSuccess = {
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            recommendations = it.toListOfMovieSimilarUI()
+                            recommendations = it
                         )
                     )
                 )

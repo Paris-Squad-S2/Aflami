@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -12,7 +11,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -28,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
@@ -82,8 +81,6 @@ fun MovieDetailsScreenContent(
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
-    val rate = stringResource(R.string.rate)
-    val addToList = stringResource(R.string.add_to_list)
 
     val windowHeight = LocalConfiguration.current.screenHeightDp.dp
 
@@ -218,7 +215,7 @@ fun MovieDetailsScreenContent(
                                         modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f),
                                     ) {
                                         MoreLikeThisSection(
-                                            mediaList = state.movieDetailsUiState.recommendations,
+                                            mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems(),
                                             onClick = {},
                                             mediaType = stringResource(R.string.movie)
                                         )
@@ -232,9 +229,13 @@ fun MovieDetailsScreenContent(
                                         modifier = Modifier.padding(16.dp)
                                     )
                                 } else {
-                                    ReviewsSection(
-                                        reviews = state.movieDetailsUiState.reviews.takeIf { it.isNotEmpty() }
-                                    )
+                                    Box(
+                                        modifier = Modifier.heightIn(min = 0.dp, max = windowHeight * 0.8f),
+                                    ) {
+                                        ReviewsSection(
+                                            reviews = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
+                                        )
+                                    }
                                 }
                             }
 
