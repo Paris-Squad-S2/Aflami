@@ -7,5 +7,7 @@ import com.repository.model.local.TvShowEntity
 
 class TvShowLocalDataSourceImp(private val dao: TvShowDao) : TvShowLocalDataSource {
     override suspend fun addTvShow(tvShow: TvShowEntity) = dao.addTvShow(tvShow)
-    override suspend fun getTvShowId(tvShowId: Int): TvShowEntity? = dao.getTvShowById(tvShowId)
+    override suspend fun getTvShowId(tvShowId: Int, language: String): TvShowEntity? {
+        return dao.getTvShowById(tvShowId, language)
+    }
 }
