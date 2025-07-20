@@ -118,7 +118,7 @@ fun MovieLogoDto.toEntity(id: Int): Image {
 fun MovieReviewDto.toEntity(): Review {
     return Review(
         createdAt = try {
-            LocalDate.parse(this.createdAt ?: "9999,1,1")
+            LocalDate.parse(this.createdAt.orEmpty())
         } catch (_: Exception) {
             LocalDate(9999, 1, 1)
         },
