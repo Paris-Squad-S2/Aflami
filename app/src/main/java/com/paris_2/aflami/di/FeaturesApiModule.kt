@@ -36,7 +36,7 @@ val FeatureAPIModule = module {
     factory<MediaDetailsFeatureAPI> { MediaDetailsFeatureAPIImpl() }
 
 
-    factory<HomeFeatureAPI> { HomeFeatureAPIImpl() }
+    factory<HomeFeatureAPI> { HomeFeatureAPIImpl(get()) }
     factory<ListsFeatureAPI> { ListsFeatureAPIImpl() }
     factory<CategoriesFeatureAPI> { CategoriesFeatureAPIImpl() }
     factory<GuessGameFeatureAPI> { GuessGameFeatureAPIImpl() }

@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.mp.KoinPlatform.getKoin
 
 class HomeFeatureAPIImpl(
-    private val appNavigator: AppNavigator = getKoin().get()
+    private val appNavigator: AppNavigator
 ) : HomeFeatureAPI {
     override fun invoke(homeDestination: HomeDestination?): @Composable (() -> Unit) {
         return {
