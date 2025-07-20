@@ -28,7 +28,7 @@ abstract class TvShowDetailDataBase : RoomDatabase() {
 
     abstract fun castDao(): TvShowCastDao
     abstract fun galleryDao(): TvShowGalleryDao
-    abstract fun movieDao(): TvShowDao
+    abstract fun tvShowDao(): TvShowDao
     abstract fun reviewDao(): TvShowReviewDao
     abstract fun seasonDao(): SeasonDao
     abstract fun tvShowSimilarDao(): TvShowSimilarDao

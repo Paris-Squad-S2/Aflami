@@ -1,2 +1,2 @@
-versionName=0.2.1
-- solved the room build
+versionName=0.2.2
+- refactor movie repository implementation to use a local datasource

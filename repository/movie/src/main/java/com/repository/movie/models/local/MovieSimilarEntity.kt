@@ -3,23 +3,24 @@ package com.repository.movie.models.local
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.repository.movie.util.getCurrentDate
-import kotlinx.datetime.LocalDateTime
 
 @Entity(
-    tableName = "cast_table", foreignKeys = [ForeignKey(
+    tableName = "movies_similar_table",
+    foreignKeys = [ForeignKey(
         entity = MovieEntity::class,
         parentColumns = ["id"],
         childColumns = ["movieId"],
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class CastEntity(
-    @PrimaryKey
+data class MovieSimilarEntity(
+    @PrimaryKey()
     val id: Int,
     val movieId: Int,
-    val name: String,
-    val imageUri: String,
-    val castCacheDate: LocalDateTime = getCurrentDate(),
-    val language: String
+    val title: String,
+    val voteAverage: Double,
+    val posterPath: String,
+    val releaseDate: String,
+    val language: String,
+    val page: Int
 )

@@ -4,6 +4,7 @@ import com.datasource.local.datasource.MovieCastLocalDataSourceImp
 import com.datasource.local.datasource.MovieGalleryLocalDataSourceImp
 import com.datasource.local.datasource.MovieLocalDataSourceImp
 import com.datasource.local.datasource.MovieReviewLocalDataSourceImp
+import com.datasource.local.datasource.MovieSimilarLocalDataSourceImp
 import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
 import com.datasource.local.datasource.TvShowGalleryLocalDataSourceImp
 import com.datasource.local.datasource.TvShowLocalDataSourceImp
@@ -25,6 +26,7 @@ import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
+import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.dataSource.local.GenresInteractionDataSource
 import com.repository.search.dataSource.local.GenresLocalDataSource
@@ -50,4 +52,5 @@ val dataSourceModule = module {
     singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
     singleOf(::TvShowSimilarLocalDataSourceImpl) bind TvShowSimilarLocalDataSource::class
     singleOf(::GenresInteractionDataSourceImpl) bind GenresInteractionDataSource::class
+    singleOf(::MovieSimilarLocalDataSourceImp) bind MovieSimilarLocalDataSource::class
 }
