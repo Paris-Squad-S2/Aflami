@@ -3,8 +3,6 @@ package com.repository.model.local
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.repository.util.getCurrentDate
-import kotlinx.datetime.LocalDateTime
 
 @Entity(
     tableName = "cast_tv_shows_table", foreignKeys = [ForeignKey(
@@ -20,6 +18,5 @@ data class CastEntity(
     val tvShowId: Int,
     val name: String,
     val imageUri: String,
-    val castCacheDate: LocalDateTime = getCurrentDate(),
     val language: String
 )

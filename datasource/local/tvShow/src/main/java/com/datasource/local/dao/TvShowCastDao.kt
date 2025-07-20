@@ -5,7 +5,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.repository.model.local.CastEntity
-import com.repository.model.local.TvShowSimilarEntity
 
 @Dao
 interface TvShowCastDao {

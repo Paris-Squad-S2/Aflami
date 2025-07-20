@@ -3,8 +3,6 @@ package com.repository.model.local
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.repository.util.getCurrentDate
-import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -25,5 +23,4 @@ data class SeasonEntity(
     val episodeCount: Int,
     val seasonNumber: Int,
     val episodes: List<EpisodeEntity>,
-    val seasonCacheDate: LocalDateTime = getCurrentDate(),
 )
