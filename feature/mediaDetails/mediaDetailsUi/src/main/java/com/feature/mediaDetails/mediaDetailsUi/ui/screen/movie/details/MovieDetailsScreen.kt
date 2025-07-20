@@ -5,18 +5,21 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
@@ -33,6 +36,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.C
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
@@ -80,7 +84,7 @@ fun MovieDetailsScreenContent(
 
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
-
+    val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
 
     Box(
         Modifier
@@ -232,17 +236,34 @@ fun MovieDetailsScreenContent(
                                     }
                                 }
 
-                            MovieChips.REVIEWS -> item {
+                            MovieChips.REVIEWS ->
                                 if (state.isReviewsLoading) {
-                                    PageLoadingPlaceHolder(
-                                        modifier = Modifier.padding(16.dp)
-                                    )
-                                } else {
-                                    ReviewsSection(
-                                        reviews = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
-                                    )
+                                    item {
+                                        PageLoadingPlaceHolder(
+                                            modifier = Modifier.padding(16.dp)
+                                        )
+                                    }
+                                } else if(reviewsList.itemSnapshotList.isEmpty()){
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Theme.colors.surface),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.there_is_no_reviews),
+                                                style = Theme.textStyle.label.large,
+                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                            )
+                                        }
+                                    }
                                 }
-                            }
+                                else {
+                                    items(reviewsList.itemCount){index ->
+                                        ReviewsSection(reviewsList[index])
+                                    }
+                                }
 
                             MovieChips.GALLERY -> item {
                                 if (state.isGalleryLoading) {
