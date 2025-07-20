@@ -11,6 +11,6 @@ interface TvShowReviewDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addReviews(reviews: List<ReviewEntity>)
 
-    @Query("SELECT * FROM reviews_table WHERE tvShowId = :tvShowId")
-    suspend fun getReviewsByTvShowId(tvShowId: Int): List<ReviewEntity>
+    @Query("SELECT * FROM reviews_table WHERE tvShowId = :tvShowId AND language = :language")
+    suspend fun getReviewsByTvShowId(tvShowId: Int,language: String): List<ReviewEntity>
 }

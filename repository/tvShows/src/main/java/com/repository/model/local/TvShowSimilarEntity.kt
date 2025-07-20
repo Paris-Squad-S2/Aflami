@@ -5,7 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "gallery_table",
+    tableName = "tv_shows_similar_table",
     foreignKeys = [ForeignKey(
         entity = TvShowEntity::class,
         parentColumns = ["id"],
@@ -13,9 +13,14 @@ import androidx.room.PrimaryKey
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class GalleryEntity(
-    @PrimaryKey(autoGenerate = true)
+data class TvShowSimilarEntity(
+    @PrimaryKey()
     val id: Int,
     val tvShowId: Int,
-    val images: List<ImageEntity>,
+    val title: String,
+    val voteAverage: Double,
+    val posterPath: String,
+    val releaseDate: String,
+    val language: String,
+    val page: Int
 )

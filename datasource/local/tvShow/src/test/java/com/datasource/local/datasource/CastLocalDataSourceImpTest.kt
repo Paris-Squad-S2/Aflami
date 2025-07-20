@@ -18,6 +18,8 @@ class CastLocalDataSourceImpTest {
     private lateinit var sampleCast: CastEntity
     private lateinit var sampleCast2: CastEntity
     private lateinit var sampleCastList: List<CastEntity>
+    private val language = "en"
+
 
     @BeforeEach
     fun setUp() {
@@ -27,13 +29,15 @@ class CastLocalDataSourceImpTest {
             id = 1,
             tvShowId = 2,
             name = "name",
-            imageUri = "path"
+            imageUri = "path",
+            language = language
         )
         sampleCast2 = CastEntity(
             id = 2,
             tvShowId = 4,
             name = "Maze",
-            imageUri = "path"
+            imageUri = "path",
+            language = language
         )
         sampleCastList = listOf(sampleCast, sampleCast2)
     }
@@ -48,11 +52,11 @@ class CastLocalDataSourceImpTest {
     @Test
     fun `getCastByMovieId should call getCastByTvShowId on DAO and return its result`() = runTest {
         val tvShowId = 10
-        every { runBlocking { castDao.getCastByTvShowId(tvShowId) } } returns sampleCastList // For MockK with suspend functions
+        every { runBlocking { castDao.getCastByTvShowId(tvShowId,language) } } returns sampleCastList // For MockK with suspend functions
 
-        val result = castLocalDataSourceImp.getCastByTvShowId(tvShowId)
+        val result = castLocalDataSourceImp.getCastByTvShowId(tvShowId,language)
 
-        coVerify(exactly = 1) { castDao.getCastByTvShowId(tvShowId) }
+        coVerify(exactly = 1) { castDao.getCastByTvShowId(tvShowId, language) }
         assertEquals(sampleCastList, result)
     }
 
@@ -61,11 +65,11 @@ class CastLocalDataSourceImpTest {
     fun `getCastByMovieId should return empty list if DAO returns empty list`() = runTest {
         val tvShowIdWithNoCast = 200
         val emptyList = emptyList<CastEntity>()
-        every { runBlocking { castDao.getCastByTvShowId(tvShowIdWithNoCast) } } returns emptyList
+        every { runBlocking { castDao.getCastByTvShowId(tvShowIdWithNoCast, language) } } returns emptyList
 
-        val result = castLocalDataSourceImp.getCastByTvShowId(tvShowIdWithNoCast)
+        val result = castLocalDataSourceImp.getCastByTvShowId(tvShowIdWithNoCast,language)
 
-        coVerify(exactly = 1) { castDao.getCastByTvShowId(tvShowIdWithNoCast) }
+        coVerify(exactly = 1) { castDao.getCastByTvShowId(tvShowIdWithNoCast,language) }
         assertEquals(emptyList, result)
     }
 }

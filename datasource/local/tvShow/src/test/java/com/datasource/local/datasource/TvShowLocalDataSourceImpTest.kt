@@ -16,6 +16,7 @@ class TvShowLocalDataSourceImpTest {
     private lateinit var tvShowLocalDataSourceImp: TvShowLocalDataSourceImp
     private lateinit var tvShowDao: TvShowDao
     private lateinit var sampleTvShow: TvShowEntity
+    private val language = "en"
 
 
     @BeforeEach
@@ -50,7 +51,8 @@ class TvShowLocalDataSourceImpTest {
                     originCountry = "US"
                 )
             ),
-            seasons = listOf()
+            seasons = listOf(),
+            language = language
         )
     }
 
@@ -64,22 +66,22 @@ class TvShowLocalDataSourceImpTest {
     @Test
     fun `getTvShowId should call getTvShowById on DAO and return its result`() = runTest {
         val tvShowId = 1
-        coEvery { tvShowDao.getTvShowById(tvShowId) } returns sampleTvShow
+        coEvery { tvShowDao.getTvShowById(tvShowId,language) } returns sampleTvShow
 
-        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId)
+        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId,language)
 
-        coVerify { tvShowDao.getTvShowById(tvShowId) }
+        coVerify { tvShowDao.getTvShowById(tvShowId,language) }
         assertEquals(sampleTvShow, result)
     }
 
     @Test
     fun `getTvShowId should return null when DAO returns null`() = runTest {
         val tvShowId = 2
-        coEvery { tvShowDao.getTvShowById(tvShowId) } returns null
+        coEvery { tvShowDao.getTvShowById(tvShowId,language) } returns null
 
-        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId)
+        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId,language)
 
-        coVerify { tvShowDao.getTvShowById(tvShowId) }
+        coVerify { tvShowDao.getTvShowById(tvShowId,language) }
         assertNull(result)
 
     }

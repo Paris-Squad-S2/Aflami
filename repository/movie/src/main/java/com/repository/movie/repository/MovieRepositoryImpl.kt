@@ -1,14 +1,16 @@
 package com.repository.movie.repository
 
 import com.domain.mediaDetails.exception.NetworkException
+import com.domain.mediaDetails.exception.NoFoundMovieException
+import com.domain.mediaDetails.exception.NoFundGalleryMovieException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
+import com.domain.mediaDetails.model.MovieSimilar
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.repository.MovieRepository
-import com.domain.mediaDetails.model.MovieSimilar
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -41,7 +43,8 @@ class MovieRepositoryImpl(
             } else {
                 val remoteMovie = movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
                 movieLocalDataSource.addMovie(remoteMovie.toLocalDto(language))
-                remoteMovie.toEntity()
+                movieLocalDataSource.getMovieById(movieId, language)?.toEntity()
+                    ?: throw NoFoundMovieException()
             }
         }
     }
@@ -64,7 +67,7 @@ class MovieRepositoryImpl(
                         language
                     )
                 })
-                remoteCast
+                movieCastLocalDataSource.getCastByMovieId(movieId, language).map { it.toEntity() }
             }
 
         }
@@ -91,7 +94,8 @@ class MovieRepositoryImpl(
                     movieSimilarLocalDataSource.addSimilarMovies(it)
                 }
 
-                remoteMoviesSimilarDto.movieSimilarDto?.map { it.toEntity() } ?: emptyList()
+                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                    .map { it.toEntity() }
 
             }
         }
@@ -106,14 +110,14 @@ class MovieRepositoryImpl(
             } else {
                 val remoteGallery = movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity()
                 val remoteGalleryImages = remoteGallery.images
-                remoteGallery.also {
-                    movieGalleryLocalDataSource.addGallery(
-                        GalleryEntity(
-                            movieId = movieId,
-                            images = remoteGalleryImages.map { it.toLocalDto() },
-                        )
+                movieGalleryLocalDataSource.addGallery(
+                    GalleryEntity(
+                        movieId = movieId,
+                        images = remoteGalleryImages.map { it.toLocalDto() },
                     )
-                }
+                )
+                movieGalleryLocalDataSource.getGalleryByMovieId(movieId)?.toEntity()
+                    ?: throw NoFundGalleryMovieException()
             }
         }
     }
@@ -134,7 +138,10 @@ class MovieRepositoryImpl(
                     movieLocalDataSource.addMovie(remoteMovieDetails.toLocalDto(language))
                 }
 
-                remoteProductionCompanies?.map { it.toEntity() } ?: emptyList()
+                movieLocalDataSource.getMovieById(
+                    movieId,
+                    language
+                )?.productionCompanies?.map { it.toEntity() } ?: emptyList()
             }
 
         }
@@ -162,7 +169,8 @@ class MovieRepositoryImpl(
                     })
                 }
 
-                remoteReviews
+                movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+                    ?.map { it.toEntity() } ?: emptyList()
             }
         }
     }
