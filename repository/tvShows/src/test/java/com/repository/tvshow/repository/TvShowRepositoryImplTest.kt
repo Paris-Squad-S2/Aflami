@@ -7,20 +7,13 @@ import com.repository.dataSource.local.TvShowReviewLocalDataSource
 import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
-import com.repository.mapper.toEntity
 import com.repository.mapper.toLocalDto
-import com.repository.model.local.GalleryEntity
-import com.repository.model.remote.TvShowSeasonDto
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.tvshow.testUtils.mockTvShowCreditsDto
 import com.repository.tvshow.testUtils.mockTvShowDto
-import com.repository.tvshow.testUtils.mockTvShowLogoDto
-import com.repository.tvshow.testUtils.mockTvShowReviewsDto
 import com.repository.tvshow.testUtils.mockTvShowSimilarsDto
 import com.repository.util.NetworkConnectionChecker
-import io.mockk.Runs
 import io.mockk.coEvery
-import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
@@ -68,7 +61,7 @@ class TvShowRepositoryImplTest {
         val tvShowId = 550
         val language = "en"
 
-        val expectedTvShow = mockTvShowDto.toEntity()
+        val expectedTvShow = mockTvShowDto.toLocalDto(language, tvShowId)
 
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language)
@@ -76,7 +69,7 @@ class TvShowRepositoryImplTest {
 
         coEvery {
             tvShowLocalDataSource.getTvShowId(tvShowId, language)
-        } returns mockTvShowDto.toLocalDto(language)
+        } returns mockTvShowDto.toLocalDto(language, tvShowId)
 
         coEvery {
             tvShowLocalDataSource.addTvShow(any())
@@ -94,7 +87,7 @@ class TvShowRepositoryImplTest {
         // Given
         val tvShowId = 550
         val language = "en"
-        val expectedTvShowCast = mockTvShowCreditsDto.cast?.map { it.toEntity() } ?: emptyList()
+        val expectedTvShowCast = mockTvShowCreditsDto.cast?.map { it.toLocalDto(language, tvShowId) } ?: emptyList()
 
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
@@ -102,7 +95,7 @@ class TvShowRepositoryImplTest {
 
         coEvery {
             tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
-        } returns expectedTvShowCast.map { it.toLocalDto(language) }
+        } returns expectedTvShowCast.map { it.toLocalDto(language, tvShowId) }
 
         coEvery {
             tvShowCastLocalDataSource.addCast(any())
@@ -202,7 +195,7 @@ class TvShowRepositoryImplTest {
 
             coEvery {
                 tvShowLocalDataSource.getTvShowId(tvShowId, language)?.productionCompanies
-            } returns mockTvShowDto.toLocalDto(language).productionCompanies
+            } returns mockTvShowDto.toLocalDto(language, tvShowId).productionCompanies
 
             coEvery {
                 tvShowLocalDataSource.addTvShow(any())
