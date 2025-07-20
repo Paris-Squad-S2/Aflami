@@ -20,7 +20,6 @@ import com.repository.movie.mapper.toLocalDto
 import com.repository.movie.models.local.GalleryEntity
 import com.repository.movie.util.NetworkConnectionChecker
 import com.repository.movie.util.detectLanguage
-import kotlin.collections.isNotEmpty
 
 class MovieRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
@@ -53,7 +52,7 @@ class MovieRepositoryImpl(
 
             val localCast = movieCastLocalDataSource.getCastByMovieId(movieId, language)
 
-            if (!localCast.isNullOrEmpty()) {
+            if (localCast.isNotEmpty()) {
                 localCast.map { it.toEntity() }
             } else {
                 val remoteCast = movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
@@ -77,7 +76,7 @@ class MovieRepositoryImpl(
             val localMoviesSimilar =
                 movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
 
-            if (localMoviesSimilar != null && localMoviesSimilar.isNotEmpty()) {
+            if (localMoviesSimilar.isNotEmpty()) {
                 localMoviesSimilar.map { it.toEntity() }
             } else {
                 val remoteMoviesSimilarDto =

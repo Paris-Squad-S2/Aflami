@@ -8,5 +8,5 @@ interface MovieSimilarLocalDataSource {
         movieId: Int,
         page: Int,
         language: String
-    ): List<MovieSimilarEntity>?
+    ): List<MovieSimilarEntity>
 }

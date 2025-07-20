@@ -12,6 +12,6 @@ interface MovieSimilarDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addSimilarMovies(movies: List<MovieSimilarEntity>)
 
-    @Query("SELECT * FROM movies_similar_table WHERE id = :movieId AND page = :page AND language = :language")
-    suspend fun getSimilarMovies(movieId: Int,page: Int, language: String): List<MovieSimilarEntity>?
+    @Query("SELECT * FROM movies_similar_table WHERE movieId = :movieId AND page = :page AND language = :language")
+    suspend fun getSimilarMovies(movieId: Int,page: Int, language: String): List<MovieSimilarEntity>
 }

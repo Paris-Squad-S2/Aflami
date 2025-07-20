@@ -15,6 +15,6 @@ class MovieSimilarLocalDataSourceImp(
         movieId: Int,
         page: Int,
         language: String
-    ): List<MovieSimilarEntity>? = similarDao.getSimilarMovies(movieId, page, language)
+    ): List<MovieSimilarEntity> = similarDao.getSimilarMovies(movieId, page, language)
 
 }
