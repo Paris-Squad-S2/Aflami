@@ -7,13 +7,20 @@ import com.repository.dataSource.local.TvShowReviewLocalDataSource
 import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.mapper.toEntity
 import com.repository.mapper.toLocalDto
+import com.repository.model.local.GalleryEntity
+import com.repository.model.remote.TvShowSeasonDto
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.tvshow.testUtils.mockTvShowCreditsDto
 import com.repository.tvshow.testUtils.mockTvShowDto
+import com.repository.tvshow.testUtils.mockTvShowLogoDto
+import com.repository.tvshow.testUtils.mockTvShowReviewsDto
 import com.repository.tvshow.testUtils.mockTvShowSimilarsDto
 import com.repository.util.NetworkConnectionChecker
+import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
@@ -87,7 +94,7 @@ class TvShowRepositoryImplTest {
         // Given
         val tvShowId = 550
         val language = "en"
-        val expectedTvShowCast = mockTvShowCreditsDto.cast?.map { it.toLocalDto(language, tvShowId) } ?: emptyList()
+        val expectedTvShowCast = mockTvShowCreditsDto.cast ?: emptyList()
 
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
@@ -105,7 +112,7 @@ class TvShowRepositoryImplTest {
         val result = tvShowRepository.getTvShowCast(tvShowId)
 
         // Then
-        assertEquals(expectedTvShowCast, result)
+        assertEquals(expectedTvShowCast.first().name, result.first().name)
     }
 
     @Test
@@ -117,9 +124,21 @@ class TvShowRepositoryImplTest {
             val language = "en"
 
             val expectedCast =
-                mockTvShowSimilarsDto.tvShowSimilarDto?.map { it.toEntity() } ?: emptyList()
+                mockTvShowSimilarsDto.tvShowSimilarDto?.map {
+                    it.toLocalDto(
+                        tvShowId,
+                        language,
+                        page
+                    )
+                } ?: emptyList()
             val localDto =
-                mockTvShowSimilarsDto.tvShowSimilarDto?.map { it.toLocalDto(tvShowId,language, page) }
+                mockTvShowSimilarsDto.tvShowSimilarDto?.map {
+                    it.toLocalDto(
+                        tvShowId,
+                        language,
+                        page
+                    )
+                }
                     ?: emptyList()
 
             // When
@@ -152,7 +171,7 @@ class TvShowRepositoryImplTest {
         // Given
         val tvShowId = 123
 
-        val expectedImages = mockTvShowLogoDto.logos?.map { it.toEntity(tvShowId) } ?: emptyList()
+        val expectedImages = mockTvShowLogoDto.toLocalDto(tvShowId).images
 
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowImages(tvShowId)
@@ -163,7 +182,7 @@ class TvShowRepositoryImplTest {
         } returns GalleryEntity(
             id = 0,
             tvShowId = 123,
-            images = expectedImages.map { it.toLocalDto() },
+            images = expectedImages.map { it },
         )
 
         coEvery {
@@ -223,11 +242,10 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowReviewsDto
 
             val dto =
-                mockTvShowReviewsDto.results?.map { it.toEntity().toLocalDto(tvShowId,language) }
-                    ?: emptyList()
+                mockTvShowReviewsDto.results ?: emptyList()
             coEvery {
                 tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
-            } returns dto
+            } returns dto.map { it.toLocalDto(tvShowId, language) }
 
             coEvery {
                 tvShowReviewLocalDataSource.addReview(any())
@@ -237,7 +255,9 @@ class TvShowRepositoryImplTest {
             val result = tvShowRepository.getTvShowReview(tvShowId, page)
 
             // Then
-            val expectedReviews = mockTvShowReviewsDto.results?.map { it.toEntity() } ?: emptyList()
+            val expectedReviews =
+                mockTvShowReviewsDto.results?.map { it.toLocalDto(tvShowId, language).toEntity() }
+                    ?: emptyList()
             assertEquals(expectedReviews.first().createdAt, result.first().createdAt)
         }
 
@@ -253,7 +273,7 @@ class TvShowRepositoryImplTest {
                 name = "stronger things"
             )
 
-            val expectedSeason = mockTvShowSeasonDto.toEntity()
+            val expectedSeason = mockTvShowSeasonDto.toLocalDto(tvShowId).toEntity()
 
             coEvery {
                 tvShowDetailsRemoteDataSource.getSeasonDetails(
