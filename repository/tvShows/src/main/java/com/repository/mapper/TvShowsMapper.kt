@@ -64,15 +64,21 @@ fun TvShowSeasonDto.toLocalDto(tvShowId: Int): SeasonEntity {
 }
 
 private fun TvShowEpisodeDto.toLocalDto(posterUrl: String): EpisodeEntity {
+    val airDate = try {
+        LocalDate.parse(this.airDate.orEmpty())
+    }
+    catch (_: Exception) {
+        LocalDate(9999, 1, 1)
+    }
     return EpisodeEntity(
         id = this.id ?: 0,
         episodeNumber = this.episodeNumber ?: 0,
         posterUrl = posterUrl,
         voteAverage = this.voteAverage ?: 0.0,
-        airDate = LocalDate.parse(this.airDate.orEmpty()),
+        airDate = airDate,
         runtime = this.runtime ?: 0,
         description = this.overview.orEmpty(),
-        stillUrl = this.stillPath.orEmpty()
+        stillUrl = this.stillPath.toImageUrl().orEmpty()
     )
 }
 
@@ -199,10 +205,16 @@ fun ImageEntity.toEntity(): Image {
 
 
 fun TvShowReviewDto.toLocalDto(tvShowId: Int,language: String): ReviewEntity{
+    val createdAt = try {
+        LocalDate.parse(this.createdAt.orEmpty().substring(0,10))
+    }
+    catch (_: Exception) {
+        LocalDate(9999, 1, 1)
+    }
     return ReviewEntity(
         id = 0,
         name = this.authorDetails?.name.orEmpty(),
-        createdAt = LocalDate.parse(this.createdAt?.substring(0,10) ?: "2025-01-01"),
+        createdAt = createdAt,
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
         rating = this.authorDetails?.rating ?: 0.0,
