@@ -2,8 +2,6 @@ package com.repository.model.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.repository.util.getCurrentDate
-import kotlinx.datetime.LocalDateTime
 
 @Entity(tableName = "tv_shows_table")
 data class TvShowEntity(
@@ -15,7 +13,6 @@ data class TvShowEntity(
     val posterPath: String,
     val genres: List<GenreEntity>,
     val releaseDate: String,
-    val tvShowCacheDate: LocalDateTime = getCurrentDate(),
     val runtime: Int,
     val seasons: List<SeasonEntity>,
     val country: String,
