@@ -229,7 +229,7 @@ class MovieRepositoryImplTest {
                     page,
                     language
                 )
-            } returns null
+            } returns emptyList()
             coEvery {
                 movieDetailsRemoteDataSource.getSimilarMovies(
                     movieId,
@@ -273,7 +273,7 @@ class MovieRepositoryImplTest {
                     page,
                     language
                 )
-            } returns null
+            } returns emptyList()
             coEvery {
                 movieDetailsRemoteDataSource.getSimilarMovies(
                     movieId,
