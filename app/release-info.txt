@@ -1,2 +1,2 @@
-versionName=0.2.2
-- refactor movie repository implementation to use a local datasource
+versionName=0.2.3
+- Implement Authentication Feature Api
