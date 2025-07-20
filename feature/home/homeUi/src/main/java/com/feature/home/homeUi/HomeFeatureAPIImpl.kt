@@ -2,7 +2,6 @@ package com.feature.home.homeUi
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -14,7 +13,6 @@ import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.aflami.designsystem.components.AflamiButton
 import com.paris_2.aflami.designsystem.components.ButtonType
 import kotlinx.coroutines.launch
-import org.koin.mp.KoinPlatform.getKoin
 
 class HomeFeatureAPIImpl(
     private val appNavigator: AppNavigator
