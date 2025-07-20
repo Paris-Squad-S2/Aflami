@@ -6,6 +6,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
+import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
+import com.feature.authentication.authenticationApi.fromJsonToAuthenticationDestination
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesApi.fromJsonToCategoriesDestination
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
@@ -30,6 +32,7 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
     val searchFeature: SearchFeatureAPI = koinInject()
     val mediaDetailsFeature: MediaDetailsFeatureAPI = koinInject()
 
+    val authFeature: AuthenticationFeatureAPI = koinInject()
     val homeFeature: HomeFeatureAPI = koinInject()
     val listsFeature: ListsFeatureAPI = koinInject()
     val categoriesFeature: CategoriesFeatureAPI = koinInject()
@@ -52,7 +55,14 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        navigation<AppDestinations.AppGraph1>(startDestination = AppDestinations.HomeFeature()) {
+        navigation<AppDestinations.AppGraph1>(startDestination = AppDestinations.AuthenticationFeature()) {
+
+            composable<AppDestinations.AuthenticationFeature> {
+                val authenticationDestination =
+                    it.toRoute<AppDestinations.AuthenticationFeature>().authenticationDestination
+                authFeature(authenticationDestination?.fromJsonToAuthenticationDestination())()
+            }
+
             composable<AppDestinations.HomeFeature> {
                 val homeDestination =
                     it.toRoute<AppDestinations.HomeFeature>().homeDestination
