@@ -88,7 +88,6 @@ class MovieRepositoryImplTest {
             // Given
             val movieId = 550
             val language = "en"
-            val expectedMovie = mockMovieDto
 
             // When & Then
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
@@ -122,7 +121,6 @@ class MovieRepositoryImplTest {
             // Given
             val movieId = 550
             val language = "en"
-            val expectedMovieCast = mockMovieCreditsDto.cast?.map { it.toEntity() } ?: emptyList()
 
             coEvery {
                 movieCastLocalDataSource.getCastByMovieId(movieId, language)
@@ -320,7 +318,6 @@ class MovieRepositoryImplTest {
         runTest {
             // Given
             val movieId = 123
-            val expectedGallery = mockMovieImagesDto.toEntity()
 
             coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
@@ -366,8 +363,6 @@ class MovieRepositoryImplTest {
             // Given
             val movieId = 123
             val language = "en"
-            val expectedProductionCompanies =
-                listOf(MovieProductionCompanyDto(name = "sonic")).map { it.toEntity() }
 
             coEvery {
                 movieLocalDataSource.getMovieById(movieId, language)
