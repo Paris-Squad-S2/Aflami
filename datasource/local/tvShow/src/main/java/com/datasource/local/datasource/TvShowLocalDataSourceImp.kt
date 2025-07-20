@@ -1,6 +1,5 @@
 package com.datasource.local.datasource
 
-import android.util.Log
 import com.datasource.local.dao.TvShowDao
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.model.local.TvShowEntity
