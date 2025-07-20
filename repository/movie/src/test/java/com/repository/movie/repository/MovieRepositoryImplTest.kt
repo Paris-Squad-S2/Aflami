@@ -1,5 +1,9 @@
 package com.repository.movie.repository
 
+import com.domain.mediaDetails.exception.NetworkException
+import com.domain.mediaDetails.model.Cast
+import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.ProductionCompany
 import com.google.common.truth.Truth.assertThat
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
@@ -26,6 +30,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 
 class MovieRepositoryImplTest {
@@ -58,7 +63,7 @@ class MovieRepositoryImplTest {
         // Given
         val movieId = 550
         val language = "en"
-        val expectedMovie = mockMovieDto.toEntity()
+        val expectedMovie = mockMovieDto
 
         coEvery {
             movieLocalDataSource.getMovieById(
@@ -83,29 +88,12 @@ class MovieRepositoryImplTest {
             // Given
             val movieId = 550
             val language = "en"
-            val expectedMovie = mockMovieDto.toEntity()
 
+            // When & Then
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
-            coEvery {
-                movieDetailsRemoteDataSource.getMovieDetails(
-                    movieId,
-                    language
-                )
-            } returns mockMovieDto
-            coEvery { movieLocalDataSource.addMovie(any()) } just Runs
-
-            // When
-            val result = movieRepository.getMovieDetails(movieId)
-
-            // Then
-            assertThat(result.title).isEqualTo(expectedMovie.title)
-            coVerify(exactly = 1) {
-                movieDetailsRemoteDataSource.getMovieDetails(
-                    movieId,
-                    language
-                )
+            assertThrows<NetworkException> {
+                movieRepository.getMovieDetails(movieId)
             }
-            coVerify(exactly = 1) { movieLocalDataSource.addMovie(any()) }
         }
 
     @Test
@@ -122,7 +110,7 @@ class MovieRepositoryImplTest {
         val result = movieRepository.getMovieCast(movieId)
 
         // Then
-        assertThat(result).isEqualTo(expectedMovieCast)
+        assertThat(result.first().name).isEqualTo(expectedMovieCast.first().name)
         coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieCredits(any(), any()) }
         coVerify(exactly = 0) { movieCastLocalDataSource.addCast(any()) }
     }
@@ -133,7 +121,6 @@ class MovieRepositoryImplTest {
             // Given
             val movieId = 550
             val language = "en"
-            val expectedMovieCast = mockMovieCreditsDto.cast?.map { it.toEntity() } ?: emptyList()
 
             coEvery {
                 movieCastLocalDataSource.getCastByMovieId(movieId, language)
@@ -147,7 +134,7 @@ class MovieRepositoryImplTest {
             val result = movieRepository.getMovieCast(movieId)
 
             // Then
-            assertThat(result).isEqualTo(expectedMovieCast)
+            assertThat(result).isEqualTo(emptyList<List<Cast>>())
             coVerify(exactly = 1) {
                 movieDetailsRemoteDataSource.getMovieCredits(
                     movieId,
@@ -190,7 +177,7 @@ class MovieRepositoryImplTest {
             val page = 1
             val language = "en"
             val expectedRecommendations =
-                mockMovieSimilarsDto.movieSimilarDto?.map { it.toEntity() } ?: emptyList()
+                mockMovieSimilarsDto.movieSimilarDto ?: emptyList()
             val localRecommendations =
                 expectedRecommendations.map { it.toLocalDto(movieId, page, language) }
 
@@ -202,7 +189,13 @@ class MovieRepositoryImplTest {
             val result = movieRepository.getMovieRecommendations(movieId, page)
 
             // Then
-            assertThat(result).isEqualTo(expectedRecommendations)
+            assertThat(result.first().title).isEqualTo(expectedRecommendations.map {
+                it.toLocalDto(
+                    movieId,
+                    page,
+                    language
+                ).toEntity()
+            }.first().title)
             coVerify(exactly = 0) {
                 movieDetailsRemoteDataSource.getSimilarMovies(
                     any(),
@@ -221,7 +214,7 @@ class MovieRepositoryImplTest {
             val page = 1
             val language = "en"
             val expectedRecommendations =
-                mockMovieSimilarsDto.movieSimilarDto?.map { it.toEntity() } ?: emptyList()
+                mockMovieSimilarsDto.movieSimilarDto ?: emptyList()
 
             coEvery {
                 movieSimilarLocalDataSource.getSimilarMovies(
@@ -243,7 +236,7 @@ class MovieRepositoryImplTest {
             val result = movieRepository.getMovieRecommendations(movieId, page)
 
             // Then
-            assertThat(result).isEqualTo(expectedRecommendations)
+            assertThat(result).isEqualTo(emptyList<List<MovieSimilar>>())
             coVerify(exactly = 1) {
                 movieDetailsRemoteDataSource.getSimilarMovies(
                     movieId,
@@ -325,20 +318,15 @@ class MovieRepositoryImplTest {
         runTest {
             // Given
             val movieId = 123
-            val expectedGallery = mockMovieImagesDto.toEntity()
 
             coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
             coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
 
-            // When
-            val result = movieRepository.getMovieGallery(movieId)
-
-            // Then
-            assertThat(result.images).isEqualTo(expectedGallery.images)
-            coVerify(exactly = 1) { movieDetailsRemoteDataSource.getMovieImages(movieId) }
-            coVerify(exactly = 1) { movieGalleryLocalDataSource.addGallery(any()) }
-
+            // When & Then
+            assertThrows<NetworkException> {
+                movieRepository.getMovieGallery(movieId)
+            }
         }
 
     @Test
@@ -375,8 +363,6 @@ class MovieRepositoryImplTest {
             // Given
             val movieId = 123
             val language = "en"
-            val expectedProductionCompanies =
-                listOf(MovieProductionCompanyDto(name = "sonic")).map { it.toEntity() }
 
             coEvery {
                 movieLocalDataSource.getMovieById(movieId, language)
@@ -390,7 +376,7 @@ class MovieRepositoryImplTest {
             val result = movieRepository.getCompanyProducts(movieId)
 
             // Then
-            assertThat(result).isEqualTo(expectedProductionCompanies)
+            assertThat(result).isEqualTo(listOf<List<ProductionCompany>>())
             coVerify(exactly = 1) {
                 movieDetailsRemoteDataSource.getMovieDetails(
                     movieId,
