@@ -28,7 +28,8 @@ class ReviewLocalDataSourceImpTest {
             avatarUrl = "path",
             username = "username",
             rating = 1.9,
-            description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
+            description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White.",
+            language = "ar"
         )
     }
 
@@ -43,22 +44,22 @@ class ReviewLocalDataSourceImpTest {
     fun `getReviewsForMovie should call getReviewsByMovieId on DAO and return its result`() =
         runTest {
             val movieId = 2
-            coEvery { reviewDao.getReviewsByMovieId(movieId) } returns listOf(sampleReview)
+            coEvery { reviewDao.getReviewsByMovieId(movieId,"ar") } returns listOf(sampleReview)
 
-            val result = reviewLocalDataSourceImp.getReviewsForMovie(movieId)
+            val result = reviewLocalDataSourceImp.getReviewsForMovie(movieId,"ar")
 
-            coVerify { reviewDao.getReviewsByMovieId(movieId) }
+            coVerify { reviewDao.getReviewsByMovieId(movieId,"ar") }
             assert(result == listOf(sampleReview))
         }
 
     @Test
     fun `getReviewsForMovie should return empty list when DAO returns null`() = runTest {
         val movieId = 3
-        coEvery { reviewDao.getReviewsByMovieId(movieId) } returns emptyList()
+        coEvery { reviewDao.getReviewsByMovieId(movieId,"ar") } returns emptyList()
 
-        val result = reviewLocalDataSourceImp.getReviewsForMovie(movieId)
+        val result = reviewLocalDataSourceImp.getReviewsForMovie(movieId,"ar")
 
-        coVerify { reviewDao.getReviewsByMovieId(movieId) }
+        coVerify { reviewDao.getReviewsByMovieId(movieId,"ar") }
         assert(result.isEmpty())
     }
 }

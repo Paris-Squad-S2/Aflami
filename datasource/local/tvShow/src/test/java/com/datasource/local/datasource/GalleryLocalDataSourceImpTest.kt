@@ -3,7 +3,6 @@ package com.datasource.local.datasource
 
 import com.datasource.local.dao.TvShowGalleryDao
 import com.google.common.truth.Truth.assertThat
-import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.model.local.GalleryEntity
 import com.repository.model.local.ImageEntity
 import io.mockk.coEvery

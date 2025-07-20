@@ -48,7 +48,8 @@ class MovieLocalDataSourceImpTest {
                     name = "Syncopy",
                     originCountry = "GB"
                 )
-            )
+            ),
+            language = "ar"
         )
         sampleMovie2 = MovieEntity(
             id = 2,
@@ -77,7 +78,8 @@ class MovieLocalDataSourceImpTest {
                     name = "Syncopy",
                     originCountry = "GB"
                 )
-            )
+            ),
+            language = "ar"
         )
     }
 
@@ -93,22 +95,22 @@ class MovieLocalDataSourceImpTest {
     @Test
     fun `getMovieById should call getMovie on DAO and return its result`() = runTest {
         val movieId = 2
-        coEvery { movieDao.getMovieById(movieId) } returns sampleMovie
+        coEvery { movieDao.getMovieById(movieId,"ar") } returns sampleMovie
 
-        val result = movieLocalDataSource.getMovieById(movieId)
+        val result = movieLocalDataSource.getMovieById(movieId,"ar")
 
-        coVerify { movieDao.getMovieById(movieId) }
+        coVerify { movieDao.getMovieById(movieId,"ar") }
         assert(result == sampleMovie)
     }
 
     @Test
     fun `getMovieById should return null when DAO returns null`() = runTest {
         val movieId = 3
-        coEvery { movieDao.getMovieById(movieId) } returns null
+        coEvery { movieDao.getMovieById(movieId,"ar") } returns null
 
-        val result = movieLocalDataSource.getMovieById(movieId)
+        val result = movieLocalDataSource.getMovieById(movieId,"ar")
 
-        coVerify { movieDao.getMovieById(movieId) }
+        coVerify { movieDao.getMovieById(movieId,"ar") }
         assert(result == null)
     }
 

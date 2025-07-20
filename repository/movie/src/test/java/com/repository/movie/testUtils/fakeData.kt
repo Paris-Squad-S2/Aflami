@@ -1,7 +1,5 @@
 package com.repository.movie.testUtils
 
-import com.repository.movie.mapper.toEntity
-import com.repository.movie.models.local.MovieEntity
 import com.repository.movie.models.local.ReviewEntity
 import com.repository.movie.models.remote.MovieCastDto
 import com.repository.movie.models.remote.MovieCreditsDto
@@ -48,8 +46,9 @@ val review = ReviewEntity(
     id = 0,
     movieId = 550,
     createdAt = LocalDate.parse("2025-01-01"),
-    avatarUrl = "",
+    avatarUrl = "https://image.tmdb.org/t/p/w500/",
     username = "",
     rating = 2.2,
-    description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
+    description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White.",
+    language = "AR"
 )
