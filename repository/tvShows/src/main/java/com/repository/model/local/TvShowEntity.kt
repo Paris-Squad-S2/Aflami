@@ -20,4 +20,5 @@ data class TvShowEntity(
     val seasons: List<SeasonEntity>,
     val country: String,
     val productionCompanies: List<ProductionCompanyEntity>,
+    val language: String
 )

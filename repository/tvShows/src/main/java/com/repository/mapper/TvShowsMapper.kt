@@ -19,12 +19,14 @@ import com.repository.model.local.ProductionCompanyEntity
 import com.repository.model.local.ReviewEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TvShowEntity
+import com.repository.model.local.TvShowSimilarEntity
 import com.repository.model.remote.TvShowCastDto
 import com.repository.model.remote.TvShowDto
 import com.repository.model.remote.TvShowEpisodeDto
 import com.repository.model.remote.TvShowGenreDto
 import com.repository.model.remote.TvShowImagesDto
 import com.repository.model.remote.TvShowLogoDto
+import com.repository.model.remote.TvShowPosterDto
 import com.repository.model.remote.TvShowProductionCompanyDto
 import com.repository.model.remote.TvShowReviewDto
 import com.repository.model.remote.TvShowSeasonDto
@@ -48,26 +50,27 @@ fun TvShowDto.toEntity(): TvShow {
     )
 }
 
-fun TvShowDto.toLocalDto(): TvShowEntity {
+fun TvShowDto.toLocalDto(language: String,tvShowId : Int): TvShowEntity {
     return TvShowEntity(
-        id = this.id ?: 0,
+        id = tvShowId,
         title = this.name.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
-        seasons = this.seasonDto?.map { it.toLocalDto() } ?: emptyList(),
+        seasons = this.seasonDto?.map { it.toLocalDto(tvShowId) } ?: emptyList(),
         releaseDate = this.firstAirDate.orEmpty(),
         runtime = this.episodeRunTime?.firstOrNull() ?: 0,
         country = this.originCountry?.firstOrNull().orEmpty(),
-        productionCompanies = this.productionCompanies?.map { it.toLocalDto() } ?: emptyList()
+        productionCompanies = this.productionCompanies?.map { it.toLocalDto() } ?: emptyList(),
+        language = language
     )
 }
 
-fun TvShowSeasonDto.toLocalDto(): SeasonEntity {
+fun TvShowSeasonDto.toLocalDto(tvShowId: Int): SeasonEntity {
     return SeasonEntity(
-        id = 0,
-        tvShowId = this.id ?: 0,
+        id = this.id ?: 0,
+        tvShowId = tvShowId,
         name = this.name.orEmpty(),
         episodeCount = this.episodeCount ?: 0,
         seasonNumber = this.seasonNumber ?: 0,
@@ -105,12 +108,13 @@ fun TvShowEntity.toEntity(): TvShow {
     )
 }
 
-fun Cast.toLocalDto(): CastEntity {
+fun Cast.toLocalDto(language: String): CastEntity {
     return CastEntity(
         tvShowId = this.id,
         name = this.name,
         id = 0,
-        imageUri = this.imageUrl
+        imageUri = this.imageUrl,
+        language = language
     )
 }
 
@@ -145,7 +149,7 @@ private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     )
 }
 
-private fun ProductionCompanyEntity.toEntity(): ProductionCompany {
+fun ProductionCompanyEntity.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id,
         logoPath = this.logoPath,
@@ -179,6 +183,16 @@ fun TvShowCastDto.toEntity(): Cast {
     )
 }
 
+fun TvShowCastDto.toLocalDto(language: String,tvShowId: Int): CastEntity {
+    return CastEntity(
+        tvShowId = tvShowId,
+        name = this.name.orEmpty(),
+        id = this.id ?: 0,
+        imageUri = this.profilePath.orEmpty(),
+        language = language
+    )
+}
+
 fun TvShowSimilarDto.toEntity(): TvShowSimilar {
     return TvShowSimilar(
         id = this.id ?: 0,
@@ -186,6 +200,57 @@ fun TvShowSimilarDto.toEntity(): TvShowSimilar {
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
+    )
+}
+
+fun TvShowSimilar.toLocalDto(language: String,page: Int): TvShowSimilarEntity {
+    return TvShowSimilarEntity(
+        id = 0,
+        title = this.title,
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
+        releaseDate = this.releaseDate,
+        voteAverage = this.voteAverage,
+        language = language,
+        page = page,
+        tvShowId = this.id
+    )
+}
+fun TvShowSimilarEntity.toEntity(): TvShowSimilar {
+    return TvShowSimilar(
+        id = this.id,
+        title = this.title,
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
+        releaseDate = this.releaseDate,
+        voteAverage = this.voteAverage,
+    )
+}
+
+fun TvShowSimilarDto.toLocalDto(tvShowId: Int,language: String,page: Int): TvShowSimilarEntity {
+    return TvShowSimilarEntity(
+        id = this.id ?: 0,
+        tvShowId = tvShowId,
+        title = this.title.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
+        releaseDate = this.releaseDate.orEmpty(),
+        voteAverage = this.voteAverage ?: 0.0,
+        language = language,
+        page = page
+
+    )
+}
+
+fun TvShowImagesDto.toLocalDto(tvShowId: Int): GalleryEntity{
+    return GalleryEntity(
+        id = 0,
+        images = this.posters?.map { it.toLocalDto() } ?: emptyList(),
+        tvShowId = tvShowId
+    )
+}
+
+private fun TvShowPosterDto.toLocalDto(): ImageEntity{
+    return ImageEntity(
+        id = 0,
+        url = this.filePath.toImageUrl().orEmpty()
     )
 }
 
@@ -235,7 +300,21 @@ fun TvShowReviewDto.toEntity(): Review {
     )
 }
 
-fun Review.toLocalDto(): ReviewEntity {
+fun TvShowReviewDto.toLocalDto(tvShowId: Int,language: String): ReviewEntity{
+    return ReviewEntity(
+        id = 0,
+        name = this.authorDetails?.name.orEmpty(),
+        createdAt = LocalDate.parse(this.createdAt?.substring(0,10) ?: "2025-01-01"),
+        avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
+        username = this.authorDetails?.username.orEmpty(),
+        rating = this.authorDetails?.rating ?: 0.0,
+        tvShowId = tvShowId,
+        description = this.content.orEmpty(),
+        language = language
+    )
+}
+
+fun Review.toLocalDto(tvShowId: Int,language: String): ReviewEntity {
     return ReviewEntity(
         id = 0,
         name = this.name,
@@ -243,8 +322,9 @@ fun Review.toLocalDto(): ReviewEntity {
         avatarUrl = this.avatarUrl,
         username = this.username,
         rating = this.rating,
-        tvShowId = this.id,
-        description = this.description
+        tvShowId = tvShowId,
+        description = this.description,
+        language = language
     )
 }
 
