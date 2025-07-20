@@ -111,16 +111,6 @@ fun TvShowDetailsScreenContent(
                 )
             }
 
-            state.tvShowDetailsUiState.tvShowUi.title.isBlank() -> {
-                PlaceholderView(
-                    modifier = Modifier.fillMaxSize(),
-                    image = painterResource(designsystemR.drawable.ic_network_error),
-                    title = stringResource(featureMediaDetailsUiR.string.no_tvshow_details),
-                    subTitle = stringResource(featureMediaDetailsUiR.string.tvshow_details_not_available),
-                    spacer = 16.dp
-                )
-            }
-
             else -> {
                 val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
                 LazyColumn(

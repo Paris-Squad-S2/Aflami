@@ -3,7 +3,9 @@ package com.repository.model.local
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Entity(
     tableName = "seasons_table",
     foreignKeys = [ForeignKey(
