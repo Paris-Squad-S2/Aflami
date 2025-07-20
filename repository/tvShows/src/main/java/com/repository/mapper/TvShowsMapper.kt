@@ -88,7 +88,7 @@ fun TvShowEntity.toEntity(): TvShow {
         title = this.title,
         voteAverage = this.voteAverage,
         description = this.description,
-        posterPath = this.posterPath,
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres.map { it.toEntity() },
         releaseDate = this.releaseDate,
         runtime = this.runtime,
@@ -102,7 +102,7 @@ fun CastEntity.toEntity(): Cast {
     return Cast(
         id = this.id,
         name = this.name,
-        imageUrl = this.imageUri
+        imageUrl = this.imageUri.toImageUrl().orEmpty()
     )
 }
 
@@ -132,7 +132,7 @@ private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
 fun ProductionCompanyEntity.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id,
-        logoPath = this.logoPath,
+        logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name,
         originCountry = this.originCountry
     )
@@ -199,7 +199,7 @@ fun GalleryEntity.toEntity(): Gallery {
 fun ImageEntity.toEntity(): Image {
     return Image(
         id = this.id,
-        url = this.url
+        url = this.url.toImageUrl().orEmpty()
     )
 }
 
@@ -238,7 +238,7 @@ private fun EpisodeEntity.toEntity(): Episode{
     return Episode(
         id = this.id,
         episodeNumber = this.episodeNumber,
-        posterUrl = this.posterUrl,
+        posterUrl = this.posterUrl.toImageUrl().orEmpty(),
         voteAverage = this.voteAverage,
         airDate = this.airDate,
         runtime = this.runtime,
@@ -251,7 +251,7 @@ fun ReviewEntity.toEntity(): Review {
         id = this.id.toString(),
         name = this.name,
         createdAt = this.createdAt,
-        avatarUrl = this.avatarUrl,
+        avatarUrl = this.avatarUrl.toImageUrl().orEmpty(),
         username = this.username,
         rating = this.rating,
         description = this.description
