@@ -15,6 +15,7 @@ class ReviewLocalDataSourceImpTest {
     private lateinit var reviewLocalDataSourceImp: TvShowReviewLocalDataSourceImp
     private lateinit var reviewDao: TvShowReviewDao
     private lateinit var sampleReview: ReviewEntity
+    private val language = "en"
 
     @BeforeEach
     fun setUp() {
@@ -22,13 +23,14 @@ class ReviewLocalDataSourceImpTest {
         reviewLocalDataSourceImp = TvShowReviewLocalDataSourceImp(reviewDao)
         sampleReview = ReviewEntity(
             id = 1,
-            tvShowId = "2",
+            tvShowId = 2,
             name = "الاسطوره",
             createdAt = LocalDate(year = 2020, month = 2, day = 2),
             avatarUrl = "path",
             username = "username",
             rating = 1.9,
-            description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White."
+            description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White.",
+            language = language
         )
     }
 
@@ -40,25 +42,25 @@ class ReviewLocalDataSourceImpTest {
     }
 
     @Test
-    fun `getReviewsForMovie should call getReviewsByMovieId on DAO and return its result`() =
+    fun `getReviewsForMovie should call getReviewsBytvShowId on DAO and return its result`() =
         runTest {
-            val movieId = 2
-            coEvery { reviewDao.getReviewsByTvShowId(movieId) } returns listOf(sampleReview)
+            val tvShowId = 2
+            coEvery { reviewDao.getReviewsByTvShowId(tvShowId,language) } returns listOf(sampleReview)
 
-            val result = reviewLocalDataSourceImp.getReviewsByTvShowId(movieId)
+            val result = reviewLocalDataSourceImp.getReviewsByTvShowId(tvShowId,language)
 
-            coVerify { reviewDao.getReviewsByTvShowId(movieId) }
+            coVerify { reviewDao.getReviewsByTvShowId(tvShowId,language) }
             assert(result == listOf(sampleReview))
         }
 
     @Test
     fun `getReviewsForMovie should return empty list when DAO returns null`() = runTest {
-        val movieId = 3
-        coEvery { reviewDao.getReviewsByTvShowId(movieId) } returns emptyList()
+        val tvShowId = 3
+        coEvery { reviewDao.getReviewsByTvShowId(tvShowId,language) } returns emptyList()
 
-        val result = reviewLocalDataSourceImp.getReviewsByTvShowId(movieId)
+        val result = reviewLocalDataSourceImp.getReviewsByTvShowId(tvShowId,language)
 
-        coVerify { reviewDao.getReviewsByTvShowId(movieId) }
+        coVerify { reviewDao.getReviewsByTvShowId(tvShowId,language) }
         assert(result.isEmpty())
     }
 }

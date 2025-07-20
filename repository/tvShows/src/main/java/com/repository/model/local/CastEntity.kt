@@ -15,10 +15,11 @@ import kotlinx.datetime.LocalDateTime
     )]
 )
 data class CastEntity(
-    @PrimaryKey
+    @PrimaryKey()
     val id: Int,
     val tvShowId: Int,
     val name: String,
     val imageUri: String,
     val castCacheDate: LocalDateTime = getCurrentDate(),
+    val language: String
 )

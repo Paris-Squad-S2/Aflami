@@ -13,6 +13,7 @@ import com.datasource.local.dao.TvShowCastDao
 import com.datasource.local.dao.TvShowDao
 import com.datasource.local.dao.TvShowGalleryDao
 import com.datasource.local.dao.TvShowReviewDao
+import com.datasource.local.dao.TvShowSimilarDao
 import com.datasource.local.search.SearchDatabase
 import com.datasource.local.search.dao.CountryDao
 import com.datasource.local.search.dao.GenresDao
@@ -68,6 +69,7 @@ val roomModule = module {
     single<TvShowDao> { get<TvShowDetailDataBase>().movieDao() }
     single<TvShowReviewDao> { get<TvShowDetailDataBase>().reviewDao() }
     single<SeasonDao> { get<TvShowDetailDataBase>().seasonDao() }
+    single<TvShowSimilarDao> { get<TvShowDetailDataBase>().tvShowSimilarDao() }
 
 }
 
