@@ -63,7 +63,7 @@ val roomModule = module {
     single<MovieSimilarDao> { get<MovieDetailDataBase>().movieSimilarDao() }
     single<TvShowCastDao> { get<TvShowDetailDataBase>().castDao() }
     single<TvShowGalleryDao> { get<TvShowDetailDataBase>().galleryDao() }
-    single<TvShowDao> { get<TvShowDetailDataBase>().movieDao() }
+    single<TvShowDao> { get<TvShowDetailDataBase>().tvShowDao() }
     single<TvShowReviewDao> { get<TvShowDetailDataBase>().reviewDao() }
     single<SeasonDao> { get<TvShowDetailDataBase>().seasonDao() }
 
