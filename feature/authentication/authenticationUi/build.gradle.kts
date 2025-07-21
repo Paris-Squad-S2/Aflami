@@ -70,6 +70,6 @@ dependencies {
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.APP_NAVIGATION))
 
-//    WebView
+    //WebView
     implementation(libs.androidx.webkit)
 }
