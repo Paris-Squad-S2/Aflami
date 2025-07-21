@@ -55,4 +55,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.APP_NAVIGATION))
 }

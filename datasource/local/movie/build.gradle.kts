@@ -42,8 +42,6 @@ dependencies {
     implementation(libs.androidx.room.common.jvm)
     implementation(project(Modules.REPOSITORY_MOVIE))
     testImplementation(libs.jupiter.junit.jupiter)
-    testImplementation(libs.jupiter.junit.jupiter)
-    testImplementation(libs.jupiter.junit.jupiter)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)

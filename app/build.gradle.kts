@@ -157,7 +157,7 @@ dependencies {
     implementation(libs.work.runtime.ktx)
 
     implementation(libs.androidx.startup.runtime)
-    
+
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.APP_NAVIGATION))
 
@@ -167,11 +167,16 @@ dependencies {
     implementation(project(Modules.FEATURE_PROFILE_API))
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_LISTS_UI))
     implementation(project(Modules.FEATURE_PROFILE_UI))
     implementation(project(Modules.FEATURE_CATEGORIES_UI))
     implementation(project(Modules.FEATURE_GUESS_GAME_UI))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_UI))
+
+
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
 
@@ -200,6 +205,9 @@ dependencies {
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
+
+    implementation(project(Modules.APP_NAVIGATION))
+
 
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)

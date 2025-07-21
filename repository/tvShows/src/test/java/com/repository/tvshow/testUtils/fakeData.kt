@@ -15,7 +15,12 @@ val mockTvShowDto = TvShowDto(
     id = 550,
     name = "The Epic Blockbuster",
     overview = "Mind-blowing action sequences",
-    firstAirDate = "2024-07-15"
+    firstAirDate = "2024-07-15",
+    productionCompanies = listOf(
+        TvShowProductionCompanyDto(
+            name = "Marvel"
+        )
+    )
 )
 
 val mockTvShowCreditsDto = TvShowCreditsDto(

@@ -8,11 +8,13 @@ import com.datasource.local.dao.MovieCastDao
 import com.datasource.local.dao.MovieDao
 import com.datasource.local.dao.MovieGalleryDao
 import com.datasource.local.dao.MovieReviewDao
+import com.datasource.local.dao.MovieSimilarDao
 import com.datasource.local.dao.SeasonDao
 import com.datasource.local.dao.TvShowCastDao
 import com.datasource.local.dao.TvShowDao
 import com.datasource.local.dao.TvShowGalleryDao
 import com.datasource.local.dao.TvShowReviewDao
+import com.datasource.local.dao.TvShowSimilarDao
 import com.datasource.local.search.SearchDatabase
 import com.datasource.local.search.dao.CountryDao
 import com.datasource.local.search.dao.GenresDao
@@ -32,9 +34,7 @@ val roomModule = module {
             get<Context>(),
             SearchDatabase::class.java,
             SEARCH_DATABASE_NAME
-        )
-            .addMigrations(SearchDatabase.MIGRATION_1_2)
-            .build()
+        ).addMigrations(SearchDatabase.MIGRATION_1_2).build()
     }
 
     single<MovieDetailDataBase> {
@@ -42,8 +42,7 @@ val roomModule = module {
             get<Context>(),
             MovieDetailDataBase::class.java,
             MOVIE_DATABASE_NAME
-        )
-            .build()
+        ).build()
     }
 
     single<TvShowDetailDataBase> {
@@ -51,8 +50,7 @@ val roomModule = module {
             get<Context>(),
             TvShowDetailDataBase::class.java,
             TV_SHOW_DATABASE_NAME
-        )
-            .build()
+        ).build()
     }
     single<SearchHistoryDao> { get<SearchDatabase>().searchHistoryDao() }
     single<MediaDao> { get<SearchDatabase>().mediaDao() }
@@ -63,11 +61,13 @@ val roomModule = module {
     single<MovieGalleryDao> { get<MovieDetailDataBase>().galleryDao() }
     single<MovieDao> { get<MovieDetailDataBase>().movieDao() }
     single<MovieReviewDao> { get<MovieDetailDataBase>().reviewDao() }
+    single<MovieSimilarDao> { get<MovieDetailDataBase>().movieSimilarDao() }
     single<TvShowCastDao> { get<TvShowDetailDataBase>().castDao() }
     single<TvShowGalleryDao> { get<TvShowDetailDataBase>().galleryDao() }
-    single<TvShowDao> { get<TvShowDetailDataBase>().movieDao() }
+    single<TvShowDao> { get<TvShowDetailDataBase>().tvShowDao() }
     single<TvShowReviewDao> { get<TvShowDetailDataBase>().reviewDao() }
     single<SeasonDao> { get<TvShowDetailDataBase>().seasonDao() }
+    single<TvShowSimilarDao> { get<TvShowDetailDataBase>().tvShowSimilarDao() }
 
 }
 

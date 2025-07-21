@@ -27,13 +27,15 @@ class CastLocalDataSourceImpTest {
             id = 1,
             movieId = 2,
             name = "name",
-            imageUri = "path"
+            imageUri = "path",
+            language = "ar"
         )
         sampleCast2 = CastEntity(
             id = 2,
             movieId = 4,
             name = "Maze",
-            imageUri = "path"
+            imageUri = "path",
+            language = "ar"
         )
         sampleCastList = listOf(sampleCast, sampleCast2)
     }
@@ -48,11 +50,11 @@ class CastLocalDataSourceImpTest {
     @Test
     fun `getCastByMovieId should call getCastByMovieId on DAO and return its result`() = runTest {
         val movieId = 10
-        every { runBlocking { castDao.getCastByMovieId(movieId) } } returns sampleCastList // For MockK with suspend functions
+        every { runBlocking { castDao.getCastByMovieId(movieId,"ar") } } returns sampleCastList // For MockK with suspend functions
 
-        val result = castLocalDataSourceImp.getCastByMovieId(movieId)
+        val result = castLocalDataSourceImp.getCastByMovieId(movieId,"ar")
 
-        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId) }
+        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId,"ar") }
         assertEquals(sampleCastList, result)
     }
 
@@ -61,11 +63,11 @@ class CastLocalDataSourceImpTest {
     fun `getCastByMovieId should return empty list if DAO returns empty list`() = runTest {
         val movieIdWithNoCast = 200
         val emptyList = emptyList<CastEntity>()
-        every { runBlocking { castDao.getCastByMovieId(movieIdWithNoCast) } } returns emptyList
+        every { runBlocking { castDao.getCastByMovieId(movieIdWithNoCast,"ar") } } returns emptyList
 
-        val result = castLocalDataSourceImp.getCastByMovieId(movieIdWithNoCast)
+        val result = castLocalDataSourceImp.getCastByMovieId(movieIdWithNoCast,"ar")
 
-        coVerify(exactly = 1) { castDao.getCastByMovieId(movieIdWithNoCast) }
+        coVerify(exactly = 1) { castDao.getCastByMovieId(movieIdWithNoCast,"ar") }
         assertEquals(emptyList, result)
     }
 }
