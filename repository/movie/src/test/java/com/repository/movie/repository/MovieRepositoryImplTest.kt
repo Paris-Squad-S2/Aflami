@@ -1,6 +1,7 @@
 package com.repository.movie.repository
 
 import com.domain.mediaDetails.exception.NetworkException
+import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.MovieSimilar
 import com.domain.mediaDetails.model.ProductionCompany
@@ -91,7 +92,7 @@ class MovieRepositoryImplTest {
 
             // When & Then
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
-            assertThrows<NetworkException> {
+            assertThrows<NoInternetConnectionException> {
                 movieRepository.getMovieDetails(movieId)
             }
         }
@@ -324,7 +325,7 @@ class MovieRepositoryImplTest {
             coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
 
             // When & Then
-            assertThrows<NetworkException> {
+            assertThrows<NoInternetConnectionException> {
                 movieRepository.getMovieGallery(movieId)
             }
         }

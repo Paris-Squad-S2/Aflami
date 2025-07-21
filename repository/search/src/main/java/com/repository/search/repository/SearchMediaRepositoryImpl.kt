@@ -1,8 +1,8 @@
 package com.repository.search.repository
 
-import com.domain.search.exception.NoDataForActorException
-import com.domain.search.exception.NoDataForCountryException
-import com.domain.search.exception.NoDataForSearchException
+import com.domain.search.exception.NoMediaForActorException
+import com.domain.search.exception.NoMediaForCountryException
+import com.domain.search.exception.NoMediaForSearchException
 import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
@@ -59,7 +59,7 @@ class SearchMediaRepositoryImpl(
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
-            throw NoDataForActorException()
+            throw NoMediaForActorException()
         }
     }
 
@@ -98,7 +98,7 @@ class SearchMediaRepositoryImpl(
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
-            throw NoDataForCountryException()
+            throw NoMediaForCountryException()
         }
     }
 
@@ -133,7 +133,7 @@ class SearchMediaRepositoryImpl(
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
-            throw NoDataForSearchException()
+            throw NoMediaForSearchException()
         }
     }
 

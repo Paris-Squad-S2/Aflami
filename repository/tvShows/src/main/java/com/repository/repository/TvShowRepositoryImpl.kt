@@ -1,6 +1,5 @@
 package com.repository.repository
 
-import com.domain.mediaDetails.exception.NetworkException
 import com.domain.mediaDetails.exception.NoFoundTvShowException
 import com.domain.mediaDetails.exception.NoFundGalleryTvShowException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
@@ -182,10 +181,8 @@ class TvShowRepositoryImpl(
                 throw NoInternetConnectionException()
             }
             call()
-        } catch (_: NoInternetConnectionException) {
+        } catch (_: Exception) {
             throw NoInternetConnectionException()
-        } catch (e: Exception) {
-            throw NetworkException(e.message ?: "Unknown error")
         }
     }
 }

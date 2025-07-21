@@ -8,9 +8,9 @@ import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.entity.SearchHistoryEntity
 import com.repository.search.entity.SearchType
-import com.domain.search.exception.NoDataForActorException
-import com.domain.search.exception.NoDataForCountryException
-import com.domain.search.exception.NoDataForSearchException
+import com.domain.search.exception.NoMediaForActorException
+import com.domain.search.exception.NoMediaForCountryException
+import com.domain.search.exception.NoMediaForSearchException
 import com.domain.search.exception.NoInternetConnectionException
 import com.repository.search.dto.ResultDto
 import com.repository.search.dto.SearchDto
@@ -171,7 +171,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } throws RuntimeException()
 
-        assertFailsWith<NoDataForActorException> {
+        assertFailsWith<NoMediaForActorException> {
             repository.getMediaByActor(actorName, page)
         }
     }
@@ -281,7 +281,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } throws RuntimeException("DB error")
 
-        assertFailsWith<NoDataForCountryException> {
+        assertFailsWith<NoMediaForCountryException> {
             repository.getMoviesByCountry(countryName, page)
         }
     }
@@ -379,7 +379,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page,language) } throws RuntimeException("DB error")
 
-        assertFailsWith<NoDataForSearchException> {
+        assertFailsWith<NoMediaForSearchException> {
             repository.getMediaByQuery(query, page)
         }
     }
