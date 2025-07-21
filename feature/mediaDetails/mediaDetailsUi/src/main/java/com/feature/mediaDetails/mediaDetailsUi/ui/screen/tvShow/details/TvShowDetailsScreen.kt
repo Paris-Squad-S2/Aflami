@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -17,6 +16,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -32,9 +32,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
@@ -42,6 +42,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProduc
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -89,6 +90,9 @@ fun TvShowDetailsScreenContent(
     val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
+
+    val reviewsList = state.tvShowDetailsUiState.reviews.collectAsLazyPagingItems()
+
 
     Box(
         Modifier
@@ -239,10 +243,32 @@ fun TvShowDetailsScreenContent(
                                 }
                             }
 
-                            TvShowChips.REVIEWS -> item {
-                                ReviewsSection(
-                                    reviews = state.tvShowDetailsUiState.reviews.collectAsLazyPagingItems()
-                                )
+                            TvShowChips.REVIEWS -> if (state.isReviewsLoading) {
+                                item {
+                                    PageLoadingPlaceHolder(
+                                        modifier = Modifier.padding(16.dp)
+                                    )
+                                }
+                            } else if(reviewsList.itemSnapshotList.isEmpty()){
+                                item {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Theme.colors.surface),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.there_is_no_reviews),
+                                            style = Theme.textStyle.label.large,
+                                            color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                        )
+                                    }
+                                }
+                            }
+                            else {
+                                items(reviewsList.itemCount){index ->
+                                    ReviewsSection(reviewsList[index])
+                                }
                             }
 
                             TvShowChips.GALLERY -> item {

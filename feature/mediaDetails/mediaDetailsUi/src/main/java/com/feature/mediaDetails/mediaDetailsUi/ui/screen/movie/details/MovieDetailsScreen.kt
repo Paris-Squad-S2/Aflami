@@ -11,12 +11,14 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
@@ -80,7 +82,7 @@ fun MovieDetailsScreenContent(
 
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
-
+    val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
 
     Box(
         Modifier
@@ -232,17 +234,34 @@ fun MovieDetailsScreenContent(
                                     }
                                 }
 
-                            MovieChips.REVIEWS -> item {
+                            MovieChips.REVIEWS ->
                                 if (state.isReviewsLoading) {
-                                    PageLoadingPlaceHolder(
-                                        modifier = Modifier.padding(16.dp)
-                                    )
-                                } else {
-                                    ReviewsSection(
-                                        reviews = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
-                                    )
+                                    item {
+                                        PageLoadingPlaceHolder(
+                                            modifier = Modifier.padding(16.dp)
+                                        )
+                                    }
+                                } else if(reviewsList.itemSnapshotList.isEmpty()){
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Theme.colors.surface),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.there_is_no_reviews),
+                                                style = Theme.textStyle.label.large,
+                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                            )
+                                        }
+                                    }
                                 }
-                            }
+                                else {
+                                    items(reviewsList.itemCount){index ->
+                                        ReviewsSection(reviewsList[index])
+                                    }
+                                }
 
                             MovieChips.GALLERY -> item {
                                 if (state.isGalleryLoading) {
