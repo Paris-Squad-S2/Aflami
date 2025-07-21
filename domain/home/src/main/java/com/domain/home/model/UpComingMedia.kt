@@ -8,5 +8,6 @@ data class UpComingMedia(
     val voteAverage: Double,
     val posterPath: String,
     val yearOfRelease: LocalDate,
-    val type : MediaType
+    val type : MediaType,
+    val genres: List<Genre>
 )
