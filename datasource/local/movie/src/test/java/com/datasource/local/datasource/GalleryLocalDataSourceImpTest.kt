@@ -16,25 +16,10 @@ import kotlin.test.Test
 class GalleryLocalDataSourceImpTest {
     private lateinit var galleryLocalDataSource: MovieGalleryLocalDataSourceImp
     private val galleryDao: MovieGalleryDao = mockk(relaxed = true)
-    private lateinit var sampleGallery: GalleryEntity
 
     @BeforeEach
     fun setUp() {
         galleryLocalDataSource = MovieGalleryLocalDataSourceImp(galleryDao)
-        sampleGallery = GalleryEntity(
-            id = 1,
-            movieId = 1,
-            images = listOf(
-                ImageEntity(
-                    id = 10,
-                    url = "uri"
-                ),
-                ImageEntity(
-                    id = 20,
-                    url = "uri"
-                ),
-            )
-        )
     }
 
 
@@ -85,6 +70,23 @@ class GalleryLocalDataSourceImpTest {
         galleryLocalDataSource.getGalleryByMovieId(movieId)
 
         coVerify(exactly = 1) { galleryDao.getGallery(movieId) }
+    }
+
+    companion object{
+        val sampleGallery = GalleryEntity(
+            id = 1,
+            movieId = 1,
+            images = listOf(
+                ImageEntity(
+                    id = 10,
+                    url = "uri"
+                ),
+                ImageEntity(
+                    id = 20,
+                    url = "uri"
+                ),
+            )
+        )
     }
 
 }

@@ -15,29 +15,11 @@ import kotlin.test.assertEquals
 class CastLocalDataSourceImpTest {
     private lateinit var castLocalDataSourceImp: MovieCastLocalDataSourceImp
     private lateinit var castDao: MovieCastDao
-    private lateinit var sampleCast: CastEntity
-    private lateinit var sampleCast2: CastEntity
-    private lateinit var sampleCastList: List<CastEntity>
 
     @BeforeEach
     fun setUp() {
         castDao = mockk(relaxed = true)
         castLocalDataSourceImp = MovieCastLocalDataSourceImp(castDao)
-        sampleCast = CastEntity(
-            id = 1,
-            movieId = 2,
-            name = "name",
-            imageUri = "path",
-            language = "ar"
-        )
-        sampleCast2 = CastEntity(
-            id = 2,
-            movieId = 4,
-            name = "Maze",
-            imageUri = "path",
-            language = "ar"
-        )
-        sampleCastList = listOf(sampleCast, sampleCast2)
     }
 
     @Test
@@ -88,4 +70,21 @@ class CastLocalDataSourceImpTest {
         coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, "ar") }
     }
 
+    companion object{
+       val  sampleCast = CastEntity(
+        id = 1,
+        movieId = 2,
+        name = "name",
+        imageUri = "path",
+        language = "ar"
+        )
+        val sampleCast2 = CastEntity(
+        id = 2,
+        movieId = 4,
+        name = "Maze",
+        imageUri = "path",
+        language = "ar"
+        )
+        val sampleCastList = listOf(sampleCast, sampleCast2)
+    }
 }
