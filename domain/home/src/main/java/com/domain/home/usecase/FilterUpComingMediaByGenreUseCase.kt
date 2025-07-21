@@ -8,9 +8,7 @@ class FilterUpComingMediaByGenreUseCase(
 ) {
     suspend operator fun invoke(genreId: Int): List<Media>{
         return mediaRepository.getUpComingMedia().filter { media ->
-            media.genres.any(){ genre ->
-                genre.id == genreId
-            }
+            genreId in media.genreIds
         }
     }
 }
