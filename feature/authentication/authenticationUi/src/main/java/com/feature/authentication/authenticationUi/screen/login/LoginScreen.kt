@@ -59,8 +59,6 @@ fun LoginScreenContent(
                     )
                 )
             )
-            .statusBarsPadding()
-            .navigationBarsPadding()
             .verticalScroll(scrollVerticalState)
     ) {
 
@@ -96,7 +94,11 @@ fun LoginScreenContent(
             yPercentage = 0.85f,
             size = 24.dp
         )
-        Column(modifier = Modifier.fillMaxSize()) {
+        Column(modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .navigationBarsPadding()
+        ) {
 
             HeaderIconLogin(modifier = Modifier.padding(top = 24.dp, start = 12.dp))
 
@@ -189,7 +191,7 @@ fun LoginScreenContent(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 16.dp),
+                    .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
                 AflamiText(

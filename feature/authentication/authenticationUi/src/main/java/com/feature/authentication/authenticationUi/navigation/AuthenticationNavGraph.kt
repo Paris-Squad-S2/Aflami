@@ -9,6 +9,7 @@ import androidx.navigation.navigation
 import com.feature.authentication.authenticationApi.AuthenticationDestination
 import com.feature.authentication.authenticationApi.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.screen.login.LoginScreen
+import com.feature.authentication.authenticationUi.screen.register.RegisterWebViewScreen
 import org.koin.compose.koinInject
 
 @Composable
@@ -39,5 +40,6 @@ fun AuthenticationNavGraph(
 fun NavGraphBuilder.buildSearchNavGraph(startDestination: AuthenticationDestination? = null) {
     navigation<AuthenticationDestinations.AuthenticationGraph1>(startDestination = startDestination ?: AuthenticationDestinations.LoginScreen) {
         composable<AuthenticationDestinations.LoginScreen> { LoginScreen() }
+        composable<AuthenticationDestinations.RegisterWebViewScreen> { RegisterWebViewScreen() }
     }
 }

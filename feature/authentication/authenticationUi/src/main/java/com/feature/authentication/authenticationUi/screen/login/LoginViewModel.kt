@@ -1,6 +1,10 @@
 package com.feature.authentication.authenticationUi.screen.login
 
+import androidx.navigation.NavOptions
+import com.feature.authentication.authenticationApi.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.aflami.designsystem.components.ButtonState
 
 data class LoginUIState(
@@ -11,7 +15,9 @@ data class LoginUIState(
     val buttonState: ButtonState = ButtonState.Normal
 )
 
-class LoginViewModel : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
+class LoginViewModel(
+    val appNavigator : AppNavigator
+) : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
 
     init {
         updateStateButton()
@@ -35,7 +41,23 @@ class LoginViewModel : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenI
     }
 
     override fun onClickLoginAsGuest() {
-        TODO("Not yet implemented")
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.HomeFeature(),
+                    NavOptions.Builder().apply {
+                        setPopUpTo(
+                            AppDestinations.AuthenticationFeature(),
+                            inclusive = true
+                        )
+                    }.build()
+                )
+                //TODO handle guest login
+            },
+            onError = {
+                // TODO: Handle error by showing snack bar
+            }
+        )
     }
 
     override fun onClickForgotPassword() {
@@ -43,7 +65,9 @@ class LoginViewModel : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenI
     }
 
     override fun onClickCreateAccount() {
-        TODO("Not yet implemented")
+        navigate(
+            AuthenticationDestinations.RegisterWebViewScreen
+        )
     }
 
 

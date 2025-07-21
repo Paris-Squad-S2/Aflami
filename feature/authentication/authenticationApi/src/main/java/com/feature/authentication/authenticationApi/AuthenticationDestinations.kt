@@ -9,4 +9,7 @@ sealed interface AuthenticationDestinations : AuthenticationGraph {
 
     @Serializable
     data object LoginScreen : AuthenticationDestination
+
+    @Serializable
+    data object RegisterWebViewScreen : AuthenticationDestination
 }
