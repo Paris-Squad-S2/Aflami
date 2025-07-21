@@ -1,14 +1,14 @@
-package com.example.home.dto
+package com.paris_2.home.dto
 
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerialName
 
 @Serializable
-data class HomeListsDto(
+data class MediaListDto(
     @SerialName("page")
     val page: Int,
     @SerialName("results")
-    val results: List<ResultDto>,
+    val results: List<MediaDto>,
     @SerialName("total_pages")
     val totalPages: Int,
     @SerialName("total_results")

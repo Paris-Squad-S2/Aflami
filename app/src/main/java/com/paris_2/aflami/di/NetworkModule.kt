@@ -1,6 +1,7 @@
 package com.paris_2.aflami.di
 
 import android.util.Log
+import com.paris_2.home.MediaApiService
 import com.feature.search.searchUi.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
@@ -11,8 +12,13 @@ import io.ktor.client.request.header
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.android.ext.koin.androidApplication
 import org.koin.dsl.module
+import retrofit2.Retrofit
+import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 val NetworkModule = module {
 
@@ -39,5 +45,30 @@ val NetworkModule = module {
                  url("https://api.themoviedb.org/3/")
             }
         }
+    }
+    single {
+        val logging = HttpLoggingInterceptor().apply {
+            level = HttpLoggingInterceptor.Level.BODY
+        }
+        OkHttpClient.Builder()
+            .addInterceptor(logging)
+            .addInterceptor { chain ->
+                val request = chain.request().newBuilder()
+                    .addHeader("Authorization", "Bearer ${BuildConfig.API_TOKEN}")
+                    .build()
+                chain.proceed(request)
+            }
+            .build()
+    }
+
+    single {
+        Retrofit.Builder()
+            .baseUrl("https://api.themoviedb.org/3/")
+            .client(get())
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .build()
+    }
+    single<MediaApiService> {
+        get<Retrofit>().create(MediaApiService::class.java)
     }
 }

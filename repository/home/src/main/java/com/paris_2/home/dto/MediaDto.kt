@@ -1,11 +1,11 @@
-package com.example.home.dto
+package com.paris_2.home.dto
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class ResultDto(
+data class MediaDto(
     @SerialName("adult")
     val adult: Boolean,
     @SerialName("backdrop_path")

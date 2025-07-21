@@ -189,6 +189,9 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.REPOSITORY_HOME))
+    implementation(project(Modules.DATASOURCE_REMOTE_HOME))
+
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 
@@ -198,6 +201,13 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
+
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit.converter)
+
 }
 
 kover {

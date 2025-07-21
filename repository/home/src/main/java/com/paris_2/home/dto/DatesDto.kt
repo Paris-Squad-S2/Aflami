@@ -1,4 +1,4 @@
-package com.example.home.dto
+package com.paris_2.home.dto
 
 
 import kotlinx.serialization.SerialName
