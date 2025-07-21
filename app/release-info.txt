@@ -1,2 +1,2 @@
-versionName=0.2.3
-- refactor tv show repository implementation to use a local datasource
+versionName=0.2.4
+- Implement Authentication Feature Api

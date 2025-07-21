@@ -1,4 +1,4 @@
 package com.feature.authentication.authenticationApi
 
-class MyClass {
-}
+
+interface AuthenticationGraph
