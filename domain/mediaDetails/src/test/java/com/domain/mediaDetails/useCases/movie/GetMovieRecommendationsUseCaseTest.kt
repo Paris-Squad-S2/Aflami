@@ -7,7 +7,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import testUtils.fakeMovieSimilar
-import testUtils.fakeMovies
 import kotlin.test.assertEquals
 
 class GetMovieRecommendationsUseCaseTest {

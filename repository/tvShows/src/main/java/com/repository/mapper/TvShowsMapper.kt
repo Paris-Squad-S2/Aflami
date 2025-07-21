@@ -90,7 +90,7 @@ fun TvShowEntity.toEntity(): TvShow {
         description = this.description,
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres.map { it.toEntity() },
-        releaseDate = this.releaseDate,
+        releaseDate = LocalDate.parse(this.releaseDate),
         runtime = this.runtime,
         country = this.country,
         productionCompanies = this.productionCompanies.map { it.toEntity() },
