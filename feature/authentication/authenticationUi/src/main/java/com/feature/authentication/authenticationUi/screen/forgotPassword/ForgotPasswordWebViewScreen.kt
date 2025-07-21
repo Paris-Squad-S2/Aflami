@@ -1,4 +1,4 @@
-package com.feature.authentication.authenticationUi.screen.register
+package com.feature.authentication.authenticationUi.screen.forgotPassword
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,14 +16,17 @@ import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun RegisterWebViewScreen(viewModel: RegisterViewModel = koinViewModel()) {
+fun ForgotPasswordWebViewScreen(viewModel: ForgotPasswordViewModel = koinViewModel()) {
 
     val uiState = viewModel.screenState.collectAsStateWithLifecycle()
-    RegisterScreenContent(uiState.value, viewModel)
+    ForgotPasswordScreenContent(uiState.value, viewModel)
 }
 
 @Composable
-private fun RegisterScreenContent(uIState: RegisterUIState, registerViewModel: RegisterViewModel) {
+private fun ForgotPasswordScreenContent(
+    uIState: ForgotPasswordUIState,
+    registerViewModel: ForgotPasswordViewModel
+) {
 
     Box(
         modifier = Modifier
@@ -33,13 +36,13 @@ private fun RegisterScreenContent(uIState: RegisterUIState, registerViewModel: R
                     colors = listOf(
                         Color(0xFFD85895).copy(alpha = 0.24f),
                         Color(0xFFD85895).copy(alpha = 0f)
-                    )
-                ) // TODO: Don't use hardcoded colors, use Theme.colors
+                    ) // TODO: Don't use hardcoded colors, use Theme.colors
+                )
             )
             .statusBarsPadding()
     ) {
         WebViewComposable(
-            url = uIState.registrationUrl,
+            url = uIState.resetPasswordUrl,
             onWebMessageReceived = { message: String ->
                 registerViewModel.onNavigateBack()
             },
@@ -59,5 +62,4 @@ private fun RegisterScreenContent(uIState: RegisterUIState, registerViewModel: R
             },
         )
     }
-
 }

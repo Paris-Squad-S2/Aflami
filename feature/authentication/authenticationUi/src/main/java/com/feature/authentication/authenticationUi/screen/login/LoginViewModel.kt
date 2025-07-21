@@ -1,7 +1,9 @@
 package com.feature.authentication.authenticationUi.screen.login
 
+import androidx.annotation.StringRes
 import androidx.navigation.NavOptions
 import com.feature.authentication.authenticationApi.AuthenticationDestinations
+import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
@@ -11,24 +13,31 @@ data class LoginUIState(
     val username: String = "",
     val password: String = "",
     val showPassword: Boolean = false,
-    val isErrorPassword: Boolean = false,
+    @StringRes val errorMessage: Int? = null,
     val buttonState: ButtonState = ButtonState.Normal
 )
 
 class LoginViewModel(
-    val appNavigator : AppNavigator
+    val appNavigator: AppNavigator
 ) : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
 
     init {
         updateStateButton()
     }
+
     override fun onUsernameChange(username: String) {
         emitState(newState = screenState.value.copy(username = username))
         updateStateButton()
     }
 
     override fun onPasswordChange(password: String) {
-        emitState(newState = screenState.value.copy(password = password))
+        val isError = password.length < 4
+        emitState(
+            screenState.value.copy(
+                password = password,
+                errorMessage = if (isError) R.string.password_should_be_4_characters_or_more else null
+            )
+        )
         updateStateButton()
     }
 
@@ -37,7 +46,28 @@ class LoginViewModel(
     }
 
     override fun onClickLogin() {
-        TODO("Not yet implemented")
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.HomeFeature(),
+                    NavOptions.Builder().apply {
+                        setPopUpTo(
+                            AppDestinations.AuthenticationFeature(),
+                            inclusive = true
+                        )
+                    }.build()
+                )
+                //TODO handle login
+            },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = R.string.incorrect_password,
+                        buttonState = ButtonState.Disabled
+                    )
+                )
+            }
+        )
     }
 
     override fun onClickLoginAsGuest() {
@@ -61,7 +91,9 @@ class LoginViewModel(
     }
 
     override fun onClickForgotPassword() {
-        TODO("Not yet implemented")
+        navigate(
+            AuthenticationDestinations.ForgotPasswordWebViewScreen
+        )
     }
 
     override fun onClickCreateAccount() {
@@ -74,7 +106,8 @@ class LoginViewModel(
     private fun updateStateButton() {
         val newButtonState = if (screenState.value.username.isEmpty() ||
             screenState.value.password.isEmpty() ||
-            screenState.value.isErrorPassword) {
+            screenState.value.errorMessage != null
+        ) {
             ButtonState.Disabled
         } else {
             ButtonState.Normal

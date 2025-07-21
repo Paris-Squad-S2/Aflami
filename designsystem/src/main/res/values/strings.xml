@@ -36,4 +36,5 @@
     <string name="aflami">AFLAMI</string>
     <string name="loading_with_dots">Loading…</string>
     <string name="login">Login</string>
+    <string name="empty"> </string>
 </resources>

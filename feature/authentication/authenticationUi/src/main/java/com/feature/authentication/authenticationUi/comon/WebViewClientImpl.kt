@@ -1,4 +1,4 @@
-package com.feature.authentication.authenticationUi.screen.register.components
+package com.feature.authentication.authenticationUi.comon
 
 import android.graphics.Bitmap
 import android.webkit.WebResourceError

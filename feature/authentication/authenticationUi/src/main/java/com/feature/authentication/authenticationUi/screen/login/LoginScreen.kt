@@ -25,7 +25,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.feature.authentication.authenticationUi.R
+import com.feature.authentication.authenticationUi.R as R
+import com.paris_2.aflami.designsystem.R as RDesignSystem
 import com.feature.authentication.authenticationUi.screen.login.components.CircleBackground
 import com.feature.authentication.authenticationUi.screen.login.components.HeaderIconLogin
 import com.paris_2.aflami.designsystem.components.AflamiButton
@@ -52,15 +53,7 @@ fun LoginScreenContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFD85895).copy(alpha = 0.24f),
-                        Color(0xFFD85895).copy(alpha = 0f)
-                    )
-                )
-            )
-            .verticalScroll(scrollVerticalState)
+            .background(Theme.colors.surface)
     ) {
 
         CircleBackground(
@@ -68,16 +61,19 @@ fun LoginScreenContent(
             yPercentage = 0.35f,
             size = 100.dp
         )
+
         CircleBackground(
             xPercentage = 0.70f,
             yPercentage = 0.41f,
             size = 64.dp
         )
+
         CircleBackground(
             xPercentage = 0.90f,
             yPercentage = 0.60f,
             size = 64.dp
         )
+
         CircleBackground(
             xPercentage = 0.5f,
             yPercentage = 0.70f,
@@ -95,10 +91,52 @@ fun LoginScreenContent(
             yPercentage = 0.85f,
             size = 24.dp
         )
-        Column(modifier = Modifier
+
+        CircleBackground(
+            xPercentage = 0.55f,
+            yPercentage = -0.09f,
+            size = 64.dp
+        )
+
+        CircleBackground(
+            xPercentage = 0.1f,
+            yPercentage = -0.09f,
+            size = 32.dp
+        )
+
+        CircleBackground(
+            xPercentage = 0.95f,
+            yPercentage = -0.04f,
+            size = 40.dp
+        )
+
+        CircleBackground(
+            xPercentage = 0.88f,
+            yPercentage = 0.10f,
+            size = 64.dp
+        )
+
+        CircleBackground(
+            xPercentage = -0.09f,
+            yPercentage = 0.88f,
+            size = 100.dp
+        )
+
+        Column(
+            modifier = Modifier
             .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        Color(0xFFD85895).copy(alpha = 0.24f),
+                        Color(0xFFD85895).copy(alpha = 0f),
+                    ), // TODO: Don't use hardcoded colors, use Theme.colors
+                    endY = 1700f,
+                )
+            )
             .statusBarsPadding()
             .navigationBarsPadding()
+            .verticalScroll(scrollVerticalState)
         ) {
 
             HeaderIconLogin(modifier = Modifier.padding(top = 24.dp, start = 12.dp))
@@ -141,14 +179,13 @@ fun LoginScreenContent(
                     .fillMaxWidth()
                     .padding(top = 12.dp),
                 leadingIcon = R.drawable.ic_password,
-                trailingIcon = if (loginUIState.showPassword) R.drawable.ic_eye else R.drawable.ic_eye,
+                trailingIcon = if (loginUIState.showPassword) RDesignSystem.drawable.ic_eye_closed else RDesignSystem.drawable.ic_eye_opened,
                 onClickTrailingIcon = {
                     loginScreenInteractionListener.onShowPasswordChange(
                         loginUIState.showPassword
                     )
                 },
-                showError = loginUIState.isErrorPassword,
-                errorMessage = R.string.incorrect_password,
+                errorMessage = loginUIState.errorMessage,
                 showText = loginUIState.showPassword
             )
             AflamiText(
@@ -215,38 +252,7 @@ fun LoginScreenContent(
                     textAlign = TextAlign.Center
                 )
             }
-
         }
-        CircleBackground(
-            xPercentage = 0.55f,
-            yPercentage = -0.09f,
-            size = 64.dp
-        )
-
-        CircleBackground(
-            xPercentage = 0.1f,
-            yPercentage = -0.09f,
-            size = 32.dp
-        )
-
-
-        CircleBackground(
-            xPercentage = 0.95f,
-            yPercentage = -0.04f,
-            size = 40.dp
-        )
-
-        CircleBackground(
-            xPercentage = 0.88f,
-            yPercentage = 0.10f,
-            size = 64.dp
-        )
-
-        CircleBackground(
-            xPercentage = -0.09f,
-            yPercentage = 0.88f,
-            size = 100.dp
-        )
     }
 }
 

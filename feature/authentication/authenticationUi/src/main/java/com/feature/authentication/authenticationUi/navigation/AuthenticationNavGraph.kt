@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.feature.authentication.authenticationApi.AuthenticationDestination
 import com.feature.authentication.authenticationApi.AuthenticationDestinations
+import com.feature.authentication.authenticationUi.screen.forgotPassword.ForgotPasswordWebViewScreen
 import com.feature.authentication.authenticationUi.screen.login.LoginScreen
 import com.feature.authentication.authenticationUi.screen.register.RegisterWebViewScreen
 import org.koin.compose.koinInject
@@ -41,5 +42,6 @@ fun NavGraphBuilder.buildSearchNavGraph(startDestination: AuthenticationDestinat
     navigation<AuthenticationDestinations.AuthenticationGraph1>(startDestination = startDestination ?: AuthenticationDestinations.LoginScreen) {
         composable<AuthenticationDestinations.LoginScreen> { LoginScreen() }
         composable<AuthenticationDestinations.RegisterWebViewScreen> { RegisterWebViewScreen() }
+        composable<AuthenticationDestinations.ForgotPasswordWebViewScreen> { ForgotPasswordWebViewScreen() }
     }
 }

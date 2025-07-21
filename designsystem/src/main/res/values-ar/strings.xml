@@ -36,4 +36,5 @@
     <string name="aflami">أفلامي</string>
     <string name="loading_with_dots">جارٍ التحميل…</string>
     <string name="login">تسجيل الدخول</string>
+    <string name="empty"> </string>
 </resources>
