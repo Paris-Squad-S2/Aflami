@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="go_to_home">Go to home</string>
+    <string name="incorrect_password">كلمة المرور غير صحيحة</string>
+    <string name="login">تسجيل الدخول</string>
+    <string name="continue_as_guest">المتابعة كضيف</string>
+    <string name="welcome_back">مرحبًا بعودتك!</string>
+    <string name="please_enter_your_information_to_login">يرجى إدخال معلوماتك لتسجيل الدخول</string>
+    <string name="user_name">اسم المستخدم</string>
+    <string name="password">كلمة المرور</string>
+    <string name="forgot_password">هل نسيت كلمة المرور؟</string>
+    <string name="don_t_have_account">ليس لديك حساب؟</string>
+    <string name="create_account">إنشاء حساب</string>
 </resources>
