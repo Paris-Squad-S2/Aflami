@@ -157,49 +157,59 @@ dependencies {
     implementation(libs.work.runtime.ktx)
 
     implementation(libs.androidx.startup.runtime)
+    
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.APP_NAVIGATION))
 
     implementation(project(Modules.FEATURE_SEARCH_API))
-
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.FEATURE_LISTS_API))
     implementation(project(Modules.FEATURE_PROFILE_API))
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
-
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_LISTS_UI))
     implementation(project(Modules.FEATURE_PROFILE_UI))
     implementation(project(Modules.FEATURE_CATEGORIES_UI))
     implementation(project(Modules.FEATURE_GUESS_GAME_UI))
-
-
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
+
     implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
-    implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
+    implementation(project(Modules.REPOSITORY_AUTHENTICATION))
+    implementation(project(Modules.REPOSITORY_MOVIE))
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
+
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
     implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))
+    implementation(project(Modules.DATASOURCE_REMOTE_AUTHENTICATION))
+
+    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
+    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
+    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
+    implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
+    implementation(project(Modules.DATASOURCE_LOCAL_AUTHENTICATION))
+
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
-    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.REPOSITORY_MOVIE))
-    implementation(project(Modules.REPOSITORY_TV_SHOW))
-    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
-    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
+
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
-
-    implementation(project(Modules.APP_NAVIGATION))
-
 
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
+
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit.converter)
+
 }
 
 kover {
