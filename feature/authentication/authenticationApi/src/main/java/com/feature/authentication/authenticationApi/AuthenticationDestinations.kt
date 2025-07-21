@@ -1,0 +1,12 @@
+package com.feature.authentication.authenticationApi
+
+import kotlinx.serialization.Serializable
+
+sealed interface AuthenticationDestinations : AuthenticationGraph {
+
+    @Serializable
+    data object AuthenticationGraph1 : AuthenticationGraph
+
+    @Serializable
+    data object AuthenticationScreen : AuthenticationDestination
+}

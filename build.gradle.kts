@@ -47,7 +47,10 @@ val koverExcludedPackages = listOf(
     "*.SearchApp*",
     "**.components**",
     "*ScreenKt",
-    "**.ClearMediaWorker"
+    "**.ClearMediaWorker",
+    "**FeatureAPI**",
+    "**NavGraph**",
+    "**Destination**",
     /*
     "**.GenreResourceMapper",
 
