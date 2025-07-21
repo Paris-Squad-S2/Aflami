@@ -24,50 +24,64 @@ class CastLocalDataSourceImpTest {
 
     @Test
     fun `addCast should add cast when addCast in CastDao called successfully`() = runTest {
+        //Given
         castLocalDataSourceImp.addCast(listOf(sampleCast, sampleCast2))
 
+        //When&Then
         coVerify(exactly = 1) { castLocalDataSourceImp.addCast(listOf(sampleCast, sampleCast2)) }
     }
 
     @Test
     fun `getCastByMovieId should return the correct result from DAO`() = runTest {
+        //Given
         val movieId = 10
         every { runBlocking { castDao.getCastByMovieId(movieId, language) } } returns sampleCastList
 
+        //When
         val result = castLocalDataSourceImp.getCastByMovieId(movieId, language)
 
+        //Then
         assertEquals(sampleCastList, result)
     }
 
     @Test
     fun `getCastByMovieId should call DAO exactly once`() = runTest {
+        //Given
         val movieId = 10
         every { runBlocking { castDao.getCastByMovieId(movieId, language) } } returns sampleCastList
 
+        //When
         castLocalDataSourceImp.getCastByMovieId(movieId, language)
 
+        //Then
         coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, language) }
     }
 
     @Test
     fun `getCastByMovieId should return empty list when DAO returns empty list`() = runTest {
+        //Given
         val movieId = 200
         val emptyList = emptyList<CastEntity>()
         every { runBlocking { castDao.getCastByMovieId(movieId, language) } } returns emptyList
 
+        //When
         val result = castLocalDataSourceImp.getCastByMovieId(movieId, language)
 
+        //Then
         assertEquals(emptyList, result)
     }
 
     @Test
     fun `getCastByMovieId should verify DAO called for empty result`() = runTest {
+        //Given
         val movieId = 200
-        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns emptyList()
+        every { runBlocking { castDao.getCastByMovieId(movieId, language) } } returns emptyList()
 
-        castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
+        //When
+        castLocalDataSourceImp.getCastByMovieId(movieId, language)
 
-        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, "ar") }
+        //Then
+        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, language) }
     }
 
     private companion object{

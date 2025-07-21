@@ -25,49 +25,63 @@ class MovieLocalDataSourceImpTest {
 
     @Test
     fun `addMovie should add movie when addMovie in MovieDao called successfully`() = runTest {
+        //Given
         movieLocalDataSource.addMovie(sampleMovie)
 
+        //When&Then
         coVerify(exactly = 1) { movieLocalDataSource.addMovie(sampleMovie) }
 
     }
 
     @Test
     fun `getMovieById should return movie when DAO returns movie`() = runTest {
+        //Given
         val movieId = 2
         coEvery { movieDao.getMovieById(movieId, language) } returns sampleMovie
 
+        //When
         val result = movieLocalDataSource.getMovieById(movieId, language)
 
+        //Then
         assert(result == sampleMovie)
     }
 
     @Test
     fun `getMovieById should call DAO once when movie exists`() = runTest {
+        //Given
         val movieId = 2
         coEvery { movieDao.getMovieById(movieId, language) } returns sampleMovie
 
+        //When
         movieLocalDataSource.getMovieById(movieId, language)
 
+        //Then
         coVerify(exactly = 1) { movieDao.getMovieById(movieId, language) }
     }
 
     @Test
     fun `getMovieById should return null when DAO returns null`() = runTest {
+        //Given
         val movieId = 3
         coEvery { movieDao.getMovieById(movieId, language) } returns null
 
+        //When
         val result = movieLocalDataSource.getMovieById(movieId, language)
 
+        //Then
         assert(result == null)
     }
 
     @Test
     fun `getMovieById should call DAO once when movie is null`() = runTest {
+        //Given
         val movieId = 3
         coEvery { movieDao.getMovieById(movieId, language) } returns null
 
+        //When
         movieLocalDataSource.getMovieById(movieId, language)
 
+        //Then
         coVerify(exactly = 1) { movieDao.getMovieById(movieId, language) }
     }
 
