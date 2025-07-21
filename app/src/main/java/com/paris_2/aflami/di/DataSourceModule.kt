@@ -14,6 +14,10 @@ import com.datasource.local.search.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.search.datasource.GenresLocalDataSourceImpl
 import com.datasource.local.search.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.search.datasource.MediaLocalDataSourceImpl
+import com.paris_2.dataSource.local.authentication.AuthenticationLocalDataSourceImpl
+import com.paris_2.datasource.remote.authentication.AuthenticationRemoteDataSourceImpl
+import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -47,4 +51,7 @@ val dataSourceModule = module {
     singleOf(::TvShowReviewLocalDataSourceImp) bind TvShowReviewLocalDataSource::class
     singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
     singleOf(::GenresInteractionDataSourceImpl) bind GenresInteractionDataSource::class
+    singleOf(::GenresInteractionDataSourceImpl) bind GenresInteractionDataSource::class
+    singleOf(::AuthenticationRemoteDataSourceImpl) bind AuthenticationRemoteDataSource::class
+    singleOf(::AuthenticationLocalDataSourceImpl) bind AuthenticationLocalDataSource::class
 }
