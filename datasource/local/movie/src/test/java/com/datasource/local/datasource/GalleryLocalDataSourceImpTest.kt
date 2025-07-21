@@ -13,7 +13,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 
-
 class GalleryLocalDataSourceImpTest {
     private lateinit var galleryLocalDataSource: MovieGalleryLocalDataSourceImp
     private val galleryDao: MovieGalleryDao = mockk(relaxed = true)
@@ -49,26 +48,43 @@ class GalleryLocalDataSourceImpTest {
     }
 
     @Test
-    fun `should get gallery by movie id when getGalleryByMovieId is called`() = runTest {
+    fun `getGalleryByMovieId should return gallery when DAO returns gallery`() = runTest {
         val movieId = 1
         coEvery { galleryDao.getGallery(movieId) } returns sampleGallery
 
         val result = galleryLocalDataSource.getGalleryByMovieId(movieId)
 
-        coVerify(exactly = 1) { galleryDao.getGallery(movieId) }
         assertThat(result).isEqualTo(sampleGallery)
     }
 
+    @Test
+    fun `getGalleryByMovieId should call DAO method exactly once`() = runTest {
+        val movieId = 1
+        coEvery { galleryDao.getGallery(movieId) } returns sampleGallery
+
+        galleryLocalDataSource.getGalleryByMovieId(movieId)
+
+        coVerify(exactly = 1) { galleryDao.getGallery(movieId) }
+    }
 
     @Test
-    fun `should return null when getGalleryByMovieId returns null`() = runTest {
+    fun `getGalleryByMovieId should return null when DAO returns null`() = runTest {
         val movieId = 2
         coEvery { galleryDao.getGallery(movieId) } returns null
 
         val result = galleryLocalDataSource.getGalleryByMovieId(movieId)
 
-        coVerify(exactly = 1) { galleryDao.getGallery(movieId) }
         assertThat(result).isNull()
-
     }
+
+    @Test
+    fun `getGalleryByMovieId should call DAO once when returning null`() = runTest {
+        val movieId = 2
+        coEvery { galleryDao.getGallery(movieId) } returns null
+
+        galleryLocalDataSource.getGalleryByMovieId(movieId)
+
+        coVerify(exactly = 1) { galleryDao.getGallery(movieId) }
+    }
+
 }
