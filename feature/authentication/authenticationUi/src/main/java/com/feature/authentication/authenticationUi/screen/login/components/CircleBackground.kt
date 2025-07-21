@@ -22,7 +22,7 @@ fun CircleBackground(xPercentage: Float, yPercentage: Float,size: Dp, modifier: 
                 y = with(LocalConfiguration.current) { (screenHeightDp * yPercentage).dp })
 
             .background(
-                color = Theme.colors.status.backgroundCircles.copy(0.15f),
+                color = Theme.colors.status.backgroundCircles,
                 shape = CircleShape
             )
     )
