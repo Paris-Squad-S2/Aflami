@@ -1,6 +1,5 @@
 package com.repository.movie.repository
 
-import com.domain.mediaDetails.exception.NetworkException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.MovieSimilar
