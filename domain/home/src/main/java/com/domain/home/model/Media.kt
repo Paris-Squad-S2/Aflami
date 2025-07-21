@@ -8,6 +8,6 @@ data class Media(
     val voteAverage: Double,
     val posterPath: String,
     val yearOfRelease: LocalDate,
-    val genres: List<Genre>,
+    val genreIds: List<Int>,
     val type : MediaType
 )
