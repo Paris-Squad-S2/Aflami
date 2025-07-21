@@ -1,12 +1,12 @@
 package com.domain.home.usecase
 
-import com.domain.home.model.TopRatingMedia
+import com.domain.home.model.Media
 import com.domain.home.repository.MediaRepository
 
 class GetTopRatingMediaUseCase(
     private val mediaRepository : MediaRepository
 ) {
-    suspend operator fun invoke() : List<TopRatingMedia>{
+    suspend operator fun invoke() : List<Media>{
         return mediaRepository.getTopRatingMedia()
     }
 }
