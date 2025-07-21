@@ -1,4 +1,4 @@
-package com.paris_2.repository.authentication.repository
+package com.paris_2.domain.authentication.repository
 
 interface AuthenticationRepository {
     suspend fun login(username: String, password: String): Boolean

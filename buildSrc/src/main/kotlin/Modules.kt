@@ -12,6 +12,7 @@ object Modules {
     const val DOMAIN_HOME = ":domain:home"
     const val DOMAIN_CATEGORIES = ":domain:categories"
     const val DOMAIN_MEDIA_DETAILS = ":domain:mediaDetails"
+    const val DOMAIN_AUTHENTICATION = ":domain:authentication"
 
     const val REPOSITORY_MOVIE = ":repository:movie"
     const val REPOSITORY_TV_SHOW = ":repository:tvShows"

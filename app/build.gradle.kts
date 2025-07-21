@@ -196,6 +196,7 @@ dependencies {
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
+    implementation(project(Modules.DOMAIN_AUTHENTICATION))
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)

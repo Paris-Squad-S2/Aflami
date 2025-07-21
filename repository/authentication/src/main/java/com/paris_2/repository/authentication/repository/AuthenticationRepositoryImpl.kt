@@ -1,5 +1,6 @@
 package com.paris_2.repository.authentication.repository
 
+import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
