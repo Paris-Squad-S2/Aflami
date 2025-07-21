@@ -34,9 +34,9 @@ class MovieLocalDataSourceImpTest {
     @Test
     fun `getMovieById should return movie when DAO returns movie`() = runTest {
         val movieId = 2
-        coEvery { movieDao.getMovieById(movieId, "ar") } returns sampleMovie
+        coEvery { movieDao.getMovieById(movieId, language) } returns sampleMovie
 
-        val result = movieLocalDataSource.getMovieById(movieId, "ar")
+        val result = movieLocalDataSource.getMovieById(movieId, language)
 
         assert(result == sampleMovie)
     }
@@ -44,19 +44,19 @@ class MovieLocalDataSourceImpTest {
     @Test
     fun `getMovieById should call DAO once when movie exists`() = runTest {
         val movieId = 2
-        coEvery { movieDao.getMovieById(movieId, "ar") } returns sampleMovie
+        coEvery { movieDao.getMovieById(movieId, language) } returns sampleMovie
 
-        movieLocalDataSource.getMovieById(movieId, "ar")
+        movieLocalDataSource.getMovieById(movieId, language)
 
-        coVerify(exactly = 1) { movieDao.getMovieById(movieId, "ar") }
+        coVerify(exactly = 1) { movieDao.getMovieById(movieId, language) }
     }
 
     @Test
     fun `getMovieById should return null when DAO returns null`() = runTest {
         val movieId = 3
-        coEvery { movieDao.getMovieById(movieId, "ar") } returns null
+        coEvery { movieDao.getMovieById(movieId, language) } returns null
 
-        val result = movieLocalDataSource.getMovieById(movieId, "ar")
+        val result = movieLocalDataSource.getMovieById(movieId, language)
 
         assert(result == null)
     }
@@ -64,15 +64,16 @@ class MovieLocalDataSourceImpTest {
     @Test
     fun `getMovieById should call DAO once when movie is null`() = runTest {
         val movieId = 3
-        coEvery { movieDao.getMovieById(movieId, "ar") } returns null
+        coEvery { movieDao.getMovieById(movieId, language) } returns null
 
-        movieLocalDataSource.getMovieById(movieId, "ar")
+        movieLocalDataSource.getMovieById(movieId, language)
 
-        coVerify(exactly = 1) { movieDao.getMovieById(movieId, "ar") }
+        coVerify(exactly = 1) { movieDao.getMovieById(movieId, language) }
     }
 
 
-    companion object {
+    private companion object {
+        val language = "ar"
         val sampleMovie = MovieEntity(
             id = 1,
             title = "Inception",
@@ -101,7 +102,7 @@ class MovieLocalDataSourceImpTest {
                     originCountry = "GB"
                 )
             ),
-            language = "ar"
+            language = language
         )
     }
 

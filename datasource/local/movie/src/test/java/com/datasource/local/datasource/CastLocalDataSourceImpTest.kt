@@ -32,9 +32,9 @@ class CastLocalDataSourceImpTest {
     @Test
     fun `getCastByMovieId should return the correct result from DAO`() = runTest {
         val movieId = 10
-        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns sampleCastList
+        every { runBlocking { castDao.getCastByMovieId(movieId, language) } } returns sampleCastList
 
-        val result = castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
+        val result = castLocalDataSourceImp.getCastByMovieId(movieId, language)
 
         assertEquals(sampleCastList, result)
     }
@@ -42,20 +42,20 @@ class CastLocalDataSourceImpTest {
     @Test
     fun `getCastByMovieId should call DAO exactly once`() = runTest {
         val movieId = 10
-        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns sampleCastList
+        every { runBlocking { castDao.getCastByMovieId(movieId, language) } } returns sampleCastList
 
-        castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
+        castLocalDataSourceImp.getCastByMovieId(movieId, language)
 
-        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, "ar") }
+        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, language) }
     }
 
     @Test
     fun `getCastByMovieId should return empty list when DAO returns empty list`() = runTest {
         val movieId = 200
         val emptyList = emptyList<CastEntity>()
-        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns emptyList
+        every { runBlocking { castDao.getCastByMovieId(movieId, language) } } returns emptyList
 
-        val result = castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
+        val result = castLocalDataSourceImp.getCastByMovieId(movieId, language)
 
         assertEquals(emptyList, result)
     }
@@ -70,20 +70,22 @@ class CastLocalDataSourceImpTest {
         coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, "ar") }
     }
 
-    companion object{
+    private companion object{
+
+        val language ="ar"
        val  sampleCast = CastEntity(
         id = 1,
         movieId = 2,
         name = "name",
         imageUri = "path",
-        language = "ar"
+        language = language
         )
         val sampleCast2 = CastEntity(
         id = 2,
         movieId = 4,
         name = "Maze",
         imageUri = "path",
-        language = "ar"
+        language = language
         )
         val sampleCastList = listOf(sampleCast, sampleCast2)
     }

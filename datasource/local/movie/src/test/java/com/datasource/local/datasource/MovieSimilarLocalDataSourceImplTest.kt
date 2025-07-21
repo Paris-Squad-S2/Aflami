@@ -12,10 +12,8 @@ import kotlin.test.Test
 class MovieSimilarLocalDataSourceImplTest {
 
     private lateinit var movieSimilarLocalDataSourceImpl: MovieSimilarLocalDataSourceImp
-    private lateinit var movieSimilarEntity: List<MovieSimilarEntity>
     private lateinit var movieSimilarDao: MovieSimilarDao
-    private val language = "en"
-    private val page = 1
+
 
     @BeforeEach
     fun setUp(){
@@ -23,16 +21,6 @@ class MovieSimilarLocalDataSourceImplTest {
         movieSimilarLocalDataSourceImpl = MovieSimilarLocalDataSourceImp(
             movieSimilarDao
         )
-        movieSimilarEntity = listOf(MovieSimilarEntity(
-            id = 1,
-            movieId = 30,
-            title = "spider man",
-            voteAverage = 5.5,
-            posterPath = "www.image.com",
-            releaseDate = "2025-05-05",
-            language = language,
-            page = page
-        ))
     }
 
     @Test
@@ -43,25 +31,59 @@ class MovieSimilarLocalDataSourceImplTest {
     }
 
     @Test
-    fun `getSimilarMovies should call getSimilarMovies on DAO and return its result`() = runTest {
+    fun `getSimilarMovies should return expected result from DAO`() = runTest {
         val tvShowId = 2
-        coEvery { movieSimilarDao.getSimilarMovies(tvShowId,page,language) } returns movieSimilarEntity
+        coEvery { movieSimilarDao.getSimilarMovies(tvShowId, page, language) } returns movieSimilarEntity
 
-        val result = movieSimilarLocalDataSourceImpl.getSimilarMovies(tvShowId,page,language)
+        val result = movieSimilarLocalDataSourceImpl.getSimilarMovies(tvShowId, page, language)
 
-        coVerify { movieSimilarDao.getSimilarMovies(tvShowId,page,language) }
         assert(result == movieSimilarEntity)
     }
 
     @Test
-    fun `getSimilarMovies should return null when DAO returns null`() = runTest {
+    fun `getSimilarMovies should call DAO once when result is not null`() = runTest {
+        val tvShowId = 2
+        coEvery { movieSimilarDao.getSimilarMovies(tvShowId, page, language) } returns movieSimilarEntity
+
+        movieSimilarLocalDataSourceImpl.getSimilarMovies(tvShowId, page, language)
+
+        coVerify(exactly = 1) { movieSimilarDao.getSimilarMovies(tvShowId, page, language) }
+    }
+
+    @Test
+    fun `getSimilarMovies should return empty list when DAO returns empty list`() = runTest {
         val tvShowId = 3
-        coEvery { movieSimilarDao.getSimilarMovies(tvShowId,page,language) } returns emptyList()
+        coEvery { movieSimilarDao.getSimilarMovies(tvShowId, page, language) } returns emptyList()
 
-        val result = movieSimilarLocalDataSourceImpl.getSimilarMovies(tvShowId,page,language)
+        val result = movieSimilarLocalDataSourceImpl.getSimilarMovies(tvShowId, page, language)
 
-        coVerify { movieSimilarDao.getSimilarMovies(tvShowId,page,language) }
         assert(result.isEmpty())
+    }
+
+    @Test
+    fun `getSimilarMovies should call DAO once when result is empty`() = runTest {
+        val tvShowId = 3
+        coEvery { movieSimilarDao.getSimilarMovies(tvShowId, page, language) } returns emptyList()
+
+        movieSimilarLocalDataSourceImpl.getSimilarMovies(tvShowId, page, language)
+
+        coVerify(exactly = 1) { movieSimilarDao.getSimilarMovies(tvShowId, page, language) }
+    }
+
+
+    private companion object{
+        val language = "en"
+        val page = 1
+        val movieSimilarEntity = listOf(MovieSimilarEntity(
+        id = 1,
+        movieId = 30,
+        title = "spider man",
+        voteAverage = 5.5,
+        posterPath = "www.image.com",
+        releaseDate = "2025-05-05",
+        language = language,
+        page = page
+        ))
 
     }
 

@@ -72,7 +72,7 @@ class GalleryLocalDataSourceImpTest {
         coVerify(exactly = 1) { galleryDao.getGallery(movieId) }
     }
 
-    companion object{
+   private companion object{
         val sampleGallery = GalleryEntity(
             id = 1,
             movieId = 1,
