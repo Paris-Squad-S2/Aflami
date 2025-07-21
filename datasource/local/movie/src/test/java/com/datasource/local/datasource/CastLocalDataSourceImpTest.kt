@@ -48,26 +48,44 @@ class CastLocalDataSourceImpTest {
     }
 
     @Test
-    fun `getCastByMovieId should call getCastByMovieId on DAO and return its result`() = runTest {
+    fun `getCastByMovieId should return the correct result from DAO`() = runTest {
         val movieId = 10
-        every { runBlocking { castDao.getCastByMovieId(movieId,"ar") } } returns sampleCastList // For MockK with suspend functions
+        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns sampleCastList
 
-        val result = castLocalDataSourceImp.getCastByMovieId(movieId,"ar")
+        val result = castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
 
-        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId,"ar") }
         assertEquals(sampleCastList, result)
     }
 
+    @Test
+    fun `getCastByMovieId should call DAO exactly once`() = runTest {
+        val movieId = 10
+        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns sampleCastList
+
+        castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
+
+        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, "ar") }
+    }
 
     @Test
-    fun `getCastByMovieId should return empty list if DAO returns empty list`() = runTest {
-        val movieIdWithNoCast = 200
+    fun `getCastByMovieId should return empty list when DAO returns empty list`() = runTest {
+        val movieId = 200
         val emptyList = emptyList<CastEntity>()
-        every { runBlocking { castDao.getCastByMovieId(movieIdWithNoCast,"ar") } } returns emptyList
+        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns emptyList
 
-        val result = castLocalDataSourceImp.getCastByMovieId(movieIdWithNoCast,"ar")
+        val result = castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
 
-        coVerify(exactly = 1) { castDao.getCastByMovieId(movieIdWithNoCast,"ar") }
         assertEquals(emptyList, result)
     }
+
+    @Test
+    fun `getCastByMovieId should verify DAO called for empty result`() = runTest {
+        val movieId = 200
+        every { runBlocking { castDao.getCastByMovieId(movieId, "ar") } } returns emptyList()
+
+        castLocalDataSourceImp.getCastByMovieId(movieId, "ar")
+
+        coVerify(exactly = 1) { castDao.getCastByMovieId(movieId, "ar") }
+    }
+
 }
