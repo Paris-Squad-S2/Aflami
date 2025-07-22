@@ -42,6 +42,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
+    testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(project(Modules.DOMAIN_AUTHENTICATION))
