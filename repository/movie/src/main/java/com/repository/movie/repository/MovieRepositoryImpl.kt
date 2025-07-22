@@ -201,7 +201,6 @@ class MovieRepositoryImpl(
         } catch (_: NoInternetConnectionException) {
             throw NoInternetConnectionException()
         } catch (e: Exception) {
-            Log.d("123123123", "safeCall: ${e.message}")
             throw NetworkException(e.message ?: "Unknown error")
         }
     }
