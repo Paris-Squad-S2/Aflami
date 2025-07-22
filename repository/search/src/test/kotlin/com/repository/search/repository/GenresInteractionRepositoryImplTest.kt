@@ -1,6 +1,6 @@
 package com.repository.search.repository
 
-import com.domain.search.model.GenreUserInteractionModel
+import com.domain.search.model.GenreUserInteraction
 import com.repository.search.dataSource.local.GenresInteractionDataSource
 import com.repository.search.entity.GenreUserInteractionEntity
 import com.repository.search.mapper.toCategoryUserInteractionEntity
@@ -30,7 +30,7 @@ class GenresInteractionRepositoryImplTest {
 
     @Test
     fun `upsertInteraction should call dataSource with mapped entity`() = runTest {
-        val model = GenreUserInteractionModel(genreId = 3, interactionCount = 7)
+        val model = GenreUserInteraction(genreId = 3, interactionCount = 7)
         val entity = GenreUserInteractionEntity(genreId = 3, interactionCount = 7)
         coJustRun { dataSource.upsertInteraction(entity) }
         every { model.toCategoryUserInteractionEntity() } returns entity
@@ -61,8 +61,8 @@ class GenresInteractionRepositoryImplTest {
             GenreUserInteractionEntity(2, 3)
         )
         val models = listOf(
-            GenreUserInteractionModel(1, 8),
-            GenreUserInteractionModel(2, 3)
+            GenreUserInteraction(1, 8),
+            GenreUserInteraction(2, 3)
         )
         coEvery { dataSource.getAllInteractions() } returns entities
         every { entities[0].toCategoryUserInteractionModel() } returns models[0]

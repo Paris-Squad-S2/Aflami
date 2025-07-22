@@ -1,6 +1,6 @@
 package com.repository.search.repository
 
-import com.domain.search.model.CategoryModel
+import com.domain.search.model.Category
 import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
@@ -44,7 +44,7 @@ class CategoriesRepositoryImplTest {
         val result = repository.getAllCategories()
 
         // Then
-        assertEquals(localGenres.map { CategoryModel(it.id, it.name) }, result)
+        assertEquals(localGenres.map { Category(it.id, it.name) }, result)
         coVerify(exactly = 0) { genresRemoteDataSource.getAllGenres(language) }
     }
 
@@ -62,7 +62,7 @@ class CategoriesRepositoryImplTest {
         val result = repository.getAllCategories()
 
         // Then
-        assertEquals(listOf(CategoryModel(2, "Drama")), result)
+        assertEquals(listOf(Category(2, "Drama")), result)
         coVerify { genresRemoteDataSource.getAllGenres(language) }
     }
 

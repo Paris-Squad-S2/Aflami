@@ -2,20 +2,20 @@ package com.feature.search.searchUi.screen.search
 
 
 import androidx.paging.PagingData
-import com.domain.search.model.CategoryModel
+import com.domain.search.model.Category
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.model.SearchHistoryModel
 import com.domain.search.model.SearchType
-import com.domain.search.useCases.ClearAllRecentSearchesUseCase
-import com.domain.search.useCases.ClearRecentSearchUseCase
-import com.domain.search.useCases.FilterByListOfCategoriesUseCase
-import com.domain.search.useCases.FilterMediaByRatingUseCase
-import com.domain.search.useCases.GetAllCategoriesUseCase
-import com.domain.search.useCases.GetAllRecentSearchesUseCase
-import com.domain.search.useCases.IncrementCategoryInteractionUseCase
-import com.domain.search.useCases.SearchByQueryUseCase
-import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.domain.search.useCase.ClearAllRecentSearchesUseCase
+import com.domain.search.useCase.ClearRecentSearchUseCase
+import com.domain.search.useCase.FilterByListOfCategoriesUseCase
+import com.domain.search.useCase.FilterMediaByRatingUseCase
+import com.domain.search.useCase.GetAllCategoriesUseCase
+import com.domain.search.useCase.GetAllRecentSearchesUseCase
+import com.domain.search.useCase.IncrementCategoryInteractionUseCase
+import com.domain.search.useCase.SearchByQueryUseCase
+import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
@@ -103,11 +103,11 @@ class SearchViewModelTest {
         searchTitle = "Inception", searchDate = "2023-11-15", SearchType.Query
     )
 
-    private val mockCategory1 = CategoryModel(id = 1, name = "Action")
-    private val mockCategory2 = CategoryModel(id = 2, name = "Comedy")
-    private val mockCategory3 = CategoryModel(id = 3, name = "Adventure")
-    private val mockCategory4 = CategoryModel(id = 4, name = "Sci-Fi")
-    private val mockCategory5 = CategoryModel(id = 5, name = "Thriller")
+    private val mockCategory1 = Category(id = 1, name = "Action")
+    private val mockCategory2 = Category(id = 2, name = "Comedy")
+    private val mockCategory3 = Category(id = 3, name = "Adventure")
+    private val mockCategory4 = Category(id = 4, name = "Sci-Fi")
+    private val mockCategory5 = Category(id = 5, name = "Thriller")
 
 
     @OptIn(ExperimentalCoroutinesApi::class)

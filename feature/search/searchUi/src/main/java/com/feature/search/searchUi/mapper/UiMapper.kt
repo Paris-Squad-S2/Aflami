@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.mapper
 
-import com.domain.search.model.CategoryModel
+import com.domain.search.model.Category
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.model.SearchHistoryModel
@@ -54,9 +54,9 @@ fun MediaType.toUi(): MediaTypeUi{
     }
 }
 
-fun List<CategoryModel>.toCategoryUiList() = this.map { it.toUi() }
+fun List<Category>.toCategoryUiList() = this.map { it.toUi() }
 
-fun CategoryModel.toUi(): CategoryUiState{
+fun Category.toUi(): CategoryUiState{
     return CategoryUiState(
         id = this.id,
         name = this.name

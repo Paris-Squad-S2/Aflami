@@ -3,9 +3,9 @@ package com.feature.search.searchUi.screen.findByActor
 import androidx.paging.PagingSource
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
-import com.domain.search.useCases.GetMediaByActorNameUseCase
-import com.domain.search.useCases.IncrementCategoryInteractionUseCase
-import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.domain.search.useCase.GetMediaByActorNameUseCase
+import com.domain.search.useCase.IncrementCategoryInteractionUseCase
+import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.search.MediaTypeUi
