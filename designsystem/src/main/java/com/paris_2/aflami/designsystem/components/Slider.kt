@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import kotlinx.coroutines.launch
@@ -24,7 +23,7 @@ import kotlin.math.abs
 
 @Composable
 fun Slider(
-    items: List<MediaItem>,
+    items: List<SliderMedia>,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -72,7 +71,7 @@ fun Slider(
                     )
             ) {
                 AflamiMediaCard(
-                    imageUri = item.imageResId.toString(),
+                    imageUri = item.imageUri.toString(),
                     rating = item.rating,
                     mediaCardType = MediaCardType.SLIDER,
                     showRating = isFocused,
@@ -85,8 +84,8 @@ fun Slider(
     }
 }
 
-data class MediaItem(
-    val imageResId: Int,
+data class SliderMedia(
+    val imageUri: String,
     val rating: Float
 )
 
@@ -94,19 +93,19 @@ data class MediaItem(
 @PreviewMultiDevices
 fun SliderPreview() {
     BasePreview {
-        val sampleItems = listOf(
-            MediaItem(R.drawable.anime_movie, 9.0f),
-            MediaItem(R.drawable.anime_horizontal, 8.7f),
-            MediaItem(R.drawable.attack_on_titan, 9.1f),
-            MediaItem(R.drawable.anime_movie, 9.0f),
-            MediaItem(R.drawable.anime_horizontal, 8.7f),
-            MediaItem(R.drawable.attack_on_titan, 9.1f)
-        )
-        Slider(
-            items = sampleItems,
-            modifier = Modifier.fillMaxWidth(),
-            onClick = {}
-        )
+//        val sampleItems = listOf(
+//            MediaItem(R.drawable.anime_movie, 9.0f),
+//            MediaItem(R.drawable.anime_horizontal, 8.7f),
+//            MediaItem(R.drawable.attack_on_titan, 9.1f),
+//            MediaItem(R.drawable.anime_movie, 9.0f),
+//            MediaItem(R.drawable.anime_horizontal, 8.7f),
+//            MediaItem(R.drawable.attack_on_titan, 9.1f)
+//        )
+//        Slider(
+//            items = sampleItems,
+//            modifier = Modifier.fillMaxWidth(),
+//            onClick = {}
+//        )
     }
 }
 

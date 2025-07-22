@@ -1,6 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.LocalDate
 
 data class HomeScreenUIState(
     val homeUIState: HomeUIState,
@@ -24,7 +24,7 @@ data class MediaUiState(
     val title: String,
     val type: MediaTypeUi,
     val categories: List<Int>,
-    val yearOfRelease: LocalDateTime,
+    val yearOfRelease: LocalDate,
     val rating: Double,
 )
 
