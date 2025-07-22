@@ -16,7 +16,6 @@ data class LoginUIState(
     val password: String = "",
     val showPassword: Boolean = false,
     @StringRes val passwordErrorMessage: Int? = null,
-    @StringRes val usernameErrorMessage: Int? = null,
     val loginButtonState: ButtonState = ButtonState.Normal,
     val guestButtonState: ButtonState = ButtonState.Normal,
     @StringRes val snackBarMessage: Int = R.string.login_failed,
@@ -60,7 +59,6 @@ class LoginViewModel(
                     screenState.value.copy(
                         loginButtonState = ButtonState.Loading,
                         passwordErrorMessage = null,
-                        usernameErrorMessage = null
                     )
                 )
                 loginUseCase(
@@ -83,7 +81,6 @@ class LoginViewModel(
             onInvalidCredentials = { localizedMessage ->
                 emitState(
                     screenState.value.copy(
-                        usernameErrorMessage = R.string.invalid_username_or_password,
                         passwordErrorMessage = R.string.invalid_username_or_password,
                         loginButtonState = ButtonState.Normal,
                     )
