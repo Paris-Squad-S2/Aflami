@@ -62,8 +62,25 @@ dependencies {
     implementation(libs.koin.compose.viewmodel)
     implementation(libs.koin.android)
 
-    implementation(project(Modules.FEATURE_HOME_API))
-    implementation(project(Modules.APP_NAVIGATION))
-    implementation(project(Modules.FEATURE_SEARCH_API))
+    //Navigation
+    implementation(libs.navigation.compose)
+
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
+    //kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //Modules
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.DOMAIN_HOME))
+    implementation(project(Modules.APP_NAVIGATION))
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_SEARCH_API))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+
+
+
+
 }
