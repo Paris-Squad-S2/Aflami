@@ -8,6 +8,8 @@ import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.domain.authentication.usecases.GuestLoginUseCase
+import com.paris_2.domain.authentication.usecases.LoginUseCase
 
 data class LoginUIState(
     val username: String = "",
@@ -18,7 +20,9 @@ data class LoginUIState(
 )
 
 class LoginViewModel(
-    val appNavigator: AppNavigator
+    private val appNavigator: AppNavigator,
+    private val loginUseCase: LoginUseCase,
+    private val guestLoginUseCase: GuestLoginUseCase,
 ) : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
 
     init {
@@ -48,24 +52,25 @@ class LoginViewModel(
     override fun onClickLogin() {
         tryToExecute(
             execute = {
-                appNavigator.navigate(
-                    AppDestinations.HomeFeature(),
-                    NavOptions.Builder().apply {
-                        setPopUpTo(
-                            AppDestinations.AuthenticationFeature(),
-                            inclusive = true
-                        )
-                    }.build()
+                loginUseCase(
+                    username = screenState.value.username,
+                    password = screenState.value.password
                 )
-                //TODO handle login
+            },
+            onSuccess = { loginSuccess ->
+                if (!loginSuccess) {
+                    emitState(
+                        screenState.value.copy(
+                            errorMessage = R.string.incorrect_password,
+                            buttonState = ButtonState.Disabled
+                        )
+                    )
+                } else {
+                    navigateToHome()
+                }
             },
             onError = {
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = R.string.incorrect_password,
-                        buttonState = ButtonState.Disabled
-                    )
-                )
+                // TODO: Handle error by showing snack bar
             }
         )
     }
@@ -73,16 +78,14 @@ class LoginViewModel(
     override fun onClickLoginAsGuest() {
         tryToExecute(
             execute = {
-                appNavigator.navigate(
-                    AppDestinations.HomeFeature(),
-                    NavOptions.Builder().apply {
-                        setPopUpTo(
-                            AppDestinations.AuthenticationFeature(),
-                            inclusive = true
-                        )
-                    }.build()
-                )
-                //TODO handle guest login
+                guestLoginUseCase()
+            },
+            onSuccess = { guestLoginSuccess ->
+                if (guestLoginSuccess) {
+                    navigateToHome()
+                } else {
+                    // TODO: Handle guest login failure by showing snack bar
+                }
             },
             onError = {
                 // TODO: Handle error by showing snack bar
@@ -113,6 +116,18 @@ class LoginViewModel(
             ButtonState.Normal
         }
         emitState(screenState.value.copy(buttonState = newButtonState))
+    }
+
+    private suspend fun navigateToHome() {
+        appNavigator.navigate(
+            AppDestinations.HomeFeature(),
+            NavOptions.Builder().apply {
+                setPopUpTo(
+                    AppDestinations.AuthenticationFeature(),
+                    inclusive = true
+                )
+            }.build()
+        )
     }
 
 }
