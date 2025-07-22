@@ -8,6 +8,8 @@ import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieLogoDto
 import com.repository.movie.models.remote.MovieSimilarDto
 import com.repository.movie.models.remote.MovieSimilarsDto
+import com.repository.movie.models.remote.MovieVideoDto
+import com.repository.movie.models.remote.MovieVideoResultDto
 import kotlinx.datetime.LocalDate
 
 val mockMovieDto = MovieDto(
@@ -15,6 +17,14 @@ val mockMovieDto = MovieDto(
     title = "The Epic Blockbuster",
     overview = "Mind-blowing action sequences",
     releaseDate = "2024-07-15"
+)
+
+val mockMovieVideosDto = MovieVideoDto(
+    id = 550,
+    movieVideoResultDto = listOf(
+        MovieVideoResultDto(key = "dQw4w9WgXcQ", name = "Trailer 1", site = "YouTube", type = "Trailer"),
+        MovieVideoResultDto(key = "abc123", name = "Trailer 2", site = "Vimeo", type = "Trailer")
+    )
 )
 
 val mockMovieCreditsDto = MovieCreditsDto(
