@@ -1,2 +1,2 @@
-versionName=0.2.7
-- refactor datasource unit tests to separate concerns between assertion logic and interaction verification.
+versionName=0.2.8
+- add authentication ui

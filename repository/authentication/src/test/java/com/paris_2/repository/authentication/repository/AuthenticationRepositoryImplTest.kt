@@ -1,6 +1,7 @@
 package com.paris_2.repository.authentication.repository
 
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.authentication.exception.UnknownAuthException
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.paris_2.repository.authentication.model.remote.LoginRequest
@@ -77,7 +78,7 @@ class AuthenticationRepositoryImplTest {
         val password = "pass"
         coEvery { remoteDataSource.getRequestToken() } throws RuntimeException("Network error")
 
-        assertFailsWith<RuntimeException> {
+        assertFailsWith<UnknownAuthException> {
             repository.login(username, password)
         }
     }
@@ -124,7 +125,7 @@ class AuthenticationRepositoryImplTest {
     fun `guestLogin should throw exception when remoteDataSource throws`() = runTest {
         coEvery { remoteDataSource.createGuestSession() } throws RuntimeException("Network error")
 
-        assertFailsWith<RuntimeException> {
+        assertFailsWith<UnknownAuthException> {
             repository.guestLogin()
         }
     }
