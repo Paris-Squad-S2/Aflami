@@ -5,6 +5,7 @@ import com.paris_2.repository.authentication.exeptions.NetworkException
 import com.paris_2.repository.authentication.model.remote.GuestSessionDto
 import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.model.remote.RequestTokenDto
+import com.paris_2.repository.authentication.model.remote.SessionDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -141,6 +142,127 @@ class AuthenticationRemoteDataSourceImplTest {
 
         assertFailsWith<NetworkException.UnknownException> {
             dataSource.createGuestSession()
+        }
+    }
+
+    @Test
+    fun `getRequestToken should return expected RequestTokenDto when API call is successful`() = runTest {
+        val expected = RequestTokenDto("token", "token", true)
+        coEvery { api.getRequestToken() } returns expected
+
+        val result = dataSource.getRequestToken()
+
+        assertThat(result).isEqualTo(expected)
+    }
+
+    @Test
+    fun `getRequestToken should throw UnauthenticatedException when API returns 401`() = runTest {
+        val httpException = mockk<HttpException> {
+            coEvery { code() } returns 401
+            coEvery { message() } returns "Unauthorized"
+        }
+        coEvery { api.getRequestToken() } throws httpException
+
+        assertFailsWith<NetworkException.UnauthenticatedException> {
+            dataSource.getRequestToken()
+        }
+    }
+
+    @Test
+    fun `getRequestToken should throw ServerException when API returns 500`() = runTest {
+        val httpException = mockk<HttpException> {
+            coEvery { code() } returns 500
+            coEvery { message() } returns "Server Error"
+        }
+        coEvery { api.getRequestToken() } throws httpException
+
+        assertFailsWith<NetworkException.ServerException> {
+            dataSource.getRequestToken()
+        }
+    }
+
+    @Test
+    fun `getRequestToken should throw UnknownException when API returns other HTTP error`() = runTest {
+        val httpException = mockk<HttpException> {
+            coEvery { code() } returns 403
+            coEvery { message() } returns "Forbidden"
+        }
+        coEvery { api.getRequestToken() } throws httpException
+
+        assertFailsWith<NetworkException.UnknownException> {
+            dataSource.getRequestToken()
+        }
+    }
+
+    @Test
+    fun `getRequestToken should throw UnknownException when unexpected exception occurs`() = runTest {
+        coEvery { api.getRequestToken() } throws RuntimeException("Something went wrong")
+
+        assertFailsWith<NetworkException.UnknownException> {
+            dataSource.getRequestToken()
+        }
+    }
+
+    @Test
+    fun `createSession should return expected SessionDto when API call is successful`() = runTest {
+        val requestToken = "token"
+        val expected = mockk<SessionDto>()
+        coEvery { api.createSession(mapOf("request_token" to requestToken)) } returns expected
+
+        val result = dataSource.createSession(requestToken)
+
+        assertThat(result).isEqualTo(expected)
+    }
+
+    @Test
+    fun `createSession should throw UnauthenticatedException when API returns 401`() = runTest {
+        val requestToken = "token"
+        val httpException = mockk<HttpException> {
+            coEvery { code() } returns 401
+            coEvery { message() } returns "Unauthorized"
+        }
+        coEvery { api.createSession(mapOf("request_token" to requestToken)) } throws httpException
+
+        assertFailsWith<NetworkException.UnauthenticatedException> {
+            dataSource.createSession(requestToken)
+        }
+    }
+
+    @Test
+    fun `createSession should throw ServerException when API returns 500`() = runTest {
+        val requestToken = "token"
+        val httpException = mockk<HttpException> {
+            coEvery { code() } returns 500
+            coEvery { message() } returns "Server Error"
+        }
+        coEvery { api.createSession(mapOf("request_token" to requestToken)) } throws httpException
+
+        assertFailsWith<NetworkException.ServerException> {
+            dataSource.createSession(requestToken)
+        }
+    }
+
+    @Test
+    fun `createSession should throw UnknownException when API returns other HTTP error`() = runTest {
+        val requestToken = "token"
+        val httpException = mockk<HttpException> {
+            coEvery { code() } returns 403
+            coEvery { message() } returns "Forbidden"
+        }
+        coEvery { api.createSession(mapOf("request_token" to requestToken)) } throws httpException
+
+        assertFailsWith<NetworkException.UnknownException> {
+            dataSource.createSession(requestToken)
+        }
+    }
+
+    @Test
+    fun `createSession should throw UnknownException when unexpected exception occurs`() = runTest {
+        val requestToken = "token"
+        coEvery { api.createSession(mapOf("request_token" to requestToken)) } throws RuntimeException("Something went wrong")
+
+        assertFailsWith<NetworkException.UnknownException> {
+            dataSource.createSession(requestToken)
         }
     }
 }
