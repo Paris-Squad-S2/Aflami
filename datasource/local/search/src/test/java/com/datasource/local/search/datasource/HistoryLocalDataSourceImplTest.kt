@@ -20,45 +20,58 @@ class HistoryLocalDataSourceImplTest {
     private lateinit var historyLocalDataSource: HistoryLocalDataSourceImpl
     private val searchHistoryDao: SearchHistoryDao = mockk(relaxed = true)
     private val workManager: WorkManager = mockk(relaxed = true)
-    private lateinit var sampleSearchHistory: SearchHistoryEntity
 
     @BeforeEach
     fun setUp() {
-        historyLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao,workManager)
-        sampleSearchHistory = SearchHistoryEntity(
-            searchQuery = "a",
-            searchType = SearchType.Query
-        )
+        historyLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao, workManager)
     }
 
     @Test
     fun `getAllSearchQueries should return genres when getAll in SearchHistoryDao called successfully`() =
         runTest {
             // Given
-            coEvery { searchHistoryDao.getAllSearchQueries() } returns flowOf(listOf(sampleSearchHistory))
+            coEvery { searchHistoryDao.getAllSearchQueries() } returns flowOf(
+                listOf(
+                    sampleSearchHistory
+                )
+            )
             // When
             val result = historyLocalDataSource.getAllSearchQueries().first()
             // Then
             assertThat(result).containsExactly(sampleSearchHistory)
+        }
+
+    @Test
+    fun `addSearchQuery should call DAO method once`() = runTest {
+        //Given
+        coEvery { searchHistoryDao.addSearchQuery(any()) } returns Unit
+
+        //When
+        historyLocalDataSource.addSearchQuery("aaa", SearchType.Query)
+
+        //Then
+        coVerify(exactly = 1) { searchHistoryDao.addSearchQuery(any()) }
     }
 
     @Test
-    fun `addSearchQuery should add SearchQuery when add in SearchHistoryDao called successfully`() =
-        runTest {
-            // Given
-            coEvery { searchHistoryDao.addSearchQuery(any()) } returns Unit
-            // When
-            historyLocalDataSource.addSearchQuery("aaa", SearchType.Query)
-            // Then
-            coVerify { searchHistoryDao.addSearchQuery(any()) }
-            verify { workManager.enqueue(any<OneTimeWorkRequest>()) }
-        }
+    fun `addSearchQuery should enqueue work request`() = runTest {
+        //Given
+        historyLocalDataSource.addSearchQuery("aaa", SearchType.Query)
+
+        //When&Then
+        verify(exactly = 1) { workManager.enqueue(any<OneTimeWorkRequest>()) }
+    }
 
     @Test
     fun `clearSearchQueryByQuery should clear SearchQuery when clear in SearchHistoryDao called successfully`() =
         runTest {
             // Given
-            coEvery { searchHistoryDao.clearSearchQueryByQuery("aaa", SearchType.Query) } returns Unit
+            coEvery {
+                searchHistoryDao.clearSearchQueryByQuery(
+                    "aaa",
+                    SearchType.Query
+                )
+            } returns Unit
             // When
             historyLocalDataSource.clearSearchQueryByQuery("aaa", SearchType.Query)
             // Then
@@ -80,12 +93,30 @@ class HistoryLocalDataSourceImplTest {
     fun `getSearchHistoryQuery should return entity when DAO returns non-null`() =
         runTest {
             // Given
-            coEvery { searchHistoryDao.getSearchHistoryQuery("a", SearchType.Query) } returns sampleSearchHistory
+            coEvery {
+                searchHistoryDao.getSearchHistoryQuery(
+                    "a",
+                    SearchType.Query
+                )
+            } returns sampleSearchHistory
             // When
             val result = historyLocalDataSource.getSearchHistoryQuery("a", SearchType.Query)
             // Then
             assertThat(result).isEqualTo(sampleSearchHistory)
-            coVerify { searchHistoryDao.getSearchHistoryQuery("a", SearchType.Query) }
+        }
+
+    @Test
+    fun `getSearchHistoryQuery should call DAO once when non-null result returned`() = runTest {
+        //Given
+        coEvery {
+            searchHistoryDao.getSearchHistoryQuery("a", SearchType.Query)
+        } returns sampleSearchHistory
+
+        //When
+        historyLocalDataSource.getSearchHistoryQuery("a", SearchType.Query)
+
+        //Then
+        coVerify(exactly = 1) { searchHistoryDao.getSearchHistoryQuery("a", SearchType.Query) }
     }
 
     @Test
@@ -97,7 +128,26 @@ class HistoryLocalDataSourceImplTest {
             val result = historyLocalDataSource.getSearchHistoryQuery("b", SearchType.Query)
             // Then
             assertThat(result).isNull()
-            coVerify { searchHistoryDao.getSearchHistoryQuery("b", SearchType.Query) }
+        }
+
+    @Test
+    fun `getSearchHistoryQuery should call DAO once when result is null`() = runTest {
+        //Given
+        coEvery {
+            searchHistoryDao.getSearchHistoryQuery("b", SearchType.Query)
+        } returns null
+
+        //When
+        historyLocalDataSource.getSearchHistoryQuery("b", SearchType.Query)
+
+        //Then
+        coVerify(exactly = 1) { searchHistoryDao.getSearchHistoryQuery("b", SearchType.Query) }
     }
 
+    private companion object {
+        val sampleSearchHistory = SearchHistoryEntity(
+            searchQuery = "a",
+            searchType = SearchType.Query
+        )
+    }
 }

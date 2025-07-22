@@ -15,16 +15,11 @@ import org.junit.jupiter.api.Test
 class CountriesLocalDataSourceImplTest {
     private lateinit var countriesLocalDataSource: CountriesLocalDataSourceImpl
     private val countryDao: CountryDao = mockk(relaxed = false)
-    private lateinit var sampleCountry: CountryEntity
 
     @BeforeEach
     fun setUp() {
         countriesLocalDataSource = CountriesLocalDataSourceImpl(countryDao)
-        sampleCountry = CountryEntity(
-            countryCode = "ps",
-            englishName = "palestine",
-            arabicName = "فلسطين"
-        )
+
     }
 
     @Test
@@ -74,4 +69,12 @@ class CountriesLocalDataSourceImplTest {
                 })
             }
         }
+
+    private companion object{
+       val  sampleCountry = CountryEntity(
+        countryCode = "ps",
+        englishName = "palestine",
+        arabicName = "فلسطين"
+        )
+    }
 }

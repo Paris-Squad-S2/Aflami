@@ -51,6 +51,8 @@ val koverExcludedPackages = listOf(
     "**FeatureAPI**",
     "**NavGraph**",
     "**Destination**",
+    "**Composable**",
+    "*Screen.kt",
     /*
     "**.GenreResourceMapper",
 
