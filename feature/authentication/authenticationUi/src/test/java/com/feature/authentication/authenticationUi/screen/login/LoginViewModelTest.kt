@@ -5,15 +5,22 @@ import com.paris_2.aflami.designsystem.components.ButtonState
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     fun setup() {
-        viewModel = spyk(LoginViewModel(appNavigator = mockk(relaxed = true)))
+        viewModel = spyk(
+            LoginViewModel(
+                appNavigator = mockk(relaxed = true),
+                loginUseCase = mockk(relaxed = true),
+                guestLoginUseCase = mockk(relaxed = true)
+            )
+        )
     }
 
     @Test
