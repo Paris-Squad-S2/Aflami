@@ -20,6 +20,7 @@ object Modules {
     const val REPOSITORY_CATEGORIES = ":repository:categories"
     const val REPOSITORY_GUESS_GAME = ":repository:guessGame"
     const val REPOSITORY_SEARCH = ":repository:search"
+    const val REPOSITORY_HOME = ":repository:home"
 
     const val DATASOURCE_REMOTE_USER = ":datasource:remote:user"
     const val DATASOURCE_LOCAL_USER = ":datasource:local:user"
@@ -34,6 +35,7 @@ object Modules {
     const val DATASOURCE_LOCAL_CATEGORIES = ":datasource:local:categories"
     const val DATASOURCE_LOCAL_SEARCH = ":datasource:local:search"
     const val DATASOURCE_REMOTE_SEARCH = ":datasource:remote:search"
+    const val DATASOURCE_REMOTE_HOME = ":datasource:remote:home"
 
     const val FEATURE_ONBOARDING_API = ":feature:onboarding:onboardingApi"
     const val FEATURE_ONBOARDING_UI = ":feature:onboarding:onboardingUi"
