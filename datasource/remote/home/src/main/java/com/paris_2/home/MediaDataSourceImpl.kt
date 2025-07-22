@@ -7,9 +7,9 @@ class MediaDataSourceImpl (
     private val apiService: MediaApiService
 ) : MediaRemoteDataSource {
 
-    override suspend fun getPopularMovies(): MediaListDto = apiService.getPopular()
+    override suspend fun getPopularMovies(): MediaListDto = apiService.getPopularMovie()
 
-    override suspend fun getTopRatedMovies(): MediaListDto = apiService.getTopRated()
+    override suspend fun getTopRatedMovies(): MediaListDto = apiService.getTopRatedMovie()
 
     override suspend fun getUpcomingMovies(): MediaListDto = apiService.getUpcoming()
 
