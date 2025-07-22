@@ -9,6 +9,9 @@ sealed interface AppDestinations : AppGraph {
     data object AppGraph1 : AppGraph
 
     @Serializable
+    data class AuthenticationFeature(val authenticationDestination: String? = null) : AppDestination
+
+    @Serializable
     data class HomeFeature(val homeDestination: String? = null) : AppDestination
 
     @Serializable
@@ -25,7 +28,6 @@ sealed interface AppDestinations : AppGraph {
 
     @Serializable
     data class SearchFeature(val searchDestination: String? = null) : AppDestination
-
 
     @Serializable
     data class MediaDetailsFeature(val mediaDetailsDestination: String? = null) : AppDestination

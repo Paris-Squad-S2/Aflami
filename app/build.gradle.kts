@@ -165,12 +165,14 @@ dependencies {
     implementation(project(Modules.FEATURE_PROFILE_API))
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
 
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_LISTS_UI))
     implementation(project(Modules.FEATURE_PROFILE_UI))
     implementation(project(Modules.FEATURE_CATEGORIES_UI))
     implementation(project(Modules.FEATURE_GUESS_GAME_UI))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_UI))
 
 
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
@@ -187,6 +189,9 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.REPOSITORY_HOME))
+    implementation(project(Modules.DATASOURCE_REMOTE_HOME))
+    implementation(project(Modules.DOMAIN_HOME))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 
@@ -196,6 +201,13 @@ dependencies {
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)
     implementation(libs.ktor.client.logging)
+
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit.converter)
+
 }
 
 kover {

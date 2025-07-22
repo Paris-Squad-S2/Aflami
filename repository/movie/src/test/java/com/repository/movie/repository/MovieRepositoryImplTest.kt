@@ -1,17 +1,18 @@
 package com.repository.movie.repository
 
-import com.domain.mediaDetails.exception.NoGalleryMovieDetailsFoundException
-import com.domain.mediaDetails.exception.NoMovieDetailsFoundException
+import com.domain.mediaDetails.exception.NetworkException
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Review
+import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.ProductionCompany
+import com.google.common.truth.Truth.assertThat
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
+import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
-import com.repository.movie.mapper.toRemoteDto
 import com.repository.movie.models.local.GalleryEntity
 import com.repository.movie.models.remote.MovieProductionCompanyDto
 import com.repository.movie.models.remote.MovieReviewsDto
@@ -20,155 +21,208 @@ import com.repository.movie.testUtils.mockMovieDto
 import com.repository.movie.testUtils.mockMovieImagesDto
 import com.repository.movie.testUtils.mockMovieSimilarsDto
 import com.repository.movie.testUtils.review
+import com.repository.movie.util.NetworkConnectionChecker
+import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.just
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 
 class MovieRepositoryImplTest {
-    private lateinit var movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource
     private lateinit var movieRepository: MovieRepositoryImpl
-    private lateinit var movieLocalDataSource: MovieLocalDataSource
-    private lateinit var movieCastLocalDataSource: MovieCastLocalDataSource
-    private lateinit var movieGalleryLocalDataSource: MovieGalleryLocalDataSource
-    private lateinit var movieReviewLocalDataSource: MovieReviewLocalDataSource
+    private var movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource = mockk(relaxed = true)
+    private var movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
+    private var movieCastLocalDataSource: MovieCastLocalDataSource = mockk(relaxed = true)
+    private var movieGalleryLocalDataSource: MovieGalleryLocalDataSource = mockk(relaxed = true)
+    private var movieReviewLocalDataSource: MovieReviewLocalDataSource = mockk(relaxed = true)
+    private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
+    private var movieSimilarLocalDataSource: MovieSimilarLocalDataSource = mockk()
 
     @BeforeEach
     fun setUp() {
-        movieDetailsRemoteDataSource = mockk<MovieDetailsRemoteDataSource>()
-        movieLocalDataSource = mockk<MovieLocalDataSource>()
-        movieCastLocalDataSource = mockk<MovieCastLocalDataSource>()
-        movieGalleryLocalDataSource = mockk<MovieGalleryLocalDataSource>()
-        movieReviewLocalDataSource = mockk<MovieReviewLocalDataSource>()
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+
         movieRepository = MovieRepositoryImpl(
+            networkConnectionChecker,
             movieLocalDataSource,
             movieCastLocalDataSource,
             movieGalleryLocalDataSource,
             movieReviewLocalDataSource,
-            movieDetailsRemoteDataSource
+            movieDetailsRemoteDataSource,
+            movieSimilarLocalDataSource
         )
     }
 
     @Test
-    fun `getMovieDetails - should return movie details when API delivers the goods`() = runTest {
+    fun `getMovieDetails - should return movie details from local when available`() = runTest {
         // Given
         val movieId = 550
         val language = "en"
-        val expectedMovie = mockMovieDto.toEntity()
+        val expectedMovie = mockMovieDto
 
         coEvery {
-            movieDetailsRemoteDataSource.getMovieDetails(
+            movieLocalDataSource.getMovieById(
                 movieId,
                 language
             )
-        } returns mockMovieDto
-
-        coEvery { movieLocalDataSource.getMovie(movieId) } returns mockMovieDto.toLocalDto()
-        coEvery { movieLocalDataSource.addMovie(any()) } returns Unit
+        } returns mockMovieDto.toLocalDto(language)
 
         // When
         val result = movieRepository.getMovieDetails(movieId)
 
         // Then
-        assertEquals(expectedMovie.title, result.title)
+        assertThat(result.title).isEqualTo(expectedMovie.title)
+        coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieDetails(any(), any()) }
+        coVerify(exactly = 0) { movieLocalDataSource.addMovie(any()) }
     }
 
+
     @Test
-    fun `getMovieDetails - should throw MovieDetailsFoundException when local is empty`() =
+    fun `getMovieDetails - should fetch from remote and save to local when local is empty`() =
         runTest {
             // Given
             val movieId = 550
             val language = "en"
 
-            // When && Then
-            coEvery { movieLocalDataSource.getMovie(movieId) } returns null andThen mockMovieDto.toLocalDto()
-
-            coEvery {
-                movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
-            } returns mockMovieDto
-
-            coEvery { movieLocalDataSource.addMovie(any()) } returns Unit
-            assertThrows<NoMovieDetailsFoundException> {
+            // When & Then
+            coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
+            assertThrows<NetworkException> {
                 movieRepository.getMovieDetails(movieId)
             }
-
         }
 
     @Test
-    fun `getMovieCast - should return movie cast when API delivers the goods`() = runTest {
+    fun `getMovieCast - should return movie cast from local when available`() = runTest {
         // Given
         val movieId = 550
         val language = "en"
-
         val expectedMovieCast = mockMovieCreditsDto.cast?.map { it.toEntity() } ?: emptyList()
+        val localCast = expectedMovieCast.map { it.toLocalDto(movieId, language) }
+
+        coEvery { movieCastLocalDataSource.getCastByMovieId(movieId, language) } returns localCast
 
         // When
-        coEvery {
-            movieDetailsRemoteDataSource.getMovieCredits(
-                movieId,
-                language
-            )
-        } returns mockMovieCreditsDto
-        coEvery { movieCastLocalDataSource.addCast(any()) } returns Unit
-
-        val castLocal =
-            mockMovieCreditsDto.cast?.map { it.toEntity() }?.map { it.toLocalDto() } ?: emptyList()
-
-        coEvery { movieCastLocalDataSource.getCastByMovieId(movieId) } returns castLocal
-
         val result = movieRepository.getMovieCast(movieId)
 
         // Then
-        assertEquals(expectedMovieCast, result)
-
+        assertThat(result.first().name).isEqualTo(expectedMovieCast.first().name)
+        coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieCredits(any(), any()) }
+        coVerify(exactly = 0) { movieCastLocalDataSource.addCast(any()) }
     }
 
     @Test
-    fun `getMovieCast - should return movie cast from remote when local is empty`() = runTest {
+    fun `getMovieCast - should fetch from remote and save to local when local is empty`() =
+        runTest {
+            // Given
+            val movieId = 550
+            val language = "en"
+
+            coEvery {
+                movieCastLocalDataSource.getCastByMovieId(movieId, language)
+            } returns emptyList()
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
+            } returns mockMovieCreditsDto
+            coEvery { movieCastLocalDataSource.addCast(any()) } just Runs
+
+            // When
+            val result = movieRepository.getMovieCast(movieId)
+
+            // Then
+            assertThat(result).isEqualTo(emptyList<List<Cast>>())
+            coVerify(exactly = 1) {
+                movieDetailsRemoteDataSource.getMovieCredits(
+                    movieId,
+                    language
+                )
+            }
+            coVerify(exactly = 1) { movieCastLocalDataSource.addCast(any()) }
+        }
+
+    @Test
+    fun `getMovieCast - should return empty list if remote returns no cast`() = runTest {
         // Given
         val movieId = 550
         val language = "en"
+        val emptyCreditsDto = mockMovieCreditsDto.copy(cast = null)
 
-
-        // When
-        coEvery {
-            movieCastLocalDataSource.getCastByMovieId(movieId)
-        } returns emptyList() andThen emptyList()
-
+        coEvery { movieCastLocalDataSource.getCastByMovieId(movieId, language) } returns emptyList()
         coEvery {
             movieDetailsRemoteDataSource.getMovieCredits(
                 movieId,
                 language
             )
-        } returns mockMovieCreditsDto
+        } returns emptyCreditsDto
+        coEvery { movieCastLocalDataSource.addCast(any()) } just Runs
 
-        coEvery { movieCastLocalDataSource.addCast(any()) } returns Unit
-
+        // When
         val result = movieRepository.getMovieCast(movieId)
 
         // Then
-        coVerify {
-            movieCastLocalDataSource.addCast(any())
-        }
-        assertEquals(emptyList<Cast>(), result)
+        assertThat(result).isEmpty()
+        coVerify(exactly = 1) { movieDetailsRemoteDataSource.getMovieCredits(movieId, language) }
+        coVerify(exactly = 1) { movieCastLocalDataSource.addCast(emptyList()) }
     }
 
     @Test
-    fun `getMovieRecommendations - should return move recommendations when API delivers the goods`() =
+    fun `getMovieRecommendations - should return recommendations from local when available`() =
         runTest {
             // Given
             val movieId = 123
             val page = 1
             val language = "en"
+            val expectedRecommendations =
+                mockMovieSimilarsDto.movieSimilarDto ?: emptyList()
+            val localRecommendations =
+                expectedRecommendations.map { it.toLocalDto(movieId, page, language) }
 
-            val expectedCast =
-                mockMovieSimilarsDto.movieSimilarDto?.map { it.toEntity() } ?: emptyList()
+            coEvery {
+                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+            } returns localRecommendations
 
             // When
+            val result = movieRepository.getMovieRecommendations(movieId, page)
+
+            // Then
+            assertThat(result.first().title).isEqualTo(expectedRecommendations.map {
+                it.toLocalDto(
+                    movieId,
+                    page,
+                    language
+                ).toEntity()
+            }.first().title)
+            coVerify(exactly = 0) {
+                movieDetailsRemoteDataSource.getSimilarMovies(
+                    any(),
+                    any(),
+                    any()
+                )
+            }
+            coVerify(exactly = 0) { movieSimilarLocalDataSource.addSimilarMovies(any()) }
+        }
+
+    @Test
+    fun `getMovieRecommendations - should fetch from remote and save to local when local is empty`() =
+        runTest {
+            // Given
+            val movieId = 123
+            val page = 1
+            val language = "en"
+            val expectedRecommendations =
+                mockMovieSimilarsDto.movieSimilarDto ?: emptyList()
+
+            coEvery {
+                movieSimilarLocalDataSource.getSimilarMovies(
+                    movieId,
+                    page,
+                    language
+                )
+            } returns emptyList()
             coEvery {
                 movieDetailsRemoteDataSource.getSimilarMovies(
                     movieId,
@@ -176,158 +230,254 @@ class MovieRepositoryImplTest {
                     language
                 )
             } returns mockMovieSimilarsDto
+            coEvery { movieSimilarLocalDataSource.addSimilarMovies(any()) } just Runs
+
+            // When
             val result = movieRepository.getMovieRecommendations(movieId, page)
 
             // Then
-            assertEquals(expectedCast, result)
+            assertThat(result).isEqualTo(emptyList<List<MovieSimilar>>())
+            coVerify(exactly = 1) {
+                movieDetailsRemoteDataSource.getSimilarMovies(
+                    movieId,
+                    page,
+                    language
+                )
+            }
+            coVerify(exactly = 1) {
+                movieSimilarLocalDataSource.addSimilarMovies(
+                    expectedRecommendations.map { it.toLocalDto(movieId, page, language) }
+                )
+            }
         }
 
     @Test
-    fun `getMovieGallery - should return move gallery when API delivers the goods`() = runTest {
+    fun `getMovieRecommendations - should return empty list if remote returns no recommendations`() =
+        runTest {
+            // Given
+            val movieId = 123
+            val page = 1
+            val language = "en"
+            val emptySimilarsDto = mockMovieSimilarsDto.copy(movieSimilarDto = null)
+
+            coEvery {
+                movieSimilarLocalDataSource.getSimilarMovies(
+                    movieId,
+                    page,
+                    language
+                )
+            } returns emptyList()
+            coEvery {
+                movieDetailsRemoteDataSource.getSimilarMovies(
+                    movieId,
+                    page,
+                    language
+                )
+            } returns emptySimilarsDto
+            coEvery { movieSimilarLocalDataSource.addSimilarMovies(any()) } just Runs
+
+            // When
+            val result = movieRepository.getMovieRecommendations(movieId, page)
+
+            // Then
+            assertThat(result).isEmpty()
+            coVerify(exactly = 1) {
+                movieDetailsRemoteDataSource.getSimilarMovies(
+                    movieId,
+                    page,
+                    language
+                )
+            }
+            coVerify(exactly = 0) { movieSimilarLocalDataSource.addSimilarMovies(any()) }
+        }
+
+    @Test
+    fun `getMovieGallery - should return movie gallery from local when available`() = runTest {
         // Given
         val movieId = 123
-
-        val expectedCast = mockMovieImagesDto.logos?.map { it.toEntity(movieId) } ?: emptyList()
-
-        // When
-        coEvery {
-            movieDetailsRemoteDataSource.getMovieImages(
-                movieId
-            )
-        } returns mockMovieImagesDto
-
-        coEvery { movieGalleryLocalDataSource.addGallery(any()) } returns Unit
-
-        val imageLocal =
-            mockMovieImagesDto.logos?.map { it.toEntity(movieId) }?.map { it.toLocalDto() }
-                ?: emptyList()
-        coEvery {
-            movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
-        } returns GalleryEntity(
-            images = imageLocal,
+        val expectedGallery = mockMovieImagesDto.toEntity()
+        val localGalleryEntity = GalleryEntity(
+            images = expectedGallery.images.map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
 
-        val result = movieRepository.getMovieGallery(movieId).images
+        coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+
+        // When
+        val result = movieRepository.getMovieGallery(movieId)
 
         // Then
-        assertEquals(expectedCast, result)
+        assertThat(result.images).isEqualTo(expectedGallery.images)
+        coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieImages(any()) }
+        coVerify(exactly = 0) { movieGalleryLocalDataSource.addGallery(any()) }
     }
 
     @Test
-    fun `getMovieGallery - should return movie gallery from remote when local is empty`() =
+    fun `getMovieGallery - should fetch from remote and save to local when local is empty`() =
         runTest {
             // Given
-            val movieId = 550
+            val movieId = 123
 
-            val expectedImages =
-                mockMovieImagesDto.logos?.map { it.toEntity(movieId) } ?: emptyList()
-
-            // When && Then
-            coEvery {
-                movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
-            } returns null andThen GalleryEntity(
-                images = expectedImages.map { it.toLocalDto() },
-                id = 0,
-                movieId = movieId
-            )
-
+            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
+            coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
 
-            coEvery { movieGalleryLocalDataSource.addGallery(any()) } returns Unit
-
-            assertThrows<NoGalleryMovieDetailsFoundException> {
+            // When & Then
+            assertThrows<NetworkException> {
                 movieRepository.getMovieGallery(movieId)
             }
         }
 
     @Test
-    fun `getCompanyProducts - should return company products when API delivers the goods`() =
+    fun `getCompanyProducts - should return company products from local when available`() =
         runTest {
             // Given
             val movieId = 123
             val language = "en"
+            val expectedProductionCompanies =
+                listOf(MovieProductionCompanyDto(name = "sonic")).map { it.toEntity() }
+            val localMovieDtoWithCompanies =
+                mockMovieDto.copy(productionCompanies = listOf(MovieProductionCompanyDto(name = "sonic")))
+                    .toLocalDto(language)
 
-            val mockMovieImagesDto = listOf(MovieProductionCompanyDto(name = "sonic"))
-            val expectedCast = mockMovieImagesDto.map { it.toEntity() }
+            coEvery {
+                movieLocalDataSource.getMovieById(
+                    movieId,
+                    language
+                )
+            } returns localMovieDtoWithCompanies
 
             // When
-            coEvery {
-                movieDetailsRemoteDataSource.getMovieDetails(
-                    movieId, language
-                ).productionCompanies
-            } returns mockMovieImagesDto
-
             val result = movieRepository.getCompanyProducts(movieId)
 
             // Then
-            assertEquals(expectedCast, result)
+            assertThat(result).isEqualTo(expectedProductionCompanies)
+            coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieDetails(any(), any()) }
+            coVerify(exactly = 0) { movieLocalDataSource.addMovie(any()) }
         }
 
     @Test
-    fun `getMovieReview - should return movie review when API delivers the goods`() =
+    fun `getCompanyProducts - should fetch from remote and save to local when local is empty or companies are missing`() =
         runTest {
             // Given
             val movieId = 123
             val language = "en"
-            val page = 1
 
-
-            val mockMovieReviewsDto =
-                MovieReviewsDto(results = listOf(review.toEntity().toRemoteDto()))
-
-            val expectedCast = mockMovieReviewsDto.results?.map { it.toEntity() }
+            coEvery {
+                movieLocalDataSource.getMovieById(movieId, language)
+            } returns mockMovieDto.toLocalDto(language).copy(productionCompanies = emptyList())
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
+            } returns mockMovieDto.copy(productionCompanies = listOf(MovieProductionCompanyDto(name = "sonic")))
+            coEvery { movieLocalDataSource.addMovie(any()) } just Runs
 
             // When
-            coEvery {
-                movieDetailsRemoteDataSource.getMovieReviews(
-                    movieId, page, language
-                )
-            } returns mockMovieReviewsDto
-
-            coEvery { movieReviewLocalDataSource.addReview(any()) } returns Unit
-
-            val reviewLocal =
-                mockMovieReviewsDto.results?.map { it.toEntity().toLocalDto() } ?: emptyList()
-
-            coEvery { movieReviewLocalDataSource.getReviewsForMovie(movieId) } returns reviewLocal
-
-            val result = movieRepository.getMovieReview(movieId, page)
+            val result = movieRepository.getCompanyProducts(movieId)
 
             // Then
-            assertEquals(expectedCast, result)
+            assertThat(result).isEqualTo(listOf<List<ProductionCompany>>())
+            coVerify(exactly = 1) {
+                movieDetailsRemoteDataSource.getMovieDetails(
+                    movieId,
+                    language
+                )
+            }
+            coVerify(exactly = 1) { movieLocalDataSource.addMovie(any()) }
+
         }
 
     @Test
-    fun `getMovieReview - should return movie review from remote when local is empty`() = runTest {
+    fun `getCompanyProducts - should return empty list if remote returns no production companies`() =
+        runTest {
+            // Given
+            val movieId = 123
+            val language = "en"
+            val movieDtoWithoutCompanies = mockMovieDto.copy(productionCompanies = null)
+
+            coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieDetails(
+                    movieId,
+                    language
+                )
+            } returns movieDtoWithoutCompanies
+            coEvery { movieLocalDataSource.addMovie(any()) } just Runs
+
+            // When
+            val result = movieRepository.getCompanyProducts(movieId)
+
+            // Then
+            assertThat(result).isEmpty()
+            coVerify(exactly = 1) {
+                movieDetailsRemoteDataSource.getMovieDetails(
+                    movieId,
+                    language
+                )
+            }
+            coVerify(exactly = 0) { movieLocalDataSource.addMovie(any()) }
+        }
+
+    @Test
+    fun `getMovieReview - should return movie reviews from local when available`() = runTest {
         // Given
         val movieId = 123
         val language = "en"
         val page = 1
+        val expectedReviews = listOf(review.toEntity())
+        val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
 
-        val mockMovieReviewsDto = MovieReviewsDto(results = listOf(review.toEntity().toRemoteDto()))
+        coEvery {
+            movieReviewLocalDataSource.getReviewsForMovie(
+                movieId,
+                language
+            )
+        } returns localReviews
 
         // When
-        coEvery {
-            movieReviewLocalDataSource.getReviewsForMovie(movieId)
-        } returns emptyList() andThen emptyList()
+        val result = movieRepository.getMovieReview(movieId, page)
 
+        // Then
+        assertThat(result).isEqualTo(expectedReviews)
+        coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieReviews(any(), any(), any()) }
+        coVerify(exactly = 0) { movieReviewLocalDataSource.addReview(any()) }
+    }
+
+    @Test
+    fun `getMovieReview - should return empty list if remote returns no reviews`() = runTest {
+        // Given
+        val movieId = 123
+        val language = "en"
+        val page = 1
+        val emptyReviewsDto = MovieReviewsDto(results = null)
+
+        coEvery {
+            movieReviewLocalDataSource.getReviewsForMovie(
+                movieId,
+                language
+            )
+        } returns emptyList()
         coEvery {
             movieDetailsRemoteDataSource.getMovieReviews(
                 movieId,
                 page,
                 language
             )
-        } returns mockMovieReviewsDto
+        } returns emptyReviewsDto
+        coEvery { movieReviewLocalDataSource.addReview(any()) } just Runs
 
-        coEvery { movieReviewLocalDataSource.addReview(any()) } returns Unit
-
+        // When
         val result = movieRepository.getMovieReview(movieId, page)
 
         // Then
-        coVerify { movieReviewLocalDataSource.addReview(any()) }
-        assertEquals(emptyList<Review>(), result)
+        assertThat(result).isEmpty()
+        coVerify(exactly = 1) {
+            movieDetailsRemoteDataSource.getMovieReviews(
+                movieId,
+                page,
+                language
+            )
+        }
+        coVerify(exactly = 0) { movieReviewLocalDataSource.addReview(any()) }
     }
-
 }

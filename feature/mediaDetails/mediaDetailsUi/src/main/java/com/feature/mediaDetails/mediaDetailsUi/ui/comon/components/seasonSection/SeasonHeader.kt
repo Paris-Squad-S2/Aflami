@@ -1,4 +1,7 @@
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection
+
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,6 +25,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun SeasonHeader(
+    modifier: Modifier = Modifier,
     seasonNumber: Int,
     numberOfEpisodes: Int,
     isExpanded: Boolean,
@@ -30,8 +34,9 @@ fun SeasonHeader(
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
+            .background(Theme.colors.surface)
             .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
         Text(

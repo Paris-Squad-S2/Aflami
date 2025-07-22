@@ -21,4 +21,5 @@ data class CastEntity(
     val name: String,
     val imageUri: String,
     val castCacheDate: LocalDateTime = getCurrentDate(),
-    )
+    val language: String
+)

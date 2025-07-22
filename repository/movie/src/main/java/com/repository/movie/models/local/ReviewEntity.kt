@@ -8,7 +8,7 @@ import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 
 @Entity(
-    tableName = "Reviews_Table",
+    tableName = "reviews_table",
     foreignKeys = [ForeignKey(
         entity = MovieEntity::class,
         parentColumns = ["id"],
@@ -27,5 +27,6 @@ data class ReviewEntity(
     val username: String,
     val rating: Double,
     val reviewCacheDate: LocalDateTime = getCurrentDate(),
-    val description: String
+    val description: String,
+    val language: String
     )

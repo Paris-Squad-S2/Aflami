@@ -1,5 +1,7 @@
 package com.paris_2.aflami.di
 
+import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
+import com.feature.authentication.authenticationUi.AuthenticationFeatureAPIImpl
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
@@ -40,11 +42,12 @@ val FeatureAPIModule = module {
     factory<MediaDetailsFeatureAPI> { MediaDetailsFeatureAPIImpl() }
 
 
-    factory<HomeFeatureAPI> { HomeFeatureAPIImpl() }
+    factory<HomeFeatureAPI> { HomeFeatureAPIImpl(get()) }
     factory<ListsFeatureAPI> { ListsFeatureAPIImpl() }
     factory<CategoriesFeatureAPI> { CategoriesFeatureAPIImpl() }
     factory<GuessGameFeatureAPI> { GuessGameFeatureAPIImpl() }
     factory<ProfileFeatureAPI> { ProfileFeatureAPIImpl() }
+    factory<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl(get()) }
 
     factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
     factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI::class

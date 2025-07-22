@@ -13,6 +13,7 @@ import com.repository.movie.models.local.GalleryEntity
 import com.repository.movie.models.local.GenreEntity
 import com.repository.movie.models.local.ImageEntity
 import com.repository.movie.models.local.MovieEntity
+import com.repository.movie.models.local.MovieSimilarEntity
 import com.repository.movie.models.local.ProductionCompanyEntity
 import com.repository.movie.models.local.ReviewEntity
 import com.repository.movie.models.remote.MovieCastDto
@@ -25,21 +26,6 @@ import com.repository.movie.models.remote.MovieReviewDto
 import com.repository.movie.models.remote.MovieSimilarDto
 import com.repository.movie.util.toImageUrl
 import kotlinx.datetime.LocalDate
-
-fun MovieDto.toEntity(): Movie {
-    return Movie(
-        id = this.id ?: 0,
-        title = this.title.orEmpty(),
-        posterPath = this.posterPath.toImageUrl().orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
-        description = this.overview.orEmpty(),
-        genres = this.movieGenreDto?.map { it.toEntity() } ?: emptyList(),
-        releaseDate = this.releaseDate.orEmpty(),
-        runtime = this.runtime ?: 0,
-        country = this.originCountry?.firstOrNull().orEmpty(),
-        productionCompanies = this.productionCompanies?.map { it.toEntity() } ?: emptyList(),
-    )
-}
 
 fun MovieGenreDto.toEntity(): Genre {
     return Genre(
@@ -72,12 +58,13 @@ fun MovieCastDto.toEntity(): Cast {
     )
 }
 
-fun Cast.toLocalDto(): CastEntity {
+fun Cast.toLocalDto(movieIds: Int, language: String): CastEntity {
     return CastEntity(
-        movieId = this.id,
+        movieId = movieIds,
         name = this.name,
-        id = 0,
-        imageUri = this.imageUrl
+        id = this.id,
+        imageUri = this.imageUrl.toImageUrl().orEmpty(),
+        language = language
     )
 }
 
@@ -89,23 +76,13 @@ fun CastEntity.toEntity(): Cast {
     )
 }
 
-fun MovieSimilarDto.toEntity(): MovieSimilar {
-    return MovieSimilar(
-        id = this.id ?: 0,
-        title = this.title.orEmpty(),
-        posterPath = this.posterPath.toImageUrl().orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
-        releaseDate = this.releaseDate.orEmpty(),
-    )
-}
-
 fun MovieImagesDto.toEntity(): Gallery {
     return Gallery(
         images = this.logos?.map { it.toEntity(id = this.id ?: 0) } ?: emptyList()
     )
 }
 
-fun MovieLogoDto.toEntity(id: Int): Image {
+private fun MovieLogoDto.toEntity(id: Int): Image {
     return Image(
         id = id,
         url = this.filePath.toImageUrl().orEmpty()
@@ -114,9 +91,13 @@ fun MovieLogoDto.toEntity(id: Int): Image {
 
 fun MovieReviewDto.toEntity(): Review {
     return Review(
+        createdAt = try {
+            LocalDate.parse(this.createdAt.orEmpty().substring(0,10))
+        } catch (_: Exception) {
+            LocalDate(9999, 1, 1)
+        },
         id = this.id.orEmpty(),
         name = this.authorDetails?.name.orEmpty(),
-        createdAt = LocalDate.parse(this.createdAt?.substring(0,10) ?: "2025-01-01"),
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
         rating = this.authorDetails?.rating ?: 0.0,
@@ -124,29 +105,7 @@ fun MovieReviewDto.toEntity(): Review {
     )
 }
 
-private fun Int.toEntity(): Genre {
-    return Genre(
-        id = this,
-        name = ""
-    )
-}
-
-fun Movie.toLocalDto(): MovieEntity {
-    return MovieEntity(
-        id = this.id,
-        title = this.title,
-        voteAverage = this.voteAverage,
-        description = this.description,
-        posterPath = this.posterPath,
-        genres = this.genres.map { it.toLocalDto() },
-        releaseDate = this.releaseDate,
-        runtime = this.runtime,
-        country = this.country,
-        productionCompanies = this.productionCompanies.map { it.toLocalDto() }
-    )
-}
-
-fun MovieDto.toLocalDto(): MovieEntity {
+fun MovieDto.toLocalDto(language: String): MovieEntity {
     return MovieEntity(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
@@ -158,6 +117,7 @@ fun MovieDto.toLocalDto(): MovieEntity {
         runtime = this.runtime ?: 0,
         country = this.originCountry?.firstOrNull().orEmpty(),
         productionCompanies = this.productionCompanies?.map { it.toLocalDto() } ?: emptyList(),
+        language = language
     )
 }
 
@@ -173,6 +133,19 @@ fun MovieEntity.toEntity(): Movie {
         runtime = this.runtime,
         country = this.country,
         productionCompanies = this.productionCompanies.map { it.toEntity() }
+    )
+}
+
+fun MovieSimilarDto.toLocalDto(movieId: Int, page: Int, language: String): MovieSimilarEntity {
+    return MovieSimilarEntity(
+        id = this.id ?: 0,
+        movieId = movieId,
+        title = this.title.orEmpty(),
+        voteAverage = this.voteAverage ?: 0.0,
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
+        releaseDate = this.releaseDate.orEmpty(),
+        language = language,
+        page = page
     )
 }
 
@@ -196,7 +169,7 @@ fun GalleryEntity.toEntity(): Gallery {
     )
 }
 
-fun Review.toLocalDto(): ReviewEntity {
+fun Review.toLocalDto(movieId: Int, language: String): ReviewEntity {
     return ReviewEntity(
         id = 0,
         name = this.name,
@@ -204,7 +177,8 @@ fun Review.toLocalDto(): ReviewEntity {
         avatarUrl = this.avatarUrl,
         username = this.username,
         rating = this.rating,
-        movieId = this.id.toInt(),
+        movieId = movieId,
+        language = language,
         description = this.description
     )
 }
@@ -221,42 +195,37 @@ fun ReviewEntity.toEntity(): Review {
     )
 }
 
-fun Review.toRemoteDto(): MovieReviewDto {
-    return MovieReviewDto(
-         author = this.name,
-         createdAt = this.createdAt.toString(),
-         id = this.id,
-         updatedAt = this.createdAt.toString(),
-         url = this.avatarUrl
-    )
-}
-
-
-private fun Genre.toLocalDto(): GenreEntity {
-    return GenreEntity(
+fun MovieSimilarEntity.toEntity(): MovieSimilar {
+    return MovieSimilar(
         id = this.id,
-        name = this.name
+        title = this.title,
+        voteAverage = this.voteAverage,
+        posterPath = this.posterPath,
+        releaseDate = this.releaseDate
     )
 }
 
-private fun GenreEntity.toEntity(): Genre {
+fun MovieSimilar.toLocalDto(movieId: Int, pager: Int, language: String): MovieSimilarEntity {
+    return MovieSimilarEntity(
+        id = this.id,
+        title = this.title,
+        voteAverage = this.voteAverage,
+        posterPath = this.posterPath,
+        releaseDate = this.releaseDate,
+        movieId = movieId,
+        language = language,
+        page = pager
+    )
+}
+
+fun GenreEntity.toEntity(): Genre {
     return Genre(
         id = this.id,
         name = this.name
     )
 }
 
-
-private fun ProductionCompany.toLocalDto(): ProductionCompanyEntity {
-    return ProductionCompanyEntity(
-        id = this.id,
-        logoPath = this.logoPath,
-        name = this.name,
-        originCountry = this.originCountry
-    )
-}
-
-private fun MovieProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
+fun MovieProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     return ProductionCompanyEntity(
         id = this.id ?: 0,
         logoPath = this.logoPath.toImageUrl().orEmpty(),
@@ -265,7 +234,7 @@ private fun MovieProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     )
 }
 
-private fun ProductionCompanyEntity.toEntity(): ProductionCompany {
+fun ProductionCompanyEntity.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id,
         logoPath = this.logoPath,

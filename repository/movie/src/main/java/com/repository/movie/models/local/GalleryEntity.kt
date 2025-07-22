@@ -17,7 +17,7 @@ import kotlinx.datetime.LocalDateTime
 )
 data class GalleryEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val movieId: Int,
     val images: List<ImageEntity>,
     val galleryCacheDate: LocalDateTime = getCurrentDate(),

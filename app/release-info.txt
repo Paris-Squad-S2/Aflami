@@ -1,2 +1,2 @@
-versionName=0.2.0
-- add movie and tv show details ui
+versionName=0.2.5
+- update profile image review and update his pagination
