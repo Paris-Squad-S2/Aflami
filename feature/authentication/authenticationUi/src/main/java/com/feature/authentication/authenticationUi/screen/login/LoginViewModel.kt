@@ -1,6 +1,5 @@
 package com.feature.authentication.authenticationUi.screen.login
 
-import androidx.annotation.StringRes
 import androidx.navigation.NavOptions
 import com.feature.authentication.authenticationApi.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.R
@@ -10,17 +9,6 @@ import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.usecases.GuestLoginUseCase
 import com.paris_2.domain.authentication.usecases.LoginUseCase
-
-data class LoginUIState(
-    val username: String = "",
-    val password: String = "",
-    val showPassword: Boolean = false,
-    @StringRes val passwordErrorMessage: Int? = null,
-    val loginButtonState: ButtonState = ButtonState.Normal,
-    val guestButtonState: ButtonState = ButtonState.Normal,
-    @StringRes val snackBarMessage: Int = R.string.login_failed,
-    val showSnackBar: Boolean = false
-)
 
 class LoginViewModel(
     private val appNavigator: AppNavigator,
