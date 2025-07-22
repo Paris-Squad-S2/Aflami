@@ -23,8 +23,15 @@ data class MovieDetailsUiState(
     val recommendations: Flow<PagingData<SimilarMediaUI>>,
     val cast: List<CastUi>,
     val reviews: Flow<PagingData<ReviewUi>>,
-    val gallery: List<String>
+    val gallery: List<String>,
+    val movieVideoUi: MovieVideoUi
 )
+class MovieVideoUi(
+    val key: String,
+    val name: String,
+    val site: String,
+)
+
 data class MovieUi(
     val id :Int,
     override val posterUrl: String,
@@ -35,7 +42,7 @@ data class MovieUi(
     val runtime: String,
     val country: String,
     val description: String,
-    val productionCompanies: List<ProductionCompanyUi>
+    val productionCompanies: List<ProductionCompanyUi>,
 ): MediaUi
 
 data class ProductionCompanyUi(

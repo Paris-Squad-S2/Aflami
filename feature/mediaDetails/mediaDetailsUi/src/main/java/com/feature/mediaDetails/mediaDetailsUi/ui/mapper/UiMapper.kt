@@ -5,6 +5,7 @@ import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
@@ -13,6 +14,7 @@ import com.domain.mediaDetails.model.TvShowSimilar
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieVideoUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
@@ -162,4 +164,12 @@ fun List<Season>.toListOfSeasonUi(): List<SeasonUi> {
 
 fun List<Episode>.toListOfEpisodeUi(): List<EpisodeUi> {
     return this.map { it.toUi() }
+}
+
+fun MovieVideo.toUi(): MovieVideoUi{
+    return MovieVideoUi(
+        key = this.key,
+        name = this.name,
+        site = this.site
+    )
 }

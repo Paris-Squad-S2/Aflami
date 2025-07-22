@@ -18,7 +18,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -40,6 +39,7 @@ fun DetailsImage(
     modifier: Modifier = Modifier,
     imageUris: List<String>,
     rating: Float,
+    hasVideo: Boolean = true,
     onPlayClick: () -> Unit,
 ) {
     val displayImages = imageUris.take(10)
@@ -141,6 +141,7 @@ fun DetailsImage(
                     buttonType = MediaButtonType.BIG,
                     onButtonClick = onPlayClick,
                     showBoarder = false,
+                    hasVideo = hasVideo,
                     backGroundColor = Theme.colors.surfaceHigh
                 )
             }
