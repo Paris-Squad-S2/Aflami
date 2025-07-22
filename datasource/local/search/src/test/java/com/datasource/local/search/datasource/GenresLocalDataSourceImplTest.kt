@@ -13,16 +13,10 @@ import org.junit.jupiter.api.Test
 class GenresLocalDataSourceImplTest {
     private lateinit var genresLocalDataSource: GenresLocalDataSourceImpl
     private val genresDao: GenresDao = mockk(relaxed = false)
-    private lateinit var sampleGenre: GenreEntity
-    private val language = "en"
+
     @BeforeEach
     fun setUp() {
         genresLocalDataSource = GenresLocalDataSourceImpl(genresDao)
-        sampleGenre = GenreEntity(
-            id = 1,
-            name = "all",
-            language = language
-        )
     }
 
     @Test
@@ -61,4 +55,15 @@ class GenresLocalDataSourceImplTest {
                 })
             }
         }
+
+    private companion object {
+        val language = "en"
+
+        val sampleGenre = GenreEntity(
+            id = 1,
+            name = "all",
+            language = language
+        )
+
+    }
 }
