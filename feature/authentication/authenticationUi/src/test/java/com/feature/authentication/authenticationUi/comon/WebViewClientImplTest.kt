@@ -1,10 +1,9 @@
-package com.feature.authentication.authenticationUi
+package com.feature.authentication.authenticationUi.comon
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import com.feature.authentication.authenticationUi.comon.WebViewClientImpl
 import io.mockk.mockk
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -24,15 +23,15 @@ class WebViewClientImplTest {
     @Test
     fun `onPageStarted sets isLoading true and hasError false`() {
         webViewClient.onPageStarted(mockk(), "http://test.com", null)
-        assertTrue(isLoading.value)
-        assertFalse(hasError.value)
+        Assertions.assertTrue(isLoading.value)
+        Assertions.assertFalse(hasError.value)
     }
 
     @Test
     fun `onPageFinished sets isLoading false`() {
         isLoading.value = true
         webViewClient.onPageFinished(mockk(), "http://test.com")
-        assertFalse(isLoading.value)
+        Assertions.assertFalse(isLoading.value)
     }
 
     @Test
@@ -40,7 +39,7 @@ class WebViewClientImplTest {
         isLoading.value = true
         hasError.value = false
         webViewClient.onReceivedError(mockk(), mockk(), mockk())
-        assertTrue(hasError.value)
-        assertFalse(isLoading.value)
+        Assertions.assertTrue(hasError.value)
+        Assertions.assertFalse(isLoading.value)
     }
 }
