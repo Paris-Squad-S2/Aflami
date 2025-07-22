@@ -1,6 +1,6 @@
 package com.repository.home
 
-import com.paris_2.home.datasource.remote.GenresRemoteDataSource
+import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.dto.GenresDto
 
 class GenresDataSourceImpl(

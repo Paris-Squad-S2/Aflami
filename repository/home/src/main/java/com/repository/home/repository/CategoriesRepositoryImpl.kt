@@ -1,10 +1,10 @@
-package com.paris_2.home.repository
+package com.repository.home.repository
 
 import com.domain.home.exception.NoCategoriesFoundException
-import com.domain.home.repository.CategoriesRepository
-import com.paris_2.home.datasource.remote.GenresRemoteDataSource
-import com.paris_2.home.mapper.toCategoryList
 import com.domain.home.model.Category
+import com.domain.home.repository.CategoriesRepository
+import com.repository.home.datasource.remote.GenresRemoteDataSource
+import com.repository.home.mapper.toCategoryList
 import java.util.Locale
 
 class CategoriesRepositoryImpl(

@@ -1,4 +1,4 @@
-package com.paris_2.home.mapper
+package com.repository.home.mapper
 
 import com.domain.home.model.Category
 import com.repository.home.dto.GenreDto
