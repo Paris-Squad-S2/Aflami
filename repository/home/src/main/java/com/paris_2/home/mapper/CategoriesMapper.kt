@@ -1,8 +1,9 @@
 package com.paris_2.home.mapper
 
 import com.domain.home.model.Category
-import com.paris_2.home.dto.GenreDto
-import com.paris_2.home.dto.GenresDto
+import com.repository.home.dto.GenreDto
+import com.repository.home.dto.GenresDto
+
 
 fun GenreDto.toCategory(): Category {
     return Category(
