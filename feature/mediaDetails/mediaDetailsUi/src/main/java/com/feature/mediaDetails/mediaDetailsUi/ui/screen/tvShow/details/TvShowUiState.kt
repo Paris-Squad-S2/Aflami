@@ -33,7 +33,7 @@ data class TvShowDetailsUiState(
     val tvShowVideoUi: TvShowVideoUi
 )
 
-class TvShowVideoUi(
+data class TvShowVideoUi(
     val key: String,
     val name: String,
     val site: String,
