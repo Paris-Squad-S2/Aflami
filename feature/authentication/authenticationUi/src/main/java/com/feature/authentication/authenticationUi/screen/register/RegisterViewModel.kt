@@ -8,7 +8,7 @@ class RegisterViewModel(
 ) : BaseViewModel<RegisterUIState>(RegisterUIState()) {
 
     init {
-        emitState(
+        updateState(
             screenState.value.copy(
                 registrationUrl = getRegisterUrlUseCase()
             )

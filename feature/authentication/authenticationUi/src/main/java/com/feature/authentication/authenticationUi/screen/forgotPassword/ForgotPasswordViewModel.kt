@@ -8,7 +8,7 @@ class ForgotPasswordViewModel(
 ) : BaseViewModel<ForgotPasswordUIState>(ForgotPasswordUIState()) {
 
     init {
-        emitState(
+        updateState(
             screenState.value.copy(
                 resetPasswordUrl = getForgetPasswordUrlUseCase()
             )

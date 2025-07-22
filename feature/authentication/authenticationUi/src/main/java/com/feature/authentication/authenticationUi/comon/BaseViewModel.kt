@@ -19,8 +19,8 @@ import org.koin.core.component.inject
 
 open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
 
-    private val privateScreenState = MutableStateFlow(initialState)
-    val screenState: StateFlow<S> = privateScreenState.asStateFlow()
+    private val _screenState = MutableStateFlow(initialState)
+    val screenState: StateFlow<S> = _screenState.asStateFlow()
 
     private val navigator: AuthenticationNavigator by inject()
 
@@ -31,8 +31,8 @@ open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
 
     protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
 
-    fun emitState(newState: S) {
-        privateScreenState.update { newState }
+    fun updateState(newState: S) {
+        _screenState.update { newState }
     }
 
     protected fun <T> tryToExecute(
