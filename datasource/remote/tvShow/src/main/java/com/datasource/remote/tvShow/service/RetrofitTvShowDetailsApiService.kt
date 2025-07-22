@@ -49,7 +49,7 @@ interface RetrofitTvShowDetailsApiService {
     ): TvShowSeasonDto
 
     @GET("tv/{series_id}/videos")
-    suspend fun getTrailerVideoForMovie(
+    suspend fun getTrailerVideoForTvShow(
         @Path("series_id") tvShowId: Int
     ): TvShowVideoDto
 }
