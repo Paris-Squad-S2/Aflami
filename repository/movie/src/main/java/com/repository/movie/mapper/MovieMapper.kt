@@ -6,6 +6,7 @@ import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.repository.movie.models.local.CastEntity
@@ -24,6 +25,7 @@ import com.repository.movie.models.remote.MovieLogoDto
 import com.repository.movie.models.remote.MovieProductionCompanyDto
 import com.repository.movie.models.remote.MovieReviewDto
 import com.repository.movie.models.remote.MovieSimilarDto
+import com.repository.movie.models.remote.MovieVideoResultDto
 import com.repository.movie.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
@@ -192,6 +194,15 @@ fun ReviewEntity.toEntity(): Review {
         username = this.username,
         rating = this.rating,
         description = this.description
+    )
+}
+
+fun  MovieVideoResultDto.toEntity(): MovieVideo {
+    return MovieVideo(
+        key = this.key.orEmpty(),
+        name = this.name.orEmpty(),
+        site = this.site.orEmpty(),
+        type = this.type.orEmpty(),
     )
 }
 
