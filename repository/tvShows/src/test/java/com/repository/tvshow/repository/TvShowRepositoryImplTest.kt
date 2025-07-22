@@ -1,5 +1,7 @@
 package com.repository.tvshow.repository
 
+import com.domain.mediaDetails.exception.NoInternetConnectionException
+import com.google.common.truth.Truth.assertThat
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -17,15 +19,18 @@ import com.repository.tvshow.testUtils.mockTvShowDto
 import com.repository.tvshow.testUtils.mockTvShowLogoDto
 import com.repository.tvshow.testUtils.mockTvShowReviewsDto
 import com.repository.tvshow.testUtils.mockTvShowSimilarsDto
+import com.repository.tvshow.testUtils.mockTvShowVideosDto
 import com.repository.util.NetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.just
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.Test
 
 class TvShowRepositoryImplTest {
@@ -296,5 +301,52 @@ class TvShowRepositoryImplTest {
             assertEquals(expectedSeason.name, result.name)
         }
 
+    @Test
+    fun `getTrailerVideoForTvShow - should return trailers from remote when network is available`() = runTest {
+        // Given
+        val tvShowId = 550
+        val expectedTrailers = mockTvShowVideosDto.tvShowVideoResultDto?.map { it.toEntity() } ?: emptyList()
+
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns mockTvShowVideosDto
+
+        // When
+        val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+
+        // Then
+        assertThat(result).isEqualTo(expectedTrailers)
+        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) }
+    }
+
+    @Test
+    fun `getTrailerVideoForTvShow - should return empty list when remote returns no trailers`() = runTest {
+        // Given
+        val tvShowId = 550
+        val emptyVideosDto = mockTvShowVideosDto.copy(tvShowVideoResultDto = null)
+
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns emptyVideosDto
+
+        // When
+        val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+
+        // Then
+        assertThat(result).isEmpty()
+        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) }
+    }
+
+    @Test
+    fun `getTrailerVideoForTvShow - should throw NoInternetConnectionException when network is unavailable`() = runTest {
+        // Given
+        val tvShowId = 550
+
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When & Then
+        assertThrows<NoInternetConnectionException> {
+            tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+        }
+        coVerify(exactly = 0) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(any()) }
+    }
 
 }
