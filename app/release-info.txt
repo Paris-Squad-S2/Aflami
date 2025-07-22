@@ -1,2 +1,2 @@
-versionName=0.2.5
-- update profile image review and update his pagination
+versionName=0.2.6
+- separate the media details to move and tvShow in domain
