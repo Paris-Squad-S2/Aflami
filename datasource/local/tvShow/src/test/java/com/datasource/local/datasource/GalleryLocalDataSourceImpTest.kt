@@ -17,12 +17,76 @@ class GalleryLocalDataSourceImpTest {
 
     private lateinit var galleryLocalDataSource: TvShowGalleryLocalDataSourceImp
     private val galleryDao: TvShowGalleryDao = mockk(relaxed = true)
-    private lateinit var sampleGallery: GalleryEntity
 
     @BeforeEach
     fun setUp() {
         galleryLocalDataSource = TvShowGalleryLocalDataSourceImp(galleryDao)
-        sampleGallery = GalleryEntity(
+    }
+
+
+    @Test
+    fun `should add gallery when addGallery is called`() = runTest {
+        // Given
+        galleryLocalDataSource.addGallery(sampleGallery)
+
+        // When&Then
+        coVerify(exactly = 1) { galleryDao.addGallery(sampleGallery) }
+    }
+
+    @Test
+    fun `should get gallery by movie id when getGalleryByMovieId is called`() = runTest {
+        //Given
+        val movieId = 1
+        coEvery { galleryDao.getGalleryByTvShowId(movieId) } returns sampleGallery
+
+        //When
+        val result = galleryLocalDataSource.getGalleryByTvShowId(movieId)
+
+        //Then
+        assertThat(result).isEqualTo(sampleGallery)
+    }
+
+    @Test
+    fun `should verify getGalleryByTvShowId is called once for movie id`() = runTest {
+        // GIVEN
+        val movieId = 1
+        coEvery { galleryDao.getGalleryByTvShowId(movieId) } returns sampleGallery
+
+        // WHEN
+        galleryLocalDataSource.getGalleryByTvShowId(movieId)
+
+        // THEN
+        coVerify(exactly = 1) { galleryDao.getGalleryByTvShowId(movieId) }
+    }
+
+    @Test
+    fun `should return null when getGalleryByMovieId returns null`() = runTest {
+        //Given
+        val movieId = 2
+        coEvery { galleryDao.getGalleryByTvShowId(movieId) } returns null
+
+        //When
+        val result = galleryLocalDataSource.getGalleryByTvShowId(movieId)
+
+        //Then
+        assertThat(result).isNull()
+    }
+
+    @Test
+    fun `should verify getGalleryByTvShowId is called once for movie id when gallery is null`() = runTest {
+        // GIVEN
+        val movieId = 2
+        coEvery { galleryDao.getGalleryByTvShowId(movieId) } returns null
+
+        // WHEN
+        galleryLocalDataSource.getGalleryByTvShowId(movieId)
+
+        // THEN
+        coVerify(exactly = 1) { galleryDao.getGalleryByTvShowId(movieId) }
+    }
+
+    private companion object {
+        val sampleGallery = GalleryEntity(
             id = 1,
             tvShowId = 1,
             images = listOf(
@@ -36,40 +100,6 @@ class GalleryLocalDataSourceImpTest {
                 ),
             )
         )
-    }
-
-
-    @Test
-    fun `should add gallery when addGallery is called`() = runTest {
-        // Act
-        galleryLocalDataSource.addGallery(sampleGallery)
-
-        // Assert
-        coVerify(exactly = 1) { galleryDao.addGallery(sampleGallery) }
-    }
-
-    @Test
-    fun `should get gallery by movie id when getGalleryByMovieId is called`() = runTest {
-        val movieId = 1
-        coEvery { galleryDao.getGalleryByTvShowId(movieId) } returns sampleGallery
-
-        val result = galleryLocalDataSource.getGalleryByTvShowId(movieId)
-
-        coVerify(exactly = 1) { galleryDao.getGalleryByTvShowId(movieId) }
-        assertThat(result).isEqualTo(sampleGallery)
-    }
-
-
-    @Test
-    fun `should return null when getGalleryByMovieId returns null`() = runTest {
-        val movieId = 2
-        coEvery { galleryDao.getGalleryByTvShowId(movieId) } returns null
-
-        val result = galleryLocalDataSource.getGalleryByTvShowId(movieId)
-
-        coVerify(exactly = 1) { galleryDao.getGalleryByTvShowId(movieId) }
-        assertThat(result).isNull()
-
     }
 
 }
