@@ -31,10 +31,10 @@ private fun RegisterScreenContent(uIState: RegisterUIState, registerViewModel: R
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFFD85895).copy(alpha = 0.24f),
-                        Color(0xFFD85895).copy(alpha = 0f)
+                        Theme.colors.primary.copy(alpha = 0.24f),
+                        Theme.colors.primary.copy(alpha = 0f),
                     )
-                ) // TODO: Don't use hardcoded colors, use Theme.colors
+                )
             )
             .statusBarsPadding()
     ) {

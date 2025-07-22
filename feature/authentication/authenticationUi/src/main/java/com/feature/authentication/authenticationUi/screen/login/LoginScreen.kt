@@ -128,9 +128,9 @@ fun LoginScreenContent(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        Color(0xFFD85895).copy(alpha = 0.24f),
-                        Color(0xFFD85895).copy(alpha = 0f),
-                    ), // TODO: Don't use hardcoded colors, use Theme.colors
+                        Theme.colors.primary.copy(alpha = 0.24f),
+                        Theme.colors.primary.copy(alpha = 0f),
+                    ),
                     endY = 1700f,
                 )
             )
