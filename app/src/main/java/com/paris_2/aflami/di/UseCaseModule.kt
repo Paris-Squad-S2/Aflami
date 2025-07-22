@@ -60,5 +60,9 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
+    factoryOf(::LoginUseCase)
+    factoryOf(::GuestLoginUseCase)
+    factoryOf(::GetForgetPasswordUrlUseCase)
+    factoryOf(::GetRegisterUrlUseCase)
 }
 

@@ -1,6 +1,7 @@
 package com.paris_2.datasource.remote.authentication
 
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
+import com.paris_2.repository.authentication.exeptions.NetworkException
 import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.model.remote.RequestTokenDto
 import com.paris_2.repository.authentication.model.remote.SessionDto
@@ -39,5 +40,13 @@ class AuthenticationRemoteDataSourceImpl(
         } catch (e: Exception) {
             throw NetworkException.UnknownException("Unexpected error: ${e.message}")
         }
+    }
+
+    override fun getRegisterUrl() = REGISTER_URL
+    override fun getForgetPasswordUrl() = FORGET_PASSWORD_URL
+
+    companion object{
+        const val REGISTER_URL = "https://www.themoviedb.org/signup"
+        const val FORGET_PASSWORD_URL = "https://www.themoviedb.org/reset-password"
     }
 }

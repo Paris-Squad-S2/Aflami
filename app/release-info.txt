@@ -1,2 +1,2 @@
-versionName=0.2.8
+versionName=0.2.9
 - Renamed some variable to be more meaningful

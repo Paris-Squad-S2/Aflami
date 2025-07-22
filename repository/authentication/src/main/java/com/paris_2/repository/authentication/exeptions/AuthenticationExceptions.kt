@@ -1,4 +1,4 @@
-package com.paris_2.datasource.remote.authentication
+package com.paris_2.repository.authentication.exeptions
 
 sealed class NetworkException(message: String? = null) : Exception(message) {
     class UnauthenticatedException(message: String? = null) : NetworkException(message)
