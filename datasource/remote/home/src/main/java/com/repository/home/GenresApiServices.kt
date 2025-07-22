@@ -1,4 +1,4 @@
-package com.paris_2.home
+package com.repository.home
 
 import com.repository.home.dto.GenresDto
 import retrofit2.http.GET
