@@ -33,7 +33,7 @@ class LoginViewModel(
     }
 
     override fun onUsernameChange(username: String) {
-        emitState(newState = screenState.value.copy(username = username))
+        emitState(newState = screenState.value.copy(username = username, passwordErrorMessage = null))
         updateStateButton()
     }
 
