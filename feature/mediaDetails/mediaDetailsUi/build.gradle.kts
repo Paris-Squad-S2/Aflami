@@ -39,7 +39,8 @@ android {
 
 dependencies {
 
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_TV_SHOW))
+    implementation(project(Modules.DOMAIN_MOVIE))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
 
@@ -87,7 +88,8 @@ dependencies {
 
     implementation(project(Modules.DESIGN_SYSTEM))
 
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_MOVIE))
+    implementation(project(Modules.DOMAIN_TV_SHOW))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
