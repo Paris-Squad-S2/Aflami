@@ -2,20 +2,36 @@ package com.repository.home.mapper
 
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
-import com.repository.home.dto.MediaDto
-import com.repository.home.dto.MediaListDto
+import com.repository.home.dto.MovieDto
+import com.repository.home.dto.TvDto
 import kotlinx.datetime.LocalDate
-fun MediaDto.toDomain(type: MediaType): Media {
+
+fun MovieDto.toDomain(type: MediaType): Media? {
+    val parsedDate = releaseDate?.let {
+        runCatching { LocalDate.parse(it) }.getOrNull()
+    } ?: return null
     return Media(
-        id = this.id,
-        title = this.title,
-        voteAverage = this.voteAverage,
-        posterPath = this.posterPath,
-        yearOfRelease = LocalDate.parse(this.releaseDate),
-        genreIds = this.genreIds,
+        id = id ?: -1,
+        title = title ?: "[Unknown Title]",
+        voteAverage = voteAverage ?: 0.0,
+        posterPath = posterPath ?: "",
+        yearOfRelease = parsedDate,
+        genreIds = genreIds ?: emptyList(),
         type = type
     )
 }
-fun MediaListDto.toDomainList(type: MediaType): List<Media> {
-    return results.map { it.toDomain(type) }
+
+fun TvDto.toDomain(type: MediaType): Media? {
+    val parsedDate = firstAirDate?.let {
+        runCatching { LocalDate.parse(it) }.getOrNull()
+    } ?: return null
+    return Media(
+        id = id ?: -1,
+        title = originalName ?: "[Unknown Title]",
+        voteAverage = voteAverage ?: 0.0,
+        posterPath = posterPath ?: "",
+        yearOfRelease = parsedDate,
+        genreIds = genreIds ?: emptyList(),
+        type = type
+    )
 }
