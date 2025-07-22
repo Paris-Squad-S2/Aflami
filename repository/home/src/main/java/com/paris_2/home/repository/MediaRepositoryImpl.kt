@@ -1,10 +1,43 @@
 package com.paris_2.home.repository
 
+import com.domain.home.model.Media
+import com.domain.home.model.MediaType
+import com.domain.home.repository.MediaRepository
 import com.paris_2.home.datasource.remote.MediaRemoteDataSource
+import com.paris_2.home.mapper.toDomain
 
 class MediaRepositoryImpl(
     private val mediaRemoteDataSource: MediaRemoteDataSource,
 
-    ){
+    ): MediaRepository {
+    override suspend fun getPopularMedia(): List<Media> {
+        val popularMovies = mediaRemoteDataSource.getPopularMovies().results.map {
+            it.toDomain(MediaType.MOVIE)
+        }
+        val popularTvShows = mediaRemoteDataSource.getPopularTvShows().results.map {
+            it.toDomain(MediaType.TV_SHOW)
+        }
+
+        return (popularMovies + popularTvShows)
+    }
+
+    override suspend fun getTopRatingMedia(): List<Media> {
+        val topMovies = mediaRemoteDataSource.getTopRatedMovies().results.map {
+            it.toDomain(MediaType.MOVIE)
+        }
+        val topTv = mediaRemoteDataSource.getTopRatedTvShows().results.map {
+            it.toDomain(MediaType.TV_SHOW)
+        }
+
+        return (topMovies + topTv)
+    }
+
+    override suspend fun getUpComingMedia(): List<Media> {
+        val upcomingMovies = mediaRemoteDataSource.getUpcomingMovies().results.map {
+            it.toDomain(MediaType.MOVIE)
+        }
+
+        return upcomingMovies
+    }
 
 }

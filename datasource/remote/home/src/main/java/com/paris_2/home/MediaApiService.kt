@@ -6,10 +6,10 @@ import retrofit2.http.GET
 interface MediaApiService {
 
     @GET("movie/popular")
-    suspend fun getPopular(): MediaListDto
+    suspend fun getPopularMovie(): MediaListDto
 
     @GET("movie/top_rated")
-    suspend fun getTopRated(): MediaListDto
+    suspend fun getTopRatedMovie(): MediaListDto
 
     @GET("movie/upcoming")
     suspend fun getUpcoming(): MediaListDto
