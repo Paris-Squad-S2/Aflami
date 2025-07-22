@@ -39,6 +39,6 @@ class TvShowDetailsRemoteDataSourceImpl(
     }
 
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): TvShowVideoDto {
-        return retrofitTvShowDetailsApiService.getTrailerVideoForMovie(tvShowId)
+        return retrofitTvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId)
     }
 }
