@@ -1,7 +1,7 @@
-package com.paris_2.home
+package com.repository.home
 
-import com.paris_2.home.datasource.remote.MediaRemoteDataSource
-import com.paris_2.home.dto.MediaListDto
+import com.repository.home.datasource.remote.MediaRemoteDataSource
+import com.repository.home.dto.MediaListDto
 
 class MediaDataSourceImpl (
     private val apiService: MediaApiService

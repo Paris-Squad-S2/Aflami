@@ -1,5 +1,7 @@
 package com.paris_2.aflami.di
 
+import com.domain.home.repository.MediaRepository
+import com.repository.home.repository.MediaRepositoryImpl
 import com.domain.mediaDetails.repository.MovieRepository
 import com.domain.mediaDetails.repository.TvShowRepository
 import com.domain.search.repository.CategoriesRepository
@@ -26,4 +28,5 @@ val repositoryModule = module {
     singleOf(::TvShowRepositoryImpl) bind TvShowRepository::class
     singleOf(::MovieRepositoryImpl) bind MovieRepository::class
     singleOf(::GenresInteractionRepositoryImpl) bind GenresInteractionRepository::class
+    singleOf(::MediaRepositoryImpl ) bind MediaRepository::class
 }

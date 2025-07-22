@@ -191,7 +191,7 @@ dependencies {
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.REPOSITORY_HOME))
     implementation(project(Modules.DATASOURCE_REMOTE_HOME))
-
+    implementation(project(Modules.DOMAIN_HOME))
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 

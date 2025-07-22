@@ -1,10 +1,10 @@
-package com.paris_2.home.repository
+package com.repository.home.repository
 
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
 import com.domain.home.repository.MediaRepository
-import com.paris_2.home.datasource.remote.MediaRemoteDataSource
-import com.paris_2.home.mapper.toDomain
+import com.repository.home.datasource.remote.MediaRemoteDataSource
+import com.repository.home.mapper.toDomain
 
 class MediaRepositoryImpl(
     private val mediaRemoteDataSource: MediaRemoteDataSource,
