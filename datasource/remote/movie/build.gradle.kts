@@ -45,4 +45,10 @@ dependencies {
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
     implementation(project((":repository:movie")))
+
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.retrofit.converter)
+    implementation(libs.logging.interceptor)
+    implementation(libs.okhttp)
 }
