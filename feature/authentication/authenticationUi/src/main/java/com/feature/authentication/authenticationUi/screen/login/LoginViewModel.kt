@@ -107,7 +107,7 @@ class LoginViewModel(
                 } else {
                     emitState(
                         screenState.value.copy(
-                            loginButtonState = ButtonState.Normal,
+                            guestButtonState = ButtonState.Normal,
                             showSnackBar = true,
                             snackBarMessage = R.string.guest_login_failed
                         )
@@ -117,7 +117,7 @@ class LoginViewModel(
             onError = {
                 emitState(
                     screenState.value.copy(
-                        loginButtonState = ButtonState.Normal,
+                        guestButtonState = ButtonState.Normal,
                         showSnackBar = true,
                         snackBarMessage = R.string.guest_login_failed
                     )
