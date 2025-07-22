@@ -26,7 +26,7 @@ class VideoWebViewViewModel(
     init {
         updateState(
             screenState.value.copy(
-                videoUrl = "https://www.$site.com//watch?v=$key"
+                videoUrl = "https://www.$site.com/watch?v=$key"
             )
         )
     }
