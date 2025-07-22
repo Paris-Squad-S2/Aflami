@@ -1,4 +1,4 @@
-package com.paris_2.home.dto
+package com.repository.home.dto
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
