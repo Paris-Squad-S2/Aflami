@@ -41,5 +41,9 @@ class MediaRepositoryImpl(
 
         return upcomingMovies
     }
-
+    override suspend fun getNowPlayingMedia(): List<Media> {
+        return mediaRemoteDataSource.getNowPlayingMovies().results.map {
+            it.toDomain(MediaType.MOVIE)
+        }
+    }
 }
