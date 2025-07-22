@@ -11,6 +11,16 @@ class WebViewClientImpl(
     private val isLoading: MutableState<Boolean>,
     private val hasError: MutableState<Boolean>,
 ) : WebViewClient() {
+
+    override fun shouldOverrideUrlLoading(
+        view: WebView?,
+        request: WebResourceRequest?
+    ): Boolean {
+        isLoading.value = true
+        hasError.value = false
+        return true
+    }
+
     override fun onPageStarted(
         view: WebView?,
         url: String?,
