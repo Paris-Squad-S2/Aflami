@@ -6,6 +6,7 @@ import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
@@ -60,5 +61,6 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
+    factoryOf(::GetMovieVideoUseCase)
 }
 
