@@ -1,7 +1,7 @@
 package com.paris_2.aflami.di
 
 import android.util.Log
-import com.paris_2.home.MediaApiService
+import com.repository.home.MediaApiService
 import com.feature.search.searchUi.BuildConfig
 import io.ktor.client.*
 import io.ktor.client.engine.android.*

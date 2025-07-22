@@ -1,9 +1,9 @@
-package com.paris_2.home.mapper
+package com.repository.home.mapper
 
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
-import com.paris_2.home.dto.MediaDto
-import com.paris_2.home.dto.MediaListDto
+import com.repository.home.dto.MediaDto
+import com.repository.home.dto.MediaListDto
 import kotlinx.datetime.LocalDate
 fun MediaDto.toDomain(type: MediaType): Media {
     return Media(
