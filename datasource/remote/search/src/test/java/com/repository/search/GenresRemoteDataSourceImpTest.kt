@@ -88,8 +88,23 @@ class GenresRemoteDataSourceImpTest {
             } catch (e: Exception) {
                 assertThat(e).isEqualTo(apiException)
             }
-            coVerify(exactly = 1) { mockGenresApiServices.getAllGenres(language) }
         }
+
+    @Test
+    fun `getAllGenres should call API once`() = runTest {
+        // Given
+        val apiException = RuntimeException("API Error")
+        coEvery { mockGenresApiServices.getAllGenres(language) } throws apiException
+
+        // When
+        try {
+            genresRemoteDataSource.getAllGenres(language)
+        } catch (_: Exception) {
+        }
+
+        // Then
+        coVerify(exactly = 1) { mockGenresApiServices.getAllGenres(language) }
+    }
 
     private companion object {
         val language = "en"
