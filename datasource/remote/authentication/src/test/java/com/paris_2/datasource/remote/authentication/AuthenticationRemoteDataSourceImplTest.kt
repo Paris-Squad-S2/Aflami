@@ -1,6 +1,7 @@
 package com.paris_2.datasource.remote.authentication
 
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.repository.authentication.exeptions.NetworkException
 import com.paris_2.repository.authentication.model.remote.GuestSessionDto
 import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.model.remote.RequestTokenDto

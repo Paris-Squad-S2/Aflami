@@ -14,4 +14,6 @@
     <string name="password_should_be_4_characters_or_more">يجب أن تكون كلمة المرور 4 أحرف أو أكثر</string>
     <string name="login_failed">فشل تسجيل الدخول</string>
     <string name="guest_login_failed">فشل تسجيل الدخول كضيف</string>
+    <string name="invalid_username_or_password">اسم المستخدم أو كلمة المرور غير صحيحة</string>
+
 </resources>

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import com.feature.authentication.authenticationApi.AuthenticationDestination
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
+import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -36,19 +37,26 @@ open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
 
     protected fun <T> tryToExecute(
         onSuccess: (suspend (T) -> Unit)? = null,
-        onError: (String) -> Unit,
+        onError: (String) -> Unit ,
+        onInvalidCredentials: ((String) -> Unit)? = null,
         scope: CoroutineScope = viewModelScope,
         execute: suspend () -> T,
     ): Job {
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            onError(throwable.message ?: "Unexpected error")
+            when (throwable) {
+                is InvalidCredentialsException -> onInvalidCredentials?.invoke(throwable.message ?: "Invalid username or password")
+                else -> onError(throwable.message ?: "Unexpected error")
+            }
         }
         return scope.launch(exceptionHandler) {
             try {
                 val result = execute()
                 onSuccess?.invoke(result)
             } catch (e: Exception) {
-                onError(e.message ?: "Unexpected error")
+                when (e) {
+                    is InvalidCredentialsException -> onInvalidCredentials?.invoke(e.message ?: "Invalid username or password")
+                    else -> onError(e.message ?: "Unexpected error")
+                }
             }
         }
     }

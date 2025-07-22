@@ -183,6 +183,7 @@ fun LoginScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 24.dp),
+                errorMessage = loginUIState.usernameErrorMessage,
                 leadingIcon = R.drawable.ic_user,
             )
 
