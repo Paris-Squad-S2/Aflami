@@ -144,7 +144,7 @@ fun LoginScreenContent(
                     brush = Brush.verticalGradient(
                         colors = listOf(
                             Theme.colors.primary.copy(alpha = 0.24f),
-                            Theme.colors.primary.copy(alpha = 0f),
+                            Theme.colors.surface.copy(alpha = 0.5f),
                         ),
                         endY = 1700f,
                     )
