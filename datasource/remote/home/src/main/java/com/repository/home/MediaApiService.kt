@@ -1,15 +1,15 @@
-package com.paris_2.home
+package com.repository.home
 
-import com.paris_2.home.dto.MediaListDto
+import com.repository.home.dto.MediaListDto
 import retrofit2.http.GET
 
 interface MediaApiService {
 
     @GET("movie/popular")
-    suspend fun getPopular(): MediaListDto
+    suspend fun getPopularMovie(): MediaListDto
 
     @GET("movie/top_rated")
-    suspend fun getTopRated(): MediaListDto
+    suspend fun getTopRatedMovie(): MediaListDto
 
     @GET("movie/upcoming")
     suspend fun getUpcoming(): MediaListDto

@@ -1,15 +1,15 @@
-package com.paris_2.home
+package com.repository.home
 
-import com.paris_2.home.datasource.remote.MediaRemoteDataSource
-import com.paris_2.home.dto.MediaListDto
+import com.repository.home.datasource.remote.MediaRemoteDataSource
+import com.repository.home.dto.MediaListDto
 
 class MediaDataSourceImpl (
     private val apiService: MediaApiService
 ) : MediaRemoteDataSource {
 
-    override suspend fun getPopularMovies(): MediaListDto = apiService.getPopular()
+    override suspend fun getPopularMovies(): MediaListDto = apiService.getPopularMovie()
 
-    override suspend fun getTopRatedMovies(): MediaListDto = apiService.getTopRated()
+    override suspend fun getTopRatedMovies(): MediaListDto = apiService.getTopRatedMovie()
 
     override suspend fun getUpcomingMovies(): MediaListDto = apiService.getUpcoming()
 
