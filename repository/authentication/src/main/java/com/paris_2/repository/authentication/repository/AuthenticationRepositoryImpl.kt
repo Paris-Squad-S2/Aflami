@@ -58,4 +58,10 @@ class AuthenticationRepositoryImpl(
     override fun getSessionId(): String? {
         return localDataSource.getSessionId()
     }
+
+    override fun getRegisterUrl() = remoteDataSource.getRegisterUrl()
+
+    override fun getForgetPasswordUrl (): String {
+        return remoteDataSource.getForgetPasswordUrl()
+    }
 }

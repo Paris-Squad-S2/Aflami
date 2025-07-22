@@ -1,13 +1,16 @@
 package com.feature.authentication.authenticationUi.screen.register
 
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
+import com.paris_2.domain.authentication.usecases.GetRegisterUrlUseCase
 
-class RegisterViewModel : BaseViewModel<RegisterUIState>(RegisterUIState()) {
+class RegisterViewModel(
+    getRegisterUrlUseCase: GetRegisterUrlUseCase
+) : BaseViewModel<RegisterUIState>(RegisterUIState()) {
 
     init {
         emitState(
             screenState.value.copy(
-                registrationUrl = "https://www.themoviedb.org/signup"
+                registrationUrl = getRegisterUrlUseCase()
             )
         )
     }
@@ -15,5 +18,4 @@ class RegisterViewModel : BaseViewModel<RegisterUIState>(RegisterUIState()) {
     fun onNavigateBack() {
         navigateUp()
     }
-
 }

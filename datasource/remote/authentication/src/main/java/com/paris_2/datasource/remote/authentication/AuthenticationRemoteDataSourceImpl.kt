@@ -41,4 +41,12 @@ class AuthenticationRemoteDataSourceImpl(
             throw NetworkException.UnknownException("Unexpected error: ${e.message}")
         }
     }
+
+    override fun getRegisterUrl() = REGISTER_URL
+    override fun getForgetPasswordUrl() = FORGET_PASSWORD_URL
+
+    companion object{
+        const val REGISTER_URL = "https://www.themoviedb.org/signup"
+        const val FORGET_PASSWORD_URL = "https://www.themoviedb.org/reset-password"
+    }
 }
