@@ -1,2 +1,3 @@
-versionName=0.2.4
-- Implement Authentication Feature Api
+versionName=0.2.6
+- added authentication in the domain and datasource with testing
+- add AuthInterceptor to handle authentication
