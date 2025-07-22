@@ -4,6 +4,7 @@ import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 
@@ -15,4 +16,5 @@ interface MovieRepository {
     suspend fun getCompanyProducts(movieId: Int): List<ProductionCompany>
     suspend fun getMovieReview(movieId: Int,page: Int): List<Review>
     suspend fun addMovieToFavorite(movieId: Int)
+    suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo>
 }
