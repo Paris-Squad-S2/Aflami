@@ -2,20 +2,20 @@ package com.paris_2.aflami
 
 import android.app.Application
 import android.util.Log
-import androidx.work.Configuration
-import androidx.work.WorkManager
 import androidx.work.WorkerFactory
-import com.paris_2.aflami.di.FeatureAPIModule
-import com.paris_2.aflami.di.NetworkModule
-import com.paris_2.aflami.di.SearchRemoteDataSourceModule
-import com.paris_2.aflami.di.dataSourceModule
 import com.paris_2.aflami.di.mediaDetailsModule
+import com.paris_2.aflami.di.SearchRemoteDataSourceModule
+import com.paris_2.aflami.di.NetworkModule
+import com.paris_2.aflami.di.dataSourceModule
 import com.paris_2.aflami.di.repositoryModule
 import com.paris_2.aflami.di.roomModule
-import com.paris_2.aflami.di.serviceModule
 import com.paris_2.aflami.di.useCaseModule
 import com.paris_2.aflami.di.viewModelModule
 import com.paris_2.aflami.di.workManagerModule
+import androidx.work.Configuration
+import androidx.work.WorkManager
+import com.paris_2.aflami.di.FeatureAPIModule
+import com.paris_2.aflami.di.serviceModule
 import com.repository.search.util.NetworkConnectionChecker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

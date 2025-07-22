@@ -2,16 +2,16 @@ package com.paris_2.aflami.di
 
 import android.util.Log
 import com.feature.search.searchUi.BuildConfig
-import io.ktor.client.HttpClient
-import io.ktor.client.engine.android.Android
+import com.paris_2.aflami.AuthInterceptor
+import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import io.ktor.client.*
+import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
-import io.ktor.client.plugins.logging.LogLevel
-import io.ktor.client.plugins.logging.Logger
-import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.client.request.header
-import io.ktor.http.HttpHeaders
-import io.ktor.serialization.kotlinx.json.json
+import io.ktor.http.*
+import io.ktor.serialization.kotlinx.json.*
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -26,6 +26,8 @@ val NetworkModule = module {
     single { com.repository.search.util.NetworkConnectionChecker(androidApplication().applicationContext) }
     single { com.repository.util.NetworkConnectionChecker(androidApplication().applicationContext) }
     single { com.repository.movie.util.NetworkConnectionChecker(androidApplication().applicationContext) }
+
+    single { AuthInterceptor(get<AuthenticationLocalDataSource>()) }
     single {
         HttpClient(Android) {
             install(Logging) {
@@ -54,6 +56,7 @@ val NetworkModule = module {
         }
         OkHttpClient.Builder()
             .addInterceptor(logging)
+            .addInterceptor(get<AuthInterceptor>())
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
                     .addHeader("Authorization", "Bearer ${BuildConfig.API_TOKEN}")
@@ -66,14 +69,8 @@ val NetworkModule = module {
     single {
         Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
-            .addConverterFactory(
-                Json {
-                    ignoreUnknownKeys = true
-                }.asConverterFactory("application/json".toMediaType())
-
-            )
             .client(get())
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
     }
-
 }
