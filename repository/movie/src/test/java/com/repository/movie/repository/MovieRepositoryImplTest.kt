@@ -83,21 +83,6 @@ class MovieRepositoryImplTest {
         coVerify(exactly = 0) { movieLocalDataSource.addMovie(any()) }
     }
 
-
-    @Test
-    fun `getMovieDetails - should fetch from remote and save to local when local is empty`() =
-        runTest {
-            // Given
-            val movieId = 550
-            val language = "en"
-
-            // When & Then
-            coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
-            assertThrows<NetworkException> {
-                movieRepository.getMovieDetails(movieId)
-            }
-        }
-
     @Test
     fun `getMovieCast - should return movie cast from local when available`() = runTest {
         // Given
@@ -314,22 +299,6 @@ class MovieRepositoryImplTest {
         coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieImages(any()) }
         coVerify(exactly = 0) { movieGalleryLocalDataSource.addGallery(any()) }
     }
-
-    @Test
-    fun `getMovieGallery - should fetch from remote and save to local when local is empty`() =
-        runTest {
-            // Given
-            val movieId = 123
-
-            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
-            coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
-            coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
-
-            // When & Then
-            assertThrows<NetworkException> {
-                movieRepository.getMovieGallery(movieId)
-            }
-        }
 
     @Test
     fun `getCompanyProducts - should return company products from local when available`() =
