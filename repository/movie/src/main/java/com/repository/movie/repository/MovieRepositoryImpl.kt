@@ -1,5 +1,6 @@
 package com.repository.movie.repository
 
+import com.domain.mediaDetails.exception.AflamiException
 import com.domain.mediaDetails.exception.NoFoundMovieException
 import com.domain.mediaDetails.exception.NoFundGalleryMovieException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
@@ -184,6 +185,8 @@ class MovieRepositoryImpl(
                 throw NoInternetConnectionException()
             }
             call()
+        } catch (e: AflamiException) {
+            throw e
         } catch (_: Exception) {
             throw NoInternetConnectionException()
         }
