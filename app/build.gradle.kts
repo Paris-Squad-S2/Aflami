@@ -175,8 +175,6 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_UI))
     implementation(project(Modules.FEATURE_GUESS_GAME_UI))
     implementation(project(Modules.FEATURE_AUTHENTICATION_UI))
-
-
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
 
@@ -184,8 +182,6 @@ dependencies {
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.REPOSITORY_AUTHENTICATION))
-    implementation(project(Modules.REPOSITORY_MOVIE))
-    implementation(project(Modules.REPOSITORY_TV_SHOW))
 
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
@@ -193,14 +189,12 @@ dependencies {
     implementation(project(Modules.DATASOURCE_REMOTE_AUTHENTICATION))
 
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
-    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_AUTHENTICATION))
 
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
-    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DOMAIN_AUTHENTICATION))
 
     implementation(libs.androidx.room.runtime)

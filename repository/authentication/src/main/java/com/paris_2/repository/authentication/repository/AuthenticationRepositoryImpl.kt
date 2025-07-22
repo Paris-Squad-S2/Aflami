@@ -21,6 +21,15 @@ class AuthenticationRepositoryImpl(
         return false
     }
 
+    override suspend fun guestLogin(): Boolean {
+        val guestSessionDto = remoteDataSource.createGuestSession()
+        guestSessionDto.guestSessionId?.let {
+            localDataSource.saveSessionId(it)
+            return true
+        }
+        return false
+    }
+
     override fun saveSessionId(sessionId: String) {
         localDataSource.saveSessionId(sessionId)
     }

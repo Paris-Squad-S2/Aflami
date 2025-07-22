@@ -6,6 +6,7 @@ import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRem
 import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.model.remote.RequestTokenDto
 import com.paris_2.repository.authentication.model.remote.SessionDto
+import com.paris_2.repository.authentication.model.remote.GuestSessionDto
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -96,5 +97,35 @@ class AuthenticationRepositoryImplTest {
         val result = repository.getSessionId()
 
         assertThat(result).isEqualTo(sessionId)
+    }
+
+    @Test
+    fun `guestLogin should return true and save sessionId when guestSessionId is present`() = runTest {
+        val guestSessionId = "guest_123"
+        coEvery { remoteDataSource.createGuestSession() } returns GuestSessionDto(success = true, guestSessionId = guestSessionId, expiresAt = "2025-07-23 10:11:19 UTC")
+        coEvery { localDataSource.saveSessionId(guestSessionId) } returns Unit
+
+        val result = repository.guestLogin()
+
+        assertThat(result).isTrue()
+        coVerify { localDataSource.saveSessionId(guestSessionId) }
+    }
+
+    @Test
+    fun `guestLogin should return false when guestSessionId is null`() = runTest {
+        coEvery { remoteDataSource.createGuestSession() } returns GuestSessionDto(success = true, guestSessionId = null, expiresAt = "2025-07-23 10:11:19 UTC")
+
+        val result = repository.guestLogin()
+
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `guestLogin should throw exception when remoteDataSource throws`() = runTest {
+        coEvery { remoteDataSource.createGuestSession() } throws RuntimeException("Network error")
+
+        assertFailsWith<RuntimeException> {
+            repository.guestLogin()
+        }
     }
 }

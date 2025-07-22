@@ -57,7 +57,6 @@ val dataSourceModule = module {
     singleOf(::TvShowSimilarLocalDataSourceImpl) bind TvShowSimilarLocalDataSource::class
     singleOf(::GenresInteractionDataSourceImpl) bind GenresInteractionDataSource::class
     singleOf(::MovieSimilarLocalDataSourceImp) bind MovieSimilarLocalDataSource::class
-    singleOf(::GenresInteractionDataSourceImpl) bind GenresInteractionDataSource::class
     singleOf(::AuthenticationRemoteDataSourceImpl) bind AuthenticationRemoteDataSource::class
     singleOf(::AuthenticationLocalDataSourceImpl) bind AuthenticationLocalDataSource::class
 }

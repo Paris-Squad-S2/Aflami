@@ -3,9 +3,7 @@ package com.paris_2.domain.authentication.usecases
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -32,12 +30,5 @@ class LoginUseCaseTest {
         coEvery { repository.login("user", "pass") } returns false
         val result = useCase.invoke("user", "pass")
         assertThat(result).isFalse()
-    }
-
-    @Test
-    fun `saveSessionId should call repository saveSessionId`() {
-        every { repository.saveSessionId("session123") } returns Unit
-        useCase.saveSessionId("session123")
-        verify { repository.saveSessionId("session123") }
     }
 }

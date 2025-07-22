@@ -4,6 +4,7 @@ import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRem
 import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.model.remote.RequestTokenDto
 import com.paris_2.repository.authentication.model.remote.SessionDto
+import com.paris_2.repository.authentication.model.remote.GuestSessionDto
 import retrofit2.HttpException
 
 class AuthenticationRemoteDataSourceImpl(
@@ -20,6 +21,10 @@ class AuthenticationRemoteDataSourceImpl(
 
     override suspend fun createSession(requestToken: String): SessionDto = safeApiCall {
         apiService.createSession(mapOf("request_token" to requestToken))
+    }
+
+    override suspend fun createGuestSession(): GuestSessionDto = safeApiCall {
+        apiService.createGuestSession()
     }
 
     private suspend fun <T> safeApiCall(apiCall: suspend () -> T): T {
