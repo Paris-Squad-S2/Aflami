@@ -1,3 +1,2 @@
-versionName=0.2.6
-- added authentication in the domain and datasource with testing
-- add AuthInterceptor to handle authentication
+versionName=0.2.8
+- Renamed some variable to be more meaningful
