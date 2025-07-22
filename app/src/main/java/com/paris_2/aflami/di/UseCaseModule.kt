@@ -18,7 +18,7 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseC
 import com.domain.search.useCase.AutoCompleteCountryUseCase
 import com.domain.search.useCase.ClearAllRecentSearchesUseCase
 import com.domain.search.useCase.ClearRecentSearchUseCase
-import com.domain.search.useCase.FilterByListOfCategoriesUseCase
+import com.domain.search.useCase.FilterMediaUseCase
 import com.domain.search.useCase.FilterMediaByRatingUseCase
 import com.domain.search.useCase.GetAllCategoriesUseCase
 import com.domain.search.useCase.GetAllRecentSearchesUseCase
@@ -37,7 +37,7 @@ val useCaseModule = module {
     factoryOf(::ClearAllRecentSearchesUseCase)
     factoryOf(::AutoCompleteCountryUseCase)
     factoryOf(::GetCountryCodeByNameUseCase)
-    factoryOf(::FilterByListOfCategoriesUseCase)
+    factoryOf(::FilterMediaUseCase)
     factoryOf(::FilterMediaByRatingUseCase)
     factoryOf(::GetAllCategoriesUseCase)
     factoryOf(::GetMediaByActorNameUseCase)

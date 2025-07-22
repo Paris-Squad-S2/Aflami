@@ -9,7 +9,7 @@ import com.domain.search.model.SearchHistoryModel
 import com.domain.search.model.SearchType
 import com.domain.search.useCase.ClearAllRecentSearchesUseCase
 import com.domain.search.useCase.ClearRecentSearchUseCase
-import com.domain.search.useCase.FilterByListOfCategoriesUseCase
+import com.domain.search.useCase.FilterMediaUseCase
 import com.domain.search.useCase.FilterMediaByRatingUseCase
 import com.domain.search.useCase.GetAllCategoriesUseCase
 import com.domain.search.useCase.GetAllRecentSearchesUseCase
@@ -47,7 +47,7 @@ class SearchViewModelTest {
     private val searchByQueryUseCase: SearchByQueryUseCase = mockk()
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase = mockk()
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase = mockk()
-    private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase = mockk()
+    private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase = mockk()
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase = mockk()
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase = mockk()
 

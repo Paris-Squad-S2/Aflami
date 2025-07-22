@@ -9,11 +9,11 @@ import kotlin.test.assertEquals
 
 class FilterByListOfCategoriesUseCaseTest {
 
-    private lateinit var filterByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase
+    private lateinit var filterMediaUseCase: FilterMediaUseCase
 
     @BeforeEach
     fun setUp() {
-        filterByListOfCategoriesUseCase = FilterByListOfCategoriesUseCase()
+        filterMediaUseCase = FilterMediaUseCase()
     }
 
     @Test
@@ -22,7 +22,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val selectedCategories = listOf(1)
 
         //When
-        val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
+        val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
         assertEquals(1, result.size)
@@ -37,7 +37,7 @@ class FilterByListOfCategoriesUseCaseTest {
         )
 
         //When
-        val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
+        val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
         assertEquals(expectedMediaList, result)
@@ -50,7 +50,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val expectedMediaList = emptyList<Media>()
 
         //When
-        val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
+        val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
         assertEquals(expectedMediaList, result)
@@ -63,7 +63,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val selectedCategories = listOf(3)
 
         //When
-        val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
+        val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
         assertEquals(emptyList(), result)
@@ -75,7 +75,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val selectedCategoriesList = listOf(1, 3)
 
         //When
-        val result = filterByListOfCategoriesUseCase(selectedCategoriesList, mediaList)
+        val result = filterMediaUseCase(selectedCategoriesList, mediaList)
 
         //Then
         assertEquals(2, result.size)
@@ -88,7 +88,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val expected = mediaList
 
         //When
-        val result = filterByListOfCategoriesUseCase(selectedCategories, mediaList)
+        val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
         assertEquals(expected, result)

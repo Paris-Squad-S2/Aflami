@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.ListUpdateCallback
 import com.domain.search.model.Media
 import com.domain.search.useCase.ClearAllRecentSearchesUseCase
 import com.domain.search.useCase.ClearRecentSearchUseCase
-import com.domain.search.useCase.FilterByListOfCategoriesUseCase
+import com.domain.search.useCase.FilterMediaUseCase
 import com.domain.search.useCase.FilterMediaByRatingUseCase
 import com.domain.search.useCase.GetAllCategoriesUseCase
 import com.domain.search.useCase.GetAllRecentSearchesUseCase
@@ -107,7 +107,7 @@ class SearchViewModel(
     private val searchByQueryUseCase: SearchByQueryUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
-    private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
+    private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val appNavigator: AppNavigator = getKoin().get()
