@@ -20,7 +20,7 @@ fun MediaUiState.toDomainModel(): Media{
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toDomainModel(),
-        categories = this.categories,
+        categoryIds = this.categories,
         yearOfRelease = this.yearOfRelease,
         rating = this.rating
     )
@@ -41,7 +41,7 @@ fun Media.toUi(): MediaUiState{
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toUi(),
-        categories = this.categories,
+        categories = this.categoryIds,
         yearOfRelease = this.yearOfRelease,
         rating = this.rating,
     )

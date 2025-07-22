@@ -21,7 +21,7 @@ fun createMedia(
         imageUri = "image.com",
         title = title,
         type = type,
-        categories = categories,
+        categoryIds = categories,
         yearOfRelease = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
         rating = rating,
     )

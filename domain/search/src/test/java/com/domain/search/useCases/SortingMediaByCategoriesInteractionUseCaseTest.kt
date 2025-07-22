@@ -40,7 +40,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "A",
                 type = MediaType.MOVIE,
-                categories = listOf(1, 3),
+                categoryIds = listOf(1, 3),
                 yearOfRelease = sampleDate,
                 rating = 7.2
             ),
@@ -49,7 +49,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "B",
                 type = MediaType.TVSHOW,
-                categories = listOf(2),
+                categoryIds = listOf(2),
                 yearOfRelease = sampleDate,
                 rating = 7.2
             ),
@@ -58,7 +58,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "C",
                 type = MediaType.MOVIE,
-                categories = listOf(3),
+                categoryIds = listOf(3),
                 yearOfRelease = sampleDate,
                 rating = 7.2
             ),
@@ -67,7 +67,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "D",
                 type = MediaType.TVSHOW,
-                categories = listOf(2, 3),
+                categoryIds = listOf(2, 3),
                 yearOfRelease = sampleDate,
                 rating = 7.2
             )
@@ -89,7 +89,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "A",
                 type = MediaType.MOVIE,
-                categories = listOf(1),
+                categoryIds = listOf(1),
                 yearOfRelease = sampleDate,
                 rating = 7.5
             ),
@@ -98,7 +98,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "B",
                 type = MediaType.TVSHOW,
-                categories = listOf(2),
+                categoryIds = listOf(2),
                 yearOfRelease = sampleDate,
                 rating = 5.1
             )
@@ -119,7 +119,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "A",
                 type = MediaType.TVSHOW,
-                categories = listOf(2),
+                categoryIds = listOf(2),
                 yearOfRelease = sampleDate,
                 rating = 10.0
             ),
@@ -128,7 +128,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "B",
                 type = MediaType.MOVIE,
-                categories = listOf(1),
+                categoryIds = listOf(1),
                 yearOfRelease = sampleDate,
                 rating = 8.5
             )
@@ -153,7 +153,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "A",
                 type = MediaType.TVSHOW,
-                categories = listOf(2),
+                categoryIds = listOf(2),
                 yearOfRelease = sampleDate,
                 rating = 3.1
             ),
@@ -162,7 +162,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
                 imageUri = defaultImage,
                 title = "B",
                 type = MediaType.MOVIE,
-                categories = listOf(5),
+                categoryIds = listOf(5),
                 yearOfRelease = sampleDate,
                 rating = 8.1
             )

@@ -6,7 +6,7 @@ class FilterByListOfCategoriesUseCase {
     operator fun invoke(categories: List<Int>, mediaList: List<Media>): List<Media> {
         return mediaList.filter { media ->
             categories.any { category ->
-                media.categories.contains(category)
+                media.categoryIds.contains(category)
             }
         }
     }

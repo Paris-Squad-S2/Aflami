@@ -60,7 +60,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/movie1.jpg",
         title = "The Great Adventure",
         type = MediaType.MOVIE,
-        categories = listOf(1, 3), // Action, Adventure
+        categoryIds = listOf(1, 3), // Action, Adventure
         yearOfRelease = LocalDate(2022, 10, 26),
         rating = 8.5
     )
@@ -70,7 +70,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/movie2.jpg",
         title = "Comedy Night",
         type = MediaType.MOVIE,
-        categories = listOf(2),
+        categoryIds = listOf(2),
         yearOfRelease = LocalDate(2023, 3, 15),
         rating = 6.8
     )
@@ -80,7 +80,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/tvshow1.jpg",
         title = "Space Explorers",
         type = MediaType.TVSHOW,
-        categories = listOf(4),
+        categoryIds = listOf(4),
         yearOfRelease = LocalDate(2021, 1, 10),
         rating = 9.1
     )
@@ -90,7 +90,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/tvshow2.jpg",
         title = "Mystery Lane",
         type = MediaType.TVSHOW,
-        categories = listOf(5),
+        categoryIds = listOf(5),
         yearOfRelease = LocalDate(2024, 6, 1),
         rating = 7.9
     )
