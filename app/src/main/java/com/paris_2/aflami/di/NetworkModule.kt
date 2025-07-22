@@ -45,7 +45,7 @@ val NetworkModule = module {
 
             install(DefaultRequest) {
                 header(HttpHeaders.Authorization, "Bearer ${BuildConfig.API_TOKEN}")
-                 url("https://api.themoviedb.org/3/")
+                url("https://api.themoviedb.org/3/")
             }
         }
     }
@@ -70,7 +70,9 @@ val NetworkModule = module {
         Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
             .client(get())
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .addConverterFactory(Json {
+                ignoreUnknownKeys = true
+            }.asConverterFactory("application/json".toMediaType()))
             .build()
     }
 }
