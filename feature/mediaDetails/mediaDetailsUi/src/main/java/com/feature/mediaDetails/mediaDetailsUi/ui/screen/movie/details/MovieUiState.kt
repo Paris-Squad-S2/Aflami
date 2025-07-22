@@ -26,7 +26,8 @@ data class MovieDetailsUiState(
     val gallery: List<String>,
     val movieVideoUi: MovieVideoUi
 )
-class MovieVideoUi(
+
+data class MovieVideoUi(
     val key: String,
     val name: String,
     val site: String,
