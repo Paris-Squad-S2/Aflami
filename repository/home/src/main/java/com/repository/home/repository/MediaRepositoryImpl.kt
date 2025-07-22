@@ -19,6 +19,7 @@ class MediaRepositoryImpl(
         }
 
         return (popularMovies + popularTvShows)
+            .sortedByDescending { it.voteAverage }
     }
 
     override suspend fun getTopRatingMedia(): List<Media> {
@@ -30,6 +31,7 @@ class MediaRepositoryImpl(
         }
 
         return (topMovies + topTv)
+            .sortedByDescending { it.voteAverage }
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
