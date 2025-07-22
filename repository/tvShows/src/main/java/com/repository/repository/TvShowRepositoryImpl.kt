@@ -12,6 +12,7 @@ import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowSimilar
+import com.domain.mediaDetails.model.TvShowVideo
 import com.domain.mediaDetails.repository.TvShowRepository
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
@@ -174,6 +175,18 @@ class TvShowRepositoryImpl(
 
     override suspend fun addTvShowToFavorite(tvShowId: Int) {
         TODO("Not yet implemented")
+    }
+
+    override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
+        if (networkConnectionChecker.isConnected.value.not()) {
+            throw NoInternetConnectionException()
+        }
+        return safeCall {
+            tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
+                .tvShowVideoResultDto
+                ?.map { it.toEntity() }
+                ?: emptyList()
+        }
     }
 
     private suspend fun <T> safeCall(call: suspend () -> T): T {

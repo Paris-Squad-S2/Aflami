@@ -294,7 +294,7 @@ class MovieDetailsViewModelViewModel(
             return
         }
         navigate(
-            MediaDetailsDestinations.MovieVideosScreen(
+            MediaDetailsDestinations.VideosScreen(
                 site = screenState.value.movieDetailsUiState.movieVideoUi.site,
                 key = screenState.value.movieDetailsUiState.movieVideoUi.key
             )

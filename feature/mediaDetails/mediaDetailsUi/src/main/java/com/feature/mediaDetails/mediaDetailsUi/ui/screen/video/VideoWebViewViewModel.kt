@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.video
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.video
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
@@ -14,12 +14,12 @@ class VideoWebViewViewModel(
 ) : BaseViewModel<VideoWebUIState>(VideoWebUIState()) {
 
     private val site by lazy {
-        savedStateHandle.toRoute<MediaDetailsDestinations.MovieVideosScreen>()
+        savedStateHandle.toRoute<MediaDetailsDestinations.VideosScreen>()
             .site
     }
 
     private val key by lazy {
-        savedStateHandle.toRoute<MediaDetailsDestinations.MovieVideosScreen>()
+        savedStateHandle.toRoute<MediaDetailsDestinations.VideosScreen>()
             .key
     }
 

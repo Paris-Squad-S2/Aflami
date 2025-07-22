@@ -186,10 +186,10 @@ class MovieRepositoryImpl(
             throw NoInternetConnectionException()
         }
 
-        return movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId)
+        return safeCall {  movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId)
             .movieVideoResultDto
             ?.map { it.toEntity() }
-            ?: emptyList()
+            ?: emptyList() }
     }
 
     private suspend fun <T> safeCall(call: suspend () -> T): T {

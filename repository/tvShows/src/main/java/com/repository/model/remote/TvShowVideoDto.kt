@@ -1,13 +1,12 @@
-package com.repository.movie.models.remote
-
+package com.repository.model.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class MovieVideoDto(
+data class TvShowVideoDto(
     @SerialName("id")
     val id: Int? = null,
     @SerialName("results")
-    val movieVideoResultDto: List<MovieVideoResultDto>? = null
+    val tvShowVideoResultDto: List<TvShowVideoResultDto>? = null
 )

@@ -23,5 +23,5 @@ sealed interface MediaDetailsDestinations : MediaDetailsGraph {
     data class LoginDialogDestination(val title: Int) : MediaDetailsDestination
 
     @Serializable
-    data class MovieVideosScreen(val site: String,val key: String) : MediaDetailsDestination
+    data class VideosScreen(val site: String, val key: String) : MediaDetailsDestination
 }

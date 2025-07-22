@@ -11,6 +11,7 @@ import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowSimilar
+import com.domain.mediaDetails.model.TvShowVideo
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
@@ -20,6 +21,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.SeasonUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
 import kotlinx.datetime.LocalDate
 
 fun Movie.toUi(): MovieUi {
@@ -168,6 +170,14 @@ fun List<Episode>.toListOfEpisodeUi(): List<EpisodeUi> {
 
 fun MovieVideo.toUi(): MovieVideoUi{
     return MovieVideoUi(
+        key = this.key,
+        name = this.name,
+        site = this.site
+    )
+}
+
+fun TvShowVideo.toUi(): TvShowVideoUi{
+    return TvShowVideoUi(
         key = this.key,
         name = this.name,
         site = this.site

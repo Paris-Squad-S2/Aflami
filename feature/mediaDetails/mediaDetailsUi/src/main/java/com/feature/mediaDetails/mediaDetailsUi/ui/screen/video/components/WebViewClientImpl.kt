@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.video.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.screen.video.components
 
 import android.graphics.Bitmap
 import android.webkit.WebResourceError
