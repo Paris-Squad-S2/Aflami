@@ -1,10 +1,10 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.paging
 
 import androidx.paging.PagingState
-import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.pagging.BasePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import com.paris_2.domain.movie.useCases.GetMovieRecommendationsUseCase
 
 class SimilarMoviePageSource(
     movieId: Int,

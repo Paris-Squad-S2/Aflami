@@ -8,13 +8,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
-import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
@@ -23,6 +16,13 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.aflami.appnavigation.AppNavigator
+import com.paris_2.domain.movie.useCases.AddMovieToFavoriteUseCase
+import com.paris_2.domain.movie.useCases.GetMovieCastUseCase
+import com.paris_2.domain.movie.useCases.GetMovieDetailsUseCase
+import com.paris_2.domain.movie.useCases.GetMovieGalleryUseCase
+import com.paris_2.domain.movie.useCases.GetMovieRecommendationsUseCase
+import com.paris_2.domain.movie.useCases.GetMovieReviewsUseCase
+import com.paris_2.domain.movie.useCases.GetMoviesProductionCompaniesUseCase
 import kotlinx.coroutines.flow.flowOf
 
 class MovieDetailsViewModelViewModel(

@@ -8,14 +8,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
@@ -24,6 +16,14 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.paris_2.aflami.appnavigation.AppNavigator
+import com.paris_2.domain.tvshow.useCases.AddTvShowToFavoriteUseCase
+import com.paris_2.domain.tvshow.useCases.GetSeasonDetailsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowCastUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowDetailsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowGalleryUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowRecommendationsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowReviewsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowsProductionCompaniesUseCase
 import kotlinx.coroutines.flow.flowOf
 
 class TvShowDetailsViewModel(
@@ -290,7 +290,7 @@ class TvShowDetailsViewModel(
                                     if (it.seasonNumber == seasonNumber) {
                                         it.copy(
                                             isExpanded = true,
-                                            episodes = seasons.episodes.toListOfEpisodeUi()
+                                            episodes = seasons.tvShowEpisodes.toListOfEpisodeUi()
                                         )
                                     } else {
                                         it

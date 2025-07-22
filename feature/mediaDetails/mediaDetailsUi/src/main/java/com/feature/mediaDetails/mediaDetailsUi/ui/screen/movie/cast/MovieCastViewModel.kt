@@ -2,10 +2,10 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
+import com.paris_2.domain.movie.useCases.GetMovieCastUseCase
 
 class MovieCastViewModel
     (
