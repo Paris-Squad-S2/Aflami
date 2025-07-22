@@ -1,18 +1,18 @@
 package com.repository.repository
 
-import com.domain.mediaDetails.exception.NetworkException
-import com.domain.mediaDetails.exception.NoFoundTvShowException
-import com.domain.mediaDetails.exception.NoFundGalleryTvShowException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
-import com.domain.mediaDetails.exception.NoSeasonFoundException
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Gallery
-import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.model.Review
-import com.domain.mediaDetails.model.Season
-import com.domain.mediaDetails.model.TvShow
-import com.domain.mediaDetails.model.TvShowSimilar
-import com.domain.mediaDetails.repository.TvShowRepository
+import com.paris_2.domain.tvshow.exception.NetworkException
+import com.paris_2.domain.tvshow.exception.NoFoundTvShowException
+import com.paris_2.domain.tvshow.exception.NoFundGalleryTvShowException
+import com.paris_2.domain.tvshow.exception.NoInternetConnectionException
+import com.paris_2.domain.tvshow.exception.NoSeasonFoundException
+import com.paris_2.domain.tvshow.model.Season
+import com.paris_2.domain.tvshow.model.TvShow
+import com.paris_2.domain.tvshow.model.TvShowCast
+import com.paris_2.domain.tvshow.model.TvShowGallery
+import com.paris_2.domain.tvshow.model.TvShowProductionCompany
+import com.paris_2.domain.tvshow.model.TvShowReview
+import com.paris_2.domain.tvshow.model.TvShowSimilar
+import com.paris_2.domain.tvshow.repository.TvShowRepository
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -54,7 +54,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getTvShowCast(tvShowId: Int): List<Cast> {
+    override suspend fun getTvShowCast(tvShowId: Int): List<TvShowCast> {
         return safeCall {
             val localCast = tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
             if (localCast.isNotEmpty()) {
@@ -98,7 +98,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getTvShowGallery(tvShowId: Int): Gallery {
+    override suspend fun getTvShowGallery(tvShowId: Int): TvShowGallery {
         return safeCall {
             val localGallery = tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
             if (localGallery != null) {
@@ -112,7 +112,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany> {
+    override suspend fun getCompanyProducts(tvShowId: Int): List<TvShowProductionCompany> {
         return safeCall {
             val localCompany = tvShowLocalDataSource.getTvShowId(tvShowId, language)
                 ?.productionCompanies ?: emptyList()
@@ -151,7 +151,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getTvShowReview(tvShowId: Int, page: Int): List<Review> {
+    override suspend fun getTvShowReview(tvShowId: Int, page: Int): List<TvShowReview> {
         return safeCall {
             val localReview = tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             if (localReview.isNotEmpty()) {

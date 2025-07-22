@@ -297,7 +297,7 @@ class MovieRepositoryImplTest {
         val movieId = 123
         val expectedGallery = mockMovieImagesDto.toEntity()
         val localGalleryEntity = GalleryEntity(
-            images = expectedGallery.images.map { it.toLocalDto() },
+            images = expectedGallery.movieImages.map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
@@ -308,7 +308,7 @@ class MovieRepositoryImplTest {
         val result = movieRepository.getMovieGallery(movieId)
 
         // Then
-        assertThat(result.images).isEqualTo(expectedGallery.images)
+        assertThat(result.movieImages).isEqualTo(expectedGallery.movieImages)
         coVerify(exactly = 0) { movieDetailsRemoteDataSource.getMovieImages(any()) }
         coVerify(exactly = 0) { movieGalleryLocalDataSource.addGallery(any()) }
     }

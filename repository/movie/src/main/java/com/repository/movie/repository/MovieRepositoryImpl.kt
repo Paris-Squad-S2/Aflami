@@ -1,16 +1,16 @@
 package com.repository.movie.repository
 
-import com.domain.mediaDetails.exception.NetworkException
-import com.domain.mediaDetails.exception.NoFoundMovieException
-import com.domain.mediaDetails.exception.NoFundGalleryMovieException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Gallery
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieSimilar
-import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.model.Review
-import com.domain.mediaDetails.repository.MovieRepository
+import com.paris_2.domain.movie.exception.NetworkException
+import com.paris_2.domain.movie.exception.NoFoundMovieException
+import com.paris_2.domain.movie.exception.NoFundGalleryMovieException
+import com.paris_2.domain.movie.exception.NoInternetConnectionException
+import com.paris_2.domain.movie.model.MovieCast
+import com.paris_2.domain.movie.model.MovieGallery
+import com.paris_2.domain.movie.model.Movie
+import com.paris_2.domain.movie.model.MovieSimilar
+import com.paris_2.domain.movie.model.MovieProductionCompany
+import com.paris_2.domain.movie.model.MovieReview
+import com.paris_2.domain.movie.repository.MovieRepository
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -49,7 +49,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getMovieCast(movieId: Int): List<Cast> {
+    override suspend fun getMovieCast(movieId: Int): List<MovieCast> {
         return safeCall {
 
 
@@ -101,7 +101,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getMovieGallery(movieId: Int): Gallery {
+    override suspend fun getMovieGallery(movieId: Int): MovieGallery {
         return safeCall {
             val localGallery = movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
 
@@ -109,7 +109,7 @@ class MovieRepositoryImpl(
                 localGallery.toEntity()
             } else {
                 val remoteGallery = movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity()
-                val remoteGalleryImages = remoteGallery.images
+                val remoteGalleryImages = remoteGallery.movieImages
                 movieGalleryLocalDataSource.addGallery(
                     GalleryEntity(
                         movieId = movieId,
@@ -122,7 +122,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getCompanyProducts(movieId: Int): List<ProductionCompany> {
+    override suspend fun getCompanyProducts(movieId: Int): List<MovieProductionCompany> {
         return safeCall {
             val localMovie = movieLocalDataSource.getMovieById(movieId, language)
             val localProductionCompanies = localMovie?.productionCompanies
@@ -147,7 +147,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getMovieReview(movieId: Int, page: Int): List<Review> {
+    override suspend fun getMovieReview(movieId: Int, page: Int): List<MovieReview> {
         return safeCall {
 
             val localReviews = movieReviewLocalDataSource.getReviewsForMovie(movieId, language)

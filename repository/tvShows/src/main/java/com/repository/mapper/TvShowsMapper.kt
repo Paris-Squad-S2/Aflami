@@ -1,15 +1,15 @@
 package com.repository.mapper
 
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Episode
-import com.domain.mediaDetails.model.Gallery
-import com.domain.mediaDetails.model.Genre
-import com.domain.mediaDetails.model.Image
-import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.model.Review
-import com.domain.mediaDetails.model.Season
-import com.domain.mediaDetails.model.TvShow
-import com.domain.mediaDetails.model.TvShowSimilar
+import com.paris_2.domain.tvshow.model.TvShowCast
+import com.paris_2.domain.tvshow.model.Episode
+import com.paris_2.domain.tvshow.model.TvShowGallery
+import com.paris_2.domain.tvshow.model.TvShowGenre
+import com.paris_2.domain.tvshow.model.TvShowImage
+import com.paris_2.domain.tvshow.model.TvShowProductionCompany
+import com.paris_2.domain.tvshow.model.TvShowReview
+import com.paris_2.domain.tvshow.model.Season
+import com.paris_2.domain.tvshow.model.TvShow
+import com.paris_2.domain.tvshow.model.TvShowSimilar
 import com.repository.model.local.CastEntity
 import com.repository.model.local.EpisodeEntity
 import com.repository.model.local.GalleryEntity
@@ -89,7 +89,7 @@ fun TvShowEntity.toEntity(): TvShow {
         voteAverage = this.voteAverage,
         description = this.description,
         posterPath = this.posterPath.toImageUrl().orEmpty(),
-        genres = this.genres.map { it.toEntity() },
+        tvShowGenres = this.genres.map { it.toEntity() },
         releaseDate = this.releaseDate,
         runtime = this.runtime,
         country = this.country,
@@ -98,8 +98,8 @@ fun TvShowEntity.toEntity(): TvShow {
     )
 }
 
-fun CastEntity.toEntity(): Cast {
-    return Cast(
+fun CastEntity.toEntity(): TvShowCast {
+    return TvShowCast(
         id = this.id,
         name = this.name,
         imageUrl = this.imageUri.toImageUrl().orEmpty()
@@ -113,8 +113,8 @@ private fun TvShowGenreDto.toLocalDto(): GenreEntity {
     )
 }
 
-private fun GenreEntity.toEntity(): Genre {
-    return Genre(
+private fun GenreEntity.toEntity(): TvShowGenre {
+    return TvShowGenre(
         id = this.id,
         name = this.name
     )
@@ -129,8 +129,8 @@ private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     )
 }
 
-fun ProductionCompanyEntity.toEntity(): ProductionCompany {
-    return ProductionCompany(
+fun ProductionCompanyEntity.toEntity(): TvShowProductionCompany {
+    return TvShowProductionCompany(
         id = this.id,
         logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name,
@@ -190,14 +190,14 @@ private fun TvShowPosterDto.toLocalDto(): ImageEntity{
 }
 
 
-fun GalleryEntity.toEntity(): Gallery {
-    return Gallery(
-        images = this.images.map { it.toEntity() }
+fun GalleryEntity.toEntity(): TvShowGallery {
+    return TvShowGallery(
+        tvShowImages = this.images.map { it.toEntity() }
     )
 }
 
-fun ImageEntity.toEntity(): Image {
-    return Image(
+fun ImageEntity.toEntity(): TvShowImage {
+    return TvShowImage(
         id = this.id,
         url = this.url.toImageUrl().orEmpty()
     )
@@ -230,7 +230,7 @@ fun SeasonEntity.toEntity(): Season {
         name = this.name,
         seasonNumber = this.seasonNumber,
         episodeCount = this.episodeCount,
-        episodes = this.episodes.map { it.toEntity() }
+        tvShowEpisodes = this.episodes.map { it.toEntity() }
     )
 }
 
@@ -246,8 +246,8 @@ private fun EpisodeEntity.toEntity(): Episode{
         stillUrl = this.stillUrl
     )
 }
-fun ReviewEntity.toEntity(): Review {
-    return Review(
+fun ReviewEntity.toEntity(): TvShowReview {
+    return TvShowReview(
         id = this.id.toString(),
         name = this.name,
         createdAt = this.createdAt,
