@@ -1,5 +1,7 @@
 package com.paris_2.aflami.di
 
+import com.domain.home.usecase.GetPopularMediaUseCase
+import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
@@ -28,6 +30,7 @@ import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -60,5 +63,9 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
+    factoryOf(::GetTopRatingMediaUseCase)
+    factoryOf(::GetPopularMediaUseCase)
+    // #################### fake use cases #################
+    factoryOf(::FakeContinueWatchingUseCase)
 }
 
