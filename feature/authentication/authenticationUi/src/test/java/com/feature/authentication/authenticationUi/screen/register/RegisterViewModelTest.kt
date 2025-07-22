@@ -1,6 +1,6 @@
 package com.feature.authentication.authenticationUi.screen.register
 
-import com.paris_2.domain.authentication.usecases.GetRegisterUrlUseCase
+import com.paris_2.domain.authentication.usecase.GetRegisterUrlUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk

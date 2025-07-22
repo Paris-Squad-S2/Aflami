@@ -1,4 +1,4 @@
-package com.paris_2.domain.authentication.usecases
+package com.paris_2.domain.authentication.usecase
 
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import io.mockk.coEvery
