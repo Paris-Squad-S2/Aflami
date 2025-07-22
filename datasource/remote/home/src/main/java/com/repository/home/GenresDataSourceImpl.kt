@@ -6,7 +6,7 @@ import com.repository.home.dto.GenresDto
 class GenresDataSourceImpl(
     private val apiService: GenresApiServices
 ): GenresRemoteDataSource {
-    override suspend fun getAllGenres(language: String): GenresDto {
-        return apiService.getAllGenres(language)
+    override suspend fun getMoviesGenres(language: String): GenresDto {
+        return apiService.getMoviesGenres(language)
     }
 }

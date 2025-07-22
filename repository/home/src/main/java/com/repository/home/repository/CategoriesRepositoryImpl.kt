@@ -10,10 +10,10 @@ import java.util.Locale
 class CategoriesRepositoryImpl(
     private val genresRemoteDataSource: GenresRemoteDataSource
 ): CategoriesRepository {
-    override suspend fun getAllCategories(): List<Category> {
+    override suspend fun getMoviesCategories(): List<Category> {
         val language = Locale.getDefault().language
         return try {
-            val genresDto = genresRemoteDataSource.getAllGenres(language)
+            val genresDto = genresRemoteDataSource.getMoviesGenres(language)
             val categories = genresDto.toCategoryList()
             if (categories.isEmpty()) {
                 throw NoCategoriesFoundException()
