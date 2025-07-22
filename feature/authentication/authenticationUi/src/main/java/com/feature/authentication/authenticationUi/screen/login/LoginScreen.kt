@@ -1,5 +1,10 @@
 package com.feature.authentication.authenticationUi.screen.login
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -16,27 +21,29 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.feature.authentication.authenticationUi.R as R
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.screen.login.components.CircleBackground
 import com.feature.authentication.authenticationUi.screen.login.components.HeaderIconLogin
 import com.paris_2.aflami.designsystem.components.AflamiButton
 import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.components.ButtonType
+import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.components.TextField
 import com.paris_2.aflami.designsystem.theme.Theme
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.koin.compose.viewmodel.koinViewModel
+import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = koinViewModel()) {
@@ -50,6 +57,14 @@ fun LoginScreenContent(
     loginScreenInteractionListener: LoginScreenInteractionListener
 ) {
     val scrollVerticalState = rememberScrollState()
+
+    LaunchedEffect(loginUIState.showSnackBar) {
+        if (loginUIState.showSnackBar) {
+            delay(1500)
+            loginScreenInteractionListener.onHideSnackBar()
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -124,19 +139,19 @@ fun LoginScreenContent(
 
         Column(
             modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Theme.colors.primary.copy(alpha = 0.24f),
-                        Theme.colors.primary.copy(alpha = 0f),
-                    ),
-                    endY = 1700f,
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(
+                            Theme.colors.primary.copy(alpha = 0.24f),
+                            Theme.colors.primary.copy(alpha = 0f),
+                        ),
+                        endY = 1700f,
+                    )
                 )
-            )
-            .statusBarsPadding()
-            .navigationBarsPadding()
-            .verticalScroll(scrollVerticalState)
+                .statusBarsPadding()
+                .navigationBarsPadding()
+                .verticalScroll(scrollVerticalState)
         ) {
 
             HeaderIconLogin(modifier = Modifier.padding(top = 24.dp, start = 12.dp))
@@ -185,7 +200,7 @@ fun LoginScreenContent(
                         loginUIState.showPassword
                     )
                 },
-                errorMessage = loginUIState.errorMessage,
+                errorMessage = loginUIState.passwordErrorMessage,
                 showText = loginUIState.showPassword
             )
             AflamiText(
@@ -213,7 +228,7 @@ fun LoginScreenContent(
                     .height(56.dp)
                     .padding(horizontal = 12.dp),
                 text = R.string.login,
-                state = loginUIState.buttonState
+                state = loginUIState.loginButtonState
             )
             Spacer(modifier = Modifier.padding(top = 12.dp))
             AflamiButton(
@@ -224,6 +239,7 @@ fun LoginScreenContent(
                     .height(56.dp)
                     .padding(horizontal = 12.dp),
                 text = R.string.continue_as_guest,
+                state = loginUIState.guestButtonState
             )
             Spacer(Modifier.weight(1f))
             Row(
@@ -252,6 +268,26 @@ fun LoginScreenContent(
                     textAlign = TextAlign.Center
                 )
             }
+        }
+
+
+        AnimatedVisibility(
+            visible = loginUIState.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            SnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(horizontal = 12.dp)
+                    .align(Alignment.TopCenter),
+                text = loginUIState.snackBarMessage,
+                isSuccess = false,
+                onClick = {
+                    loginScreenInteractionListener.onHideSnackBar()
+                }
+            )
         }
     }
 }
@@ -291,6 +327,10 @@ private fun LoginScreenContentPreview() {
 
             override fun onClickCreateAccount() {
                 TODO("Not yet implemented")
+            }
+
+            override fun onHideSnackBar() {
+                uiState.update { it.copy(showSnackBar = false) }
             }
 
         })

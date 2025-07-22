@@ -15,8 +15,11 @@ data class LoginUIState(
     val username: String = "",
     val password: String = "",
     val showPassword: Boolean = false,
-    @StringRes val errorMessage: Int? = null,
-    val buttonState: ButtonState = ButtonState.Normal
+    @StringRes val passwordErrorMessage: Int? = null,
+    val loginButtonState: ButtonState = ButtonState.Normal,
+    val guestButtonState: ButtonState = ButtonState.Normal,
+    @StringRes val snackBarMessage: Int = R.string.login_failed,
+    val showSnackBar: Boolean = false
 )
 
 class LoginViewModel(
@@ -39,7 +42,7 @@ class LoginViewModel(
         emitState(
             screenState.value.copy(
                 password = password,
-                errorMessage = if (isError) R.string.password_should_be_4_characters_or_more else null
+                passwordErrorMessage = if (isError) R.string.password_should_be_4_characters_or_more else null
             )
         )
         updateStateButton()
@@ -52,6 +55,12 @@ class LoginViewModel(
     override fun onClickLogin() {
         tryToExecute(
             execute = {
+                emitState(
+                    screenState.value.copy(
+                        loginButtonState = ButtonState.Loading,
+                        passwordErrorMessage = null
+                    )
+                )
                 loginUseCase(
                     username = screenState.value.username,
                     password = screenState.value.password
@@ -61,8 +70,8 @@ class LoginViewModel(
                 if (!loginSuccess) {
                     emitState(
                         screenState.value.copy(
-                            errorMessage = R.string.incorrect_password,
-                            buttonState = ButtonState.Disabled
+                            passwordErrorMessage = R.string.incorrect_password,
+                            loginButtonState = ButtonState.Disabled
                         )
                     )
                 } else {
@@ -70,7 +79,13 @@ class LoginViewModel(
                 }
             },
             onError = {
-                // TODO: Handle error by showing snack bar
+                emitState(
+                    screenState.value.copy(
+                        loginButtonState = ButtonState.Normal,
+                        showSnackBar = true,
+                        snackBarMessage = R.string.login_failed
+                    )
+                )
             }
         )
     }
@@ -78,17 +93,35 @@ class LoginViewModel(
     override fun onClickLoginAsGuest() {
         tryToExecute(
             execute = {
+                emitState(
+                    screenState.value.copy(
+                        guestButtonState = ButtonState.Loading,
+                        passwordErrorMessage = null
+                    )
+                )
                 guestLoginUseCase()
             },
             onSuccess = { guestLoginSuccess ->
                 if (guestLoginSuccess) {
                     navigateToHome()
                 } else {
-                    // TODO: Handle guest login failure by showing snack bar
+                    emitState(
+                        screenState.value.copy(
+                            loginButtonState = ButtonState.Normal,
+                            showSnackBar = true,
+                            snackBarMessage = R.string.guest_login_failed
+                        )
+                    )
                 }
             },
             onError = {
-                // TODO: Handle error by showing snack bar
+                emitState(
+                    screenState.value.copy(
+                        loginButtonState = ButtonState.Normal,
+                        showSnackBar = true,
+                        snackBarMessage = R.string.guest_login_failed
+                    )
+                )
             }
         )
     }
@@ -109,13 +142,13 @@ class LoginViewModel(
     private fun updateStateButton() {
         val newButtonState = if (screenState.value.username.isEmpty() ||
             screenState.value.password.isEmpty() ||
-            screenState.value.errorMessage != null
+            screenState.value.passwordErrorMessage != null
         ) {
             ButtonState.Disabled
         } else {
             ButtonState.Normal
         }
-        emitState(screenState.value.copy(buttonState = newButtonState))
+        emitState(screenState.value.copy(loginButtonState = newButtonState))
     }
 
     private suspend fun navigateToHome() {
@@ -128,6 +161,10 @@ class LoginViewModel(
                 )
             }.build()
         )
+    }
+
+    override fun onHideSnackBar() {
+        emitState(screenState.value.copy(showSnackBar = false))
     }
 
 }

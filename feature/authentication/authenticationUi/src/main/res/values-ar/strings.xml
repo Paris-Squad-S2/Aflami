@@ -12,4 +12,6 @@
     <string name="don_t_have_account">ليس لديك حساب؟</string>
     <string name="create_account">إنشاء حساب</string>
     <string name="password_should_be_4_characters_or_more">يجب أن تكون كلمة المرور 4 أحرف أو أكثر</string>
+    <string name="login_failed">فشل تسجيل الدخول</string>
+    <string name="guest_login_failed">فشل تسجيل الدخول كضيف</string>
 </resources>

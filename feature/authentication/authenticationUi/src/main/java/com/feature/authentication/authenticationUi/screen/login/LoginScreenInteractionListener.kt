@@ -8,4 +8,5 @@ interface LoginScreenInteractionListener {
     fun onClickLoginAsGuest()
     fun onClickForgotPassword()
     fun onClickCreateAccount()
+    fun onHideSnackBar()
 }

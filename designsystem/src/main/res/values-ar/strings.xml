@@ -37,4 +37,6 @@
     <string name="loading_with_dots">جارٍ التحميل…</string>
     <string name="login">تسجيل الدخول</string>
     <string name="empty"> </string>
+    <string name="some_error_happened">حدث خطأ ما.</string>
+    <string name="added_new_list_successfully">تمت إضافة قائمة جديدة بنجاح.</string>
 </resources>

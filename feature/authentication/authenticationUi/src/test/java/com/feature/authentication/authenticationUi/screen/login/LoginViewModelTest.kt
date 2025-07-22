@@ -20,7 +20,7 @@ class LoginViewModelTest {
     fun `init sets buttonState correctly`() {
         val state = viewModel.screenState.value
 
-        Assertions.assertEquals(ButtonState.Disabled, state.buttonState)
+        Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
     }
 
     @Test
@@ -38,7 +38,7 @@ class LoginViewModelTest {
 
         Assertions.assertEquals(
             R.string.password_should_be_4_characters_or_more,
-            state.errorMessage
+            state.passwordErrorMessage
         )
     }
 
@@ -47,7 +47,7 @@ class LoginViewModelTest {
         viewModel.onPasswordChange("1234")
         val state = viewModel.screenState.value
 
-        Assertions.assertNull(state.errorMessage)
+        Assertions.assertNull(state.passwordErrorMessage)
     }
 
     @Test
