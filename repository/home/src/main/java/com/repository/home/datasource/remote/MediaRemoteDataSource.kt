@@ -1,12 +1,13 @@
 package com.repository.home.datasource.remote
 
-import com.repository.home.dto.MediaListDto
+import com.repository.home.dto.MovieListDto
+import com.repository.home.dto.TvListDto
 
 interface MediaRemoteDataSource {
-    suspend fun getPopularMovies(): MediaListDto
-    suspend fun getTopRatedMovies(): MediaListDto
-    suspend fun getUpcomingMovies(): MediaListDto
-    suspend fun getNowPlayingMovies(): MediaListDto
-    suspend fun getPopularTvShows(): MediaListDto
-    suspend fun getTopRatedTvShows(): MediaListDto
+    suspend fun getPopularMovies(): MovieListDto
+    suspend fun getTopRatedMovies(): MovieListDto
+    suspend fun getUpcomingMovies(): MovieListDto
+    suspend fun getNowPlayingMovies(): MovieListDto
+    suspend fun getPopularTvShows(): TvListDto
+    suspend fun getTopRatedTvShows(): TvListDto
 }
