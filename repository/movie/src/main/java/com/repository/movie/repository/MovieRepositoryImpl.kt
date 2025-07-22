@@ -1,5 +1,6 @@
 package com.repository.movie.repository
 
+import android.util.Log
 import com.domain.mediaDetails.exception.NetworkException
 import com.domain.mediaDetails.exception.NoFoundMovieException
 import com.domain.mediaDetails.exception.NoFundGalleryMovieException
@@ -8,6 +9,7 @@ import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.repository.MovieRepository
@@ -179,6 +181,17 @@ class MovieRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    override suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo> {
+        if (networkConnectionChecker.isConnected.value.not()) {
+            throw NoInternetConnectionException()
+        }
+
+        return movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId)
+            .movieVideoResultDto
+            ?.map { it.toEntity() }
+            ?: emptyList()
+    }
+
     private suspend fun <T> safeCall(call: suspend () -> T): T {
         return try {
             if (networkConnectionChecker.isConnected.value.not()) {
@@ -188,6 +201,7 @@ class MovieRepositoryImpl(
         } catch (_: NoInternetConnectionException) {
             throw NoInternetConnectionException()
         } catch (e: Exception) {
+            Log.d("123123123", "safeCall: ${e.message}")
             throw NetworkException(e.message ?: "Unknown error")
         }
     }
