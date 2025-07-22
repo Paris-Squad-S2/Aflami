@@ -1,2 +1,2 @@
-versionName=0.2.8
+versionName=0.2.9
 - refactor domain unit tests to separate concerns between assertion logic and interaction verification.

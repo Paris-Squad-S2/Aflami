@@ -10,4 +10,6 @@ interface AuthenticationRemoteDataSource {
     suspend fun validateWithLogin(request: LoginRequest): RequestTokenDto
     suspend fun createSession(requestToken: String): SessionDto
     suspend fun createGuestSession(): GuestSessionDto
+    fun getRegisterUrl(): String
+    fun getForgetPasswordUrl(): String
 }
