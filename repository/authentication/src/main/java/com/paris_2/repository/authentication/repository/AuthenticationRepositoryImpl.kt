@@ -12,7 +12,10 @@ class AuthenticationRepositoryImpl(
     override suspend fun login(username: String, password: String): Boolean {
         val tokenResponse = remoteDataSource.getRequestToken()
         val requestToken = tokenResponse.requestToken ?: return false
-        remoteDataSource.validateWithLogin(LoginRequest(username, password, requestToken))
+        val validationResponse = remoteDataSource.validateWithLogin(LoginRequest(username, password, requestToken))
+        if (validationResponse.success == null || !validationResponse.success) {
+            return false
+        }
         val sessionDto = remoteDataSource.createSession(requestToken)
         sessionDto.sessionId?.let {
             localDataSource.saveSessionId(it)
