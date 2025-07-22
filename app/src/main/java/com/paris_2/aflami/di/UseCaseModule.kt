@@ -1,20 +1,5 @@
 package com.paris_2.aflami.di
 
-import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
-import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
 import com.domain.search.useCases.ClearRecentSearchUseCase
@@ -28,6 +13,21 @@ import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.movie.useCases.AddMovieToFavoriteUseCase
+import com.paris_2.domain.movie.useCases.GetMovieCastUseCase
+import com.paris_2.domain.movie.useCases.GetMovieDetailsUseCase
+import com.paris_2.domain.movie.useCases.GetMovieGalleryUseCase
+import com.paris_2.domain.movie.useCases.GetMovieRecommendationsUseCase
+import com.paris_2.domain.movie.useCases.GetMovieReviewsUseCase
+import com.paris_2.domain.movie.useCases.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.tvshow.useCases.AddTvShowToFavoriteUseCase
+import com.paris_2.domain.tvshow.useCases.GetSeasonDetailsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowCastUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowDetailsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowGalleryUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowRecommendationsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowReviewsUseCase
+import com.paris_2.domain.tvshow.useCases.GetTvShowsProductionCompaniesUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 

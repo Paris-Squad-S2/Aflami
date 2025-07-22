@@ -1,12 +1,12 @@
 package com.paris_2.aflami.di
 
-import com.domain.mediaDetails.repository.MovieRepository
-import com.domain.mediaDetails.repository.TvShowRepository
 import com.domain.search.repository.CategoriesRepository
 import com.domain.search.repository.CountryRepository
 import com.domain.search.repository.GenresInteractionRepository
 import com.domain.search.repository.SearchHistoryRepository
 import com.domain.search.repository.SearchMediaRepository
+import com.paris_2.domain.movie.repository.MovieRepository
+import com.paris_2.domain.tvshow.repository.TvShowRepository
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.search.repository.CategoriesRepositoryImpl
