@@ -9,6 +9,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
@@ -18,14 +20,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
-import com.feature.home.homeUi.mapper.toSliderMediaList
-import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
 import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.components.GenresChip
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.Slider
+import com.paris_2.aflami.designsystem.components.SliderMedia
+import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -33,18 +35,27 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeSlider(
-    onMediaClick: () -> Unit,
+    onMediaClick: (media: SliderMedia) -> Unit,
     onSearchIconClick: () -> Unit = {},
-    mediaList: List<MediaUiState>,
+    mediaList: List<SliderMedia>,
     modifier: Modifier,
 ) {
+    val mediaState = remember { mutableStateOf<SliderMedia>(SliderMedia(
+        id = 0,
+        imageUri = "",
+        title = "",
+        type = SliderMediaTypeUi.Movie,
+        categories = emptyList(),
+        rating = 0f,
+        yearOfRelease = "2022",
+    )) }
     Box {
-        if (mediaList.isNotEmpty())
+        if (mediaState.value.imageUri.isNotEmpty())
             SafeImageViewer(
-                model = mediaList[1].imageUri,
+                model = mediaState.value.imageUri,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(350.dp)
+                    .height(410.dp)
                     .blur(18.dp),
                 contentScale = ContentScale.FillWidth,
             )
@@ -78,14 +89,17 @@ fun HomeSlider(
             )
 
             Slider(
-                items = mediaList.toSliderMediaList(),
-                onClick = onMediaClick,
-                modifier = modifier
+                items = mediaList,
+                onClick = {media->
+                    onMediaClick(media)
+                },
+                modifier = modifier,
+                currentMedia = mediaState
             )
 
             if (mediaList.isNotEmpty()) {
                 AflamiText(
-                    text = mediaList[1].title,
+                    text = mediaState.value.title,
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.text.title,
                     modifier = Modifier.padding(top = 8.dp)
@@ -93,7 +107,7 @@ fun HomeSlider(
                 LazyRow (
                     Modifier.padding(top = 8.dp)
                 ){
-                    items(mediaList[1].categories){
+                    items(mediaState.value.categories){
                         GenresChip(
                             title = it,
                             isSelected = false

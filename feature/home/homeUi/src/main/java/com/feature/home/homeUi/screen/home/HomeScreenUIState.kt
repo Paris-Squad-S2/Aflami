@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
+import com.paris_2.aflami.designsystem.components.SliderMedia
 import kotlinx.datetime.LocalDate
 
 data class HomeScreenUIState(
@@ -9,7 +10,7 @@ data class HomeScreenUIState(
 )
 
 data class HomeUIState(
-    val popularMediaList: List<MediaUiState>,
+    val popularMediaList: List<SliderMedia>,
     val continueWatchingMediaList: List<MediaUiState>,
     val topRatedMediaList: List<MediaUiState>,
     val moviesBirthdayMediaList: List<MediaUiState>,

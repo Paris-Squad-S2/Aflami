@@ -1,10 +1,11 @@
 package com.feature.home.homeUi.screen.continueWatching
 
+import com.domain.home.usecase.GetMediaFromLocalUseCase
 import com.feature.home.homeUi.common.BaseViewModel
-import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
+import com.feature.home.homeUi.mapper.toMediaUiStateList
 
 class ContinueWatchingViewModel(
-    private val fakeContinueWatchingUseCase: FakeContinueWatchingUseCase,
+    private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
 ):BaseViewModel<ContinueWatchingUiState>(
     ContinueWatchingUiState(
         continueWatchingMediaList = emptyList(),
@@ -25,12 +26,12 @@ class ContinueWatchingViewModel(
                         isLoading = true
                     )
                 )
-                fakeContinueWatchingUseCase.invoke()
+                getMediaFromLocalUseCase.invoke()
                       },
             onSuccess = { mediaList ->
                 emitState(
                     screenState.value.copy(
-                        continueWatchingMediaList = mediaList,
+                        continueWatchingMediaList = mediaList.toMediaUiStateList(),
                         isLoading = false
                     )
                 )},

@@ -1,6 +1,7 @@
 package com.paris_2.aflami.designsystem.components
 
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,8 +26,9 @@ import kotlin.math.abs
 @Composable
 fun Slider(
     items: List<SliderMedia>,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    onClick: (media: SliderMedia) -> Unit,
+    modifier: Modifier = Modifier,
+    currentMedia: MutableState<SliderMedia>
 ) {
     val pagerState = rememberPagerState(
         pageCount = { items.size },
@@ -61,6 +64,7 @@ fun Slider(
             val isFocused = page == pagerState.currentPage
             val scaleX = 1f - (0.1f * abs(pageOffset))
             val item = items[page]
+            currentMedia.value  = if (page==0) items[page] else items[page-1]
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
@@ -68,7 +72,9 @@ fun Slider(
                     .graphicsLayer(
                         scaleX = scaleX,
                         scaleY = 1f
-                    )
+                    ).clickable{
+                        onClick(item)
+                    }
             ) {
                 AflamiMediaCard(
                     imageUri = item.imageUri.toString(),
@@ -76,7 +82,7 @@ fun Slider(
                     mediaCardType = MediaCardType.SLIDER,
                     showRating = isFocused,
                     showPlayButton = isFocused,
-                    onClick = onClick,
+                    onPlayButtonClick = {onClick(item)},
                     cardHeight = if (isFocused) 300.dp else 276.dp
                 )
             }
@@ -85,9 +91,18 @@ fun Slider(
 }
 
 data class SliderMedia(
+    val id: Int,
     val imageUri: String,
-    val rating: Float
+    val title: String,
+    val type: SliderMediaTypeUi,
+    val categories: List<String>,
+    val rating: Float,
+    val yearOfRelease: String
 )
+
+enum class SliderMediaTypeUi {
+    TvShow, Movie
+}
 
 @Composable
 @PreviewMultiDevices

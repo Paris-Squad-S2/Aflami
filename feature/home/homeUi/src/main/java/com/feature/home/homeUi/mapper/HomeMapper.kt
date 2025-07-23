@@ -7,14 +7,46 @@ import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.aflami.designsystem.components.SliderMedia
+import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
+import kotlinx.datetime.LocalDate
 
-fun List<MediaUiState>.toSliderMediaList() = this.map { it.toSliderMedia() }
+fun List<Media>.toSliderMediaList() = this.map { it.toSliderMedia() }
 
-fun MediaUiState.toSliderMedia(): SliderMedia{
+fun Media.toSliderMedia(): SliderMedia{
     return SliderMedia(
-        imageUri = this.imageUri,
-        rating =  this.rating.toFloat()
+        imageUri = this.posterPath,
+        rating =  this.voteAverage.toFloat(),
+        title = this.title,
+        id = this.id,
+        type = this.type.toSliderMediaTypeUi(),
+        categories = this.genreIds.map { it.genreToName() },
+        yearOfRelease = this.yearOfRelease.toString()
     )
+}
+fun MediaType.toSliderMediaTypeUi(): SliderMediaTypeUi{
+    return when(this){
+        MediaType.TV_SHOW  -> SliderMediaTypeUi.TvShow
+        MediaType.MOVIE -> SliderMediaTypeUi.Movie
+    }
+}
+
+fun SliderMedia.toMedia(): Media {
+    return Media(
+        id = this.id,
+        title = this.title,
+        posterPath = this.imageUri,
+        voteAverage = this.rating.toDouble(),
+        type = this.type.toMediaType(),
+        genreIds = this.categories.map { it.nameToGenreId() },
+        yearOfRelease = LocalDate.parse(this.yearOfRelease)
+    )
+}
+
+fun SliderMediaTypeUi.toMediaType(): MediaType {
+    return when (this) {
+        SliderMediaTypeUi.Movie -> MediaType.MOVIE
+        SliderMediaTypeUi.TvShow -> MediaType.TV_SHOW
+    }
 }
 
 fun List<Media>.toMediaUiStateList() = this.map { it.toUiState() }

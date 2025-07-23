@@ -1,6 +1,5 @@
 package com.feature.home.homeUi.screen.home
 
-import android.util.Log
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -11,20 +10,21 @@ import com.domain.home.usecase.GetUpComingMediaUseCase
 import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeApi.toJson
 import com.feature.home.homeUi.common.BaseViewModel
-import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
 import com.feature.home.homeUi.mapper.nameToGenreId
 import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
+import com.feature.home.homeUi.mapper.toSliderMediaList
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
+import com.paris_2.aflami.designsystem.components.SliderMedia
+import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 
 class HomeScreenViewModel(
     private val getPopularMediaUseCase: GetPopularMediaUseCase,
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
-    private val fakeContinueWatchingUseCase: FakeContinueWatchingUseCase,
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase,
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase,
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase,
@@ -95,7 +95,7 @@ class HomeScreenViewModel(
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            popularMediaList = it.toMediaUiStateList()
+                            popularMediaList = it.toSliderMediaList()
                         )
                     )
                 )
@@ -197,6 +197,35 @@ class HomeScreenViewModel(
                             )
 
                             MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = media.id
+                            )
+                        }.toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
+    }
+
+    override fun onMediaSliderClick(media: SliderMedia){
+        tryToExecute(
+            execute = {
+                addMediaToLocalDatabaseUseCase.invoke(media.toMedia())
+                loadContinueWatchingMedia()
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        when (media.type) {
+                            SliderMediaTypeUi.Movie -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = media.id
+                            )
+
+                            SliderMediaTypeUi.TvShow-> MediaDetailsDestinations.TvShowDetailsScreen(
                                 tvShowId = media.id
                             )
                         }.toJson()
@@ -335,6 +364,3 @@ class HomeScreenViewModel(
         )
     }
 }
-
-// Todo( add to continue watching list use case) need to local data
-// Todo( get continue Watching List use case ) from local data source

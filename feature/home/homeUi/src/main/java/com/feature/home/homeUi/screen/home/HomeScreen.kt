@@ -67,7 +67,7 @@ fun HomeScreenContent(
                     action.onSearchIconClick()
                 },
                 onMediaClick = {
-//                    actions.onMediaCardClick()
+                    action.onMediaSliderClick(it)
                 },
                 mediaList = state.homeUIState.popularMediaList,
                 modifier = Modifier.fillMaxSize(),
