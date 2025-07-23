@@ -9,4 +9,5 @@ interface HomeScreenInteractionListener {
     fun onCategorySelect(category: CategoryUiState)
     fun onAllCategoriesSelect()
     fun onDismissMoodPicker()
+    fun getRandomMoodPickerMovie()
 }
