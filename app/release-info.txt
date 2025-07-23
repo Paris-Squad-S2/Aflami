@@ -1,2 +1,2 @@
-versionName=0.2.9
+versionName=0.2.10
 - fix some ui issues in login screen
