@@ -94,7 +94,7 @@ fun HomeScreenContent(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clickable {
-//                    actions.onMediaCardClick()
+                                action.onMediaCardClick(media)
                             },
                         imageUri = media.imageUri,
                         rating = media.rating.toFloat(),
@@ -128,7 +128,7 @@ fun HomeScreenContent(
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .clickable {
-                                // nav to media Details
+                                action.onMediaCardClick(media)
                             },
                         imageUri = media.imageUri,
                         rating = media.rating.toFloat(),
@@ -217,19 +217,15 @@ fun HomeScreenContent(
         }
     }
     if (state.homeUIState.showMoodPickerDialog && state.homeUIState.moodPickerMovie != null) {
-            MoodPickerDialog(
-                movie = state.homeUIState.moodPickerMovie,
-                onDismiss = { action.onDismissMoodPicker() },
-                onViewDetailsClick = {action.onMediaCardClick(state.homeUIState.moodPickerMovie) },
-                onGetAnotherMovieClick = {action.getRandomMoodPickerMovie() }
-            )
-
-
+        val moodPickerMovie = state.homeUIState.moodPickerMovie
+        MoodPickerDialog(
+            movie = moodPickerMovie,
+            onDismiss = { action.onDismissMoodPicker() },
+            onViewDetailsClick = { action.onMediaCardClick(moodPickerMovie) },
+            onGetAnotherMovieClick = { action.getRandomMoodPickerMovie() }
+        )
     }
 }
-
-
-
 
 @Preview
 @Composable
