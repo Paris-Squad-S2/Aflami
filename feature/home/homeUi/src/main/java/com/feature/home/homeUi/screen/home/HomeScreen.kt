@@ -12,7 +12,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -20,10 +22,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
+import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
 import com.feature.home.homeUi.screen.home.component.HomeSlider
+import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
+import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.MediaCardType
+import com.paris_2.aflami.designsystem.components.MoodPicker
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -34,7 +40,7 @@ fun HomeScreen(
     val homeScreenState = viewModel.screenState.collectAsStateWithLifecycle()
 
     HomeScreenContent(
-        state = homeScreenState.value.homeUIState,
+        state = homeScreenState.value,
         action = viewModel
     )
 
@@ -42,12 +48,16 @@ fun HomeScreen(
 
 @Composable
 fun HomeScreenContent(
-    state: HomeUIState,
+    state: HomeScreenUIState,
     action: HomeScreenInteractionListener
 ) {
 
     val lazyState = rememberLazyListState()
     val isScrolling by remember { derivedStateOf { lazyState.isScrollInProgress } }
+    var currentCategories by remember { mutableStateOf(state.homeUIState.categories) }
+    var isAllCategories by remember { mutableStateOf(state.homeUIState.isAllCategories) }
+    val showMoodPickerDialog = remember { mutableStateOf(false) }
+    val moviePicker = remember { mutableStateOf(state.homeUIState.moodPickerMovie) }
 
     LazyColumn(
         state = lazyState,
@@ -62,7 +72,7 @@ fun HomeScreenContent(
                 onMediaClick = {
 //                    actions.onMediaCardClick()
                 },
-                mediaList = state.popularMediaList,
+                mediaList = state.homeUIState.popularMediaList,
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -82,7 +92,7 @@ fun HomeScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(state.continueWatchingMediaList) { media ->
+                items(state.homeUIState.continueWatchingMediaList) { media ->
                     AflamiMediaCard(
                         modifier = Modifier
                             .padding(end = 8.dp)
@@ -116,7 +126,7 @@ fun HomeScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(state.topRatedMediaList) { media ->
+                items(state.homeUIState.topRatedMediaList) { media ->
                     AflamiMediaCard(
                         modifier = Modifier
                             .padding(end = 8.dp)
@@ -136,22 +146,98 @@ fun HomeScreenContent(
             }
         }
 
-        // Todo ( Movie birthday )
 
-//         MoodPicker(
-//             modifier = TODO(),
-//             backgroundColor = TODO(),
-//             image = TODO(),
-//             onEmojiClick = TODO(),
-//             title = TODO(),
-//             question = TODO()
-//         )
+        item {
+            MoodPicker(
+                title = stringResource(R.string.mood_picker_get_a_movie),
+                question = stringResource(R.string.what_s_your_vibe_today),
+                onEmojiClick = { emojiMood ->
+                    showMoodPickerDialog.value = true
+                   action.moodPickerSelected(emojiMood.tags)
+                },
+                image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_clown),
+                backgroundColor = listOf(
+                    Theme.colors.primary,
+                    Theme.colors.status.redAccent,
+                    Theme.colors.status.yellowAccent,
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 24.dp)
+            )
+        }
+        item {
+            AflamiSectionTitle(
+                title = stringResource(R.string.upcoming),
+                modifier = Modifier.padding(bottom = 12.dp)
+            )
+            LazyRow(
+                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
+            ) {
+                item {
+                    Chips(
+                        title = stringResource(R.string.all),
+                        icon = painterResource(R.drawable.ic_category_all),
+                        isSelected = isAllCategories,
+                        onClick = {
+                            action.onAllCategoriesSelect()
+                            if (!isAllCategories) isAllCategories = true
+                            currentCategories = state.homeUIState.categories.mapValues { false }
+                        }
+                    )
+                }
+                items(currentCategories.size) { index ->
+                    val category = currentCategories.keys.elementAt(index)
+                    Chips(
+                        title = category.name,
+                        icon = painterResource(getResourceId(category.id)),
+                        isSelected = currentCategories[category] ?: false,
+                        onClick = {
+                            action.onCategorySelect(category = listOf(category.id))
+                            isAllCategories = false
+                            currentCategories = currentCategories.toMutableMap().apply {
+                                this[category] = (currentCategories[category] ?: false)
+                            }
+                        }
+                    )
+                }
+            }
 
-        // Todo ( upComing )
+        }
 
-        // Todo ( Bottom Bar )
+        items(state.homeUIState.upComingMediaList) { upcomingMedia ->
+            AflamiMediaCard(
+                imageUri = upcomingMedia.imageUri,
+                rating = upcomingMedia.rating.toFloat(),
+                movieName = upcomingMedia.title,
+                mediaType = upcomingMedia.type.toString(),
+                year = upcomingMedia.yearOfRelease.toString(),
+                mediaCardType = MediaCardType.UP_COMING,
+                showGradientFilter = false,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 8.dp)
+                    .clickable {
+                        action.onMediaCardClick(upcomingMedia)
+                    },
+            )
+        }
+    }
+    if (showMoodPickerDialog.value) {
+            MoodPickerDialog(
+                movie = moviePicker.value!!,
+                onDismiss = { showMoodPickerDialog.value = false },
+                onViewDetailsClick = {action.onMediaCardClick(moviePicker.value!!) },
+                onGetAnotherMovieClick = { }
+            )
+
+
     }
 }
+
+
+
 
 @Preview
 @Composable
