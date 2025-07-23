@@ -227,7 +227,11 @@ fun MovieDetailsScreenContent(
                                                 mediaCardType = MediaCardType.UP_COMING,
                                                 showGradientFilter = true,
                                                 clickable = true,
-                                                onClick = { },
+                                                onClick = {
+                                                    movieDetailsScreenInteractionListener.onSimilarMovieClick(
+                                                        mediaId = media.id
+                                                    )
+                                                },
                                                 cardWidth = null
                                             )
                                         }

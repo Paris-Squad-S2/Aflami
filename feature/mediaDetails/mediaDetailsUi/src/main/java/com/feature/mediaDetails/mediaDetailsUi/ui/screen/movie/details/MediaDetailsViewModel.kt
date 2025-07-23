@@ -15,6 +15,7 @@ import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
@@ -22,7 +23,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompa
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
-import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.flow.flowOf
 
 class MovieDetailsViewModelViewModel(
@@ -34,7 +34,7 @@ class MovieDetailsViewModelViewModel(
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
     private val getMovieProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase,
     private val addMovieToFavoriteUseCase: AddMovieToFavoriteUseCase,
-    private val appNavigator: AppNavigator,
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
@@ -232,7 +232,7 @@ class MovieDetailsViewModelViewModel(
 
     override fun onNavigateBack() {
         tryToExecute(
-            execute = { appNavigator.navigateUp() },
+            execute = { navigateUp() },
             onError = {
                 updateState(
                     screenState.value.copy(
@@ -264,5 +264,9 @@ class MovieDetailsViewModelViewModel(
             )
         )
         loadedMovieDetails(mediaId = movieId)
+    }
+
+    override fun onSimilarMovieClick(mediaId: Int) {
+        mediaDetailsFeatureAPI.startMovieDetails(mediaId)
     }
 }

@@ -19,7 +19,7 @@ import com.feature.profile.profileApi.fromJsonToProfileDestination
 import org.koin.compose.koinInject
 
 @Composable
-fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
+internal fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
     val homeFeature: HomeFeatureAPI = koinInject()
     val listsFeature: ListsFeatureAPI = koinInject()
     val categoriesFeature: CategoriesFeatureAPI = koinInject()

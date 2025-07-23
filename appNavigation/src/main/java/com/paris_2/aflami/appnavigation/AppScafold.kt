@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
-fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
+internal fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
 
     val navController = rememberNavController()
 

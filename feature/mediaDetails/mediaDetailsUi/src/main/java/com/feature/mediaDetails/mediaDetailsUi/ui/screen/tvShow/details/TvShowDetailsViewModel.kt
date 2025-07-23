@@ -16,6 +16,7 @@ import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
@@ -23,7 +24,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompa
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
-import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.flow.flowOf
 
 class TvShowDetailsViewModel(
@@ -36,7 +36,7 @@ class TvShowDetailsViewModel(
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase,
     private val addTvShowToFavoriteUseCase: AddTvShowToFavoriteUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
-    private val appNavigator: AppNavigator,
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
@@ -236,7 +236,7 @@ class TvShowDetailsViewModel(
 
     override fun onNavigateBack() {
         tryToExecute(
-            execute = { appNavigator.navigateUp() },
+            execute = { navigateUp() },
             onError = {
                 updateState(
                     screenState.value.copy(
@@ -322,5 +322,11 @@ class TvShowDetailsViewModel(
             )
         )
         loadTvShowDetails(mediaId = mediaId)
+    }
+
+    override fun onSimilarTvShowClick(mediaId: Int) {
+        mediaDetailsFeatureAPI.startTvShowDetails(
+            tvShowId = mediaId
+        )
     }
 }

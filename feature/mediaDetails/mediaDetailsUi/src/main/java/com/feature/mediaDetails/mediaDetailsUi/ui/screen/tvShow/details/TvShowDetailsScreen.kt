@@ -237,7 +237,9 @@ fun TvShowDetailsScreenContent(
                                         mediaCardType = MediaCardType.UP_COMING,
                                         showGradientFilter = true,
                                         clickable = true,
-                                        onClick = { },
+                                        onClick = {
+                                            tvShowScreenInteractionListener.onSimilarTvShowClick(media.id)
+                                        },
                                         cardWidth = null
                                     )
                                 }
