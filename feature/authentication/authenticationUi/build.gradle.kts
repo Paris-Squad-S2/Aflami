@@ -83,7 +83,6 @@ dependencies {
 
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.APP_NAVIGATION))
     implementation(project(Modules.DOMAIN_AUTHENTICATION))
 

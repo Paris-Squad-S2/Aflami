@@ -1,17 +1,15 @@
 package com.feature.authentication.authenticationUi.screen.login
 
-import androidx.navigation.NavOptions
 import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigator
+import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.usecases.GuestLoginUseCase
 import com.paris_2.domain.authentication.usecases.LoginUseCase
 
 class LoginViewModel(
-    private val appNavigator: AppNavigator,
+    private val appNavigationAPI : AppNavigationAPI,
     private val loginUseCase: LoginUseCase,
     private val guestLoginUseCase: GuestLoginUseCase,
 ) : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
@@ -147,16 +145,8 @@ class LoginViewModel(
         updateState(screenState.value.copy(loginButtonState = newButtonState))
     }
 
-    private suspend fun navigateToHome() {
-        appNavigator.navigate(
-            AppDestinations.HomeFeature(),
-            NavOptions.Builder().apply {
-                setPopUpTo(
-                    AppDestinations.AuthenticationFeature(),
-                    inclusive = true
-                )
-            }.build()
-        )
+    private fun navigateToHome() {
+        appNavigationAPI()
     }
 
     override fun onHideSnackBar() {

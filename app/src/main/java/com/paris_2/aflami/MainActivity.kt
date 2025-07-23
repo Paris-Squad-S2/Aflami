@@ -7,13 +7,12 @@ import androidx.activity.enableEdgeToEdge
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import org.koin.android.ext.android.get
-import org.koin.core.parameter.parametersOf
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val authenticationFeatureAPI: AuthenticationFeatureAPI = get { parametersOf(this) }
+        val authenticationFeatureAPI: AuthenticationFeatureAPI = get()
         setContent {
             AflamiTheme {
                 authenticationFeatureAPI()

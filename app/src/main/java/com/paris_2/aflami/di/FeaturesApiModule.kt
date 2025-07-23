@@ -27,7 +27,10 @@ import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.navigation.SearchNavigatorImpl
 import com.paris_2.aflami.appnavigation.AppNavigatorImpl
 import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigationAPI
+import com.paris_2.aflami.appnavigation.AppNavigationAPIImpl
 import com.paris_2.aflami.appnavigation.AppNavigator
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -48,5 +51,6 @@ val FeatureAPIModule = module {
 
     factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
     factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI ::class
-    single { (context: android.content.Context) -> AuthenticationFeatureAPIImpl(context) as AuthenticationFeatureAPI }
+    single<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl(androidContext()) }
+    single<AppNavigationAPI> { AppNavigationAPIImpl(androidContext()) }
 }

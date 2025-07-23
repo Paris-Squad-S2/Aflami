@@ -9,6 +9,7 @@ class AuthenticationFeatureAPIImpl(
 ) : AuthenticationFeatureAPI {
     override fun invoke() {
         val intent = Intent(context, AuthActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(intent)
     }
 }
