@@ -1,8 +1,6 @@
 package com.feature.authentication.authenticationUi.navigation
 
 import androidx.navigation.NavOptions
-import com.feature.authentication.authenticationApi.AuthenticationDestination
-import com.feature.authentication.authenticationApi.AuthenticationGraph
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex

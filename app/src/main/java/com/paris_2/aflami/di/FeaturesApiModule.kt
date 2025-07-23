@@ -1,6 +1,6 @@
 package com.paris_2.aflami.di
 
-import com.feature.authentication.authenticationApi.AuthenticationDestinations
+import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.authentication.authenticationUi.AuthenticationFeatureAPIImpl
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator

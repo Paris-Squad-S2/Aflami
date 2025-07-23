@@ -6,8 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
-import com.feature.authentication.authenticationApi.fromJsonToAuthenticationDestination
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesApi.fromJsonToCategoriesDestination
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI

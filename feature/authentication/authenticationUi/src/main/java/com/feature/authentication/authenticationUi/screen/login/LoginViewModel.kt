@@ -1,7 +1,7 @@
 package com.feature.authentication.authenticationUi.screen.login
 
 import androidx.navigation.NavOptions
-import com.feature.authentication.authenticationApi.AuthenticationDestinations
+import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.paris_2.aflami.appnavigation.AppDestinations
