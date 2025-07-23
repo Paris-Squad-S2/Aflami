@@ -83,7 +83,24 @@ dependencies {
 
     // paging 3
     implementation(libs.androidx.paging.runtime)
-    implementation (libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.compose)
+
+
+    // For building media playback UIs using Jetpack Compose
+    implementation(libs.androidx.media3.ui.compose)
+    // For media playback using ExoPlayer
+    implementation(libs.androidx.media3.exoplayer)
+
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // test
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
+
 
     implementation(project(Modules.DESIGN_SYSTEM))
 
