@@ -234,8 +234,3 @@ fun HomeScreenContent(
     }
 }
 
-@Preview
-@Composable
-private fun HomeScreenPreview() {
-    HomeScreen()
-}
