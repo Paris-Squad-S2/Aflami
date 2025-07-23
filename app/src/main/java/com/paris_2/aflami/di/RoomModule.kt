@@ -15,6 +15,8 @@ import com.datasource.local.dao.TvShowDao
 import com.datasource.local.dao.TvShowGalleryDao
 import com.datasource.local.dao.TvShowReviewDao
 import com.datasource.local.dao.TvShowSimilarDao
+import com.datasource.local.home.HomeDatabase
+import com.datasource.local.home.dao.HomeMediaDao
 import com.datasource.local.search.SearchDatabase
 import com.datasource.local.search.dao.CountryDao
 import com.datasource.local.search.dao.GenresDao
@@ -45,6 +47,14 @@ val roomModule = module {
         ).build()
     }
 
+    single<HomeDatabase> {
+        Room.databaseBuilder(
+            get<Context>(),
+            HomeDatabase::class.java,
+            MOVIE_DATABASE_NAME
+        ).build()
+    }
+
     single<TvShowDetailDataBase> {
         Room.databaseBuilder(
             get<Context>(),
@@ -68,7 +78,7 @@ val roomModule = module {
     single<TvShowReviewDao> { get<TvShowDetailDataBase>().reviewDao() }
     single<SeasonDao> { get<TvShowDetailDataBase>().seasonDao() }
     single<TvShowSimilarDao> { get<TvShowDetailDataBase>().tvShowSimilarDao() }
-
+    single<HomeMediaDao> { get<HomeDatabase>().mediaDao() }
 }
 
 object DatabaseConstants {

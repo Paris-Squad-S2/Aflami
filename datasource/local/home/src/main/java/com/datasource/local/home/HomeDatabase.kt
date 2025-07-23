@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.datasource.local.home.dao.MediaDao
+import com.datasource.local.home.dao.HomeMediaDao
 import com.repository.home.entity.MediaEntity
 
 @Database(
@@ -15,7 +15,7 @@ import com.repository.home.entity.MediaEntity
 
 @TypeConverters(HomeConverter::class)
 abstract class HomeDatabase : RoomDatabase() {
-    abstract fun mediaDao(): MediaDao
+    abstract fun mediaDao(): HomeMediaDao
 
     companion object {
         const val DATABASE_NAME = "home_db"

@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.repository.home.entity.MediaEntity
 
 @Dao
-interface MediaDao {
+interface HomeMediaDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addMedia(media: MediaEntity)
