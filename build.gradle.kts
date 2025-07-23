@@ -56,11 +56,18 @@ val koverExcludedPackages = listOf(
     "*State.kt",
     "**MovieUiState.**",
     "**.TvShowUiState.**",
-    "**.MediaDetailsViewModel**",
-    "**.TvShowDetailsViewModel**",
-    "**.VideoWebViewViewModel**",
     "**.MovieUiState**",
-    "**.TvShowUiState**"
+    "**.TvShowUiState**",
+    "**NetworkErrorMapper.**",
+    "**.NetworkErrorMapper**",
+    "**NetWorkExcpetion.**",
+    "**.NetWorkExcpetion**",
+    "**SafeApiCall.**",
+    "**.SafeApiCall**",
+    "**KtorMovieDetailsApiServiceImpl.**",
+    "**.KtorMovieDetailsApiServiceImpl**",
+    "**KtorTvShowDetailsApiServiceImpl.**",
+    "**.KtorTvShowDetailsApiServiceImpl**",
     /*
     "**.GenreResourceMapper",
 
