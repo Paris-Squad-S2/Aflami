@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCases.movie
 
 import com.domain.mediaDetails.repository.MovieRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -22,12 +23,12 @@ class GetMoviesProductionCompaniesUseCaseTest {
     fun `should return movie production from repository`() = runTest {
         // Given
         val movieId = 1
-
-        // when
         coEvery { movieRepository.getCompanyProducts(movieId) } returns fakeProductionCompanies
 
         // Then
         val result = getMoviesProductionCompaniesUseCase(movieId)
+
+        // when
         assertEquals(result, fakeProductionCompanies)
 
     }
@@ -35,14 +36,31 @@ class GetMoviesProductionCompaniesUseCaseTest {
     @Test
     fun `should return empty list when no cast found`() = runTest{
         // Given
-        val movieId = 1
-
-        // when
         coEvery { movieRepository.getCompanyProducts(movieId) } returns emptyList()
 
         // Then
         val result = getMoviesProductionCompaniesUseCase(movieId)
+
+        // when
         assertEquals(result, emptyList())
     }
+
+    @Test
+    fun `should call repository method when use case is invoked`() = runTest {
+        // Given
+        coEvery { movieRepository.getCompanyProducts(movieId) } returns fakeProductionCompanies
+
+        // When
+        getMoviesProductionCompaniesUseCase(movieId)
+
+        // Then
+        coVerify(exactly = 1) { movieRepository.getCompanyProducts(movieId) }
+    }
+
+    private companion object{
+        val movieId = 1
+
+    }
+
 
 }

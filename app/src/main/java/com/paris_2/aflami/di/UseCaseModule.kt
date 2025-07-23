@@ -28,6 +28,10 @@ import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.authentication.usecases.GetForgetPasswordUrlUseCase
+import com.paris_2.domain.authentication.usecases.GetRegisterUrlUseCase
+import com.paris_2.domain.authentication.usecases.LoginUseCase
+import com.paris_2.domain.authentication.usecases.GuestLoginUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -60,5 +64,9 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
+    factoryOf(::LoginUseCase)
+    factoryOf(::GuestLoginUseCase)
+    factoryOf(::GetForgetPasswordUrlUseCase)
+    factoryOf(::GetRegisterUrlUseCase)
 }
 

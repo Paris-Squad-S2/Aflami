@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCases.movie
 
 import com.domain.mediaDetails.repository.MovieRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -22,27 +23,53 @@ class GetMovieCastUseCaseTest {
     @Test
     fun `should return movie cast from repository`() = runTest {
         // Given
-        val movieId = 1
-
-        // when
         coEvery { movieRepository.getMovieCast(movieId) } returns fakeCast
 
-        // Then
+        //When
         val result = getMovieCastUseCase(movieId)
+
+        // Then
         assertEquals(result, fakeCast)
 
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest{
+    fun `should verify repository interaction when getting cast`() = runTest {
         // Given
-        val movieId = 1
+        coEvery { movieRepository.getMovieCast(movieId) } returns fakeCast
 
-        // when
-        coEvery { movieRepository.getMovieCast(movieId) } returns emptyList()
+        // When
+        getMovieCastUseCase(movieId)
 
         // Then
+        coVerify(exactly = 1) { movieRepository.getMovieCast(movieId) }
+    }
+
+    @Test
+    fun `should return empty list when no cast found`() = runTest{
+        // Given
+        coEvery { movieRepository.getMovieCast(movieId) } returns emptyList()
+
+        // when
         val result = getMovieCastUseCase(movieId)
+
+        // Then
         assertEquals(result, emptyList())
+    }
+
+    @Test
+    fun `should verify repository interaction when no cast is found`() = runTest {
+        // Given
+        coEvery { movieRepository.getMovieCast(movieId) } returns emptyList()
+
+        // When
+        getMovieCastUseCase(movieId)
+
+        // Then
+        coVerify(exactly = 1) { movieRepository.getMovieCast(movieId) }
+    }
+
+    private companion object{
+        val movieId = 1
     }
 }
