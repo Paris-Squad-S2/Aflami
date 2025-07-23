@@ -14,7 +14,7 @@ fun MovieDto.toDomain(type: MediaType): Media? {
         id = id ?: -1,
         title = title ?: "[Unknown Title]",
         voteAverage = voteAverage ?: 0.0,
-        posterPath = posterPath ?: "",
+        posterPath = imageUrl.orEmpty(),
         yearOfRelease = parsedDate,
         genreIds = genreIds ?: emptyList(),
         type = type
@@ -29,7 +29,7 @@ fun TvDto.toDomain(type: MediaType): Media? {
         id = id ?: -1,
         title = originalName ?: "[Unknown Title]",
         voteAverage = voteAverage ?: 0.0,
-        posterPath = posterPath ?: "",
+        posterPath = imageUrl.orEmpty(),
         yearOfRelease = parsedDate,
         genreIds = genreIds ?: emptyList(),
         type = type

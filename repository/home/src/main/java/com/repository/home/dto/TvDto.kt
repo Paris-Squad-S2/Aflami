@@ -46,4 +46,8 @@ data class TvDto(
 
     @SerialName("vote_count")
     val voteCount: Int? = null
-)
+){
+    val imageUrl: String?
+        get() = posterPath?.let { "https://image.tmdb.org/t/p/w500/$it" }
+
+}
