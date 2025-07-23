@@ -40,8 +40,6 @@ val FeatureAPIModule = module {
     single<SearchNavigator> { SearchNavigatorImpl(startGraph = SearchDestinations.SearchGraph1) }
     single<MediaDetailsNavigator> { MediaDetailsNavigatorImpl(startGraph = MediaDetailsDestinations.MediaDetailsGraph1) }
     single<AuthenticationNavigator> { AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1) }
-    factory<MediaDetailsFeatureAPI> { MediaDetailsFeatureAPIImpl() }
-
 
     factory<HomeFeatureAPI> { HomeFeatureAPIImpl(get()) }
     factory<ListsFeatureAPI> { ListsFeatureAPIImpl() }
@@ -49,8 +47,8 @@ val FeatureAPIModule = module {
     factory<GuessGameFeatureAPI> { GuessGameFeatureAPIImpl() }
     factory<ProfileFeatureAPI> { ProfileFeatureAPIImpl() }
 
-    factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
     factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI ::class
+    single<SearchFeatureAPI> { SearchFeatureAPIImpl(androidContext()) }
     single<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl(androidContext()) }
     single<AppNavigationAPI> { AppNavigationAPIImpl(androidContext()) }
 }

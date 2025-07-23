@@ -24,7 +24,6 @@ import org.koin.compose.koinInject
 
 @Composable
 fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
-    val searchFeature: SearchFeatureAPI = koinInject()
     val mediaDetailsFeature: MediaDetailsFeatureAPI = koinInject()
 
     val homeFeature: HomeFeatureAPI = koinInject()
@@ -78,11 +77,6 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
                 profileFeature(profileDestination?.fromJsonToProfileDestination())()
             }
 
-            composable<AppDestinations.SearchFeature> {
-                val searchDestination =
-                    it.toRoute<AppDestinations.SearchFeature>().searchDestination
-                searchFeature(searchDestination?.fromJsonToSearchDestination())()
-            }
             composable<AppDestinations.MediaDetailsFeature> {
                 val mediaDetailsDestination =
                     it.toRoute<AppDestinations.MediaDetailsFeature>().mediaDetailsDestination
