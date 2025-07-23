@@ -70,7 +70,7 @@ class LoginViewModel(
                 updateState(
                     screenState.value.copy(
                         passwordErrorMessage = R.string.invalid_username_or_password,
-                        loginButtonState = ButtonState.Normal,
+                        loginButtonState = ButtonState.Disabled,
                     )
                 )
             },
