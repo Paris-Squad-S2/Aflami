@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -67,6 +68,7 @@ fun MovieDetailsScreenContent(
     val movieChips = MovieChips.entries
     val listState = rememberLazyListState()
     val density = LocalDensity.current
+    val activity = LocalActivity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
 
     val alpha by remember {
@@ -100,7 +102,7 @@ fun MovieDetailsScreenContent(
                         leadingIcons = listOf(
                             iconItemWithDefaults(
                                 icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                                onClick = { activity?.finish() }
                             )
                         )
                     )
@@ -118,7 +120,7 @@ fun MovieDetailsScreenContent(
                         leadingIcons = listOf(
                             iconItemWithDefaults(
                                 icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                                onClick = { activity?.finish() }
                             )
                         )
                     )
@@ -299,7 +301,7 @@ fun MovieDetailsScreenContent(
                     leadingIcons = listOf(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                            onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                            onClick = { activity?.finish() }
                         )
                     ),
                     trailingIcons = listOf(

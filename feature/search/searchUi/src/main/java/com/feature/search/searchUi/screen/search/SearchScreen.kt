@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -71,13 +72,13 @@ private fun SearchScreenContent(
     searchScreenInteractionListener: SearchScreenInteractionListener,
     state: SearchScreenState
 ) {
+    val activity = LocalActivity.current
     if (state.searchUiState.showFilterDialog) {
         FilterDialog(
             state = state,
             searchScreenInteractionListener = searchScreenInteractionListener,
         )
     }
-
     Column(
         Modifier
             .fillMaxSize()
@@ -91,7 +92,7 @@ private fun SearchScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                    onClick = searchScreenInteractionListener::onNavigateBack,
+                    onClick = { activity?.finish() },
                 )
             ),
         )

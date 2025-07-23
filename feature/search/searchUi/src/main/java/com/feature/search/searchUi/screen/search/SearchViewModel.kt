@@ -458,21 +458,6 @@ class SearchViewModel(
         )
     }
 
-    override fun onNavigateBack() {
-        tryToExecute(
-            execute = {
-                navigateUp()
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage
-                    )
-                )
-            }
-        )
-    }
-
     override fun onRetryRecentSearches() {
         loadRecentSearches()
     }
