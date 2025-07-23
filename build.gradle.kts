@@ -54,6 +54,8 @@ val koverExcludedPackages = listOf(
     "**Composable**",
     "*Screen.kt",
     "*State.kt",
+    "**.MovieUiState.**",
+    "**.TvShowUiState.**",
     /*
     "**.GenreResourceMapper",
 
