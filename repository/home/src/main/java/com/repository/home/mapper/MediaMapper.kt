@@ -4,6 +4,8 @@ import com.domain.home.model.Media
 import com.domain.home.model.MediaType
 import com.repository.home.dto.MovieDto
 import com.repository.home.dto.TvDto
+import com.repository.home.entity.MediaEntity
+import com.repository.home.entity.MediaTypeEntity
 import kotlinx.datetime.LocalDate
 
 fun MovieDto.toDomain(type: MediaType): Media? {
@@ -34,4 +36,23 @@ fun TvDto.toDomain(type: MediaType): Media? {
         genreIds = genreIds ?: emptyList(),
         type = type
     )
+}
+
+fun MediaEntity.toDomain(): Media{
+    return Media(
+        id = this.id,
+        title = this.title,
+        voteAverage = this.voteAverage,
+        posterPath = this.posterPath,
+        yearOfRelease = LocalDate.parse(this.releaseDate),
+        genreIds = this.genreIds,
+        type = this.type.toDomain()
+    )
+}
+
+fun MediaTypeEntity.toDomain(): MediaType {
+    return when (this) {
+        MediaTypeEntity.MOVIE -> MediaType.MOVIE
+        MediaTypeEntity.TV_SHOW -> MediaType.TV_SHOW
+    }
 }
