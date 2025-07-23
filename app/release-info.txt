@@ -1,2 +1,2 @@
-versionName=0.2.8
-- add authentication ui
+versionName=0.2.9
+- fix some ui issues in login screen
