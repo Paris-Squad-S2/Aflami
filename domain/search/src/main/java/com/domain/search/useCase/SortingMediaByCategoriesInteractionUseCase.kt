@@ -1,0 +1,18 @@
+package com.domain.search.useCase
+
+import com.domain.search.model.Media
+import com.domain.search.repository.GenresInteractionRepository
+
+class SortingMediaByCategoriesInteractionUseCase(
+    private val genresInteractionRepository: GenresInteractionRepository
+) {
+    suspend operator fun invoke(list: List<Media>): List<Media> {
+        val interactions = genresInteractionRepository.getAllInteractions()
+        val interactionMap = interactions.associate { it.genreId to it.interactionCount }
+        return list.sortedByDescending { media ->
+            media.categoryIds.sumOf { categoryId ->
+                interactionMap[categoryId] ?: 0
+            }
+        }
+    }
+}
