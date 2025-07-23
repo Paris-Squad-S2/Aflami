@@ -42,15 +42,36 @@ dependencies {
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
 
-    testImplementation(libs.junit)
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // test
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
+    testImplementation(kotlin("test"))
+
 
     //retrofit
     implementation(libs.retrofit)
     implementation(libs.retrofit.converter)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
+}
+
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
 }
