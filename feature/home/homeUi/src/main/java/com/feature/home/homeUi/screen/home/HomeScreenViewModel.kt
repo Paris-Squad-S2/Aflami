@@ -2,14 +2,19 @@ package com.feature.home.homeUi.screen.home
 
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
+import com.feature.home.homeApi.HomeDestinations
+import com.feature.home.homeApi.toJson
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
 import com.feature.home.homeUi.mapper.toMediaUiStateList
+import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigator
 
 class HomeScreenViewModel(
     private val getPopularMediaUseCase: GetPopularMediaUseCase,
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
-    private val fakeContinueWatchingUseCase: FakeContinueWatchingUseCase
+    private val fakeContinueWatchingUseCase: FakeContinueWatchingUseCase,
+    private val appNavigator: AppNavigator,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState(
@@ -26,13 +31,13 @@ class HomeScreenViewModel(
             errorMessage = null
         )
     ) {
-     init {
-         loadPopularMedia()
-         loadTopRatingMedia()
-         loadContinueWatchingMedia()
-     }
+    init {
+        loadPopularMedia()
+        loadTopRatingMedia()
+        loadContinueWatchingMedia()
+    }
 
-    private fun loadPopularMedia (){
+    private fun loadPopularMedia() {
         tryToExecute(
             execute = getPopularMediaUseCase::invoke,
             onSuccess = {
@@ -52,28 +57,27 @@ class HomeScreenViewModel(
 
     private fun loadTopRatingMedia() {
         tryToExecute(
-            execute = fakeContinueWatchingUseCase::invoke
-            ,
-            onSuccess ={ topRatingMedia ->
+            execute = getTopRatingMediaUseCase::invoke,
+            onSuccess = { topRatingMedia ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            topRatedMediaList = topRatingMedia
+                            topRatedMediaList = topRatingMedia.toMediaUiStateList()
                         )
                     )
                 )
-            } ,
-            onError = {errorMessage->
+            },
+            onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage =  errorMessage
+                        errorMessage = errorMessage
                     )
                 )
             },
         )
     }
 
-    private fun loadContinueWatchingMedia(){
+    private fun loadContinueWatchingMedia() {
         tryToExecute(
             execute = fakeContinueWatchingUseCase::invoke,
             onSuccess = { mediaList ->
@@ -90,7 +94,14 @@ class HomeScreenViewModel(
     }
 
     override fun onSearchIconClick() {
-        TODO("Not yet implemented")
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    destination = AppDestinations.SearchFeature()
+                )
+            },
+            onError = {}
+        )
     }
 
     override fun onMediaCardClick(mediaId: Int) {
@@ -98,16 +109,31 @@ class HomeScreenViewModel(
     }
 
     override fun navigateToContinueWatchingScreen() {
-        TODO("Not yet implemented")
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    destination = AppDestinations.HomeFeature(
+                        homeDestination = HomeDestinations.ContinueWatchingScreen.toJson(),
+                    )
+                )
+            },
+            onError = {}
+        )
     }
 
     override fun navigateToTopRatingScreen() {
-        TODO("Not yet implemented")
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    destination = AppDestinations.HomeFeature(
+                        homeDestination = HomeDestinations.TopRatingMoviesScreen.toJson(),
+                    )
+                )
+            },
+            onError = {}
+        )
     }
 
-    override fun navigateToMoviesBirthdayScreen() {
-        TODO("Not yet implemented")
-    }
 
     override fun moodPickerSelected(mood: String) {
         TODO("Not yet implemented")

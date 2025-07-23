@@ -23,7 +23,7 @@ data class MediaUiState(
     val imageUri: String,
     val title: String,
     val type: MediaTypeUi,
-    val categories: List<Int>,
+    val categories: List<String>,
     val yearOfRelease: LocalDate,
     val rating: Double,
 )

@@ -23,7 +23,7 @@ fun Media.toUiState(): MediaUiState {
         imageUri = this.posterPath,
         title = this.title,
         type = this.type.toUiState(),
-        categories = this.genreIds,
+        categories = this.genreIds.map { it.genreToName() },
         yearOfRelease = this.yearOfRelease,
         rating = this.voteAverage,
     )
