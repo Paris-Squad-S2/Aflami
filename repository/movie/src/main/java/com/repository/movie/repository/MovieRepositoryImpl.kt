@@ -1,6 +1,5 @@
 package com.repository.movie.repository
 
-import android.util.Log
 import com.domain.mediaDetails.exception.NetworkException
 import com.domain.mediaDetails.exception.NoFoundMovieException
 import com.domain.mediaDetails.exception.NoFundGalleryMovieException
@@ -200,6 +199,10 @@ class MovieRepositoryImpl(
             call()
         } catch (_: NoInternetConnectionException) {
             throw NoInternetConnectionException()
+        } catch (_: NoFoundMovieException){
+            throw NoFoundMovieException()
+        } catch (e: NoFundGalleryMovieException) {
+            throw NoFundGalleryMovieException()
         } catch (e: Exception) {
             throw NetworkException(e.message ?: "Unknown error")
         }
