@@ -15,7 +15,9 @@ data class HomeUIState(
     val moviesBirthdayMediaList: List<MediaUiState>,
     val categories: Map<CategoryUiState, Boolean>,
     val upComingMediaList: List<MediaUiState>,
-    val showMoodPickerDialog : Boolean
+    val showMoodPickerDialog: Boolean,
+    val isAllCategories: Boolean,
+    val moodPickerMovie: MediaUiState?
     )
 
 data class MediaUiState(
