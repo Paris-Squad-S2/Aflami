@@ -280,7 +280,7 @@ fun LoginScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding()
-                    .padding(horizontal = 12.dp)
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
                     .align(Alignment.TopCenter),
                 text = loginUIState.snackBarMessage,
                 isSuccess = false,
