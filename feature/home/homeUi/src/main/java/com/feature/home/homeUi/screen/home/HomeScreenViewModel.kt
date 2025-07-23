@@ -1,12 +1,20 @@
 package com.feature.home.homeUi.screen.home
 
+import android.util.Log
+import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
+import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
+import com.domain.home.usecase.GetUpComingMediaUseCase
 import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeApi.toJson
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
+import com.feature.home.homeUi.mapper.nameToGenreId
+import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMediaUiStateList
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 
@@ -14,6 +22,9 @@ class HomeScreenViewModel(
     private val getPopularMediaUseCase: GetPopularMediaUseCase,
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
     private val fakeContinueWatchingUseCase: FakeContinueWatchingUseCase,
+    private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase,
+    private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase,
+    private val getUpcomingMediaUseCase: GetUpComingMediaUseCase,
     private val appNavigator: AppNavigator,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
@@ -23,9 +34,19 @@ class HomeScreenViewModel(
                 continueWatchingMediaList = emptyList(),
                 topRatedMediaList = emptyList(),
                 moviesBirthdayMediaList = emptyList(),
-                categories = emptyMap(),
+                categories = mapOf(),
                 upComingMediaList = emptyList(),
-                showMoodPickerDialog = false
+                showMoodPickerDialog = false,
+                isAllCategories = true,
+                moodPickerMovie = MediaUiState(
+                    id = 0,
+                    title = "",
+                    imageUri = "",
+                    type = MediaTypeUi.MOVIE,
+                    categories = emptyList(),
+                    yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
+                    rating = 0.0,
+                )
             ),
             isLoading = false,
             errorMessage = null
@@ -35,6 +56,31 @@ class HomeScreenViewModel(
         loadPopularMedia()
         loadTopRatingMedia()
         loadContinueWatchingMedia()
+        loadCategories()
+        onAllCategoriesSelect()
+    }
+
+    private fun loadCategories() {
+        tryToExecute(
+            execute = getMoviesCategoriesUseCase::invoke,
+            onSuccess = { categories ->
+                emitState(
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            categories = categories.toCategoryUiList().associateWith { false }
+                                .toMutableMap()
+                        )
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     private fun loadPopularMedia() {
@@ -49,8 +95,12 @@ class HomeScreenViewModel(
                     )
                 )
             },
-            onError = {
-                // Todo(handle error)
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
             }
         )
     }
@@ -73,7 +123,7 @@ class HomeScreenViewModel(
                         errorMessage = errorMessage
                     )
                 )
-            },
+            }
         )
     }
 
@@ -93,6 +143,28 @@ class HomeScreenViewModel(
         )
     }
 
+    override fun onAllCategoriesSelect() {
+        tryToExecute(
+            execute = getUpcomingMediaUseCase::invoke,
+            onSuccess = { upcomingMovies ->
+                emitState(
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            upComingMediaList = upcomingMovies.toMediaUiStateList()
+                        )
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
+    }
+
     override fun onSearchIconClick() {
         tryToExecute(
             execute = {
@@ -104,8 +176,31 @@ class HomeScreenViewModel(
         )
     }
 
-    override fun onMediaCardClick(mediaId: Int) {
-        TODO("Not yet implemented")
+    override fun onMediaCardClick(media: MediaUiState) {
+        tryToExecute(
+            execute = {
+                appNavigator.navigate(
+                    AppDestinations.MediaDetailsFeature(
+                        when (media.type) {
+                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
+                                movieId = media.id
+                            )
+
+                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
+                                tvShowId = media.id
+                            )
+                        }.toJson()
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     override fun navigateToContinueWatchingScreen() {
@@ -135,12 +230,61 @@ class HomeScreenViewModel(
     }
 
 
-    override fun moodPickerSelected(mood: String) {
-        TODO("Not yet implemented")
+    fun getRandomMovie(){
+
+    }
+    override fun moodPickerSelected(mood: List<String>) {
+        tryToExecute(
+            execute = {
+                val moodCategories = mood.map { mood ->
+                    mood.nameToGenreId()}
+                Log.d("MoodPicker", "Mood selected: $moodCategories")
+
+                filterUpComingMediaByCategoriesUseCase.invoke(moodCategories)
+
+            },
+            onSuccess = { filteredMovies ->
+                emitState(
+                        screenState.value.copy(
+                           homeUIState = screenState.value.homeUIState.copy(
+                            moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
+                        )
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
+
     }
 
-    override fun onCategorySelect(category: Int) {
-        TODO("Not yet implemented")
+    override fun onCategorySelect(category: List<Int>) {
+        tryToExecute(
+            execute = {
+                filterUpComingMediaByCategoriesUseCase.invoke(category)
+            },
+            onSuccess = { filteredMovies ->
+                emitState(
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            upComingMediaList = filteredMovies.toMediaUiStateList(),
+                        )
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 }
 
