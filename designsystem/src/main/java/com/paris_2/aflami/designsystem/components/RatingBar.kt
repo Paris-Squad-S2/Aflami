@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -24,10 +22,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.CompositingStrategy
 import androidx.compose.ui.graphics.drawscope.clipRect
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.LayoutDirection
@@ -108,14 +107,14 @@ private fun StarIconFromResource(
         val starModifier = Modifier.matchParentSize()
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_star_filled),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_filled),
             contentDescription = null,
             tint = selectedColor.copy(alpha = 0.3f),
             modifier = starModifier
         )
 
         Icon(
-            painter = painterResource(id = R.drawable.ic_star_filled),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_filled),
             contentDescription = null,
             tint = selectedColor,
             modifier = starModifier
