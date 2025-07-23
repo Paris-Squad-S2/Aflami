@@ -33,7 +33,6 @@ import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
-import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
 import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
@@ -76,10 +75,5 @@ val useCaseModule = module {
     factoryOf(::FilterUpComingMediaByCategoriesUseCase)
     factoryOf(::AddMediaToLocalUseCase)
     factoryOf(::GetMediaFromLocalUseCase)
-
-
-    // #################### fake use cases #################
-    factoryOf(::FakeContinueWatchingUseCase)
-
-}
+    }
 
