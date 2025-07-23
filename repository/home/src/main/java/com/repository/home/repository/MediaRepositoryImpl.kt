@@ -4,14 +4,14 @@ import android.util.Log
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
 import com.domain.home.repository.MediaRepository
-import com.repository.home.datasource.local.MediaLocalDataSource
+import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.mapper.toDomain
 import com.repository.home.mapper.toEntity
 
 class MediaRepositoryImpl(
     private val mediaRemoteDataSource: MediaRemoteDataSource,
-    private val mediaLocalDataSource: MediaLocalDataSource
+    private val homeMediaLocalDataSource: HomeMediaLocalDataSource
 ) : MediaRepository {
 
     companion object {
@@ -77,10 +77,10 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun addMediaToLocal(media: Media) {
-        mediaLocalDataSource.addMedia(media.toEntity())
+        homeMediaLocalDataSource.addMedia(media.toEntity())
     }
 
     override suspend fun getMediaFromLocal(): List<Media> {
-        return mediaLocalDataSource.getAllMedia().map { it.toDomain() }
+        return homeMediaLocalDataSource.getAllMedia().map { it.toDomain() }
     }
 }
