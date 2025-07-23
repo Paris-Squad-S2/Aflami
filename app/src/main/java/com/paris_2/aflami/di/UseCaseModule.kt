@@ -1,7 +1,9 @@
 package com.paris_2.aflami.di
 
 
+import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
+import com.domain.home.usecase.GetMediaFromLocalUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
@@ -67,11 +69,15 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
-    factory { GetTopRatingMediaUseCase(get()) }
-    factory { GetPopularMediaUseCase(get()) }
-    factory { GetMoviesCategoriesUseCase(get()) }
-    factory { GetUpComingMediaUseCase(get()) }
-    factory { FilterUpComingMediaByCategoriesUseCase(get()) }
+    factoryOf(::GetTopRatingMediaUseCase)
+    factoryOf(::GetPopularMediaUseCase)
+    factoryOf(::GetMoviesCategoriesUseCase)
+    factoryOf(::GetUpComingMediaUseCase)
+    factoryOf(::FilterUpComingMediaByCategoriesUseCase)
+    factoryOf(::AddMediaToLocalUseCase)
+    factoryOf(::GetMediaFromLocalUseCase)
+
+
     // #################### fake use cases #################
     factoryOf(::FakeContinueWatchingUseCase)
 
