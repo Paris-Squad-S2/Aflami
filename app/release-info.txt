@@ -1,2 +1,3 @@
-versionName=0.2.9
-- refactor domain unit tests to separate concerns between assertion logic and interaction verification.
+versionName=0.2.10
+- fix some ui issues in login screen
+- Display Snackbar for login errors

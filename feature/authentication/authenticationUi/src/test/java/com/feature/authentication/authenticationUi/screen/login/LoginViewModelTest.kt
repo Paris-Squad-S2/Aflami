@@ -2,6 +2,10 @@ package com.feature.authentication.authenticationUi.screen.login
 
 import com.feature.authentication.authenticationUi.R
 import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.domain.authentication.exception.InvalidCredentialsException
+import com.paris_2.domain.authentication.usecases.LoginUseCase
+import io.mockk.coEvery
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
@@ -11,13 +15,13 @@ import org.junit.jupiter.api.Test
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-
+    private val loginUseCase = mockk<LoginUseCase>(relaxed = true)
     @BeforeEach
     fun setup() {
         viewModel = spyk(
             LoginViewModel(
                 appNavigator = mockk(relaxed = true),
-                loginUseCase = mockk(relaxed = true),
+                loginUseCase = loginUseCase,
                 guestLoginUseCase = mockk(relaxed = true)
             )
         )
@@ -64,5 +68,15 @@ class LoginViewModelTest {
         val state = viewModel.screenState.value
 
         Assertions.assertEquals(!initial, state.showPassword)
+    }
+
+    @Test
+    fun `onClickLogin with invalid credentials sets error message and disables button`() {
+        coEvery { loginUseCase("user", "1234") } throws(InvalidCredentialsException("Invalid credentials"))
+
+        viewModel.onClickLogin()
+
+        val state = viewModel.screenState.value
+        Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
     }
 }
