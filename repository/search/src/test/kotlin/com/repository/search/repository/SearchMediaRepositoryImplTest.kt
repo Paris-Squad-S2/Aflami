@@ -1,9 +1,9 @@
 package com.repository.search.repository
 
-import com.domain.search.exception.NoDataForActorException
-import com.domain.search.exception.NoDataForCountryException
-import com.domain.search.exception.NoDataForSearchException
 import com.domain.search.exception.NoInternetConnectionException
+import com.domain.search.exception.NoMediaForActorException
+import com.domain.search.exception.NoMediaForCountryException
+import com.domain.search.exception.NoMediaForSearchException
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
@@ -171,7 +171,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } throws RuntimeException()
 
-        assertFailsWith<NoDataForActorException> {
+        assertFailsWith<NoMediaForActorException> {
             repository.getMediaByActor(actorName, page)
         }
     }
@@ -244,7 +244,6 @@ class SearchMediaRepositoryImplTest {
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery {
             searchRemoteDataSource.searchCountryCode(
-                query = countryName,
                 page = page,
                 countryCode = countryName,
                 language = any()
