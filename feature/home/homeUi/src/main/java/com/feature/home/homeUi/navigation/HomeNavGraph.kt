@@ -10,7 +10,6 @@ import com.feature.home.homeApi.HomeDestination
 import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingScreen
 import com.feature.home.homeUi.screen.home.HomeScreen
-import com.feature.home.homeUi.screen.moviesBirthday.MoviesBirthdayScreen
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesScreen
 import org.koin.compose.koinInject
 
@@ -45,7 +44,6 @@ fun NavGraphBuilder.buildSearchNavGraph(startDestination: HomeDestination? = nul
     ) {
         composable<HomeDestinations.HomeScreen> { HomeScreen() }
         composable<HomeDestinations.ContinueWatchingScreen> { ContinueWatchingScreen() }
-        composable<HomeDestinations.MoviesBirthdayScreen> { MoviesBirthdayScreen() }
         composable<HomeDestinations.TopRatingMoviesScreen> { TopRatingMoviesScreen() }
     }
 }
