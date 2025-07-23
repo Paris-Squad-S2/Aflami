@@ -1,22 +1,20 @@
-package com.paris_2.aflami
+package com.feature.authentication.authenticationUi
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
+import com.feature.authentication.authenticationUi.navigation.AuthenticationNavGraph
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import org.koin.android.ext.android.get
-import org.koin.core.parameter.parametersOf
 
-class MainActivity : ComponentActivity() {
+class AuthActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        val authenticationFeatureAPI: AuthenticationFeatureAPI = get { parametersOf(this) }
         setContent {
             AflamiTheme {
-                authenticationFeatureAPI()
+                AuthenticationNavGraph()
+//            AppScaffold()
             }
         }
     }

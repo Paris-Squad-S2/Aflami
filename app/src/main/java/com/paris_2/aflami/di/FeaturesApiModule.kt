@@ -48,5 +48,5 @@ val FeatureAPIModule = module {
 
     factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
     factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI ::class
-    factoryOf(::AuthenticationFeatureAPIImpl) bind AuthenticationFeatureAPI::class
+    single { (context: android.content.Context) -> AuthenticationFeatureAPIImpl(context) as AuthenticationFeatureAPI }
 }
