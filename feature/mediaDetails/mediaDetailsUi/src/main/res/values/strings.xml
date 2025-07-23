@@ -31,4 +31,5 @@
     <string name="title_activity_media_details">MediaDetailsActivity</string>
     <string name="there_is_no_gallery">There is no gallery</string>
     <string name="there_is_no_recommendations">There is no recommendations</string>
+    <string name="there_is_no_seasons">There is no seasons</string>
 </resources>

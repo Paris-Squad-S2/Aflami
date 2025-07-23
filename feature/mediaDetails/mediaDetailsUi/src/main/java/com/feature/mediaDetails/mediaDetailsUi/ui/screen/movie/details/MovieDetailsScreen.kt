@@ -234,8 +234,7 @@ fun MovieDetailsScreenContent(
                                             )
                                         }
                                     }
-                                }
-                                else {
+                                } else {
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
                                             AflamiMediaCard(
@@ -279,8 +278,7 @@ fun MovieDetailsScreenContent(
                                                 .fillMaxWidth()
                                                 .background(Theme.colors.surface)
                                                 .padding(vertical = 30.dp)
-                                                .navigationBarsPadding()
-                                            ,
+                                                .navigationBarsPadding(),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
@@ -316,8 +314,7 @@ fun MovieDetailsScreenContent(
                                             color = Theme.colors.text.body.copy(alpha = 0.6f)
                                         )
                                     }
-                                }
-                                else {
+                                } else {
                                     GallerySection(state.movieDetailsUiState.gallery)
                                 }
                             }
