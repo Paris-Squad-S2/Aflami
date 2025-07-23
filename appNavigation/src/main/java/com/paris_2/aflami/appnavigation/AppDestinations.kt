@@ -22,7 +22,4 @@ sealed interface AppDestinations : AppGraph {
 
     @Serializable
     data class ProfileFeature(val profileDestination: String? = null) : AppDestination
-
-    @Serializable
-    data class MediaDetailsFeature(val mediaDetailsDestination: String? = null) : AppDestination
 }

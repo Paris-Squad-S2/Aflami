@@ -9,8 +9,6 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestination
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.LoginDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreen

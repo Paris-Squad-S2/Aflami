@@ -1,10 +1,7 @@
 package com.feature.search.searchUi
 
 import android.content.Intent
-import androidx.compose.runtime.Composable
-import com.feature.search.searchApi.SearchDestination
 import com.feature.search.searchApi.SearchFeatureAPI
-import com.feature.search.searchUi.navigation.SearchNavGraph
 import kotlin.jvm.java
 
 class SearchFeatureAPIImpl(

@@ -121,6 +121,9 @@ dependencies {
 
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+
+    //kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
 }
 
 

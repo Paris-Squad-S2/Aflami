@@ -15,7 +15,7 @@ import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi

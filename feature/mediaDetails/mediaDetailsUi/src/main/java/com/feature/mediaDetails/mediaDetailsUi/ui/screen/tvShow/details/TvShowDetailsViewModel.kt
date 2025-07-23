@@ -16,7 +16,7 @@ import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi

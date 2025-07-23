@@ -14,18 +14,12 @@ import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeApi.fromJsonToHomeDestination
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsApi.fromJsonToListsDestination
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.mediaDetails.mediaDetailsApi.fromJsonToMediaDetailsDestination
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileApi.fromJsonToProfileDestination
-import com.feature.search.searchApi.SearchFeatureAPI
-import com.feature.search.searchApi.fromJsonToSearchDestination
 import org.koin.compose.koinInject
 
 @Composable
 fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
-    val mediaDetailsFeature: MediaDetailsFeatureAPI = koinInject()
-
     val homeFeature: HomeFeatureAPI = koinInject()
     val listsFeature: ListsFeatureAPI = koinInject()
     val categoriesFeature: CategoriesFeatureAPI = koinInject()
@@ -75,12 +69,6 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
                 val profileDestination =
                     it.toRoute<AppDestinations.ProfileFeature>().profileDestination
                 profileFeature(profileDestination?.fromJsonToProfileDestination())()
-            }
-
-            composable<AppDestinations.MediaDetailsFeature> {
-                val mediaDetailsDestination =
-                    it.toRoute<AppDestinations.MediaDetailsFeature>().mediaDetailsDestination
-                mediaDetailsFeature(mediaDetailsDestination?.fromJsonToMediaDetailsDestination())()
             }
         }
     }

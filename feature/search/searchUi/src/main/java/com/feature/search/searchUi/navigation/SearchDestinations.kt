@@ -1,4 +1,4 @@
-package com.feature.search.searchApi
+package com.feature.search.searchUi.navigation
 
 import kotlinx.serialization.Serializable
 

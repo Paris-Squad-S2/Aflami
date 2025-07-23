@@ -1,4 +1,4 @@
-package com.feature.mediaDetails.mediaDetailsApi
+package com.feature.mediaDetails.mediaDetailsUi.ui.navigation
 
 import kotlinx.serialization.Serializable
 

@@ -13,14 +13,14 @@ import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsUi.ListsFeatureAPIImpl
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.MediaDetailsFeatureAPIImpl
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigatorImpl
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileUi.ProfileFeatureAPIImpl
-import com.feature.search.searchApi.SearchDestinations
+import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchNavigator

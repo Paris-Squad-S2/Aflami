@@ -1,8 +1,6 @@
 package com.feature.search.searchUi.navigation
 
 import androidx.navigation.NavOptions
-import com.feature.search.searchApi.SearchDestination
-import com.feature.search.searchApi.SearchGraph
 import kotlinx.coroutines.flow.Flow
 
 interface SearchNavigator {
