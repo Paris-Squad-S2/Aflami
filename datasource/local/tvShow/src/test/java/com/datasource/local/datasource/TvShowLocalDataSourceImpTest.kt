@@ -8,22 +8,89 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test
 
 class TvShowLocalDataSourceImpTest {
     private lateinit var tvShowLocalDataSourceImp: TvShowLocalDataSourceImp
     private lateinit var tvShowDao: TvShowDao
-    private lateinit var sampleTvShow: TvShowEntity
-    private val language = "en"
 
 
     @BeforeEach
     fun setUp() {
         tvShowDao = mockk(relaxed = true)
         tvShowLocalDataSourceImp = TvShowLocalDataSourceImp(tvShowDao)
-        sampleTvShow = TvShowEntity(
+
+    }
+
+    @Test
+    fun `addTvShow should add tv show when addTvShow in TvShowDao is called`() = runTest {
+        //Given
+        tvShowLocalDataSourceImp.addTvShow(sampleTvShow)
+
+        //When&Then
+        coVerify(exactly = 1) { tvShowDao.addTvShow(sampleTvShow) }
+    }
+
+    @Test
+    fun `getTvShowId should call getTvShowById on DAO and return its result`() = runTest {
+        //Given
+        val tvShowId = 1
+        coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns sampleTvShow
+
+        //When
+        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+
+        //Then
+        assertEquals(sampleTvShow, result)
+    }
+
+    @Test
+    fun `getTvShowId should verify DAO is called with correct ID when it returns TvShowEntity`() =
+        runTest {
+            //Given
+            val tvShowId = 1
+            coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns sampleTvShow
+
+            //When
+            tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+
+            //Then
+            coVerify(exactly = 1) { tvShowDao.getTvShowById(tvShowId, language) }
+        }
+
+    @Test
+    fun `getTvShowId should return null when DAO returns null`() = runTest {
+        //Given
+        val tvShowId = 2
+        coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns null
+
+        //When
+        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+
+        //Then
+        assertNull(result)
+
+    }
+
+    @Test
+    fun `getTvShowId should verify DAO is called with correct ID when it returns null`() = runTest {
+        //Given
+        val tvShowId = 2
+        coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns null
+
+        //When
+        tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+
+        //Then
+        coVerify(exactly = 1) { tvShowDao.getTvShowById(tvShowId, language) }
+    }
+
+    private companion object {
+        val language = "en"
+        val sampleTvShow = TvShowEntity(
             id = 101,
             title = "Stranger Things",
             voteAverage = 8.7,
@@ -54,35 +121,5 @@ class TvShowLocalDataSourceImpTest {
             seasons = listOf(),
             language = language
         )
-    }
-
-    @Test
-    fun `addTvShow should add tv show when addTvShow in TvShowDao is called`() = runTest {
-        tvShowLocalDataSourceImp.addTvShow(sampleTvShow)
-
-        coVerify(exactly = 1) { tvShowDao.addTvShow(sampleTvShow) }
-    }
-
-    @Test
-    fun `getTvShowId should call getTvShowById on DAO and return its result`() = runTest {
-        val tvShowId = 1
-        coEvery { tvShowDao.getTvShowById(tvShowId,language) } returns sampleTvShow
-
-        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId,language)
-
-        coVerify { tvShowDao.getTvShowById(tvShowId,language) }
-        assertEquals(sampleTvShow, result)
-    }
-
-    @Test
-    fun `getTvShowId should return null when DAO returns null`() = runTest {
-        val tvShowId = 2
-        coEvery { tvShowDao.getTvShowById(tvShowId,language) } returns null
-
-        val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId,language)
-
-        coVerify { tvShowDao.getTvShowById(tvShowId,language) }
-        assertNull(result)
-
     }
 }

@@ -1,5 +1,8 @@
 package com.paris_2.aflami.di
 
+import com.feature.authentication.authenticationUi.screen.forgotPassword.ForgotPasswordViewModel
+import com.feature.authentication.authenticationUi.screen.login.LoginViewModel
+import com.feature.authentication.authenticationUi.screen.register.RegisterViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModelViewModel
@@ -18,4 +21,7 @@ val viewModelModule = module {
     viewModelOf(::TvShowDetailsViewModel)
     viewModelOf(::TvShowCastViewModel)
     viewModelOf(::MovieCastViewModel)
+    viewModelOf(::LoginViewModel)
+    viewModelOf(::RegisterViewModel)
+    viewModelOf(::ForgotPasswordViewModel)
 }
