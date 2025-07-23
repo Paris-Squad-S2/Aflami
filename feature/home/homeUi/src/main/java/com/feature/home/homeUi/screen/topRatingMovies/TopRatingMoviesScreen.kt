@@ -9,21 +9,29 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
-import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
+import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopRatingMoviesScreen(
     viewModel: TopRatingMoviesViewModel = koinViewModel(),
@@ -31,8 +39,14 @@ fun TopRatingMoviesScreen(
     val state = viewModel.screenState.collectAsState()
 
     Column {
-        AflamiSectionTitle(
-            title = "Top Rating",
+        TopAppBar(
+            logo = iconItemWithDefaults(
+                icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
+                onClick = viewModel::onBackButtonClick
+                ,
+                backgroundColor = Theme.colors.primaryVariant,
+            ),
+            title = stringResource(R.string.top_rating),
             modifier = Modifier.padding( top = 23.dp)
         )
         if (state.value.topRatingMovies.isNotEmpty()) {
@@ -64,14 +78,14 @@ fun TopRatingMoviesContent(
     LazyVerticalGrid(
         state = lazyGridState,
         columns = GridCells.Adaptive(minSize = 160.dp),
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp, top = 8.dp),
+        contentPadding = PaddingValues(start = 12.dp, end = 12.dp),
     ) {
 
 
         items(continueWatchingList) { media ->
             AflamiMediaCard(
                 modifier = Modifier
-                    .padding(8.dp)
+                    .padding(6.dp)
                     .clickable {
                         onMediaCardClick(media)
                     },
