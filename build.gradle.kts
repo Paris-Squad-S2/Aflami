@@ -61,6 +61,7 @@ val koverExcludedPackages = listOf(
     "**ApiServiceImpl**",
     "**AflamiNavBar",
     "**AppScafold",
+    "**/app**"
     /*
     "**.GenreResourceMapper",
 
