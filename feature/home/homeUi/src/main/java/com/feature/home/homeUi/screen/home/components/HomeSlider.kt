@@ -18,8 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
+import com.feature.home.homeUi.R
 import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
 import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.components.GenresChip
@@ -52,16 +54,17 @@ fun HomeSlider(
                 model = mediaState.value.imageUri,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(410.dp)
+                    .height(380.dp)
                     .blur(18.dp),
                 contentScale = ContentScale.FillWidth,
             )
         Column(
+            modifier = Modifier.padding(top = 74.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             AflamiSectionTitle(
-                title = "Popular",
-                painter = painterResource(com.feature.home.homeUi.R.drawable.ic_fire),
+                title = stringResource(R.string.popular),
+                painter = painterResource(R.drawable.ic_fire),
                 iconColor = Theme.colors.secondary,
                 hasViewAll = false,
                 modifier = Modifier.padding(bottom = 12.dp)

@@ -3,4 +3,6 @@
     <string name="go_to_search">الذهاب الي البحث </string>
     <string name="top_rating">الأعلي تقييما</string>
     <string name="continue_watching">أكمل المشاهدة</string>
+    <string name="popular">المشهور</string>
+    <string name="aflami">أفلامي</string>
 </resources>

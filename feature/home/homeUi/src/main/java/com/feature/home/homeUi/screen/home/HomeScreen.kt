@@ -1,6 +1,8 @@
 package com.feature.home.homeUi.screen.home
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +20,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -61,61 +64,94 @@ fun HomeScreenContent(
     val lazyState = rememberLazyListState()
     val isScrolling by remember { derivedStateOf { lazyState.isScrollInProgress } }
     var isAllCategories by remember { mutableStateOf(state.homeUIState.isAllCategories) }
+    val density = LocalDensity.current
+    val maxScrollPx = with(density) { 56.dp.toPx() }
 
-    LazyColumn(
-        state = lazyState,
-        modifier = Modifier.fillMaxSize(),
-    ) {
+    val alpha by remember {
+        derivedStateOf {
+            val scroll =
+                if (lazyState.firstVisibleItemIndex > 0) maxScrollPx else lazyState.firstVisibleItemScrollOffset.toFloat()
+            (scroll / maxScrollPx).coerceIn(0f, 1f)
+        }
+    }
 
-        stickyHeader {
-            TopAppBar(
-                title = "AFLAMI",
-                subtitle = "More than just watching.",
-                modifier = Modifier.padding(top = 16.dp),
-                logo = iconItemWithDefaults(
-                    ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo), {},
-                    Theme.colors.primaryVariant,
-                ),
-                trailingIcons = listOf(
-                    IconItem(
-                        icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_search),
-                        onClick =  action::onSearchIconClick,
-                        backgroundColor = Theme.colors.surfaceHigh,
-                        tint = Theme.colors.text.body
-                    )
+    val topBarBackground = Theme.colors.surface.copy(alpha = alpha)
+    Box(
+        Modifier
+            .fillMaxSize()
+    ){
+        LazyColumn(
+            state = lazyState,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+
+            item {
+                HomeSlider(
+                    onMediaClick = {
+                        action.onMediaSliderClick(it)
+                    },
+                    mediaList = state.homeUIState.popularMediaList,
+                    modifier = Modifier.fillMaxSize(),
                 )
-            )
-        }
-
-        item {
-            HomeSlider(
-                onMediaClick = {
-                    action.onMediaSliderClick(it)
-                },
-                mediaList = state.homeUIState.popularMediaList,
-                modifier = Modifier.fillMaxSize(),
-            )
-        }
+            }
 
 
-        if (state.homeUIState.continueWatchingMediaList.isNotEmpty()){
+            if (state.homeUIState.continueWatchingMediaList.isNotEmpty()) {
+                item {
+                    AflamiSectionTitle(
+                        title = stringResource(R.string.continue_watching),
+                        hasViewAll = true,
+                        onClickViewAll = {
+                            action.navigateToContinueWatchingScreen()
+                        },
+                        modifier = Modifier.padding(top = 6.dp)
+                    )
+
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 12.dp, bottom = 16.dp),
+                        contentPadding = PaddingValues(16.dp)
+                    ) {
+                        items(state.homeUIState.continueWatchingMediaList.take(10)) { media ->
+                            AflamiMediaCard(
+                                modifier = Modifier
+                                    .padding(end = 8.dp)
+                                    .clickable {
+                                        action.onMediaCardClick(media)
+                                    },
+                                imageUri = media.imageUri,
+                                rating = media.rating.toFloat(),
+                                movieName = media.title,
+                                mediaType = media.type.mediaName,
+                                year = media.yearOfRelease.year.toString(),
+                                mediaCardType = MediaCardType.NORMAL,
+                                showGradientFilter = true,
+                                enabled = !isScrolling,
+                            )
+                        }
+                    }
+                }
+            }
             item {
                 AflamiSectionTitle(
-                    title = stringResource(R.string.continue_watching),
+                    title = stringResource(R.string.top_rating),
                     hasViewAll = true,
+                    painter = painterResource(R.drawable.ic_fire),
+                    iconColor = Theme.colors.secondary,
                     onClickViewAll = {
-                        action.navigateToContinueWatchingScreen()
+                        action.navigateToTopRatingScreen()
                     },
                     modifier = Modifier.padding(top = 6.dp)
-                )
 
+                )
                 LazyRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 12.dp,bottom = 16.dp),
+                        .padding(top = 12.dp),
                     contentPadding = PaddingValues(16.dp)
                 ) {
-                    items(state.homeUIState.continueWatchingMediaList.take(10)) { media ->
+                    items(state.homeUIState.topRatedMediaList.take(10)) { media ->
                         AflamiMediaCard(
                             modifier = Modifier
                                 .padding(end = 8.dp)
@@ -134,118 +170,102 @@ fun HomeScreenContent(
                     }
                 }
             }
-    }
-        item {
-            AflamiSectionTitle(
-                title = stringResource(R.string.top_rating),
-                hasViewAll = true,
-                painter = painterResource(R.drawable.ic_fire),
-                iconColor = Theme.colors.secondary,
-                onClickViewAll = {
-                    action.navigateToTopRatingScreen()
-                },
-                modifier = Modifier.padding(top = 6.dp)
-
-            )
-            LazyRow(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 12.dp),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                items(state.homeUIState.topRatedMediaList.take(10)) { media ->
-                    AflamiMediaCard(
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .clickable {
-                                action.onMediaCardClick(media)
-                            },
-                        imageUri = media.imageUri,
-                        rating = media.rating.toFloat(),
-                        movieName = media.title,
-                        mediaType = media.type.mediaName,
-                        year = media.yearOfRelease.year.toString(),
-                        mediaCardType = MediaCardType.NORMAL,
-                        showGradientFilter = true,
-                        enabled = !isScrolling,
-                    )
-                }
-            }
-        }
 
 
-        item {
-            MoodPicker(
-                title = stringResource(R.string.mood_picker_get_a_movie),
-                question = stringResource(R.string.what_s_your_vibe_today),
-                onEmojiClick = { emojiMood ->
-                   action.moodPickerSelected(emojiMood.tags)
-                },
-                image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_clown),
-                backgroundColor = listOf(
-                    Theme.colors.primary,
-                    Theme.colors.status.redAccent,
-                    Theme.colors.status.yellowAccent,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 24.dp)
-            )
-        }
-        item {
-            AflamiSectionTitle(
-                title = stringResource(R.string.upcoming),
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-            LazyRow(
-                contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
-            ) {
-                item {
-                    Chips(
-                        title = stringResource(R.string.all),
-                        icon = painterResource(R.drawable.ic_category_all),
-                        isSelected = isAllCategories,
-                        onClick = {
-                            action.onAllCategoriesSelect()
-                            if (!isAllCategories) isAllCategories = true
-                        }
-                    )
-                }
-                items(state.homeUIState.categories.size) { index ->
-                    val category = state.homeUIState.categories.keys.elementAt(index)
-                    Chips(
-                        title = category.name,
-                        icon = painterResource(getResourceId(category.id)),
-                        isSelected = state.homeUIState.categories[category] ?: false,
-                        onClick = {
-                            isAllCategories = false
-                            action.onCategorySelect(category = category)
-                        }
-                    )
-                }
-            }
-
-        }
-
-        items(state.homeUIState.upComingMediaList) { upcomingMedia ->
-            AflamiMediaCard(
-                imageUri = upcomingMedia.imageUri,
-                rating = upcomingMedia.rating.toFloat(),
-                movieName = upcomingMedia.title,
-                mediaType = upcomingMedia.type.toString(),
-                year = upcomingMedia.yearOfRelease.toString(),
-                mediaCardType = MediaCardType.UP_COMING,
-                showGradientFilter = false,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .padding(bottom = 8.dp)
-                    .clickable {
-                        action.onMediaCardClick(upcomingMedia)
+            item {
+                MoodPicker(
+                    title = stringResource(R.string.mood_picker_get_a_movie),
+                    question = stringResource(R.string.what_s_your_vibe_today),
+                    onEmojiClick = { emojiMood ->
+                        action.moodPickerSelected(emojiMood.tags)
                     },
-            )
+                    image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_clown),
+                    backgroundColor = listOf(
+                        Theme.colors.primary,
+                        Theme.colors.status.redAccent,
+                        Theme.colors.status.yellowAccent,
+                    ),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp, vertical = 24.dp)
+                )
+            }
+            item {
+                AflamiSectionTitle(
+                    title = stringResource(R.string.upcoming),
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+                LazyRow(
+                    contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
+                ) {
+                    item {
+                        Chips(
+                            title = stringResource(R.string.all),
+                            icon = painterResource(R.drawable.ic_category_all),
+                            isSelected = isAllCategories,
+                            onClick = {
+                                action.onAllCategoriesSelect()
+                                if (!isAllCategories) isAllCategories = true
+                            }
+                        )
+                    }
+                    items(state.homeUIState.categories.size) { index ->
+                        val category = state.homeUIState.categories.keys.elementAt(index)
+                        Chips(
+                            title = category.name,
+                            icon = painterResource(getResourceId(category.id)),
+                            isSelected = state.homeUIState.categories[category] ?: false,
+                            onClick = {
+                                isAllCategories = false
+                                action.onCategorySelect(category = category)
+                            }
+                        )
+                    }
+                }
+
+            }
+
+            items(state.homeUIState.upComingMediaList) { upcomingMedia ->
+                AflamiMediaCard(
+                    imageUri = upcomingMedia.imageUri,
+                    rating = upcomingMedia.rating.toFloat(),
+                    movieName = upcomingMedia.title,
+                    mediaType = upcomingMedia.type.toString(),
+                    year = upcomingMedia.yearOfRelease.toString(),
+                    mediaCardType = MediaCardType.UP_COMING,
+                    showGradientFilter = false,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp)
+                        .clickable {
+                            action.onMediaCardClick(upcomingMedia)
+                        },
+                )
+            }
         }
     }
+
+    TopAppBar(
+        title = stringResource(R.string.aflami),
+        subtitle = "More than just watching.",
+        modifier = Modifier
+            .background(topBarBackground)
+            .padding(top = 16.dp),
+        logo = iconItemWithDefaults(
+            ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo), {},
+            Theme.colors.primaryVariant,
+        ),
+        trailingIcons = listOf(
+            IconItem(
+                icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_search),
+                onClick =  action::onSearchIconClick,
+                backgroundColor = Theme.colors.surfaceHigh,
+                tint = Theme.colors.text.body
+            )
+        )
+    )
+
     if (state.homeUIState.showMoodPickerDialog && state.homeUIState.moodPickerMovie != null) {
         val moodPickerMovie = state.homeUIState.moodPickerMovie
         MoodPickerDialog(
