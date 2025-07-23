@@ -3,6 +3,7 @@ package com.paris_2.aflami.di
 import android.util.Log
 import com.repository.home.MediaApiService
 import com.feature.search.searchUi.BuildConfig
+import com.repository.home.GenresApiServices
 import io.ktor.client.*
 import io.ktor.client.engine.android.*
 import io.ktor.client.plugins.DefaultRequest
@@ -71,4 +72,8 @@ val NetworkModule = module {
     single<MediaApiService> {
         get<Retrofit>().create(MediaApiService::class.java)
     }
+    single<GenresApiServices> {
+        get<Retrofit>().create(GenresApiServices::class.java)
+    }
+
 }

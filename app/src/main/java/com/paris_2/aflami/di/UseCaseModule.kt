@@ -1,6 +1,7 @@
 package com.paris_2.aflami.di
 
-import com.domain.home.usecase.GetPopularMediaUseCase
+
+import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
@@ -31,6 +32,9 @@ import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
+import com.domain.home.usecase.GetMoviesCategoriesUseCase
+import com.domain.home.usecase.GetPopularMediaUseCase
+import com.domain.home.usecase.GetUpComingMediaUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -63,9 +67,13 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
-    factoryOf(::GetTopRatingMediaUseCase)
-    factoryOf(::GetPopularMediaUseCase)
+    factory { GetTopRatingMediaUseCase(get()) }
+    factory { GetPopularMediaUseCase(get()) }
+    factory { GetMoviesCategoriesUseCase(get()) }
+    factory { GetUpComingMediaUseCase(get()) }
+    factory { FilterUpComingMediaByCategoriesUseCase(get()) }
     // #################### fake use cases #################
     factoryOf(::FakeContinueWatchingUseCase)
+
 }
 
