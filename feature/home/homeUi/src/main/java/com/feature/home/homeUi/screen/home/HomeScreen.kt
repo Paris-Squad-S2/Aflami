@@ -83,11 +83,13 @@ fun HomeScreenContent(
                     onClickViewAll = {
                         action.navigateToContinueWatchingScreen()
                     },
-                    modifier = Modifier.padding(top = 10.dp)
+                    modifier = Modifier.padding(top = 6.dp)
                 )
 
                 LazyRow(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 12.dp,bottom = 16.dp),
                     contentPadding = PaddingValues(16.dp)
                 ) {
                     items(state.homeUIState.continueWatchingMediaList.take(10)) { media ->
@@ -119,9 +121,13 @@ fun HomeScreenContent(
                 onClickViewAll = {
                     action.navigateToTopRatingScreen()
                 },
+                modifier = Modifier.padding(top = 6.dp)
+
             )
             LazyRow(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 12.dp),
                 contentPadding = PaddingValues(16.dp)
             ) {
                 items(state.homeUIState.topRatedMediaList.take(10)) { media ->
