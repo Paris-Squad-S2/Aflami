@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
+import android.util.Log
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -14,13 +15,10 @@ import com.feature.home.homeUi.mapper.nameToGenreId
 import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
-import com.feature.home.homeUi.mapper.toSliderMediaList
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
-import com.paris_2.aflami.designsystem.components.SliderMedia
-import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 
 class HomeScreenViewModel(
     private val getPopularMediaUseCase: GetPopularMediaUseCase,
@@ -156,9 +154,10 @@ class HomeScreenViewModel(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             upComingMediaList = upcomingMovies.toMediaUiStateList(),
-                            categories = screenState.value.homeUIState.categories.toMutableMap().apply {
-                                this.keys.forEach { this[it] = false }
-                            },
+                            categories = screenState.value.homeUIState.categories.toMutableMap()
+                                .apply {
+                                    this.keys.forEach { this[it] = false }
+                                },
                         )
                     )
                 )
@@ -289,11 +288,11 @@ class HomeScreenViewModel(
             },
             onSuccess = { filteredMovies ->
                 emitState(
-                        screenState.value.copy(
-                           homeUIState = screenState.value.homeUIState.copy(
-                               upComingMediaList = filteredMovies.toMediaUiStateList(),
-                                moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
-                                showMoodPickerDialog = true
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            upComingMediaList = filteredMovies.toMediaUiStateList(),
+                            moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
+                            showMoodPickerDialog = true
                         )
                     )
                 )
@@ -315,16 +314,18 @@ class HomeScreenViewModel(
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            categories = screenState.value.homeUIState.categories.toMutableMap().apply {
-                                this[category] = !(this[category] ?: false)
-                            }
+                            categories = screenState.value.homeUIState.categories.toMutableMap()
+                                .apply {
+                                    this[category] = !(this[category] ?: false)
+                                }
                         )
                     )
                 )
-                filterUpComingMediaByCategoriesUseCase.invoke(screenState.value.homeUIState.categories
-                    .filter { it.value }
-                    .keys
-                    .map { it.id })
+                filterUpComingMediaByCategoriesUseCase.invoke(
+                    screenState.value.homeUIState.categories
+                        .filter { it.value }
+                        .keys
+                        .map { it.id })
             },
             onSuccess = { filteredMovies ->
                 emitState(
@@ -364,3 +365,6 @@ class HomeScreenViewModel(
         )
     }
 }
+
+// Todo( add to continue watching list use case) need to local data
+// Todo( get continue Watching List use case ) from local data source
