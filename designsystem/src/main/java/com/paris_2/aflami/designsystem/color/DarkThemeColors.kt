@@ -43,7 +43,7 @@ val darkThemeColors = Colors(
         blueCard = Color(0xFF121B1F),
         navyCard = Color(0xFF12151F),
         yellowCard = Color(0xFF1F1A12),
-        backgroundCircles = Color(0x14FFFFFF),
+        backgroundCircles = Color(0xFFFFFFFF).copy(alpha = 0.04f),
         profileOverlay = Color(0x800D090B)
     )
 )

@@ -10,6 +10,8 @@ import com.repository.model.remote.TvShowReviewDto
 import com.repository.model.remote.TvShowReviewsDto
 import com.repository.model.remote.TvShowSimilarDto
 import com.repository.model.remote.TvShowSimilarsDto
+import com.repository.model.remote.TvShowVideoDto
+import com.repository.model.remote.TvShowVideoResultDto
 
 val mockTvShowDto = TvShowDto(
     id = 550,
@@ -20,6 +22,14 @@ val mockTvShowDto = TvShowDto(
         TvShowProductionCompanyDto(
             name = "Marvel"
         )
+    )
+)
+
+val mockTvShowVideosDto = TvShowVideoDto(
+    id = 550,
+    tvShowVideoResultDto = listOf(
+        TvShowVideoResultDto(key = "dQw4w9WgXcQ", name = "Trailer 1", site = "YouTube", type = "Trailer"),
+        TvShowVideoResultDto(key = "abc123", name = "Trailer 2", site = "Vimeo", type = "Trailer")
     )
 )
 

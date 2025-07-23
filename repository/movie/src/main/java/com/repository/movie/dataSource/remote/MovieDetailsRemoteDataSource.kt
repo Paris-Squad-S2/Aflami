@@ -5,6 +5,7 @@ import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieReviewsDto
 import com.repository.movie.models.remote.MovieSimilarsDto
+import com.repository.movie.models.remote.MovieVideoDto
 
 interface MovieDetailsRemoteDataSource {
     suspend fun getMovieDetails(movieId: Int, language: String): MovieDto
@@ -12,4 +13,5 @@ interface MovieDetailsRemoteDataSource {
     suspend fun getMovieReviews(movieId: Int, page: Int, language: String): MovieReviewsDto
     suspend fun getSimilarMovies(movieId: Int, page: Int, language: String): MovieSimilarsDto
     suspend fun getMovieCredits(movieId: Int, language: String): MovieCreditsDto
+    suspend fun getTrailerVideoForMovie(movieId: Int): MovieVideoDto
 }

@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -29,7 +30,7 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 @Composable
 fun SnackBar(
     modifier: Modifier = Modifier,
-    text: String,
+    @StringRes text: Int,
     isSuccess: Boolean,
     onClick: () -> Unit = {}
 ) {
@@ -61,7 +62,7 @@ fun SnackBar(
             tint = color,
         )
         Text(
-            text = text,
+            text = stringResource(id = text),
             style = Theme.textStyle.body.medium,
             modifier = Modifier.padding(start = 12.dp)
         )
@@ -75,12 +76,12 @@ private fun SnackBarErrorPreview() {
     BasePreview {
         Column(Modifier.padding(50.dp)) {
             SnackBar(
-                text = "Some error happened.",
+                text = R.string.some_error_happened,
                 isSuccess = false
             )
             Spacer(modifier = Modifier.height(50.dp))
             SnackBar(
-                text = "Added new list successfully.",
+                text = R.string.added_new_list_successfully,
                 isSuccess = true
             )
         }
