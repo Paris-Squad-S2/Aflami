@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCases.movie
 
 import com.domain.mediaDetails.repository.MovieRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -21,29 +22,55 @@ class GetMovieReviewsUseCaseTest {
     @Test
     fun `should return movie reviews from repository`() = runTest {
         // Given
-        val movieId = 1
-        val page = 1
-
-        // when
         coEvery { movieRepository.getMovieReview(movieId,page) } returns fakeReviews
 
-        // Then
+        // when
         val result = getMovieReviewsUseCase(movieId,page)
+
+        // Then
         assertEquals(result, fakeReviews)
 
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest{
+    fun `should verify repository call when getting movie reviews`() = runTest {
         // Given
-        val movieId = 1
-        val page = 1
-        // when
-        coEvery { movieRepository.getMovieReview(movieId,page) } returns emptyList()
+        coEvery { movieRepository.getMovieReview(movieId, page) } returns fakeReviews
+
+        // When
+        getMovieReviewsUseCase(movieId, page)
 
         // Then
+        coVerify(exactly = 1) { movieRepository.getMovieReview(movieId, page) }
+    }
+
+    @Test
+    fun `should return empty list when no cast found`() = runTest{
+        // Given
+        coEvery { movieRepository.getMovieReview(movieId,page) } returns emptyList()
+
+        // when
         val result = getMovieReviewsUseCase(movieId,page)
+
+        // Then
         assertEquals(result, emptyList())
+    }
+
+    @Test
+    fun `should verify repository call when no reviews found`() = runTest {
+        // Given
+        coEvery { movieRepository.getMovieReview(movieId, page) } returns emptyList()
+
+        // When
+        getMovieReviewsUseCase(movieId, page)
+
+        // Then
+        coVerify(exactly = 1) { movieRepository.getMovieReview(movieId, page) }
+    }
+
+    private companion object{
+        val movieId = 1
+        val page = 1
     }
 
 }

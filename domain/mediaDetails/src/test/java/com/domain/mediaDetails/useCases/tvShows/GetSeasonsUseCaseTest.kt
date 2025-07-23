@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCases.tvShows
 
 import com.domain.mediaDetails.repository.TvShowRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -22,16 +23,40 @@ class GetSeasonsUseCaseTest {
     @Test
     fun `should return season details from repository`() = runTest {
         // Given
-        val tvShowId = 1
-        val seasonNumber = 1
+        coEvery {
+            tvShowRepository.getSeasonDetails(
+                tvShowId,
+                seasonNumber
+            )
+        } returns fakeSeasons.first()
 
         // when
-        coEvery { tvShowRepository.getSeasonDetails(tvShowId, seasonNumber) } returns fakeSeasons.first()
+        val result = getSeasonDetailsUseCase(tvShowId, seasonNumber)
 
         // Then
-        val result = getSeasonDetailsUseCase(tvShowId,seasonNumber)
         assertEquals(result, fakeSeasons.first())
 
     }
 
+    @Test
+    fun `should call repository method when use case is invoked`() = runTest {
+        // Given
+        coEvery {
+            tvShowRepository.getSeasonDetails(
+                tvShowId,
+                seasonNumber
+            )
+        } returns fakeSeasons.first()
+
+        // When
+        getSeasonDetailsUseCase(tvShowId, seasonNumber)
+
+        // Then
+        coVerify(exactly = 1) { tvShowRepository.getSeasonDetails(tvShowId, seasonNumber) }
+    }
+
+    private companion object {
+        val tvShowId = 1
+        val seasonNumber = 1
+    }
 }
