@@ -2,9 +2,11 @@ package com.feature.home.homeUi.screen.home.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -49,6 +51,8 @@ fun HomeSlider(
         rating = 0f,
         yearOfRelease = "2022",
     )) }
+
+
     Box {
         if (mediaState.value.imageUri.isNotEmpty())
             SafeImageViewer(
@@ -88,13 +92,14 @@ fun HomeSlider(
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
+            if (mediaList.isNotEmpty())
             Slider(
                 items = mediaList,
                 onClick = {media->
                     onMediaClick(media)
                 },
                 modifier = modifier,
-                currentMedia = mediaState
+                currentMedia = mediaState,
             )
 
             if (mediaList.isNotEmpty()) {
@@ -112,6 +117,7 @@ fun HomeSlider(
                             title = it,
                             isSelected = false
                         )
+                        Spacer(modifier = Modifier.width(4.dp))
                     }
                 }
             }
