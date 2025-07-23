@@ -60,6 +60,7 @@ dependencies {
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
 
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
 }

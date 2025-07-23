@@ -14,13 +14,76 @@ import kotlin.test.Test
 class SeasonLocalDataSourceImpTest {
     private lateinit var seasonLocalDataSourceImp: TvShowSeasonLocalDataSourceImp
     private lateinit var seasonDao: SeasonDao
-    private lateinit var sampleSeason: SeasonEntity
 
     @BeforeEach
     fun setUp() {
         seasonDao = mockk(relaxed = true)
         seasonLocalDataSourceImp = TvShowSeasonLocalDataSourceImp(seasonDao)
-        sampleSeason = SeasonEntity(
+    }
+
+    @Test
+    fun `addSeason should add season when addSeason in SeasonDao called successfully`() = runTest {
+        //Given
+        seasonLocalDataSourceImp.addSeasonDetails(sampleSeason)
+
+        //When&Then
+        coVerify(exactly = 1) { seasonLocalDataSourceImp.addSeasonDetails(sampleSeason) }
+    }
+
+    @Test
+    fun `getSeasonsByTvShowId should call getSeasonByTvShowId on DAO and return its result`() =
+        runTest {
+            //Given
+            val tvShowId = 10
+            coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns sampleSeason
+
+            //When
+            val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+            //Then
+            assert(result == sampleSeason)
+        }
+
+    @Test
+    fun `getSeasonByTvShowId should verify DAO is called with correct ID`() = runTest {
+        // Given
+        val tvShowId = 10
+        coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns sampleSeason
+
+        // When
+        seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+
+        // Then
+        coVerify(exactly = 1) { seasonDao.getSeasonByTvShowId(tvShowId) }
+    }
+
+    @Test
+    fun `getSeasonsByTvShowId should return null when DAO returns null`() = runTest {
+        //Given
+        val tvShowId = 1
+        coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns null
+
+        //When
+        val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+
+        //Then
+        assert(result == null)
+    }
+
+    @Test
+    fun `getSeasonDetailsByTvShowId should verify DAO is called when DAO returns null`() = runTest {
+        // Given
+        val tvShowId = 1
+        coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns null
+
+        // When
+        seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+
+        // Then
+        coVerify(exactly = 1) { seasonDao.getSeasonByTvShowId(tvShowId) }
+    }
+
+    private companion object {
+        val sampleSeason = SeasonEntity(
             id = 1,
             tvShowId = 10,
             name = "The Red Wedding",
@@ -40,35 +103,4 @@ class SeasonLocalDataSourceImpTest {
             seasonNumber = 0
         )
     }
-
-    @Test
-    fun `addSeason should add season when addSeason in SeasonDao called successfully`() = runTest {
-        seasonLocalDataSourceImp.addSeasonDetails(sampleSeason)
-
-        coVerify(exactly = 1) { seasonLocalDataSourceImp.addSeasonDetails(sampleSeason) }
-    }
-
-    @Test
-    fun `getSeasonsByTvShowId should call getSeasonByTvShowId on DAO and return its result`() =
-        runTest {
-            val tvShowId = 10
-            coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns sampleSeason
-
-            val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
-
-            coVerify { seasonDao.getSeasonByTvShowId(tvShowId) }
-            assert(result == sampleSeason)
-        }
-
-    @Test
-    fun `getSeasonsByTvShowId should return null when DAO returns null`() = runTest {
-        val tvShowId = 1
-        coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns null
-
-        val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
-
-        coVerify { seasonDao.getSeasonByTvShowId(tvShowId) }
-        assert(result == null)
-    }
-
 }

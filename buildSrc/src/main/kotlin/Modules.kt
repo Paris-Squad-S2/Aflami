@@ -12,6 +12,7 @@ object Modules {
     const val DOMAIN_HOME = ":domain:home"
     const val DOMAIN_CATEGORIES = ":domain:categories"
     const val DOMAIN_MEDIA_DETAILS = ":domain:mediaDetails"
+    const val DOMAIN_AUTHENTICATION = ":domain:authentication"
 
     const val REPOSITORY_MOVIE = ":repository:movie"
     const val REPOSITORY_TV_SHOW = ":repository:tvShows"
@@ -21,6 +22,7 @@ object Modules {
     const val REPOSITORY_GUESS_GAME = ":repository:guessGame"
     const val REPOSITORY_SEARCH = ":repository:search"
     const val REPOSITORY_HOME = ":repository:home"
+    const val REPOSITORY_AUTHENTICATION = ":repository:authentication"
 
     const val DATASOURCE_REMOTE_USER = ":datasource:remote:user"
     const val DATASOURCE_LOCAL_USER = ":datasource:local:user"
@@ -37,6 +39,8 @@ object Modules {
     const val DATASOURCE_LOCAL_SEARCH = ":datasource:local:search"
     const val DATASOURCE_REMOTE_SEARCH = ":datasource:remote:search"
     const val DATASOURCE_REMOTE_HOME = ":datasource:remote:home"
+    const val DATASOURCE_LOCAL_AUTHENTICATION = ":datasource:local:authentication"
+    const val DATASOURCE_REMOTE_AUTHENTICATION = ":datasource:remote:authentication"
 
     const val FEATURE_ONBOARDING_API = ":feature:onboarding:onboardingApi"
     const val FEATURE_ONBOARDING_UI = ":feature:onboarding:onboardingUi"
@@ -59,4 +63,3 @@ object Modules {
 
     const val SAFE_IMAGE_VIEWER = ":safeimageviewer"
 }
-

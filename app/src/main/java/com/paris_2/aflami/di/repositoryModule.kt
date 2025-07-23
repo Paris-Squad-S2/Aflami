@@ -10,6 +10,8 @@ import com.domain.search.repository.CountryRepository
 import com.domain.search.repository.GenresInteractionRepository
 import com.domain.search.repository.SearchHistoryRepository
 import com.domain.search.repository.SearchMediaRepository
+import com.paris_2.domain.authentication.repository.AuthenticationRepository
+import com.paris_2.repository.authentication.repository.AuthenticationRepositoryImpl
 import com.repository.home.repository.MoviesCategoriesRepositoryImpl
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
@@ -32,4 +34,6 @@ val repositoryModule = module {
     singleOf(::GenresInteractionRepositoryImpl) bind GenresInteractionRepository::class
     singleOf(::MediaRepositoryImpl ) bind MediaRepository::class
     singleOf(::MoviesCategoriesRepositoryImpl) bind MoviesCategoriesRepository::class
+    singleOf(::AuthenticationRepositoryImpl) bind AuthenticationRepository::class
+
 }
