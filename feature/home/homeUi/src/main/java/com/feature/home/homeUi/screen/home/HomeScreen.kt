@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -16,9 +17,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
@@ -28,8 +30,11 @@ import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
 import com.paris_2.aflami.designsystem.components.Chips
+import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.MoodPicker
+import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -46,6 +51,7 @@ fun HomeScreen(
 
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenContent(
     state: HomeScreenUIState,
@@ -61,11 +67,28 @@ fun HomeScreenContent(
         modifier = Modifier.fillMaxSize(),
     ) {
 
+        stickyHeader {
+            TopAppBar(
+                title = "AFLAMI",
+                subtitle = "More than just watching.",
+                modifier = Modifier.padding(top = 16.dp),
+                logo = iconItemWithDefaults(
+                    ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo), {},
+                    Theme.colors.primaryVariant,
+                ),
+                trailingIcons = listOf(
+                    IconItem(
+                        icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_search),
+                        onClick =  action::onSearchIconClick,
+                        backgroundColor = Theme.colors.surfaceHigh,
+                        tint = Theme.colors.text.body
+                    )
+                )
+            )
+        }
+
         item {
             HomeSlider(
-                onSearchIconClick = {
-                    action.onSearchIconClick()
-                },
                 onMediaClick = {
                     action.onMediaSliderClick(it)
                 },
