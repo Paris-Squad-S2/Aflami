@@ -1,5 +1,13 @@
 <resources>
     <string name="go_to_search">Go to Search</string>
+    <string name="mood_picker">Mood Picker</string>
+    <string name="movie_that_matches_your_mood_is">Movie that matches your mood is:</string>
+    <string name="view_details">View Details</string>
+    <string name="get_another_movie">Get another movie</string>
     <string name="top_rating">Top Rating</string>
     <string name="continue_watching">Continue Watching</string>
+    <string name="upcoming">Upcoming</string>
+    <string name="all">All</string>
+    <string name="mood_picker_get_a_movie">Mood Picker ( Get a Movie )</string>
+    <string name="what_s_your_vibe_today">"What’s your vibe today? "</string>
 </resources>

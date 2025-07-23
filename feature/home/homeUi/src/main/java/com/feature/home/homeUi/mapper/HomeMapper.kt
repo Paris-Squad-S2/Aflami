@@ -1,7 +1,9 @@
 package com.feature.home.homeUi.mapper
 
+import com.domain.home.model.Category
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
+import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.aflami.designsystem.components.SliderMedia
@@ -35,3 +37,13 @@ fun MediaType.toUiState(): MediaTypeUi{
         MediaType.MOVIE -> MediaTypeUi.MOVIE
     }
 }
+
+fun Category.toCategoryUIState():CategoryUiState{
+    return CategoryUiState(
+        id = this.id,
+        name = this.name
+    )
+}
+
+fun List<Category>.toCategoryUiList() = this.map { it.toCategoryUIState() }
+
