@@ -13,10 +13,6 @@ class VideoWebViewViewModel(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<VideoWebUIState>(VideoWebUIState()) {
 
-    private val site by lazy {
-        savedStateHandle.toRoute<MediaDetailsDestinations.VideosScreen>()
-            .site
-    }
 
     private val key by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.VideosScreen>()
@@ -24,6 +20,15 @@ class VideoWebViewViewModel(
     }
 
     init {
+        val site by lazy {
+            savedStateHandle.toRoute<MediaDetailsDestinations.VideosScreen>()
+                .site
+        }
+
+        val key by lazy {
+            savedStateHandle.toRoute<MediaDetailsDestinations.VideosScreen>()
+                .key
+        }
         updateState(
             screenState.value.copy(
                 videoUrl = "https://www.$site.com/watch?v=$key"

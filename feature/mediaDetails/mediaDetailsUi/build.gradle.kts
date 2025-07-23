@@ -109,3 +109,17 @@ dependencies {
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
 }
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = 70
+                    }
+                }
+            }
+        }
+    }
+}
