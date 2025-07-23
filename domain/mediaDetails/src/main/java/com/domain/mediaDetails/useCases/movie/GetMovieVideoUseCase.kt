@@ -1,0 +1,17 @@
+package com.domain.mediaDetails.useCases.movie
+
+import com.domain.mediaDetails.model.MovieVideo
+import com.domain.mediaDetails.repository.MovieRepository
+
+class GetMovieVideoUseCase(
+    private val movieRepository: MovieRepository
+) {
+    suspend operator fun invoke(movieId: Int): MovieVideo {
+        return movieRepository.getTrailerVideoForMovie(movieId)
+            .first { it.site.trim().lowercase() == SITE }
+
+    }
+    companion object{
+        private const val SITE = "youtube"
+    }
+}

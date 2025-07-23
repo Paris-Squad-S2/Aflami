@@ -1,18 +1,19 @@
 package testUtils
 
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Country
 import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowSimilar
+import com.domain.mediaDetails.model.TvShowVideo
 import kotlinx.datetime.LocalDate
 
 val fakeGenres = listOf(
@@ -348,6 +349,24 @@ val fakeImages = listOf(
 )
 
 val fakeGallery = Gallery(images = fakeImages)
+
+val fakeMovieVideo = listOf(
+    MovieVideo(
+        key = "dQw4w9WgXcQ",
+        name = "Trailer 1",
+        site = "YouTube",
+        type = "Trailer"
+    )
+)
+
+val fakeTvShowVideo = listOf(
+    TvShowVideo(
+        key = "dQw4w9WgXcQ",
+        name = "Trailer 1",
+        site = "YouTube",
+        type = "Trailer"
+    )
+)
 
 val fakeMovie = Movie(
     id = 3,

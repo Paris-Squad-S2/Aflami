@@ -6,6 +6,7 @@ import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
@@ -14,6 +15,7 @@ import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
@@ -68,5 +70,7 @@ val useCaseModule = module {
     factoryOf(::GuestLoginUseCase)
     factoryOf(::GetForgetPasswordUrlUseCase)
     factoryOf(::GetRegisterUrlUseCase)
+    factoryOf(::GetMovieVideoUseCase)
+    factoryOf(::GetTvShowVideoUseCase)
 }
 
