@@ -23,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
-import com.feature.home.homeUi.screen.home.component.HomeSlider
+import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.AflamiSectionTitle

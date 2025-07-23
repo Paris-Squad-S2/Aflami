@@ -38,9 +38,7 @@ fun TopRatingMoviesScreen(
         if (state.value.topRatingMovies.isNotEmpty()) {
             TopRatingMoviesContent(
                 continueWatchingList = state.value.topRatingMovies,
-                onMediaCardClick = { media ->
-//            viewModel.onMediaCardClick(media)
-                }
+                onMediaCardClick = viewModel::onMediaCardClick
             )
         } else if (state.value.isLoading) {
             PageLoadingPlaceHolder(
@@ -49,9 +47,7 @@ fun TopRatingMoviesScreen(
         } else if (state.value.errorMessage != null) {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
-                onRetry = {
-//            viewModel.onRetry()
-                }
+                onRetry = viewModel::onRetry
             )
         }
     }

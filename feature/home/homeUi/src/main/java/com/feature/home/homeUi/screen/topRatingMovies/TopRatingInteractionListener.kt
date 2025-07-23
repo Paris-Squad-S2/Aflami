@@ -1,0 +1,7 @@
+package com.feature.home.homeUi.screen.topRatingMovies
+
+import com.feature.home.homeUi.screen.home.MediaUiState
+
+fun interface TopRatingInteractionListener {
+    fun onMediaCardClick(media: MediaUiState)
+}
