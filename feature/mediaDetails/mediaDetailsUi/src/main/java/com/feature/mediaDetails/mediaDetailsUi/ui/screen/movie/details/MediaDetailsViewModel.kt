@@ -8,12 +8,14 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.useCases.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
@@ -34,6 +36,7 @@ class MovieDetailsViewModelViewModel(
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
     private val getMovieProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase,
     private val addMovieToFavoriteUseCase: AddMovieToFavoriteUseCase,
+    private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val appNavigator: AppNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
@@ -48,12 +51,17 @@ class MovieDetailsViewModelViewModel(
                 runtime = "",
                 country = "",
                 description = "",
-                productionCompanies = emptyList()
+                productionCompanies = emptyList(),
             ),
             cast = emptyList(),
             reviews = flowOf(PagingData.empty()),
             gallery = emptyList(),
-            recommendations = flowOf(PagingData.empty())
+            recommendations = flowOf(PagingData.empty()),
+            movieVideoUi = MovieVideoUi(
+                key = "",
+                name = "",
+                site = "",
+            )
         ),
         isLoading = true,
         errorMessage = null
@@ -66,6 +74,15 @@ class MovieDetailsViewModelViewModel(
 
     init {
         loadedMovieDetails(mediaId = movieId)
+        getInformationVideoMovie()
+    }
+
+    private fun getInformationVideoMovie() {
+        tryToExecute(
+            execute = { getMovieVideoUseCase(movieId) },
+            onSuccess = ::onGetVideoMovieSuccess,
+            onError = ::onGetVideoMovieError,
+        )
     }
 
 
@@ -134,7 +151,7 @@ class MovieDetailsViewModelViewModel(
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
-                      },
+            },
             onSuccess = {
                 updateState(
                     screenState.value.copy(
@@ -166,7 +183,7 @@ class MovieDetailsViewModelViewModel(
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
-                      },
+            },
             onSuccess = {
                 updateState(
                     screenState.value.copy(
@@ -264,5 +281,42 @@ class MovieDetailsViewModelViewModel(
             )
         )
         loadedMovieDetails(mediaId = movieId)
+    }
+
+    override fun onClickPlayTrailer() {
+        if (screenState.value.movieDetailsUiState.movieVideoUi.key.isEmpty() ||
+            screenState.value.movieDetailsUiState.movieVideoUi.site.isEmpty()) {
+            updateState(
+                screenState.value.copy(
+                    errorMessage = "No video available"
+                )
+            )
+            return
+        }
+        navigate(
+            MediaDetailsDestinations.VideosScreen(
+                site = screenState.value.movieDetailsUiState.movieVideoUi.site,
+                key = screenState.value.movieDetailsUiState.movieVideoUi.key
+            )
+        )
+    }
+
+    private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
+        updateState(
+            screenState.value.copy(
+                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                    movieVideoUi = movieVideo.toUi()
+                )
+            )
+        )
+
+    }
+
+    private fun onGetVideoMovieError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
     }
 }

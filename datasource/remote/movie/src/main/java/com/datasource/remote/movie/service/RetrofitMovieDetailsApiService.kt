@@ -1,0 +1,47 @@
+package com.datasource.remote.movie.service
+
+import com.repository.movie.models.remote.MovieCreditsDto
+import com.repository.movie.models.remote.MovieDto
+import com.repository.movie.models.remote.MovieImagesDto
+import com.repository.movie.models.remote.MovieReviewsDto
+import com.repository.movie.models.remote.MovieSimilarsDto
+import com.repository.movie.models.remote.MovieVideoDto
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+
+interface RetrofitMovieDetailsApiService {
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String
+    ): MovieDto
+
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages(@Path("movie_id") movieId: Int): MovieImagesDto
+
+    @GET("movie/{movie_id}/reviews")
+    suspend fun getMovieReviews(
+        @Path("movie_id") movieId: Int,
+        @Query("page") page: Int,
+        @Query("language") language: String
+    ): MovieReviewsDto
+
+    @GET("movie/{movie_id}/recommendations")
+    suspend fun getSimilarMovies(
+        @Path("movie_id") movieId: Int,
+        @Query("page") page: Int,
+        @Query("language") language: String
+    ): MovieSimilarsDto
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun getMovieCredits(
+        @Path("movie_id") movieId: Int,
+        @Query("language") language: String
+    ): MovieCreditsDto
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getTrailerVideoForMovie(
+        @Path("movie_id") movieId: Int
+    ): MovieVideoDto
+}

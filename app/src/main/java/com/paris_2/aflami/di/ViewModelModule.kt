@@ -6,6 +6,7 @@ import com.feature.authentication.authenticationUi.screen.register.RegisterViewM
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModelViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.video.VideoWebViewViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
 import com.feature.search.searchUi.screen.findByActor.FindByActorViewModel
 import com.feature.search.searchUi.screen.search.SearchViewModel
@@ -24,4 +25,5 @@ val viewModelModule = module {
     viewModelOf(::LoginViewModel)
     viewModelOf(::RegisterViewModel)
     viewModelOf(::ForgotPasswordViewModel)
+    viewModelOf(::VideoWebViewViewModel)
 }

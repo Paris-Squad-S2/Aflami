@@ -6,7 +6,6 @@ import com.domain.search.exception.NoMediaForSearchException
 import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
-import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
@@ -14,6 +13,7 @@ import com.repository.search.entity.SearchType
 import com.repository.search.mapper.toMediaEntities
 import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.util.detectLanguage
 import com.repository.search.util.getCurrentDate
 import kotlinx.datetime.DateTimeUnit
@@ -78,7 +78,6 @@ class SearchMediaRepositoryImpl(
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto = searchRemoteDataSource.searchCountryCode(
-                    query = countryName,
                     countryCode = countryName,
                     language = language,
                     page = page,

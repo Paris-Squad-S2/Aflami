@@ -83,7 +83,19 @@ dependencies {
 
     // paging 3
     implementation(libs.androidx.paging.runtime)
-    implementation (libs.androidx.paging.compose)
+    implementation(libs.androidx.paging.compose)
+
+
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // test
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
+
 
     implementation(project(Modules.DESIGN_SYSTEM))
 
@@ -91,4 +103,18 @@ dependencies {
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
+}
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = 0 //TODO set a minimum value for coverage and add tests to achieve it
+                    }
+                }
+            }
+        }
+    }
 }
