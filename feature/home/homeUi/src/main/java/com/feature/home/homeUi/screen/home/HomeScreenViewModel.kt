@@ -1,7 +1,9 @@
 package com.feature.home.homeUi.screen.home
 
 import android.util.Log
+import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
+import com.domain.home.usecase.GetMediaFromLocalUseCase
 import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
@@ -12,6 +14,7 @@ import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
 import com.feature.home.homeUi.mapper.nameToGenreId
 import com.feature.home.homeUi.mapper.toCategoryUiList
+import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
@@ -25,6 +28,8 @@ class HomeScreenViewModel(
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase,
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase,
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase,
+    private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase,
+    private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val appNavigator: AppNavigator,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
@@ -129,12 +134,12 @@ class HomeScreenViewModel(
 
     private fun loadContinueWatchingMedia() {
         tryToExecute(
-            execute = fakeContinueWatchingUseCase::invoke,
+            execute = getMediaFromLocalUseCase::invoke,
             onSuccess = { mediaList ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            continueWatchingMediaList = mediaList
+                            continueWatchingMediaList = mediaList.toMediaUiStateList()
                         )
                     )
                 )
@@ -182,6 +187,8 @@ class HomeScreenViewModel(
     override fun onMediaCardClick(media: MediaUiState) {
         tryToExecute(
             execute = {
+                addMediaToLocalDatabaseUseCase.invoke(media.toMedia())
+                loadContinueWatchingMedia()
                 appNavigator.navigate(
                     AppDestinations.MediaDetailsFeature(
                         when (media.type) {
