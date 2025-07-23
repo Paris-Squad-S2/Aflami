@@ -1,3 +1,2 @@
-versionName=0.2.10
+versionName=0.2.11
 - fix some ui issues in login screen
-- Display Snackbar for login errors
