@@ -1,10 +1,8 @@
 package com.feature.home.homeUi.screen.continueWatching
 
 import com.feature.home.homeUi.common.BaseViewModel
-import com.feature.home.homeUi.fake.FakeContinueWatchingUseCase
 
 class ContinueWatchingViewModel(
-    private val fakeContinueWatchingUseCase: FakeContinueWatchingUseCase,
 ):BaseViewModel<ContinueWatchingUiState>(
     ContinueWatchingUiState(
         continueWatchingMediaList = emptyList(),
@@ -13,7 +11,7 @@ class ContinueWatchingViewModel(
     )
 ) {
 
-    init {
+   /* init {
         loadContinueWatchingMedia()
     }
 
@@ -43,6 +41,6 @@ class ContinueWatchingViewModel(
                 )
             }
         )
-    }
+    }*/
 
 }
