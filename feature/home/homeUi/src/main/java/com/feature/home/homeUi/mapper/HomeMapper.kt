@@ -31,10 +31,29 @@ fun Media.toUiState(): MediaUiState {
     )
 }
 
+fun MediaUiState.toMedia():Media{
+    return Media(
+        id = this.id,
+        posterPath = this.imageUri,
+        title = this.title,
+        type = this.type.toMediaType(),
+        genreIds = this.categories.map { it.nameToGenreId() },
+        yearOfRelease = this.yearOfRelease,
+        voteAverage = this.rating,
+    )
+}
+
+
 fun MediaType.toUiState(): MediaTypeUi{
     return when(this){
         MediaType.TV_SHOW -> MediaTypeUi.TVSHOW
         MediaType.MOVIE -> MediaTypeUi.MOVIE
+    }
+}
+fun MediaTypeUi.toMediaType(): MediaType{
+    return when(this){
+        MediaTypeUi.TVSHOW -> MediaType.TV_SHOW
+        MediaTypeUi.MOVIE -> MediaType.MOVIE
     }
 }
 
