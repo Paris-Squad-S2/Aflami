@@ -8,14 +8,16 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.domain.mediaDetails.model.TvShowVideo
+import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
@@ -36,6 +38,7 @@ class TvShowDetailsViewModel(
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase,
     private val addTvShowToFavoriteUseCase: AddTvShowToFavoriteUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
+    private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
     private val appNavigator: AppNavigator,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
@@ -57,6 +60,11 @@ class TvShowDetailsViewModel(
             reviews = flowOf(PagingData.empty()),
             gallery = emptyList(),
             recommendations = flowOf(PagingData.empty()),
+            tvShowVideoUi = TvShowVideoUi(
+                key = "",
+                name = "",
+                site = ""
+            )
         ),
         isLoading = true,
         errorMessage = null,
@@ -72,6 +80,15 @@ class TvShowDetailsViewModel(
     }
     init {
         loadTvShowDetails(mediaId)
+        getInformationVideoTvShow()
+    }
+
+    private fun getInformationVideoTvShow() {
+        tryToExecute(
+            execute = { getTvShowVideoUseCase(mediaId) },
+            onSuccess = ::onGetVideoTvShowSuccess,
+            onError = ::onGetVideoTvShowError,
+        )
     }
 
     private fun loadTvShowDetails(mediaId: Int) {
@@ -314,6 +331,24 @@ class TvShowDetailsViewModel(
         )
     }
 
+    override fun onClickPlayTrailer() {
+        if (screenState.value.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty() ||
+            screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()) {
+            updateState(
+                screenState.value.copy(
+                    errorMessage = "No video available"
+                )
+            )
+            return
+        }
+        navigate(
+            MediaDetailsDestinations.VideosScreen(
+                site = screenState.value.tvShowDetailsUiState.tvShowVideoUi.site,
+                key = screenState.value.tvShowDetailsUiState.tvShowVideoUi.key
+            )
+        )
+    }
+
     override fun onRetryLoadTvShowDetails() {
         updateState(
             screenState.value.copy(
@@ -322,5 +357,24 @@ class TvShowDetailsViewModel(
             )
         )
         loadTvShowDetails(mediaId = mediaId)
+    }
+
+    private fun onGetVideoTvShowSuccess(tvShowVideo: TvShowVideo) {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    tvShowVideoUi = tvShowVideo.toUi()
+                )
+            )
+        )
+
+    }
+
+    private fun onGetVideoTvShowError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
     }
 }

@@ -1,2 +1,3 @@
 versionName=0.2.11
-- fix some ui issues in login screen
+- refactor tv show, movie and search by use retrofit instead of ktor
+- fix play button video in tv show and movie
