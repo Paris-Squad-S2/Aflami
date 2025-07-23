@@ -75,40 +75,41 @@ fun HomeScreenContent(
         }
 
 
-        item {
-            AflamiSectionTitle(
-                title = stringResource(R.string.continue_watching),
-                hasViewAll = true,
-                onClickViewAll = {
-                    action.navigateToContinueWatchingScreen()
-                },
-                modifier = Modifier.padding(top = 10.dp)
-            )
+        if (state.homeUIState.continueWatchingMediaList.isNotEmpty()){
+            item {
+                AflamiSectionTitle(
+                    title = stringResource(R.string.continue_watching),
+                    hasViewAll = true,
+                    onClickViewAll = {
+                        action.navigateToContinueWatchingScreen()
+                    },
+                    modifier = Modifier.padding(top = 10.dp)
+                )
 
-            LazyRow(
-                modifier = Modifier.fillMaxWidth(),
-                contentPadding = PaddingValues(16.dp)
-            ) {
-                items(state.homeUIState.continueWatchingMediaList) { media ->
-                    AflamiMediaCard(
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .clickable {
-                                action.onMediaCardClick(media)
-                            },
-                        imageUri = media.imageUri,
-                        rating = media.rating.toFloat(),
-                        movieName = media.title,
-                        mediaType = media.type.mediaName,
-                        year = media.yearOfRelease.year.toString(),
-                        mediaCardType = MediaCardType.NORMAL,
-                        showGradientFilter = true,
-                        enabled = !isScrolling,
-                    )
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentPadding = PaddingValues(16.dp)
+                ) {
+                    items(state.homeUIState.continueWatchingMediaList.take(10)) { media ->
+                        AflamiMediaCard(
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .clickable {
+                                    action.onMediaCardClick(media)
+                                },
+                            imageUri = media.imageUri,
+                            rating = media.rating.toFloat(),
+                            movieName = media.title,
+                            mediaType = media.type.mediaName,
+                            year = media.yearOfRelease.year.toString(),
+                            mediaCardType = MediaCardType.NORMAL,
+                            showGradientFilter = true,
+                            enabled = !isScrolling,
+                        )
+                    }
                 }
             }
-        }
-
+    }
         item {
             AflamiSectionTitle(
                 title = stringResource(R.string.top_rating),
@@ -123,7 +124,7 @@ fun HomeScreenContent(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(16.dp)
             ) {
-                items(state.homeUIState.topRatedMediaList) { media ->
+                items(state.homeUIState.topRatedMediaList.take(10)) { media ->
                     AflamiMediaCard(
                         modifier = Modifier
                             .padding(end = 8.dp)
