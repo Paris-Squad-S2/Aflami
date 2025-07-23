@@ -54,10 +54,7 @@ fun HomeScreenContent(
 
     val lazyState = rememberLazyListState()
     val isScrolling by remember { derivedStateOf { lazyState.isScrollInProgress } }
-    var currentCategories by remember { mutableStateOf(state.homeUIState.categories) }
     var isAllCategories by remember { mutableStateOf(state.homeUIState.isAllCategories) }
-    val showMoodPickerDialog = remember { mutableStateOf(false) }
-    val moviePicker = remember { mutableStateOf(state.homeUIState.moodPickerMovie) }
 
     LazyColumn(
         state = lazyState,
@@ -152,7 +149,6 @@ fun HomeScreenContent(
                 title = stringResource(R.string.mood_picker_get_a_movie),
                 question = stringResource(R.string.what_s_your_vibe_today),
                 onEmojiClick = { emojiMood ->
-                    showMoodPickerDialog.value = true
                    action.moodPickerSelected(emojiMood.tags)
                 },
                 image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_clown),
@@ -182,22 +178,18 @@ fun HomeScreenContent(
                         onClick = {
                             action.onAllCategoriesSelect()
                             if (!isAllCategories) isAllCategories = true
-                            currentCategories = state.homeUIState.categories.mapValues { false }
                         }
                     )
                 }
-                items(currentCategories.size) { index ->
-                    val category = currentCategories.keys.elementAt(index)
+                items(state.homeUIState.categories.size) { index ->
+                    val category = state.homeUIState.categories.keys.elementAt(index)
                     Chips(
                         title = category.name,
                         icon = painterResource(getResourceId(category.id)),
-                        isSelected = currentCategories[category] ?: false,
+                        isSelected = state.homeUIState.categories[category] ?: false,
                         onClick = {
-                            action.onCategorySelect(category = listOf(category.id))
                             isAllCategories = false
-                            currentCategories = currentCategories.toMutableMap().apply {
-                                this[category] = (currentCategories[category] ?: false)
-                            }
+                            action.onCategorySelect(category = category)
                         }
                     )
                 }
@@ -224,11 +216,11 @@ fun HomeScreenContent(
             )
         }
     }
-    if (showMoodPickerDialog.value) {
+    if (state.homeUIState.showMoodPickerDialog && state.homeUIState.moodPickerMovie != null) {
             MoodPickerDialog(
-                movie = moviePicker.value!!,
-                onDismiss = { showMoodPickerDialog.value = false },
-                onViewDetailsClick = {action.onMediaCardClick(moviePicker.value!!) },
+                movie = state.homeUIState.moodPickerMovie,
+                onDismiss = { action.onDismissMoodPicker() },
+                onViewDetailsClick = {action.onMediaCardClick(state.homeUIState.moodPickerMovie) },
                 onGetAnotherMovieClick = { }
             )
 

@@ -6,6 +6,7 @@ interface HomeScreenInteractionListener {
     fun navigateToContinueWatchingScreen()
     fun navigateToTopRatingScreen()
     fun moodPickerSelected(mood: List<String>)
-    fun onCategorySelect(category: List<Int>)
+    fun onCategorySelect(category: CategoryUiState)
     fun onAllCategoriesSelect()
+    fun onDismissMoodPicker()
 }

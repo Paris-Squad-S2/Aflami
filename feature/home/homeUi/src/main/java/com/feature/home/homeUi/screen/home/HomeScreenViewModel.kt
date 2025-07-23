@@ -150,7 +150,10 @@ class HomeScreenViewModel(
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            upComingMediaList = upcomingMovies.toMediaUiStateList()
+                            upComingMediaList = upcomingMovies.toMediaUiStateList(),
+                            categories = screenState.value.homeUIState.categories.toMutableMap().apply {
+                                this.keys.forEach { this[it] = false }
+                            },
                         )
                     )
                 )
@@ -237,7 +240,8 @@ class HomeScreenViewModel(
         tryToExecute(
             execute = {
                 val moodCategories = mood.map { mood ->
-                    mood.nameToGenreId()}
+                    mood.nameToGenreId()
+                }
                 Log.d("MoodPicker", "Mood selected: $moodCategories")
 
                 filterUpComingMediaByCategoriesUseCase.invoke(moodCategories)
@@ -247,7 +251,8 @@ class HomeScreenViewModel(
                 emitState(
                         screenState.value.copy(
                            homeUIState = screenState.value.homeUIState.copy(
-                            moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
+                                moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
+                                showMoodPickerDialog = true
                         )
                     )
                 )
@@ -263,10 +268,22 @@ class HomeScreenViewModel(
 
     }
 
-    override fun onCategorySelect(category: List<Int>) {
+    override fun onCategorySelect(category: CategoryUiState) {
         tryToExecute(
             execute = {
-                filterUpComingMediaByCategoriesUseCase.invoke(category)
+                emitState(
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            categories = screenState.value.homeUIState.categories.toMutableMap().apply {
+                                this[category] = !(this[category] ?: false)
+                            }
+                        )
+                    )
+                )
+                filterUpComingMediaByCategoriesUseCase.invoke(screenState.value.homeUIState.categories
+                    .filter { it.value }
+                    .keys
+                    .map { it.id })
             },
             onSuccess = { filteredMovies ->
                 emitState(
@@ -284,6 +301,25 @@ class HomeScreenViewModel(
                     )
                 )
             }
+        )
+    }
+
+    override fun onDismissMoodPicker() {
+        emitState(
+            screenState.value.copy(
+                homeUIState = screenState.value.homeUIState.copy(
+                    showMoodPickerDialog = false,
+                    moodPickerMovie = MediaUiState(
+                        id = 0,
+                        title = "",
+                        imageUri = "",
+                        type = MediaTypeUi.MOVIE,
+                        categories = emptyList(),
+                        yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
+                        rating = 0.0,
+                    )
+                )
+            )
         )
     }
 }
