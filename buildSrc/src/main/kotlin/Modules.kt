@@ -33,6 +33,7 @@ object Modules {
     const val DATASOURCE_LOCAL_GUESS_GAME = ":datasource:local:guessGame"
     const val DATASOURCE_REMOTE_CATEGORIES = ":datasource:remote:categories"
     const val DATASOURCE_LOCAL_CATEGORIES = ":datasource:local:categories"
+    const val DATASOURCE_LOCAL_HOME = ":datasource:local:home"
     const val DATASOURCE_LOCAL_SEARCH = ":datasource:local:search"
     const val DATASOURCE_REMOTE_SEARCH = ":datasource:remote:search"
     const val DATASOURCE_REMOTE_HOME = ":datasource:remote:home"

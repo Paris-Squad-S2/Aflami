@@ -15,12 +15,15 @@ import com.datasource.local.dao.TvShowDao
 import com.datasource.local.dao.TvShowGalleryDao
 import com.datasource.local.dao.TvShowReviewDao
 import com.datasource.local.dao.TvShowSimilarDao
+import com.datasource.local.home.HomeDatabase
+import com.datasource.local.home.dao.HomeMediaDao
 import com.datasource.local.search.SearchDatabase
 import com.datasource.local.search.dao.CountryDao
 import com.datasource.local.search.dao.GenresDao
 import com.datasource.local.search.dao.GenresUserInteractionDao
 import com.datasource.local.search.dao.MediaDao
 import com.datasource.local.search.dao.SearchHistoryDao
+import com.paris_2.aflami.di.DatabaseConstants.HOME_DATABASE_NAME
 import com.paris_2.aflami.di.DatabaseConstants.MOVIE_DATABASE_NAME
 import com.paris_2.aflami.di.DatabaseConstants.SEARCH_DATABASE_NAME
 import com.paris_2.aflami.di.DatabaseConstants.TV_SHOW_DATABASE_NAME
@@ -42,6 +45,14 @@ val roomModule = module {
             get<Context>(),
             MovieDetailDataBase::class.java,
             MOVIE_DATABASE_NAME
+        ).build()
+    }
+
+    single<HomeDatabase> {
+        Room.databaseBuilder(
+            get<Context>(),
+            HomeDatabase::class.java,
+            HOME_DATABASE_NAME
         ).build()
     }
 
@@ -68,11 +79,12 @@ val roomModule = module {
     single<TvShowReviewDao> { get<TvShowDetailDataBase>().reviewDao() }
     single<SeasonDao> { get<TvShowDetailDataBase>().seasonDao() }
     single<TvShowSimilarDao> { get<TvShowDetailDataBase>().tvShowSimilarDao() }
-
+    single<HomeMediaDao> { get<HomeDatabase>().mediaDao() }
 }
 
 object DatabaseConstants {
     const val MOVIE_DATABASE_NAME = "movie_database"
     const val TV_SHOW_DATABASE_NAME = "tv_show_database"
     const val SEARCH_DATABASE_NAME = "search_db"
+    const val HOME_DATABASE_NAME = "home_db"
 }
