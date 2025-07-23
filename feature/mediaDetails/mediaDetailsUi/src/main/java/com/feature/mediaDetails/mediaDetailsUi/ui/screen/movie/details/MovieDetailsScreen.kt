@@ -150,7 +150,7 @@ fun MovieDetailsScreenContent(
                             )
                         } else {
                             DetailsImage(
-                                imageUris = state.movieDetailsUiState.gallery,
+                                imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
                                 onPlayClick = movieDetailsScreenInteractionListener::onClickPlayTrailer,
                                 hasVideo = !(state.movieDetailsUiState.movieVideoUi.site.isEmpty() ||
@@ -217,8 +217,25 @@ fun MovieDetailsScreenContent(
                                             modifier = Modifier.padding(16.dp)
                                         )
                                     }
-                                } else {
-
+                                } else if (mediaList.itemSnapshotList.isEmpty()) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Theme.colors.surface)
+                                                .padding(vertical = 30.dp)
+                                                .navigationBarsPadding(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.there_is_no_recommendations),
+                                                style = Theme.textStyle.label.large,
+                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                            )
+                                        }
+                                    }
+                                }
+                                else {
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
                                             AflamiMediaCard(
@@ -260,7 +277,10 @@ fun MovieDetailsScreenContent(
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .background(Theme.colors.surface),
+                                                .background(Theme.colors.surface)
+                                                .padding(vertical = 30.dp)
+                                                .navigationBarsPadding()
+                                            ,
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
@@ -281,7 +301,23 @@ fun MovieDetailsScreenContent(
                                     PageLoadingPlaceHolder(
                                         modifier = Modifier.padding(16.dp)
                                     )
-                                } else {
+                                } else if (state.movieDetailsUiState.gallery.isEmpty()) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Theme.colors.surface)
+                                            .padding(vertical = 30.dp)
+                                            .navigationBarsPadding(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.there_is_no_gallery),
+                                            style = Theme.textStyle.label.large,
+                                            color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                        )
+                                    }
+                                }
+                                else {
                                     GallerySection(state.movieDetailsUiState.gallery)
                                 }
                             }
@@ -296,7 +332,6 @@ fun MovieDetailsScreenContent(
                                         companies = state.movieDetailsUiState.movie.productionCompanies,
                                         modifier = Modifier
                                             .padding(horizontal = 16.dp)
-                                            .padding(top = 12.dp)
                                     )
                                 }
                             }
