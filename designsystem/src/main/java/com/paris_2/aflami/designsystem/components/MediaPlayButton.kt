@@ -1,6 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
-import androidx.compose.foundation.Image
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +29,7 @@ fun MediaPlayButton(
     showBoarder: Boolean = false,
     buttonSize: Int? = null,
     iconSize: Int? = null,
+    hasVideo: Boolean = true,
     onButtonClick: () -> Unit = {},
     buttonType: MediaButtonType
 ) {
@@ -60,12 +62,14 @@ fun MediaPlayButton(
             .clickable { onButtonClick() }
     ) {
         val iconPadding = if (buttonSize == 64) 10 else 3
-        Image(
+        val tint = animateColorAsState(if(hasVideo) Theme.colors.primary else Theme.colors.disable)
+        Icon(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(start = iconPadding.dp)
                 .size(finalIconSize),
             painter = painterResource(R.drawable.play_media),
+            tint = tint.value,
             contentDescription = "play media"
         )
     }

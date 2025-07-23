@@ -125,7 +125,9 @@ fun TvShowDetailsScreenContent(
                         DetailsImage(
                             imageUris = state.tvShowDetailsUiState.gallery,
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                            onPlayClick = {},
+                            hasVideo = !(state.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty() ||
+                                    state.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty()),
+                            onPlayClick = tvShowScreenInteractionListener::onClickPlayTrailer,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }

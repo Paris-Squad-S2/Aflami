@@ -1,2 +1,3 @@
-versionName=0.2.9
-- refactor domain unit tests to separate concerns between assertion logic and interaction verification.
+versionName=0.2.11
+- refactor tv show, movie and search by use retrofit instead of ktor
+- fix play button video in tv show and movie

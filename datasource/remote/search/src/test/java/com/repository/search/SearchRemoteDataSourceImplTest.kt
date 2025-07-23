@@ -2,7 +2,7 @@ package com.repository.search
 
 import com.google.common.truth.Truth.assertThat
 import com.repository.search.dto.SearchDto
-import com.repository.search.service.contract.SearchApiService
+import com.repository.search.service.implementation.RetrofitSearchApiService
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -12,7 +12,7 @@ import org.junit.Test
 
 class SearchRemoteDataSourceImplTest {
 
-    private val mockSearchApiService = mockk<SearchApiService>()
+    private val mockSearchApiService = mockk<RetrofitSearchApiService>()
 
     private val mockSearchDto = mockk<SearchDto>()
     private lateinit var searchRemoteDataSource: SearchRemoteDataSourceImpl
@@ -153,12 +153,12 @@ class SearchRemoteDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+                mockSearchApiService.searchCountryCode(page, language, countryCode)
             } returns mockSearchDto
 
             //When
             val result =
-                searchRemoteDataSource.searchCountryCode(query, page, language, countryCode)
+                searchRemoteDataSource.searchCountryCode(page, language, countryCode)
 
             // Then
             assertThat(result).isEqualTo(mockSearchDto)
@@ -169,15 +169,15 @@ class SearchRemoteDataSourceImplTest {
     fun `searchCountryCode should call API when API call is successful`() = runTest {
         // Given
         coEvery {
-            mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
         } returns mockSearchDto
 
         // When
-        searchRemoteDataSource.searchCountryCode(query, page, language, countryCode)
+        searchRemoteDataSource.searchCountryCode(page, language, countryCode)
 
         // Then
         coVerify(exactly = 1) {
-            mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
         }
     }
 
@@ -186,12 +186,12 @@ class SearchRemoteDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+                mockSearchApiService.searchCountryCode(page, language, countryCode)
             } throws apiException
 
             // When and Then
             try {
-                searchRemoteDataSource.searchCountryCode(query, page, language, countryCode)
+                searchRemoteDataSource.searchCountryCode(page, language, countryCode)
                 throw AssertionError("Should have propagated the exception")
             } catch (e: Exception) {
                 assertThat(e).isEqualTo(apiException)
@@ -203,18 +203,18 @@ class SearchRemoteDataSourceImplTest {
     fun `searchCountryCode should call API when exception is thrown`() = runTest {
         // Given
         coEvery {
-            mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
         } throws apiException
 
         // When
         try {
-            searchRemoteDataSource.searchCountryCode(query, page, language, countryCode)
+            searchRemoteDataSource.searchCountryCode(page, language, countryCode)
         } catch (_: Exception) {
         }
 
         // Then
         coVerify(exactly = 1) {
-            mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
         }
     }
 

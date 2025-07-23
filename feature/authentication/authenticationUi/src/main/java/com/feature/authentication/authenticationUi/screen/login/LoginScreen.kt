@@ -208,7 +208,7 @@ fun LoginScreenContent(
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
                 modifier = Modifier
-                    .fillMaxWidth()
+                    .align(Alignment.End)
                     .padding(top = 8.dp, bottom = 48.dp)
                     .padding(horizontal = 12.dp)
                     .clickable(
@@ -280,7 +280,7 @@ fun LoginScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding()
-                    .padding(horizontal = 12.dp)
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
                     .align(Alignment.TopCenter),
                 text = loginUIState.snackBarMessage,
                 isSuccess = false,
