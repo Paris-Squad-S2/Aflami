@@ -1,3 +1,5 @@
 <resources>
     <string name="go_to_search">Go to Search</string>
+    <string name="top_rating">Top Rating</string>
+    <string name="continue_watching">Continue Watching</string>
 </resources>
