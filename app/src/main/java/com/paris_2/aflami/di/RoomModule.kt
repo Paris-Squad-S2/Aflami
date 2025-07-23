@@ -23,6 +23,7 @@ import com.datasource.local.search.dao.GenresDao
 import com.datasource.local.search.dao.GenresUserInteractionDao
 import com.datasource.local.search.dao.MediaDao
 import com.datasource.local.search.dao.SearchHistoryDao
+import com.paris_2.aflami.di.DatabaseConstants.HOME_DATABASE_NAME
 import com.paris_2.aflami.di.DatabaseConstants.MOVIE_DATABASE_NAME
 import com.paris_2.aflami.di.DatabaseConstants.SEARCH_DATABASE_NAME
 import com.paris_2.aflami.di.DatabaseConstants.TV_SHOW_DATABASE_NAME
@@ -51,7 +52,7 @@ val roomModule = module {
         Room.databaseBuilder(
             get<Context>(),
             HomeDatabase::class.java,
-            MOVIE_DATABASE_NAME
+            HOME_DATABASE_NAME
         ).build()
     }
 
@@ -85,4 +86,5 @@ object DatabaseConstants {
     const val MOVIE_DATABASE_NAME = "movie_database"
     const val TV_SHOW_DATABASE_NAME = "tv_show_database"
     const val SEARCH_DATABASE_NAME = "search_db"
+    const val HOME_DATABASE_NAME = "home_db"
 }
