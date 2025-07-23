@@ -58,4 +58,11 @@ dependencies {
 
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_LISTS_API))
+    implementation(project(Modules.FEATURE_CATEGORIES_API))
+    implementation(project(Modules.FEATURE_GUESS_GAME_API))
+    implementation(project(Modules.FEATURE_PROFILE_API))
 }

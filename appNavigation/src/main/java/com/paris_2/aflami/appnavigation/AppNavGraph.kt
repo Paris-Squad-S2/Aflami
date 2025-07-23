@@ -1,4 +1,4 @@
-package com.paris_2.aflami
+package com.paris_2.aflami.appnavigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -22,9 +22,6 @@ import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileApi.fromJsonToProfileDestination
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchApi.fromJsonToSearchDestination
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigationEvent
-import com.paris_2.aflami.appnavigation.AppNavigator
 import org.koin.compose.koinInject
 
 @Composable

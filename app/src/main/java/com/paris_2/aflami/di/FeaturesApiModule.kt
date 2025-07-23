@@ -25,7 +25,7 @@ import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.navigation.SearchNavigatorImpl
-import com.paris_2.aflami.AppNavigatorImpl
+import com.paris_2.aflami.appnavigation.AppNavigatorImpl
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
 import org.koin.core.module.dsl.factoryOf
