@@ -1,6 +1,5 @@
 package com.feature.home.homeUi.screen.home
 
-import android.util.Log
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -15,10 +14,13 @@ import com.feature.home.homeUi.mapper.nameToGenreId
 import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
+import com.feature.home.homeUi.mapper.toSliderMediaList
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
+import com.paris_2.aflami.designsystem.components.SliderMedia
+import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 
 class HomeScreenViewModel(
     private val getPopularMediaUseCase: GetPopularMediaUseCase,
@@ -365,6 +367,3 @@ class HomeScreenViewModel(
         )
     }
 }
-
-// Todo( add to continue watching list use case) need to local data
-// Todo( get continue Watching List use case ) from local data source
