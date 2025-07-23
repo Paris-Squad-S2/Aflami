@@ -2,9 +2,10 @@ package com.feature.home.homeUi.screen.home
 
 interface HomeScreenInteractionListener {
     fun onSearchIconClick()
-    fun onMediaCardClick(mediaId: Int)
+    fun onMediaCardClick(media:MediaUiState,)
     fun navigateToContinueWatchingScreen()
     fun navigateToTopRatingScreen()
-    fun moodPickerSelected(mood: String)
-    fun onCategorySelect(category: Int)
+    fun moodPickerSelected(mood: List<String>)
+    fun onCategorySelect(category: List<Int>)
+    fun onAllCategoriesSelect()
 }
