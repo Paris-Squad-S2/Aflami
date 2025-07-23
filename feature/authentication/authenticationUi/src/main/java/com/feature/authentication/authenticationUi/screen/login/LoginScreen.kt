@@ -33,10 +33,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.screen.login.components.CircleBackground
 import com.feature.authentication.authenticationUi.screen.login.components.HeaderIconLogin
-import com.paris_2.aflami.designsystem.components.AflamiButton
-import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.components.ButtonType
+import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.SnackBar
+import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.TextField
 import com.paris_2.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
@@ -156,7 +156,7 @@ fun LoginScreenContent(
 
             HeaderIconLogin(modifier = Modifier.padding(top = 24.dp, start = 12.dp))
 
-            AflamiText(
+            Text(
                 text = stringResource(R.string.welcome_back),
                 style = Theme.textStyle.title.medium,
                 color = Theme.colors.text.title,
@@ -166,7 +166,7 @@ fun LoginScreenContent(
                     .padding(horizontal = 12.dp)
             )
 
-            AflamiText(
+            Text(
                 text = stringResource(R.string.please_enter_your_information_to_login),
                 style = Theme.textStyle.body.medium,
                 color = Theme.colors.text.body,
@@ -203,7 +203,7 @@ fun LoginScreenContent(
                 errorMessage = loginUIState.passwordErrorMessage,
                 showText = loginUIState.showPassword
             )
-            AflamiText(
+            Text(
                 text = stringResource(R.string.forgot_password),
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
@@ -220,7 +220,7 @@ fun LoginScreenContent(
             )
 
 
-            AflamiButton(
+            CustomButton(
                 onClick = loginScreenInteractionListener::onClickLogin,
                 type = ButtonType.Primary,
                 modifier = Modifier
@@ -231,7 +231,7 @@ fun LoginScreenContent(
                 state = loginUIState.loginButtonState
             )
             Spacer(modifier = Modifier.padding(top = 12.dp))
-            AflamiButton(
+            CustomButton(
                 onClick = loginScreenInteractionListener::onClickLoginAsGuest,
                 type = ButtonType.Secondary,
                 modifier = Modifier
@@ -248,14 +248,14 @@ fun LoginScreenContent(
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                AflamiText(
+                Text(
                     text = stringResource(R.string.don_t_have_account),
                     style = Theme.textStyle.label.medium,
                     color = Theme.colors.text.hint,
                     modifier = Modifier.padding(end = 4.dp),
                     textAlign = TextAlign.Center
                 )
-                AflamiText(
+                Text(
                     text = stringResource(R.string.create_account),
                     style = Theme.textStyle.label.medium,
                     color = Theme.colors.primary,
