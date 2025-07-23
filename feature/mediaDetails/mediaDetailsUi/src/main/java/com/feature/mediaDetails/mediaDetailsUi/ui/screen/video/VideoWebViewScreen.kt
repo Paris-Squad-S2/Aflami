@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.video.components.WebViewComposable
 import com.paris_2.aflami.designsystem.components.NetworkError
@@ -29,6 +30,7 @@ private fun MovieVideoScreenContent(
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .background(Theme.colors.surface)
             .statusBarsPadding()
     ) {
         WebViewComposable(
