@@ -10,15 +10,15 @@ import androidx.paging.filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.domain.search.model.Media
-import com.domain.search.useCases.ClearAllRecentSearchesUseCase
-import com.domain.search.useCases.ClearRecentSearchUseCase
-import com.domain.search.useCases.FilterByListOfCategoriesUseCase
-import com.domain.search.useCases.FilterMediaByRatingUseCase
-import com.domain.search.useCases.GetAllCategoriesUseCase
-import com.domain.search.useCases.GetAllRecentSearchesUseCase
-import com.domain.search.useCases.IncrementCategoryInteractionUseCase
-import com.domain.search.useCases.SearchByQueryUseCase
-import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.domain.search.useCase.ClearAllRecentSearchesUseCase
+import com.domain.search.useCase.ClearRecentSearchUseCase
+import com.domain.search.useCase.FilterMediaUseCase
+import com.domain.search.useCase.FilterMediaByRatingUseCase
+import com.domain.search.useCase.GetAllCategoriesUseCase
+import com.domain.search.useCase.GetAllRecentSearchesUseCase
+import com.domain.search.useCase.IncrementCategoryInteractionUseCase
+import com.domain.search.useCase.SearchByQueryUseCase
+import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.toJson
 import com.feature.search.searchApi.SearchDestinations
@@ -107,7 +107,7 @@ class SearchViewModel(
     private val searchByQueryUseCase: SearchByQueryUseCase,
     private val getAllCategoriesUseCase: GetAllCategoriesUseCase,
     private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase,
-    private val filterMedByListOfCategoriesUseCase: FilterByListOfCategoriesUseCase,
+    private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val appNavigator: AppNavigator = getKoin().get()
