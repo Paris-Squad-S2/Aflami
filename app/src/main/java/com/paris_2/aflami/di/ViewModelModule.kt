@@ -1,6 +1,8 @@
 package com.paris_2.aflami.di
 
+import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingViewModel
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
+import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModelViewModel
@@ -20,4 +22,6 @@ val viewModelModule = module {
     viewModelOf(::TvShowCastViewModel)
     viewModelOf(::MovieCastViewModel)
     viewModelOf(::HomeScreenViewModel)
+    viewModelOf(::ContinueWatchingViewModel)
+    viewModelOf(::TopRatingMoviesViewModel)
 }
