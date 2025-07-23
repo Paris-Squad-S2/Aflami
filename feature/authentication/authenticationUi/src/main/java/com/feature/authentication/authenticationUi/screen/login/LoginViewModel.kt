@@ -58,7 +58,7 @@ class LoginViewModel(
                 if (!loginSuccess) {
                     updateState(
                         screenState.value.copy(
-                            snackBarMessage = R.string.incorrect_password,
+                            snackBarMessage = R.string.incorrect_password_or_username,
                             loginButtonState = ButtonState.Disabled,
                             showSnackBar = true,
                         )
@@ -70,7 +70,7 @@ class LoginViewModel(
             onInvalidCredentials = { localizedMessage ->
                 updateState(
                     screenState.value.copy(
-                        snackBarMessage = R.string.invalid_username_or_password,
+                        snackBarMessage = R.string.incorrect_password_or_username,
                         loginButtonState = ButtonState.Disabled,
                         showSnackBar = true,
                     )
