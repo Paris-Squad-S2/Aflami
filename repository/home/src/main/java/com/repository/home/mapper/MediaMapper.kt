@@ -56,3 +56,18 @@ fun MediaTypeEntity.toDomain(): MediaType {
         MediaTypeEntity.TV_SHOW -> MediaType.TV_SHOW
     }
 }
+
+fun Media.toEntity(): MediaEntity = MediaEntity(
+    id = id,
+    title = title,
+    voteAverage = voteAverage,
+    posterPath = posterPath,
+    releaseDate = yearOfRelease.toString(),
+    genreIds = genreIds,
+    type = type.toEntity()
+)
+
+fun MediaType.toEntity(): MediaTypeEntity = when (this) {
+    MediaType.MOVIE -> MediaTypeEntity.MOVIE
+    MediaType.TV_SHOW -> MediaTypeEntity.TV_SHOW
+}
