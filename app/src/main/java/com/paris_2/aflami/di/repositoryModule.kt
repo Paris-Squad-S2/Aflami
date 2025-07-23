@@ -31,5 +31,5 @@ val repositoryModule = module {
     singleOf(::MovieRepositoryImpl) bind MovieRepository::class
     singleOf(::GenresInteractionRepositoryImpl) bind GenresInteractionRepository::class
     singleOf(::MediaRepositoryImpl ) bind MediaRepository::class
-    single { MoviesCategoriesRepositoryImpl(get()) as MoviesCategoriesRepository }
+    singleOf(::MoviesCategoriesRepositoryImpl) bind MoviesCategoriesRepository::class
 }
