@@ -115,7 +115,6 @@ HomeScreenViewModelTest {
         )
     }
 
-    // Map test UI model to correct domain model for use case stubs
     private fun MediaUiState.toMedia() = DomainMedia(
         id = id,
         title = title,
