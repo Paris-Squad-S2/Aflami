@@ -221,7 +221,7 @@ fun HomeScreenContent(
                 movie = state.homeUIState.moodPickerMovie,
                 onDismiss = { action.onDismissMoodPicker() },
                 onViewDetailsClick = {action.onMediaCardClick(state.homeUIState.moodPickerMovie) },
-                onGetAnotherMovieClick = { }
+                onGetAnotherMovieClick = {action.getRandomMoodPickerMovie() }
             )
 
 

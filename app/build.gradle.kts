@@ -181,6 +181,7 @@ dependencies {
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
+    implementation(project(Modules.DATASOURCE_LOCAL_HOME))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
     implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))

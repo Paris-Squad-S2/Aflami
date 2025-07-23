@@ -233,24 +233,29 @@ class HomeScreenViewModel(
     }
 
 
-    fun getRandomMovie(){
-
+    override fun getRandomMoodPickerMovie() {
+        val movies = screenState.value.homeUIState.upComingMediaList
+        emitState(
+            screenState.value.copy(
+                homeUIState = screenState.value.homeUIState.copy(
+                    moodPickerMovie = movies.random(),
+                )
+        ))
     }
+
     override fun moodPickerSelected(mood: List<String>) {
         tryToExecute(
             execute = {
                 val moodCategories = mood.map { mood ->
                     mood.nameToGenreId()
                 }
-                Log.d("MoodPicker", "Mood selected: $moodCategories")
-
                 filterUpComingMediaByCategoriesUseCase.invoke(moodCategories)
-
             },
             onSuccess = { filteredMovies ->
                 emitState(
                         screenState.value.copy(
                            homeUIState = screenState.value.homeUIState.copy(
+                               upComingMediaList = filteredMovies.toMediaUiStateList(),
                                 moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
                                 showMoodPickerDialog = true
                         )
