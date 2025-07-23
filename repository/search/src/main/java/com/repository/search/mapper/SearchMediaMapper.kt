@@ -19,7 +19,7 @@ fun MediaEntity.toMedia(): Media {
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toMediaType(),
-        categories = this.category,
+        categoryIds = this.category,
         yearOfRelease = this.yearOfRelease,
         rating = this.rating
     )

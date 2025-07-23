@@ -1,2 +1,2 @@
-versionName=0.2.12
+versionName=0.2.13
 - refactor tv show, movie and media detail exception

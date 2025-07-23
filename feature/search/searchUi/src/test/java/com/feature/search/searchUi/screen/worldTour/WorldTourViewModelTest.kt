@@ -1,12 +1,12 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import com.domain.search.model.Country
-import com.domain.search.useCases.AutoCompleteCountryUseCase
-import com.domain.search.useCases.GetCountryCodeByNameUseCase
-import com.domain.search.useCases.GetMediaByActorNameUseCase
-import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
-import com.domain.search.useCases.IncrementCategoryInteractionUseCase
-import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.domain.search.useCase.AutoCompleteCountryUseCase
+import com.domain.search.useCase.GetCountryCodeByNameUseCase
+import com.domain.search.useCase.GetMediaByActorNameUseCase
+import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
+import com.domain.search.useCase.IncrementCategoryInteractionUseCase
+import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
