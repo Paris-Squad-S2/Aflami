@@ -16,29 +16,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
-import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
 import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.components.GenresChip
-import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.Slider
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
-import com.paris_2.aflami.designsystem.components.TopAppBar
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeSlider(
     onMediaClick: (media: SliderMedia) -> Unit,
-    onSearchIconClick: () -> Unit = {},
     mediaList: List<SliderMedia>,
     modifier: Modifier,
 ) {
@@ -66,24 +59,6 @@ fun HomeSlider(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TopAppBar(
-                title = "AFLAMI",
-                subtitle = "More than just watching.",
-                modifier = Modifier.padding(top = 16.dp),
-                logo = iconItemWithDefaults(
-                    ImageVector.vectorResource(R.drawable.ic_aflami_logo), {},
-                    Theme.colors.primaryVariant,
-                ),
-                trailingIcons = listOf(
-                    IconItem(
-                        icon = ImageVector.vectorResource(R.drawable.ic_search),
-                        onClick = onSearchIconClick,
-                        backgroundColor = Theme.colors.surfaceHigh,
-                        tint = Theme.colors.text.body
-                    )
-                )
-            )
-
             AflamiSectionTitle(
                 title = "Popular",
                 painter = painterResource(com.feature.home.homeUi.R.drawable.ic_fire),
