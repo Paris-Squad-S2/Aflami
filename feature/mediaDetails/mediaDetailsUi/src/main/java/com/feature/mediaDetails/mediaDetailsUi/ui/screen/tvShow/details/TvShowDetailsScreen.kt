@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -43,11 +42,10 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
+import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -227,7 +225,7 @@ fun TvShowDetailsScreenContent(
                             TvShowChips.MORE_LIKE_THIS ->
                             items(mediaList.itemCount) { mediaIndex ->
                                 mediaList[mediaIndex]?.let { media ->
-                                    AflamiMediaCard(
+                                    MediaCard(
                                         modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                         imageUri = media.posterPath,
                                         rating = media.voteAverage.toFloat(),

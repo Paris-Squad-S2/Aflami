@@ -10,7 +10,7 @@ import com.feature.authentication.authenticationApi.AuthenticationDestination
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
-import com.paris_2.aflami.designsystem.components.AflamiButton
+import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.ButtonType
 import kotlinx.coroutines.launch
 
@@ -24,7 +24,7 @@ class AuthenticationFeatureAPIImpl(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                AflamiButton(
+                CustomButton(
                     text = R.string.go_to_home,
                     type = ButtonType.Primary,
                     onClick = {

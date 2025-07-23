@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.appnavigation.AppDestination
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AflamiText
+import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.NavigationBar
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -97,7 +97,7 @@ private fun RowScope.AflamiNavBarItem(
                 currentItem = currentItem,
                 selected = isSelected
             )
-            AflamiText(
+            Text(
                 text = stringResource(currentItem.label),
                 style = Theme.textStyle.label.small,
                 color = animateColorAsState(

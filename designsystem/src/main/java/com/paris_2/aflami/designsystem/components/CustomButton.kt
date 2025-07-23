@@ -15,9 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -49,7 +47,7 @@ sealed class ButtonType {
 }
 
 @Composable
-fun AflamiButton(
+fun CustomButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     state: ButtonState = ButtonState.Normal,
@@ -114,7 +112,7 @@ fun AflamiButton(
 
             AnimatedVisibility(visible = isLoading, enter = fadeIn()) {
                 if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
-                AnimatedLoadingIcon(
+                LoadingIcon(
                     modifier = Modifier.size(20.dp),
                     color = buttonContentColor
                 )
@@ -142,22 +140,22 @@ fun PrimaryButton() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AflamiButton(
+                CustomButton(
                     onClick = { },
                     text = R.string.submit,
                     type = ButtonType.Primary,
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Primary,
                     state = ButtonState.Disabled
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Primary,
                     state = ButtonState.Loading
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Primary,
                     state = ButtonState.Normal,
@@ -181,26 +179,26 @@ fun SecondaryButton() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Secondary,
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Secondary,
                     state = ButtonState.Loading
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { },
                     type = ButtonType.Secondary,
                     state = ButtonState.Loading
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Secondary,
                     state = ButtonState.Disabled
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Secondary,
                     state = ButtonState.Normal,
@@ -223,16 +221,16 @@ fun TextButton() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.cancel,
                     type = ButtonType.TextButton,
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.cancel,
                     type = ButtonType.TextButton,
                     state = ButtonState.Disabled
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.cancel,
                     type = ButtonType.TextButton,
                     state = ButtonState.Loading
@@ -252,7 +250,7 @@ fun FABButton() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AflamiButton(
+                CustomButton(
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
@@ -260,14 +258,14 @@ fun FABButton() {
                     },
                     type = ButtonType.FloatingActionButton,
                 )
-                AflamiButton(
+                CustomButton(
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = { Icon(Icons.Default.Add, null) },
                     type = ButtonType.FloatingActionButton,
                     state = ButtonState.Loading
                 )
-                AflamiButton(
+                CustomButton(
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
@@ -291,24 +289,24 @@ fun PrimaryNegativeButton() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Primary,
                     isNegative = true
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Primary,
                     isNegative = true,
                     state = ButtonState.Loading
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Primary,
                     isNegative = true,
                     state = ButtonState.Disabled
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.submit,
                     type = ButtonType.Primary,
                     isNegative = true,
@@ -332,18 +330,18 @@ fun TextNegativeButton() {
                 verticalArrangement = Arrangement.spacedBy(20.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.cancel,
                     type = ButtonType.TextButton,
                     isNegative = true
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.cancel,
                     type = ButtonType.TextButton,
                     isNegative = true,
                     state = ButtonState.Disabled
                 )
-                AflamiButton(
+                CustomButton(
                     onClick = { }, text = R.string.cancel,
                     type = ButtonType.TextButton,
                     isNegative = true,

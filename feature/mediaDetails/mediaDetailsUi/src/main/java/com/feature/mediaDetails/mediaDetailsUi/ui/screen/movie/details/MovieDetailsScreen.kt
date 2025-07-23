@@ -37,7 +37,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
+import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
@@ -217,7 +217,7 @@ fun MovieDetailsScreenContent(
 
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
-                                            AflamiMediaCard(
+                                            MediaCard(
                                                 modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
                                                 imageUri = media.posterPath,
                                                 rating = media.voteAverage.toFloat(),
