@@ -6,4 +6,5 @@ interface MovieDetailsScreenInteractionListener {
     fun onShowAllCastClick(movieId: Int)
     fun onRetryLoadMovieDetails()
     fun onSimilarMovieClick(mediaId: Int)
+    fun onClickPlayTrailer()
 }

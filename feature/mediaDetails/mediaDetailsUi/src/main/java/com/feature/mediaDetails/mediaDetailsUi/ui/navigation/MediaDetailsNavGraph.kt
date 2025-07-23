@@ -12,6 +12,7 @@ import androidx.navigation.toRoute
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.LoginDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.video.VideoWebViewScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreen
 import org.koin.compose.koinInject
@@ -51,6 +52,7 @@ fun NavGraphBuilder.buildDetailsNavGraph(
         composable<MediaDetailsDestinations.MovieDetailsScreen> { MovieDetailsScreen() }
         composable<MediaDetailsDestinations.TvShowDetailsScreen> { TvShowDetailsScreen() }
         composable<MediaDetailsDestinations.MovieCastScreen> { MovieCastScreen() }
+        composable<MediaDetailsDestinations.VideosScreen> { VideoWebViewScreen() }
         composable<MediaDetailsDestinations.TvShowCastScreen> { TvShowCastScreen() }
         dialog<MediaDetailsDestinations.LoginDialogDestination> { backStackEntry ->
             val destination =

@@ -28,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -47,7 +46,6 @@ import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -127,7 +125,9 @@ fun TvShowDetailsScreenContent(
                         DetailsImage(
                             imageUris = state.tvShowDetailsUiState.gallery,
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                            onPlayClick = {},
+                            hasVideo = !(state.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty() ||
+                                    state.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty()),
+                            onPlayClick = tvShowScreenInteractionListener::onClickPlayTrailer,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }

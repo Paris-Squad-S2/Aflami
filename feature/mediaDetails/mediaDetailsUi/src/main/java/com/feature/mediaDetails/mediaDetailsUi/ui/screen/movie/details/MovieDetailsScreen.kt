@@ -152,7 +152,9 @@ fun MovieDetailsScreenContent(
                             DetailsImage(
                                 imageUris = state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
-                                onPlayClick = {},
+                                onPlayClick = movieDetailsScreenInteractionListener::onClickPlayTrailer,
+                                hasVideo = !(state.movieDetailsUiState.movieVideoUi.site.isEmpty() ||
+                                        state.movieDetailsUiState.movieVideoUi.key.isEmpty()),
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                         }
@@ -220,7 +222,13 @@ fun MovieDetailsScreenContent(
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
                                             AflamiMediaCard(
-                                                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(
+                                                        start = 16.dp,
+                                                        end = 16.dp,
+                                                        bottom = 8.dp
+                                                    ),
                                                 imageUri = media.posterPath,
                                                 rating = media.voteAverage.toFloat(),
                                                 movieName = media.title,
@@ -247,7 +255,7 @@ fun MovieDetailsScreenContent(
                                             modifier = Modifier.padding(16.dp)
                                         )
                                     }
-                                } else if(reviewsList.itemSnapshotList.isEmpty()){
+                                } else if (reviewsList.itemSnapshotList.isEmpty()) {
                                     item {
                                         Box(
                                             modifier = Modifier
@@ -262,9 +270,8 @@ fun MovieDetailsScreenContent(
                                             )
                                         }
                                     }
-                                }
-                                else {
-                                    items(reviewsList.itemCount){index ->
+                                } else {
+                                    items(reviewsList.itemCount) { index ->
                                         ReviewsSection(reviewsList[index])
                                     }
                                 }

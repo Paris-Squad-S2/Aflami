@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCases.tvShows
 
 import com.domain.mediaDetails.repository.TvShowRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -22,14 +23,31 @@ class GetTvShowDetailsUseCaseTest {
     @Test
     fun `should return tv show details from repository`() = runTest {
         // Given
-        val tvShowId = 1
-
-        // when
         coEvery { tvShowRepository.getTvShowDetails(tvShowId) } returns fakeTvShow
 
-        // Then
+        // when
         val result = getTvShowDetailsUseCase(tvShowId)
-        assertEquals(result,fakeTvShow)
+
+        // Then
+        assertEquals(result, fakeTvShow)
+
+    }
+
+    @Test
+    fun `should call repository method exactly once`() = runTest {
+        // Given
+        coEvery { tvShowRepository.getTvShowDetails(tvShowId) } returns fakeTvShow
+
+        // When
+        getTvShowDetailsUseCase(tvShowId)
+
+        // Then
+        coVerify(exactly = 1) { tvShowRepository.getTvShowDetails(tvShowId) }
+    }
+
+
+    private companion object {
+        val tvShowId = 1
 
     }
 

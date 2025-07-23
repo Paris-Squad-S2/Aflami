@@ -8,6 +8,7 @@ import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.repository.MovieRepository
@@ -179,6 +180,17 @@ class MovieRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    override suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo> {
+        if (networkConnectionChecker.isConnected.value.not()) {
+            throw NoInternetConnectionException()
+        }
+
+        return safeCall {  movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId)
+            .movieVideoResultDto
+            ?.map { it.toEntity() }
+            ?: emptyList() }
+    }
+
     private suspend fun <T> safeCall(call: suspend () -> T): T {
         return try {
             if (networkConnectionChecker.isConnected.value.not()) {
@@ -187,6 +199,10 @@ class MovieRepositoryImpl(
             call()
         } catch (_: NoInternetConnectionException) {
             throw NoInternetConnectionException()
+        } catch (_: NoFoundMovieException){
+            throw NoFoundMovieException()
+        } catch (e: NoFundGalleryMovieException) {
+            throw NoFundGalleryMovieException()
         } catch (e: Exception) {
             throw NetworkException(e.message ?: "Unknown error")
         }
