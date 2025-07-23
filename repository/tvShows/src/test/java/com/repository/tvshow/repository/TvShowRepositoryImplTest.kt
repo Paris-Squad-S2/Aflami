@@ -1,6 +1,9 @@
 package com.repository.tvshow.repository
 
+import com.domain.mediaDetails.exception.NoFoundTvShowException
+import com.domain.mediaDetails.exception.NoFundGalleryTvShowException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
+import com.domain.mediaDetails.exception.NoSeasonFoundException
 import com.google.common.truth.Truth.assertThat
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
@@ -95,6 +98,31 @@ class TvShowRepositoryImplTest {
     }
 
     @Test
+    fun `getTvShowDetails - should throw NoFoundTvShowException when local data source returns null after adding`() =
+        runTest {
+            // Given
+            val tvShowId = 550
+            val language = "en"
+
+            coEvery {
+                tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language)
+            } returns mockTvShowDto
+
+            coEvery {
+                tvShowLocalDataSource.getTvShowId(tvShowId, language)
+            } returns null
+
+            coEvery {
+                tvShowLocalDataSource.addTvShow(any())
+            } just Runs
+
+            // When & Then
+            assertThrows<NoFoundTvShowException> {
+                tvShowRepository.getTvShowDetails(tvShowId)
+            }
+        }
+
+    @Test
     fun `getTvShowCast - should return tv show cast when API delivers the goods`() = runTest {
         // Given
         val tvShowId = 550
@@ -119,6 +147,34 @@ class TvShowRepositoryImplTest {
         // Then
         assertEquals(expectedTvShowCast.first().name, result.first().name)
     }
+
+    @Test
+    fun `getTvShowCast - should fetch and save cast from remote when local data is empty`() =
+        runTest {
+            // Given
+            val tvShowId = 550
+            val language = "en"
+            val remoteCast = mockTvShowCreditsDto.cast ?: emptyList()
+
+            coEvery {
+                tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
+            } returns emptyList() andThen
+                    remoteCast.map { it.toLocalDto(language, tvShowId) }
+
+            coEvery {
+                tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
+            } returns mockTvShowCreditsDto
+
+            coEvery {
+                tvShowCastLocalDataSource.addCast(any())
+            } just Runs
+
+            // When
+            val result = tvShowRepository.getTvShowCast(tvShowId)
+
+            // Then
+            assertEquals(remoteCast.first().name, result.first().name)
+        }
 
     @Test
     fun `getTvShowRecommendations - should return tv show recommendations when API delivers the goods`() =
@@ -172,6 +228,36 @@ class TvShowRepositoryImplTest {
         }
 
     @Test
+    fun `getTvShowRecommendations - should fetch and save recommendations from remote when local data is empty`() =
+        runTest {
+            // Given
+            val tvShowId = 123
+            val page = 1
+            val language = "en"
+
+            val remoteRecommendations = mockTvShowSimilarsDto.tvShowSimilarDto ?: emptyList()
+
+            coEvery {
+                tvShowSimilarLocalDataSource.getSimilarTvShows(tvShowId, page, language)
+            } returns emptyList() andThen
+                    remoteRecommendations.map { it.toLocalDto(tvShowId, language, page) }
+
+            coEvery {
+                tvShowDetailsRemoteDataSource.getSimilarTvShows(tvShowId, page, language)
+            } returns mockTvShowSimilarsDto
+
+            coEvery {
+                tvShowSimilarLocalDataSource.addSimilarTvShows(any())
+            } just Runs
+
+            // When
+            val result = tvShowRepository.getTvShowRecommendations(tvShowId, page)
+
+            // Then
+            assertEquals(remoteRecommendations.first().title, result.first().title)
+        }
+
+    @Test
     fun `getTvShowGallery - should return tv show gallery when API delivers the goods`() = runTest {
         // Given
         val tvShowId = 123
@@ -200,6 +286,30 @@ class TvShowRepositoryImplTest {
         // Then
         assertEquals(expectedImages, result)
     }
+
+    @Test
+    fun `getTvShowGallery - should throw NoFundGalleryTvShowException when local data source returns null after adding`() =
+        runTest {
+            // Given
+            val tvShowId = 123
+
+            coEvery {
+                tvShowDetailsRemoteDataSource.getTvShowImages(tvShowId)
+            } returns mockTvShowLogoDto
+
+            coEvery {
+                tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
+            } returns null
+
+            coEvery {
+                tvShowGalleryLocalDataSource.addGallery(any())
+            } just Runs
+
+            // When & Then
+            assertThrows<NoFundGalleryTvShowException> {
+                tvShowRepository.getTvShowGallery(tvShowId)
+            }
+        }
 
     @Test
     fun `getCompanyProducts - should return company products when API delivers the goods`() =
@@ -231,6 +341,35 @@ class TvShowRepositoryImplTest {
             assertEquals(expectedCast.first().name, result.first().name)
         }
 
+    @Test
+    fun `getCompanyProducts - should fetch and save company products from remote when local data is empty`() =
+        runTest {
+            // Given
+            val tvShowId = 123
+            val language = "en"
+            val remoteProductionCompanies = mockTvShowDto.productionCompanies ?: emptyList()
+
+            coEvery {
+                tvShowLocalDataSource.getTvShowId(tvShowId, language)?.productionCompanies
+            } returns emptyList() andThen mockTvShowDto.toLocalDto(
+                language,
+                tvShowId
+            ).productionCompanies
+            coEvery {
+                tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language)
+            } returns mockTvShowDto
+
+            coEvery {
+                tvShowLocalDataSource.addTvShow(any())
+            } just Runs
+
+            // When
+            val result = tvShowRepository.getCompanyProducts(tvShowId)
+
+            // Then
+            assertEquals(remoteProductionCompanies.first().name, result.first().name)
+
+        }
 
     @Test
     fun `getTvShowReview - should return tv show review when API delivers the goods`() =
@@ -264,6 +403,34 @@ class TvShowRepositoryImplTest {
                 mockTvShowReviewsDto.results?.map { it.toLocalDto(tvShowId, language).toEntity() }
                     ?: emptyList()
             assertEquals(expectedReviews.first().createdAt, result.first().createdAt)
+        }
+
+    @Test
+    fun `getTvShowReview - should fetch and save reviews from remote when local data is empty`() =
+        runTest {
+            // Given
+            val tvShowId = 123
+            val language = "en"
+            val page = 1
+            val remoteReviews = mockTvShowReviewsDto.results ?: emptyList()
+
+            coEvery {
+                tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
+            } returns emptyList() andThen remoteReviews.map { it.toLocalDto(tvShowId, language) }
+
+            coEvery {
+                tvShowDetailsRemoteDataSource.getTvShowReviews(tvShowId, page, language)
+            } returns mockTvShowReviewsDto
+
+            coEvery {
+                tvShowReviewLocalDataSource.addReview(any())
+            } just Runs
+
+            // When
+            val result = tvShowRepository.getTvShowReview(tvShowId, page)
+
+            // Then
+            assertEquals(result, remoteReviews.map { it.toLocalDto(tvShowId, language).toEntity() })
         }
 
     @Test
@@ -302,51 +469,85 @@ class TvShowRepositoryImplTest {
         }
 
     @Test
-    fun `getTrailerVideoForTvShow - should return trailers from remote when network is available`() = runTest {
-        // Given
-        val tvShowId = 550
-        val expectedTrailers = mockTvShowVideosDto.tvShowVideoResultDto?.map { it.toEntity() } ?: emptyList()
+    fun `getSeasonDetails - should throw NoSeasonFoundException when local data source returns null after adding`() =
+        runTest {
+            // Given
+            val tvShowId = 123
+            val seasonNumber = 1
+            val language = "en"
 
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns mockTvShowVideosDto
+            val mockTvShowSeasonDto = TvShowSeasonDto(
+                name = "stronger things"
+            )
 
-        // When
-        val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+            coEvery {
+                tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
+            } returns mockTvShowSeasonDto
 
-        // Then
-        assertThat(result).isEqualTo(expectedTrailers)
-        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) }
-    }
+            coEvery {
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+            } returns null
 
-    @Test
-    fun `getTrailerVideoForTvShow - should return empty list when remote returns no trailers`() = runTest {
-        // Given
-        val tvShowId = 550
-        val emptyVideosDto = mockTvShowVideosDto.copy(tvShowVideoResultDto = null)
+            coEvery {
+                tvShowSeasonLocalDataSource.addSeasonDetails(any())
+            } just Runs
 
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns emptyVideosDto
-
-        // When
-        val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
-
-        // Then
-        assertThat(result).isEmpty()
-        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) }
-    }
-
-    @Test
-    fun `getTrailerVideoForTvShow - should throw NoInternetConnectionException when network is unavailable`() = runTest {
-        // Given
-        val tvShowId = 550
-
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
-
-        // When & Then
-        assertThrows<NoInternetConnectionException> {
-            tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+            // When & Then
+            assertThrows<NoSeasonFoundException> {
+                tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
+            }
         }
-        coVerify(exactly = 0) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(any()) }
-    }
+
+    @Test
+    fun `getTrailerVideoForTvShow - should return trailers from remote when network is available`() =
+        runTest {
+            // Given
+            val tvShowId = 550
+            val expectedTrailers =
+                mockTvShowVideosDto.tvShowVideoResultDto?.map { it.toEntity() } ?: emptyList()
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns mockTvShowVideosDto
+
+            // When
+            val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+
+            // Then
+            assertThat(result).isEqualTo(expectedTrailers)
+            coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) }
+        }
+
+    @Test
+    fun `getTrailerVideoForTvShow - should return empty list when remote returns no trailers`() =
+        runTest {
+            // Given
+            val tvShowId = 550
+            val emptyVideosDto = mockTvShowVideosDto.copy(tvShowVideoResultDto = null)
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns emptyVideosDto
+
+            // When
+            val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+
+            // Then
+            assertThat(result).isEmpty()
+            coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) }
+        }
+
+    @Test
+    fun `getTrailerVideoForTvShow - should throw NoInternetConnectionException when network is unavailable`() =
+        runTest {
+            // Given
+            val tvShowId = 550
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getTrailerVideoForTvShow(tvShowId)
+            }
+            coVerify(exactly = 0) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(any()) }
+        }
 
 }

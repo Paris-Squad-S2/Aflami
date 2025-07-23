@@ -1,6 +1,7 @@
 package com.repository.movie.repository
 
-import com.domain.mediaDetails.exception.NetworkException
+import com.domain.mediaDetails.exception.NoFoundMovieException
+import com.domain.mediaDetails.exception.NoFundGalleryMovieException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.MovieSimilar
@@ -23,6 +24,7 @@ import com.repository.movie.testUtils.mockMovieImagesDto
 import com.repository.movie.testUtils.mockMovieSimilarsDto
 import com.repository.movie.testUtils.mockMovieVideosDto
 import com.repository.movie.testUtils.review
+import com.repository.movie.testUtils.reviewRemoteDto
 import com.repository.movie.util.NetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -59,6 +61,62 @@ class MovieRepositoryImplTest {
             movieSimilarLocalDataSource
         )
     }
+
+    @Test
+    fun `getMovieDetails - should fetch from remote and save to local when local is null`() =
+        runTest {
+            // Given
+            val movieId = 550
+            val language = "en"
+            val expectedMovie = mockMovieDto
+            val localMovieDto = expectedMovie.toLocalDto(language)
+
+            coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieDetails(
+                    movieId,
+                    language
+                )
+            } returns expectedMovie
+            coEvery { movieLocalDataSource.addMovie(any()) } just Runs
+            coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns localMovieDto
+
+            // When
+            val result = movieRepository.getMovieDetails(movieId)
+
+            // Then
+            assertThat(result.title).isEqualTo(expectedMovie.title)
+        }
+
+    @Test
+    fun `getMovieDetails - should throw NoFoundMovieException when remote fetch succeeds but local save fails to retrieve`() =
+        runTest {
+            // Given
+            val movieId = 550
+            val language = "en"
+            val expectedMovie = mockMovieDto
+
+            coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieDetails(
+                    movieId,
+                    language
+                )
+            } returns expectedMovie
+            coEvery { movieLocalDataSource.addMovie(any()) } just Runs
+            coEvery {
+                movieLocalDataSource.getMovieById(
+                    movieId,
+                    language
+                )
+            } returnsMany listOf(null, null)
+
+            // When & Then
+            assertThrows<NoFoundMovieException> {
+                movieRepository.getMovieDetails(movieId)
+            }
+        }
+
 
     @Test
     fun `getMovieDetails - should return movie details from local when available`() = runTest {
@@ -301,6 +359,52 @@ class MovieRepositoryImplTest {
     }
 
     @Test
+    fun `getMovieGallery - should fetch from remote and save to local when local is null`() =
+        runTest {
+            // Given
+            val movieId = 123
+            val expectedGallery = mockMovieImagesDto.toEntity()
+            val localGalleryEntity = GalleryEntity(
+                images = expectedGallery.images.map { it.toLocalDto() },
+                id = 0,
+                movieId = movieId
+            )
+
+            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
+            coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
+            coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
+            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+
+            // When
+            val result = movieRepository.getMovieGallery(movieId)
+
+            // Then
+            assertThat(result.images).isEqualTo(expectedGallery.images)
+        }
+
+    @Test
+    fun `getMovieGallery - should throw NoFundGalleryMovieException when remote fetch succeeds but local save fails to retrieve`() =
+        runTest {
+            // Given
+            val movieId = 123
+            val expectedGallery = mockMovieImagesDto.toEntity()
+
+            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
+            coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
+            coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
+            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returnsMany listOf(
+                null,
+                null
+            )
+
+            // When & Then
+            assertThrows<NoFundGalleryMovieException> {
+                movieRepository.getMovieGallery(movieId)
+            }
+        }
+
+
+    @Test
     fun `getCompanyProducts - should return company products from local when available`() =
         runTest {
             // Given
@@ -453,50 +557,84 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun `getTrailerVideoForMovie - should return trailers from remote when network is available`() = runTest {
-        // Given
-        val movieId = 550
-        val expectedTrailers = mockMovieVideosDto.movieVideoResultDto?.map { it.toEntity() } ?: emptyList()
+    fun `getMovieReview - should fetch from remote and save to local when local is empty`() =
+        runTest {
+            // Given
+            val movieId = 123
+            val language = "en"
+            val page = 1
+            val remoteReviews = listOf(reviewRemoteDto)
 
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns mockMovieVideosDto
+            coEvery {
+                movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            } returns emptyList() andThen listOf(reviewRemoteDto).map {
+                it.toEntity().toLocalDto(movieId, language)
+            }
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
+            } returns MovieReviewsDto(results = listOf(reviewRemoteDto))
+            coEvery {
+                movieReviewLocalDataSource.addReview(any())
+            } just Runs
 
-        // When
-        val result = movieRepository.getTrailerVideoForMovie(movieId)
 
-        // Then
-        assertThat(result).isEqualTo(expectedTrailers)
-        coVerify(exactly = 1) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) }
-    }
+            // When
+            val result = movieRepository.getMovieReview(movieId, page)
 
-    @Test
-    fun `getTrailerVideoForMovie - should return empty list when remote returns no trailers`() = runTest {
-        // Given
-        val movieId = 550
-        val emptyVideosDto = mockMovieVideosDto.copy(movieVideoResultDto = null)
-
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns emptyVideosDto
-
-        // When
-        val result = movieRepository.getTrailerVideoForMovie(movieId)
-
-        // Then
-        assertThat(result).isEmpty()
-        coVerify(exactly = 1) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) }
-    }
-
-    @Test
-    fun `getTrailerVideoForMovie - should throw NoInternetConnectionException when network is unavailable`() = runTest {
-        // Given
-        val movieId = 550
-
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
-
-        // When & Then
-        assertThrows<NoInternetConnectionException> {
-            movieRepository.getTrailerVideoForMovie(movieId)
+            // Then
+            assertThat(result.first().name).isEqualTo(remoteReviews.map { it.toEntity() }
+                .first().name)
         }
-        coVerify(exactly = 0) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(any()) }
-    }
+
+    @Test
+    fun `getTrailerVideoForMovie - should return trailers from remote when network is available`() =
+        runTest {
+            // Given
+            val movieId = 550
+            val expectedTrailers =
+                mockMovieVideosDto.movieVideoResultDto?.map { it.toEntity() } ?: emptyList()
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns mockMovieVideosDto
+
+            // When
+            val result = movieRepository.getTrailerVideoForMovie(movieId)
+
+            // Then
+            assertThat(result).isEqualTo(expectedTrailers)
+            coVerify(exactly = 1) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) }
+        }
+
+    @Test
+    fun `getTrailerVideoForMovie - should return empty list when remote returns no trailers`() =
+        runTest {
+            // Given
+            val movieId = 550
+            val emptyVideosDto = mockMovieVideosDto.copy(movieVideoResultDto = null)
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns emptyVideosDto
+
+            // When
+            val result = movieRepository.getTrailerVideoForMovie(movieId)
+
+            // Then
+            assertThat(result).isEmpty()
+            coVerify(exactly = 1) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) }
+        }
+
+    @Test
+    fun `getTrailerVideoForMovie - should throw NoInternetConnectionException when network is unavailable`() =
+        runTest {
+            // Given
+            val movieId = 550
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                movieRepository.getTrailerVideoForMovie(movieId)
+            }
+            coVerify(exactly = 0) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(any()) }
+        }
 }

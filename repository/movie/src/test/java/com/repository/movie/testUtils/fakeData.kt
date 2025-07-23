@@ -6,6 +6,7 @@ import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieLogoDto
+import com.repository.movie.models.remote.MovieReviewDto
 import com.repository.movie.models.remote.MovieSimilarDto
 import com.repository.movie.models.remote.MovieSimilarsDto
 import com.repository.movie.models.remote.MovieVideoDto
@@ -61,4 +62,8 @@ val review = ReviewEntity(
     rating = 2.2,
     description = "A thrilling ride from start to finish. The performances are outstanding, especially Bryan Cranston's portrayal of Walter White.",
     language = "AR"
+)
+
+val reviewRemoteDto = MovieReviewDto(
+  author = "mohammed",
 )

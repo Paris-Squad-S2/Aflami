@@ -197,6 +197,12 @@ class TvShowRepositoryImpl(
             call()
         } catch (_: NoInternetConnectionException) {
             throw NoInternetConnectionException()
+        } catch (_: NoFoundTvShowException) {
+            throw NoFoundTvShowException()
+        } catch (_: NoFundGalleryTvShowException) {
+            throw NoFundGalleryTvShowException()
+        } catch (_: NoSeasonFoundException) {
+            throw NoSeasonFoundException()
         } catch (e: Exception) {
             throw NetworkException(e.message ?: "Unknown error")
         }
