@@ -55,7 +55,7 @@ val koverExcludedPackages = listOf(
     "*Screen.kt",
     "**State**",
     "**Mapper**",
-    "**Excpetion**",
+    "**Exception**",
     "**SafeApiCall**",
     "**ApiServiceImpl**",
     /*
