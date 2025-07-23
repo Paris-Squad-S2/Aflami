@@ -28,8 +28,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should return only movies when repository returns mixed media`() = runTest {
 
         // Given
-        val countryName = "United States"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns mixedMediaList
 
         // When
@@ -43,8 +41,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should return correct movie titles`() = runTest {
 
         // Given
-        val countryName = "United States"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns mixedMediaList
 
         // When
@@ -58,8 +54,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should filter only movies by type`() = runTest {
 
         // Given
-        val countryName = "United States"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns mixedMediaList
 
         // When
@@ -73,8 +67,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `verify repository should be called once for mixed media case`() = runTest {
 
         //Given
-        val countryName = "United States"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns mixedMediaList
 
         //When
@@ -87,8 +79,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     @Test
     fun `should return empty list when only TV shows returned`() = runTest {
         //Given
-        val countryName = "Canada"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns nonMovieMedia
 
         //When
@@ -102,8 +92,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `verify repository is called for only TV shows`() = runTest {
 
         //Given
-        val countryName = "Canada"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns nonMovieMedia
 
         //When
@@ -117,8 +105,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should return empty list when repository response is empty`() = runTest {
 
         // Given
-        val countryName = "Canada"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns nonMovieMedia
 
         // When
@@ -132,8 +118,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `verify repository is called when repository response is empty`() = runTest {
 
         //Given
-        val countryName = "Egypt"
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(countryName, page) } returns emptyList()
 
         //When
@@ -147,8 +131,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should return empty list when country name is empty`() = runTest {
 
         //Given
-        val page = 1
-        val emptyCountryName = ""
         coEvery { searchMediaRepository.getMoviesByCountry(emptyCountryName, page) } returns emptyList()
 
         //When
@@ -162,8 +144,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `verify repository is called when country name is empty`() = runTest {
 
         //Given
-        val emptyCountryName = ""
-        val page = 1
         coEvery { searchMediaRepository.getMoviesByCountry(emptyCountryName, page) } returns emptyList()
 
         //When
@@ -177,8 +157,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should return empty list when country name is whitespace`() = runTest {
 
         //Given
-        val page = 1
-        val whitespaceCountryName = "   "
         coEvery { searchMediaRepository.getMoviesByCountry(whitespaceCountryName, page) } returns emptyList()
 
         //When
@@ -192,8 +170,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `verify repository is called when country name is whitespace`() = runTest {
 
         //Given
-        val page = 1
-        val whitespaceCountryName = "   "
         coEvery { searchMediaRepository.getMoviesByCountry(whitespaceCountryName, page) } returns emptyList()
 
         //When
@@ -208,8 +184,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `should return movie when country name is case-sensitive `() = runTest {
 
         // Given
-        val page = 1
-        val upperCaseCountry = "CANADA"
         coEvery { searchMediaRepository.getMoviesByCountry(upperCaseCountry, page) } returns movies
 
         // When
@@ -223,8 +197,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
     fun `verify repository is called when country name is case-sensitive`() = runTest {
 
         //Given
-        val page = 1
-        val upperCaseCountry = "CANADA"
         coEvery { searchMediaRepository.getMoviesByCountry(upperCaseCountry, page) } returns movies
 
         //When
@@ -234,7 +206,13 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
         coVerify(exactly = 1) { searchMediaRepository.getMoviesByCountry(upperCaseCountry, page) }
     }
 
-    companion object{
+   private companion object{
+       val countryName = "United States"
+       val emptyCountryName = ""
+       val whitespaceCountryName = "   "
+       val upperCaseCountry = "CANADA"
+
+       val page = 1
         val mixedMediaList = listOf(
             createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
             createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),

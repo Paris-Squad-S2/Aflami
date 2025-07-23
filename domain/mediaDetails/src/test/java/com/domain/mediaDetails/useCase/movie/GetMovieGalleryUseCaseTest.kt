@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCase.movie
 
 import com.domain.mediaDetails.repository.MovieRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -21,15 +22,30 @@ class GetMovieGalleryUseCaseTest {
     @Test
     fun `should return movie gallery from repository`() = runTest {
         // Given
-        val movieId = 1
-
-        // when
         coEvery { movieRepository.getMovieGallery(movieId) } returns fakeGallery
 
-        // Then
+        // when
         val result = getMovieGalleryUseCase(movieId)
+
+        // Then
         assertEquals(result, fakeGallery)
 
     }
 
+    @Test
+    fun `should call repository method when use case is invoked`() = runTest {
+        // Given
+        coEvery { movieRepository.getMovieGallery(movieId) } returns fakeGallery
+
+        // When
+        getMovieGalleryUseCase(movieId)
+
+        // Then
+        coVerify(exactly = 1) { movieRepository.getMovieGallery(movieId) }
+    }
+
+    private companion object{
+        val movieId = 1
+
+    }
 }

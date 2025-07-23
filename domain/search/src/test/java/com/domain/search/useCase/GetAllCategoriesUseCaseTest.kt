@@ -34,6 +34,17 @@ class GetAllCategoriesUseCaseTest {
 
         //Then
         assertEquals(3, result.size)
+    }
+
+    @Test
+    fun `should call getAllCategories exactly once`() = runTest {
+        // Given
+        coEvery { categoriesRepository.getAllCategories() } returns sampleCategories
+
+        // When
+        getAllCategoriesUseCase()
+
+        // Then
         coVerify(exactly = 1) { categoriesRepository.getAllCategories() }
     }
 
@@ -59,10 +70,21 @@ class GetAllCategoriesUseCaseTest {
 
         //Then
         assertTrue { result.isEmpty() }
+    }
+
+    @Test
+    fun `should call getAllCategories when no categories found`() = runTest {
+        // Given
+        coEvery { categoriesRepository.getAllCategories() } returns emptyList()
+
+        // When
+        getAllCategoriesUseCase()
+
+        // Then
         coVerify(exactly = 1) { categoriesRepository.getAllCategories() }
     }
 
-    companion object{
+    companion object {
         private val sampleCategories = listOf(
             Category(id = 1, name = "Romance"),
             Category(id = 2, name = "Science Fiction"),

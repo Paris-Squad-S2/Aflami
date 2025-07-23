@@ -3,8 +3,10 @@ package testUtils
 import com.domain.search.model.Country
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
+import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.test.assertEquals
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -15,7 +17,7 @@ fun createMedia(
     type: MediaType,
     rating: Double = 0.0,
     categories: List<Int> = listOf(),
-    ): Media {
+): Media {
     return Media(
         id = id,
         imageUri = "image.com",
@@ -39,3 +41,20 @@ val sampleCountries = listOf(
     Country(countryCode = "2312", englishName = "India", arabicName = "الهند"),
     Country(countryCode = "7484", englishName = "China", arabicName = "الصين")
 )
+
+val sampleDate = LocalDate(2020, 1, 1)
+val defaultImage = "example.jpg"
+
+fun media(id: Int, title: String, categories: List<Int>) = Media(
+    id = id,
+    imageUri = defaultImage,
+    title = title,
+    type = MediaType.MOVIE,
+    categories = categories,
+    yearOfRelease = sampleDate,
+    rating = 7.0
+)
+
+fun assertIds(actual: List<Media>, vararg expectedIds: Int) {
+    assertEquals(expectedIds.toList(), actual.map { it.id })
+}

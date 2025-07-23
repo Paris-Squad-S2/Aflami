@@ -144,10 +144,13 @@ class AutoCompleteCountryUseCaseTest {
 
     @Test
     fun `should call getAllCountries when querying`() = runTest {
+        //Given
         coEvery { countryRepository.getAllCountries() } returns sampleCountries
 
+        //When
         autoCompleteCountryUseCase("any")
 
+        //Then
         coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 }

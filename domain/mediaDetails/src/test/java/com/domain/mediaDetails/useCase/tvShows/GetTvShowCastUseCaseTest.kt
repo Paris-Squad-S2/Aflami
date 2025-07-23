@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCase.tvShows
 
 import com.domain.mediaDetails.repository.TvShowRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -23,27 +24,53 @@ class GetTvShowCastUseCaseTest {
     @Test
     fun `should return tv show cast from repository`() = runTest {
         // Given
-        val tvShowId = 1
-
-        // when
         coEvery { tvShowRepository.getTvShowCast(tvShowId) } returns fakeCast
 
-        // Then
+        // when
         val result = getTvShowCastUseCase(tvShowId)
+
+        // Then
         assertEquals(result, fakeCast)
 
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest {
+    fun `should call repository method to get cast`() = runTest {
         // Given
-        val tvShowId = 1
+        coEvery { tvShowRepository.getTvShowCast(tvShowId) } returns fakeCast
 
-        // when
-        coEvery { tvShowRepository.getTvShowCast(tvShowId) } returns emptyList()
+        // When
+        getTvShowCastUseCase(tvShowId)
 
         // Then
+        coVerify(exactly = 1) { tvShowRepository.getTvShowCast(tvShowId) }
+    }
+
+    @Test
+    fun `should return empty list when no cast found`() = runTest {
+        // Given
+        coEvery { tvShowRepository.getTvShowCast(tvShowId) } returns emptyList()
+
+        // when
         val result = getTvShowCastUseCase(tvShowId)
+
+        // Then
         assertTrue(result.isEmpty())
+    }
+
+    @Test
+    fun `should call repository method even if no cast found`() = runTest {
+        // Given
+        coEvery { tvShowRepository.getTvShowCast(tvShowId) } returns emptyList()
+
+        // When
+        getTvShowCastUseCase(tvShowId)
+
+        // Then
+        coVerify(exactly = 1) { tvShowRepository.getTvShowCast(tvShowId) }
+    }
+
+    private companion object {
+        val tvShowId = 1
     }
 }

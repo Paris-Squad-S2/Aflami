@@ -2,6 +2,7 @@ package com.domain.mediaDetails.useCase.movie
 
 import com.domain.mediaDetails.repository.MovieRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
@@ -21,15 +22,29 @@ class GetMovieDetailsUseCaseTest {
     @Test
     fun `should return movie details from repository`() = runTest {
         // Given
-        val movieId = 1
-
-        // when
         coEvery { movieRepository.getMovieDetails(movieId) } returns fakeMovie
 
-        // Then
+        // when
         val result = getMovieDetailsUseCase(movieId)
+
+        // Then
         assertEquals(result, fakeMovie)
 
     }
 
+    @Test
+    fun `should verify repository interaction when getting movie details`() = runTest {
+        // Given
+        coEvery { movieRepository.getMovieDetails(movieId) } returns fakeMovie
+
+        // When
+        getMovieDetailsUseCase(movieId)
+
+        // Then
+        coVerify(exactly = 1) { movieRepository.getMovieDetails(movieId) }
+    }
+
+    private companion object{
+        val movieId = 1
+    }
 }
