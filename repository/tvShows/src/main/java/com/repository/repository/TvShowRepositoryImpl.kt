@@ -1,8 +1,13 @@
 package com.repository.repository
 
 import com.domain.mediaDetails.exception.AflamiException
-import com.domain.mediaDetails.exception.NoFoundTvShowException
-import com.domain.mediaDetails.exception.NoFundGalleryTvShowException
+import com.domain.mediaDetails.exception.NoCastFoundException
+import com.domain.mediaDetails.exception.NoTvShowFoundException
+import com.domain.mediaDetails.exception.NoGalleryFoundException
+import com.domain.mediaDetails.exception.NoProductionCompanyFoundException
+import com.domain.mediaDetails.exception.NoReviewFoundException
+import com.domain.mediaDetails.exception.NoSimilarFoundException
+import com.domain.mediaDetails.exception.NoVideoFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoSeasonFoundException
 import com.domain.mediaDetails.model.Cast
@@ -40,7 +45,7 @@ class TvShowRepositoryImpl(
     private val language = detectLanguage()
 
     override suspend fun getTvShowDetails(tvShowId: Int): TvShow {
-        return safeCall {
+        return safeCall(NoTvShowFoundException()) {
             val localTVShow = tvShowLocalDataSource.getTvShowId(tvShowId, language)
             if (localTVShow != null) {
                 localTVShow.toEntity()
@@ -49,14 +54,14 @@ class TvShowRepositoryImpl(
                     tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language)
                 tvShowLocalDataSource.addTvShow(remoteTvShow.toLocalDto(language, tvShowId))
                 tvShowLocalDataSource.getTvShowId(tvShowId, language)?.toEntity()
-                    ?: throw NoFoundTvShowException()
+                    ?: throw NoTvShowFoundException()
             }
 
         }
     }
 
     override suspend fun getTvShowCast(tvShowId: Int): List<Cast> {
-        return safeCall {
+        return safeCall(NoCastFoundException()) {
             val localCast = tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
             if (localCast.isNotEmpty()) {
                 localCast.map { it.toEntity() }
@@ -76,7 +81,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowRecommendations(tvShowId: Int, page: Int): List<TvShowSimilar> {
-        return safeCall {
+        return safeCall(NoSimilarFoundException()) {
             val localSimilar =
                 tvShowSimilarLocalDataSource.getSimilarTvShows(tvShowId, page, language)
             if (localSimilar.isNotEmpty()) {
@@ -100,7 +105,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowGallery(tvShowId: Int): Gallery {
-        return safeCall {
+        return safeCall(NoGalleryFoundException()) {
             val localGallery = tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
             if (localGallery != null) {
                 localGallery.toEntity()
@@ -108,13 +113,13 @@ class TvShowRepositoryImpl(
                 val remoteGallery = tvShowDetailsRemoteDataSource.getTvShowImages(tvShowId)
                 tvShowGalleryLocalDataSource.addGallery(remoteGallery.toLocalDto(tvShowId))
                 tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)?.toEntity()
-                    ?: throw NoFundGalleryTvShowException()
+                    ?: throw NoGalleryFoundException()
             }
         }
     }
 
     override suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany> {
-        return safeCall {
+        return safeCall(NoProductionCompanyFoundException()) {
             val localCompany = tvShowLocalDataSource.getTvShowId(tvShowId, language)
                 ?.productionCompanies ?: emptyList()
 
@@ -134,7 +139,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season {
-        return safeCall {
+        return safeCall(NoSeasonFoundException()) {
             val localSeason = tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
             if (localSeason != null) {
                 localSeason.toEntity()
@@ -153,7 +158,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowReview(tvShowId: Int, page: Int): List<Review> {
-        return safeCall {
+        return safeCall(NoReviewFoundException()) {
             val localReview = tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             if (localReview.isNotEmpty()) {
                 localReview.map { it.toEntity() }
@@ -178,10 +183,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
-        if (networkConnectionChecker.isConnected.value.not()) {
-            throw NoInternetConnectionException()
-        }
-        return safeCall {
+        return safeCall(NoVideoFoundException()) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
                 .tvShowVideoResultDto
                 ?.map { it.toEntity() }
@@ -189,16 +191,16 @@ class TvShowRepositoryImpl(
         }
     }
 
-    private suspend fun <T> safeCall(call: suspend () -> T): T {
+    private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
+        if (networkConnectionChecker.isConnected.value.not()) {
+            throw NoInternetConnectionException()
+        }
         return try {
-            if (networkConnectionChecker.isConnected.value.not()) {
-                throw NoInternetConnectionException()
-            }
             call()
         } catch (e: AflamiException) {
             throw e
         } catch (_: Exception) {
-            throw NoInternetConnectionException()
+            throw exception
         }
     }
 }
