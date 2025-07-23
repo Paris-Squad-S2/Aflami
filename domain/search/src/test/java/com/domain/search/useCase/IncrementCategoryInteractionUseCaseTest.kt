@@ -1,7 +1,8 @@
 package com.domain.search.useCases
 
-import com.domain.search.model.GenreUserInteractionModel
+import com.domain.search.model.GenreUserInteraction
 import com.domain.search.repository.GenresInteractionRepository
+import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -45,7 +46,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteractionModel(genreId = genreId, interactionCount = 1)
+                GenreUserInteraction(genreId = genreId, interactionCount = 1)
             )
         }
     }
@@ -76,7 +77,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteractionModel(genreId = genreId, interactionCount = 6)
+                GenreUserInteraction(genreId = genreId, interactionCount = 6)
             )
         }
     }
@@ -111,7 +112,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteractionModel(genreId = 1, interactionCount = 3)
+                GenreUserInteraction(genreId = 1, interactionCount = 3)
             )
         }
     }
@@ -127,7 +128,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteractionModel(genreId = 2, interactionCount = 1)
+                GenreUserInteraction(genreId = 2, interactionCount = 1)
             )
         }
     }
@@ -143,7 +144,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteractionModel(genreId = 3, interactionCount = 8)
+                GenreUserInteraction(genreId = 3, interactionCount = 8)
             )
         }
     }

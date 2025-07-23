@@ -1,9 +1,9 @@
 package com.domain.search.useCases
 
-import com.domain.search.model.GenreUserInteractionModel
-import com.domain.search.model.Media
-import com.domain.search.model.MediaType
+
+import com.domain.search.model.GenreUserInteraction
 import com.domain.search.repository.GenresInteractionRepository
+import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -32,9 +32,9 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
 
         // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
-            GenreUserInteractionModel(1, 10),
-            GenreUserInteractionModel(2, 5),
-            GenreUserInteractionModel(3, 1)
+            GenreUserInteraction(1, 10),
+            GenreUserInteraction(2, 5),
+            GenreUserInteraction(3, 1)
         )
 
         val mediaList = listOf(
@@ -55,8 +55,8 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
     fun `should preserve input order when media have equal category interaction sums`() = runTest {
         // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
-            GenreUserInteractionModel(1, 10),
-            GenreUserInteractionModel(2, 0)
+            GenreUserInteraction(1, 10),
+            GenreUserInteraction(2, 0)
         )
 
         val mediaList = listOf(
@@ -75,7 +75,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
     fun `should order medias with no matching genres as zero interaction`() = runTest {
         // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
-            GenreUserInteractionModel(1, 7)
+            GenreUserInteraction(1, 7)
         )
 
         val mediaList = listOf(
