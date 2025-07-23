@@ -33,7 +33,11 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
+}
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -80,7 +84,24 @@ dependencies {
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
+    //test
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.junit)
 
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(kotlin("test"))
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
 
 }
+
