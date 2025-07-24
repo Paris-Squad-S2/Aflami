@@ -15,8 +15,8 @@ import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.MediaCardType
+import com.paris_2.aflami.designsystem.components.SectionTitle
 
 @Composable
 fun HomeSection(
@@ -32,11 +32,17 @@ fun HomeSection(
     Column(
         modifier = modifier
     ) {
-        MediaCard(
+        SectionTitle(
             title = title,
             hasViewAll = true,
-            iconColor = iconColor ?: Color.Unspecified,
-            painter = leadingIconPainter,
+            icon = {
+                leadingIconPainter?.let { it->   Icon(
+                    imageVector = it,
+                    contentDescription = "$title icon",
+                    modifier = Modifier.padding(start = 8.dp),
+                    tint = iconColor ?: Color.Unspecified,
+                )
+            }},
             onClickViewAll = onSectionAllClick,
             modifier = Modifier.padding(top = 6.dp)
         )

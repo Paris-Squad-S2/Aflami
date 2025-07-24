@@ -1,5 +1,8 @@
 package com.feature.home.homeUi.screen.home.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,10 +21,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -29,7 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
 import com.paris_2.aflami.designsystem.components.GenresChip
-import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.Slider
@@ -90,7 +90,8 @@ fun HomeSlider(
                             modifier = Modifier.padding(start = 8.dp),
                             tint = Theme.colors.secondary,
                         )
-                    }                    hasViewAll = false,
+                    },
+                    hasViewAll = false,
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
 
