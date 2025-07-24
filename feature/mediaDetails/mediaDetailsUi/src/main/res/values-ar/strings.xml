@@ -29,5 +29,5 @@
     <string name="tvshow_details_not_available">تفاصيل المسلسل غير متاحة</string>
     <string name="there_is_no_gallery">لا يوجد معرض</string>
     <string name="there_is_no_recommendations">لا توجد توصيات</string>
-    <string name="there_is_no_seasons">There is no seasons</string>
+    <string name="there_is_no_seasons">لا توجد مواسم</string>
 </resources>
