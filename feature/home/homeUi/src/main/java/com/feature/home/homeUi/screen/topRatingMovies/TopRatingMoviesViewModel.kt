@@ -6,7 +6,6 @@ import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris_2.aflami.appnavigation.AppDestinations
 
 class TopRatingMoviesViewModel(
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
