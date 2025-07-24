@@ -8,15 +8,15 @@ class MediaDataSourceImpl (
     private val apiService: MediaApiService
 ) : MediaRemoteDataSource {
 
-    override suspend fun getPopularMovies(): MovieListDto = apiService.getPopularMovie()
+    override suspend fun getPopularMovies(language: String): MovieListDto = apiService.getPopularMovie(language)
 
-    override suspend fun getTopRatedMovies(): MovieListDto = apiService.getTopRatedMovie()
+    override suspend fun getTopRatedMovies(language: String): MovieListDto = apiService.getTopRatedMovie(language)
 
-    override suspend fun getUpcomingMovies(): MovieListDto = apiService.getUpcoming()
+    override suspend fun getUpcomingMovies(language: String): MovieListDto = apiService.getUpcoming(language)
 
     override suspend fun getNowPlayingMovies(): MovieListDto = apiService.getNowPlaying()
 
-    override suspend fun getPopularTvShows(): TvListDto = apiService.getPopularTv()
+    override suspend fun getPopularTvShows(language: String): TvListDto = apiService.getPopularTv(language)
 
-    override suspend fun getTopRatedTvShows(): TvListDto = apiService.getTopRatedTv()
+    override suspend fun getTopRatedTvShows(language: String): TvListDto = apiService.getTopRatedTv(language)
 }

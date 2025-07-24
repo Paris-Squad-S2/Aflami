@@ -7,6 +7,7 @@ import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.mapper.toDomain
 import com.repository.home.mapper.toEntity
+import java.util.Locale
 
 class MediaRepositoryImpl(
     private val mediaRemoteDataSource: MediaRemoteDataSource,
@@ -14,11 +15,12 @@ class MediaRepositoryImpl(
 ) : MediaRepository {
 
     override suspend fun getPopularMedia(): List<Media> {
-        val popularMovies = mediaRemoteDataSource.getPopularMovies().results?.mapNotNull {
+        val language = Locale.getDefault().language
+        val popularMovies = mediaRemoteDataSource.getPopularMovies(language = language).results?.mapNotNull {
             it.toDomain(MediaType.MOVIE)
         } ?: emptyList()
 
-        val popularTvShows = mediaRemoteDataSource.getPopularTvShows().results?.mapNotNull {
+        val popularTvShows = mediaRemoteDataSource.getPopularTvShows(language = language).results?.mapNotNull {
             it.toDomain(MediaType.TV_SHOW)
         } ?: emptyList()
 
@@ -29,11 +31,12 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getTopRatingMedia(): List<Media> {
-        val topMovies = mediaRemoteDataSource.getTopRatedMovies().results?.mapNotNull {
+        val language = Locale.getDefault().language
+        val topMovies = mediaRemoteDataSource.getTopRatedMovies(language = language).results?.mapNotNull {
             it.toDomain(MediaType.MOVIE)
         } ?: emptyList()
 
-        val topTv = mediaRemoteDataSource.getTopRatedTvShows().results?.mapNotNull {
+        val topTv = mediaRemoteDataSource.getTopRatedTvShows(language = language).results?.mapNotNull {
             it.toDomain(MediaType.TV_SHOW)
         } ?: emptyList()
 
@@ -44,7 +47,8 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
-        val upcomingMovies = mediaRemoteDataSource.getUpcomingMovies().results?.mapNotNull {
+        val language = Locale.getDefault().language
+        val upcomingMovies = mediaRemoteDataSource.getUpcomingMovies(language = language).results?.mapNotNull {
             it.toDomain(MediaType.MOVIE)
         } ?: emptyList()
         return upcomingMovies
