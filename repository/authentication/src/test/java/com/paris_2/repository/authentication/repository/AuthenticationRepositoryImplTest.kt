@@ -129,4 +129,62 @@ class AuthenticationRepositoryImplTest {
             repository.guestLogin()
         }
     }
+
+    @Test
+    fun `login should set isGuest to false when login succeeds`() = runTest {
+        val username = "user"
+        val password = "pass"
+        val requestToken = "token123"
+        val sessionId = "session456"
+        coEvery { remoteDataSource.getRequestToken() } returns RequestTokenDto(requestToken = requestToken, success = true)
+        coEvery { remoteDataSource.validateWithLogin(LoginRequest(username, password, requestToken)) } returns RequestTokenDto(requestToken = requestToken, success = true)
+        coEvery { remoteDataSource.createSession(requestToken) } returns SessionDto(sessionId)
+
+        val result = repository.login(username, password)
+
+        assertThat(result).isTrue()
+        coVerify {
+            localDataSource.saveSessionId(sessionId)
+            localDataSource.setIsGuest(false)
+        }
+    }
+
+    @Test
+    fun `guestLogin should set isGuest to true when guest login succeeds`() = runTest {
+        val guestSessionId = "guest_123"
+        coEvery { remoteDataSource.createGuestSession() } returns GuestSessionDto(
+            success = true,
+            guestSessionId = guestSessionId,
+            expiresAt = "2025-07-23"
+        )
+
+        val result = repository.guestLogin()
+
+        assertThat(result).isTrue()
+        coVerify {
+            localDataSource.saveSessionId(guestSessionId)
+            localDataSource.setIsGuest(true)
+        }
+    }
+    @Test
+    fun `isLoggedIn should return value from localDataSource`() {
+        every { localDataSource.isLoggedIn() } returns true
+        assertThat(repository.isLoggedIn()).isTrue()
+    }
+
+    @Test
+    fun `getRegisterUrl should return url from remoteDataSource`() {
+        val expectedUrl = "https://example.com/register"
+        every { remoteDataSource.getRegisterUrl() } returns expectedUrl
+        assertThat(repository.getRegisterUrl()).isEqualTo(expectedUrl)
+    }
+
+    @Test
+    fun `getForgetPasswordUrl should return url from remoteDataSource`() {
+        val expectedUrl = "https://example.com/reset"
+        every { remoteDataSource.getForgetPasswordUrl() } returns expectedUrl
+        assertThat(repository.getForgetPasswordUrl()).isEqualTo(expectedUrl)
+    }
+
+
 }
