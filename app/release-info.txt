@@ -1,2 +1,2 @@
-versionName=0.2.15
-- enhancement the navigation between the media details and similar media
+versionName=0.2.16
+- fix back button in tvShow details screen
