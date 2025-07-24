@@ -9,16 +9,16 @@ import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-    private val loginUseCase = mockk<LoginUseCase>(relaxed = true)
+    private lateinit var loginUseCase: LoginUseCase
 
     @BeforeEach
     fun setup() {
+        loginUseCase = mockk(relaxed = true)
         viewModel = spyk(
             LoginViewModel(
                 appNavigationAPI = mockk(relaxed = true),
@@ -72,7 +72,6 @@ class LoginViewModelTest {
     }
 
     @Test
-    @Order(0)
     fun `onClickLogin with invalid credentials sets error message and disables button`() {
         coEvery { loginUseCase("user", "1234") } throws(InvalidCredentialsException("Invalid credentials"))
 
