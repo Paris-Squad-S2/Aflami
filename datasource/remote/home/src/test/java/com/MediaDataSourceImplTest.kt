@@ -28,9 +28,9 @@ class MediaDataSourceImplTest {
     @Test
     fun `getPopularMovies should propagate exception when API call fails`() = runTest {
         val apiException = RuntimeException("API Error")
-        coEvery { apiService.getPopularMovie() } throws apiException
+        coEvery { apiService.getPopularMovie(any()) } throws apiException
         try {
-            mediaDataSource.getPopularMovies()
+            mediaDataSource.getPopularMovies("en")
             throw AssertionError("Should have propagated the exception")
         } catch (e: Exception) {
             assertThat(e).isEqualTo(apiException)
@@ -39,26 +39,26 @@ class MediaDataSourceImplTest {
 
     @Test
     fun `getPopularMovies should return data from api`() = runTest {
-        coEvery { apiService.getPopularMovie() } returns movieListDto
-        val result = mediaDataSource.getPopularMovies()
+        coEvery { apiService.getPopularMovie(any()) } returns movieListDto
+        val result = mediaDataSource.getPopularMovies("en")
         assertThat(result).isEqualTo(movieListDto)
-        coVerify(exactly = 1) { apiService.getPopularMovie() }
+        coVerify(exactly = 1) { apiService.getPopularMovie(any()) }
     }
 
     @Test
     fun `getTopRatedMovies should return data from api`() = runTest {
-        coEvery { apiService.getTopRatedMovie() } returns movieListDto
-        val result = mediaDataSource.getTopRatedMovies()
+        coEvery { apiService.getTopRatedMovie(any()) } returns movieListDto
+        val result = mediaDataSource.getTopRatedMovies("en")
         assertThat(result).isEqualTo(movieListDto)
-        coVerify(exactly = 1) { apiService.getTopRatedMovie() }
+        coVerify(exactly = 1) { apiService.getTopRatedMovie(any()) }
     }
 
     @Test
     fun `getUpcomingMovies should return data from api`() = runTest {
-        coEvery { apiService.getUpcoming() } returns movieListDto
-        val result = mediaDataSource.getUpcomingMovies()
+        coEvery { apiService.getUpcoming(any()) } returns movieListDto
+        val result = mediaDataSource.getUpcomingMovies("en")
         assertThat(result).isEqualTo(movieListDto)
-        coVerify(exactly = 1) { apiService.getUpcoming() }
+        coVerify(exactly = 1) { apiService.getUpcoming(any()) }
     }
 
     @Test
@@ -71,18 +71,18 @@ class MediaDataSourceImplTest {
 
     @Test
     fun `getPopularTvShows should return data from api`() = runTest {
-        coEvery { apiService.getPopularTv() } returns tvListDto
-        val result = mediaDataSource.getPopularTvShows()
+        coEvery { apiService.getPopularTv(any()) } returns tvListDto
+        val result = mediaDataSource.getPopularTvShows("en")
         assertThat(result).isEqualTo(tvListDto)
-        coVerify(exactly = 1) { apiService.getPopularTv() }
+        coVerify(exactly = 1) { apiService.getPopularTv(any()) }
     }
 
     @Test
     fun `getTopRatedTvShows should return data from api`() = runTest {
-        coEvery { apiService.getTopRatedTv() } returns tvListDto
-        val result = mediaDataSource.getTopRatedTvShows()
+        coEvery { apiService.getTopRatedTv(any()) } returns tvListDto
+        val result = mediaDataSource.getTopRatedTvShows("en")
         assertThat(result).isEqualTo(tvListDto)
-        coVerify(exactly = 1) { apiService.getTopRatedTv() }
+        coVerify(exactly = 1) { apiService.getTopRatedTv(any()) }
     }
 
     private companion object {
