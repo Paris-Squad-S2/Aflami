@@ -1,2 +1,2 @@
-versionName=0.2.14
-- refactor repository unit tests to separate concerns between assertion logic and interaction verification.
+versionName=0.3.0
+- add  home screen feature with all screens related to it
