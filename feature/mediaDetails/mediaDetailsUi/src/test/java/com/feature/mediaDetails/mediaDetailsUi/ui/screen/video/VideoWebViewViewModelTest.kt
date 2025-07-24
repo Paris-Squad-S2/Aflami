@@ -2,7 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.video
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations.VideosScreen
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations.VideosScreen
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.mockkStatic
