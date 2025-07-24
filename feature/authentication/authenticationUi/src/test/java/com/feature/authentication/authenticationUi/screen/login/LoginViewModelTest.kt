@@ -80,4 +80,16 @@ class LoginViewModelTest {
         val state = viewModel.screenState.value
         Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
     }
+
+    @Test
+    fun `onClickLogin with valid credentials navigates to home`() {
+        coEvery { loginUseCase(any(), any()) } returns true
+
+        viewModel.onUsernameChange("user")
+        viewModel.onPasswordChange("1234")
+        viewModel.onClickLogin()
+
+        // Verify that navigateToHome() was called
+        io.mockk.verify { viewModel["navigateToHome"]() }
+    }
 }

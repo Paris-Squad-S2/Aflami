@@ -154,15 +154,9 @@ class WorldTourViewModel(
         tryToExecute(
             execute = {
                 incrementCategoryInteractionUseCase.invoke(media.categories)
-                when (media.type) {
-                    MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
-                        movieId = media.id
-                    )
-
-                    MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
-                        tvShowId = media.id
-                    )
-                }
+                mediaDetailsFeatureAPI.startMovieDetails(
+                    movieId = media.id
+                )
             },
             onError = { errorMessage ->
                 emitState(
