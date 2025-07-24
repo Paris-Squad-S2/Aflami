@@ -1,22 +1,22 @@
 package com.repository.search.repository
 
-import com.repository.search.util.NetworkConnectionChecker
+import com.domain.search.exception.NoInternetConnectionException
+import com.domain.search.exception.NoMediaForActorException
+import com.domain.search.exception.NoMediaForCountryException
+import com.domain.search.exception.NoMediaForSearchException
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
+import com.repository.search.dto.ResultDto
+import com.repository.search.dto.SearchDto
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.entity.SearchHistoryEntity
 import com.repository.search.entity.SearchType
-import com.domain.search.exception.NoDataForActorException
-import com.domain.search.exception.NoDataForCountryException
-import com.domain.search.exception.NoDataForSearchException
-import com.domain.search.exception.NoInternetConnectionException
-import com.repository.search.dto.ResultDto
-import com.repository.search.dto.SearchDto
 import com.repository.search.mapper.toMedia
 import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
+import com.repository.search.util.NetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -171,7 +171,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } throws RuntimeException()
 
-        assertFailsWith<NoDataForActorException> {
+        assertFailsWith<NoMediaForActorException> {
             repository.getMediaByActor(actorName, page)
         }
     }
@@ -244,7 +244,6 @@ class SearchMediaRepositoryImplTest {
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery {
             searchRemoteDataSource.searchCountryCode(
-                query = countryName,
                 page = page,
                 countryCode = countryName,
                 language = any()
@@ -281,7 +280,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } throws RuntimeException("DB error")
 
-        assertFailsWith<NoDataForCountryException> {
+        assertFailsWith<NoMediaForCountryException> {
             repository.getMoviesByCountry(countryName, page)
         }
     }
@@ -379,7 +378,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page,language) } throws RuntimeException("DB error")
 
-        assertFailsWith<NoDataForSearchException> {
+        assertFailsWith<NoMediaForSearchException> {
             repository.getMediaByQuery(query, page)
         }
     }

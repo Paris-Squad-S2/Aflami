@@ -1,15 +1,15 @@
 package com.repository.search.mapper
 
-import com.domain.search.model.CategoryModel
+import com.domain.search.model.Category
 import com.repository.search.dto.GenreDto
 import com.repository.search.entity.GenreEntity
 
-fun List<GenreEntity>.toCategories(): List<CategoryModel> {
+fun List<GenreEntity>.toCategories(): List<Category> {
     return this.map { it.toCategoryModel() }
 }
 
-fun GenreEntity.toCategoryModel(): CategoryModel {
-    return CategoryModel(
+fun GenreEntity.toCategoryModel(): Category {
+    return Category(
         id = this.id,
         name = this.name
     )

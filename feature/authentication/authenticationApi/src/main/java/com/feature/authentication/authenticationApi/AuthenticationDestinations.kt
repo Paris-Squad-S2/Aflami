@@ -8,5 +8,11 @@ sealed interface AuthenticationDestinations : AuthenticationGraph {
     data object AuthenticationGraph1 : AuthenticationGraph
 
     @Serializable
-    data object AuthenticationScreen : AuthenticationDestination
+    data object LoginScreen : AuthenticationDestination
+
+    @Serializable
+    data object RegisterWebViewScreen : AuthenticationDestination
+
+    @Serializable
+    data object ForgotPasswordWebViewScreen : AuthenticationDestination
 }

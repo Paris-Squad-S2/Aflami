@@ -2,11 +2,12 @@ package com.domain.mediaDetails.repository
 
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
-import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
+import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowSimilar
+import com.domain.mediaDetails.model.TvShowVideo
 
 interface TvShowRepository {
     suspend fun getTvShowDetails(tvShowId: Int): TvShow
@@ -17,4 +18,6 @@ interface TvShowRepository {
     suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season
     suspend fun getTvShowReview(tvShowId: Int,page: Int): List<Review>
     suspend fun addTvShowToFavorite(tvShowId: Int)
+    suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo>
+
 }

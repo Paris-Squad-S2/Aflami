@@ -1,12 +1,11 @@
 package com.repository.search.repository
 
-import com.domain.search.exception.NoDataForActorException
-import com.domain.search.exception.NoDataForCountryException
-import com.domain.search.exception.NoDataForSearchException
+import com.domain.search.exception.NoMediaForActorException
+import com.domain.search.exception.NoMediaForCountryException
+import com.domain.search.exception.NoMediaForSearchException
 import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.Media
 import com.domain.search.repository.SearchMediaRepository
-import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
@@ -14,6 +13,7 @@ import com.repository.search.entity.SearchType
 import com.repository.search.mapper.toMediaEntities
 import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.util.detectLanguage
 import com.repository.search.util.getCurrentDate
 import kotlinx.datetime.DateTimeUnit
@@ -59,7 +59,7 @@ class SearchMediaRepositoryImpl(
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
-            throw NoDataForActorException()
+            throw NoMediaForActorException()
         }
     }
 
@@ -78,7 +78,6 @@ class SearchMediaRepositoryImpl(
             if (networkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto = searchRemoteDataSource.searchCountryCode(
-                    query = countryName,
                     countryCode = countryName,
                     language = language,
                     page = page,
@@ -98,7 +97,7 @@ class SearchMediaRepositoryImpl(
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
-            throw NoDataForCountryException()
+            throw NoMediaForCountryException()
         }
     }
 
@@ -133,7 +132,7 @@ class SearchMediaRepositoryImpl(
         } catch (e: NoInternetConnectionException) {
             throw e
         } catch (_: Exception) {
-            throw NoDataForSearchException()
+            throw NoMediaForSearchException()
         }
     }
 

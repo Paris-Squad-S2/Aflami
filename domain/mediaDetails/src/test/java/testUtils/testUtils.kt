@@ -1,18 +1,19 @@
 package testUtils
 
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Country
 import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowSimilar
+import com.domain.mediaDetails.model.TvShowVideo
 import kotlinx.datetime.LocalDate
 
 val fakeGenres = listOf(
@@ -257,7 +258,7 @@ val fakeTvShow = TvShow(
     description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
     posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
     genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
-    releaseDate = "2008-01-20",
+    releaseDate = LocalDate(year = 1994, month = 10, day = 14),
     runtime = 47,
     country = "US",
     productionCompanies = listOf(fakeProductionCompanies[2]),
@@ -273,7 +274,7 @@ val fakeTvShows = listOf(
         description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
         posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
         genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
-        releaseDate = "2008-01-20",
+        releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 47,
         country = "US",
         productionCompanies = listOf(fakeProductionCompanies[2]),
@@ -286,7 +287,7 @@ val fakeTvShows = listOf(
         description = "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.",
         posterPath = "https://image.tmdb.org/t/p/w500/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
         genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[2]),
-        releaseDate = "2011-04-17",
+        releaseDate =LocalDate(year = 1994, month = 10, day = 14),
         runtime = 57,
         country = "US",
         productionCompanies = listOf(fakeProductionCompanies[0]),
@@ -299,7 +300,7 @@ val fakeTvShows = listOf(
         description = "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces.",
         posterPath = "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
         genres = listOf(fakeGenres[0], fakeGenres[5], fakeGenres[6]),
-        releaseDate = "2016-07-15",
+        releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 51,
         country = "US",
         productionCompanies = listOf(fakeProductionCompanies[1]),
@@ -312,7 +313,7 @@ val fakeTvShows = listOf(
         description = "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium.",
         posterPath = "https://image.tmdb.org/t/p/w500/7DJKHzAi83PmGuHjrEfQ1S9y4LF.jpg",
         genres = listOf(fakeGenres[1]),
-        releaseDate = "2005-03-24",
+        releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 22,
         country = "US",
         productionCompanies = listOf(fakeProductionCompanies[1]),
@@ -325,7 +326,7 @@ val fakeTvShows = listOf(
         description = "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.",
         posterPath = "https://image.tmdb.org/t/p/w500/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
         genres = listOf(fakeGenres[0], fakeGenres[9], fakeGenres[3]),
-        releaseDate = "2010-07-25",
+        releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 90,
         country = "GB",
         productionCompanies = listOf(fakeProductionCompanies[3]),
@@ -349,6 +350,24 @@ val fakeImages = listOf(
 
 val fakeGallery = Gallery(images = fakeImages)
 
+val fakeMovieVideo = listOf(
+    MovieVideo(
+        key = "dQw4w9WgXcQ",
+        name = "Trailer 1",
+        site = "YouTube",
+        type = "Trailer"
+    )
+)
+
+val fakeTvShowVideo = listOf(
+    TvShowVideo(
+        key = "dQw4w9WgXcQ",
+        name = "Trailer 1",
+        site = "YouTube",
+        type = "Trailer"
+    )
+)
+
 val fakeMovie = Movie(
     id = 3,
     title = "Pulp Fiction",
@@ -356,7 +375,7 @@ val fakeMovie = Movie(
     description = "The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.",
     posterPath = "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
     genres = listOf(fakeGenres[1], fakeGenres[6]),
-    releaseDate = "1994-10-14",
+    releaseDate = LocalDate(year = 1994, month = 10, day = 14),
     runtime = 154,
     country = "US",
     productionCompanies = listOf(fakeProductionCompanies[3])
@@ -369,7 +388,7 @@ val fakeMovies = listOf(
         description = "Batman raises the stakes in his war on crime with the help of Lt. Jim Gordon and District Attorney Harvey Dent.",
         posterPath = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
         genres = listOf(fakeGenres[0], fakeGenres[1], fakeGenres[6]),
-        releaseDate = "2008-07-18",
+        releaseDate = LocalDate(year = 2008, month = 10, day = 14),
         runtime = 152,
         country = "US",
         productionCompanies = listOf(fakeProductionCompanies[0])
@@ -381,7 +400,7 @@ val fakeMovies = listOf(
         description = "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
         posterPath = "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
         genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[6]),
-        releaseDate = "2010-07-16",
+        releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 148,
         country = "GB",
         productionCompanies = listOf(fakeProductionCompanies[0])
@@ -393,7 +412,7 @@ val fakeMovies = listOf(
         description = "The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.",
         posterPath = "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
         genres = listOf(fakeGenres[1], fakeGenres[6]),
-        releaseDate = "1994-10-14",
+        releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 154,
         country = "US",
         productionCompanies = listOf(fakeProductionCompanies[3])

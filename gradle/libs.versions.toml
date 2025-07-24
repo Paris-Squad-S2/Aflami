@@ -47,6 +47,7 @@ junitJupiter = "5.13.2"
 coroutines-test = "1.7.3"
 kover = "0.9.1"
 roomCommonJvm = "2.7.2"
+webkit = "1.11.0"
 workKtx = "2.10.2"
 junitJupiterVersion = "5.8.1"
 loggingInterceptor = "5.1.0"
@@ -59,6 +60,7 @@ androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = 
 androidx-paging-compose = { module = "androidx.paging:paging-compose", version.ref = "pagingRuntime" }
 androidx-paging-runtime = { module = "androidx.paging:paging-runtime", version.ref = "pagingRuntime" }
 androidx-startup-runtime = { module = "androidx.startup:startup-runtime", version.ref = "startupRuntime" }
+androidx-webkit = { module = "androidx.webkit:webkit", version.ref = "webkit" }
 firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }

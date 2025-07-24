@@ -10,6 +10,7 @@ import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowSimilar
+import com.domain.mediaDetails.model.TvShowVideo
 import com.repository.model.local.CastEntity
 import com.repository.model.local.EpisodeEntity
 import com.repository.model.local.GalleryEntity
@@ -30,6 +31,7 @@ import com.repository.model.remote.TvShowProductionCompanyDto
 import com.repository.model.remote.TvShowReviewDto
 import com.repository.model.remote.TvShowSeasonDto
 import com.repository.model.remote.TvShowSimilarDto
+import com.repository.model.remote.TvShowVideoResultDto
 import com.repository.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
@@ -90,7 +92,7 @@ fun TvShowEntity.toEntity(): TvShow {
         description = this.description,
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres.map { it.toEntity() },
-        releaseDate = this.releaseDate,
+        releaseDate = LocalDate.parse(this.releaseDate),
         runtime = this.runtime,
         country = this.country,
         productionCompanies = this.productionCompanies.map { it.toEntity() },
@@ -103,6 +105,15 @@ fun CastEntity.toEntity(): Cast {
         id = this.id,
         name = this.name,
         imageUrl = this.imageUri.toImageUrl().orEmpty()
+    )
+}
+
+fun  TvShowVideoResultDto.toEntity(): TvShowVideo {
+    return TvShowVideo(
+        key = this.key.orEmpty(),
+        name = this.name.orEmpty(),
+        site = this.site.orEmpty(),
+        type = this.type.orEmpty(),
     )
 }
 
