@@ -2,14 +2,12 @@ package com.paris_2.dataSource.local.authentication
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import io.mockk.verify
-import org.junit.Assert.assertEquals
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Assertions.assertEquals
 
 class AuthenticationLocalDataSourceImplTest {
     private lateinit var context: Context
@@ -17,11 +15,12 @@ class AuthenticationLocalDataSourceImplTest {
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var dataSource: AuthenticationLocalDataSourceImpl
 
-    @Before
+    @BeforeEach
     fun setUp() {
         context = mockk()
         sharedPreferences = mockk()
         editor = mockk(relaxed = true)
+
         every { context.getSharedPreferences(any(), any()) } returns sharedPreferences
         every { sharedPreferences.edit() } answers {
             val action = args[0] as SharedPreferences.Editor.() -> Unit
@@ -29,6 +28,7 @@ class AuthenticationLocalDataSourceImplTest {
             editor
         }
         every { sharedPreferences.edit() } returns editor
+
         dataSource = AuthenticationLocalDataSourceImpl(context)
     }
 
@@ -47,6 +47,7 @@ class AuthenticationLocalDataSourceImplTest {
         val result = dataSource.getSessionId()
         assertEquals(sessionId, result)
     }
+
     @Test
     fun `isLoggedIn should return true when sessionId exists and isGuest is false`() {
         every { sharedPreferences.getString("session_id", null) } returns "real_session"
@@ -56,6 +57,7 @@ class AuthenticationLocalDataSourceImplTest {
 
         assertEquals(true, result)
     }
+
     @Test
     fun `isLoggedIn should return false when sessionId is null`() {
         every { sharedPreferences.getString("session_id", null) } returns null
@@ -65,6 +67,7 @@ class AuthenticationLocalDataSourceImplTest {
 
         assertEquals(false, result)
     }
+
     @Test
     fun `isLoggedIn should return false when user is guest`() {
         every { sharedPreferences.getString("session_id", null) } returns "guest_session"
@@ -74,17 +77,18 @@ class AuthenticationLocalDataSourceImplTest {
 
         assertEquals(false, result)
     }
+
     @Test
     fun `setIsGuest should save boolean in SharedPreferences`() {
         every { editor.putBoolean("is_guest", true) } returns editor
         dataSource.setIsGuest(true)
         verify { editor.putBoolean("is_guest", true) }
     }
+
     @Test
     fun `isGuest should return correct value from SharedPreferences`() {
         every { sharedPreferences.getBoolean("is_guest", false) } returns true
         val result = dataSource.isGuest()
         assertEquals(true, result)
     }
-
 }
