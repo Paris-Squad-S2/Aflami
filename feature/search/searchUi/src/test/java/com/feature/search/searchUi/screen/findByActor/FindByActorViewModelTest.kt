@@ -168,6 +168,32 @@ class FindByActorViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
+    fun `onMediaCardClick navigates to detailsScreen`() = runTest {
+        val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
+        val viewModel = FindByActorViewModel(
+            savedStateHandle = mockk(relaxed = true),
+            getMediaByActorNameUseCase = getMediaByActorNameUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+        )
+        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+            id = 42,
+            imageUri = "",
+            title = "Test Movie",
+            type = MediaTypeUi.MOVIE,
+            categories = listOf(1, 2),
+            yearOfRelease = LocalDate(2023, 1, 1),
+            rating = 4.5,
+        )
+        viewModel.onMediaCardClick(mediaUiState)
+        advanceUntilIdle()
+        coVerify { mediaDetailsFeatureAPI.startTvShowDetails(any()) }
+    }
+
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
     fun `onSearchQueryChange cancels previous debounce if new query is typed`() = runTest {
         val query1 = "Leonardo"
         val query2 = "DiCaprio"

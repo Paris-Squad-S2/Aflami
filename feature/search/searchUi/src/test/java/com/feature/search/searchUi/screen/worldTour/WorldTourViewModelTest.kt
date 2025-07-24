@@ -23,7 +23,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.paris_2.aflami.appnavigation.AppNavigator as AppNavigator1
 
 class WorldTourViewModelTest {
     private lateinit var viewModel: WorldTourViewModel
@@ -124,6 +123,33 @@ class WorldTourViewModelTest {
 
         coVerify(exactly = 1) { autoCompleteCountryUseCase(query2) }
         coVerify(exactly = 0) { autoCompleteCountryUseCase(query1) }
+    }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `onMediaCardClick triggers navigation`() = runTest {
+        val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
+        val viewModel = WorldTourViewModel(
+            savedStateHandle = mockk(relaxed = true),
+            autoCompleteCountryUseCase = autoCompleteCountryUseCase,
+            getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
+            getMoviesByCountryUseCase = getMoviesByCountryUseCase,
+            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
+            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+        )
+        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+            id = 12,
+            imageUri = "",
+            title = "Test Movie",
+            type = com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE,
+            categories = listOf(1, 2),
+            yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
+            rating = 4.5
+        )
+        viewModel.onMediaCardClick(mediaUiState)
+        advanceUntilIdle()
+        coVerify { mediaDetailsFeatureAPI.startMovieDetails(any()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
