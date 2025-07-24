@@ -12,11 +12,13 @@ import com.domain.search.useCase.GetMediaByActorNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import com.feature.search.searchUi.screen.findByActor.FindByActorDefaults.initialFindByActorScreenState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
@@ -25,17 +27,10 @@ class FindByActorViewModel(
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
-    FindByActorScreenState(
-        uiState = FindByActorUiState(
-            searchQuery = "",
-            searchResult = flowOf(PagingData.empty()),
-        ),
-        errorMessage = null
-    )
+    initialFindByActorScreenState()
 ) {
-
 
     init {
         val initialQuery = savedStateHandle.toRoute<SearchDestinations.FindByActorScreen>().name
@@ -50,70 +45,32 @@ class FindByActorViewModel(
 
     private var debounceJob: Job? = null
 
+
     override fun onSearchQueryChange(query: String) {
-        updateState(
-            screenState.value.copy(
-                uiState = screenState.value.uiState.copy(
-                    searchQuery = query,
-                )
-            )
-        )
+        updateSearchQuery(query)
         debounceJob?.cancel()
+
         if (query.isNotBlank()) {
-            debounceJob = viewModelScope.launch {
-                delay(1000)
-                searchQuery(query)
-            }
+            startDebouncedSearch(query)
         } else {
-            updateState(
-                screenState.value.copy(
-                    uiState = screenState.value.uiState.copy(
-                        searchResult = flowOf(PagingData.empty()),
-                    )
-                )
-            )
+            clearSearchResults()
         }
     }
 
 
     private fun searchQuery(query: String): Job {
-        return tryToExecute(
-            execute = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = null
-                    )
-                )
-                Pager(
-                 config = PagingConfig(pageSize = 10),
-                 pagingSourceFactory = {
-                     FindByActorPagingSource(
-                         query,
-                         getMediaByActorNameUseCase,
-                         sortingMediaByCategoriesInteractionUseCase)
-                 }
-                ).flow.cachedIn(viewModelScope)
-
-            },
-            onSuccess = { searchResult ->
-                updateState(
-                    screenState.value.copy(
-                        uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult
-                            ,
-                        )
-                    )
-                )
-            },
-            onError = { errorMessage ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage
-                    )
-                )
-            }
-        )
+        return viewModelScope.launch {
+            tryToExecute(
+                execute = {
+                    updateState(screenState.value.copy(errorMessage = null))
+                    createSearchPager(query)
+                },
+                onSuccess = ::handleSearchSuccess,
+                onError = ::handleSearchError
+            )
+        }
     }
+
 
     override fun onRetrySearchQuery() {
         searchQuery(screenState.value.uiState.searchQuery)
@@ -123,19 +80,77 @@ class FindByActorViewModel(
         tryToExecute(
             execute = {
                 incrementCategoryInteractionUseCase.invoke(media.categories)
-                mediaDetailsFeatureAPI.startMovieDetails(
-                    movieId = media.id
-                )
+                mediaDetailsFeatureAPI.startMovieDetails(movieId = media.id)
             },
-            onError = { errorMessage ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage
-                    )
-                )
-            }
+            onError = ::handleMediaCardClickError
         )
     }
 
+
+    private fun createSearchPager(query: String): Flow<PagingData<MediaUiState>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                FindByActorPagingSource(
+                    query,
+                    getMediaByActorNameUseCase,
+                    sortingMediaByCategoriesInteractionUseCase
+                )
+            }
+        ).flow.cachedIn(viewModelScope)
+    }
+
+    private fun handleSearchSuccess(searchResultFlow: Flow<PagingData<MediaUiState>>) {
+        updateState(
+            screenState.value.copy(
+                uiState = screenState.value.uiState.copy(
+                    searchResult = searchResultFlow
+                )
+            )
+        )
+    }
+
+    private fun handleSearchError(errorMessage: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = errorMessage
+            )
+        )
+    }
+
+    private fun updateSearchQuery(query: String) {
+        updateState(
+            screenState.value.copy(
+                uiState = screenState.value.uiState.copy(
+                    searchQuery = query
+                )
+            )
+        )
+    }
+
+    private fun startDebouncedSearch(query: String) {
+        debounceJob = viewModelScope.launch {
+            delay(1000)
+            searchQuery(query)
+        }
+    }
+
+    private fun clearSearchResults() {
+        updateState(
+            screenState.value.copy(
+                uiState = screenState.value.uiState.copy(
+                    searchResult = flowOf(PagingData.empty())
+                )
+            )
+        )
+    }
+
+    private fun handleMediaCardClickError(errorMessage: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = errorMessage
+            )
+        )
+    }
 
 }
