@@ -6,8 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.authentication.authenticationApi.AuthenticationDestination
-import com.feature.authentication.authenticationApi.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.screen.forgotPassword.ForgotPasswordWebViewScreen
 import com.feature.authentication.authenticationUi.screen.login.LoginScreen
 import com.feature.authentication.authenticationUi.screen.register.RegisterWebViewScreen

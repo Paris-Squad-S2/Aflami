@@ -3,7 +3,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.comon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestination
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestination
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

@@ -2,8 +2,8 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.video
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 
 data class VideoWebUIState(
     val videoUrl: String = "",

@@ -10,21 +10,17 @@ import androidx.paging.cachedIn
 import com.domain.search.useCase.GetMediaByActorNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsApi.toJson
-import com.feature.search.searchApi.SearchDestinations
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.search.MediaUiState
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.getKoin
 
 data class FindByActorScreenState(
     val uiState: FindByActorUiState,
@@ -41,7 +37,7 @@ class FindByActorViewModel(
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val appNavigator: AppNavigator = getKoin().get()
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -139,18 +135,8 @@ class FindByActorViewModel(
         tryToExecute(
             execute = {
                 incrementCategoryInteractionUseCase.invoke(media.categories)
-                appNavigator.navigate(
-                    AppDestinations.MediaDetailsFeature(
-                        when (media.type) {
-                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = media.id
-                            )
-
-                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = media.id
-                            )
-                        }.toJson()
-                    )
+                mediaDetailsFeatureAPI.startMovieDetails(
+                    movieId = media.id
                 )
             },
             onError = { errorMessage ->

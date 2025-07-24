@@ -29,4 +29,5 @@
     <string name="query">Query</string>
     <string name="country">Country</string>
     <string name="actor">Actor</string>
+    <string name="title_activity_search">SearchActivity</string>
 </resources>
