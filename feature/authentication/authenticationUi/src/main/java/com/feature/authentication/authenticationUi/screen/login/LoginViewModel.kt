@@ -5,8 +5,8 @@ import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.domain.authentication.usecases.GuestLoginUseCase
-import com.paris_2.domain.authentication.usecases.LoginUseCase
+import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
+import com.paris_2.domain.authentication.usecase.LoginUseCase
 
 class LoginViewModel(
     private val appNavigationAPI : AppNavigationAPI,

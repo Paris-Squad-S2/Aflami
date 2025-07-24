@@ -9,15 +9,16 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.domain.mediaDetails.model.TvShowVideo
-import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
+
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel

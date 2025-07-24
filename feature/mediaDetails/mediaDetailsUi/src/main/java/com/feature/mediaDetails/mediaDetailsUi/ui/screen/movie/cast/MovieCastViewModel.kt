@@ -2,7 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.useCases.movie.GetMovieCastUseCase
+import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi

@@ -2,7 +2,7 @@ package com.repository.search.repository
 
 import com.domain.search.exception.NoCategoriesFoundException
 import com.domain.search.exception.NoInternetConnectionException
-import com.domain.search.model.CategoryModel
+import com.domain.search.model.Category
 import com.domain.search.repository.CategoriesRepository
 import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
@@ -17,7 +17,7 @@ class CategoriesRepositoryImpl(
     private val genresRemoteDataSource: GenresRemoteDataSource,
 ) : CategoriesRepository {
 
-    override suspend fun getAllCategories(): List<CategoryModel> {
+    override suspend fun getAllCategories(): List<Category> {
         val language = Locale.getDefault().language
         return try {
             val genres = genresLocalDataSource.getGenres(language)

@@ -7,9 +7,9 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.search.useCases.GetMediaByActorNameUseCase
-import com.domain.search.useCases.IncrementCategoryInteractionUseCase
-import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.domain.search.useCase.GetMediaByActorNameUseCase
+import com.domain.search.useCase.IncrementCategoryInteractionUseCase
+import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
