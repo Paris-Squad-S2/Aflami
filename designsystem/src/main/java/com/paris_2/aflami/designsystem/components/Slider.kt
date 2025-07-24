@@ -79,7 +79,7 @@ fun Slider(
                         onClick(item)
                     }
             ) {
-                AflamiMediaCard(
+                MediaCard(
                     modifier = Modifier.width(244.dp).height(300.dp),
                     imageUri = item.imageUri.toString(),
                     rating = item.rating,
@@ -127,4 +127,3 @@ fun SliderPreview() {
 //        )
     }
 }
-

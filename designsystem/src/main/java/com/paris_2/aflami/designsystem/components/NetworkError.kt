@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
@@ -51,7 +50,7 @@ fun NetworkError(
             modifier = Modifier.padding(bottom = 16.dp),
             textAlign = TextAlign.Center
         )
-        AflamiButton(
+        CustomButton(
             text = R.string.retry,
             onClick = onRetry,
             type = ButtonType.Secondary,

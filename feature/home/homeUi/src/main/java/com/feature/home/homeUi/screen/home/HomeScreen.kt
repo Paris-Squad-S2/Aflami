@@ -28,18 +28,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
 import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
-import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
 import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.IconItem
+import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.MoodPicker
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -51,13 +52,14 @@ fun HomeScreen(
 ) {
     val homeScreenState = viewModel.screenState.collectAsStateWithLifecycle()
 
-    when{
-        homeScreenState.value.errorMessage!=null -> {
+    when {
+        homeScreenState.value.errorMessage != null -> {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = viewModel::onRetry
             )
         }
+
         else -> HomeScreenContent(
             state = homeScreenState.value,
             action = viewModel
@@ -90,13 +92,13 @@ fun HomeScreenContent(
     Box(
         Modifier
             .fillMaxSize()
-    ){
+    ) {
         LazyColumn(
             state = lazyState,
             modifier = Modifier.fillMaxSize(),
         ) {
 
-            if(state.homeUIState.popularMediaList.isNotEmpty()) {
+            if (state.homeUIState.popularMediaList.isNotEmpty()) {
                 item {
                     HomeSlider(
                         onMediaClick = {
@@ -106,7 +108,7 @@ fun HomeScreenContent(
                         modifier = Modifier.fillMaxSize(),
                     )
                 }
-            }else if(state.isPopularMediaLoading){
+            } else if (state.isPopularMediaLoading) {
                 item {
                     PageLoadingPlaceHolder(
                         modifier = Modifier
@@ -128,7 +130,7 @@ fun HomeScreenContent(
                         isScrolling = isScrolling
                     )
                 }
-            }else if(state.isContinueWatchingLoading){
+            } else if (state.isContinueWatchingLoading) {
                 item {
                     PageLoadingPlaceHolder(
                         modifier = Modifier
@@ -139,7 +141,7 @@ fun HomeScreenContent(
                 }
             }
 
-            if(state.homeUIState.topRatedMediaList.isNotEmpty()) {
+            if (state.homeUIState.topRatedMediaList.isNotEmpty()) {
                 item {
                     HomeSection(
                         title = stringResource(com.feature.home.homeUi.R.string.top_rating),
@@ -151,7 +153,7 @@ fun HomeScreenContent(
                         isScrolling = isScrolling
                     )
                 }
-            }else if(state.isTopRatingLoading){
+            } else if (state.isTopRatingLoading) {
                 item {
                     PageLoadingPlaceHolder(
                         modifier = Modifier
@@ -181,7 +183,7 @@ fun HomeScreenContent(
                 )
             }
             item {
-                AflamiSectionTitle(
+                SectionTitle(
                     title = stringResource(com.feature.home.homeUi.R.string.upcoming),
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
@@ -191,7 +193,7 @@ fun HomeScreenContent(
                     item {
                         Chips(
                             title = stringResource(com.feature.home.homeUi.R.string.all),
-                            icon = painterResource(com.feature.home.homeUi.R.drawable.ic_category_all),
+                            icon = ImageVector.vectorResource(R.drawable.ic_category_all),
                             isSelected = isAllCategories,
                             onClick = {
                                 action.onAllCategoriesSelect()
@@ -203,7 +205,7 @@ fun HomeScreenContent(
                         val category = state.homeUIState.categories.keys.elementAt(index)
                         Chips(
                             title = category.name,
-                            icon = painterResource(getResourceId(category.id)),
+                            icon = ImageVector.vectorResource(getResourceId(category.id)),
                             isSelected = state.homeUIState.categories[category] ?: false,
                             onClick = {
                                 isAllCategories = false
@@ -217,7 +219,7 @@ fun HomeScreenContent(
 
             if (state.homeUIState.upComingMediaList.isNotEmpty()) {
                 items(state.homeUIState.upComingMediaList) { upcomingMedia ->
-                    AflamiMediaCard(
+                    MediaCard(
                         imageUri = upcomingMedia.imageUri,
                         rating = upcomingMedia.rating.toFloat(),
                         movieName = upcomingMedia.title,
@@ -234,7 +236,7 @@ fun HomeScreenContent(
                             },
                     )
                 }
-            }else if (state.isCategoryLoading){
+            } else if (state.isCategoryLoading) {
                 item {
                     PageLoadingPlaceHolder(
                         modifier = Modifier
@@ -254,13 +256,14 @@ fun HomeScreenContent(
             .background(topBarBackground)
             .padding(top = 32.dp),
         logo = iconItemWithDefaults(
-            ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo), {},
+            ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
+            {},
             Theme.colors.primaryVariant,
         ),
         trailingIcons = listOf(
             IconItem(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_search),
-                onClick =  action::onSearchIconClick,
+                onClick = action::onSearchIconClick,
                 backgroundColor = Theme.colors.surfaceHigh,
                 tint = Theme.colors.text.body
             )

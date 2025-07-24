@@ -21,7 +21,7 @@ class LoginViewModelTest {
 
     @BeforeEach
     fun setup() {
-        loginUseCase = mockk(relaxed = true)
+        loginUseCase = mockk()
         viewModel = spyk(
             LoginViewModel(
                 appNavigationAPI = appNavigationAPI,

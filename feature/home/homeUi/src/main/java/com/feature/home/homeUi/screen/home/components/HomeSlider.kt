@@ -17,19 +17,21 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
-import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
-import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.components.GenresChip
+import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.Slider
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
+import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -39,15 +41,19 @@ fun HomeSlider(
     mediaList: List<SliderMedia>,
     modifier: Modifier,
 ) {
-    val mediaState = remember { mutableStateOf<SliderMedia>(SliderMedia(
-        id = 0,
-        imageUri = "",
-        title = "",
-        type = SliderMediaTypeUi.Movie,
-        categories = emptyList(),
-        rating = 0f,
-        yearOfRelease = "2022",
-    )) }
+    val mediaState = remember {
+        mutableStateOf<SliderMedia>(
+            SliderMedia(
+                id = 0,
+                imageUri = "",
+                title = "",
+                type = SliderMediaTypeUi.Movie,
+                categories = emptyList(),
+                rating = 0f,
+                yearOfRelease = "2022",
+            )
+        )
+    }
 
 
     Box {
@@ -65,10 +71,16 @@ fun HomeSlider(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            AflamiSectionTitle(
+            SectionTitle(
                 title = stringResource(R.string.popular),
-                painter = painterResource(R.drawable.ic_fire),
-                iconColor = Theme.colors.secondary,
+                icon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
+                        contentDescription = "",
+                        modifier = Modifier.padding(start = 8.dp),
+                        tint = Theme.colors.secondary,
+                    )
+                },
                 hasViewAll = false,
                 modifier = Modifier.padding(bottom = 12.dp)
             )
@@ -85,17 +97,21 @@ fun HomeSlider(
             }
 
             if (mediaList.isNotEmpty()) {
-                AflamiText(
+                Text(
                     text = mediaState.value.title,
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.text.title,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
+                    modifier = Modifier
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 16.dp)
                 )
-                LazyRow (
-                    Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
-                ){
-                    items(mediaState.value.categories){
+                LazyRow(
+                    Modifier
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 16.dp)
+                ) {
+                    items(mediaState.value.categories) {
                         GenresChip(
                             title = it,
                             isSelected = false

@@ -73,8 +73,6 @@ fun MediaPlayButton(
             contentDescription = "play media"
         )
     }
-
-
 }
 
 enum class MediaButtonType {

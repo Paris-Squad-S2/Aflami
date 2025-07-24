@@ -7,8 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,7 +32,7 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun AflamiMediaCard(
+fun MediaCard(
     modifier: Modifier = Modifier,
     imageUri: String,
     rating: Float,
@@ -174,7 +171,7 @@ enum class MediaCardType {
 @Composable
 fun PreviewMediaNormalCard() {
     AflamiTheme {
-        AflamiMediaCard(
+        MediaCard(
             imageUri = R.drawable.anime_movie.toString(),
             rating = 9.9f,
             movieName = "Your Name",
@@ -191,7 +188,7 @@ fun PreviewMediaNormalCard() {
 @Composable
 fun PreviewMediaUpComingCard() {
     AflamiTheme {
-        AflamiMediaCard(
+        MediaCard(
             imageUri = R.drawable.anime_horizontal.toString(),
             rating = 9f,
             movieName = "Grave of the Fireflies",
@@ -208,7 +205,7 @@ fun PreviewMediaUpComingCard() {
 @Composable
 fun PreviewMediaEpisodeCard() {
     AflamiTheme {
-        AflamiMediaCard(
+        MediaCard(
             imageUri = R.drawable.attack_on_titan.toString(),
             rating = 8.8f,
             mediaCardType = MediaCardType.EPISODE
@@ -221,7 +218,7 @@ fun PreviewMediaEpisodeCard() {
 @Composable
 fun PreviewMediaSliderCard() {
     AflamiTheme {
-        AflamiMediaCard(
+        MediaCard(
             imageUri = R.drawable.shniderlist_slider.toString(),
             rating = 8f,
             mediaCardType = MediaCardType.SLIDER,
@@ -236,7 +233,7 @@ fun PreviewMediaSliderCard() {
 @Composable
 fun PreviewMediaEmptySliderCard() {
     AflamiTheme {
-        AflamiMediaCard(
+        MediaCard(
             imageUri = R.drawable.shniderlist_slider.toString(),
             mediaCardType = MediaCardType.SLIDER,
             showRating = false,
