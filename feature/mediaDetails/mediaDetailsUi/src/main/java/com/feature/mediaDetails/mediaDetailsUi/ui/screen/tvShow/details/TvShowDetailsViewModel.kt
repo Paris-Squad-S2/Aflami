@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.domain.mediaDetails.model.TvShowVideo
 import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
@@ -18,16 +17,15 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
-
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
-import kotlinx.coroutines.flow.flowOf
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsStateDefaults.initialTvShowDetailsScreenState
 
 class TvShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -42,36 +40,7 @@ class TvShowDetailsViewModel(
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
-    TvShowDetailsScreenState(
-        TvShowDetailsUiState(
-            tvShowUi = TvShowUi(
-                id = 0,
-                posterUrl = "",
-                rating = 0f,
-                title = "",
-                genres = emptyList(),
-                releaseDate = "",
-                runtime = "",
-                country = "",
-                description = "",
-                seasons = emptyList(),
-                productionCompanies = emptyList()
-            ),
-            cast = emptyList(),
-            reviews = flowOf(PagingData.empty()),
-            gallery = emptyList(),
-            recommendations = flowOf(PagingData.empty()),
-            tvShowVideoUi = TvShowVideoUi(
-                key = "",
-                name = "",
-                site = ""
-            )
-        ),
-        isLoading = true,
-        errorMessage = null,
-        isEpisodesLoading = true,
-        seasonsLoadingStates = emptyMap()
-    )
+    initialTvShowDetailsScreenState()
 ) {
 
 
@@ -79,6 +48,7 @@ class TvShowDetailsViewModel(
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
 
     }
+
     init {
         loadTvShowDetails(mediaId)
         getInformationVideoTvShow()
@@ -178,7 +148,7 @@ class TvShowDetailsViewModel(
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
-            },            onSuccess = { recommendations ->
+            }, onSuccess = { recommendations ->
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
@@ -208,7 +178,8 @@ class TvShowDetailsViewModel(
                             getTvShowReviewsUseCase = getTvShowReviewsUseCase
                         )
                     }
-                ).flow.cachedIn(viewModelScope) },
+                ).flow.cachedIn(viewModelScope)
+            },
             onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
@@ -321,7 +292,8 @@ class TvShowDetailsViewModel(
 
     override fun onClickPlayTrailer() {
         if (screenState.value.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty() ||
-            screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()) {
+            screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()
+        ) {
             updateState(
                 screenState.value.copy(
                     errorMessage = "No video available"

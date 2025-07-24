@@ -7,16 +7,13 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastDefaults.initialTvShowCastUiState
 
 class TvShowCastViewModel(
     savedStateHandle: SavedStateHandle,
     private val getTvShowCastUseCase: GetTvShowCastUseCase,
 ) : TvShowCastScreenInteractionListener, BaseViewModel<TvShowCastUiState>(
-    TvShowCastUiState(
-        cast = emptyList(),
-        isLoading = false,
-        errorMessage = null
-    )
+    initialTvShowCastUiState()
 ) {
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowCastScreen>().tvShowId

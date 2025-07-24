@@ -30,8 +30,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestina
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsStateDefaults.initialMovieDetailsScreenState
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
 
 class MovieDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
@@ -344,40 +344,3 @@ class MovieDetailsViewModelViewModel(
         )
     }
 }
-
-private fun initialMovieDetailsScreenState(): MovieDetailsScreenState {
-    return MovieDetailsScreenState(
-        movieDetailsUiState = emptyMovieDetailsUiState(),
-        isLoading = true,
-        errorMessage = null
-    )
-}
-
-private fun emptyMovieDetailsUiState() = MovieDetailsUiState(
-    movie = emptyMovieUi(),
-    cast = emptyList(),
-    reviews = flowOf(PagingData.empty()),
-    gallery = emptyList(),
-    recommendations = flowOf(PagingData.empty()),
-    movieVideoUi = emptyMovieVideoUi()
-)
-
-
-private fun emptyMovieUi() = MovieUi(
-    id = 0,
-    posterUrl = "",
-    rating = 0f,
-    title = "",
-    genres = emptyList(),
-    releaseDate = "",
-    runtime = "",
-    country = "",
-    description = "",
-    productionCompanies = emptyList(),
-)
-
-private fun emptyMovieVideoUi() = MovieVideoUi(
-    key = "",
-    name = "",
-    site = "",
-)
