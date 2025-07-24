@@ -1,11 +1,10 @@
 package com.feature.search.searchUi.screen.utils
 
+import MediaUiState
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.domain.search.model.Media
-import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.search.searchUi.screen.search.SearchViewModel.NoopListUpdateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -15,8 +14,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-
- suspend fun Flow<PagingData<MediaUiState>>.collectAllItems(): List<MediaUiState> {
+suspend fun Flow<PagingData<MediaUiState>>.collectAllItems(): List<MediaUiState> {
     val differ = AsyncPagingDataDiffer(
         diffCallback = object : DiffUtil.ItemCallback<MediaUiState>() {
             override fun areItemsTheSame(oldItem: MediaUiState, newItem: MediaUiState): Boolean =
@@ -43,8 +41,8 @@ import kotlinx.coroutines.launch
 }
 
 class NoopListUpdateCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int){}
-    override fun onRemoved(position: Int, count: Int){}
-    override fun onMoved(fromPosition: Int, toPosition: Int){}
-    override fun onChanged(position: Int, count: Int, payload: Any?){}
+    override fun onInserted(position: Int, count: Int) {}
+    override fun onRemoved(position: Int, count: Int) {}
+    override fun onMoved(fromPosition: Int, toPosition: Int) {}
+    override fun onChanged(position: Int, count: Int, payload: Any?) {}
 }

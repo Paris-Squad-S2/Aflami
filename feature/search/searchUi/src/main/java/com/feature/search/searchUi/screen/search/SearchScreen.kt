@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import SearchScreenState
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -70,7 +71,7 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
 @Composable
 private fun SearchScreenContent(
     searchScreenInteractionListener: SearchScreenInteractionListener,
-    state: SearchScreenState
+    state: SearchScreenState,
 ) {
     val activity = LocalActivity.current
     if (state.searchUiState.showFilterDialog) {
