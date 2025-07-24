@@ -29,7 +29,7 @@ fun TvDto.toDomain(type: MediaType): Media? {
     } ?: return null
     return Media(
         id = id ?: -1,
-        title = originalName ?: "[Unknown Title]",
+        title = name ?: "[Unknown Title]",
         voteAverage = voteAverage ?: 0.0,
         posterPath = imageUrl.orEmpty(),
         yearOfRelease = parsedDate,

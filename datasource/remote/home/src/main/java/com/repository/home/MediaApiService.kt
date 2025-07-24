@@ -3,11 +3,15 @@ package com.repository.home
 import com.repository.home.dto.MovieListDto
 import com.repository.home.dto.TvListDto
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface MediaApiService {
 
     @GET("movie/popular")
-    suspend fun getPopularMovie(): MovieListDto
+    suspend fun getPopularMovie(
+        @Query("language")
+        language: String
+    ): MovieListDto
 
     @GET("movie/top_rated")
     suspend fun getTopRatedMovie(): MovieListDto
@@ -22,7 +26,10 @@ interface MediaApiService {
     suspend fun getTopRatedTv(): TvListDto
 
     @GET("tv/popular")
-    suspend fun getPopularTv(): TvListDto
+    suspend fun getPopularTv(
+        @Query("language")
+        language: String
+    ): TvListDto
 
 }
 
