@@ -10,10 +10,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.aflami.designsystem.components.AflamiButton
-import com.paris_2.aflami.designsystem.components.AflamiDialog
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
-import com.paris_2.aflami.designsystem.components.AflamiText
+import com.paris_2.aflami.designsystem.components.CustomButton
+import com.paris_2.aflami.designsystem.components.Dialog
+import com.paris_2.aflami.designsystem.components.MediaCard
+import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -27,13 +27,13 @@ fun MoodPickerDialog(
     onGetAnotherMovieClick: () -> Unit,
 ){
 
-    AflamiDialog(
+    Dialog(
         onDismiss = onDismiss,
         title = R.string.mood_picker,
         modifier = Modifier
             .padding(12.dp),
     ) {
-        AflamiText(
+        Text(
             text = stringResource(R.string.movie_that_matches_your_mood_is),
             style = Theme.textStyle.body.medium,
             color = Theme.colors.text.body,
@@ -41,7 +41,7 @@ fun MoodPickerDialog(
             modifier = Modifier
                 .padding(horizontal = 12.dp)
         )
-        AflamiMediaCard(
+        MediaCard(
             imageUri = movie.imageUri,
             rating = movie.rating.toFloat(),
             movieName = movie.title,
@@ -55,7 +55,7 @@ fun MoodPickerDialog(
         )
         Column(modifier = Modifier
             .padding(horizontal = 12.dp,vertical = 12.dp)) {
-            AflamiButton(
+            CustomButton(
                 text = R.string.view_details,
                 onClick = onViewDetailsClick,
                 type = ButtonType.Primary,
@@ -64,7 +64,7 @@ fun MoodPickerDialog(
                     .fillMaxWidth()
                     .padding(bottom = 12.dp)
             )
-            AflamiButton(
+            CustomButton(
                 text = R.string.get_another_movie,
                 onClick = onGetAnotherMovieClick,
                 type = ButtonType.Secondary,

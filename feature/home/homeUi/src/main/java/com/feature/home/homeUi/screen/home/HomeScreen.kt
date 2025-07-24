@@ -145,7 +145,7 @@ fun HomeScreenContent(
                 item {
                     HomeSection(
                         title = stringResource(com.feature.home.homeUi.R.string.top_rating),
-                        leadingIconPainter = painterResource(com.feature.home.homeUi.R.drawable.ic_fire),
+                        leadingIconPainter = ImageVector.vectorResource(R.drawable.ic_fire),
                         iconColor = Theme.colors.secondary,
                         mediaList = state.homeUIState.topRatedMediaList,
                         onMediaClick = action::onMediaCardClick,
