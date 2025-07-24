@@ -1,6 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -26,6 +27,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.flow.flowOf
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 
 class MovieDetailsViewModelViewModel(
     savedStateHandle: SavedStateHandle,
@@ -38,6 +40,7 @@ class MovieDetailsViewModelViewModel(
     private val addMovieToFavoriteUseCase: AddMovieToFavoriteUseCase,
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val appNavigator: AppNavigator,
+    private val isLoggedInUseCase: IsLoggedInUseCase,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
@@ -261,6 +264,29 @@ class MovieDetailsViewModelViewModel(
     }
 
     override fun onFavouriteClick(title: Int) {
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    Log.d("isLoggedIn", "true")
+                    tryToExecute(
+                        execute = { addMovieToFavoriteUseCase(title) },
+                        onSuccess = {
+                            Log.d("AddToFavorite", "Done")
+                        },
+                        onError = {
+                            updateState(screenState.value.copy(errorMessage = it))
+                        }
+                    )
+                } else {
+                    Log.d("isLoggedIn", "false")
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
 
