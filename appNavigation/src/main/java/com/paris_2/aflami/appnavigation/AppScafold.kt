@@ -1,8 +1,6 @@
-package com.paris_2.aflami
+package com.paris_2.aflami.appnavigation
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.runtime.Composable
@@ -14,13 +12,12 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.paris_2.aflami.appnavigation.AppNavigator
-import com.paris_2.aflami.designsystem.components.AflamiScafold
+import com.paris_2.aflami.designsystem.components.Scafold
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
 @Composable
-fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
+internal fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
 
     val navController = rememberNavController()
 
@@ -45,7 +42,7 @@ fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
     val scope = rememberCoroutineScope()
 
 
-    AflamiScafold(
+    Scafold(
         content = {
             AppNavGraph(navController = navController)
         },

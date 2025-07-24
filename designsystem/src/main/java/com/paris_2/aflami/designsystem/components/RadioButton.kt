@@ -8,26 +8,22 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
-fun AflamiRadioButton(
+fun RadioButton(
     selected: Boolean,
     isDisable: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: Int? = null,
-    iconTint: Color = Color.Unspecified,
+    icon: @Composable (() -> Unit)? = null,
 ) {
     if (icon == null) {
         Spacer(
@@ -55,34 +51,29 @@ fun AflamiRadioButton(
                 )
         )
     }else{
-        Icon(
-            imageVector = ImageVector.vectorResource(icon),
-            contentDescription = "radio button icon",
-            tint = iconTint,
-            modifier = Modifier.size(18.dp)
-        )
+       icon()
     }
 }
 
 @PreviewMultiDevices
 @Composable
-fun AflamiRadioButtonPreview() {
+fun RadioButtonPreview() {
     BasePreview {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            AflamiRadioButton(
+            RadioButton(
                 selected = true,
                 isDisable = false,
                 icon = null,
                 onClick = {}
             )
-            AflamiRadioButton(
+            RadioButton(
                 selected = false,
                 isDisable = false,
                 icon = null,
                 onClick = {}
             )
 
-            AflamiRadioButton(
+            RadioButton(
                 selected = false,
                 isDisable = true,
                 icon = null,

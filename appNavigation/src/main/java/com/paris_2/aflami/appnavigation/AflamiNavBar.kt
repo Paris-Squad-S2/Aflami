@@ -1,4 +1,4 @@
-package com.paris_2.aflami
+package com.paris_2.aflami.appnavigation
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
@@ -28,15 +28,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.appnavigation.AppDestination
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AflamiText
+import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.NavigationBar
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
+import com.paris_2.aflami.designsystem.R
 
 @Composable
 fun AflamiNavBar(
@@ -97,7 +95,7 @@ private fun RowScope.AflamiNavBarItem(
                 currentItem = currentItem,
                 selected = isSelected
             )
-            AflamiText(
+            Text(
                 text = stringResource(currentItem.label),
                 style = Theme.textStyle.label.small,
                 color = animateColorAsState(

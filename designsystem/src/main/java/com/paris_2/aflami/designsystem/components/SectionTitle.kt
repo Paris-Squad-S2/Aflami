@@ -6,15 +6,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -22,12 +19,10 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun AflamiSectionTitle(
+fun SectionTitle(
     title: String,
     modifier: Modifier = Modifier,
-    painter: Painter? = null,
-    contentDescription: String? = null,
-    iconColor: Color = Theme.colors.iconBackground,
+    icon: @Composable (() -> Unit)? = null,
     hasViewAll: Boolean = false,
     onClickViewAll: () -> Unit = {}
 ) {
@@ -43,14 +38,7 @@ fun AflamiSectionTitle(
             style = Theme.textStyle.headline.small,
             color = Theme.colors.text.title,
         )
-        if (painter != null) {
-            Icon(
-                painter = painter,
-                contentDescription = contentDescription,
-                modifier = Modifier.padding(start = 8.dp),
-                tint = iconColor
-            )
-        }
+        icon?.invoke()
         Spacer(modifier = Modifier.weight(1f))
         if (hasViewAll) {
             Text(
@@ -72,10 +60,15 @@ fun AflamiSectionTitle(
 @Composable
 fun AflamiSectionTitlePreview() {
     AflamiTheme {
-        AflamiSectionTitle(
+        SectionTitle(
             title = "Home",
             hasViewAll = true,
-            painter = painterResource(R.drawable.ic_home),
+            icon ={Icon(
+               imageVector = ImageVector.vectorResource(R.drawable.ic_home),
+                contentDescription = "",
+                modifier = Modifier.padding(start = 8.dp),
+                tint = Theme.colors.iconBackground,
+            )},
         )
     }
 }

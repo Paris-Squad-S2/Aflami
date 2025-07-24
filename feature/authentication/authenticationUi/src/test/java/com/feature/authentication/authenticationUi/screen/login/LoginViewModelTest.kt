@@ -1,11 +1,12 @@
 package com.feature.authentication.authenticationUi.screen.login
 
 import com.feature.authentication.authenticationUi.R
+import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import io.mockk.coEvery
-import io.mockk.every
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
@@ -15,12 +16,15 @@ import org.junit.jupiter.api.Test
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-    private val loginUseCase = mockk<LoginUseCase>(relaxed = true)
+    private lateinit var loginUseCase: LoginUseCase
+    private val appNavigationAPI: AppNavigationAPI = mockk(relaxed = true)
+
     @BeforeEach
     fun setup() {
+        loginUseCase = mockk()
         viewModel = spyk(
             LoginViewModel(
-                appNavigator = mockk(relaxed = true),
+                appNavigationAPI = appNavigationAPI,
                 loginUseCase = loginUseCase,
                 guestLoginUseCase = mockk(relaxed = true)
             )
@@ -72,11 +76,28 @@ class LoginViewModelTest {
 
     @Test
     fun `onClickLogin with invalid credentials sets error message and disables button`() {
-        coEvery { loginUseCase("user", "1234") } throws(InvalidCredentialsException("Invalid credentials"))
+        coEvery {
+            loginUseCase(
+                "user",
+                "1234"
+            )
+        } throws (InvalidCredentialsException("Invalid credentials"))
 
         viewModel.onClickLogin()
 
         val state = viewModel.screenState.value
         Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
+    }
+
+    @Test
+    fun `onClickLogin with valid credentials navigates to home`() {
+        coEvery { loginUseCase(any(), any()) } returns true
+
+        viewModel.onUsernameChange("user")
+        viewModel.onPasswordChange("1234")
+        viewModel.onClickLogin()
+
+        // Verify that navigateToHome() was called
+        coVerify { appNavigationAPI() }
     }
 }

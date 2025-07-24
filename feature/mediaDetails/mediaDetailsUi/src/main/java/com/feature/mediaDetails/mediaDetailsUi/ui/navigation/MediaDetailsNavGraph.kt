@@ -9,8 +9,8 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestination
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.LoginDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreen
@@ -18,6 +18,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.video.VideoWebViewScree
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreen
 import org.koin.compose.koinInject
+import org.koin.core.context.GlobalContext
 
 @Composable
 fun MediaDetailsNavGraph(
@@ -46,7 +47,9 @@ fun MediaDetailsNavGraph(
 }
 
 fun NavGraphBuilder.buildDetailsNavGraph(
-    startDestination: MediaDetailsDestination? = null, navController: NavController,
+    startDestination: MediaDetailsDestination? = null,
+    navController: NavController,
+    authenticationFeatureAPI: AuthenticationFeatureAPI = GlobalContext.get().get(),
 ) {
     navigation<MediaDetailsDestinations.MediaDetailsGraph1>(
         startDestination = startDestination ?: MediaDetailsDestinations.MovieDetailsScreen,
@@ -62,7 +65,9 @@ fun NavGraphBuilder.buildDetailsNavGraph(
             LoginDialog(
                 title = destination.title,
                 onDismiss = { navController.navigateUp() },
-                onLoginClick = {}
+                onLoginClick = {
+                    authenticationFeatureAPI()
+                }
             )
         }
     }

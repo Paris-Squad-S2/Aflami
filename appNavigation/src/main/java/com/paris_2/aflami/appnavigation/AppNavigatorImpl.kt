@@ -1,10 +1,6 @@
-package com.paris_2.aflami
+package com.paris_2.aflami.appnavigation
 
 import androidx.navigation.NavOptions
-import com.paris_2.aflami.appnavigation.AppDestination
-import com.paris_2.aflami.appnavigation.AppGraph
-import com.paris_2.aflami.appnavigation.AppNavigationEvent
-import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex
