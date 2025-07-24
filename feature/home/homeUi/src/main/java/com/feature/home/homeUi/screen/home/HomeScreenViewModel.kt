@@ -8,7 +8,6 @@ import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
 import com.feature.home.homeApi.HomeDestinations
-import com.feature.home.homeApi.toJson
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.nameToGenreId
 import com.feature.home.homeUi.mapper.toCategoryUiList
@@ -17,7 +16,6 @@ import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
-import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 
