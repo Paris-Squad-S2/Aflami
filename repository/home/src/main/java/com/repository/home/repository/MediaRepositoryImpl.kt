@@ -47,7 +47,8 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
-        val upcomingMovies = mediaRemoteDataSource.getUpcomingMovies().results?.mapNotNull {
+        val language = Locale.getDefault().language
+        val upcomingMovies = mediaRemoteDataSource.getUpcomingMovies(language = language).results?.mapNotNull {
             it.toDomain(MediaType.MOVIE)
         } ?: emptyList()
         return upcomingMovies

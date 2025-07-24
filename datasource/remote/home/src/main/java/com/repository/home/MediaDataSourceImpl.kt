@@ -12,7 +12,7 @@ class MediaDataSourceImpl (
 
     override suspend fun getTopRatedMovies(language: String): MovieListDto = apiService.getTopRatedMovie(language)
 
-    override suspend fun getUpcomingMovies(): MovieListDto = apiService.getUpcoming()
+    override suspend fun getUpcomingMovies(language: String): MovieListDto = apiService.getUpcoming(language)
 
     override suspend fun getNowPlayingMovies(): MovieListDto = apiService.getNowPlaying()
 

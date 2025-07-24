@@ -20,7 +20,10 @@ interface MediaApiService {
     ): MovieListDto
 
     @GET("movie/upcoming")
-    suspend fun getUpcoming(): MovieListDto
+    suspend fun getUpcoming(
+        @Query("language")
+        language: String
+    ): MovieListDto
 
     @GET("movie/now_playing")
     suspend fun getNowPlaying(): MovieListDto
