@@ -6,6 +6,7 @@ import com.domain.search.model.MediaType
 import com.domain.search.useCase.GetMediaByActorNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.search.MediaTypeUi
@@ -49,7 +50,7 @@ class FindByActorViewModelTest {
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
     }
 
@@ -168,13 +169,13 @@ class FindByActorViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onMediaCardClick navigates to detailsScreen`() = runTest {
-        val navMock = mockk<com.paris_2.aflami.appnavigation.AppNavigator>(relaxed = true)
+        val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
         val viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = navMock
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
         val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
             id = 42,
@@ -187,7 +188,7 @@ class FindByActorViewModelTest {
         )
         viewModel.onMediaCardClick(mediaUiState)
         advanceUntilIdle()
-        coVerify { navMock.navigate(any()) }
+        coVerify { mediaDetailsFeatureAPI.startMovieDetails(any()) }
     }
 
 

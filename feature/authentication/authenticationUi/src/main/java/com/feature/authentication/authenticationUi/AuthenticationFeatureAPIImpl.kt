@@ -1,12 +1,15 @@
 package com.feature.authentication.authenticationUi
 
-import androidx.compose.runtime.Composable
-import com.feature.authentication.authenticationApi.AuthenticationDestination
+import android.content.Intent
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
-import com.feature.authentication.authenticationUi.navigation.AuthenticationNavGraph
+import kotlin.jvm.java
 
-class AuthenticationFeatureAPIImpl() : AuthenticationFeatureAPI {
-    override fun invoke(authenticationDestination: AuthenticationDestination?): @Composable (() -> Unit) = {
-        AuthenticationNavGraph(startDestination = authenticationDestination)
+class AuthenticationFeatureAPIImpl(
+    private val context: android.content.Context
+) : AuthenticationFeatureAPI {
+    override fun invoke() {
+        val intent = Intent(context, AuthActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+        context.startActivity(intent)
     }
 }

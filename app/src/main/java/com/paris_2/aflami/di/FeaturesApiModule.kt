@@ -1,6 +1,6 @@
 package com.paris_2.aflami.di
 
-import com.feature.authentication.authenticationApi.AuthenticationDestinations
+import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.authentication.authenticationUi.AuthenticationFeatureAPIImpl
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
@@ -9,28 +9,30 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
-import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
 import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.navigation.HomeNavigatorImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsUi.ListsFeatureAPIImpl
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.MediaDetailsFeatureAPIImpl
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigatorImpl
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileUi.ProfileFeatureAPIImpl
-import com.feature.search.searchApi.SearchDestinations
+import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.navigation.SearchNavigatorImpl
-import com.paris_2.aflami.AppNavigatorImpl
+import com.paris_2.aflami.appnavigation.AppNavigatorImpl
 import com.paris_2.aflami.appnavigation.AppDestinations
+import com.paris_2.aflami.appnavigation.AppNavigationAPI
+import com.paris_2.aflami.appnavigation.AppNavigationAPIImpl
 import com.paris_2.aflami.appnavigation.AppNavigator
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -42,18 +44,14 @@ val FeatureAPIModule = module {
     single<AuthenticationNavigator> { AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1) }
     single<HomeNavigator> { HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1) }
 
-
-    factory<MediaDetailsFeatureAPI> { MediaDetailsFeatureAPIImpl() }
-
-
     factory<HomeFeatureAPI> { HomeFeatureAPIImpl(get()) }
     factory<ListsFeatureAPI> { ListsFeatureAPIImpl() }
     factory<CategoriesFeatureAPI> { CategoriesFeatureAPIImpl() }
     factory<GuessGameFeatureAPI> { GuessGameFeatureAPIImpl() }
     factory<ProfileFeatureAPI> { ProfileFeatureAPIImpl() }
-    factory<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl() }
 
-    factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
-    factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI::class
-    factoryOf(::AuthenticationFeatureAPIImpl) bind AuthenticationFeatureAPI::class
+    factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI ::class
+    single<SearchFeatureAPI> { SearchFeatureAPIImpl(androidContext()) }
+    single<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl(androidContext()) }
+    single<AppNavigationAPI> { AppNavigationAPIImpl(androidContext()) }
 }

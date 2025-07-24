@@ -1,4 +1,4 @@
-package com.feature.authentication.authenticationApi
+package com.feature.authentication.authenticationUi.navigation
 
 import kotlinx.serialization.Serializable
 

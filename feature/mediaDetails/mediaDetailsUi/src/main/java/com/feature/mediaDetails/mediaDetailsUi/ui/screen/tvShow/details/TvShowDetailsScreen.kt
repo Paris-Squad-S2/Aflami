@@ -60,7 +60,6 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = koinViewModel()) {
     TvShowDetailsScreenContent(state = state.value, tvShowScreenInteractionListener = viewModel)
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TvShowDetailsScreenContent(
@@ -114,7 +113,8 @@ fun TvShowDetailsScreenContent(
             }
 
             else -> {
-                val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
+                val mediaList =
+                    state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
                 LazyColumn(
                     state = listState,
                     modifier = Modifier
@@ -123,7 +123,7 @@ fun TvShowDetailsScreenContent(
                 ) {
                     item {
                         DetailsImage(
-                            imageUris = state.tvShowDetailsUiState.gallery,
+                            imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl) + state.tvShowDetailsUiState.gallery,
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
                             hasVideo = !(state.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty() ||
                                     state.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty()),
@@ -166,57 +166,88 @@ fun TvShowDetailsScreenContent(
                     selectedIndex.intValue.let { index ->
                         when (tvChips[index]) {
                             TvShowChips.SEASONS -> {
-                                state.tvShowDetailsUiState.tvShowUi.seasons.forEachIndexed { seasonIndex, season ->
-                                    val isExpanded = expandedStates.value[seasonIndex]
-                                    val isSeasonLoading =
-                                        state.seasonsLoadingStates[season.seasonNumber] == true
-
-                                    stickyHeader {
-                                        SeasonHeader(
-                                            seasonNumber = seasonIndex + 1,
-                                            numberOfEpisodes = season.episodeCount,
-                                            isExpanded = isExpanded,
-                                            onToggleExpand = {
-                                                expandedStates.value =
-                                                    expandedStates.value.toMutableList().also {
-                                                        it[seasonIndex] = !it[seasonIndex]
-                                                    }
-                                                tvShowScreenInteractionListener.onClickOnSeason(season.seasonNumber)
-                                            },
-                                        )
+                                if (state.tvShowDetailsUiState.tvShowUi.seasons.isEmpty()) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Theme.colors.surface)
+                                                .padding(vertical = 30.dp)
+                                                .navigationBarsPadding(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.there_is_no_seasons),
+                                                style = Theme.textStyle.label.large,
+                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                            )
+                                        }
                                     }
+                                } else {
+                                    state.tvShowDetailsUiState.tvShowUi.seasons.forEachIndexed { seasonIndex, season ->
+                                        val isExpanded = expandedStates.value[seasonIndex]
+                                        val isSeasonLoading =
+                                            state.seasonsLoadingStates[season.seasonNumber] == true
 
-                                    if (isExpanded) {
-                                        if (isSeasonLoading) {
-                                            item {
-
-                                            Box(
-                                                modifier = Modifier
-                                                    .fillMaxWidth()
-                                                    .padding(16.dp),
-                                                contentAlignment = Alignment.Center
-                                            ) {
-                                                PageLoadingPlaceHolder()
-                                            }
-                                            }
-                                        } else {
-                                            items(season.episodes.size) { episodeIndex ->
-                                                val episode = season.episodes[episodeIndex]
-                                                AnimatedVisibility(
-                                                    visible = true,
-                                                    enter = expandVertically(animationSpec = tween(300)) + fadeIn(),
-                                                    exit = shrinkVertically(animationSpec = tween(300)) + fadeOut()
-                                                ) {
-                                                    EpisodeCard(
-                                                        episodeRating = episode.voteAverage.toFloat(),
-                                                        episodeNumber = episode.episodeNumber.toString(),
-                                                        episodeTitle = episode.episodeNumber.toString(),
-                                                        episodeDuration = episode.runtime,
-                                                        imageUri = episode.stillUrl,
-                                                        episodeDate = episode.airDate,
-                                                        episodeDescription = episode.description,
-                                                        modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                                        stickyHeader {
+                                            SeasonHeader(
+                                                seasonNumber = seasonIndex + 1,
+                                                numberOfEpisodes = season.episodeCount,
+                                                isExpanded = isExpanded,
+                                                onToggleExpand = {
+                                                    expandedStates.value =
+                                                        expandedStates.value.toMutableList().also {
+                                                            it[seasonIndex] = !it[seasonIndex]
+                                                        }
+                                                    tvShowScreenInteractionListener.onClickOnSeason(
+                                                        season.seasonNumber
                                                     )
+                                                },
+                                            )
+                                        }
+
+                                        if (isExpanded) {
+                                            if (isSeasonLoading) {
+                                                item {
+
+                                                    Box(
+                                                        modifier = Modifier
+                                                            .fillMaxWidth()
+                                                            .padding(16.dp),
+                                                        contentAlignment = Alignment.Center
+                                                    ) {
+                                                        PageLoadingPlaceHolder()
+                                                    }
+                                                }
+                                            } else {
+                                                items(season.episodes.size) { episodeIndex ->
+                                                    val episode = season.episodes[episodeIndex]
+                                                    AnimatedVisibility(
+                                                        visible = true,
+                                                        enter = expandVertically(
+                                                            animationSpec = tween(
+                                                                300
+                                                            )
+                                                        ) + fadeIn(),
+                                                        exit = shrinkVertically(
+                                                            animationSpec = tween(
+                                                                300
+                                                            )
+                                                        ) + fadeOut()
+                                                    ) {
+                                                        EpisodeCard(
+                                                            episodeRating = episode.voteAverage.toFloat(),
+                                                            episodeNumber = episode.episodeNumber.toString(),
+                                                            episodeTitle = episode.episodeNumber.toString(),
+                                                            episodeDuration = episode.runtime,
+                                                            imageUri = episode.stillUrl,
+                                                            episodeDate = episode.airDate,
+                                                            episodeDescription = episode.description,
+                                                            modifier = Modifier
+                                                                .fillMaxWidth()
+                                                                .padding(horizontal = 8.dp)
+                                                        )
+                                                    }
                                                 }
                                             }
                                         }
@@ -225,54 +256,96 @@ fun TvShowDetailsScreenContent(
                             }
 
                             TvShowChips.MORE_LIKE_THIS ->
-                            items(mediaList.itemCount) { mediaIndex ->
-                                mediaList[mediaIndex]?.let { media ->
-                                    AflamiMediaCard(
-                                        modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
-                                        imageUri = media.posterPath,
-                                        rating = media.voteAverage.toFloat(),
-                                        movieName = media.title,
-                                        mediaType = stringResource(featureMediaDetailsUiR.string.tvshow),
-                                        year = media.releaseDate.takeLast(4),
-                                        mediaCardType = MediaCardType.UP_COMING,
-                                        showGradientFilter = true,
-                                        clickable = true,
-                                        onClick = { },
-                                        cardWidth = null
-                                    )
+                                if (mediaList.itemSnapshotList.isEmpty()) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Theme.colors.surface)
+                                                .padding(vertical = 30.dp)
+                                                .navigationBarsPadding(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.there_is_no_recommendations),
+                                                style = Theme.textStyle.label.large,
+                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    items(mediaList.itemCount) { mediaIndex ->
+                                        mediaList[mediaIndex]?.let { media ->
+                                            AflamiMediaCard(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(
+                                                        start = 16.dp,
+                                                        end = 16.dp,
+                                                        bottom = 8.dp
+                                                    ),
+                                                imageUri = media.posterPath,
+                                                rating = media.voteAverage.toFloat(),
+                                                movieName = media.title,
+                                                mediaType = stringResource(featureMediaDetailsUiR.string.tvshow),
+                                                year = media.releaseDate.takeLast(4),
+                                                mediaCardType = MediaCardType.UP_COMING,
+                                                showGradientFilter = true,
+                                                clickable = true,
+                                                onClick = {
+                                                    tvShowScreenInteractionListener.onSimilarTvShowClick(
+                                                        media.id
+                                                    )
+                                                },
+                                                cardWidth = null
+                                            )
+                                        }
+                                    }
                                 }
-                            }
 
-                            TvShowChips.REVIEWS -> if (state.isReviewsLoading) {
-                                item {
-                                    PageLoadingPlaceHolder(
-                                        modifier = Modifier.padding(16.dp)
-                                    )
+                            TvShowChips.REVIEWS ->
+                                if (reviewsList.itemSnapshotList.isEmpty()) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Theme.colors.surface)
+                                                .padding(vertical = 30.dp)
+                                                .navigationBarsPadding(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.there_is_no_reviews),
+                                                style = Theme.textStyle.label.large,
+                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                            )
+                                        }
+                                    }
+                                } else {
+                                    items(reviewsList.itemCount) { index ->
+                                        ReviewsSection(reviewsList[index])
+                                    }
                                 }
-                            } else if(reviewsList.itemSnapshotList.isEmpty()){
-                                item {
+
+                            TvShowChips.GALLERY -> item {
+                                if (state.tvShowDetailsUiState.gallery.isEmpty()) {
                                     Box(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .background(Theme.colors.surface),
+                                            .background(Theme.colors.surface)
+                                            .padding(vertical = 30.dp)
+                                            .navigationBarsPadding(),
                                         contentAlignment = Alignment.Center
                                     ) {
                                         Text(
-                                            text = stringResource(R.string.there_is_no_reviews),
+                                            text = stringResource(R.string.there_is_no_gallery),
                                             style = Theme.textStyle.label.large,
                                             color = Theme.colors.text.body.copy(alpha = 0.6f)
                                         )
                                     }
+                                } else {
+                                    GallerySection(state.tvShowDetailsUiState.gallery)
                                 }
-                            }
-                            else {
-                                items(reviewsList.itemCount){index ->
-                                    ReviewsSection(reviewsList[index])
-                                }
-                            }
-
-                            TvShowChips.GALLERY -> item {
-                                GallerySection(state.tvShowDetailsUiState.gallery)
                             }
 
                             TvShowChips.COMPANY_PRODUCTION -> item {

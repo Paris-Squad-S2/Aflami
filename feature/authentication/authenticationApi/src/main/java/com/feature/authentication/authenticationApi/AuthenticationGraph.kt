@@ -1,4 +1,0 @@
-package com.feature.authentication.authenticationApi
-
-
-interface AuthenticationGraph

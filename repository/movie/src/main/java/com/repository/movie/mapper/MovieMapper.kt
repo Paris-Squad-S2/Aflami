@@ -111,7 +111,7 @@ fun MovieDto.toLocalDto(language: String): MovieEntity {
     return MovieEntity(
         id = this.id ?: 0,
         title = this.title.orEmpty(),
-        posterPath = this.posterPath.orEmpty(),
+        posterPath = this.posterPath.toImageUrl().orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         description = this.overview.orEmpty(),
         genres = this.movieGenreDto?.map { it.toLocalDto() } ?: emptyList(),
