@@ -1,5 +1,7 @@
 package com.domain.mediaDetails.model
 
+import kotlinx.datetime.LocalDate
+
 data class TvShow (
     val id: Int,
     val title: String,
@@ -7,7 +9,7 @@ data class TvShow (
     val description: String,
     val posterPath : String,
     val genres : List<Genre>,
-    val releaseDate : String,
+    val releaseDate : LocalDate,
     val runtime: Int,
     val seasons: List<Season>,
     val country: String,

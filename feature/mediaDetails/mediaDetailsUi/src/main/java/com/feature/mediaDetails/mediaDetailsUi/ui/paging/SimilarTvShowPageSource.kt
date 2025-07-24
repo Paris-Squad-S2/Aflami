@@ -1,7 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.paging
 
 import androidx.paging.PagingState
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.pagging.BasePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI

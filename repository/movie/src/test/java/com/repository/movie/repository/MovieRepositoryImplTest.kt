@@ -1,7 +1,7 @@
 package com.repository.movie.repository
 
-import com.domain.mediaDetails.exception.NoFoundMovieException
-import com.domain.mediaDetails.exception.NoFundGalleryMovieException
+import com.domain.mediaDetails.exception.NoMovieFoundException
+import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.MovieSimilar
@@ -112,7 +112,7 @@ class MovieRepositoryImplTest {
             } returnsMany listOf(null, null)
 
             // When & Then
-            assertThrows<NoFoundMovieException> {
+            assertThrows<NoMovieFoundException> {
                 movieRepository.getMovieDetails(movieId)
             }
         }
@@ -398,7 +398,7 @@ class MovieRepositoryImplTest {
             )
 
             // When & Then
-            assertThrows<NoFundGalleryMovieException> {
+            assertThrows<NoGalleryFoundException> {
                 movieRepository.getMovieGallery(movieId)
             }
         }

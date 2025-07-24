@@ -1,8 +1,8 @@
 package com.feature.search.searchUi.pagging
 
 import androidx.paging.PagingState
-import com.domain.search.useCases.SearchByQueryUseCase
-import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.domain.search.useCase.SearchByQueryUseCase
+import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.screen.search.MediaUiState
 
