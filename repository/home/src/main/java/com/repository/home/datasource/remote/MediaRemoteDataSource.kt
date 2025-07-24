@@ -5,9 +5,9 @@ import com.repository.home.dto.TvListDto
 
 interface MediaRemoteDataSource {
     suspend fun getPopularMovies(language: String): MovieListDto
-    suspend fun getTopRatedMovies(): MovieListDto
+    suspend fun getTopRatedMovies(language: String): MovieListDto
     suspend fun getUpcomingMovies(): MovieListDto
     suspend fun getNowPlayingMovies(): MovieListDto
     suspend fun getPopularTvShows(language: String): TvListDto
-    suspend fun getTopRatedTvShows(): TvListDto
+    suspend fun getTopRatedTvShows(language: String): TvListDto
 }

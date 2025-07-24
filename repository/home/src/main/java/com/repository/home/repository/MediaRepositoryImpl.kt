@@ -31,11 +31,12 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getTopRatingMedia(): List<Media> {
-        val topMovies = mediaRemoteDataSource.getTopRatedMovies().results?.mapNotNull {
+        val language = Locale.getDefault().language
+        val topMovies = mediaRemoteDataSource.getTopRatedMovies(language = language).results?.mapNotNull {
             it.toDomain(MediaType.MOVIE)
         } ?: emptyList()
 
-        val topTv = mediaRemoteDataSource.getTopRatedTvShows().results?.mapNotNull {
+        val topTv = mediaRemoteDataSource.getTopRatedTvShows(language = language).results?.mapNotNull {
             it.toDomain(MediaType.TV_SHOW)
         } ?: emptyList()
 

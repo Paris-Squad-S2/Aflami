@@ -14,7 +14,10 @@ interface MediaApiService {
     ): MovieListDto
 
     @GET("movie/top_rated")
-    suspend fun getTopRatedMovie(): MovieListDto
+    suspend fun getTopRatedMovie(
+        @Query("language")
+        language: String
+    ): MovieListDto
 
     @GET("movie/upcoming")
     suspend fun getUpcoming(): MovieListDto
@@ -23,7 +26,10 @@ interface MediaApiService {
     suspend fun getNowPlaying(): MovieListDto
 
     @GET("tv/top_rated")
-    suspend fun getTopRatedTv(): TvListDto
+    suspend fun getTopRatedTv(
+        @Query("language")
+        language: String
+    ): TvListDto
 
     @GET("tv/popular")
     suspend fun getPopularTv(
