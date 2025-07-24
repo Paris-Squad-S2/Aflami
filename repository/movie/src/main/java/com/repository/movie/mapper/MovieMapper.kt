@@ -124,6 +124,7 @@ fun MovieDto.toLocalDto(language: String): MovieEntity {
 }
 
 fun MovieEntity.toEntity(): Movie {
+
     return Movie(
         id = this.id,
         title = this.title,
@@ -131,7 +132,7 @@ fun MovieEntity.toEntity(): Movie {
         description = this.description,
         posterPath = this.posterPath,
         genres = this.genres.map { it.toEntity() },
-        releaseDate = this.releaseDate,
+        releaseDate = LocalDate.parse(this.releaseDate),
         runtime = this.runtime,
         country = this.country,
         productionCompanies = this.productionCompanies.map { it.toEntity() }

@@ -1,2 +1,2 @@
-versionName=0.2.13
+versionName=0.2.14
 - enhancement the navigation between the media details and similar media
