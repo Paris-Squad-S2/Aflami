@@ -55,9 +55,9 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        navigation<AppDestinations.AppGraph1>(startDestination = AppDestinations.AuthenticationFeature()) {
+        navigation<AppDestinations.AppGraph1>(startDestination = navigator.startDestination) {
 
-            composable<AppDestinations.AuthenticationFeature> {
+        composable<AppDestinations.AuthenticationFeature> {
                 val authenticationDestination =
                     it.toRoute<AppDestinations.AuthenticationFeature>().authenticationDestination
                 authFeature(authenticationDestination?.fromJsonToAuthenticationDestination())()
