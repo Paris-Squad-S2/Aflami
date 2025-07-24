@@ -29,6 +29,10 @@ class AuthenticationLocalDataSourceImpl(context: Context) : AuthenticationLocalD
         return prefs.getBoolean(KEY_IS_GUEST, false)
     }
 
+    override fun hasAnySession(): Boolean {
+        return !getSessionId().isNullOrBlank()
+    }
+
     companion object {
         private const val PREFS_NAME = "auth_prefs"
         private const val KEY_SESSION_ID = "session_id"
