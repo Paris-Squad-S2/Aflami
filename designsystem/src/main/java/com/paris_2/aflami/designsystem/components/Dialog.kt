@@ -13,16 +13,15 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.BasicAlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -33,7 +32,7 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AflamiDialog(
+fun Dialog(
     onDismiss: () -> Unit,
     @StringRes title: Int,
     modifier: Modifier = Modifier,
@@ -66,7 +65,7 @@ fun AflamiDialog(
                             .weight(1f)
                     )
                     Icon(
-                        painter = painterResource(R.drawable.ic_cancel),
+                       imageVector = ImageVector.vectorResource(R.drawable.ic_cancel),
                         modifier = Modifier
                             .size(40.dp)
                             .clip(RoundedCornerShape(12.dp))
@@ -95,7 +94,7 @@ fun PreviewAflamiDialog() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            AflamiButton(
+            CustomButton(
                 text = R.string.click_me,
                 onClick = { showDialog.value = true },
                 type = ButtonType.Primary,
@@ -107,12 +106,12 @@ fun PreviewAflamiDialog() {
         }
 
         if (showDialog.value) {
-            AflamiDialog(
+            Dialog(
                 onDismiss = { showDialog.value = false },
                 title = R.string.settings,
             ) {
                 Column {
-                    AflamiButton(
+                    CustomButton(
                         text = R.string.settings,
                         onClick = { },
                         type = ButtonType.Primary,
@@ -121,7 +120,7 @@ fun PreviewAflamiDialog() {
                             .fillMaxWidth()
                             .padding(bottom = 16.dp)
                     )
-                    AflamiButton(
+                    CustomButton(
                         text = R.string.cancel,
                         onClick = { showDialog.value = false },
                         type = ButtonType.Secondary,

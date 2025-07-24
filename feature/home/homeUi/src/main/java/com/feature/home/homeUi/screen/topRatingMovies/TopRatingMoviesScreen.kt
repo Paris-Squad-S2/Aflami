@@ -31,8 +31,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
 import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
@@ -170,7 +170,7 @@ fun TopRatingMoviesContent(
 
 
         items(continueWatchingList) { media ->
-            AflamiMediaCard(
+            MediaCard(
                 modifier = Modifier
                     .padding(6.dp)
                     .clickable {

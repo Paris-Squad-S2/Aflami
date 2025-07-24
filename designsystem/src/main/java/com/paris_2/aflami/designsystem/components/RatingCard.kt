@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import java.util.Locale
 
 
 @Composable
@@ -55,7 +55,7 @@ fun RatingCard(
             contentDescription = "star"
         )
         Text(
-            text = "%.1f".format(java.util.Locale.US, rating),
+            text = "%.1f".format(Locale.US, rating),
             color = Theme.colors.text.body,
             modifier = Modifier.padding(end = 8.dp),
             style = Theme.textStyle.label.small

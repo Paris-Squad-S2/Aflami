@@ -10,42 +10,45 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
-import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
+import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.MediaCard
+import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.MediaCardType
 
 @Composable
 fun HomeSection(
     title: String,
     mediaList: List<MediaUiState>,
-    iconColor: Color?=null,
-    onMediaClick:(media: MediaUiState) -> Unit = {},
-    onSectionAllClick:()-> Unit = {},
-    leadingIconPainter: Painter?=null,
+    iconColor: Color? = null,
+    onMediaClick: (media: MediaUiState) -> Unit = {},
+    onSectionAllClick: () -> Unit = {},
+    leadingIconPainter: ImageVector? = null,
     isScrolling: Boolean,
-    modifier: Modifier
+    modifier: Modifier,
 ) {
-    Column (
+    Column(
         modifier = modifier
-    ){
-        AflamiSectionTitle(
+    ) {
+        MediaCard(
             title = title,
             hasViewAll = true,
             iconColor = iconColor ?: Color.Unspecified,
             painter = leadingIconPainter,
             onClickViewAll = onSectionAllClick,
+            modifier = Modifier.padding(top = 6.dp)
         )
 
         LazyRow(
             modifier = Modifier
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .padding(top = 12.dp, bottom = 16.dp),
             contentPadding = PaddingValues(16.dp)
         ) {
             items(mediaList) { media ->
-                AflamiMediaCard(
+                MediaCard(
                     modifier = Modifier
                         .padding(end = 8.dp)
                         .clickable { onMediaClick(media) },

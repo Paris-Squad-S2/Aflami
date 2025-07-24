@@ -6,11 +6,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 
 @Composable
@@ -29,7 +30,7 @@ fun ChipsRowSection(
             val isSelected = index == selectedIndex
             Chips(
                 title = items[index].first,
-                icon = painterResource(id = items[index].second),
+                icon = ImageVector.vectorResource(items[index].second),
                 isSelected = isSelected,
                 onClick = { onItemSelected(index) }
             )
