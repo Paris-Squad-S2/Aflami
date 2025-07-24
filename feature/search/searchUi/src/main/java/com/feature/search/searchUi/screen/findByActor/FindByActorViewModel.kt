@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.findByActor
 
+import MediaUiState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -14,11 +15,8 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
-import com.feature.search.searchUi.screen.search.MediaTypeUi
-import com.feature.search.searchUi.screen.search.MediaUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 
@@ -53,7 +51,7 @@ class FindByActorViewModel(
     private var debounceJob: Job? = null
 
     override fun onSearchQueryChange(query: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 uiState = screenState.value.uiState.copy(
                     searchQuery = query,
@@ -67,7 +65,7 @@ class FindByActorViewModel(
                 searchQuery(query)
             }
         } else {
-            emitState(
+            updateState(
                 screenState.value.copy(
                     uiState = screenState.value.uiState.copy(
                         searchResult = flowOf(PagingData.empty()),
@@ -81,7 +79,7 @@ class FindByActorViewModel(
     private fun searchQuery(query: String): Job {
         return tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = null
                     )
@@ -98,7 +96,7 @@ class FindByActorViewModel(
 
             },
             onSuccess = { searchResult ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
                             searchResult = searchResult
@@ -108,7 +106,7 @@ class FindByActorViewModel(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -130,7 +128,7 @@ class FindByActorViewModel(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )

@@ -1,5 +1,3 @@
-package com.feature.search.searchUi.screen.search
-
 import androidx.paging.PagingData
 import com.feature.search.searchUi.R
 import kotlinx.coroutines.flow.Flow

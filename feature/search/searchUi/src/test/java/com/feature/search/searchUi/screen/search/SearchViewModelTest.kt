@@ -21,7 +21,6 @@ import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
 import com.feature.search.searchUi.screen.utils.collectAllItems
-import com.google.common.base.Verify.verify
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -304,7 +303,7 @@ class SearchViewModelTest {
         val initialMovies = listOf(mockMovie1, mockMovie2)
         val initialTvShows = listOf(mockTvShow1, mockTvShow2)
 
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
                     moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
@@ -385,7 +384,7 @@ class SearchViewModelTest {
         val selectedRating = 7.0f
         val selectedCategories = listOf(mockCategory1)
 
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
                     moviesResult = flowOf(PagingData.from(listOf(mockMovie1.toUi()))),
@@ -417,7 +416,7 @@ class SearchViewModelTest {
         val initialMovies = listOf(mockMovie1, mockMovie2)
         val initialTvShows = listOf(mockTvShow1, mockTvShow2)
 
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
                     showFilterDialog = true,
@@ -579,7 +578,7 @@ class SearchViewModelTest {
     fun `apply filter with empty categories and isAllCategories false yields empty list`() =
         runTest {
             val initialMovies = listOf(mockMovie1, mockMovie2)
-            viewModel.emitState(
+            viewModel.updateState(
                 viewModel.screenState.value.copy(
                     searchUiState = viewModel.screenState.value.searchUiState.copy(
                         moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
@@ -601,7 +600,7 @@ class SearchViewModelTest {
     @Test
     fun `apply filter with too high rating yields empty results`() = runTest {
         val initialMovies = listOf(mockMovie1, mockMovie2)
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
                     moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),

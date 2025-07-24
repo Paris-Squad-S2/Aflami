@@ -1,8 +1,8 @@
 package com.feature.search.searchUi.screen.worldTour
 
+import MediaUiState
 import androidx.paging.PagingData
 import com.domain.search.model.Country
-import com.feature.search.searchUi.screen.search.MediaUiState
 import kotlinx.coroutines.flow.Flow
 
 data class WorldTourScreenState(

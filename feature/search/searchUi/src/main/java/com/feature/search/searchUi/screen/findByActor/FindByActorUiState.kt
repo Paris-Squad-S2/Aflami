@@ -1,7 +1,7 @@
 package com.feature.search.searchUi.screen.findByActor
 
+import MediaUiState
 import androidx.paging.PagingData
-import com.feature.search.searchUi.screen.search.MediaUiState
 import kotlinx.coroutines.flow.Flow
 
 data class FindByActorScreenState(
