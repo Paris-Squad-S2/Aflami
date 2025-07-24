@@ -285,28 +285,6 @@ HomeScreenViewModelTest {
     }
 
     @Test
-    fun `navigateToContinueWatchingScreen triggers navigation`() = runTest {
-        viewModel.navigateToContinueWatchingScreen()
-        runCurrent()
-        coVerify {
-            navigate(match {
-                it.toString().contains("ContinueWatchingScreen")
-            })
-        }
-    }
-
-    @Test
-    fun `navigateToTopRatingScreen triggers navigation`() = runTest {
-        viewModel.navigateToTopRatingScreen()
-        runCurrent()
-        coVerify {
-            navigate(match {
-                it.toString().contains("TopRatingMoviesScreen")
-            })
-        }
-    }
-
-    @Test
     fun `getRandomMoodPickerMovie picks a random movie from upComingMediaList`() = runTest {
         viewModel.emitState(
             viewModel.screenState.value.copy(

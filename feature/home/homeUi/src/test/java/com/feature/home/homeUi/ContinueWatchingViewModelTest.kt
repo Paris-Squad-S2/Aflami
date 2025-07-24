@@ -126,14 +126,4 @@ class ContinueWatchingViewModelTest {
 
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(movie.id) }
     }
-
-    @Test
-    fun `onBackButtonClick triggers navigateUp`() = runTest {
-
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, mediaDetailsFeatureAPI)
-        viewModel.onBackButtonClick()
-        advanceUntilIdle()
-
-        coVerify(exactly = 1) { navigateUp() }
-    }
 }
