@@ -5,7 +5,10 @@ import kotlinx.datetime.LocalDate
 
 data class HomeScreenUIState(
     val homeUIState: HomeUIState,
-    val isLoading: Boolean,
+    val isPopularMediaLoading: Boolean,
+    val isTopRatingLoading: Boolean,
+    val isContinueWatchingLoading: Boolean,
+    val isCategoryLoading: Boolean,
     val errorMessage: String?
 )
 

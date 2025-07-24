@@ -142,7 +142,7 @@ fun MoodPicker(
                 modifier = Modifier
                     .padding(top = 12.dp , bottom = 3.dp)
                     .wrapContentSize()
-                    .clickable{ onEmojiClick(selectedEmojiMood.value) }
+                    .clickable{ if (isEmojiSelected.value) onEmojiClick(selectedEmojiMood.value) }
             )
         }
     }

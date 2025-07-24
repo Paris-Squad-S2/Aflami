@@ -1,8 +1,8 @@
-package com.feature.home.homeUi.screen.topRatingMovies
+package com.feature.home.homeUi.screen.continueWatching
 
 import com.feature.home.homeUi.screen.home.MediaUiState
 
-interface TopRatingInteractionListener {
+interface ContinueWatchingInteractionListener {
     fun onMediaCardClick(media: MediaUiState)
     fun onBackButtonClick()
 }

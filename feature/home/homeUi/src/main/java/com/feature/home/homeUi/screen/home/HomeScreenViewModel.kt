@@ -53,7 +53,10 @@ class HomeScreenViewModel(
                     rating = 0.0,
                 )
             ),
-            isLoading = false,
+            isPopularMediaLoading = false,
+            isTopRatingLoading = false,
+            isContinueWatchingLoading = false,
+            isCategoryLoading = false,
             errorMessage = null
         )
     ) {
@@ -65,23 +68,40 @@ class HomeScreenViewModel(
         onAllCategoriesSelect()
     }
 
+     fun onRetry(){
+        loadPopularMedia()
+        loadTopRatingMedia()
+        loadContinueWatchingMedia()
+        loadCategories()
+        onAllCategoriesSelect()
+    }
+
     private fun loadCategories() {
         tryToExecute(
-            execute = getMoviesCategoriesUseCase::invoke,
+            execute ={
+                emitState(
+                    screenState.value.copy(
+                        isCategoryLoading= true
+                    )
+                )
+                getMoviesCategoriesUseCase.invoke()
+                     },
             onSuccess = { categories ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             categories = categories.toCategoryUiList().associateWith { false }
                                 .toMutableMap()
-                        )
+                        ),
+                        isCategoryLoading = false
                     )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isCategoryLoading = false
                     )
                 )
             }
@@ -90,20 +110,29 @@ class HomeScreenViewModel(
 
     private fun loadPopularMedia() {
         tryToExecute(
-            execute = getPopularMediaUseCase::invoke,
+            execute = {
+                emitState(
+                    screenState.value.copy(
+                        isPopularMediaLoading = true
+                    )
+                )
+                getPopularMediaUseCase.invoke()
+            },
             onSuccess = {
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             popularMediaList = it.toSliderMediaList()
-                        )
+                        ),
+                        isPopularMediaLoading = false
                     )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isPopularMediaLoading = false
                     )
                 )
             }
@@ -112,20 +141,29 @@ class HomeScreenViewModel(
 
     private fun loadTopRatingMedia() {
         tryToExecute(
-            execute = getTopRatingMediaUseCase::invoke,
+            execute ={
+                emitState(
+                    screenState.value.copy(
+                        isTopRatingLoading = true
+                    )
+                )
+                getTopRatingMediaUseCase.invoke()
+            },
             onSuccess = { topRatingMedia ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             topRatedMediaList = topRatingMedia.toMediaUiStateList()
-                        )
+                        ),
+                        isTopRatingLoading = false
                     )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isTopRatingLoading = false
                     )
                 )
             }
@@ -134,23 +172,45 @@ class HomeScreenViewModel(
 
     private fun loadContinueWatchingMedia() {
         tryToExecute(
-            execute = getMediaFromLocalUseCase::invoke,
+            execute ={
+                emitState(
+                    screenState.value.copy(
+                        isContinueWatchingLoading = true
+                    )
+                )
+                getMediaFromLocalUseCase.invoke()
+            },
             onSuccess = { mediaList ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             continueWatchingMediaList = mediaList.toMediaUiStateList()
-                        )
+                        ),
+                        isContinueWatchingLoading = false
                     )
                 )
             },
-            onError = {}
+            onError = {errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage,
+                        isContinueWatchingLoading = false
+                    )
+                )
+            }
         )
     }
 
     override fun onAllCategoriesSelect() {
         tryToExecute(
-            execute = getUpcomingMediaUseCase::invoke,
+            execute ={
+                emitState(
+                    screenState.value.copy(
+                        isCategoryLoading = true
+                    )
+                )
+                getUpcomingMediaUseCase.invoke()
+                     },
             onSuccess = { upcomingMovies ->
                 emitState(
                     screenState.value.copy(
@@ -160,14 +220,16 @@ class HomeScreenViewModel(
                                 .apply {
                                     this.keys.forEach { this[it] = false }
                                 },
-                        )
+                        ),
+                        isContinueWatchingLoading = false
                     )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isContinueWatchingLoading = false
                     )
                 )
             }
@@ -181,7 +243,13 @@ class HomeScreenViewModel(
                     destination = AppDestinations.SearchFeature()
                 )
             },
-            onError = {}
+            onError = {errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage,
+                    )
+                )
+            }
         )
     }
 
@@ -252,7 +320,13 @@ class HomeScreenViewModel(
                     )
                 )
             },
-            onError = {}
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage,
+                    )
+                )
+            }
         )
     }
 
@@ -265,7 +339,13 @@ class HomeScreenViewModel(
                     )
                 )
             },
-            onError = {}
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage,
+                    )
+                )
+            }
         )
     }
 
@@ -283,6 +363,10 @@ class HomeScreenViewModel(
     override fun moodPickerSelected(mood: List<String>) {
         tryToExecute(
             execute = {
+                emitState(
+                    screenState.value.copy(
+                    )
+                )
                 val moodCategories = mood.map { mood ->
                     mood.nameToGenreId()
                 }
@@ -295,14 +379,14 @@ class HomeScreenViewModel(
                             upComingMediaList = filteredMovies.toMediaUiStateList(),
                             moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
                             showMoodPickerDialog = true
-                        )
+                        ),
                     )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
                     )
                 )
             }
@@ -313,6 +397,11 @@ class HomeScreenViewModel(
     override fun onCategorySelect(category: CategoryUiState) {
         tryToExecute(
             execute = {
+                emitState(
+                    screenState.value.copy(
+                        isCategoryLoading = true
+                    )
+                )
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
@@ -334,14 +423,16 @@ class HomeScreenViewModel(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             upComingMediaList = filteredMovies.toMediaUiStateList(),
-                        )
+                        ),
+                        isCategoryLoading = false
                     )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isCategoryLoading = false
                     )
                 )
             }

@@ -10,4 +10,6 @@
     <string name="all">All</string>
     <string name="mood_picker_get_a_movie">Mood Picker ( Get a Movie )</string>
     <string name="what_s_your_vibe_today">"What’s your vibe today? "</string>
+    <string name="popular">Popular</string>
+    <string name="aflami">AFLAMI</string>
 </resources>

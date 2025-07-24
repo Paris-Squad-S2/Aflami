@@ -83,4 +83,17 @@ class TopRatingMoviesViewModel(
             }
         )
     }
+
+    override fun onBackButtonClick() {
+        tryToExecute(
+            execute = { appNavigator.navigateUp() },
+            onError = {
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
 }
