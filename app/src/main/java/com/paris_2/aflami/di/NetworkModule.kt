@@ -1,10 +1,10 @@
 package com.paris_2.aflami.di
 
-import android.util.Log
 import com.repository.home.MediaApiService
 import com.feature.search.searchUi.BuildConfig
 import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.repository.home.GenresApiServices
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -72,4 +72,8 @@ val NetworkModule = module {
     single<MediaApiService> {
         get<Retrofit>().create(MediaApiService::class.java)
     }
+    single<GenresApiServices> {
+        get<Retrofit>().create(GenresApiServices::class.java)
+    }
+
 }

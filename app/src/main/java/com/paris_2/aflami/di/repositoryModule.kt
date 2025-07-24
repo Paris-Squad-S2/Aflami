@@ -1,6 +1,7 @@
 package com.paris_2.aflami.di
 
 import com.domain.home.repository.MediaRepository
+import com.domain.home.repository.MoviesCategoriesRepository
 import com.repository.home.repository.MediaRepositoryImpl
 import com.domain.mediaDetails.repository.MovieRepository
 import com.domain.mediaDetails.repository.TvShowRepository
@@ -11,6 +12,7 @@ import com.domain.search.repository.SearchHistoryRepository
 import com.domain.search.repository.SearchMediaRepository
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import com.paris_2.repository.authentication.repository.AuthenticationRepositoryImpl
+import com.repository.home.repository.MoviesCategoriesRepositoryImpl
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.search.repository.CategoriesRepositoryImpl
@@ -32,5 +34,5 @@ val repositoryModule = module {
     singleOf(::GenresInteractionRepositoryImpl) bind GenresInteractionRepository::class
     singleOf(::MediaRepositoryImpl ) bind MediaRepository::class
     singleOf(::AuthenticationRepositoryImpl) bind AuthenticationRepository::class
-
+    singleOf(::MoviesCategoriesRepositoryImpl) bind MoviesCategoriesRepository::class
 }

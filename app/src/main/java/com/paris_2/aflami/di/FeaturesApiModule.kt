@@ -9,8 +9,11 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
+import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
+import com.feature.home.homeUi.navigation.HomeNavigator
+import com.feature.home.homeUi.navigation.HomeNavigatorImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsUi.ListsFeatureAPIImpl
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
@@ -37,6 +40,9 @@ val FeatureAPIModule = module {
     single<SearchNavigator> { SearchNavigatorImpl(startGraph = SearchDestinations.SearchGraph1) }
     single<MediaDetailsNavigator> { MediaDetailsNavigatorImpl(startGraph = MediaDetailsDestinations.MediaDetailsGraph1) }
     single<AuthenticationNavigator> { AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1) }
+    single<HomeNavigator> { HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1) }
+
+
     factory<MediaDetailsFeatureAPI> { MediaDetailsFeatureAPIImpl() }
 
 
@@ -45,8 +51,9 @@ val FeatureAPIModule = module {
     factory<CategoriesFeatureAPI> { CategoriesFeatureAPIImpl() }
     factory<GuessGameFeatureAPI> { GuessGameFeatureAPIImpl() }
     factory<ProfileFeatureAPI> { ProfileFeatureAPIImpl() }
+    factory<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl() }
 
     factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
-    factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI ::class
+    factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI::class
     factoryOf(::AuthenticationFeatureAPIImpl) bind AuthenticationFeatureAPI::class
 }

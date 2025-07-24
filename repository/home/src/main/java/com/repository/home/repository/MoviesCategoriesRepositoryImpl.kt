@@ -2,14 +2,14 @@ package com.repository.home.repository
 
 import com.domain.home.exception.NoCategoriesFoundException
 import com.domain.home.model.Category
-import com.domain.home.repository.CategoriesRepository
+import com.domain.home.repository.MoviesCategoriesRepository
 import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.mapper.toCategoryList
 import java.util.Locale
 
-class CategoriesRepositoryImpl(
+class MoviesCategoriesRepositoryImpl(
     private val genresRemoteDataSource: GenresRemoteDataSource
-): CategoriesRepository {
+): MoviesCategoriesRepository {
     override suspend fun getMoviesCategories(): List<Category> {
         val language = Locale.getDefault().language
         return try {

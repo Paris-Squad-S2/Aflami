@@ -1,0 +1,60 @@
+package com.feature.home.homeUi.screen.home.components
+
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.unit.dp
+import com.feature.home.homeUi.screen.home.MediaUiState
+import com.paris_2.aflami.designsystem.components.AflamiMediaCard
+import com.paris_2.aflami.designsystem.components.AflamiSectionTitle
+import com.paris_2.aflami.designsystem.components.MediaCardType
+
+@Composable
+fun HomeSection(
+    title: String,
+    mediaList: List<MediaUiState>,
+    iconColor: Color?=null,
+    onMediaClick:(media: MediaUiState) -> Unit = {},
+    onSectionAllClick:()-> Unit = {},
+    leadingIconPainter: Painter?=null,
+    isScrolling: Boolean
+) {
+    AflamiSectionTitle(
+        title = title,
+        hasViewAll = true,
+        iconColor = iconColor?: Color.Unspecified,
+        painter = leadingIconPainter,
+        onClickViewAll = onSectionAllClick,
+        modifier = Modifier.padding(top = 6.dp)
+    )
+
+    LazyRow(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 12.dp, bottom = 16.dp),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(mediaList) { media ->
+            AflamiMediaCard(
+                modifier = Modifier
+                    .padding(end = 8.dp)
+                    .clickable { onMediaClick(media) },
+                imageUri = media.imageUri,
+                rating = media.rating.toFloat(),
+                movieName = media.title,
+                mediaType = media.type.mediaName,
+                year = media.yearOfRelease.year.toString(),
+                mediaCardType = MediaCardType.NORMAL,
+                showGradientFilter = true,
+                enabled = !isScrolling,
+            )
+        }
+    }
+}
