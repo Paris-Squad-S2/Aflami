@@ -4,12 +4,16 @@ import com.domain.home.usecase.GetMediaFromLocalUseCase
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesViewModel
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.aflami.appnavigation.AppNavigator
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -22,6 +26,7 @@ import com.domain.home.model.MediaType as DomainMediaType
 @OptIn(ExperimentalCoroutinesApi::class)
 class ContinueWatchingViewModelTest {
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
+    private val appNavigator: AppNavigator = mockk(relaxed = true)
     private lateinit var viewModel: ContinueWatchingViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -67,7 +72,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `init loads media and updates state`() = runTest {
         coEvery { getMediaFromLocalUseCase() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,appNavigator)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.continueWatchingMediaList.map { it.title }).isEqualTo(fakeMediaList.map { it.title })
@@ -78,7 +83,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `error from useCase updates errorMessage and sets isLoading false`() = runTest {
         coEvery { getMediaFromLocalUseCase() } throws RuntimeException("Failed to load")
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,appNavigator)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.errorMessage).isEqualTo("Failed to load")
@@ -92,7 +97,53 @@ class ContinueWatchingViewModelTest {
             assertThat(viewModel.screenState.value.isLoading).isTrue()
             fakeMediaList.map { it.toMedia() }
         }
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,appNavigator)
         runCurrent()
+    }
+
+    @Test
+    fun `onMediaCardClick for tv show triggers correct navigation`() = runTest {
+        coEvery { getMediaFromLocalUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, appNavigator)
+        runCurrent()
+
+        val tvShow = fakeMediaList[0]
+        viewModel.onMediaCardClick(tvShow)
+        runCurrent()
+
+        coVerify {
+            appNavigator.navigate(match {
+                it.toString().contains("TvShowDetailsScreen") && it.toString()
+                    .contains(tvShow.id.toString())
+            })
+        }
+    }
+
+    @Test
+    fun `onMediaCardClick for movie triggers correct navigation`() = runTest {
+        coEvery { getMediaFromLocalUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, appNavigator)
+        runCurrent()
+
+        val movie = fakeMediaList[1]
+        viewModel.onMediaCardClick(movie)
+        runCurrent()
+
+        coVerify {
+            appNavigator.navigate(match {
+                it.toString().contains("MovieDetailsScreen") && it.toString()
+                    .contains(movie.id.toString())
+            })
+        }
+    }
+
+    @Test
+    fun `onBackButtonClick triggers navigateUp`() = runTest {
+
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, appNavigator)
+        viewModel.onBackButtonClick()
+        advanceUntilIdle()
+
+        coVerify(exactly = 1) { appNavigator.navigateUp() }
     }
 }
