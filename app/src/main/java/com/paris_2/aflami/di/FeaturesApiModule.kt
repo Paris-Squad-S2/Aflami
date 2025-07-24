@@ -33,7 +33,10 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val FeatureAPIModule = module {
-    single<AppNavigator> { AppNavigatorImpl(startGraph = AppDestinations.AppGraph1) }
+    single<AppNavigator> { AppNavigatorImpl(
+        startGraph = AppDestinations.AppGraph1,
+        authRepository = get()
+    ) }
     single<SearchNavigator> { SearchNavigatorImpl(startGraph = SearchDestinations.SearchGraph1) }
     single<MediaDetailsNavigator> { MediaDetailsNavigatorImpl(startGraph = MediaDetailsDestinations.MediaDetailsGraph1) }
     single<AuthenticationNavigator> { AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1) }
