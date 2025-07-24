@@ -19,6 +19,7 @@ val NetworkModule = module {
     single { com.repository.search.util.NetworkConnectionChecker(androidApplication().applicationContext) }
     single { com.repository.util.NetworkConnectionChecker(androidApplication().applicationContext) }
     single { com.repository.movie.util.NetworkConnectionChecker(androidApplication().applicationContext) }
+    single { com.repository.home.util.NetworkConnectionChecker(androidApplication().applicationContext) }
 
     single { AuthInterceptor(get<AuthenticationLocalDataSource>()) }
 
