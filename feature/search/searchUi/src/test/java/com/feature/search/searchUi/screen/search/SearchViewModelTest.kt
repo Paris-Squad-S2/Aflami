@@ -656,6 +656,7 @@ class SearchViewModelTest {
         every { mediaDetailsFeatureAPI.startMovieDetails(mediaUiState.id) } returns Unit
 
         viewModel.onMediaCardClick(mediaUiState)
+        advanceUntilIdle()
 
         coVerify { incrementCategoryInteractionUseCase(mediaUiState.categories) }
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(mediaUiState.id) }
@@ -677,6 +678,7 @@ class SearchViewModelTest {
         every { mediaDetailsFeatureAPI.startTvShowDetails(mediaUiState.id) } returns Unit
 
         viewModel.onMediaCardClick(mediaUiState)
+        advanceUntilIdle()
 
         coVerify { incrementCategoryInteractionUseCase(mediaUiState.categories) }
         coVerify { mediaDetailsFeatureAPI.startTvShowDetails(mediaUiState.id) }
