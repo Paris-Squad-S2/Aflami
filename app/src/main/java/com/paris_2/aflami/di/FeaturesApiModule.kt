@@ -9,6 +9,7 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
+import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
 import com.feature.home.homeUi.navigation.HomeNavigator
@@ -44,7 +45,7 @@ val FeatureAPIModule = module {
     single<AuthenticationNavigator> { AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1) }
     single<HomeNavigator> { HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1) }
 
-    factory<HomeFeatureAPI> { HomeFeatureAPIImpl(get()) }
+    factory<HomeFeatureAPI> { HomeFeatureAPIImpl() }
     factory<ListsFeatureAPI> { ListsFeatureAPIImpl() }
     factory<CategoriesFeatureAPI> { CategoriesFeatureAPIImpl() }
     factory<GuessGameFeatureAPI> { GuessGameFeatureAPIImpl() }
