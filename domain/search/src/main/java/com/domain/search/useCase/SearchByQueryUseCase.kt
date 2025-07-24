@@ -1,0 +1,12 @@
+package com.domain.search.useCase
+
+import com.domain.search.model.Media
+import com.domain.search.repository.SearchMediaRepository
+
+class SearchByQueryUseCase(
+    private val searchMediaRepository: SearchMediaRepository,
+) {
+    suspend operator fun invoke(query: String,page: Int): List<Media> {
+        return searchMediaRepository.getMediaByQuery(query,page)
+    }
+}

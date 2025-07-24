@@ -2,7 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowCastUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi

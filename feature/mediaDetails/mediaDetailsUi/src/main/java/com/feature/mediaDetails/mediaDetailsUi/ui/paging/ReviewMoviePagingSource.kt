@@ -1,7 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.paging
 
 import androidx.paging.PagingState
-import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
+import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.pagging.BasePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
