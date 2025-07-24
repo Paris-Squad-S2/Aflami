@@ -36,6 +36,12 @@ import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
 import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
+import com.paris_2.domain.authentication.usecases.GetForgetPasswordUrlUseCase
+import com.paris_2.domain.authentication.usecases.GetRegisterUrlUseCase
+import com.paris_2.domain.authentication.usecases.GuestLoginUseCase
+import com.paris_2.domain.authentication.usecases.LoginUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 

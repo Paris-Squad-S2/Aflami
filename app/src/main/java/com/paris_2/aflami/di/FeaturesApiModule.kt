@@ -51,7 +51,7 @@ val FeatureAPIModule = module {
     factory<CategoriesFeatureAPI> { CategoriesFeatureAPIImpl() }
     factory<GuessGameFeatureAPI> { GuessGameFeatureAPIImpl() }
     factory<ProfileFeatureAPI> { ProfileFeatureAPIImpl() }
-    factory<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl(get()) }
+    factory<AuthenticationFeatureAPI> { AuthenticationFeatureAPIImpl() }
 
     factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
     factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI::class

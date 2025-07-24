@@ -13,8 +13,6 @@ import com.domain.search.repository.SearchMediaRepository
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import com.paris_2.repository.authentication.repository.AuthenticationRepositoryImpl
 import com.repository.home.repository.MoviesCategoriesRepositoryImpl
-import com.paris_2.domain.authentication.repository.AuthenticationRepository
-import com.paris_2.repository.authentication.repository.AuthenticationRepositoryImpl
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.search.repository.CategoriesRepositoryImpl

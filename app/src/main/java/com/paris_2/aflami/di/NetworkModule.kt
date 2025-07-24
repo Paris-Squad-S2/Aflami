@@ -5,8 +5,6 @@ import com.feature.search.searchUi.BuildConfig
 import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.repository.home.GenresApiServices
-import com.paris_2.aflami.AuthInterceptor
-import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
