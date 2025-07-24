@@ -26,7 +26,8 @@ class LoginViewModelTest {
             LoginViewModel(
                 appNavigationAPI = appNavigationAPI,
                 loginUseCase = loginUseCase,
-                guestLoginUseCase = mockk(relaxed = true)
+                guestLoginUseCase = mockk(relaxed = true),
+                isLoggedInUseCase = mockk(relaxed = true),
             )
         )
     }
