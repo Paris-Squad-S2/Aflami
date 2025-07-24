@@ -1,19 +1,12 @@
 package com.paris_2.aflami.di
 
-import android.util.Log
 import com.repository.home.MediaApiService
 import com.feature.search.searchUi.BuildConfig
 import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.repository.home.GenresApiServices
-import io.ktor.client.*
-import io.ktor.client.engine.android.*
-import io.ktor.client.plugins.DefaultRequest
-import io.ktor.client.plugins.contentnegotiation.*
-import io.ktor.client.plugins.logging.*
-import io.ktor.client.request.header
-import io.ktor.http.*
-import io.ktor.serialization.kotlinx.json.*
+import com.paris_2.aflami.AuthInterceptor
+import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
