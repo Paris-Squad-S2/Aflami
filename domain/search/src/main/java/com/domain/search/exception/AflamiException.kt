@@ -1,12 +1,9 @@
 package com.domain.search.exception
 
-abstract class AflamiException(message:String) : Exception(message)
-open class NetworkConnectionException(message:String): AflamiException(message)
-open class LocalDataSourceException(message:String): AflamiException(message)
+open class AflamiException(message: String) : Exception(message)
 
-
-class NoInternetConnectionException: NetworkConnectionException("Please connect your device to the internet")
-class NoDataForCountryException: LocalDataSourceException("No movies found for the given country")
-class NoDataForActorException: LocalDataSourceException("No media found for the given actor")
-class NoDataForSearchException: LocalDataSourceException("No media matched your search term")
-class NoCategoriesFoundException: LocalDataSourceException("No categories found ")
+class NoInternetConnectionException : AflamiException("Please connect your device to the internet")
+class NoMediaForCountryException : AflamiException("No movies found for the given country")
+class NoMediaForActorException : AflamiException("No media found for the given actor")
+class NoMediaForSearchException : AflamiException("No media matched your search term")
+class NoCategoriesFoundException : AflamiException("No categories found ")

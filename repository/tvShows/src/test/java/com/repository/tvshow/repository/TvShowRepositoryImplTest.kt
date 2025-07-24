@@ -1,7 +1,7 @@
 package com.repository.tvshow.repository
 
-import com.domain.mediaDetails.exception.NoFoundTvShowException
-import com.domain.mediaDetails.exception.NoFundGalleryTvShowException
+import com.domain.mediaDetails.exception.NoTvShowFoundException
+import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoSeasonFoundException
 import com.google.common.truth.Truth.assertThat
@@ -117,7 +117,7 @@ class TvShowRepositoryImplTest {
             } just Runs
 
             // When & Then
-            assertThrows<NoFoundTvShowException> {
+            assertThrows<NoTvShowFoundException> {
                 tvShowRepository.getTvShowDetails(tvShowId)
             }
         }
@@ -306,7 +306,7 @@ class TvShowRepositoryImplTest {
             } just Runs
 
             // When & Then
-            assertThrows<NoFundGalleryTvShowException> {
+            assertThrows<NoGalleryFoundException> {
                 tvShowRepository.getTvShowGallery(tvShowId)
             }
         }
