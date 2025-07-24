@@ -252,7 +252,7 @@ fun HomeScreenContent(
         subtitle = "More than just watching.",
         modifier = Modifier
             .background(topBarBackground)
-            .padding(top = 16.dp),
+            .padding(top = 32.dp),
         logo = iconItemWithDefaults(
             ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo), {},
             Theme.colors.primaryVariant,
