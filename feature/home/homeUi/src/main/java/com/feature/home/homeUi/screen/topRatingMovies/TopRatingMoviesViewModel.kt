@@ -5,14 +5,12 @@ import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsApi.toJson
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigator
 
 class TopRatingMoviesViewModel(
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
-    private val appNavigator: AppNavigator
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
 ):BaseViewModel<TopRatingMoviesUiState>(
     TopRatingMoviesUiState(
         topRatingMovies = emptyList(),
@@ -60,19 +58,15 @@ class TopRatingMoviesViewModel(
     override fun onMediaCardClick(media: MediaUiState) {
         tryToExecute(
             execute = {
-                appNavigator.navigate(
-                    AppDestinations.MediaDetailsFeature(
-                        when (media.type) {
-                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = media.id
-                            )
-
-                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = media.id
-                            )
-                        }.toJson()
+                when (media.type) {
+                    MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
+                        movieId = media.id
                     )
-                )
+
+                    MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
+                        tvShowId = media.id
+                    )
+                }
             },
             onError = { errorMessage ->
                 emitState(
@@ -86,7 +80,7 @@ class TopRatingMoviesViewModel(
 
     override fun onBackButtonClick() {
         tryToExecute(
-            execute = { appNavigator.navigateUp() },
+            execute = { navigateUp() },
             onError = {
                 emitState(
                     screenState.value.copy(
