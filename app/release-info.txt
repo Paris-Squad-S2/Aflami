@@ -1,2 +1,2 @@
-versionName=0.2.13
-- refactor tv show, movie and media detail exception
+versionName=0.2.14
+- refactor repository unit tests to separate concerns between assertion logic and interaction verification.
