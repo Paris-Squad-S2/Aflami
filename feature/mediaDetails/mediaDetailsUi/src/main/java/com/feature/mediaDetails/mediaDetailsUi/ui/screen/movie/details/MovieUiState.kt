@@ -16,6 +16,7 @@ data class MovieDetailsScreenState(
     val isReviewsLoading: Boolean = false,
     val isGalleryLoading: Boolean = false,
     val isProductionCompaniesLoading: Boolean = false,
+    val showRatingDialog: Boolean = false,
 )
 
 data class MovieDetailsUiState(
@@ -24,7 +25,8 @@ data class MovieDetailsUiState(
     val cast: List<CastUi>,
     val reviews: Flow<PagingData<ReviewUi>>,
     val gallery: List<String>,
-    val movieVideoUi: MovieVideoUi
+    val movieVideoUi: MovieVideoUi,
+    val selectedRating: Float
 )
 
 data class MovieVideoUi(
