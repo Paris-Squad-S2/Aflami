@@ -1,11 +1,13 @@
 package com.feature.search.searchUi.screen.search
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -64,18 +66,19 @@ fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SearchScreenContent(
     searchScreenInteractionListener: SearchScreenInteractionListener,
     state: SearchScreenState
 ) {
+    val activity = LocalActivity.current
     if (state.searchUiState.showFilterDialog) {
         FilterDialog(
             state = state,
             searchScreenInteractionListener = searchScreenInteractionListener,
         )
     }
-
     Column(
         Modifier
             .fillMaxSize()
@@ -89,7 +92,7 @@ private fun SearchScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                    onClick = searchScreenInteractionListener::onNavigateBack,
+                    onClick = { activity?.finish() },
                 )
             ),
         )

@@ -3,7 +3,7 @@ package com.feature.search.searchUi.comon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.feature.search.searchApi.SearchDestination
+import com.feature.search.searchUi.navigation.SearchDestination
 import com.feature.search.searchUi.navigation.SearchNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope

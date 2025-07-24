@@ -7,6 +7,7 @@ import com.domain.search.useCase.GetMediaByActorNameUseCase
 import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -22,7 +23,6 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.paris_2.aflami.appnavigation.AppNavigator as AppNavigator1
 
 class WorldTourViewModelTest {
     private lateinit var viewModel: WorldTourViewModel
@@ -53,7 +53,7 @@ class WorldTourViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
     }
 
@@ -128,7 +128,7 @@ class WorldTourViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onMediaCardClick triggers navigation`() = runTest {
-        val navMock = mockk<AppNavigator1>(relaxed = true)
+        val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
         val viewModel = WorldTourViewModel(
             savedStateHandle = mockk(relaxed = true),
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
@@ -136,7 +136,7 @@ class WorldTourViewModelTest {
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = navMock
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
         val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
             id = 12,
@@ -149,7 +149,7 @@ class WorldTourViewModelTest {
         )
         viewModel.onMediaCardClick(mediaUiState)
         advanceUntilIdle()
-        coVerify { navMock.navigate(any()) }
+        coVerify { mediaDetailsFeatureAPI.startMovieDetails(any()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)

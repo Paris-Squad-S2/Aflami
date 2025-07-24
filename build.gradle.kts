@@ -64,7 +64,11 @@ val koverExcludedPackages = listOf(
     "**/app**",
     "AflamiNavBar.kt",
     "AppScafold.kt",
-    "**Screen.kt"
+    "**Screen.kt",
+    "**Activity**",
+    "**Navigation**",
+    "**appnavigation**",
+    "**appNavigation**",
     /*
     "**.GenreResourceMapper",
 

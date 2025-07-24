@@ -1,2 +1,2 @@
-versionName=0.2.15
+versionName=0.2.16
 - Made the component in the design system more reusable.

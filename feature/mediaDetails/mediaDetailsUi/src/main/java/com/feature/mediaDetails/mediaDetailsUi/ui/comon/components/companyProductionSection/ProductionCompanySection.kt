@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -22,10 +24,10 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @Composable
 fun ProductionCompanySection(
-    companies: List<ProductionCompanyUi>?,
+    companies: List<ProductionCompanyUi>,
     modifier: Modifier = Modifier
 ) {
-    if (!companies.isNullOrEmpty()) {
+    if (companies.isNotEmpty()) {
         Column(
             modifier = modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -51,7 +53,10 @@ fun ProductionCompanySection(
         }
     } else {
         Box(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(vertical = 30.dp)
+                .navigationBarsPadding(),
             contentAlignment = Alignment.Center
         ) {
             Text(
