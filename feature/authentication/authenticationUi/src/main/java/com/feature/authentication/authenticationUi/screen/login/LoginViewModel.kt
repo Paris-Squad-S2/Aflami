@@ -6,16 +6,21 @@ import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 
 class LoginViewModel(
     private val appNavigationAPI : AppNavigationAPI,
     private val loginUseCase: LoginUseCase,
     private val guestLoginUseCase: GuestLoginUseCase,
+    private val isLoggedInUseCase: IsLoggedInUseCase,
 ) : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
 
     init {
         updateStateButton()
+        if (isLoggedInUseCase()) {
+            appNavigationAPI()
+        }
     }
 
     override fun onUsernameChange(username: String) {

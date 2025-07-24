@@ -6,7 +6,6 @@ import kotlinx.coroutines.flow.Flow
 interface AppNavigator {
     val startGraph: AppGraph
     val navigationEvent: Flow<AppNavigationEvent>
-    val startDestination: AppDestination
     suspend fun navigate(destination: AppDestination, navOptions: NavOptions? = null)
     suspend fun navigateUp()
 }
