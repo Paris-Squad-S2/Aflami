@@ -1,2 +1,2 @@
-versionName=0.2.14
-- refactor repository unit tests to separate concerns between assertion logic and interaction verification.
+versionName=0.2.15
+- add logic to handle save login state
