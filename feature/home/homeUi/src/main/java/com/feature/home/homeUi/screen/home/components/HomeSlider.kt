@@ -1,5 +1,8 @@
 package com.feature.home.homeUi.screen.home.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
@@ -51,51 +55,72 @@ fun HomeSlider(
 
 
     Box {
-        if (mediaState.value.imageUri.isNotEmpty())
+        AnimatedVisibility(
+            visible = mediaState.toString().isNotEmpty(),
+            enter = slideInVertically(),
+            exit = slideOutVertically(),
+        ){
+
             SafeImageViewer(
-                model = mediaState.value.imageUri,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp)
-                    .blur(18.dp),
-                contentScale = ContentScale.FillWidth,
-            )
-        Column(
-            modifier = Modifier.padding(top = 96.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            AflamiSectionTitle(
-                title = stringResource(R.string.popular),
-                painter = painterResource(R.drawable.ic_fire),
-                iconColor = Theme.colors.secondary,
-                hasViewAll = false,
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
-
-            if (mediaList.isNotEmpty()) {
-                Slider(
-                    items = mediaList,
-                    onClick = { media ->
-                        onMediaClick(media)
-                    },
-                    modifier = modifier,
-                    currentMedia = mediaState,
+                    model = mediaState.value.imageUri,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(420.dp)
+                        .blur(18.dp),
+                    contentScale = ContentScale.FillWidth,
                 )
-            }
 
-            if (mediaList.isNotEmpty()) {
+            Column(
+                modifier = Modifier.padding(top = 96.dp, bottom = 65.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                AflamiSectionTitle(
+                    title = stringResource(R.string.popular),
+                    painter = painterResource(R.drawable.ic_fire),
+                    iconColor = Theme.colors.secondary,
+                    hasViewAll = false,
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+
+                if (mediaList.isNotEmpty()) {
+                    Slider(
+                        items = mediaList,
+                        onClick = { media ->
+                            onMediaClick(media)
+                        },
+                        modifier = modifier,
+                        currentMedia = mediaState,
+                    )
+                }
+            }
+        }
+
+
+        AnimatedVisibility(
+            visible = mediaState.toString().isNotEmpty(),
+            modifier = Modifier.align(Alignment.BottomCenter),
+            enter = slideInVertically(),
+            exit = slideOutVertically(),
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
                 AflamiText(
                     text = mediaState.value.title,
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.text.title,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
+                    modifier = Modifier.padding(horizontal = 16.dp),
+                    minLines = 1,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-                LazyRow (
+                LazyRow(
                     Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
-                ){
-                    items(mediaState.value.categories){
+                ) {
+                    items(mediaState.value.categories) {
                         GenresChip(
                             title = it,
                             isSelected = false
@@ -104,8 +129,6 @@ fun HomeSlider(
                     }
                 }
             }
-
         }
     }
-
 }
