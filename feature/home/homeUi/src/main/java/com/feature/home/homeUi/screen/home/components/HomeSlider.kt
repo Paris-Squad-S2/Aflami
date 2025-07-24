@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
@@ -54,13 +56,14 @@ fun HomeSlider(
                 model = mediaState.value.imageUri,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(380.dp)
+                    .height(400.dp)
                     .blur(18.dp),
                 contentScale = ContentScale.FillWidth,
             )
         Column(
             modifier = Modifier.padding(top = 74.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
             AflamiSectionTitle(
                 title = stringResource(R.string.popular),
@@ -70,25 +73,27 @@ fun HomeSlider(
                 modifier = Modifier.padding(bottom = 12.dp)
             )
 
-            if (mediaList.isNotEmpty())
-            Slider(
-                items = mediaList,
-                onClick = {media->
-                    onMediaClick(media)
-                },
-                modifier = modifier,
-                currentMedia = mediaState,
-            )
+            if (mediaList.isNotEmpty()) {
+                Slider(
+                    items = mediaList,
+                    onClick = { media ->
+                        onMediaClick(media)
+                    },
+                    modifier = modifier,
+                    currentMedia = mediaState,
+                )
+            }
 
             if (mediaList.isNotEmpty()) {
                 AflamiText(
                     text = mediaState.value.title,
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.text.title,
-                    modifier = Modifier.padding(top = 8.dp)
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
                 )
                 LazyRow (
-                    Modifier.padding(top = 8.dp)
+                    Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
                 ){
                     items(mediaState.value.categories){
                         GenresChip(
