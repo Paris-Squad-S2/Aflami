@@ -1,2 +1,2 @@
 versionName=0.2.17
-- add logic to handle save login state
+- Made the component in the design system more reusable.

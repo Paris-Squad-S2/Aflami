@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +25,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -67,7 +67,7 @@ fun MoodPicker(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_heart),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_heart),
                 contentDescription = "Icon heart",
                 tint = Theme.colors.onPrimaryColors.onPrimary,
                 modifier = Modifier.padding(5.dp)
@@ -119,7 +119,7 @@ fun MoodPicker(
             ) {
                 MoodPickerList.forEachIndexed { index, icon ->
                     Icon(
-                        painter = painterResource(id = icon),
+                        imageVector = ImageVector.vectorResource(id = icon),
                         contentDescription = "Icons",
                         tint = if (selectedEmojiIndex.intValue == index) Theme.colors.primary else Theme.colors.text.body,
                         modifier = Modifier

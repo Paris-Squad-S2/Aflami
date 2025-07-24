@@ -1,6 +1,5 @@
 package com.paris_2.aflami.designsystem.components
 
-
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -38,7 +36,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
 
 @Composable
-fun AflamiAnimatedLogo() {
+fun AnimatedLogo() {
     var showFirst by remember { mutableStateOf(false) }
     var showSecond by remember { mutableStateOf(false) }
     var showThird by remember { mutableStateOf(false) }
@@ -176,5 +174,5 @@ fun TriangleImage(
 @Preview
 @Composable
 private fun Preview() {
-    AflamiAnimatedLogo()
+    AnimatedLogo()
 }

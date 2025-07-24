@@ -4,6 +4,18 @@ object Modules {
     const val DESIGN_SYSTEM = ":designsystem"
     const val FIREBASE = ":firebase"
 
+    const val FEATURE = ":feature"
+    const val FEATURE_ONBOARDING = ":feature:onboarding"
+    const val FEATURE_AUTHENTICATION = ":feature:authentication"
+    const val FEATURE_HOME = ":feature:home"
+    const val FEATURE_PROFILE = ":feature:profile"
+    const val FEATURE_SEARCH = ":feature:search"
+    const val FEATURE_MEDIA_DETAILS = ":feature:mediaDetails"
+    const val FEATURE_GUESS_GAME = ":feature:guessGame"
+    const val FEATURE_CATEGORIES = ":feature:categories"
+    const val FEATURE_LIST = ":feature:lists"
+
+    const val DOMAIN = ":domain"
     const val DOMAIN_USER = ":domain:user"
     const val DOMAIN_GUESS_GAME = ":domain:guessGame"
     const val DOMAIN_MEDIA = ":domain:media"
@@ -14,6 +26,7 @@ object Modules {
     const val DOMAIN_MEDIA_DETAILS = ":domain:mediaDetails"
     const val DOMAIN_AUTHENTICATION = ":domain:authentication"
 
+    const val REPOSITORY = ":repository"
     const val REPOSITORY_MOVIE = ":repository:movie"
     const val REPOSITORY_TV_SHOW = ":repository:tvShows"
     const val REPOSITORY_USER = ":repository:user"
@@ -23,6 +36,9 @@ object Modules {
     const val REPOSITORY_SEARCH = ":repository:search"
     const val REPOSITORY_AUTHENTICATION = ":repository:authentication"
 
+    const val DATASOURCE = ":datasource"
+    const val DATASOURCE_REMOTE = ":datasource:remote"
+    const val DATASOURCE_LOCAL = ":datasource:local"
     const val DATASOURCE_REMOTE_USER = ":datasource:remote:user"
     const val DATASOURCE_LOCAL_USER = ":datasource:local:user"
     const val DATASOURCE_REMOTE_MOVIE = ":datasource:remote:movie"

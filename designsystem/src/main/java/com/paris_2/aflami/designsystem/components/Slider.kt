@@ -71,7 +71,7 @@ fun Slider(
                         scaleY = 1f
                     )
             ) {
-                AflamiMediaCard(
+                MediaCard(
                     imageUri = item.imageResId.toString(),
                     rating = item.rating,
                     mediaCardType = MediaCardType.SLIDER,
