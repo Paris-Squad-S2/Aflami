@@ -8,7 +8,6 @@ import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
-import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
@@ -58,7 +57,6 @@ val useCaseModule = module {
     factoryOf(::GetMovieRecommendationsUseCase)
     factoryOf(::GetMovieReviewsUseCase)
     factoryOf(::GetMoviesProductionCompaniesUseCase)
-    factoryOf(::AddTvShowToFavoriteUseCase)
     factoryOf(::GetSeasonDetailsUseCase)
     factoryOf(::GetTvShowCastUseCase)
     factoryOf(::GetTvShowDetailsUseCase)
