@@ -6,7 +6,13 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.domain.mediaDetails.model.Cast
+import com.domain.mediaDetails.model.Gallery
+import com.domain.mediaDetails.model.ProductionCompany
+import com.domain.mediaDetails.model.Season
+import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowVideo
 import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
@@ -25,7 +31,10 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsStateDefaults.initialTvShowDetailsScreenState
+import kotlinx.coroutines.flow.Flow
 
 class TvShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -42,7 +51,6 @@ class TvShowDetailsViewModel(
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     initialTvShowDetailsScreenState()
 ) {
-
 
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
@@ -65,161 +73,49 @@ class TvShowDetailsViewModel(
     private fun loadTvShowDetails(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowDetailsUseCase(mediaId) },
-            onSuccess = { tvShow ->
-                updateState(
-                    screenState.value.copy(
-                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            tvShowUi = tvShow.toUi()
-                        ),
-                        isLoading = false,
-                        errorMessage = null
-                    )
-                )
-                loadTvShowCast(mediaId)
-                loadTvShowGallery(mediaId)
-                loadTvShowRecommendations(mediaId)
-                loadTvShowReviews(mediaId)
-                loadTvShowsProductionCompanies(mediaId)
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        isLoading = false,
-                        errorMessage = error
-                    )
-                )
-            }
+            onSuccess = { tvShow -> handleTvShowDetailsSuccess(mediaId, tvShow) },
+            onError = { error -> handleTvShowDetailsError(error) }
         )
     }
 
     private fun loadTvShowCast(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowCastUseCase(mediaId) },
-            onSuccess = { cast ->
-                updateState(
-                    screenState.value.copy(
-                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            cast = cast.map { it.toUi() }
-                        )
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = error
-                    )
-                )
-            }
+            onSuccess = ::handleTvShowCastSuccess,
+            onError = ::handleTvShowCastError
         )
     }
 
     private fun loadTvShowGallery(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowGalleryUseCase(mediaId) },
-            onSuccess = { gallery ->
-                updateState(
-                    screenState.value.copy(
-                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            gallery = gallery.toUi()
-                        )
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = error
-                    )
-                )
-            }
+            onSuccess = ::handleTvShowGallerySuccess,
+            onError = ::handleTvShowGalleryError
         )
     }
 
+
     private fun loadTvShowRecommendations(mediaId: Int) {
         tryToExecute(
-            execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        SimilarTvShowPageSource(
-                            movieId = mediaId,
-                            getTvShowRecommendationsUseCase = getTvShowRecommendationsUseCase
-                        )
-                    }
-                ).flow.cachedIn(viewModelScope)
-            }, onSuccess = { recommendations ->
-                updateState(
-                    screenState.value.copy(
-                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            recommendations = recommendations
-                        )
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = error
-                    )
-                )
-            }
+            execute = { createTvShowRecommendationsPager(mediaId) },
+            onSuccess = ::handleTvShowRecommendationsSuccess,
+            onError = ::handleTvShowRecommendationsError
         )
     }
 
     private fun loadTvShowReviews(mediaId: Int) {
         tryToExecute(
-            execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        ReviewTvShowPagingSource(
-                            mediaId = mediaId,
-                            getTvShowReviewsUseCase = getTvShowReviewsUseCase
-                        )
-                    }
-                ).flow.cachedIn(viewModelScope)
-            },
-            onSuccess = { reviews ->
-                updateState(
-                    screenState.value.copy(
-                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            reviews = reviews
-                        )
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = error
-                    )
-                )
-            }
+            execute = { createTvShowReviewsPager(mediaId) },
+            onSuccess = ::handleTvShowReviewsSuccess,
+            onError = ::handleTvShowReviewsError
         )
     }
 
     private fun loadTvShowsProductionCompanies(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowProductionCompaniesUseCase(mediaId) },
-            onSuccess = { productionCompanies ->
-                updateState(
-                    screenState.value.copy(
-                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
-                                productionCompanies = productionCompanies.toListOfProductionCompanyUi()
-                            )
-                        )
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = error
-                    )
-                )
-            }
+            onSuccess = ::handleTvShowProductionCompaniesSuccess,
+            onError = ::handleTvShowProductionCompaniesError
         )
     }
 
@@ -240,73 +136,35 @@ class TvShowDetailsViewModel(
         val currentSeason = screenState.value.tvShowDetailsUiState.tvShowUi.seasons
             .find { it.seasonNumber == seasonNumber }
 
-        if (currentSeason?.isExpanded == true && currentSeason.episodes.isNotEmpty()) {
-            return
-        }
+        if (currentSeason?.isExpanded == true && currentSeason.episodes.isNotEmpty()) return
 
         tryToExecute(
             execute = {
-                updateState(
-                    screenState.value.copy(
-                        seasonsLoadingStates = screenState.value.seasonsLoadingStates + (seasonNumber to true)
-                    )
-                )
+                setSeasonLoadingState(seasonNumber, isLoading = true)
 
                 getSeasonDetailsUseCase(
                     screenState.value.tvShowDetailsUiState.tvShowUi.id,
                     seasonNumber
                 )
             },
-            onSuccess = { seasons ->
-                updateState(
-                    screenState.value.copy(
-                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
-                                seasons = screenState.value.tvShowDetailsUiState.tvShowUi.seasons.map {
-                                    if (it.seasonNumber == seasonNumber) {
-                                        it.copy(
-                                            isExpanded = true,
-                                            episodes = seasons.episodes.toListOfEpisodeUi()
-                                        )
-                                    } else {
-                                        it
-                                    }
-                                }
-                            ),
-                        ),
-                        seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
-                    )
-                )
+            onSuccess = { season ->
+                handleSeasonDetailsSuccess(seasonNumber, season)
             },
             onError = { error ->
-                Log.d("TAG111", "onClickOnSeason: $error")
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = error,
-                        seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
-                    )
-                )
+                handleSeasonDetailsError(seasonNumber, error)
             }
         )
     }
 
     override fun onClickPlayTrailer() {
-        if (screenState.value.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty() ||
-            screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()
-        ) {
-            updateState(
-                screenState.value.copy(
-                    errorMessage = "No video available"
-                )
-            )
+        val video = screenState.value.tvShowDetailsUiState.tvShowVideoUi
+
+        if (!isVideoAvailable(video)) {
+            showNoVideoError()
             return
         }
-        navigate(
-            MediaDetailsDestinations.VideosScreen(
-                site = screenState.value.tvShowDetailsUiState.tvShowVideoUi.site,
-                key = screenState.value.tvShowDetailsUiState.tvShowVideoUi.key
-            )
-        )
+
+        navigateToVideoScreen(video.site, video.key)
     }
 
     override fun onRetryLoadTvShowDetails() {
@@ -322,6 +180,215 @@ class TvShowDetailsViewModel(
     override fun onSimilarTvShowClick(mediaId: Int) {
         mediaDetailsFeatureAPI.startTvShowDetails(
             tvShowId = mediaId
+        )
+    }
+
+    private fun setSeasonLoadingState(seasonNumber: Int, isLoading: Boolean) {
+        updateState(
+            screenState.value.copy(
+                seasonsLoadingStates = if (isLoading)
+                    screenState.value.seasonsLoadingStates + (seasonNumber to true)
+                else
+                    screenState.value.seasonsLoadingStates - seasonNumber
+            )
+        )
+    }
+
+    private fun handleSeasonDetailsSuccess(seasonNumber: Int, season: Season) {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
+                        seasons = screenState.value.tvShowDetailsUiState.tvShowUi.seasons.map {
+                            if (it.seasonNumber == seasonNumber) {
+                                it.copy(
+                                    isExpanded = true,
+                                    episodes = season.episodes.toListOfEpisodeUi()
+                                )
+                            } else it
+                        }
+                    )
+                ),
+                seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
+            )
+        )
+    }
+
+    private fun handleSeasonDetailsError(seasonNumber: Int, error: String) {
+        Log.d("TAG111", "onClickOnSeason: $error")
+        updateState(
+            screenState.value.copy(
+                errorMessage = error,
+                seasonsLoadingStates = screenState.value.seasonsLoadingStates - seasonNumber
+            )
+        )
+    }
+
+    private fun isVideoAvailable(video: TvShowVideoUi): Boolean {
+        return video.key.isNotEmpty() && video.site.isNotEmpty()
+    }
+
+    private fun showNoVideoError() {
+        updateState(
+            screenState.value.copy(
+                errorMessage = "No video available"
+            )
+        )
+    }
+
+    private fun navigateToVideoScreen(site: String, key: String) {
+        navigate(
+            MediaDetailsDestinations.VideosScreen(site = site, key = key)
+        )
+    }
+
+    private fun handleTvShowDetailsSuccess(mediaId: Int, tvShow: TvShow) {
+        updateTvShowUi(tvShow)
+        loadAllTvShowData(mediaId)
+    }
+
+    private fun handleTvShowDetailsError(error: String) {
+        updateState(
+            screenState.value.copy(
+                isLoading = false,
+                errorMessage = error
+            )
+        )
+    }
+
+    private fun updateTvShowUi(tvShow: TvShow) {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    tvShowUi = tvShow.toUi()
+                ),
+                isLoading = false,
+                errorMessage = null
+            )
+        )
+    }
+
+    private fun loadAllTvShowData(mediaId: Int) {
+        loadTvShowCast(mediaId)
+        loadTvShowGallery(mediaId)
+        loadTvShowRecommendations(mediaId)
+        loadTvShowReviews(mediaId)
+        loadTvShowsProductionCompanies(mediaId)
+    }
+
+
+    private fun handleTvShowCastSuccess(cast: List<Cast>) {
+        val updatedUiState = screenState.value.tvShowDetailsUiState.copy(
+            cast = cast.map { it.toUi() }
+        )
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = updatedUiState
+            )
+        )
+    }
+
+    private fun handleTvShowCastError(error: String?) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
+    }
+
+    private fun handleTvShowGallerySuccess(gallery: Gallery) {
+        val updatedUiState = screenState.value.tvShowDetailsUiState.copy(
+            gallery = gallery.toUi()
+        )
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = updatedUiState
+            )
+        )
+    }
+
+    private fun handleTvShowGalleryError(error: String?) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
+    }
+
+    private fun createTvShowRecommendationsPager(mediaId: Int): Flow<PagingData<SimilarMediaUI>> =
+        Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                SimilarTvShowPageSource(
+                    movieId = mediaId,
+                    getTvShowRecommendationsUseCase = getTvShowRecommendationsUseCase
+                )
+            }
+        ).flow.cachedIn(viewModelScope)
+
+    private fun handleTvShowRecommendationsSuccess(recommendations: Flow<PagingData<SimilarMediaUI>>) {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    recommendations = recommendations
+                )
+            )
+        )
+    }
+
+    private fun handleTvShowRecommendationsError(error: String?) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
+    }
+
+    private fun createTvShowReviewsPager(mediaId: Int): Flow<PagingData<ReviewUi>> = Pager(
+        config = PagingConfig(pageSize = 10),
+        pagingSourceFactory = {
+            ReviewTvShowPagingSource(
+                mediaId = mediaId,
+                getTvShowReviewsUseCase = getTvShowReviewsUseCase
+            )
+        }
+    ).flow.cachedIn(viewModelScope)
+
+    private fun handleTvShowReviewsSuccess(reviews: Flow<PagingData<ReviewUi>>) {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    reviews = reviews
+                )
+            )
+        )
+    }
+
+    private fun handleTvShowReviewsError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
+    }
+
+    private fun handleTvShowProductionCompaniesSuccess(companies: List<ProductionCompany>) {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
+                        productionCompanies = companies.toListOfProductionCompanyUi()
+                    )
+                )
+            )
+        )
+    }
+
+    private fun handleTvShowProductionCompaniesError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
         )
     }
 
