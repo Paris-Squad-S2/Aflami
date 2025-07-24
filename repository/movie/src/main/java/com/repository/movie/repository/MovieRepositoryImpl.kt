@@ -191,6 +191,10 @@ class MovieRepositoryImpl(
         }
     }
 
+    override suspend fun addRatingToMovie() {
+        print("movie rating added")
+    }
+
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
         if (networkConnectionChecker.isConnected.value.not()) {
             throw NoInternetConnectionException()
