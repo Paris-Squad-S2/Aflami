@@ -252,19 +252,6 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onNavigateBack() {
-        tryToExecute(
-            execute = { navigateUp() },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
-                )
-            }
-        )
-    }
-
     override fun onFavouriteClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
 
