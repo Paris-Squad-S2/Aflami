@@ -469,17 +469,17 @@ class SearchViewModel(
     override fun onMediaCardClick(mediaUiState: MediaUiState) {
         tryToExecute(
             execute = {
-                incrementCategoryInteractionUseCase.invoke(mediaUiState.categories)
+                incrementCategoryInteractionUseCase(mediaUiState.categories)
 
-                    when (mediaUiState.type) {
-                        MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
-                            movieId = mediaUiState.id
-                        )
+                when (mediaUiState.type) {
+                    MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
+                        movieId = mediaUiState.id
+                    )
 
-                        MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
-                            tvShowId = mediaUiState.id
-                        )
-                    }
+                    MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
+                        tvShowId = mediaUiState.id
+                    )
+                }
 
             },
             onError = { errorMessage ->

@@ -1,10 +1,12 @@
 package com.feature.authentication.authenticationUi.screen.login
 
 import com.feature.authentication.authenticationUi.R
+import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
@@ -15,13 +17,14 @@ class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
     private lateinit var loginUseCase: LoginUseCase
+    private val appNavigationAPI: AppNavigationAPI = mockk(relaxed = true)
 
     @BeforeEach
     fun setup() {
         loginUseCase = mockk(relaxed = true)
         viewModel = spyk(
             LoginViewModel(
-                appNavigationAPI = mockk(relaxed = true),
+                appNavigationAPI = appNavigationAPI,
                 loginUseCase = loginUseCase,
                 guestLoginUseCase = mockk(relaxed = true)
             )
@@ -73,7 +76,12 @@ class LoginViewModelTest {
 
     @Test
     fun `onClickLogin with invalid credentials sets error message and disables button`() {
-        coEvery { loginUseCase("user", "1234") } throws(InvalidCredentialsException("Invalid credentials"))
+        coEvery {
+            loginUseCase(
+                "user",
+                "1234"
+            )
+        } throws (InvalidCredentialsException("Invalid credentials"))
 
         viewModel.onClickLogin()
 
@@ -90,6 +98,6 @@ class LoginViewModelTest {
         viewModel.onClickLogin()
 
         // Verify that navigateToHome() was called
-        io.mockk.verify { viewModel["navigateToHome"]() }
+        coVerify { appNavigationAPI() }
     }
 }
