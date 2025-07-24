@@ -19,5 +19,5 @@ interface TvShowRepository {
     suspend fun getTvShowReview(tvShowId: Int,page: Int): List<Review>
     suspend fun addTvShowToFavorite(tvShowId: Int)
     suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo>
-
+    suspend fun addRatingToTvShow()
 }
