@@ -71,4 +71,8 @@ class AuthenticationRepositoryImpl(
         return localDataSource.isLoggedIn()
     }
 
+    override fun hasAnySession(): Boolean {
+        return localDataSource.hasAnySession()
+    }
+
 }
