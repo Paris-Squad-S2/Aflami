@@ -15,9 +15,10 @@ import org.junit.jupiter.api.Test
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-    private val loginUseCase = mockk<LoginUseCase>(relaxed = true)
+    private lateinit var loginUseCase:LoginUseCase
     @BeforeEach
     fun setup() {
+        loginUseCase = mockk()
         viewModel = spyk(
             LoginViewModel(
                 appNavigator = mockk(relaxed = true),
