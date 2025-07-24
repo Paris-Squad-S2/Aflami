@@ -2,10 +2,11 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 
 class MovieCastViewModel
     (
@@ -36,27 +37,40 @@ class MovieCastViewModel
     }
 
     private fun loadMovieCast(mediaId: Int) {
-        updateState(screenState.value.copy(isLoading = true))
+        setMovieCastLoadingState()
         tryToExecute(
             execute = { getMovieCastUseCase(mediaId) },
-            onSuccess = { castList ->
-                updateState(
-                    screenState.value.copy(
-                        cast = castList.toListOfCastUi(),
-                        isLoading = false,
-                        errorMessage = null
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        isLoading = false,
-                        errorMessage = error
-                    )
-                )
-            }
+            onSuccess = ::handleCastSuccess,
+            onError = ::handleCastError
+        )
+
+    }
+
+    private fun setMovieCastLoadingState() {
+        updateState(
+            screenState.value.copy(
+                isLoading = true,
+                errorMessage = null
+            )
         )
     }
 
+    private fun handleCastSuccess(castList: List<Cast>) {
+        updateState(
+            screenState.value.copy(
+                cast = castList.toListOfCastUi(),
+                isLoading = false,
+                errorMessage = null
+            )
+        )
+    }
+
+    private fun handleCastError(error: String?) {
+        updateState(
+            screenState.value.copy(
+                isLoading = false,
+                errorMessage = error
+            )
+        )
+    }
 }
