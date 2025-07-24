@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -67,6 +68,7 @@ fun MovieDetailsScreenContent(
     val movieChips = MovieChips.entries
     val listState = rememberLazyListState()
     val density = LocalDensity.current
+    val activity = LocalActivity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
 
     val alpha by remember {
@@ -100,7 +102,7 @@ fun MovieDetailsScreenContent(
                         leadingIcons = listOf(
                             iconItemWithDefaults(
                                 icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                                onClick = { activity?.finish() }
                             )
                         )
                     )
@@ -118,7 +120,7 @@ fun MovieDetailsScreenContent(
                         leadingIcons = listOf(
                             iconItemWithDefaults(
                                 icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                                onClick = { activity?.finish() }
                             )
                         )
                     )
@@ -148,7 +150,7 @@ fun MovieDetailsScreenContent(
                             )
                         } else {
                             DetailsImage(
-                                imageUris = state.movieDetailsUiState.gallery,
+                                imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
                                 onPlayClick = movieDetailsScreenInteractionListener::onClickPlayTrailer,
                                 hasVideo = !(state.movieDetailsUiState.movieVideoUi.site.isEmpty() ||
@@ -215,8 +217,24 @@ fun MovieDetailsScreenContent(
                                             modifier = Modifier.padding(16.dp)
                                         )
                                     }
+                                } else if (mediaList.itemSnapshotList.isEmpty()) {
+                                    item {
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .background(Theme.colors.surface)
+                                                .padding(vertical = 30.dp)
+                                                .navigationBarsPadding(),
+                                            contentAlignment = Alignment.Center
+                                        ) {
+                                            Text(
+                                                text = stringResource(R.string.there_is_no_recommendations),
+                                                style = Theme.textStyle.label.large,
+                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                            )
+                                        }
+                                    }
                                 } else {
-
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
                                             AflamiMediaCard(
@@ -235,7 +253,11 @@ fun MovieDetailsScreenContent(
                                                 mediaCardType = MediaCardType.UP_COMING,
                                                 showGradientFilter = true,
                                                 clickable = true,
-                                                onClick = { },
+                                                onClick = {
+                                                    movieDetailsScreenInteractionListener.onSimilarMovieClick(
+                                                        mediaId = media.id
+                                                    )
+                                                },
                                                 cardWidth = null
                                             )
                                         }
@@ -254,7 +276,9 @@ fun MovieDetailsScreenContent(
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxWidth()
-                                                .background(Theme.colors.surface),
+                                                .background(Theme.colors.surface)
+                                                .padding(vertical = 30.dp)
+                                                .navigationBarsPadding(),
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
@@ -275,6 +299,21 @@ fun MovieDetailsScreenContent(
                                     PageLoadingPlaceHolder(
                                         modifier = Modifier.padding(16.dp)
                                     )
+                                } else if (state.movieDetailsUiState.gallery.isEmpty()) {
+                                    Box(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .background(Theme.colors.surface)
+                                            .padding(vertical = 30.dp)
+                                            .navigationBarsPadding(),
+                                        contentAlignment = Alignment.Center
+                                    ) {
+                                        Text(
+                                            text = stringResource(R.string.there_is_no_gallery),
+                                            style = Theme.textStyle.label.large,
+                                            color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                        )
+                                    }
                                 } else {
                                     GallerySection(state.movieDetailsUiState.gallery)
                                 }
@@ -290,7 +329,6 @@ fun MovieDetailsScreenContent(
                                         companies = state.movieDetailsUiState.movie.productionCompanies,
                                         modifier = Modifier
                                             .padding(horizontal = 16.dp)
-                                            .padding(top = 12.dp)
                                     )
                                 }
                             }
@@ -302,7 +340,7 @@ fun MovieDetailsScreenContent(
                     leadingIcons = listOf(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                            onClick = movieDetailsScreenInteractionListener::onNavigateBack
+                            onClick = { activity?.finish() }
                         )
                     ),
                     trailingIcons = listOf(

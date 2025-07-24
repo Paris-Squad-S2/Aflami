@@ -19,9 +19,7 @@ import com.domain.search.useCase.GetAllRecentSearchesUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SearchByQueryUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsApi.toJson
-import com.feature.search.searchApi.SearchDestinations
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toCategoryUiList
@@ -29,9 +27,8 @@ import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
+import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigator
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -43,7 +40,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.datetime.LocalDate
-import org.koin.java.KoinJavaComponent.getKoin
 
 data class SearchScreenState(
     val searchUiState: SearchUiState,
@@ -110,7 +106,7 @@ class SearchViewModel(
     private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val appNavigator: AppNavigator = getKoin().get()
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -462,21 +458,6 @@ class SearchViewModel(
         )
     }
 
-    override fun onNavigateBack() {
-        tryToExecute(
-            execute = {
-                appNavigator.navigateUp()
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage
-                    )
-                )
-            }
-        )
-    }
-
     override fun onRetryRecentSearches() {
         loadRecentSearches()
     }
@@ -488,21 +469,18 @@ class SearchViewModel(
     override fun onMediaCardClick(mediaUiState: MediaUiState) {
         tryToExecute(
             execute = {
-                incrementCategoryInteractionUseCase.invoke(mediaUiState.categories)
+                incrementCategoryInteractionUseCase(mediaUiState.categories)
 
-                appNavigator.navigate(
-                    AppDestinations.MediaDetailsFeature(
-                        when (mediaUiState.type) {
-                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = mediaUiState.id
-                            )
-
-                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = mediaUiState.id
-                            )
-                        }.toJson()
+                when (mediaUiState.type) {
+                    MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
+                        movieId = mediaUiState.id
                     )
-                )
+
+                    MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
+                        tvShowId = mediaUiState.id
+                    )
+                }
+
             },
             onError = { errorMessage ->
                 emitState(

@@ -6,8 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.search.searchApi.SearchDestination
-import com.feature.search.searchApi.SearchDestinations
 import com.feature.search.searchUi.screen.findByActor.FindByActorScreen
 import com.feature.search.searchUi.screen.search.SearchScreen
 import com.feature.search.searchUi.screen.worldTour.WorldTourScreen

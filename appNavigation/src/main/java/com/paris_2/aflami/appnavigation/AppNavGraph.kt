@@ -1,4 +1,4 @@
-package com.paris_2.aflami
+package com.paris_2.aflami.appnavigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -6,8 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import androidx.navigation.toRoute
-import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
-import com.feature.authentication.authenticationApi.fromJsonToAuthenticationDestination
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesApi.fromJsonToCategoriesDestination
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
@@ -16,23 +14,12 @@ import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeApi.fromJsonToHomeDestination
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsApi.fromJsonToListsDestination
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.mediaDetails.mediaDetailsApi.fromJsonToMediaDetailsDestination
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileApi.fromJsonToProfileDestination
-import com.feature.search.searchApi.SearchFeatureAPI
-import com.feature.search.searchApi.fromJsonToSearchDestination
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigationEvent
-import com.paris_2.aflami.appnavigation.AppNavigator
 import org.koin.compose.koinInject
 
 @Composable
-fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
-    val searchFeature: SearchFeatureAPI = koinInject()
-    val mediaDetailsFeature: MediaDetailsFeatureAPI = koinInject()
-
-    val authFeature: AuthenticationFeatureAPI = koinInject()
+internal fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
     val homeFeature: HomeFeatureAPI = koinInject()
     val listsFeature: ListsFeatureAPI = koinInject()
     val categoriesFeature: CategoriesFeatureAPI = koinInject()
@@ -55,14 +42,7 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        navigation<AppDestinations.AppGraph1>(startDestination = navigator.startDestination) {
-
-        composable<AppDestinations.AuthenticationFeature> {
-                val authenticationDestination =
-                    it.toRoute<AppDestinations.AuthenticationFeature>().authenticationDestination
-                authFeature(authenticationDestination?.fromJsonToAuthenticationDestination())()
-            }
-
+        navigation<AppDestinations.AppGraph1>(startDestination = AppDestinations.HomeFeature()) {
             composable<AppDestinations.HomeFeature> {
                 val homeDestination =
                     it.toRoute<AppDestinations.HomeFeature>().homeDestination
@@ -89,17 +69,6 @@ fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostCo
                 val profileDestination =
                     it.toRoute<AppDestinations.ProfileFeature>().profileDestination
                 profileFeature(profileDestination?.fromJsonToProfileDestination())()
-            }
-
-            composable<AppDestinations.SearchFeature> {
-                val searchDestination =
-                    it.toRoute<AppDestinations.SearchFeature>().searchDestination
-                searchFeature(searchDestination?.fromJsonToSearchDestination())()
-            }
-            composable<AppDestinations.MediaDetailsFeature> {
-                val mediaDetailsDestination =
-                    it.toRoute<AppDestinations.MediaDetailsFeature>().mediaDetailsDestination
-                mediaDetailsFeature(mediaDetailsDestination?.fromJsonToMediaDetailsDestination())()
             }
         }
     }

@@ -16,10 +16,12 @@ import com.domain.search.useCase.GetAllRecentSearchesUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SearchByQueryUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
 import com.feature.search.searchUi.screen.utils.collectAllItems
+import com.google.common.base.Verify.verify
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -50,6 +52,7 @@ class SearchViewModelTest {
     private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase = mockk()
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase = mockk()
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase = mockk()
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
     private lateinit var viewModel: SearchViewModel
 
@@ -129,7 +132,7 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                appNavigator = mockk(relaxed = true)
+                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
             )
         )
     }
@@ -153,7 +156,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
 
         advanceUntilIdle()
@@ -178,7 +181,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
 
         advanceUntilIdle()
@@ -201,7 +204,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
 
         advanceUntilIdle()
@@ -476,7 +479,7 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                appNavigator = mockk(relaxed = true)
+                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
             )
             advanceUntilIdle()
 
@@ -507,7 +510,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
         advanceUntilIdle()
 
@@ -552,7 +555,7 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                appNavigator = mockk(relaxed = true)
+                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
             )
             advanceUntilIdle()
 
@@ -635,5 +638,49 @@ class SearchViewModelTest {
         val spy = spyk(viewModel)
         spy.onRecentSearchClick("Some Query", SearchTypeUi.Query)
         io.mockk.verify { spy.onSearchQueryChange("Some Query") }
+    }
+
+    @Test
+    fun `onMediaCardClick should increment category interaction and start movie details for MOVIE`() = runTest {
+        val mediaUiState = MediaUiState(
+            id = mockMovie1.id,
+            imageUri = mockMovie1.imageUri,
+            title = mockMovie1.title,
+            type = MediaTypeUi.MOVIE,
+            categories = mockMovie1.categoryIds,
+            yearOfRelease = mockMovie1.yearOfRelease,
+            rating = mockMovie1.rating
+        )
+
+        coEvery { incrementCategoryInteractionUseCase(mediaUiState.categories) } returns Unit
+        every { mediaDetailsFeatureAPI.startMovieDetails(mediaUiState.id) } returns Unit
+
+        viewModel.onMediaCardClick(mediaUiState)
+        advanceUntilIdle()
+
+        coVerify { incrementCategoryInteractionUseCase(mediaUiState.categories) }
+        coVerify { mediaDetailsFeatureAPI.startMovieDetails(mediaUiState.id) }
+    }
+
+    @Test
+    fun `onMediaCardClick should increment category interaction and start tv show details for TVSHOW`() = runTest {
+        val mediaUiState = MediaUiState(
+            id = mockTvShow1.id,
+            imageUri = mockTvShow1.imageUri,
+            title = mockTvShow1.title,
+            type = MediaTypeUi.TVSHOW,
+            categories = mockTvShow1.categoryIds,
+            yearOfRelease = mockTvShow1.yearOfRelease,
+            rating = mockTvShow1.rating
+        )
+
+        coEvery { incrementCategoryInteractionUseCase(mediaUiState.categories) } returns Unit
+        every { mediaDetailsFeatureAPI.startTvShowDetails(mediaUiState.id) } returns Unit
+
+        viewModel.onMediaCardClick(mediaUiState)
+        advanceUntilIdle()
+
+        coVerify { incrementCategoryInteractionUseCase(mediaUiState.categories) }
+        coVerify { mediaDetailsFeatureAPI.startTvShowDetails(mediaUiState.id) }
     }
 }

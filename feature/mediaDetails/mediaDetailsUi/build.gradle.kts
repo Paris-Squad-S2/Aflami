@@ -103,6 +103,7 @@ dependencies {
 
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
 }

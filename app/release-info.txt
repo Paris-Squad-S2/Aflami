@@ -1,2 +1,2 @@
-versionName=0.2.15
+versionName=0.2.16
 - add logic to handle save login state
