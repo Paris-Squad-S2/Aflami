@@ -188,7 +188,7 @@ class FindByActorViewModelTest {
         )
         viewModel.onMediaCardClick(mediaUiState)
         advanceUntilIdle()
-        coVerify { mediaDetailsFeatureAPI.startTvShowDetails(any()) }
+        coVerify { mediaDetailsFeatureAPI.startMovieDetails(any()) }
     }
 
 
