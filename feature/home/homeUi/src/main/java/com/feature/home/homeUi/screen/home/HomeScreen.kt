@@ -125,7 +125,8 @@ fun HomeScreenContent(
                         mediaList = state.homeUIState.continueWatchingMediaList,
                         onMediaClick = action::onMediaCardClick,
                         onSectionAllClick = action::navigateToContinueWatchingScreen,
-                        isScrolling = isScrolling
+                        isScrolling = isScrolling,
+                        modifier = Modifier.padding(top=8.dp)
                     )
                 }
             }else if(state.isContinueWatchingLoading){
@@ -148,7 +149,8 @@ fun HomeScreenContent(
                         mediaList = state.homeUIState.topRatedMediaList,
                         onMediaClick = action::onMediaCardClick,
                         onSectionAllClick = action::navigateToTopRatingScreen,
-                        isScrolling = isScrolling
+                        isScrolling = isScrolling,
+                        modifier = Modifier.padding(top=8.dp)
                     )
                 }
             }else if(state.isTopRatingLoading){

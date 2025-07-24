@@ -1,6 +1,7 @@
 package com.feature.home.homeUi.screen.home.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,37 +25,40 @@ fun HomeSection(
     onMediaClick:(media: MediaUiState) -> Unit = {},
     onSectionAllClick:()-> Unit = {},
     leadingIconPainter: Painter?=null,
-    isScrolling: Boolean
+    isScrolling: Boolean,
+    modifier: Modifier
 ) {
-    AflamiSectionTitle(
-        title = title,
-        hasViewAll = true,
-        iconColor = iconColor?: Color.Unspecified,
-        painter = leadingIconPainter,
-        onClickViewAll = onSectionAllClick,
-        modifier = Modifier.padding(top = 6.dp)
-    )
+    Column (
+        modifier = modifier
+    ){
+        AflamiSectionTitle(
+            title = title,
+            hasViewAll = true,
+            iconColor = iconColor ?: Color.Unspecified,
+            painter = leadingIconPainter,
+            onClickViewAll = onSectionAllClick,
+        )
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 12.dp, bottom = 16.dp),
-        contentPadding = PaddingValues(16.dp)
-    ) {
-        items(mediaList) { media ->
-            AflamiMediaCard(
-                modifier = Modifier
-                    .padding(end = 8.dp)
-                    .clickable { onMediaClick(media) },
-                imageUri = media.imageUri,
-                rating = media.rating.toFloat(),
-                movieName = media.title,
-                mediaType = media.type.mediaName,
-                year = media.yearOfRelease.year.toString(),
-                mediaCardType = MediaCardType.NORMAL,
-                showGradientFilter = true,
-                enabled = !isScrolling,
-            )
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth(),
+            contentPadding = PaddingValues(16.dp)
+        ) {
+            items(mediaList) { media ->
+                AflamiMediaCard(
+                    modifier = Modifier
+                        .padding(end = 8.dp)
+                        .clickable { onMediaClick(media) },
+                    imageUri = media.imageUri,
+                    rating = media.rating.toFloat(),
+                    movieName = media.title,
+                    mediaType = media.type.mediaName,
+                    year = media.yearOfRelease.year.toString(),
+                    mediaCardType = MediaCardType.NORMAL,
+                    showGradientFilter = true,
+                    enabled = !isScrolling,
+                )
+            }
         }
     }
 }
