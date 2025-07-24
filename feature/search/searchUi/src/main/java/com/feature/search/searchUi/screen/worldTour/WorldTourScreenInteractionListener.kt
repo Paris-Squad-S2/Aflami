@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import com.feature.search.searchUi.screen.search.MediaUiState
+import MediaUiState
+
 
 interface WorldTourScreenInteractionListener {
     fun onNavigateBack()

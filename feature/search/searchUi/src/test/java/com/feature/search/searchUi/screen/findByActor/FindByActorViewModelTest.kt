@@ -1,5 +1,7 @@
 package com.feature.search.searchUi.screen.findByActor
 
+import MediaTypeUi
+import MediaUiState
 import androidx.paging.PagingSource
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
@@ -9,7 +11,6 @@ import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
-import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -148,7 +149,11 @@ class FindByActorViewModelTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
         coEvery { getMediaByActorNameUseCase(testQuery, any()) } throws Exception(errorMessage)
-        val pagingSource = FindByActorPagingSource(testQuery, getMediaByActorNameUseCase,sortingMediaByCategoriesInteractionUseCase)
+        val pagingSource = FindByActorPagingSource(
+            testQuery,
+            getMediaByActorNameUseCase,
+            sortingMediaByCategoriesInteractionUseCase
+        )
         val result = pagingSource.load(
             PagingSource.LoadParams.Refresh(
                 key = null,
@@ -177,7 +182,7 @@ class FindByActorViewModelTest {
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
-        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+        val mediaUiState = MediaUiState(
             id = 42,
             imageUri = "",
             title = "Test Movie",

@@ -1,2 +1,2 @@
-versionName=0.2.17
-- Made the component in the design system more reusable.
+versionName=0.2.18
+-Extract UI state classes into separate files for better separation of concerns and readability.

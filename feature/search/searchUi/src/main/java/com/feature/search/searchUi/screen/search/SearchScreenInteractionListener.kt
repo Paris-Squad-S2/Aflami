@@ -1,5 +1,9 @@
 package com.feature.search.searchUi.screen.search
 
+import CategoryUiState
+import MediaUiState
+import SearchTypeUi
+
 interface SearchScreenInteractionListener {
     fun onNavigateToWorldTourScreen()
     fun onNavigateToFindByActorScreen()

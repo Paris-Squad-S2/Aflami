@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search.components
 
+import SearchScreenState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
-import com.feature.search.searchUi.screen.search.SearchScreenState
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
