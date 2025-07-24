@@ -69,6 +69,8 @@ val koverExcludedPackages = listOf(
     "**Navigation**",
     "**appnavigation**",
     "**appNavigation**",
+    "**.HomeConverter*",
+    "**.HomeDatabase*",
     /*
     "**.GenreResourceMapper",
 
