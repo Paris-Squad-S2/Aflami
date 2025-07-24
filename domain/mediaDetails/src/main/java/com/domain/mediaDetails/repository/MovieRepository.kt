@@ -17,4 +17,5 @@ interface MovieRepository {
     suspend fun getMovieReview(movieId: Int,page: Int): List<Review>
     suspend fun addMovieToFavorite(movieId: Int)
     suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo>
+    suspend fun addRatingToMovie()
 }
