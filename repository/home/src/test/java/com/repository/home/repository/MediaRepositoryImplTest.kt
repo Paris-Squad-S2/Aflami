@@ -56,8 +56,8 @@ class MediaRepositoryImplTest {
             overview = "",
             posterPath = ""
         )
-        coEvery { remote.getPopularMovies().results } returns listOf(movie1, movie2)
-        coEvery { remote.getPopularTvShows().results } returns listOf(tv1)
+        coEvery { remote.getPopularMovies(any()).results } returns listOf(movie1, movie2)
+        coEvery { remote.getPopularTvShows(any()).results } returns listOf(tv1)
         val result = repo.getPopularMedia()
         assertThat(result.map { it.voteAverage }).isEqualTo(listOf(9.0, 8.0, 7.0))
     }
@@ -82,8 +82,8 @@ class MediaRepositoryImplTest {
             overview = "",
             posterPath = ""
         )
-        coEvery { remote.getTopRatedMovies().results } returns listOf(movie)
-        coEvery { remote.getTopRatedTvShows().results } returns listOf(tv)
+        coEvery { remote.getTopRatedMovies(any()).results } returns listOf(movie)
+        coEvery { remote.getTopRatedTvShows(any()).results } returns listOf(tv)
         val result = repo.getTopRatingMedia()
         assertThat(result.first().voteAverage).isEqualTo(9.5)
         assertThat(result.last().voteAverage).isEqualTo(8.5)
@@ -100,7 +100,7 @@ class MediaRepositoryImplTest {
             overview = "",
             posterPath = ""
         )
-        coEvery { remote.getUpcomingMovies().results } returns listOf(movie)
+        coEvery { remote.getUpcomingMovies(any()).results } returns listOf(movie)
         val result = repo.getUpComingMedia()
         assertThat(result.single().id).isEqualTo(100)
     }
