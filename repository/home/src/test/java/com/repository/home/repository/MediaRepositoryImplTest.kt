@@ -1,5 +1,8 @@
 package com.repository.home.repository
 
+import com.domain.home.exception.NoInternetConnectionException
+import com.domain.home.exception.addMediaToLocalException
+import com.domain.home.exception.catchMediaFromLocalException
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
 import com.google.common.truth.Truth.assertThat
@@ -10,21 +13,27 @@ import com.repository.home.dto.TvDto
 import com.repository.home.entity.MediaEntity
 import com.repository.home.entity.MediaTypeEntity
 import com.repository.home.mapper.toEntity
+import com.repository.home.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class MediaRepositoryImplTest {
     private val remote: MediaRemoteDataSource = mockk()
     private val local: HomeMediaLocalDataSource = mockk(relaxed = true)
+    private val networkChecker: NetworkConnectionChecker = mockk()
     private lateinit var repo: MediaRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        repo = MediaRepositoryImpl(remote, local)
+        every { networkChecker.isConnected } returns MutableStateFlow(true)
+        repo = MediaRepositoryImpl(networkChecker, remote, local)
     }
 
     @Test
@@ -143,5 +152,34 @@ class MediaRepositoryImplTest {
         coEvery { local.getAllMedia() } returns listOf(entity)
         val result = repo.getMediaFromLocal()
         assertThat(result.single().id).isEqualTo(300)
+    }
+
+    @Test
+    fun `getPopularMedia throws NoInternetConnectionException when offline`() = runTest {
+        every { networkChecker.isConnected } returns MutableStateFlow(false)
+
+        assertThrows<NoInternetConnectionException> {
+            repo.getPopularMedia()
+        }
+    }
+
+    @Test
+    fun `addMediaToLocal throws addMediaToLocalException on failure`() = runTest {
+        val media = Media(123, "Fail", 4.0, "", mockk(), listOf(1), MediaType.TV_SHOW)
+
+        coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
+
+        assertThrows<addMediaToLocalException> {
+            repo.addMediaToLocal(media)
+        }
+    }
+
+    @Test
+    fun `getMediaFromLocal throws catchMediaFromLocalException on failure`() = runTest {
+        coEvery { local.getAllMedia() } throws RuntimeException("DB read failed")
+
+        assertThrows<catchMediaFromLocalException> {
+            repo.getMediaFromLocal()
+        }
     }
 }

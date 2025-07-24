@@ -15,6 +15,8 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -126,18 +128,43 @@ enum class SliderMediaTypeUi {
 @PreviewMultiDevices
 fun SliderPreview() {
     BasePreview {
-//        val sampleItems = listOf(
-//            MediaItem(R.drawable.anime_movie, 9.0f),
-//            MediaItem(R.drawable.anime_horizontal, 8.7f),
-//            MediaItem(R.drawable.attack_on_titan, 9.1f),
-//            MediaItem(R.drawable.anime_movie, 9.0f),
-//            MediaItem(R.drawable.anime_horizontal, 8.7f),
-//            MediaItem(R.drawable.attack_on_titan, 9.1f)
-//        )
-//        Slider(
-//            items = sampleItems,
-//            modifier = Modifier.fillMaxWidth(),
-//            onClick = {}
-//        )
+        val sampleItems = listOf(
+            SliderMedia(
+                id = 1,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image1.jpg",
+                title = "Sample Movie 1",
+                type = SliderMediaTypeUi.Movie,
+                categories = listOf("Action", "Adventure"),
+                rating = 8.5f,
+                yearOfRelease = "2023"
+            ),
+            SliderMedia(
+                id = 2,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image2.jpg",
+                title = "Sample TV Show",
+                type = SliderMediaTypeUi.TvShow,
+                categories = listOf("Drama"),
+                rating = 9.0f,
+                yearOfRelease = "2022"
+            ),
+            SliderMedia(
+                id = 3,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
+                title = "Sample Movie 2",
+                type = SliderMediaTypeUi.Movie,
+                categories = listOf("Sci-Fi"),
+                rating = 7.8f,
+                yearOfRelease = "2024"
+            )
+        )
+
+        val currentMedia = remember { mutableStateOf(sampleItems.first()) }
+
+        Slider(
+            items = sampleItems,
+            currentMedia = currentMedia,
+            modifier = Modifier.fillMaxWidth(),
+            onClick = {}
+        )
     }
 }
