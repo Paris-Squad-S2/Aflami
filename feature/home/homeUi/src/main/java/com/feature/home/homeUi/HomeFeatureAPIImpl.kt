@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import com.feature.home.homeApi.HomeDestination
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
-import com.paris_2.aflami.designsystem.components.AflamiButton
+import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.ButtonType
 
 class HomeFeatureAPIImpl(
@@ -20,7 +20,7 @@ class HomeFeatureAPIImpl(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                AflamiButton(
+                CustomButton(
                     text = R.string.go_to_search,
                     type = ButtonType.Primary,
                     onClick = {

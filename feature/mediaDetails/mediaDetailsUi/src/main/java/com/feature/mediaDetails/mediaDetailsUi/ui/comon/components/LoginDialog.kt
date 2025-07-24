@@ -26,8 +26,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.R
-import com.paris_2.aflami.designsystem.components.AflamiButton
-import com.paris_2.aflami.designsystem.components.AflamiDialog
+import com.paris_2.aflami.designsystem.components.CustomButton
+import com.paris_2.aflami.designsystem.components.Dialog
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -44,7 +44,7 @@ fun LoginDialog(
     image: Painter = painterResource(R.drawable.profile_placholder),
     @StringRes buttonTextResId: Int = R.string.login,
 ) {
-    AflamiDialog(
+    Dialog(
         onDismiss = onDismiss,
         title = title,
         modifier = modifier
@@ -92,7 +92,7 @@ fun LoginDialog(
                     .fillMaxWidth()
                     .padding(top = 12.dp, bottom = 24.dp)
             )
-            AflamiButton(
+            CustomButton(
                 onClick = onLoginClick,
                 modifier = Modifier
                     .fillMaxWidth()

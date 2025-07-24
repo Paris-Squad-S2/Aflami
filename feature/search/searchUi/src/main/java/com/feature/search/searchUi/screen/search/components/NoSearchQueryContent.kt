@@ -17,9 +17,9 @@ import com.feature.search.searchUi.R
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.feature.search.searchUi.screen.search.SearchScreenState
 import com.feature.search.searchUi.screen.search.SearchTypeUi
-import com.paris_2.aflami.designsystem.components.AflamiButton
-import com.paris_2.aflami.designsystem.components.AflamiHorizontalDivider
-import com.paris_2.aflami.designsystem.components.AflamiText
+import com.paris_2.aflami.designsystem.components.CustomButton
+import com.paris_2.aflami.designsystem.components.HorizontalDivider
+import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.NetworkError
@@ -36,7 +36,7 @@ fun NoSearchQueryContent(
 ) {
     LazyColumn {
         item {
-            AflamiText(
+            Text(
                 text = stringResource(R.string.search_suggestions_hub),
                 style = Theme.textStyle.title.medium,
                 color = Theme.colors.text.title,
@@ -80,12 +80,12 @@ fun NoSearchQueryContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AflamiText(
+                    Text(
                         text = stringResource(R.string.recent_searches),
                         style = Theme.textStyle.title.medium,
                         color = Theme.colors.text.title,
                     )
-                    AflamiButton(
+                    CustomButton(
                         onClick = searchScreenInteractionListener::onClearAllRecentSearches,
                         text = R.string.clear_all,
                         type = ButtonType.TextButton,
@@ -146,7 +146,7 @@ fun NoSearchQueryContent(
                     }
                 )
                 if (index < state.searchUiState.recentSearches.size - 1) {
-                    AflamiHorizontalDivider(
+                    HorizontalDivider(
                         modifier = Modifier.padding(
                             horizontal = 16.dp,
                             vertical = 12.dp

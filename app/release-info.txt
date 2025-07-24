@@ -1,2 +1,2 @@
-versionName=0.2.16
-- fix back button in tvShow details screen
+versionName=0.2.17
+- Made the component in the design system more reusable.
