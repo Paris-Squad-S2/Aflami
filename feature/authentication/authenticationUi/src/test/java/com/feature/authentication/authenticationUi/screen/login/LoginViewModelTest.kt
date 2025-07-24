@@ -14,7 +14,8 @@ import org.junit.jupiter.api.Test
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-    private lateinit var loginUseCase:LoginUseCase
+    private lateinit var loginUseCase: LoginUseCase
+
     @BeforeEach
     fun setup() {
         loginUseCase = mockk()
@@ -72,7 +73,12 @@ class LoginViewModelTest {
 
     @Test
     fun `onClickLogin with invalid credentials sets error message and disables button`() {
-        coEvery { loginUseCase("user", "1234") } throws(InvalidCredentialsException("Invalid credentials"))
+        coEvery {
+            loginUseCase(
+                "user",
+                "1234"
+            )
+        } throws (InvalidCredentialsException("Invalid credentials"))
 
         viewModel.onClickLogin()
 
