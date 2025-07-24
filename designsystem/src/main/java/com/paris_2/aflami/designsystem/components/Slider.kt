@@ -97,7 +97,7 @@ fun Slider(
                     modifier = Modifier
                         .width(244.dp)
                         .height(300.dp),
-                    imageUri = item.imageUri.toString(),
+                    imageUri = item.imageUri,
                     rating = item.rating,
                     mediaCardType = MediaCardType.SLIDER,
                     showRating = isFocused,

@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search.components
 
+import SearchScreenState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +23,6 @@ import androidx.compose.ui.unit.dp
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.GenreResourceMapper.getResourceId
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
-import com.feature.search.searchUi.screen.search.SearchScreenState
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.Chips
