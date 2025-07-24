@@ -29,17 +29,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.getKoin
 
-data class WorldTourScreenState(
-    val uiState: WorldTourUiState,
-    val errorMessage: String?
-)
-
-data class WorldTourUiState(
-    val searchQuery: String,
-    val searchResult: Flow<PagingData<MediaUiState>>,
-    val hints: List<Country>
-)
-
 class WorldTourViewModel(
     savedStateHandle: SavedStateHandle,
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,

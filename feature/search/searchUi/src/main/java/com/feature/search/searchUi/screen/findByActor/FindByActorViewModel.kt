@@ -26,16 +26,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import org.koin.java.KoinJavaComponent.getKoin
 
-data class FindByActorScreenState(
-    val uiState: FindByActorUiState,
-    val errorMessage: String?
-)
-
-data class FindByActorUiState(
-    val searchQuery: String,
-    val searchResult: Flow<PagingData<MediaUiState>>,
-)
-
 class FindByActorViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
