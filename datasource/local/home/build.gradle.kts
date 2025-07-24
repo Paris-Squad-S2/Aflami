@@ -57,6 +57,16 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
+    // test
+    testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.mockk)
+    implementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.kotlin.test.junit5)
+
     implementation(project(Modules.REPOSITORY_HOME))
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
