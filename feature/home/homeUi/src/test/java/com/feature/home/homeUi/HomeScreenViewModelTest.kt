@@ -16,8 +16,6 @@ import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigator
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

@@ -6,14 +6,12 @@ import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.aflami.appnavigation.AppNavigator
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
