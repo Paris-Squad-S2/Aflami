@@ -7,6 +7,7 @@ import com.paris_2.aflami.appnavigation.AppGraph
 import com.paris_2.aflami.appnavigation.AppNavigationEvent
 import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex
@@ -14,7 +15,7 @@ import kotlinx.coroutines.sync.withLock
 
 class AppNavigatorImpl(
     override val startGraph: AppGraph,
-    private val authRepository: AuthenticationRepository
+    private val isLoggedInUseCase: IsLoggedInUseCase
 ) : AppNavigator {
     private val _navigateEvent = Channel<AppNavigationEvent>()
     override val navigationEvent = _navigateEvent.receiveAsFlow()
@@ -22,7 +23,7 @@ class AppNavigatorImpl(
     private var lastNavigateTime = 0L
 
     override val startDestination: AppDestination
-        get() = if (authRepository.isLoggedIn()) {
+        get() = if (isLoggedInUseCase()) {
             AppDestinations.HomeFeature()
         } else {
             AppDestinations.AuthenticationFeature()

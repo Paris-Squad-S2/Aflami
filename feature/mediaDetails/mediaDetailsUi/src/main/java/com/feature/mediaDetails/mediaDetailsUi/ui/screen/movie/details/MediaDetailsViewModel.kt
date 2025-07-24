@@ -268,18 +268,15 @@ class MovieDetailsViewModelViewModel(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    Log.d("isLoggedIn", "true")
                     tryToExecute(
                         execute = { addMovieToFavoriteUseCase(title) },
                         onSuccess = {
-                            Log.d("AddToFavorite", "Done")
                         },
                         onError = {
                             updateState(screenState.value.copy(errorMessage = it))
                         }
                     )
                 } else {
-                    Log.d("isLoggedIn", "false")
                     navigate(MediaDetailsDestinations.LoginDialogDestination(title))
                 }
             },
