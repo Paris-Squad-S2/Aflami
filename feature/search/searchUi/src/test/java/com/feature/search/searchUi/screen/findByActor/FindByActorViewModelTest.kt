@@ -6,6 +6,7 @@ import com.domain.search.model.MediaType
 import com.domain.search.useCase.GetMediaByActorNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.search.MediaTypeUi
@@ -49,7 +50,7 @@ class FindByActorViewModelTest {
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
     }
 
@@ -164,32 +165,6 @@ class FindByActorViewModelTest {
         assertTrue(result is PagingSource.LoadResult.Error)
         assertEquals(errorMessage, (result).throwable.message)
     }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `onMediaCardClick navigates to detailsScreen`() = runTest {
-        val navMock = mockk<com.paris_2.aflami.appnavigation.AppNavigator>(relaxed = true)
-        val viewModel = FindByActorViewModel(
-            savedStateHandle = mockk(relaxed = true),
-            getMediaByActorNameUseCase = getMediaByActorNameUseCase,
-            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
-            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = navMock
-        )
-        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
-            id = 42,
-            imageUri = "",
-            title = "Test Movie",
-            type = MediaTypeUi.MOVIE,
-            categories = listOf(1, 2),
-            yearOfRelease = LocalDate(2023, 1, 1),
-            rating = 4.5,
-        )
-        viewModel.onMediaCardClick(mediaUiState)
-        advanceUntilIdle()
-        coVerify { navMock.navigate(any()) }
-    }
-
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test

@@ -129,7 +129,7 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                appNavigator = mockk(relaxed = true)
+                mediaDetailsFeatureAPI = mockk(relaxed = true)
             )
         )
     }
@@ -153,7 +153,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -178,7 +178,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -201,7 +201,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
 
         advanceUntilIdle()
@@ -476,7 +476,7 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                appNavigator = mockk(relaxed = true)
+                mediaDetailsFeatureAPI = mockk(relaxed = true)
             )
             advanceUntilIdle()
 
@@ -507,7 +507,7 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
         advanceUntilIdle()
 
@@ -552,7 +552,7 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                appNavigator = mockk(relaxed = true)
+                mediaDetailsFeatureAPI = mockk(relaxed = true)
             )
             advanceUntilIdle()
 

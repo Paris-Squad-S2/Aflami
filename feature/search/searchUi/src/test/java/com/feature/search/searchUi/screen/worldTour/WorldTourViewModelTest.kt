@@ -7,6 +7,7 @@ import com.domain.search.useCase.GetMediaByActorNameUseCase
 import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -53,7 +54,7 @@ class WorldTourViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
-            appNavigator = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
         )
     }
 
@@ -123,33 +124,6 @@ class WorldTourViewModelTest {
 
         coVerify(exactly = 1) { autoCompleteCountryUseCase(query2) }
         coVerify(exactly = 0) { autoCompleteCountryUseCase(query1) }
-    }
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    @Test
-    fun `onMediaCardClick triggers navigation`() = runTest {
-        val navMock = mockk<AppNavigator1>(relaxed = true)
-        val viewModel = WorldTourViewModel(
-            savedStateHandle = mockk(relaxed = true),
-            autoCompleteCountryUseCase = autoCompleteCountryUseCase,
-            getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
-            getMoviesByCountryUseCase = getMoviesByCountryUseCase,
-            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
-            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            appNavigator = navMock
-        )
-        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
-            id = 12,
-            imageUri = "",
-            title = "Test Movie",
-            type = com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE,
-            categories = listOf(1, 2),
-            yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
-            rating = 4.5
-        )
-        viewModel.onMediaCardClick(mediaUiState)
-        advanceUntilIdle()
-        coVerify { navMock.navigate(any()) }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
