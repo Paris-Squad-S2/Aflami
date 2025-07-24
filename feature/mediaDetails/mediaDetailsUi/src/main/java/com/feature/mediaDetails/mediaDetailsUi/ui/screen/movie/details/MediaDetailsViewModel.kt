@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -8,7 +9,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.useCase.movie.AddMovieToFavoriteUseCase
+import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
@@ -35,10 +36,10 @@ class MovieDetailsViewModelViewModel(
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
     private val getMovieProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase,
-    private val addMovieToFavoriteUseCase: AddMovieToFavoriteUseCase,
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val addRatingToMovieUseCase: AddRatingToMovieUseCase
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
@@ -62,7 +63,8 @@ class MovieDetailsViewModelViewModel(
                 key = "",
                 name = "",
                 site = "",
-            )
+            ),
+            selectedRating = 0f
         ),
         isLoading = true,
         errorMessage = null
@@ -254,8 +256,13 @@ class MovieDetailsViewModelViewModel(
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
                     tryToExecute(
-                        execute = { addMovieToFavoriteUseCase(title) },
+                        execute = { addRatingToMovieUseCase() },
                         onSuccess = {
+                            updateState(
+                                screenState.value.copy(
+                                    showRatingDialog = true
+                                )
+                            )
                         },
                         onError = {
                             updateState(screenState.value.copy(errorMessage = it))
@@ -269,7 +276,6 @@ class MovieDetailsViewModelViewModel(
                 updateState(screenState.value.copy(errorMessage = it))
             }
         )
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
 
     override fun onAddToListClick(title: Int) {
@@ -331,4 +337,17 @@ class MovieDetailsViewModelViewModel(
             )
         )
     }
+
+    override fun onDismissRatingDialog() {
+        updateState(
+            screenState.value.copy(
+                showRatingDialog = false
+            )
+        )
+    }
+
+    override fun onRatingSubmitted(rating: Float) {
+        TODO("Not yet implemented")
+    }
+
 }
