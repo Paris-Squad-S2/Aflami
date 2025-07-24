@@ -7,4 +7,5 @@ interface AuthenticationLocalDataSource {
 
     fun setIsGuest(isGuest: Boolean)
     fun isGuest(): Boolean
+    fun hasAnySession(): Boolean
 }
