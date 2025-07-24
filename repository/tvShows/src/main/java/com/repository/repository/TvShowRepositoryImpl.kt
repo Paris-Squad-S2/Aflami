@@ -182,6 +182,10 @@ class TvShowRepositoryImpl(
         TODO("Not yet implemented")
     }
 
+    override suspend fun addRatingToTvShow(){
+        print("Rating added to Tv Show")
+    }
+
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
         return safeCall(NoVideoFoundException()) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
