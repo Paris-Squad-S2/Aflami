@@ -1,3 +1,2 @@
-versionName=0.2.11
-- refactor tv show, movie and search by use retrofit instead of ktor
-- fix play button video in tv show and movie
+versionName=0.2.13
+- Made the component in the design system more reusable.
