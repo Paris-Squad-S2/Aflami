@@ -2,8 +2,10 @@ package com.paris_2.dataSource.local.authentication
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.mockkStatic
 import io.mockk.verify
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -45,4 +47,44 @@ class AuthenticationLocalDataSourceImplTest {
         val result = dataSource.getSessionId()
         assertEquals(sessionId, result)
     }
+    @Test
+    fun `isLoggedIn should return true when sessionId exists and isGuest is false`() {
+        every { sharedPreferences.getString("session_id", null) } returns "real_session"
+        every { sharedPreferences.getBoolean("is_guest", false) } returns false
+
+        val result = dataSource.isLoggedIn()
+
+        assertEquals(true, result)
+    }
+    @Test
+    fun `isLoggedIn should return false when sessionId is null`() {
+        every { sharedPreferences.getString("session_id", null) } returns null
+        every { sharedPreferences.getBoolean("is_guest", false) } returns false
+
+        val result = dataSource.isLoggedIn()
+
+        assertEquals(false, result)
+    }
+    @Test
+    fun `isLoggedIn should return false when user is guest`() {
+        every { sharedPreferences.getString("session_id", null) } returns "guest_session"
+        every { sharedPreferences.getBoolean("is_guest", false) } returns true
+
+        val result = dataSource.isLoggedIn()
+
+        assertEquals(false, result)
+    }
+    @Test
+    fun `setIsGuest should save boolean in SharedPreferences`() {
+        every { editor.putBoolean("is_guest", true) } returns editor
+        dataSource.setIsGuest(true)
+        verify { editor.putBoolean("is_guest", true) }
+    }
+    @Test
+    fun `isGuest should return correct value from SharedPreferences`() {
+        every { sharedPreferences.getBoolean("is_guest", false) } returns true
+        val result = dataSource.isGuest()
+        assertEquals(true, result)
+    }
+
 }
