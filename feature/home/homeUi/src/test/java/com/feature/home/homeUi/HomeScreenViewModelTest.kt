@@ -13,6 +13,8 @@ import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
 import com.feature.home.homeUi.screen.home.MediaTypeUi.TVSHOW
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.appnavigation.AppNavigator
@@ -42,7 +44,8 @@ HomeScreenViewModelTest {
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
     private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase = mockk()
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
-    private val appNavigator: AppNavigator = mockk(relaxed = true)
+    private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
     private lateinit var viewModel: HomeScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -111,7 +114,8 @@ HomeScreenViewModelTest {
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
-            appNavigator
+            searchFeatureAPI,
+            mediaDetailsFeatureAPI
         )
     }
 
@@ -156,7 +160,8 @@ HomeScreenViewModelTest {
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
-            appNavigator
+            searchFeatureAPI,
+            mediaDetailsFeatureAPI
         )
         runCurrent()
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Failed categories")
@@ -173,7 +178,8 @@ HomeScreenViewModelTest {
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
-            appNavigator
+            searchFeatureAPI,
+            mediaDetailsFeatureAPI
         )
         runCurrent()
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Popular error")
@@ -190,7 +196,8 @@ HomeScreenViewModelTest {
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
-            appNavigator
+            searchFeatureAPI,
+            mediaDetailsFeatureAPI
         )
         runCurrent()
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo("TopRating error")
@@ -248,7 +255,7 @@ HomeScreenViewModelTest {
     fun `onSearchIconClick triggers navigation`() = runTest {
         viewModel.onSearchIconClick()
         runCurrent()
-        coVerify { appNavigator.navigate(AppDestinations.SearchFeature()) }
+        coVerify { searchFeatureAPI() }
     }
 
     @Test
@@ -261,19 +268,11 @@ HomeScreenViewModelTest {
             viewModel.onMediaCardClick(movie)
             runCurrent()
             coVerify { addMediaToLocalDatabaseUseCase.invoke(movie.toMedia()) }
-            coVerify {
-                appNavigator.navigate(match {
-                    it.toString().contains("MovieDetailsScreen")
-                })
-            }
+            coVerify { mediaDetailsFeatureAPI.startMovieDetails(movie.id) }
             viewModel.onMediaCardClick(tv)
             runCurrent()
             coVerify { addMediaToLocalDatabaseUseCase.invoke(tv.toMedia()) }
-            coVerify {
-                appNavigator.navigate(match {
-                    it.toString().contains("TvShowDetailsScreen")
-                })
-            }
+            coVerify { mediaDetailsFeatureAPI.startTvShowDetails(tv.id) }
         }
 
     @Test
@@ -290,7 +289,7 @@ HomeScreenViewModelTest {
         viewModel.navigateToContinueWatchingScreen()
         runCurrent()
         coVerify {
-            appNavigator.navigate(match {
+            navigate(match {
                 it.toString().contains("ContinueWatchingScreen")
             })
         }
@@ -301,7 +300,7 @@ HomeScreenViewModelTest {
         viewModel.navigateToTopRatingScreen()
         runCurrent()
         coVerify {
-            appNavigator.navigate(match {
+            navigate(match {
                 it.toString().contains("TopRatingMoviesScreen")
             })
         }
