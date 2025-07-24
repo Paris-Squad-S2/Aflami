@@ -5,7 +5,6 @@ import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
@@ -15,7 +14,8 @@ import org.junit.jupiter.api.Test
 class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
-    private lateinit var loginUseCase:LoginUseCase
+    private lateinit var loginUseCase: LoginUseCase
+
     @BeforeEach
     fun setup() {
         loginUseCase = mockk()
@@ -73,7 +73,12 @@ class LoginViewModelTest {
 
     @Test
     fun `onClickLogin with invalid credentials sets error message and disables button`() {
-        coEvery { loginUseCase("user", "1234") } throws(InvalidCredentialsException("Invalid credentials"))
+        coEvery {
+            loginUseCase(
+                "user",
+                "1234"
+            )
+        } throws (InvalidCredentialsException("Invalid credentials"))
 
         viewModel.onClickLogin()
 
