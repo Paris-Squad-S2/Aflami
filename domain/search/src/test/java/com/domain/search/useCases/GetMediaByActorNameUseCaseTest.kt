@@ -26,8 +26,6 @@ class GetMediaByActorNameUseCaseTest {
     fun `should return only movies for given actor`() = runTest {
 
         // Given
-        val actorName = "actor"
-        val page = 1
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
         // When
@@ -41,8 +39,6 @@ class GetMediaByActorNameUseCaseTest {
     fun `should return correct movie titles for given actor`() = runTest {
 
         // Given
-        val actorName = "actor"
-        val page = 1
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
         // When
@@ -56,8 +52,6 @@ class GetMediaByActorNameUseCaseTest {
     fun `should verify repository is called exactly once for given actor`() = runTest {
 
         // Given
-        val actorName = "actor"
-        val page = 1
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
         // When
@@ -71,8 +65,6 @@ class GetMediaByActorNameUseCaseTest {
     fun `should return empty list when repository returns no media for given actor`() = runTest {
 
         // Given
-        val actorName = "Wael"
-        val page = 1
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns emptyList()
 
         // When
@@ -87,8 +79,6 @@ class GetMediaByActorNameUseCaseTest {
     fun `should verify repository is called when no media returned`() = runTest {
 
         // Given
-        val page = 1
-        val actorName = "Wael"
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns emptyList()
 
         // When
@@ -102,8 +92,6 @@ class GetMediaByActorNameUseCaseTest {
     fun `should return empty list when only TV shows are returned`() = runTest {
 
         // Given
-        val actorName = "actor"
-        val page = 1
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns tvOnlyMedia
 
         // When
@@ -117,8 +105,6 @@ class GetMediaByActorNameUseCaseTest {
     fun `should verify repository is called when only TV shows are returned`() = runTest {
 
         // Given
-        val actorName = "actor"
-        val page = 1
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns tvOnlyMedia
 
         // When
@@ -128,7 +114,9 @@ class GetMediaByActorNameUseCaseTest {
         coVerify(exactly = 1) { searchMediaRepository.getMediaByActor(actorName, page) }
     }
 
-    companion object {
+    private companion object {
+        val page = 1
+        val actorName = "Wael"
         val mediaList = listOf(
             createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
             createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),

@@ -11,6 +11,7 @@ import com.domain.mediaDetails.useCases.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieGalleryUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieReviewsUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.domain.mediaDetails.useCases.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.tvShows.AddTvShowToFavoriteUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetSeasonDetailsUseCase
@@ -19,6 +20,7 @@ import com.domain.mediaDetails.useCases.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.search.useCases.AutoCompleteCountryUseCase
 import com.domain.search.useCases.ClearAllRecentSearchesUseCase
@@ -33,6 +35,10 @@ import com.domain.search.useCases.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCases.IncrementCategoryInteractionUseCase
 import com.domain.search.useCases.SearchByQueryUseCase
 import com.domain.search.useCases.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.authentication.usecases.GetForgetPasswordUrlUseCase
+import com.paris_2.domain.authentication.usecases.GetRegisterUrlUseCase
+import com.paris_2.domain.authentication.usecases.LoginUseCase
+import com.paris_2.domain.authentication.usecases.GuestLoginUseCase
 import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
@@ -68,6 +74,12 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
+    factoryOf(::LoginUseCase)
+    factoryOf(::GuestLoginUseCase)
+    factoryOf(::GetForgetPasswordUrlUseCase)
+    factoryOf(::GetRegisterUrlUseCase)
+    factoryOf(::GetMovieVideoUseCase)
+    factoryOf(::GetTvShowVideoUseCase)
     factoryOf(::GetTopRatingMediaUseCase)
     factoryOf(::GetPopularMediaUseCase)
     factoryOf(::GetMoviesCategoriesUseCase)

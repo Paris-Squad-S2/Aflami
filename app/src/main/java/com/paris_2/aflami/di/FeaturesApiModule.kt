@@ -1,7 +1,10 @@
 package com.paris_2.aflami.di
 
+import com.feature.authentication.authenticationApi.AuthenticationDestinations
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.authentication.authenticationUi.AuthenticationFeatureAPIImpl
+import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
+import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigatorImpl
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
@@ -36,6 +39,7 @@ val FeatureAPIModule = module {
     single<AppNavigator> { AppNavigatorImpl(startGraph = AppDestinations.AppGraph1) }
     single<SearchNavigator> { SearchNavigatorImpl(startGraph = SearchDestinations.SearchGraph1) }
     single<MediaDetailsNavigator> { MediaDetailsNavigatorImpl(startGraph = MediaDetailsDestinations.MediaDetailsGraph1) }
+    single<AuthenticationNavigator> { AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1) }
     single<HomeNavigator> { HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1) }
 
 
@@ -51,4 +55,5 @@ val FeatureAPIModule = module {
 
     factoryOf(::SearchFeatureAPIImpl) bind SearchFeatureAPI::class
     factoryOf(::MediaDetailsFeatureAPIImpl) bind MediaDetailsFeatureAPI::class
+    factoryOf(::AuthenticationFeatureAPIImpl) bind AuthenticationFeatureAPI::class
 }

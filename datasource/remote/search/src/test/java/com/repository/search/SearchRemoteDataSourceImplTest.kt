@@ -1,8 +1,8 @@
 package com.repository.search
 
-import com.repository.search.service.contract.SearchApiService
 import com.google.common.truth.Truth.assertThat
 import com.repository.search.dto.SearchDto
+import com.repository.search.service.implementation.RetrofitSearchApiService
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -12,7 +12,9 @@ import org.junit.Test
 
 class SearchRemoteDataSourceImplTest {
 
-    private val mockSearchApiService = mockk<SearchApiService>()
+    private val mockSearchApiService = mockk<RetrofitSearchApiService>()
+
+    private val mockSearchDto = mockk<SearchDto>()
     private lateinit var searchRemoteDataSource: SearchRemoteDataSourceImpl
 
     @Before
@@ -24,135 +26,205 @@ class SearchRemoteDataSourceImplTest {
     fun `searchMulti should return expected SearchDto when API call is successful`() =
         runTest {
             // Given
-            val query = "avengers"
-            val page = 1
-            val language = "en-US"
-            val mockSearchDto = mockk<SearchDto>()
-            // When
             coEvery {
                 mockSearchApiService.searchMulti(query, page, language)
             } returns mockSearchDto
+
+            // When
             val result = searchRemoteDataSource.searchMulti(query, page, language)
+
             // Then
             assertThat(result).isEqualTo(mockSearchDto)
-            coVerify(exactly = 1) { mockSearchApiService.searchMulti(query, page, language) }
         }
 
     @Test
-    fun `searchMulti should propagate exception when API call fails`() =
-        runTest {
-            // Given
-            val query = "avengers"
-            val page = 1
-            val language = "en-US"
-            val apiException = RuntimeException("API Error")
-            // When
-            coEvery {
-                mockSearchApiService.searchMulti(query, page, language)
-            } throws apiException
+    fun `searchMulti should call searchMulti API once`() = runTest {
+        // Given
+        coEvery { mockSearchApiService.searchMulti(query, page, language) } returns mockSearchDto
 
-            // Then
-            try {
-                searchRemoteDataSource.searchMulti(query, page, language)
-                throw AssertionError("Should have propagated the exception")
-            } catch (e: Exception) {
-                assertThat(e).isEqualTo(apiException)
-            }
-            coVerify(exactly = 1) { mockSearchApiService.searchMulti(query, page, language) }
+        // When
+        searchRemoteDataSource.searchMulti(query, page, language)
+
+        // Then
+        coVerify(exactly = 1) { mockSearchApiService.searchMulti(query, page, language) }
+    }
+
+
+    @Test
+    fun `searchMulti should throw exception when API fails`() = runTest {
+        //Given
+        coEvery { mockSearchApiService.searchMulti(query, page, language) } throws apiException
+
+        //When and Then
+        try {
+            searchRemoteDataSource.searchMulti(query, page, language)
+            throw AssertionError("Should have thrown exception")
+        } catch (e: Exception) {
+            assertThat(e).isEqualTo(apiException)
         }
+    }
+
+    @Test
+    fun `searchMulti should call searchMulti API once when exception occurs`() = runTest {
+        //Given
+        coEvery { mockSearchApiService.searchMulti(query, page, language) } throws apiException
+
+        //When and Then
+        try {
+            searchRemoteDataSource.searchMulti(query, page, language)
+        } catch (_: Exception) {
+        }
+
+        coVerify(exactly = 1) { mockSearchApiService.searchMulti(query, page, language) }
+    }
+
 
     @Test
     fun `searchPerson should return expected SearchDto when API call is successful`() =
         runTest {
             // Given
-            val query = "chris evans"
-            val page = 1
-            val language = "en-US"
-            val mockSearchDto = mockk<SearchDto>()
+            coEvery {
+                mockSearchApiService.searchPerson(actorQuery, page, language)
+            } returns mockSearchDto
 
             // When
-            coEvery {
-                mockSearchApiService.searchPerson(query, page, language)
-            } returns mockSearchDto
-            val result = searchRemoteDataSource.searchPerson(query, page, language)
+            val result = searchRemoteDataSource.searchPerson(actorQuery, page, language)
 
             // Then
             assertThat(result).isEqualTo(mockSearchDto)
-            coVerify(exactly = 1) { mockSearchApiService.searchPerson(query, page, language) }
         }
+
+    @Test
+    fun `searchPerson should call API service exactly once`() = runTest {
+        // Given
+        coEvery {
+            mockSearchApiService.searchPerson(
+                actorQuery,
+                page,
+                language
+            )
+        } returns mockSearchDto
+
+        // When
+        searchRemoteDataSource.searchPerson(actorQuery, page, language)
+
+        // Then
+        coVerify(exactly = 1) { mockSearchApiService.searchPerson(actorQuery, page, language) }
+    }
 
     @Test
     fun `searchPerson should propagate exception when API call fails`() =
         runTest {
             // Given
-            val query = "chris evans"
-            val page = 1
-            val language = "en-US"
-            val apiException = RuntimeException("API Error")
-            // When
             coEvery {
-                mockSearchApiService.searchPerson(query, page, language)
+                mockSearchApiService.searchPerson(actorQuery, page, language)
             } throws apiException
 
-            // Then
+            // When and Then
             try {
-                searchRemoteDataSource.searchPerson(query, page, language)
+                searchRemoteDataSource.searchPerson(actorQuery, page, language)
                 throw AssertionError("Should have propagated the exception")
             } catch (e: Exception) {
                 assertThat(e).isEqualTo(apiException)
             }
-            coVerify(exactly = 1) { mockSearchApiService.searchPerson(query, page, language) }
         }
+
+    @Test
+    fun `searchPerson should call API when exception is thrown`() = runTest {
+        // Given
+        coEvery {
+            mockSearchApiService.searchPerson(actorQuery, page, language)
+        } throws apiException
+
+        // When
+        try {
+            searchRemoteDataSource.searchPerson(actorQuery, page, language)
+        } catch (_: Exception) {
+        }
+
+        // Then
+        coVerify(exactly = 1) {
+            mockSearchApiService.searchPerson(actorQuery, page, language)
+        }
+    }
 
     @Test
     fun `searchCountryCode should return expected SearchDto when API call is successful `() =
         runTest {
             // Given
-            val query = "avengers"
-            val page = 1
-            val language = "en-US"
-            val countryCode = "US"
-            val mockSearchDto = mockk<SearchDto>()
-            // When
             coEvery {
-                mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+                mockSearchApiService.searchCountryCode(page, language, countryCode)
             } returns mockSearchDto
 
+            //When
             val result =
-                searchRemoteDataSource.searchCountryCode(query, page, language, countryCode)
+                searchRemoteDataSource.searchCountryCode(page, language, countryCode)
 
             // Then
             assertThat(result).isEqualTo(mockSearchDto)
-            coVerify(exactly = 1) {
-                mockSearchApiService.searchCountryCode(query, page, language, countryCode)
-            }
+
         }
+
+    @Test
+    fun `searchCountryCode should call API when API call is successful`() = runTest {
+        // Given
+        coEvery {
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
+        } returns mockSearchDto
+
+        // When
+        searchRemoteDataSource.searchCountryCode(page, language, countryCode)
+
+        // Then
+        coVerify(exactly = 1) {
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
+        }
+    }
 
     @Test
     fun `searchCountryCode should propagate exception when API call fails`() =
         runTest {
             // Given
-            val query = "avengers"
-            val page = 1
-            val language = "en-US"
-            val countryCode = "US"
-            val apiException = RuntimeException("API Error")
-            // When
             coEvery {
-                mockSearchApiService.searchCountryCode(query, page, language, countryCode)
+                mockSearchApiService.searchCountryCode(page, language, countryCode)
             } throws apiException
 
-            // Then
-
+            // When and Then
             try {
-                searchRemoteDataSource.searchCountryCode(query, page, language, countryCode)
+                searchRemoteDataSource.searchCountryCode(page, language, countryCode)
                 throw AssertionError("Should have propagated the exception")
             } catch (e: Exception) {
                 assertThat(e).isEqualTo(apiException)
             }
 
-            coVerify(exactly = 1) {
-                mockSearchApiService.searchCountryCode(query, page, language, countryCode)
-            }
         }
+
+    @Test
+    fun `searchCountryCode should call API when exception is thrown`() = runTest {
+        // Given
+        coEvery {
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
+        } throws apiException
+
+        // When
+        try {
+            searchRemoteDataSource.searchCountryCode(page, language, countryCode)
+        } catch (_: Exception) {
+        }
+
+        // Then
+        coVerify(exactly = 1) {
+            mockSearchApiService.searchCountryCode(page, language, countryCode)
+        }
+    }
+
+
+    private companion object {
+        val actorQuery = "chris evans"
+        val query = "avengers"
+        val page = 1
+        val language = "en-US"
+        val countryCode = "US"
+        val apiException = RuntimeException("API Error")
+    }
 }

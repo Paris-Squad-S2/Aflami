@@ -44,15 +44,15 @@ val lightThemeColors = Colors(
         blueCard = Color(0x3D8DD3F2),
         navyCard = Color(0x3D91A9FA),
         yellowCard = Color(0x3DFAD291),
-        backgroundCircles = Color(0x3DD85895),
+        backgroundCircles = Color(0xFFD85895).copy(alpha = 0.08f),
         profileOverlay = Color(0x80FAF5F7)
     )
 )
 
 val gradient = Brush.linearGradient(
     colors = listOf(
-        Color(0xD85895).copy(alpha = 0.87f),
-        Color(0x64163B).copy(alpha = 0.87f)
+        Color(0xFFD85895).copy(alpha = 0.87f),
+        Color(0xFF64163B).copy(alpha = 0.87f)
     ),
     start = androidx.compose.ui.geometry.Offset.Zero,
     end = androidx.compose.ui.geometry.Offset.Infinite

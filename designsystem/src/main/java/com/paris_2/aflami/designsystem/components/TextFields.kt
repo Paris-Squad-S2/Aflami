@@ -67,7 +67,6 @@ fun TextField(
     trailingIcon: Int? = null,
     singleLine: Boolean = true,
     enabled: Boolean = true,
-    showError: Boolean = false,
     errorMessage: Int? = null,
     onClick: () -> Unit = {},
     onClickTrailingIcon: () -> Unit = { },
@@ -75,6 +74,11 @@ fun TextField(
     suggestions: List<String> = emptyList(),
     onSuggestionSelected: (String) -> Unit = {}
 ) {
+    var showError by remember { mutableStateOf(errorMessage != null) }
+
+    LaunchedEffect(errorMessage) {
+        showError = errorMessage != null
+    }
 
     var expanded by remember { mutableStateOf(false) }
     val filteredSuggestions = remember(value, suggestions) {
@@ -129,7 +133,7 @@ fun TextField(
                     .padding(bottom = 4.dp, start = 16.dp),
             ) {
                 Text(
-                    text = stringResource(id = errorMessage ?: R.string.error),
+                    text = stringResource(id = errorMessage ?: R.string.empty),
                     color = Theme.colors.onPrimaryColors.onPrimary,
                     style = Theme.textStyle.label.medium,
                     fontSize = 12.sp,
@@ -362,85 +366,82 @@ fun PreviewTextField() {
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             var defaultText by remember { mutableStateOf("") }
-            var showError by remember { mutableStateOf(false) }
+            var errorMessage: Int? by remember { mutableStateOf(null) }
             TextField(
                 value = defaultText,
                 onValueChange = {
                     defaultText = it
-                    showError = true
+                    errorMessage = R.string.error
                 },
                 placeholder = "Full name",
                 enabled = true,
                 leadingIcon = R.drawable.ic_outlined_user,
-                showError = showError
+                errorMessage = errorMessage,
             )
 
 
             var text by remember { mutableStateOf("") }
-            var showError2 by remember { mutableStateOf(true) }
+            var errorMessage2: Int? by remember { mutableStateOf(R.string.incorrect_password) }
             TextField(
                 value = text,
                 onValueChange = {
                     text = it
-                    showError2 = true
+                    errorMessage2 = R.string.incorrect_password
                 },
                 placeholder = "Full name",
                 enabled = true,
                 leadingIcon = R.drawable.ic_outlined_user,
-                showError = showError2,
-                errorMessage = R.string.incorrect_password,
+                errorMessage = errorMessage2,
             )
 
             var defaultText2 by remember { mutableStateOf("") }
-            var showError3 by remember { mutableStateOf(false) }
+            var errorMessage3: Int? by remember { mutableStateOf(null) }
             TextField(
                 value = defaultText2,
                 onValueChange = {
                     defaultText2 = it
-                    showError3 = true
+                    errorMessage3 = R.string.error
                 },
                 placeholder = "label",
                 enabled = false,
                 trailingIcon = R.drawable.ic_filter_vertical,
-                showError = showError3,
+                errorMessage = errorMessage3,
                 onClick = {
-                    showError3 = true
+                    errorMessage3 = R.string.error
                 }
             )
 
             var password by remember { mutableStateOf("") }
-            var showPasswordError by remember { mutableStateOf(false) }
+            var errorMessage4: Int? by remember { mutableStateOf(null) }
             var showPassword by remember { mutableStateOf(false) }
             TextField(
                 value = password,
                 onValueChange = {
                     password = it
-                    showPasswordError = true
+                    errorMessage4 = R.string.incorrect_password
                 },
                 placeholder = "label",
                 enabled = true,
                 trailingIcon = if (showPassword) R.drawable.ic_eye_closed else R.drawable.ic_eye_opened,
-                showError = showPasswordError,
                 onClick = {
-                    showPasswordError = true
+                    errorMessage4 = R.string.incorrect_password
                 },
                 onClickTrailingIcon = {
                     showPassword = !showPassword
                 },
-                errorMessage = R.string.incorrect_password,
+                errorMessage = errorMessage4,
                 showText = showPassword
             )
 
 
             var multiLineText2 by remember { mutableStateOf("") }
-            var showError4 by remember { mutableStateOf(false) }
             TextField(
                 value = multiLineText2,
                 onValueChange = { multiLineText2 = it },
                 placeholder = "Description",
                 singleLine = false,
                 trailingIcon = null,
-                showError = showError4,
+                errorMessage = null,
             )
 
             val hints = listOf("Apple", "Banana", "Cherry", "Date", "Elderberry")

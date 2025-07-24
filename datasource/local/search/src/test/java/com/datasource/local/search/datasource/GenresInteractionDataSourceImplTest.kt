@@ -13,15 +13,10 @@ import org.junit.jupiter.api.Test
 class GenresInteractionDataSourceImplTest {
     private lateinit var genresInteractionDataSource: GenresInteractionDataSourceImpl
     private val genresUserInteractionDao: GenresUserInteractionDao = mockk(relaxed = false)
-    private lateinit var sampleInteraction: GenreUserInteractionEntity
 
     @BeforeEach
     fun setUp() {
         genresInteractionDataSource = GenresInteractionDataSourceImpl(genresUserInteractionDao)
-        sampleInteraction = GenreUserInteractionEntity(
-            genreId = 5,
-            interactionCount = 9
-        )
     }
 
     @Test
@@ -76,5 +71,12 @@ class GenresInteractionDataSourceImplTest {
         val result = genresInteractionDataSource.getAllInteractions()
         // Then
         assertThat(result).isEmpty()
+    }
+
+    private companion object{
+        val sampleInteraction = GenreUserInteractionEntity(
+        genreId = 5,
+        interactionCount = 9
+        )
     }
 }

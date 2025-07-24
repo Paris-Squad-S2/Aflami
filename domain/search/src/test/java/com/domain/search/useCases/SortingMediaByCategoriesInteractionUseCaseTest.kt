@@ -5,10 +5,15 @@ import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.repository.GenresInteractionRepository
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
+import testUtils.assertIds
+import testUtils.defaultImage
+import testUtils.media
+import testUtils.sampleDate
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -22,152 +27,109 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
         sortingUseCase = SortingMediaByCategoriesInteractionUseCase(genresInteractionRepository)
     }
 
-    private val sampleDate = LocalDate(2020, 1, 1)
-    private val defaultImage = "example.jpg"
-
     @Test
     fun `should sort media by sum of category interaction counts descending`() = runTest {
-        val interactions = listOf(
-            GenreUserInteractionModel(genreId = 1, interactionCount = 10),
-            GenreUserInteractionModel(genreId = 2, interactionCount = 5),
-            GenreUserInteractionModel(genreId = 3, interactionCount = 1)
+
+        // Given
+        coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
+            GenreUserInteractionModel(1, 10),
+            GenreUserInteractionModel(2, 5),
+            GenreUserInteractionModel(3, 1)
         )
-        coEvery { genresInteractionRepository.getAllInteractions() } returns interactions
 
         val mediaList = listOf(
-            Media(
-                id = 101,
-                imageUri = defaultImage,
-                title = "A",
-                type = MediaType.MOVIE,
-                categories = listOf(1, 3),
-                yearOfRelease = sampleDate,
-                rating = 7.2
-            ),
-            Media(
-                id = 102,
-                imageUri = defaultImage,
-                title = "B",
-                type = MediaType.TVSHOW,
-                categories = listOf(2),
-                yearOfRelease = sampleDate,
-                rating = 7.2
-            ),
-            Media(
-                id = 103,
-                imageUri = defaultImage,
-                title = "C",
-                type = MediaType.MOVIE,
-                categories = listOf(3),
-                yearOfRelease = sampleDate,
-                rating = 7.2
-            ),
-            Media(
-                id = 104,
-                imageUri = defaultImage,
-                title = "D",
-                type = MediaType.TVSHOW,
-                categories = listOf(2, 3),
-                yearOfRelease = sampleDate,
-                rating = 7.2
-            )
+            media(101, "A", listOf(1, 3)),
+            media(102, "B", listOf(2)),
+            media(103, "C", listOf(3)),
+            media(104, "D", listOf(2, 3))
         )
+
+        // When
         val result = sortingUseCase(mediaList)
-        assertEquals(listOf(101, 104, 102, 103), result.map { it.id })
+
+        // Then
+        assertIds(result, 101, 104, 102, 103)
     }
 
     @Test
     fun `should preserve input order when media have equal category interaction sums`() = runTest {
-        val interactions = listOf(
-            GenreUserInteractionModel(genreId = 1, interactionCount = 10),
-            GenreUserInteractionModel(genreId = 2, interactionCount = 0)
+        // Given
+        coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
+            GenreUserInteractionModel(1, 10),
+            GenreUserInteractionModel(2, 0)
         )
-        coEvery { genresInteractionRepository.getAllInteractions() } returns interactions
+
         val mediaList = listOf(
-            Media(
-                id = 200,
-                imageUri = defaultImage,
-                title = "A",
-                type = MediaType.MOVIE,
-                categories = listOf(1),
-                yearOfRelease = sampleDate,
-                rating = 7.5
-            ),
-            Media(
-                id = 201,
-                imageUri = defaultImage,
-                title = "B",
-                type = MediaType.TVSHOW,
-                categories = listOf(2),
-                yearOfRelease = sampleDate,
-                rating = 5.1
-            )
+            media(200, "A", listOf(1)),
+            media(201, "B", listOf(2))
         )
+
+        // When
         val result = sortingUseCase(mediaList)
-        assertEquals(listOf(200, 201), result.map { it.id })
+
+        // Then
+        assertIds(result, 200, 201)
     }
 
     @Test
     fun `should order medias with no matching genres as zero interaction`() = runTest {
-        val interactions = listOf(
-            GenreUserInteractionModel(genreId = 1, interactionCount = 7)
+        // Given
+        coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
+            GenreUserInteractionModel(1, 7)
         )
-        coEvery { genresInteractionRepository.getAllInteractions() } returns interactions
+
         val mediaList = listOf(
-            Media(
-                id = 300,
-                imageUri = defaultImage,
-                title = "A",
-                type = MediaType.TVSHOW,
-                categories = listOf(2),
-                yearOfRelease = sampleDate,
-                rating = 10.0
-            ),
-            Media(
-                id = 301,
-                imageUri = defaultImage,
-                title = "B",
-                type = MediaType.MOVIE,
-                categories = listOf(1),
-                yearOfRelease = sampleDate,
-                rating = 8.5
-            )
+            media(300, "A", listOf(2)), // No matching genre
+            media(301, "B", listOf(1))  // Matching genre
         )
+
+        // When
         val result = sortingUseCase(mediaList)
-        assertEquals(listOf(301, 300), result.map { it.id })
+
+        // Then
+        assertIds(result, 301, 300)
     }
 
     @Test
     fun `should return empty list when input media list is empty`() = runTest {
+        // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns emptyList()
+
+        // When
         val result = sortingUseCase(emptyList())
+
+        // Then
         assertEquals(emptyList(), result)
     }
 
     @Test
-    fun `should treat all zero when repository returns no interactions`() = runTest {
+    fun `should treat all as zero when repository returns no interactions`() = runTest {
+        // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns emptyList()
+
         val mediaList = listOf(
-            Media(
-                id = 401,
-                imageUri = defaultImage,
-                title = "A",
-                type = MediaType.TVSHOW,
-                categories = listOf(2),
-                yearOfRelease = sampleDate,
-                rating = 3.1
-            ),
-            Media(
-                id = 402,
-                imageUri = defaultImage,
-                title = "B",
-                type = MediaType.MOVIE,
-                categories = listOf(5),
-                yearOfRelease = sampleDate,
-                rating = 8.1
-            )
+            media(401, "A", listOf(2)),
+            media(402, "B", listOf(5))
         )
+
+        // When
         val result = sortingUseCase(mediaList)
-        assertEquals(listOf(401, 402), result.map { it.id })
+
+        // Then
+        assertIds(result, 401, 402)
     }
+
+    @Test
+    fun `should call genresInteractionRepository to retrieve interactions`() = runTest {
+        // Given
+        val mediaList = listOf(media(500, "A", listOf(1)))
+        coEvery { genresInteractionRepository.getAllInteractions() } returns emptyList()
+
+        // When
+        sortingUseCase(mediaList)
+
+        // Then
+        coVerify(exactly = 1) { genresInteractionRepository.getAllInteractions() }
+    }
+
 }
