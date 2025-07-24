@@ -33,6 +33,7 @@ import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.paris_2.domain.authentication.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.authentication.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -72,5 +73,6 @@ val useCaseModule = module {
     factoryOf(::GetRegisterUrlUseCase)
     factoryOf(::GetMovieVideoUseCase)
     factoryOf(::GetTvShowVideoUseCase)
+    factoryOf(::IsLoggedInUseCase)
 }
 
