@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
@@ -70,6 +71,7 @@ fun TvShowDetailsScreenContent(
     val listState = rememberLazyListState()
     val density = LocalDensity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
+    val activity = LocalActivity.current
 
     val alpha by remember {
         derivedStateOf {
@@ -363,7 +365,7 @@ fun TvShowDetailsScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(designsystemR.drawable.ic_back),
-                    onClick = { tvShowScreenInteractionListener.onNavigateBack() }
+                    onClick = { activity?.finish() }
                 )
             ),
             trailingIcons = listOf(
