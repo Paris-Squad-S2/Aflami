@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -26,8 +28,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
+import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.paris_2.aflami.designsystem.components.AflamiMediaCard
@@ -36,6 +38,8 @@ import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.MoodPicker
+import com.paris_2.aflami.designsystem.components.NetworkError
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -47,11 +51,18 @@ fun HomeScreen(
 ) {
     val homeScreenState = viewModel.screenState.collectAsStateWithLifecycle()
 
-    HomeScreenContent(
-        state = homeScreenState.value,
-        action = viewModel
-    )
-
+    when{
+        homeScreenState.value.errorMessage!=null -> {
+            NetworkError(
+                modifier = Modifier.fillMaxSize(),
+                onRetry = viewModel::onRetry
+            )
+        }
+        else -> HomeScreenContent(
+            state = homeScreenState.value,
+            action = viewModel
+        )
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,8 +85,8 @@ fun HomeScreenContent(
             (scroll / maxScrollPx).coerceIn(0f, 1f)
         }
     }
-
     val topBarBackground = Theme.colors.surface.copy(alpha = alpha)
+
     Box(
         Modifier
             .fillMaxSize()
@@ -85,97 +96,76 @@ fun HomeScreenContent(
             modifier = Modifier.fillMaxSize(),
         ) {
 
-            item {
-                HomeSlider(
-                    onMediaClick = {
-                        action.onMediaSliderClick(it)
-                    },
-                    mediaList = state.homeUIState.popularMediaList,
-                    modifier = Modifier.fillMaxSize(),
-                )
+            if(state.homeUIState.popularMediaList.isNotEmpty()) {
+                item {
+                    HomeSlider(
+                        onMediaClick = {
+                            action.onMediaSliderClick(it)
+                        },
+                        mediaList = state.homeUIState.popularMediaList,
+                        modifier = Modifier.fillMaxSize(),
+                    )
+                }
+            }else if(state.isPopularMediaLoading){
+                item {
+                    PageLoadingPlaceHolder(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(410.dp)
+                            .statusBarsPadding()
+                    )
+                }
             }
 
 
             if (state.homeUIState.continueWatchingMediaList.isNotEmpty()) {
                 item {
-                    AflamiSectionTitle(
-                        title = stringResource(R.string.continue_watching),
-                        hasViewAll = true,
-                        onClickViewAll = {
-                            action.navigateToContinueWatchingScreen()
-                        },
-                        modifier = Modifier.padding(top = 6.dp)
+                    HomeSection(
+                        title = stringResource(id = com.feature.home.homeUi.R.string.continue_watching),
+                        mediaList = state.homeUIState.continueWatchingMediaList,
+                        onMediaClick = action::onMediaCardClick,
+                        onSectionAllClick = action::navigateToContinueWatchingScreen,
+                        isScrolling = isScrolling
                     )
-
-                    LazyRow(
+                }
+            }else if(state.isContinueWatchingLoading){
+                item {
+                    PageLoadingPlaceHolder(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(top = 12.dp, bottom = 16.dp),
-                        contentPadding = PaddingValues(16.dp)
-                    ) {
-                        items(state.homeUIState.continueWatchingMediaList.take(10)) { media ->
-                            AflamiMediaCard(
-                                modifier = Modifier
-                                    .padding(end = 8.dp)
-                                    .clickable {
-                                        action.onMediaCardClick(media)
-                                    },
-                                imageUri = media.imageUri,
-                                rating = media.rating.toFloat(),
-                                movieName = media.title,
-                                mediaType = media.type.mediaName,
-                                year = media.yearOfRelease.year.toString(),
-                                mediaCardType = MediaCardType.NORMAL,
-                                showGradientFilter = true,
-                                enabled = !isScrolling,
-                            )
-                        }
-                    }
-                }
-            }
-            item {
-                AflamiSectionTitle(
-                    title = stringResource(R.string.top_rating),
-                    hasViewAll = true,
-                    painter = painterResource(R.drawable.ic_fire),
-                    iconColor = Theme.colors.secondary,
-                    onClickViewAll = {
-                        action.navigateToTopRatingScreen()
-                    },
-                    modifier = Modifier.padding(top = 6.dp)
-
-                )
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 12.dp),
-                    contentPadding = PaddingValues(16.dp)
-                ) {
-                    items(state.homeUIState.topRatedMediaList.take(10)) { media ->
-                        AflamiMediaCard(
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .clickable {
-                                    action.onMediaCardClick(media)
-                                },
-                            imageUri = media.imageUri,
-                            rating = media.rating.toFloat(),
-                            movieName = media.title,
-                            mediaType = media.type.mediaName,
-                            year = media.yearOfRelease.year.toString(),
-                            mediaCardType = MediaCardType.NORMAL,
-                            showGradientFilter = true,
-                            enabled = !isScrolling,
-                        )
-                    }
+                            .height(410.dp)
+                            .statusBarsPadding()
+                    )
                 }
             }
 
+            if(state.homeUIState.topRatedMediaList.isNotEmpty()) {
+                item {
+                    HomeSection(
+                        title = stringResource(com.feature.home.homeUi.R.string.top_rating),
+                        leadingIconPainter = painterResource(com.feature.home.homeUi.R.drawable.ic_fire),
+                        iconColor = Theme.colors.secondary,
+                        mediaList = state.homeUIState.topRatedMediaList,
+                        onMediaClick = action::onMediaCardClick,
+                        onSectionAllClick = action::navigateToTopRatingScreen,
+                        isScrolling = isScrolling
+                    )
+                }
+            }else if(state.isTopRatingLoading){
+                item {
+                    PageLoadingPlaceHolder(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(410.dp)
+                            .statusBarsPadding()
+                    )
+                }
+            }
 
             item {
                 MoodPicker(
-                    title = stringResource(R.string.mood_picker_get_a_movie),
-                    question = stringResource(R.string.what_s_your_vibe_today),
+                    title = stringResource(com.feature.home.homeUi.R.string.mood_picker_get_a_movie),
+                    question = stringResource(com.feature.home.homeUi.R.string.what_s_your_vibe_today),
                     onEmojiClick = { emojiMood ->
                         action.moodPickerSelected(emojiMood.tags)
                     },
@@ -187,12 +177,12 @@ fun HomeScreenContent(
                     ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 24.dp)
+                        .padding(horizontal = 16.dp, vertical = 24.dp),
                 )
             }
             item {
                 AflamiSectionTitle(
-                    title = stringResource(R.string.upcoming),
+                    title = stringResource(com.feature.home.homeUi.R.string.upcoming),
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
                 LazyRow(
@@ -200,8 +190,8 @@ fun HomeScreenContent(
                 ) {
                     item {
                         Chips(
-                            title = stringResource(R.string.all),
-                            icon = painterResource(R.drawable.ic_category_all),
+                            title = stringResource(com.feature.home.homeUi.R.string.all),
+                            icon = painterResource(com.feature.home.homeUi.R.drawable.ic_category_all),
                             isSelected = isAllCategories,
                             onClick = {
                                 action.onAllCategoriesSelect()
@@ -225,29 +215,40 @@ fun HomeScreenContent(
 
             }
 
-            items(state.homeUIState.upComingMediaList) { upcomingMedia ->
-                AflamiMediaCard(
-                    imageUri = upcomingMedia.imageUri,
-                    rating = upcomingMedia.rating.toFloat(),
-                    movieName = upcomingMedia.title,
-                    mediaType = upcomingMedia.type.toString(),
-                    year = upcomingMedia.yearOfRelease.toString(),
-                    mediaCardType = MediaCardType.UP_COMING,
-                    showGradientFilter = false,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                        .padding(bottom = 8.dp)
-                        .clickable {
-                            action.onMediaCardClick(upcomingMedia)
-                        },
-                )
+            if (state.homeUIState.upComingMediaList.isNotEmpty()) {
+                items(state.homeUIState.upComingMediaList) { upcomingMedia ->
+                    AflamiMediaCard(
+                        imageUri = upcomingMedia.imageUri,
+                        rating = upcomingMedia.rating.toFloat(),
+                        movieName = upcomingMedia.title,
+                        mediaType = upcomingMedia.type.toString(),
+                        year = upcomingMedia.yearOfRelease.toString(),
+                        mediaCardType = MediaCardType.UP_COMING,
+                        showGradientFilter = false,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 8.dp)
+                            .clickable {
+                                action.onMediaCardClick(upcomingMedia)
+                            },
+                    )
+                }
+            }else if (state.isCategoryLoading){
+                item {
+                    PageLoadingPlaceHolder(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(410.dp)
+                            .statusBarsPadding()
+                    )
+                }
             }
         }
     }
 
     TopAppBar(
-        title = stringResource(R.string.aflami),
+        title = stringResource(com.feature.home.homeUi.R.string.aflami),
         subtitle = "More than just watching.",
         modifier = Modifier
             .background(topBarBackground)
@@ -276,4 +277,3 @@ fun HomeScreenContent(
         )
     }
 }
-
