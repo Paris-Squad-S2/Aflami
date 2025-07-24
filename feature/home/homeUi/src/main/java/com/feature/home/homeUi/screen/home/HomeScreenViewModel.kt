@@ -15,10 +15,9 @@ import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsApi.toJson
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigator
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 
@@ -30,7 +29,8 @@ class HomeScreenViewModel(
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase,
     private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase,
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
-    private val appNavigator: AppNavigator,
+    private val searchFeatureAPI: SearchFeatureAPI,
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState(
@@ -239,9 +239,7 @@ class HomeScreenViewModel(
     override fun onSearchIconClick() {
         tryToExecute(
             execute = {
-                appNavigator.navigate(
-                    destination = AppDestinations.SearchFeature()
-                )
+                searchFeatureAPI()
             },
             onError = {errorMessage ->
                 emitState(
@@ -258,19 +256,15 @@ class HomeScreenViewModel(
             execute = {
                 addMediaToLocalDatabaseUseCase.invoke(media.toMedia())
                 loadContinueWatchingMedia()
-                appNavigator.navigate(
-                    AppDestinations.MediaDetailsFeature(
-                        when (media.type) {
-                            MediaTypeUi.MOVIE -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = media.id
-                            )
-
-                            MediaTypeUi.TVSHOW -> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = media.id
-                            )
-                        }.toJson()
+                when (media.type) {
+                    MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
+                        movieId = media.id
                     )
-                )
+
+                    MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
+                        tvShowId = media.id
+                    )
+                }
             },
             onError = { errorMessage ->
                 emitState(
@@ -287,19 +281,15 @@ class HomeScreenViewModel(
             execute = {
                 addMediaToLocalDatabaseUseCase.invoke(media.toMedia())
                 loadContinueWatchingMedia()
-                appNavigator.navigate(
-                    AppDestinations.MediaDetailsFeature(
-                        when (media.type) {
-                            SliderMediaTypeUi.Movie -> MediaDetailsDestinations.MovieDetailsScreen(
-                                movieId = media.id
-                            )
-
-                            SliderMediaTypeUi.TvShow-> MediaDetailsDestinations.TvShowDetailsScreen(
-                                tvShowId = media.id
-                            )
-                        }.toJson()
+                when (media.type) {
+                    SliderMediaTypeUi.Movie -> mediaDetailsFeatureAPI.startMovieDetails(
+                        movieId = media.id
                     )
-                )
+
+                    SliderMediaTypeUi.TvShow -> mediaDetailsFeatureAPI.startTvShowDetails(
+                        tvShowId = media.id
+                    )
+                }
             },
             onError = { errorMessage ->
                 emitState(
@@ -314,10 +304,8 @@ class HomeScreenViewModel(
     override fun navigateToContinueWatchingScreen() {
         tryToExecute(
             execute = {
-                appNavigator.navigate(
-                    destination = AppDestinations.HomeFeature(
-                        homeDestination = HomeDestinations.ContinueWatchingScreen.toJson(),
-                    )
+                navigate(
+                    destination = HomeDestinations.ContinueWatchingScreen,
                 )
             },
             onError = { errorMessage ->
@@ -333,10 +321,8 @@ class HomeScreenViewModel(
     override fun navigateToTopRatingScreen() {
         tryToExecute(
             execute = {
-                appNavigator.navigate(
-                    destination = AppDestinations.HomeFeature(
-                        homeDestination = HomeDestinations.TopRatingMoviesScreen.toJson(),
-                    )
+                navigate(
+                    destination = HomeDestinations.TopRatingMoviesScreen,
                 )
             },
             onError = { errorMessage ->
