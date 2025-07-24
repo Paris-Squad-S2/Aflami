@@ -61,7 +61,7 @@ fun HomeSlider(
                 contentScale = ContentScale.FillWidth,
             )
         Column(
-            modifier = Modifier.padding(top = 74.dp),
+            modifier = Modifier.padding(top = 96.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {

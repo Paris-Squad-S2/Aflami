@@ -71,7 +71,7 @@ fun Slider(
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(top = if (isFocused) 0.dp else 24.dp)
+                    .padding(top = if (isFocused) 0.dp else 12.dp)
                     .graphicsLayer(
                         scaleX = scaleX,
                         scaleY = 1f
