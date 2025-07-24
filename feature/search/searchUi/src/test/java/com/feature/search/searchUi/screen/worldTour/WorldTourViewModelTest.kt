@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.worldTour
 
+import MediaUiState
 import com.domain.search.model.Country
 import com.domain.search.useCase.AutoCompleteCountryUseCase
 import com.domain.search.useCase.GetCountryCodeByNameUseCase
@@ -138,11 +139,11 @@ class WorldTourViewModelTest {
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
-        val mediaUiState = com.feature.search.searchUi.screen.search.MediaUiState(
+        val mediaUiState = MediaUiState(
             id = 12,
             imageUri = "",
             title = "Test Movie",
-            type = com.feature.search.searchUi.screen.search.MediaTypeUi.MOVIE,
+            type = MediaTypeUi.MOVIE,
             categories = listOf(1, 2),
             yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
             rating = 4.5

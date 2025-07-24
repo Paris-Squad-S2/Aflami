@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.findByActor
 
-import com.feature.search.searchUi.screen.search.MediaUiState
+import MediaUiState
+
 
 interface FindByActorScreenInteractionListener {
     fun onNavigateBack()
