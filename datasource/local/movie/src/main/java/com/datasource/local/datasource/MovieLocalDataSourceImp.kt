@@ -15,7 +15,7 @@ class MovieLocalDataSourceImp(
 ) : MovieLocalDataSource {
     override suspend fun addMovie(movie: MovieEntity) {
         dao.addMovies(movie)
-        scheduleClearMediaWork(movie.id, movie.language)
+        scheduleClearMovieWork(movie.id, movie.language)
     }
 
     override suspend fun getMovieById(movieId: Int, language: String): MovieEntity? =
@@ -24,7 +24,7 @@ class MovieLocalDataSourceImp(
     override suspend fun clearMovieById(movieId: Int, language: String) =
         dao.clearMovieDetailsById(movieId, language)
 
-    private fun scheduleClearMediaWork(movieId: Int, language: String) {
+    private fun scheduleClearMovieWork(movieId: Int, language: String) {
         val inputData = workDataOf(
             ClearMovieDetailWorker.MOVIE_ID to movieId,
             ClearMovieDetailWorker.LANGUAGE to language

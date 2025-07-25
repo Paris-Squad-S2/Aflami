@@ -2,6 +2,7 @@ package com.paris_2.aflami.di
 
 import androidx.work.WorkManager
 import androidx.work.WorkerFactory
+import com.repository.dataSource.local.workmanager.ClearTvShowDetailsWorker
 import com.repository.movie.dataSource.local.workmanager.ClearMovieDetailWorker
 import com.repository.search.dataSource.local.workManager.ClearMediaWorker
 import org.koin.android.ext.koin.androidContext
@@ -28,6 +29,14 @@ val workManagerModule = module {
             context = androidContext(),
             workerParams = get(),
             movieLocalDataSource = get()
+        )
+    }
+
+    worker {
+        ClearTvShowDetailsWorker(
+            context = androidContext(),
+            workerParams = get(),
+            tvShowLocalDataSource = get()
         )
     }
 
