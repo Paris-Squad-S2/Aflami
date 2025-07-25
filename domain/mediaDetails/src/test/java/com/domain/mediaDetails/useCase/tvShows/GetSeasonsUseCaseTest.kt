@@ -5,8 +5,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import testUtils.fakeSeasons
 import kotlin.test.assertEquals
 
@@ -15,7 +15,7 @@ class GetSeasonsUseCaseTest {
     private lateinit var getSeasonDetailsUseCase: GetSeasonDetailsUseCase
     private val tvShowRepository: TvShowRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getSeasonDetailsUseCase = GetSeasonDetailsUseCase(tvShowRepository)
     }
@@ -30,12 +30,11 @@ class GetSeasonsUseCaseTest {
             )
         } returns fakeSeasons.first()
 
-        // when
+        // When
         val result = getSeasonDetailsUseCase(tvShowId, seasonNumber)
 
         // Then
-        assertEquals(result, fakeSeasons.first())
-
+        assertEquals(fakeSeasons.first(), result)
     }
 
     @Test
@@ -56,7 +55,7 @@ class GetSeasonsUseCaseTest {
     }
 
     private companion object {
-        val tvShowId = 1
-        val seasonNumber = 1
+        const val tvShowId = 1
+        const val seasonNumber = 1
     }
 }
