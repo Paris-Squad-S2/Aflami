@@ -27,7 +27,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import kotlinx.coroutines.flow.flowOf
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 
-class MovieDetailsViewModelViewModel(
+class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieCastUseCase: GetMovieCastUseCase,

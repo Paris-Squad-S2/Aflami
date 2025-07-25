@@ -53,7 +53,7 @@ import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsViewModelViewModel = koinViewModel(),
+    viewModel: MovieDetailsViewModel = koinViewModel(),
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     MovieDetailsScreenContent(
