@@ -75,6 +75,8 @@ fun EpisodeCard(
         Text(
             text = episodeDescription,
             style = Theme.textStyle.label.small,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             color = Theme.colors.text.hint,
             modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
         )

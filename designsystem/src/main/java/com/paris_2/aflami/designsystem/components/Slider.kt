@@ -1,27 +1,32 @@
 package com.paris_2.aflami.designsystem.components
 
 import android.content.res.Configuration
+import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.PagerDefaults
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.layout.boundsInWindow
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
@@ -52,13 +57,15 @@ fun Slider(
 
                 pagerState.animateScrollToPage(
                     page = nextPage,
-                    animationSpec = tween(durationMillis = 400)
+                    animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)
                 )
             }
         }
     }
 
     val configuration = LocalConfiguration.current
+    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
+    val screenCenterPx = with(LocalDensity.current) { screenWidth.toPx() } / 2f
 
     Box(
         modifier = modifier,
@@ -72,22 +79,28 @@ fun Slider(
                 PaddingValues(horizontal = 300.dp),
             modifier = Modifier.fillMaxWidth(),
             beyondViewportPageCount = 2,
-            flingBehavior = PagerDefaults.flingBehavior(state = pagerState)
         ) { page ->
-            val pageOffset = (pagerState.currentPage - page) + pagerState.currentPageOffsetFraction
             val isFocused = page == pagerState.currentPage
-            val scaleX = 1f - (0.1f * abs(pageOffset))
-            val scaleY = 1f - (0.1f * abs(pageOffset))
             val item = items[page]
+            var itemCenterX by remember { mutableFloatStateOf(0f) }
+
+            val distanceFromCenter = abs(itemCenterX - screenCenterPx)
+            val maxDistance = screenCenterPx
+            val normalizedOffset = (distanceFromCenter / maxDistance).coerceIn(0f, 1f)
+
+            val scale = 1f - (0.1f * normalizedOffset)
             currentMedia.value = items[pagerState.currentPage]
 
             Box(
                 contentAlignment = Alignment.Center,
                 modifier = Modifier
-                    .padding(top = if (isFocused) 0.dp else 12.dp)
+                    .onGloballyPositioned { layoutCoordinates ->
+                        val itemBounds = layoutCoordinates.boundsInWindow()
+                        itemCenterX = itemBounds.left + itemBounds.width / 2
+                    }
                     .graphicsLayer(
-                        scaleX = scaleX,
-                        scaleY = scaleY,
+                        scaleX = scale,
+                        scaleY = scale,
                     )
                     .clickable {
                         onClick(item)
