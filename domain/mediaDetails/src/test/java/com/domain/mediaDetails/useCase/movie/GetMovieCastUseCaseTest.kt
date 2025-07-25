@@ -5,7 +5,7 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
+import org.junit.jupiter.api.BeforeEach
 import testUtils.fakeCast
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -15,7 +15,7 @@ class GetMovieCastUseCaseTest {
     private lateinit var getMovieCastUseCase: GetMovieCastUseCase
     private val movieRepository: MovieRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getMovieCastUseCase = GetMovieCastUseCase(movieRepository)
     }
@@ -68,6 +68,20 @@ class GetMovieCastUseCaseTest {
         // Then
         coVerify(exactly = 1) { movieRepository.getMovieCast(movieId) }
     }
+    @Test
+    fun `should throw exception when repository throws`() = runTest {
+            // Given
+            val exception = RuntimeException("Something went wrong")
+            coEvery { movieRepository.getMovieCast(movieId) } throws exception
+
+            // Then
+            val thrown = kotlin.runCatching {
+                getMovieCastUseCase(movieId)
+            }.exceptionOrNull()
+
+            assertEquals(exception, thrown)
+        }
+
 
     private companion object{
         val movieId = 1

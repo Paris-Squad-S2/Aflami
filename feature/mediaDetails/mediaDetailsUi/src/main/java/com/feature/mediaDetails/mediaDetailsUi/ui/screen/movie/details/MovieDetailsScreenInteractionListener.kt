@@ -7,4 +7,6 @@ interface MovieDetailsScreenInteractionListener {
     fun onRetryLoadMovieDetails()
     fun onSimilarMovieClick(mediaId: Int)
     fun onClickPlayTrailer()
+    fun onDismissRatingDialog()
+    fun onRatingSubmitted(rating: Float)
 }

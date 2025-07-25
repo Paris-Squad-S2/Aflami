@@ -179,8 +179,8 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun addTvShowToFavorite(tvShowId: Int) {
-        TODO("Not yet implemented")
+    override suspend fun addRatingToTvShow(){
+        print("Rating added to Tv Show")
     }
 
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {

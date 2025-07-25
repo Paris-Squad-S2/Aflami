@@ -6,17 +6,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -36,7 +35,7 @@ fun RecentSearchItem(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Icon(
-            painter = painterResource(id = R.drawable.ic_clock),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
             contentDescription = null,
             modifier = Modifier.padding(end = 8.dp),
             tint = Theme.colors.text.hint
@@ -57,4 +56,18 @@ fun RecentSearchItem(
             tint = Theme.colors.text.hint
         )
     }
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewRecentSearchItem() {
+    AflamiTheme {
+        RecentSearchItem(
+            recentSearchTitle = "text tecent",
+            onRecentSearchClick = {},
+            onDeleteRecentSearch = {},
+            modifier = Modifier
+        )
+    }
+
 }

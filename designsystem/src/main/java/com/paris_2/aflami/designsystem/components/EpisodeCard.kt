@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +39,7 @@ fun EpisodeCard(
             .padding(horizontal = 16.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            AflamiMediaCard(
+            MediaCard(
                 rating = episodeRating,
                 mediaCardType = MediaCardType.EPISODE,
                 imageUri = imageUri,
@@ -83,6 +82,8 @@ fun EpisodeCard(
         Text(
             text = episodeDescription,
             style = Theme.textStyle.label.small,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis,
             color = Theme.colors.text.hint,
             modifier = Modifier
                 .fillMaxWidth()

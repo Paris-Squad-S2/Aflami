@@ -15,8 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -27,7 +25,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -67,7 +67,7 @@ fun MoodPicker(
             contentAlignment = Alignment.Center
         ) {
             Icon(
-                painter = painterResource(R.drawable.ic_heart),
+                imageVector = ImageVector.vectorResource(R.drawable.ic_heart),
                 contentDescription = "Icon heart",
                 tint = Theme.colors.onPrimaryColors.onPrimary,
                 modifier = Modifier.padding(5.dp)
@@ -78,7 +78,7 @@ fun MoodPicker(
             text = title,
             style = Theme.textStyle.title.small,
             modifier = Modifier
-                .padding(start = 12.dp, top = 44.dp)
+                .padding(start = 12.dp, top = 44.dp, bottom = 10.dp)
                 .align(Alignment.TopStart)
         )
 
@@ -104,6 +104,8 @@ fun MoodPicker(
             Text(
                 text = question,
                 style = Theme.textStyle.body.small,
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
             )
 
 
@@ -119,7 +121,7 @@ fun MoodPicker(
             ) {
                 MoodPickerList.forEachIndexed { index, icon ->
                     Icon(
-                        painter = painterResource(id = icon),
+                        imageVector = ImageVector.vectorResource(id = icon),
                         contentDescription = "Icons",
                         tint = if (selectedEmojiIndex.intValue == index) Theme.colors.primary else Theme.colors.text.body,
                         modifier = Modifier
@@ -137,7 +139,10 @@ fun MoodPicker(
                 text = "Get now",
                 style = Theme.textStyle.label.medium,
                 color = if (isEmojiSelected.value) Theme.colors.primary else Theme.colors.disable,
-                modifier = Modifier.wrapContentSize().clickable{ onEmojiClick(selectedEmojiMood.value) }
+                modifier = Modifier
+                    .padding(top = 12.dp , bottom = 3.dp)
+                    .wrapContentSize()
+                    .clickable{ if (isEmojiSelected.value) onEmojiClick(selectedEmojiMood.value) }
             )
         }
     }

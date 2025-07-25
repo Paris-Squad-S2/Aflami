@@ -22,7 +22,8 @@ data class TvShowDetailsScreenState(
     val isGalleryLoading: Boolean = false,
     val isProductionCompaniesLoading: Boolean = false,
     val seasonsLoadingStates: Map<Int, Boolean> = emptyMap(),
-)
+    val showRatingDialog: Boolean = false
+    )
 
 data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
@@ -31,6 +32,7 @@ data class TvShowDetailsUiState(
     val reviews: Flow<PagingData<ReviewUi>>,
     val gallery: List<String>,
     val tvShowVideoUi: TvShowVideoUi,
+    val selectedRating: Float,
 )
 
 data class TvShowVideoUi(

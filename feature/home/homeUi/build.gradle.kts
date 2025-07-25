@@ -33,7 +33,11 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
+}
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 dependencies {
@@ -56,8 +60,47 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(project(Modules.FEATURE_HOME_API))
-    implementation(project(Modules.APP_NAVIGATION))
-    implementation(project(Modules.FEATURE_SEARCH_API))
+    //Koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.compose.viewmodel)
+    implementation(libs.koin.android)
+
+    //Navigation
+    implementation(libs.navigation.compose)
+
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
+    //kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //Modules
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.DOMAIN_HOME))
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_SEARCH_API))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+
+    //test
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.junit)
+
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(kotlin("test"))
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+
+
 }
+

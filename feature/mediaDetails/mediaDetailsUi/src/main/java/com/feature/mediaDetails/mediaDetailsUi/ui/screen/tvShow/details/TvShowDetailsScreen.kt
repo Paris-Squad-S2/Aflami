@@ -21,10 +21,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -37,13 +39,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
+import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
@@ -79,6 +82,7 @@ fun TvShowDetailsScreenContent(
     val density = LocalDensity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
     val activity = LocalActivity.current
+    var currentRating by remember { mutableFloatStateOf(state.tvShowDetailsUiState.selectedRating) }
 
     val alpha by remember {
         derivedStateOf {
@@ -86,6 +90,15 @@ fun TvShowDetailsScreenContent(
                 if (listState.firstVisibleItemIndex > 0) maxScrollPx else listState.firstVisibleItemScrollOffset.toFloat()
             (scroll / maxScrollPx).coerceIn(0f, 1f)
         }
+    }
+    if (state.showRatingDialog) {
+        RatingDialog(
+            currentRating = currentRating,
+            onRatingChange = { newRating ->
+                currentRating = newRating },
+            onDismiss = { tvShowScreenInteractionListener.onDismissRatingDialog() },
+            onSubmit = { tvShowScreenInteractionListener.onDismissRatingDialog()  }
+        )
     }
 
     val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
@@ -108,13 +121,6 @@ fun TvShowDetailsScreenContent(
             .statusBarsPadding()
     ) {
         when {
-//            state.errorMessage != null -> {
-//                NetworkError(
-//                    modifier = Modifier.fillMaxSize(),
-//                    onRetry = tvShowScreenInteractionListener::onRetryLoadTvShowDetails
-//                )
-//            }
-
             state.isLoading -> {
                 PageLoadingPlaceHolder(
                     modifier = Modifier.fillMaxSize()
@@ -295,7 +301,7 @@ fun TvShowDetailsScreenContent(
                                 } else {
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
-                                            AflamiMediaCard(
+                                            MediaCard(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
                                                     .padding(
