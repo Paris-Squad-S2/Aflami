@@ -68,6 +68,20 @@ class GetMovieCastUseCaseTest {
         // Then
         coVerify(exactly = 1) { movieRepository.getMovieCast(movieId) }
     }
+    @Test
+    fun `should throw exception when repository throws`() = runTest {
+            // Given
+            val exception = RuntimeException("Something went wrong")
+            coEvery { movieRepository.getMovieCast(movieId) } throws exception
+
+            // Then
+            val thrown = kotlin.runCatching {
+                getMovieCastUseCase(movieId)
+            }.exceptionOrNull()
+
+            assertEquals(exception, thrown)
+        }
+
 
     private companion object{
         val movieId = 1
