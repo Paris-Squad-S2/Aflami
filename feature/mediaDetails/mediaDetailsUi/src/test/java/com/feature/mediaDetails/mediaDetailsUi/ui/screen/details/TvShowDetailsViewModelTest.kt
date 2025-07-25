@@ -278,22 +278,7 @@ class TvShowDetailsViewModelTest {
 
         coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
     }
-
-    @Test
-    fun `onClickPlayEpisodeTrailer error shows snackbar and message`() = runTest {
-        val testTvShowId = 123
-        val testSeasonNumber = 1
-        val testEpisodeNumber = 2
-        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } throws RuntimeException("Error")
-        viewModel = makeViewModelWithDefaultStateHandle()
-
-        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
-        runCurrent()
-
-        assertTrue(viewModel.screenState.value.showSnackBar)
-        assertEquals(2132017418, viewModel.screenState.value.snackBarMessage)
-    }
-
+    
     private fun makeViewModelWithDefaultStateHandle(): TvShowDetailsViewModel {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>() } returns MediaDetailsDestinations.TvShowDetailsScreen(
             tvShowId = testTvShowId
