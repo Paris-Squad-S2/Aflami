@@ -2,6 +2,7 @@ package com.paris_2.aflami.di
 
 import androidx.work.WorkManager
 import androidx.work.WorkerFactory
+import com.repository.movie.dataSource.local.workmanager.ClearMovieDetailWorker
 import com.repository.search.dataSource.local.workManager.ClearMediaWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
@@ -10,7 +11,7 @@ import org.koin.dsl.module
 
 val workManagerModule = module {
 
-    single { WorkManager.getInstance(androidContext()) }
+    factory { WorkManager.getInstance(androidContext()) }
 
     single<WorkerFactory> { KoinWorkerFactory() }
 
@@ -19,6 +20,14 @@ val workManagerModule = module {
             context = androidContext(),
             workerParams = get(),
             mediaLocalDataSource = get()
+        )
+    }
+
+    worker {
+        ClearMovieDetailWorker(
+            context = androidContext(),
+            workerParams = get(),
+            movieLocalDataSource = get()
         )
     }
 

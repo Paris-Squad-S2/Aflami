@@ -25,7 +25,7 @@ class ClearMediaWorker(
 
             mediaLocalDataSource.clearAllMediaBySearchQuery(searchQuery, searchType)
             Result.success()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             Result.failure()
         }
     }
