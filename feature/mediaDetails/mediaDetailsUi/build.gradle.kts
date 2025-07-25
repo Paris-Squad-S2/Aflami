@@ -36,6 +36,10 @@ android {
         compose = true
     }
 }
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 
 dependencies {
 
