@@ -101,13 +101,6 @@ fun TvShowDetailsScreenContent(
             .statusBarsPadding()
     ) {
         when {
-//            state.errorMessage != null -> {
-//                NetworkError(
-//                    modifier = Modifier.fillMaxSize(),
-//                    onRetry = tvShowScreenInteractionListener::onRetryLoadTvShowDetails
-//                )
-//            }
-
             state.isLoading -> {
                 PageLoadingPlaceHolder(
                     modifier = Modifier.fillMaxSize()
