@@ -57,7 +57,6 @@ class FindByActorViewModel(
         }
     }
 
-
     private fun searchQuery(query: String): Job {
         return viewModelScope.launch {
             tryToExecute(
