@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="go_to_search">Go to Search</string>
+    <string name="go_to_search">الذهاب الي البحث </string>
+    <string name="top_rating">الأعلي تقييما</string>
+    <string name="continue_watching">أكمل المشاهدة</string>
+    <string name="popular">المشهور</string>
+    <string name="aflami">أفلامي</string>
 </resources>

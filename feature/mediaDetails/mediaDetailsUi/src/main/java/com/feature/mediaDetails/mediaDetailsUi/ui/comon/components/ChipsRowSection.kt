@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
-import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,9 +12,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.Chips
-import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun ChipsRowSection(
@@ -33,17 +30,7 @@ fun ChipsRowSection(
             val isSelected = index == selectedIndex
             Chips(
                 title = items[index].first,
-                icon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(items[index].second),
-                        contentDescription = null,
-                        modifier = Modifier.padding(16.dp),
-                        tint = animateColorAsState(
-                            targetValue = if (isSelected) Theme.colors.onPrimaryColors.onPrimary
-                            else Theme.colors.text.hint
-                        ).value
-                    )
-                },
+                icon = ImageVector.vectorResource(items[index].second),
                 isSelected = isSelected,
                 onClick = { onItemSelected(index) }
             )

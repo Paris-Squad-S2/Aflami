@@ -183,6 +183,8 @@ dependencies {
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.REPOSITORY_AUTHENTICATION))
 
+    implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
+    implementation(project(Modules.DATASOURCE_LOCAL_HOME))
     implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
     implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))
@@ -195,6 +197,12 @@ dependencies {
 
     implementation(project(Modules.DOMAIN_SEARCH))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
+    implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.REPOSITORY_HOME))
+    implementation(project(Modules.DATASOURCE_REMOTE_HOME))
+    implementation(project(Modules.DOMAIN_HOME))
     implementation(project(Modules.DOMAIN_AUTHENTICATION))
 
     implementation(libs.androidx.room.runtime)

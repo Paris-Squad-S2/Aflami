@@ -3,6 +3,8 @@ package com.paris_2.aflami.di
 import com.feature.search.searchUi.BuildConfig
 import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.repository.home.GenresApiServices
+import com.repository.home.MediaApiService
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -17,6 +19,7 @@ val NetworkModule = module {
     single { com.repository.search.util.NetworkConnectionChecker(androidApplication().applicationContext) }
     single { com.repository.util.NetworkConnectionChecker(androidApplication().applicationContext) }
     single { com.repository.movie.util.NetworkConnectionChecker(androidApplication().applicationContext) }
+    single { com.repository.home.util.NetworkConnectionChecker(androidApplication().applicationContext) }
 
     single { AuthInterceptor(get<AuthenticationLocalDataSource>()) }
 
@@ -45,4 +48,12 @@ val NetworkModule = module {
             }.asConverterFactory("application/json".toMediaType()))
             .build()
     }
+
+    single<MediaApiService> {
+        get<Retrofit>().create(MediaApiService::class.java)
+    }
+    single<GenresApiServices> {
+        get<Retrofit>().create(GenresApiServices::class.java)
+    }
+
 }
