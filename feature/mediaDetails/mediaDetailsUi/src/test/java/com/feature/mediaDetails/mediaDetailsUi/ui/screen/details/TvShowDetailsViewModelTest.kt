@@ -2,6 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowVideo
@@ -19,6 +20,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -165,6 +167,131 @@ class TvShowDetailsViewModelTest {
     fun `onSimilarTvShowClick triggers navigation`() = runTest {
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onSimilarTvShowClick(77)
+    }
+
+    @Test
+    fun `onClickPlayTvShowTrailer with valid video data navigates to video screen`() = runTest {
+        val expectedSite = "YouTube"
+        val expectedKey = "abc123"
+        val mockVideoUi = TvShowVideoUi(site = expectedSite, key = expectedKey, name = "Test Video")
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.updateState(
+            viewModel.screenState.value.copy(
+                tvShowDetailsUiState = viewModel.screenState.value.tvShowDetailsUiState.copy(
+                    tvShowVideoUi = mockVideoUi
+                )
+            )
+        )
+
+        viewModel.onClickPlayTvShowTrailer()
+        runCurrent()
+
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer with valid video calls use case`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        val mockEpisodeVideo = mockk<EpisodeVideo> {
+            every { site } returns "YouTube"
+            every { key } returns "abc123"
+            every { name } returns "Test Episode"
+        }
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer with valid video does not show snackbar`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        val mockEpisodeVideo = mockk<EpisodeVideo> {
+            every { site } returns "YouTube"
+            every { key } returns "abc123"
+            every { name } returns "Test Episode"
+        }
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        assertFalse(viewModel.screenState.value.showSnackBar)
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer with empty video calls use case`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        val mockEpisodeVideo = mockk<EpisodeVideo> {
+            every { site } returns ""
+            every { key } returns ""
+            every { name } returns "Test Episode"
+        }
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer with empty video shows snackbar`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        val mockEpisodeVideo = mockk<EpisodeVideo> {
+            every { site } returns ""
+            every { key } returns ""
+            every { name } returns "Test Episode"
+        }
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        assertTrue(viewModel.screenState.value.showSnackBar)
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer error calls use case`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } throws RuntimeException("Error")
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer error shows snackbar and message`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } throws RuntimeException("Error")
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        assertTrue(viewModel.screenState.value.showSnackBar)
+        assertEquals(2132017418, viewModel.screenState.value.snackBarMessage)
     }
 
     private fun makeViewModelWithDefaultStateHandle(): TvShowDetailsViewModel {

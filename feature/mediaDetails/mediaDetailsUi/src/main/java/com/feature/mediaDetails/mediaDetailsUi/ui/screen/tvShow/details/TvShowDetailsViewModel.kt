@@ -29,10 +29,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestina
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class TvShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
