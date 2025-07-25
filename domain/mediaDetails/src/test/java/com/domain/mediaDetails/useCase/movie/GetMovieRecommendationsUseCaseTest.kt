@@ -5,16 +5,17 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import testUtils.fakeMovieSimilar
 import kotlin.test.assertEquals
 
 class GetMovieRecommendationsUseCaseTest {
+
     private lateinit var getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase
     private val movieRepository: MovieRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getMovieRecommendationsUseCase = GetMovieRecommendationsUseCase(movieRepository)
     }
@@ -22,26 +23,25 @@ class GetMovieRecommendationsUseCaseTest {
     @Test
     fun `should return movie recommendation from repository`() = runTest {
         // Given
-        coEvery { movieRepository.getMovieRecommendations(movieId,page) } returns fakeMovieSimilar
+        coEvery { movieRepository.getMovieRecommendations(movieId, page) } returns fakeMovieSimilar
 
-        // when
-        val result = getMovieRecommendationsUseCase(movieId,page)
+        // When
+        val result = getMovieRecommendationsUseCase(movieId, page)
 
         // Then
-        assertEquals(result, fakeMovieSimilar)
-
+        assertEquals(fakeMovieSimilar, result)
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest{
+    fun `should return empty list when no recommendations found`() = runTest {
         // Given
-        coEvery { movieRepository.getMovieRecommendations(movieId,page) } returns emptyList()
+        coEvery { movieRepository.getMovieRecommendations(movieId, page) } returns emptyList()
 
-        // when
-        val result = getMovieRecommendationsUseCase(movieId,page)
+        // When
+        val result = getMovieRecommendationsUseCase(movieId, page)
 
         // Then
-        assertEquals(result, emptyList())
+        assertEquals(emptyList(), result)
     }
 
     @Test
@@ -56,9 +56,8 @@ class GetMovieRecommendationsUseCaseTest {
         coVerify(exactly = 1) { movieRepository.getMovieRecommendations(movieId, page) }
     }
 
-    private companion object{
-        val movieId = 1
-        val page = 1
+    private companion object {
+        const val movieId = 1
+        const val page = 1
     }
-
 }
