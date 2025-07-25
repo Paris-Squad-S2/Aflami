@@ -11,5 +11,5 @@ interface TvShowScreenInteractionListener {
     fun onDismissRatingDialog()
     fun onRatingSubmitted(rating: Float)
     fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int)
-
+    fun onHideSnackBar()
 }

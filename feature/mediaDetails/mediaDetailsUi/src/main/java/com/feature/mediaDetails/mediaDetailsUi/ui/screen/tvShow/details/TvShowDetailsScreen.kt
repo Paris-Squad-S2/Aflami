@@ -1,12 +1,16 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -50,6 +54,7 @@ import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -248,27 +253,37 @@ fun TvShowDetailsScreenContent(
                                                         ) + fadeOut()
                                                     ) {
 
-                                                        EpisodeCard(
-                                                            episodeRating = episode.voteAverage.toFloat(),
-                                                            episodeNumber = episode.episodeNumber.toString(),
-                                                            episodeTitle = episode.episodeNumber.toString(),
-                                                            episodeDuration = episode.runtime,
-                                                            imageUri = episode.stillUrl,
-                                                            episodeDate = episode.airDate,
-                                                            episodeDescription = episode.description,
-                                                            modifier = Modifier
-                                                                .fillMaxWidth()
-                                                                .padding(horizontal = 8.dp),
-                                                            hasVideo = true,
-                                                            onPlayClick = {
-                                                                tvShowScreenInteractionListener.onClickPlayEpisodeTrailer(
-                                                                    state.tvShowDetailsUiState.tvShowUi.id,
-                                                                    season.seasonNumber + 1,
-                                                                    episode.episodeNumber
-                                                                )
-                                                            }
+                                                        AnimatedContent(
+                                                            targetState = if(episode.stillUrl.isNotEmpty()) episode.stillUrl else state.tvShowDetailsUiState.tvShowUi.posterUrl,
+                                                            transitionSpec = {
+                                                                fadeIn(animationSpec = tween(300)) togetherWith
+                                                                        fadeOut(animationSpec = tween(300))
+                                                            },
+                                                            label = "image_transition"
+                                                        ){ value ->
+                                                            EpisodeCard(
+                                                                episodeRating = episode.voteAverage.toFloat(),
+                                                                episodeNumber = episode.episodeNumber.toString(),
+                                                                episodeTitle = episode.episodeNumber.toString(),
+                                                                episodeDuration = episode.runtime,
+                                                                imageUri = value,
+                                                                episodeDate = episode.airDate,
+                                                                episodeDescription = episode.description,
+                                                                modifier = Modifier
+                                                                    .fillMaxWidth()
+                                                                    .padding(horizontal = 8.dp),
+                                                                hasVideo = true,
+                                                                onPlayClick = {
+                                                                    tvShowScreenInteractionListener.onClickPlayEpisodeTrailer(
+                                                                        state.tvShowDetailsUiState.tvShowUi.id,
+                                                                        seasonIndex + 1,
+                                                                        episode.episodeNumber
+                                                                    )
+                                                                }
 
-                                                        )
+                                                            )
+                                                        }
+
                                                     }
                                                 }
                                             }
@@ -377,6 +392,7 @@ fun TvShowDetailsScreenContent(
                             }
                         }
                     }
+
                 }
             }
         }
@@ -408,5 +424,22 @@ fun TvShowDetailsScreenContent(
             ),
             modifier = Modifier.background(backgroundColor)
         )
+        AnimatedVisibility(
+            visible = state.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            SnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                    .align(Alignment.TopCenter),
+                text = state.snackBarMessage,
+                isSuccess = false,
+                onClick = tvShowScreenInteractionListener::onHideSnackBar
+            )
+        }
     }
+
 }

@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -21,6 +20,7 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
@@ -405,8 +405,6 @@ class TvShowDetailsViewModel(
             }
         }
 
-        Log.d("TAG111", "onPlay: $tvShowId $seasonNumber $episodeNumber")
-
         tryToExecute(
             execute = {
                 getEpisodeVideoUseCase(
@@ -416,8 +414,12 @@ class TvShowDetailsViewModel(
                 )
             },
             onSuccess = ::onGetVideoEpisodeSuccess,
-            onError = ::onGetVideoError,
+            onError = ::onGetVideoEpisodeError,
         )
+    }
+
+    override fun onHideSnackBar() {
+        updateState(screenState.value.copy(showSnackBar = false))
     }
 
     override fun onSimilarTvShowClick(mediaId: Int) {
@@ -437,6 +439,11 @@ class TvShowDetailsViewModel(
     }
 
     private fun onGetVideoEpisodeSuccess(episodeVideo: EpisodeVideo) {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = false,
+            )
+        )
         viewModelScope.launch {
             _episodeVideoUiState.collect {
                 _episodeVideoUiState.update {
@@ -444,13 +451,20 @@ class TvShowDetailsViewModel(
                 }
             }
         }
-
-        navigate(
-            MediaDetailsDestinations.VideosScreen(
-                site = screenState.value.tvShowDetailsUiState.tvShowVideoUi.site,
-                key = screenState.value.tvShowDetailsUiState.tvShowVideoUi.key
+        if(episodeVideo.site.isEmpty() || episodeVideo.key.isEmpty()){
+            updateState(
+                screenState.value.copy(
+                    showSnackBar = true,
+                )
             )
-        )
+        } else {
+            navigate(
+                MediaDetailsDestinations.VideosScreen(
+                    site = _episodeVideoUiState.value.site,
+                    key =  _episodeVideoUiState.value.key
+                )
+            )
+        }
 
     }
 
@@ -458,6 +472,15 @@ class TvShowDetailsViewModel(
         updateState(
             screenState.value.copy(
                 errorMessage = error
+            )
+        )
+    }
+
+    private fun onGetVideoEpisodeError(error: String) {
+        updateState(
+            screenState.value.copy(
+                snackBarMessage = R.string.not_found_video,
+                showSnackBar = true
             )
         )
     }
