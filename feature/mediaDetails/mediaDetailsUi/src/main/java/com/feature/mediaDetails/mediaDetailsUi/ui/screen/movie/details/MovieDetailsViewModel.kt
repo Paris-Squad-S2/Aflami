@@ -17,15 +17,15 @@ import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
-import kotlinx.coroutines.flow.flowOf
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import kotlinx.coroutines.flow.flowOf
 
 class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -302,7 +302,8 @@ class MovieDetailsViewModel(
 
     override fun onClickPlayTrailer() {
         if (screenState.value.movieDetailsUiState.movieVideoUi.key.isEmpty() ||
-            screenState.value.movieDetailsUiState.movieVideoUi.site.isEmpty()) {
+            screenState.value.movieDetailsUiState.movieVideoUi.site.isEmpty()
+        ) {
             updateState(
                 screenState.value.copy(
                     errorMessage = "No video available"
@@ -326,7 +327,6 @@ class MovieDetailsViewModel(
                 )
             )
         )
-
     }
 
     private fun onGetVideoMovieError(error: String) {
@@ -345,8 +345,6 @@ class MovieDetailsViewModel(
         )
     }
 
-    override fun onRatingSubmitted(rating: Float) {
-        TODO("Not yet implemented")
-    }
+    override fun onRatingSubmitted(rating: Float) {}
 
 }
