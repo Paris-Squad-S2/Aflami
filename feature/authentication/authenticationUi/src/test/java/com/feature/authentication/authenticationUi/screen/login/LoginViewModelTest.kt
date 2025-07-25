@@ -17,16 +17,17 @@ class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
     private lateinit var loginUseCase: LoginUseCase
-    private val appNavigationAPI: AppNavigationAPI = mockk(relaxed = true)
+    private lateinit var appNavigationAPI: AppNavigationAPI
 
     @BeforeEach
     fun setup() {
         loginUseCase = mockk()
+        appNavigationAPI = mockk(relaxed = true)
         viewModel = spyk(
             LoginViewModel(
                 appNavigationAPI = appNavigationAPI,
                 loginUseCase = loginUseCase,
-                guestLoginUseCase = mockk(relaxed = true)
+                guestLoginUseCase = mockk(relaxed = true),
             )
         )
     }

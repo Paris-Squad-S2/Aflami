@@ -5,8 +5,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import testUtils.fakeGallery
 import kotlin.test.assertEquals
 
@@ -14,7 +14,7 @@ class GetMovieGalleryUseCaseTest {
     private lateinit var getMovieGalleryUseCase: GetMovieGalleryUseCase
     private val movieRepository: MovieRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getMovieGalleryUseCase = GetMovieGalleryUseCase(movieRepository)
     }
@@ -24,12 +24,11 @@ class GetMovieGalleryUseCaseTest {
         // Given
         coEvery { movieRepository.getMovieGallery(movieId) } returns fakeGallery
 
-        // when
+        // When
         val result = getMovieGalleryUseCase(movieId)
 
         // Then
-        assertEquals(result, fakeGallery)
-
+        assertEquals(fakeGallery, result)
     }
 
     @Test
@@ -44,8 +43,7 @@ class GetMovieGalleryUseCaseTest {
         coVerify(exactly = 1) { movieRepository.getMovieGallery(movieId) }
     }
 
-    private companion object{
-        val movieId = 1
-
+    private companion object {
+        const val movieId = 1
     }
 }

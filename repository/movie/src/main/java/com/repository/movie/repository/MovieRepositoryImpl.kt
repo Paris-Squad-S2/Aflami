@@ -178,10 +178,6 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun addMovieToFavorite(movieId: Int) {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo> {
         return safeCall(NoVideoFoundException()) {
             movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId)
@@ -189,6 +185,10 @@ class MovieRepositoryImpl(
                 ?.map { it.toEntity() }
                 ?: emptyList()
         }
+    }
+
+    override suspend fun addRatingToMovie() {
+        print("movie rating added")
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {

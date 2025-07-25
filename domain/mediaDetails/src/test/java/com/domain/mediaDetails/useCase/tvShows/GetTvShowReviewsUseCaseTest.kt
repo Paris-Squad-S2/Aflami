@@ -5,17 +5,18 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import testUtils.fakeReviews
 
 class GetTvShowReviewsUseCaseTest {
+
     private lateinit var getTvShowReviewsUseCase: GetTvShowReviewsUseCase
     private val tvShowRepository: TvShowRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getTvShowReviewsUseCase = GetTvShowReviewsUseCase(tvShowRepository)
     }
@@ -25,12 +26,11 @@ class GetTvShowReviewsUseCaseTest {
         // Given
         coEvery { tvShowRepository.getTvShowReview(tvShowId, page) } returns fakeReviews
 
-        // when
+        // When
         val result = getTvShowReviewsUseCase(tvShowId, page)
 
         // Then
-        assertEquals(result, fakeReviews)
-
+        assertEquals(fakeReviews, result)
     }
 
     @Test
@@ -46,19 +46,6 @@ class GetTvShowReviewsUseCaseTest {
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest {
-        // Given
-        coEvery { tvShowRepository.getTvShowReview(tvShowId, page) } returns emptyList()
-
-        // when
-        val result = getTvShowReviewsUseCase(tvShowId, page)
-
-        // Then
-        assertTrue(result.isEmpty())
-    }
-
-
-    @Test
     fun `should return empty list when no reviews found`() = runTest {
         // Given
         coEvery { tvShowRepository.getTvShowReview(tvShowId, page) } returns emptyList()
@@ -70,10 +57,20 @@ class GetTvShowReviewsUseCaseTest {
         assertTrue(result.isEmpty())
     }
 
+    @Test
+    fun `should verify repository call when no reviews found`() = runTest {
+        // Given
+        coEvery { tvShowRepository.getTvShowReview(tvShowId, page) } returns emptyList()
 
-    private companion object {
-        val tvShowId = 1
-        val page = 1
+        // When
+        getTvShowReviewsUseCase(tvShowId, page)
+
+        // Then
+        coVerify(exactly = 1) { tvShowRepository.getTvShowReview(tvShowId, page) }
     }
 
+    private companion object {
+        const val tvShowId = 1
+        const val page = 1
+    }
 }
