@@ -30,7 +30,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSourc
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -88,8 +87,6 @@ class TvShowDetailsViewModel(
         name = "",
         site = ""
     ))
-
-    val episodeVideoUiState = _episodeVideoUiState.asStateFlow()
 
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
@@ -356,7 +353,7 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onClickPlayTrailer() {
+    override fun onClickPlayTvShowTrailer() {
         if (screenState.value.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty() ||
             screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()
         ) {
@@ -395,7 +392,7 @@ class TvShowDetailsViewModel(
 
     override fun onRatingSubmitted(rating: Float) {}
 
-    override fun onPlay(tvShowId: Int, seasonNumber: Int, episodeNumber: Int) {
+    override fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int) {
         viewModelScope.launch {
             _episodeVideoUiState.collect {
                 if (it.site.isEmpty() || it.key.isEmpty()) {

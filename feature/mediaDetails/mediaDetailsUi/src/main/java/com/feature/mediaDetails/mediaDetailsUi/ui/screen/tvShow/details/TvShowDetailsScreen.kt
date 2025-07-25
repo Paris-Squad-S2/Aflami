@@ -46,8 +46,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
-import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.EpisodeCard
+import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -61,11 +61,9 @@ import com.paris_2.aflami.designsystem.R as designsystemR
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = koinViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    val episodeVideoUi = viewModel.episodeVideoUiState.collectAsStateWithLifecycle()
 
     TvShowDetailsScreenContent(
         state = state.value,
-        episodeVideoUi.value,
         tvShowScreenInteractionListener = viewModel
     )
 }
@@ -74,7 +72,6 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = koinViewModel()) {
 @Composable
 fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
-    episodeVideoUi: EpisodeVideoUi,
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
 ) {
     val tvChips = TvShowChips.entries
@@ -142,7 +139,7 @@ fun TvShowDetailsScreenContent(
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
                             hasVideo = !(state.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty() ||
                                     state.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty()),
-                            onPlayClick = tvShowScreenInteractionListener::onClickPlayTrailer,
+                            onPlayClick = tvShowScreenInteractionListener::onClickPlayTvShowTrailer,
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -264,7 +261,7 @@ fun TvShowDetailsScreenContent(
                                                                 .padding(horizontal = 8.dp),
                                                             hasVideo = true,
                                                             onPlayClick = {
-                                                                tvShowScreenInteractionListener.onPlay(
+                                                                tvShowScreenInteractionListener.onClickPlayEpisodeTrailer(
                                                                     state.tvShowDetailsUiState.tvShowUi.id,
                                                                     season.seasonNumber + 1,
                                                                     episode.episodeNumber

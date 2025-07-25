@@ -1,6 +1,5 @@
 package com.paris_2.aflami.di
 
-import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -8,6 +7,7 @@ import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
@@ -15,7 +15,6 @@ import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
-import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
