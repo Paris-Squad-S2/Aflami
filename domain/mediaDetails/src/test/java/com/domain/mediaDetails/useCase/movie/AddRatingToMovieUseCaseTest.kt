@@ -9,7 +9,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class AddRatingToTvShowUseCaseTest {
+class AddRatingToMovieUseCaseTest {
 
     private lateinit var repository: TvShowRepository
     private lateinit var useCase: AddRatingToTvShowUseCase
