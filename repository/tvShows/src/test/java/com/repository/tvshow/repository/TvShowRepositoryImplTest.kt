@@ -1,5 +1,6 @@
 package com.repository.tvshow.repository
 
+import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoSeasonFoundException
@@ -991,6 +992,17 @@ class TvShowRepositoryImplTest {
         // Then
         coVerify(exactly = 0) {
             tvShowSeasonLocalDataSource.addSeasonDetails(any())
+        }
+    }
+    @Test
+    fun `getTvShowCast should throw NoCastFoundException when remote throws generic exception`() = runTest {
+        // Given
+        coEvery { tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language) } returns emptyList()
+        coEvery { tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language) } throws RuntimeException("Something went wrong")
+
+        // When & Then
+        assertThrows<NoCastFoundException> {
+            tvShowRepository.getTvShowCast(tvShowId)
         }
     }
 
