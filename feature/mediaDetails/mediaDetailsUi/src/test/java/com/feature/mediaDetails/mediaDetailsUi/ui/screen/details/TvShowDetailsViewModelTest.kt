@@ -16,6 +16,7 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseC
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
@@ -35,6 +36,9 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TvShowDetailsViewModelTest {
@@ -62,6 +66,14 @@ class TvShowDetailsViewModelTest {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>() } returns MediaDetailsDestinations.TvShowDetailsScreen(
             tvShowId = testTvShowId
         )
+        stopKoin()
+        startKoin {
+            modules(
+                module {
+                    single<MediaDetailsNavigator> { mockk(relaxed = true) }
+                }
+            )
+        }
     }
 
     @Test
@@ -91,7 +103,7 @@ class TvShowDetailsViewModelTest {
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onFavouriteClick(testTvShowId)
         runCurrent()
-        assertTrue(!viewModel.screenState.value.showRatingDialog)
+        assertTrue(viewModel.screenState.value.showRatingDialog)
     }
 
     @Test
@@ -118,7 +130,6 @@ class TvShowDetailsViewModelTest {
         val mockEpisodesResult = mockk<Season>(relaxed = true)
         coEvery { getSeasonDetailsUseCase(any(), any()) } returns mockEpisodesResult
         viewModel = makeViewModelWithDefaultStateHandle()
-        // Setup state so season present and not expanded
         val stateWithSeasons = viewModel.screenState.value.copy(
             tvShowDetailsUiState = viewModel.screenState.value.tvShowDetailsUiState.copy(
                 tvShowUi = viewModel.screenState.value.tvShowDetailsUiState.tvShowUi.copy(

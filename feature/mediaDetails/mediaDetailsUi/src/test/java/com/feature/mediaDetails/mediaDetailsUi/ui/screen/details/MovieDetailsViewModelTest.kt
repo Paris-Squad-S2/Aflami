@@ -63,7 +63,7 @@ class MovieDetailsViewModelTest {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>() } returns MediaDetailsDestinations.MovieDetailsScreen(
             movieId = testMovieId
         )
-        stopKoin() // ensure Koin is stopped before starting
+        stopKoin()
         startKoin {
             modules(
                 module {
