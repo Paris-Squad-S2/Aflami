@@ -258,19 +258,15 @@ class TvShowDetailsViewModel(
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
-                Log.d("isLoggedIn", "isLoggedIn: $isLoggedIn")
-                Log.d("isLoggedIn", "showRatingDialog = ${screenState.value.showRatingDialog}")
                 if (isLoggedIn) {
                     tryToExecute(
                         execute = { addRatingToTvShowUseCase() },
                         onSuccess = {
-                            Log.d("isLoggedIn", "onSuccess")
                             updateState(
                                 screenState.value.copy(
                                     showRatingDialog = true
                                 )
                             )
-                            Log.d("isLoggedIn", "showRatingDialog = ${screenState.value.showRatingDialog}")
                         },
                         onError = {
                             updateState(screenState.value.copy(errorMessage = it))
@@ -336,7 +332,6 @@ class TvShowDetailsViewModel(
                 )
             },
             onError = { error ->
-                Log.d("TAG111", "onClickOnSeason: $error")
                 updateState(
                     screenState.value.copy(
                         errorMessage = error,
@@ -383,9 +378,7 @@ class TvShowDetailsViewModel(
         )    
     }
 
-    override fun onRatingSubmitted(rating: Float) {
-        TODO("Not yet implemented")
-    }
+    override fun onRatingSubmitted(rating: Float) {}
 
     override fun onSimilarTvShowClick(mediaId: Int) {
         mediaDetailsFeatureAPI.startTvShowDetails(
@@ -401,7 +394,6 @@ class TvShowDetailsViewModel(
                 )
             )
         )
-
     }
 
     private fun onGetVideoTvShowError(error: String) {
