@@ -1,2 +1,2 @@
-versionName=0.3.1
-- enhance home slider scrolling behaviour
+versionName=0.3.2
+- update episode title in tv show
