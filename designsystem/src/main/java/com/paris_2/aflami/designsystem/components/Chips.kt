@@ -28,7 +28,7 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 @Composable
 fun Chips(
     title: String,
-    icon: @Composable (() -> Unit),
+    icon: ImageVector,
     isSelected: Boolean,
     onClick: () -> Unit
 ) {
@@ -54,7 +54,14 @@ fun Chips(
                 ),
             contentAlignment = Alignment.Center
         ) {
-            icon()
+            Icon(
+                imageVector = icon,
+                contentDescription = null,
+                modifier = Modifier.padding(16.dp),
+                tint = animateColorAsState(
+                    targetValue = if (isSelected) Theme.colors.onPrimaryColors.onPrimary else Theme.colors.text.hint
+                ).value
+            )
         }
 
         Text(
@@ -76,32 +83,14 @@ fun ChipsPreview(){
     BasePreview {
         Column {
             Chips(
-                icon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_all),
-                        contentDescription = null,
-                        modifier = Modifier.padding(16.dp),
-                        tint = animateColorAsState(
-                            targetValue = Theme.colors.onPrimaryColors.onPrimary
-                        ).value
-                    )
-                },
                 title = "All",
+                icon = ImageVector.vectorResource(R.drawable.ic_all),
                 isSelected = true,
                 onClick = {}
             )
             Chips(
-                icon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_romance),
-                        contentDescription = null,
-                        modifier = Modifier.padding(16.dp),
-                        tint = animateColorAsState(
-                            targetValue = Theme.colors.text.hint
-                        ).value
-                    )
-                },
                 title = "Romance",
+                icon = ImageVector.vectorResource(R.drawable.ic_romance),
                 isSelected = false,
                 onClick = {}
             )

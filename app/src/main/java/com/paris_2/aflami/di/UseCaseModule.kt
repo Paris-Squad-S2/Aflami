@@ -1,5 +1,12 @@
 package com.paris_2.aflami.di
 
+import com.domain.home.usecase.AddMediaToLocalUseCase
+import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
+import com.domain.home.usecase.GetMediaFromLocalUseCase
+import com.domain.home.usecase.GetMoviesCategoriesUseCase
+import com.domain.home.usecase.GetPopularMediaUseCase
+import com.domain.home.usecase.GetTopRatingMediaUseCase
+import com.domain.home.usecase.GetUpComingMediaUseCase
 import com.domain.mediaDetails.useCase.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
@@ -66,6 +73,13 @@ val useCaseModule = module {
     factoryOf(::GetTvShowsProductionCompaniesUseCase)
     factoryOf(::IncrementCategoryInteractionUseCase)
     factoryOf(::SortingMediaByCategoriesInteractionUseCase)
+    factoryOf(::GetTopRatingMediaUseCase)
+    factoryOf(::GetPopularMediaUseCase)
+    factoryOf(::GetMoviesCategoriesUseCase)
+    factoryOf(::GetUpComingMediaUseCase)
+    factoryOf(::FilterUpComingMediaByCategoriesUseCase)
+    factoryOf(::AddMediaToLocalUseCase)
+    factoryOf(::GetMediaFromLocalUseCase)
     factoryOf(::LoginUseCase)
     factoryOf(::GuestLoginUseCase)
     factoryOf(::GetForgetPasswordUrlUseCase)

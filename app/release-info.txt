@@ -1,2 +1,2 @@
-versionName=0.2.18
--Extract UI state classes into separate files for better separation of concerns and readability.
+versionName=0.3.0
+- add  home screen feature with all screens related to it

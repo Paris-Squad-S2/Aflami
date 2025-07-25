@@ -9,6 +9,8 @@ import com.paris_2.aflami.di.FeatureAPIModule
 import com.paris_2.aflami.di.NetworkModule
 import com.paris_2.aflami.di.SearchRemoteDataSourceModule
 import com.paris_2.aflami.di.dataSourceModule
+import com.paris_2.aflami.di.homeRemoteDataSourceModule
+import com.paris_2.aflami.di.mediaDetailsModule
 import com.paris_2.aflami.di.mediaDetailsModule
 import com.paris_2.aflami.di.repositoryModule
 import com.paris_2.aflami.di.roomModule
@@ -40,7 +42,8 @@ class AflamiApplication : Application() {
                 NetworkModule,
                 SearchRemoteDataSourceModule,
                 mediaDetailsModule,
-                serviceModule
+                serviceModule,
+                homeRemoteDataSourceModule
             )
         }
 
@@ -55,8 +58,10 @@ class AflamiApplication : Application() {
         val networkChecker1: NetworkConnectionChecker = getKoin().get()
         val networkChecker2: com.repository.movie.util.NetworkConnectionChecker = getKoin().get()
         val networkChecker3: com.repository.util.NetworkConnectionChecker = getKoin().get()
+        val networkChecker4: com.repository.home.util.NetworkConnectionChecker = getKoin().get()
         networkChecker1.startChecker()
         networkChecker2.startChecker()
         networkChecker3.startChecker()
+        networkChecker4.startChecker()
     }
 }
