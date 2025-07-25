@@ -132,7 +132,7 @@ fun HomeSlider(
                 LazyRow(
                     Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
                 ) {
-                    items(mediaState.value.categories) {
+                    items(mediaState.value.categories.take(3)) {
                         GenresChip(
                             title = it,
                             isSelected = false
