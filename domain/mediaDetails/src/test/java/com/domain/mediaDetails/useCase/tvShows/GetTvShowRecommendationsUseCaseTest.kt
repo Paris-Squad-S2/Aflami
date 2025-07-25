@@ -5,17 +5,18 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import testUtils.fakeTvShowsSimilar
 
 class GetTvShowRecommendationsUseCaseTest {
+
     private lateinit var getTvShowRecommendationsUseCase: GetTvShowRecommendationsUseCase
     private val tvShowRepository: TvShowRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getTvShowRecommendationsUseCase = GetTvShowRecommendationsUseCase(tvShowRepository)
     }
@@ -24,28 +25,21 @@ class GetTvShowRecommendationsUseCaseTest {
     fun `should return tv show recommendation from repository`() = runTest {
         // Given
         coEvery {
-            tvShowRepository.getTvShowRecommendations(
-                tvShowId,
-                page
-            )
+            tvShowRepository.getTvShowRecommendations(tvShowId, page)
         } returns fakeTvShowsSimilar
 
-        // when
+        // When
         val result = getTvShowRecommendationsUseCase(tvShowId, page)
 
         // Then
-        assertEquals(result, fakeTvShowsSimilar)
-
+        assertEquals(fakeTvShowsSimilar, result)
     }
 
     @Test
     fun `should verify repository interaction for recommendations`() = runTest {
         // Given
         coEvery {
-            tvShowRepository.getTvShowRecommendations(
-                tvShowId,
-                page
-            )
+            tvShowRepository.getTvShowRecommendations(tvShowId, page)
         } returns fakeTvShowsSimilar
 
         // When
@@ -60,7 +54,7 @@ class GetTvShowRecommendationsUseCaseTest {
         // Given
         coEvery { tvShowRepository.getTvShowRecommendations(tvShowId, page) } returns emptyList()
 
-        // when
+        // When
         val result = getTvShowRecommendationsUseCase(tvShowId, page)
 
         // Then
@@ -80,8 +74,7 @@ class GetTvShowRecommendationsUseCaseTest {
     }
 
     private companion object {
-        val tvShowId = 1
-        val page = 1
+        const val tvShowId = 1
+        const val page = 1
     }
-
 }

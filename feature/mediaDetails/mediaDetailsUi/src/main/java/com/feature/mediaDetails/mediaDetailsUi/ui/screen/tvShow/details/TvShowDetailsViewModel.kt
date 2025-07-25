@@ -9,7 +9,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.domain.mediaDetails.model.TvShowVideo
-import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
+import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
@@ -18,7 +18,6 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
-
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
@@ -27,6 +26,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompa
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import kotlinx.coroutines.flow.flowOf
 
 class TvShowDetailsViewModel(
@@ -37,10 +37,11 @@ class TvShowDetailsViewModel(
     private val getTvShowRecommendationsUseCase: GetTvShowRecommendationsUseCase,
     private val getTvShowReviewsUseCase: GetTvShowReviewsUseCase,
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase,
-    private val addTvShowToFavoriteUseCase: AddTvShowToFavoriteUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
@@ -65,7 +66,8 @@ class TvShowDetailsViewModel(
                 key = "",
                 name = "",
                 site = ""
-            )
+            ),
+            selectedRating = 0f
         ),
         isLoading = true,
         errorMessage = null,
@@ -253,10 +255,32 @@ class TvShowDetailsViewModel(
     }
 
     override fun onFavouriteClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
-
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    tryToExecute(
+                        execute = { addRatingToTvShowUseCase() },
+                        onSuccess = {
+                            updateState(
+                                screenState.value.copy(
+                                    showRatingDialog = true
+                                )
+                            )
+                        },
+                        onError = {
+                            updateState(screenState.value.copy(errorMessage = it))
+                        }
+                    )
+                } else {
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
     }
-
     override fun onAddToListClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
@@ -308,7 +332,6 @@ class TvShowDetailsViewModel(
                 )
             },
             onError = { error ->
-                Log.d("TAG111", "onClickOnSeason: $error")
                 updateState(
                     screenState.value.copy(
                         errorMessage = error,
@@ -347,6 +370,16 @@ class TvShowDetailsViewModel(
         loadTvShowDetails(mediaId = mediaId)
     }
 
+    override fun onDismissRatingDialog() {
+        updateState(
+            screenState.value.copy(
+                showRatingDialog = false
+            )
+        )    
+    }
+
+    override fun onRatingSubmitted(rating: Float) {}
+
     override fun onSimilarTvShowClick(mediaId: Int) {
         mediaDetailsFeatureAPI.startTvShowDetails(
             tvShowId = mediaId
@@ -361,7 +394,6 @@ class TvShowDetailsViewModel(
                 )
             )
         )
-
     }
 
     private fun onGetVideoTvShowError(error: String) {

@@ -1,5 +1,6 @@
 package com.paris_2.aflami.di
 
+import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -7,14 +8,13 @@ import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
-import com.domain.mediaDetails.useCase.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
+import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
@@ -40,6 +40,8 @@ import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.paris_2.domain.authentication.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.authentication.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
+import com.paris_2.domain.authentication.usecase.HasAnySessionUseCase
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -56,14 +58,12 @@ val useCaseModule = module {
     factoryOf(::GetMediaByActorNameUseCase)
     factoryOf(::GetMoviesOnlyByCountryNameUseCase)
     factoryOf(::SearchByQueryUseCase)
-    factoryOf(::AddMovieToFavoriteUseCase)
     factoryOf(::GetMovieCastUseCase)
     factoryOf(::GetMovieDetailsUseCase)
     factoryOf(::GetMovieGalleryUseCase)
     factoryOf(::GetMovieRecommendationsUseCase)
     factoryOf(::GetMovieReviewsUseCase)
     factoryOf(::GetMoviesProductionCompaniesUseCase)
-    factoryOf(::AddTvShowToFavoriteUseCase)
     factoryOf(::GetSeasonDetailsUseCase)
     factoryOf(::GetTvShowCastUseCase)
     factoryOf(::GetTvShowDetailsUseCase)
@@ -86,5 +86,9 @@ val useCaseModule = module {
     factoryOf(::GetRegisterUrlUseCase)
     factoryOf(::GetMovieVideoUseCase)
     factoryOf(::GetTvShowVideoUseCase)
+    factoryOf(::IsLoggedInUseCase)
+    factoryOf(::HasAnySessionUseCase)
+    factoryOf(::AddRatingToMovieUseCase)
+    factoryOf(::AddRatingToTvShowUseCase)
 }
 

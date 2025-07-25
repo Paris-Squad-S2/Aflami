@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -32,6 +34,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
@@ -50,7 +53,7 @@ import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsViewModelViewModel = koinViewModel(),
+    viewModel: MovieDetailsViewModel = koinViewModel(),
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     MovieDetailsScreenContent(
@@ -70,7 +73,7 @@ fun MovieDetailsScreenContent(
     val density = LocalDensity.current
     val activity = LocalActivity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
-
+    var currentRating by remember { mutableFloatStateOf(state.movieDetailsUiState.selectedRating) }
     val alpha by remember {
         derivedStateOf {
             val scroll =
@@ -78,10 +81,17 @@ fun MovieDetailsScreenContent(
             (scroll / maxScrollPx).coerceIn(0f, 1f)
         }
     }
+    if (state.showRatingDialog) {
+        RatingDialog(
+            currentRating = currentRating,
+            onRatingChange = { newRating ->
+                currentRating = newRating },
+            onDismiss = { movieDetailsScreenInteractionListener.onDismissRatingDialog() },
+            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog()  }
+        )
+    }
 
     val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
-
-
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
@@ -347,7 +357,7 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate)
+                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate) // when click on this should open rating dialog
                             }
                         ),
                         iconItemWithDefaults(

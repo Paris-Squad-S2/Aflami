@@ -11,7 +11,7 @@ import com.paris_2.domain.authentication.usecase.LoginUseCase
 class LoginViewModel(
     private val appNavigationAPI : AppNavigationAPI,
     private val loginUseCase: LoginUseCase,
-    private val guestLoginUseCase: GuestLoginUseCase,
+    private val guestLoginUseCase: GuestLoginUseCase
 ) : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
 
     init {

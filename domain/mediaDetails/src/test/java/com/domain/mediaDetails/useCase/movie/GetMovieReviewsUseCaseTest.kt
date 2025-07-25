@@ -5,16 +5,17 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import testUtils.fakeReviews
 import kotlin.test.assertEquals
 
 class GetMovieReviewsUseCaseTest {
+
     private lateinit var getMovieReviewsUseCase: GetMovieReviewsUseCase
     private val movieRepository: MovieRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getMovieReviewsUseCase = GetMovieReviewsUseCase(movieRepository)
     }
@@ -22,14 +23,13 @@ class GetMovieReviewsUseCaseTest {
     @Test
     fun `should return movie reviews from repository`() = runTest {
         // Given
-        coEvery { movieRepository.getMovieReview(movieId,page) } returns fakeReviews
+        coEvery { movieRepository.getMovieReview(movieId, page) } returns fakeReviews
 
-        // when
-        val result = getMovieReviewsUseCase(movieId,page)
+        // When
+        val result = getMovieReviewsUseCase(movieId, page)
 
         // Then
-        assertEquals(result, fakeReviews)
-
+        assertEquals(fakeReviews, result)
     }
 
     @Test
@@ -45,15 +45,15 @@ class GetMovieReviewsUseCaseTest {
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest{
+    fun `should return empty list when no reviews found`() = runTest {
         // Given
-        coEvery { movieRepository.getMovieReview(movieId,page) } returns emptyList()
+        coEvery { movieRepository.getMovieReview(movieId, page) } returns emptyList()
 
-        // when
-        val result = getMovieReviewsUseCase(movieId,page)
+        // When
+        val result = getMovieReviewsUseCase(movieId, page)
 
         // Then
-        assertEquals(result, emptyList())
+        assertEquals(emptyList(), result)
     }
 
     @Test
@@ -68,9 +68,8 @@ class GetMovieReviewsUseCaseTest {
         coVerify(exactly = 1) { movieRepository.getMovieReview(movieId, page) }
     }
 
-    private companion object{
-        val movieId = 1
-        val page = 1
+    private companion object {
+        const val movieId = 1
+        const val page = 1
     }
-
 }

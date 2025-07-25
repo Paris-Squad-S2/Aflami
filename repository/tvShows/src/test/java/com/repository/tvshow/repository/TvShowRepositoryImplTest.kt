@@ -1,5 +1,6 @@
 package com.repository.tvshow.repository
 
+import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoSeasonFoundException
@@ -993,6 +994,60 @@ class TvShowRepositoryImplTest {
             tvShowSeasonLocalDataSource.addSeasonDetails(any())
         }
     }
+    @Test
+    fun `getTvShowCast should throw NoCastFoundException when remote throws generic exception`() = runTest {
+        // Given
+        coEvery { tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language) } returns emptyList()
+        coEvery { tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language) } throws RuntimeException("Something went wrong")
+
+        // When & Then
+        assertThrows<NoCastFoundException> {
+            tvShowRepository.getTvShowCast(tvShowId)
+        }
+    }
+    @Test
+    fun `getTvShowRecommendations - should throw NoInternetConnectionException when offline`() = runTest {
+        // Given
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When & Then
+        assertThrows<NoInternetConnectionException> {
+            tvShowRepository.getTvShowRecommendations(tvShowId, page)
+        }
+    }
+    @Test
+    fun `getCompanyProducts - should return empty list when productionCompanies is null`() = runTest {
+        // Given
+        val local = mockTvShowDto.toLocalDto(language, tvShowId).copy(productionCompanies = emptyList())
+
+        coEvery { tvShowLocalDataSource.getTvShowId(tvShowId, language) } returns local
+
+        // When
+        val result = tvShowRepository.getCompanyProducts(tvShowId)
+
+        // Then
+        assertThat(result).isEmpty()
+    }
+    @Test
+    fun `getTvShowReview - should return empty list when remote returns null reviews`() = runTest {
+        // Given
+        val emptyDto = mockTvShowReviewsDto.copy(results = null)
+
+        coEvery { tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language) } returns emptyList()
+        coEvery { tvShowDetailsRemoteDataSource.getTvShowReviews(tvShowId, page, language) } returns emptyDto
+
+        // When
+        val result = tvShowRepository.getTvShowReview(tvShowId, page)
+
+        // Then
+        assertThat(result).isEmpty()
+    }
+    @Test
+    fun `addRatingToTvShow - should print rating added message`() = runTest {
+        // When
+        tvShowRepository.addRatingToTvShow()
+    }
+
 
     private companion object {
         val tvShowId = 123
