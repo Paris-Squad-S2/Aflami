@@ -23,6 +23,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun EpisodeCard(
     modifier: Modifier = Modifier,
+    hasVideo: Boolean = true,
     episodeRating: Float,
     episodeNumber: String,
     episodeTitle: String,
@@ -30,6 +31,7 @@ fun EpisodeCard(
     episodeDuration: String,
     episodeDate: String,
     episodeDescription: String,
+    onPlayClick: () -> Unit
 ) {
     Column(
         modifier = modifier
@@ -70,14 +72,21 @@ fun EpisodeCard(
             }
 
             Spacer(modifier = Modifier.weight(1f))
-            MediaPlayButton(buttonType = MediaButtonType.MEDIUM, showBoarder = true)
+            MediaPlayButton(
+                buttonType = MediaButtonType.MEDIUM,
+                showBoarder = true,
+                hasVideo = hasVideo,
+                onButtonClick = {onPlayClick()}
+            )
 
         }
         Text(
             text = episodeDescription,
             style = Theme.textStyle.label.small,
             color = Theme.colors.text.hint,
-            modifier = Modifier.fillMaxWidth().padding(bottom = 8.dp)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp)
         )
 
     }
@@ -96,6 +105,7 @@ fun PreviewEpisodeCard() {
             episodeTitle = "Recovering a body",
             episodeDate = "3 Sep 2020",
             imageUri = "https://image.tmdb.org/t/p/w500//3BHWR7mney46vFhG4lQrsso3p1m.jpg",
+            onPlayClick = {}
         )
     }
 }

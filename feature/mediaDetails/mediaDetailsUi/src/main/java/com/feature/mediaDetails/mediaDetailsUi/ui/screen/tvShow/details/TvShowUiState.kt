@@ -30,7 +30,7 @@ data class TvShowDetailsUiState(
     val cast: List<CastUi>,
     val reviews: Flow<PagingData<ReviewUi>>,
     val gallery: List<String>,
-    val tvShowVideoUi: TvShowVideoUi
+    val tvShowVideoUi: TvShowVideoUi,
 )
 
 data class TvShowVideoUi(
@@ -62,6 +62,7 @@ data class SeasonUi(
     val episodes: List<EpisodeUi>,
 )
 
+
 data class EpisodeUi(
     val episodeNumber: Int,
     val posterUrl: String,
@@ -70,4 +71,10 @@ data class EpisodeUi(
     val runtime: String,
     val description: String,
     val stillUrl: String,
+)
+
+data class EpisodeVideoUi(
+    val key: String,
+    val name: String,
+    val site: String,
 )

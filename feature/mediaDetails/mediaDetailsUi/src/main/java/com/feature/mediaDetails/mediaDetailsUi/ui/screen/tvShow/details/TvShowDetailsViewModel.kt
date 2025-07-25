@@ -8,26 +8,31 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.TvShowVideo
 import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
-
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 class TvShowDetailsViewModel(
     savedStateHandle: SavedStateHandle,
@@ -40,6 +45,7 @@ class TvShowDetailsViewModel(
     private val addTvShowToFavoriteUseCase: AddTvShowToFavoriteUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
+    private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
@@ -65,30 +71,39 @@ class TvShowDetailsViewModel(
                 key = "",
                 name = "",
                 site = ""
-            )
+            ),
         ),
         isLoading = true,
         errorMessage = null,
         isEpisodesLoading = true,
-        seasonsLoadingStates = emptyMap()
+        seasonsLoadingStates = emptyMap(),
     )
 ) {
 
+    private val _episodeVideoUiState = MutableStateFlow(EpisodeVideoUi(
+        key = "",
+        name = "",
+        site = ""
+    ))
+
+    val episodeVideoUiState = _episodeVideoUiState.asStateFlow()
 
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
 
     }
+
     init {
         loadTvShowDetails(mediaId)
         getInformationVideoTvShow()
     }
 
+
     private fun getInformationVideoTvShow() {
         tryToExecute(
             execute = { getTvShowVideoUseCase(mediaId) },
             onSuccess = ::onGetVideoTvShowSuccess,
-            onError = ::onGetVideoTvShowError,
+            onError = ::onGetVideoError,
         )
     }
 
@@ -178,7 +193,7 @@ class TvShowDetailsViewModel(
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
-            },            onSuccess = { recommendations ->
+            }, onSuccess = { recommendations ->
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
@@ -208,7 +223,8 @@ class TvShowDetailsViewModel(
                             getTvShowReviewsUseCase = getTvShowReviewsUseCase
                         )
                     }
-                ).flow.cachedIn(viewModelScope) },
+                ).flow.cachedIn(viewModelScope)
+            },
             onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
@@ -321,7 +337,8 @@ class TvShowDetailsViewModel(
 
     override fun onClickPlayTrailer() {
         if (screenState.value.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty() ||
-            screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()) {
+            screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()
+        ) {
             updateState(
                 screenState.value.copy(
                     errorMessage = "No video available"
@@ -347,6 +364,34 @@ class TvShowDetailsViewModel(
         loadTvShowDetails(mediaId = mediaId)
     }
 
+    override fun onPlay(tvShowId: Int, seasonNumber: Int, episodeNumber: Int) {
+        viewModelScope.launch {
+            _episodeVideoUiState.collect {
+                if (it.site.isEmpty() || it.key.isEmpty()) {
+                    updateState(
+                        screenState.value.copy(
+                            errorMessage = "No video available"
+                        )
+                    )
+                }
+            }
+        }
+
+        Log.d("TAG111", "onPlay: $tvShowId $seasonNumber $episodeNumber")
+
+        tryToExecute(
+            execute = {
+                getEpisodeVideoUseCase(
+                    tvShowId,
+                    seasonNumber,
+                    episodeNumber,
+                )
+            },
+            onSuccess = ::onGetVideoEpisodeSuccess,
+            onError = ::onGetVideoError,
+        )
+    }
+
     override fun onSimilarTvShowClick(mediaId: Int) {
         mediaDetailsFeatureAPI.startTvShowDetails(
             tvShowId = mediaId
@@ -364,7 +409,25 @@ class TvShowDetailsViewModel(
 
     }
 
-    private fun onGetVideoTvShowError(error: String) {
+    private fun onGetVideoEpisodeSuccess(episodeVideo: EpisodeVideo) {
+        viewModelScope.launch {
+            _episodeVideoUiState.collect {
+                _episodeVideoUiState.update {
+                   episodeVideo.toUi()
+                }
+            }
+        }
+
+        navigate(
+            MediaDetailsDestinations.VideosScreen(
+                site = screenState.value.tvShowDetailsUiState.tvShowVideoUi.site,
+                key = screenState.value.tvShowDetailsUiState.tvShowVideoUi.key
+            )
+        )
+
+    }
+
+    private fun onGetVideoError(error: String) {
         updateState(
             screenState.value.copy(
                 errorMessage = error

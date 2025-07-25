@@ -8,15 +8,16 @@ import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCase.tvShows.AddTvShowToFavoriteUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
 import com.domain.search.useCase.AutoCompleteCountryUseCase
 import com.domain.search.useCase.ClearAllRecentSearchesUseCase
 import com.domain.search.useCase.ClearRecentSearchUseCase
@@ -72,5 +73,6 @@ val useCaseModule = module {
     factoryOf(::GetRegisterUrlUseCase)
     factoryOf(::GetMovieVideoUseCase)
     factoryOf(::GetTvShowVideoUseCase)
+    factoryOf(::GetEpisodeVideoUseCase)
 }
 

@@ -1,5 +1,6 @@
 package com.datasource.remote.tvShow.service
 
+import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.TvShowCreditsDto
 import com.repository.model.remote.TvShowDto
 import com.repository.model.remote.TvShowImagesDto
@@ -52,4 +53,12 @@ interface RetrofitTvShowDetailsApiService {
     suspend fun getTrailerVideoForTvShow(
         @Path("series_id") tvShowId: Int
     ): TvShowVideoDto
+
+    @GET("tv/{series_id}/season/{season_number}/episode/{episode_number}/videos")
+    suspend fun getTrailerVideoForEpisode(
+        @Path("series_id") tvShowId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Path("episode_number") episodeNumber: Int,
+        @Query("language") language: String
+    ): EpisodeVideoDto
 }

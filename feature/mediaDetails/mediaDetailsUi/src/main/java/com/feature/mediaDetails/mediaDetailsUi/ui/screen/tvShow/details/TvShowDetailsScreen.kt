@@ -58,13 +58,20 @@ import com.paris_2.aflami.designsystem.R as designsystemR
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = koinViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    TvShowDetailsScreenContent(state = state.value, tvShowScreenInteractionListener = viewModel)
+    val episodeVideoUi = viewModel.episodeVideoUiState.collectAsStateWithLifecycle()
+
+    TvShowDetailsScreenContent(
+        state = state.value,
+        episodeVideoUi.value,
+        tvShowScreenInteractionListener = viewModel
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
+    episodeVideoUi: EpisodeVideoUi,
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
 ) {
     val tvChips = TvShowChips.entries
@@ -237,6 +244,7 @@ fun TvShowDetailsScreenContent(
                                                             )
                                                         ) + fadeOut()
                                                     ) {
+
                                                         EpisodeCard(
                                                             episodeRating = episode.voteAverage.toFloat(),
                                                             episodeNumber = episode.episodeNumber.toString(),
@@ -247,7 +255,16 @@ fun TvShowDetailsScreenContent(
                                                             episodeDescription = episode.description,
                                                             modifier = Modifier
                                                                 .fillMaxWidth()
-                                                                .padding(horizontal = 8.dp)
+                                                                .padding(horizontal = 8.dp),
+                                                            hasVideo = true,
+                                                            onPlayClick = {
+                                                                tvShowScreenInteractionListener.onPlay(
+                                                                    state.tvShowDetailsUiState.tvShowUi.id,
+                                                                    season.seasonNumber + 1,
+                                                                    episode.episodeNumber
+                                                                )
+                                                            }
+
                                                         )
                                                     }
                                                 }
