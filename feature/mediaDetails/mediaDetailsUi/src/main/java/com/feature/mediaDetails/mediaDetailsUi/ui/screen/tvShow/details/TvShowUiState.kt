@@ -37,6 +37,7 @@ data class TvShowDetailsUiState(
     val gallery: List<String>,
     val tvShowVideoUi: TvShowVideoUi,
     val selectedRating: Float,
+    val episodeVideoUi: EpisodeVideoUi
 )
 
 data class TvShowVideoUi(

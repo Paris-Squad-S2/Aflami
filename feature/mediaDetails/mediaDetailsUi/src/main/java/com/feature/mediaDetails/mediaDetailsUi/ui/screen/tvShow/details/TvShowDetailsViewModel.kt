@@ -73,7 +73,12 @@ class TvShowDetailsViewModel(
                 name = "",
                 site = ""
             ),
-            selectedRating = 0f
+            selectedRating = 0f,
+            episodeVideoUi = EpisodeVideoUi(
+                key = "",
+                name = "",
+                site = ""
+            )
         ),
         isLoading = true,
         errorMessage = null,
@@ -82,16 +87,11 @@ class TvShowDetailsViewModel(
     )
 ) {
 
-    private val _episodeVideoUiState = MutableStateFlow(EpisodeVideoUi(
-        key = "",
-        name = "",
-        site = ""
-    ))
-
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
 
     }
+
     init {
         loadTvShowDetails(mediaId)
         getInformationVideoTvShow()
@@ -191,7 +191,7 @@ class TvShowDetailsViewModel(
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
-            },            onSuccess = { recommendations ->
+            }, onSuccess = { recommendations ->
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
@@ -221,7 +221,8 @@ class TvShowDetailsViewModel(
                             getTvShowReviewsUseCase = getTvShowReviewsUseCase
                         )
                     }
-                ).flow.cachedIn(viewModelScope) },
+                ).flow.cachedIn(viewModelScope)
+            },
             onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
@@ -292,6 +293,7 @@ class TvShowDetailsViewModel(
             }
         )
     }
+
     override fun onAddToListClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
     }
@@ -393,18 +395,6 @@ class TvShowDetailsViewModel(
     override fun onRatingSubmitted(rating: Float) {}
 
     override fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int) {
-        viewModelScope.launch {
-            _episodeVideoUiState.collect {
-                if (it.site.isEmpty() || it.key.isEmpty()) {
-                    updateState(
-                        screenState.value.copy(
-                            errorMessage = "No video available"
-                        )
-                    )
-                }
-            }
-        }
-
         tryToExecute(
             execute = {
                 getEpisodeVideoUseCase(
@@ -442,16 +432,11 @@ class TvShowDetailsViewModel(
         updateState(
             screenState.value.copy(
                 showSnackBar = false,
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(episodeVideoUi = episodeVideo.toUi())
             )
         )
-        viewModelScope.launch {
-            _episodeVideoUiState.collect {
-                _episodeVideoUiState.update {
-                   episodeVideo.toUi()
-                }
-            }
-        }
-        if(episodeVideo.site.isEmpty() || episodeVideo.key.isEmpty()){
+
+        if (episodeVideo.site.isEmpty() || episodeVideo.key.isEmpty()) {
             updateState(
                 screenState.value.copy(
                     showSnackBar = true,
@@ -460,8 +445,8 @@ class TvShowDetailsViewModel(
         } else {
             navigate(
                 MediaDetailsDestinations.VideosScreen(
-                    site = _episodeVideoUiState.value.site,
-                    key =  _episodeVideoUiState.value.key
+                    site = screenState.value.tvShowDetailsUiState.episodeVideoUi.site,
+                    key = screenState.value.tvShowDetailsUiState.episodeVideoUi.key
                 )
             )
         }
