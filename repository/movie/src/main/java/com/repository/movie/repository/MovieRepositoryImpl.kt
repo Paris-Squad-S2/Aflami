@@ -178,10 +178,6 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun addMovieToFavorite(movieId: Int) {
-        TODO("Not yet implemented")
-    }
-
     override suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo> {
         return safeCall(NoVideoFoundException()) {
             movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId)
