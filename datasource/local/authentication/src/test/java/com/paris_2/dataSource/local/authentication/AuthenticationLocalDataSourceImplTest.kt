@@ -91,4 +91,24 @@ class AuthenticationLocalDataSourceImplTest {
         val result = dataSource.isGuest()
         assertEquals(true, result)
     }
+    @Test
+    fun `hasAnySession should return true when sessionId is not null or blank`() {
+        every { sharedPreferences.getString("session_id", null) } returns "some_session"
+        val result = dataSource.hasAnySession()
+        assertEquals(true, result)
+    }
+
+    @Test
+    fun `hasAnySession should return false when sessionId is null`() {
+        every { sharedPreferences.getString("session_id", null) } returns null
+        val result = dataSource.hasAnySession()
+        assertEquals(false, result)
+    }
+
+    @Test
+    fun `hasAnySession should return false when sessionId is blank`() {
+        every { sharedPreferences.getString("session_id", null) } returns " "
+        val result = dataSource.hasAnySession()
+        assertEquals(false, result)
+    }
 }
