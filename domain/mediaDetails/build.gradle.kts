@@ -25,6 +25,10 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(kotlin("test"))
 }
+tasks.test {
+    useJUnitPlatform()
+}
+
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
