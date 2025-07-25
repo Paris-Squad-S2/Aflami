@@ -185,6 +185,10 @@ class AuthenticationRepositoryImplTest {
         every { remoteDataSource.getForgetPasswordUrl() } returns expectedUrl
         assertThat(repository.getForgetPasswordUrl()).isEqualTo(expectedUrl)
     }
-
+    @Test
+    fun `hasAnySession should return value from localDataSource`() {
+        every { localDataSource.hasAnySession() } returns true
+        assertThat(repository.hasAnySession()).isTrue()
+    }
 
 }
