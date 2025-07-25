@@ -138,5 +138,34 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForTvShow(tvShowId)
             assertThat(result).isEqualTo(tvShowVideoDto)
         }
+        @Test
+   fun `getTrailerVideoForEpisode should deliver epic trailer when the API nails the audition`() = runTest {
+        val tvShowId = 456
+        val seasonNumber = 2
+        val episodeNumber = 3
+        val language = "en-US"
+        val blockbusterTrailer = EpisodeVideoDto(
+            id = "trailer123",
+            key = "cool_trailer_key",
+            name = "Epic Trailer for the Ages"
+        )
+
+        coEvery {
+            retrofitTvShowDetailsApiService.getTrailerVideoForEpisode(
+                tvShowId,
+                seasonNumber,
+                episodeNumber,
+                language
+            )
+        } returns blockbusterTrailer
+
+        val result = tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForEpisode(
+            tvShowId,
+            seasonNumber,
+            episodeNumber,
+            language
+        )
+        assertThat(result).isEqualTo(blockbusterTrailer)
+    }
 
 }
