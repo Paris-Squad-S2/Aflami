@@ -5,8 +5,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import testUtils.fakeCast
@@ -16,7 +16,7 @@ class GetTvShowCastUseCaseTest {
     private lateinit var getTvShowCastUseCase: GetTvShowCastUseCase
     private val tvShowRepository: TvShowRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getTvShowCastUseCase = GetTvShowCastUseCase(tvShowRepository)
     }
@@ -26,12 +26,11 @@ class GetTvShowCastUseCaseTest {
         // Given
         coEvery { tvShowRepository.getTvShowCast(tvShowId) } returns fakeCast
 
-        // when
+        // When
         val result = getTvShowCastUseCase(tvShowId)
 
         // Then
-        assertEquals(result, fakeCast)
-
+        assertEquals(fakeCast, result)
     }
 
     @Test
@@ -51,7 +50,7 @@ class GetTvShowCastUseCaseTest {
         // Given
         coEvery { tvShowRepository.getTvShowCast(tvShowId) } returns emptyList()
 
-        // when
+        // When
         val result = getTvShowCastUseCase(tvShowId)
 
         // Then
@@ -71,6 +70,6 @@ class GetTvShowCastUseCaseTest {
     }
 
     private companion object {
-        val tvShowId = 1
+        const val tvShowId = 1
     }
 }

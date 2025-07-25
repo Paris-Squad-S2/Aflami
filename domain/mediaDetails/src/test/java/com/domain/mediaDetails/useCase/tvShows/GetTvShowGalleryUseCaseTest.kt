@@ -5,8 +5,8 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import testUtils.fakeGallery
 
@@ -15,7 +15,7 @@ class GetTvShowGalleryUseCaseTest {
     private lateinit var getTvShowGalleryUseCase: GetTvShowGalleryUseCase
     private val tvShowRepository: TvShowRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getTvShowGalleryUseCase = GetTvShowGalleryUseCase(tvShowRepository)
     }
@@ -25,12 +25,11 @@ class GetTvShowGalleryUseCaseTest {
         // Given
         coEvery { tvShowRepository.getTvShowGallery(tvShowId) } returns fakeGallery
 
-        // when
+        // When
         val result = getTvShowGalleryUseCase(tvShowId)
 
         // Then
-        assertEquals(result, fakeGallery)
-
+        assertEquals(fakeGallery, result)
     }
 
     @Test
@@ -46,8 +45,6 @@ class GetTvShowGalleryUseCaseTest {
     }
 
     private companion object {
-        val tvShowId = 1
-
+        const val tvShowId = 1
     }
-
 }
