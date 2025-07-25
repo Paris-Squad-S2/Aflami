@@ -6,14 +6,15 @@ import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowVideo
 import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
@@ -51,6 +52,7 @@ class TvShowDetailsViewModelTest {
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase = mockk()
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase = mockk()
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase = mockk()
+    private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
@@ -179,6 +181,7 @@ class TvShowDetailsViewModelTest {
             getTvShowProductionCompaniesUseCase,
             getSeasonDetailsUseCase,
             getTvShowVideoUseCase,
+            getEpisodeVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
             addRatingToTvShowUseCase
