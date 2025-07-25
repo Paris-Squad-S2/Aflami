@@ -1,10 +1,10 @@
 package com.feature.search.searchUi.pagging
 
+import MediaUiState
 import androidx.paging.PagingState
 import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.search.searchUi.mapper.toMediaUiList
-import com.feature.search.searchUi.screen.search.MediaUiState
 
 class WorldTourPagingSource(
     countryName: String,

@@ -1,2 +1,2 @@
-versionName=0.2.17
-- Made the component in the design system more reusable.
+versionName=0.3.0
+- add  home screen feature with all screens related to it

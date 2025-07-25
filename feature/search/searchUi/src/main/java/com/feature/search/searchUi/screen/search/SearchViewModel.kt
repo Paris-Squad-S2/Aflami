@@ -1,5 +1,10 @@
 package com.feature.search.searchUi.screen.search
 
+import CategoryUiState
+import MediaUiState
+import SearchScreenState
+import SearchTypeUi
+import SearchUiState
 import androidx.lifecycle.viewModelScope
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
@@ -39,63 +44,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-import kotlinx.datetime.LocalDate
-
-data class SearchScreenState(
-    val searchUiState: SearchUiState,
-    val isLoading: Boolean,
-    val errorMessage: String?
-)
-
-
-data class SearchUiState(
-    val searchQuery: String,
-    val showFilterDialog: Boolean,
-    val recentSearches: List<SearchHistoryUiState>,
-    val selectedTabIndex: Int,
-    val moviesResult: Flow<PagingData<MediaUiState>>,
-    val tvShowsResult: Flow<PagingData<MediaUiState>>,
-    val filteredMoviesResult: Flow<PagingData<MediaUiState>>,
-    val filteredTvShowsResult: Flow<PagingData<MediaUiState>>,
-    val categories: Map<CategoryUiState, Boolean>,
-    val selectedRating: Float,
-    val isAllCategories: Boolean,
-    val isApplyFilter:Boolean,
-)
-
-
-data class MediaUiState(
-    val id: Int,
-    val imageUri: String,
-    val title: String,
-    val type: MediaTypeUi,
-    val categories: List<Int>,
-    val yearOfRelease: LocalDate,
-    val rating: Double,
-)
-
-enum class MediaTypeUi(val mediaName: String) {
-    TVSHOW("TV Show"),
-    MOVIE("Movie")
-}
-
-data class CategoryUiState(
-    val id: Int,
-    val name: String,
-)
-
-data class SearchHistoryUiState(
-    val searchTitle: String,
-    val searchDate: String,
-    val searchType: SearchTypeUi
-)
-
-enum class SearchTypeUi(val displayNameResId: Int) {
-    Query(R.string.query),
-    Country(R.string.country),
-    Actor(R.string.actor);
-}
-
 class SearchViewModel(
     private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase,
     private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase,
@@ -138,7 +86,7 @@ class SearchViewModel(
             execute = getAllRecentSearchesUseCase::invoke,
             onSuccess = { recentSearches ->
                 recentSearches.collect { recentSearchesList ->
-                    emitState(
+                    updateState(
                         screenState.value.copy(
                             isLoading = false,
                             searchUiState = screenState.value.searchUiState.copy(
@@ -150,7 +98,7 @@ class SearchViewModel(
                 }
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -163,7 +111,7 @@ class SearchViewModel(
         tryToExecute(
             execute = getAllCategoriesUseCase::invoke,
             onSuccess = { categories ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         searchUiState = screenState.value.searchUiState.copy(
                             categories = categories.toCategoryUiList().associateWith { false }
@@ -173,7 +121,7 @@ class SearchViewModel(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -197,7 +145,7 @@ class SearchViewModel(
     private var debounceJob: Job? = null
 
     override fun onSearchQueryChange(query: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 searchUiState = screenState.value.searchUiState.copy(
                     searchQuery = query,
@@ -214,11 +162,10 @@ class SearchViewModel(
         }
     }
 
-
     private fun searchQuery(query: String): Job {
         return tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = null
                     )
@@ -255,7 +202,7 @@ class SearchViewModel(
                 val filteredTvShowsResult =
                     filteredMediaByCategories.map { pagingData  -> pagingData
                         .filter { it.type == MediaTypeUi.TVSHOW }}
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isLoading = false,
                         searchUiState = screenState.value.searchUiState.copy(
@@ -268,7 +215,7 @@ class SearchViewModel(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -277,8 +224,9 @@ class SearchViewModel(
         )
     }
 
+
     override fun onSelectTab(tabIndex: Int) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 searchUiState = screenState.value.searchUiState.copy(
                     selectedTabIndex = tabIndex
@@ -288,7 +236,7 @@ class SearchViewModel(
     }
 
     override fun onFilterButtonClick() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 searchUiState = screenState.value.searchUiState.copy(
                     showFilterDialog = !screenState.value.searchUiState.showFilterDialog
@@ -304,7 +252,7 @@ class SearchViewModel(
     ) {
         tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         searchUiState = screenState.value.searchUiState.copy(
                             showFilterDialog = false,
@@ -345,11 +293,23 @@ class SearchViewModel(
                 Pair(filteredByCategoriesMovies, filteredByCategoriesTvShows)
             },
             onSuccess = { (filteredByCategoriesMovies, filteredByCategoriesTvShows) ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         searchUiState = screenState.value.searchUiState.copy(
-                            filteredMoviesResult = flow{emit(PagingData.from(filteredByCategoriesMovies.toMediaUiList()))},
-                            filteredTvShowsResult = flow{emit(PagingData.from(filteredByCategoriesTvShows.toMediaUiList()))},
+                            filteredMoviesResult = flow {
+                                emit(
+                                    PagingData.from(
+                                        filteredByCategoriesMovies.toMediaUiList()
+                                    )
+                                )
+                            },
+                            filteredTvShowsResult = flow {
+                                emit(
+                                    PagingData.from(
+                                        filteredByCategoriesTvShows.toMediaUiList()
+                                    )
+                                )
+                            },
                             isApplyFilter = true
                         ),
                         isLoading = false
@@ -357,7 +317,7 @@ class SearchViewModel(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         isLoading = false,
@@ -371,7 +331,7 @@ class SearchViewModel(
     }
 
     override fun onClearFilterClick() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 searchUiState = screenState.value.searchUiState.copy(
                     showFilterDialog = false,
@@ -400,7 +360,7 @@ class SearchViewModel(
                         )
                     },
                     onError = { errorMessage ->
-                        emitState(
+                        updateState(
                             screenState.value.copy(
                                 errorMessage = errorMessage
                             )
@@ -419,7 +379,7 @@ class SearchViewModel(
                         )
                     },
                     onError = { errorMessage ->
-                        emitState(
+                        updateState(
                             screenState.value.copy(
                                 errorMessage = errorMessage
                             )
@@ -434,7 +394,7 @@ class SearchViewModel(
         tryToExecute(
             execute = clearAllRecentSearchesUseCase::invoke,
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -449,7 +409,7 @@ class SearchViewModel(
                 clearRecentSearchUseCase(id, searchTypeUi.toDomainModel())
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -483,7 +443,7 @@ class SearchViewModel(
 
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -521,10 +481,16 @@ class SearchViewModel(
     private suspend fun Flow<PagingData<MediaUiState>>.collectAllItems(): List<MediaUiState> {
         val differ = AsyncPagingDataDiffer(
             diffCallback = object : DiffUtil.ItemCallback<MediaUiState>() {
-                override fun areItemsTheSame(oldItem: MediaUiState, newItem: MediaUiState): Boolean =
+                override fun areItemsTheSame(
+                    oldItem: MediaUiState,
+                    newItem: MediaUiState,
+                ): Boolean =
                     oldItem.id == newItem.id
 
-                override fun areContentsTheSame(oldItem: MediaUiState, newItem: MediaUiState): Boolean =
+                override fun areContentsTheSame(
+                    oldItem: MediaUiState,
+                    newItem: MediaUiState,
+                ): Boolean =
                     oldItem == newItem
             },
             updateCallback = NoopListUpdateCallback(),
@@ -545,12 +511,11 @@ class SearchViewModel(
     }
 
     class NoopListUpdateCallback : ListUpdateCallback {
-        override fun onInserted(position: Int, count: Int){}
-        override fun onRemoved(position: Int, count: Int){}
-        override fun onMoved(fromPosition: Int, toPosition: Int){}
-        override fun onChanged(position: Int, count: Int, payload: Any?){}
+        override fun onInserted(position: Int, count: Int) {}
+        override fun onRemoved(position: Int, count: Int) {}
+        override fun onMoved(fromPosition: Int, toPosition: Int) {}
+        override fun onChanged(position: Int, count: Int, payload: Any?) {}
     }
-
 
 
 }

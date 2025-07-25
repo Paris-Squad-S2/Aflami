@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.worldTour
 
+import MediaUiState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -7,7 +8,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.search.model.Country
 import com.domain.search.useCase.AutoCompleteCountryUseCase
 import com.domain.search.useCase.GetCountryCodeByNameUseCase
 import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
@@ -17,25 +17,10 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.pagging.WorldTourPagingSource
-import com.feature.search.searchUi.screen.search.MediaTypeUi
-import com.feature.search.searchUi.screen.search.MediaUiState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
-import org.koin.java.KoinJavaComponent.getKoin
-
-data class WorldTourScreenState(
-    val uiState: WorldTourUiState,
-    val errorMessage: String?
-)
-
-data class WorldTourUiState(
-    val searchQuery: String,
-    val searchResult: Flow<PagingData<MediaUiState>>,
-    val hints: List<Country>
-)
 
 class WorldTourViewModel(
     savedStateHandle: SavedStateHandle,
@@ -70,7 +55,7 @@ class WorldTourViewModel(
 
     private var debounceJob: Job? = null
     override fun onSearchQueryChange(query: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 uiState = screenState.value.uiState.copy(
                     searchQuery = query,
@@ -81,7 +66,7 @@ class WorldTourViewModel(
         if (query.isNotBlank()) {
             debounceJob = viewModelScope.launch {
                 val hints = autoCompleteCountryUseCase(query)
-                emitState(
+                updateState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
                             hints = hints
@@ -95,7 +80,7 @@ class WorldTourViewModel(
                 } else if (screenState.value.uiState.hints.isNotEmpty()) {
                     searchQuery(screenState.value.uiState.hints.first().countryCode)
                 } else {
-                    emitState(
+                    updateState(
                         screenState.value.copy(
                             uiState = screenState.value.uiState.copy(
                                 searchResult = flowOf(PagingData.empty()),
@@ -111,7 +96,7 @@ class WorldTourViewModel(
     private fun searchQuery(query: String): Job {
         return tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = null
                     )
@@ -128,7 +113,7 @@ class WorldTourViewModel(
                 ).flow.cachedIn(viewModelScope)
             },
             onSuccess = { searchResult ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
                             searchResult = searchResult,
@@ -137,7 +122,7 @@ class WorldTourViewModel(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -159,7 +144,7 @@ class WorldTourViewModel(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )

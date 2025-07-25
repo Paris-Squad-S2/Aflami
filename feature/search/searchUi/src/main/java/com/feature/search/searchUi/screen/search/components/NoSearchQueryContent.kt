@@ -1,5 +1,7 @@
 package com.feature.search.searchUi.screen.search.components
 
+import SearchScreenState
+import SearchTypeUi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -15,24 +17,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
-import com.feature.search.searchUi.screen.search.SearchScreenState
-import com.feature.search.searchUi.screen.search.SearchTypeUi
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.HorizontalDivider
-import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
+import com.paris_2.aflami.designsystem.components.CustomButton
+import com.paris_2.aflami.designsystem.components.HorizontalDivider
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.RecentSearchItem
 import com.paris_2.aflami.designsystem.components.SearchSuggestionHub
+import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
 fun NoSearchQueryContent(
     state: SearchScreenState,
-    searchScreenInteractionListener: SearchScreenInteractionListener
+    searchScreenInteractionListener: SearchScreenInteractionListener,
 ) {
     LazyColumn {
         item {
@@ -130,7 +130,11 @@ fun NoSearchQueryContent(
                 val recentSearch = state.searchUiState.recentSearches[index]
                 RecentSearchItem(
                     modifier = Modifier.animateItem(),
-                    recentSearchTitle = recentSearch.searchTitle + if (recentSearch.searchType!= SearchTypeUi.Query) " (${stringResource(recentSearch.searchType.displayNameResId)})" else "",
+                    recentSearchTitle = recentSearch.searchTitle + if (recentSearch.searchType != SearchTypeUi.Query) " (${
+                        stringResource(
+                            recentSearch.searchType.displayNameResId
+                        )
+                    })" else "",
                     onRecentSearchClick = {
                         searchScreenInteractionListener.onRecentSearchClick(
                             recentSearch.searchTitle,

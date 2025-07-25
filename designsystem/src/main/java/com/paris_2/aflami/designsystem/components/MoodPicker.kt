@@ -78,7 +78,7 @@ fun MoodPicker(
             text = title,
             style = Theme.textStyle.title.small,
             modifier = Modifier
-                .padding(start = 12.dp, top = 44.dp)
+                .padding(start = 12.dp, top = 44.dp, bottom = 10.dp)
                 .align(Alignment.TopStart)
         )
 
@@ -104,6 +104,8 @@ fun MoodPicker(
             Text(
                 text = question,
                 style = Theme.textStyle.body.small,
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
             )
 
 
@@ -137,7 +139,10 @@ fun MoodPicker(
                 text = "Get now",
                 style = Theme.textStyle.label.medium,
                 color = if (isEmojiSelected.value) Theme.colors.primary else Theme.colors.disable,
-                modifier = Modifier.wrapContentSize().clickable{ onEmojiClick(selectedEmojiMood.value) }
+                modifier = Modifier
+                    .padding(top = 12.dp , bottom = 3.dp)
+                    .wrapContentSize()
+                    .clickable{ if (isEmojiSelected.value) onEmojiClick(selectedEmojiMood.value) }
             )
         }
     }

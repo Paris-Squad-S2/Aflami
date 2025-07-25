@@ -1,4 +1,4 @@
-package com.feature.home.homeUi
+package com.paris_2.home
 
 import org.junit.Test
 
