@@ -16,7 +16,7 @@ import com.repository.search.entity.SearchType
 import com.repository.search.mapper.toMedia
 import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
-import com.repository.search.util.NetworkConnectionChecker
+import com.repository.search.util.SearchNetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -42,7 +42,7 @@ import kotlin.time.ExperimentalTime
 class SearchMediaRepositoryImplTest {
 
     private lateinit var repository: SearchMediaRepositoryImpl
-    private val networkConnectionChecker = mockk<NetworkConnectionChecker>()
+    private val searchNetworkConnectionChecker = mockk<SearchNetworkConnectionChecker>()
     private val mediaLocalDataSource = mockk<MediaLocalDataSource>()
     private val searchRemoteDataSource = mockk<SearchRemoteDataSource>()
     private val historyLocalDataSource = mockk<HistoryLocalDataSource>()
@@ -51,7 +51,7 @@ class SearchMediaRepositoryImplTest {
     @BeforeEach
     fun setup() {
         repository = SearchMediaRepositoryImpl(
-            networkConnectionChecker,
+            searchNetworkConnectionChecker,
             mediaLocalDataSource,
             searchRemoteDataSource,
             historyLocalDataSource
@@ -101,7 +101,7 @@ class SearchMediaRepositoryImplTest {
         coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
 
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
 
         val mockDto = SearchDto(
             page = 1,
@@ -155,7 +155,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByActor(actorName, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+        coEvery { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
         val exception = assertFailsWith<NoInternetConnectionException> {
             repository.getMediaByActor(actorName, page)
@@ -241,7 +241,7 @@ class SearchMediaRepositoryImplTest {
            SearchType.Country, expiredDate
         )
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(countryName, SearchType.Country) } just Runs
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery {
             searchRemoteDataSource.searchCountryCode(
                 page = page,
@@ -264,7 +264,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByCountry(countryName, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country) } returns null
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+        coEvery { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
         val exception = assertFailsWith<NoInternetConnectionException> {
             repository.getMoviesByCountry(countryName, page)
@@ -344,7 +344,7 @@ class SearchMediaRepositoryImplTest {
            SearchType.Query, expiredDate
         )
         coEvery { mediaLocalDataSource.clearAllMediaBySearchQuery(query, SearchType.Query) } just Runs
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { searchRemoteDataSource.searchMulti(query, page = page, language = any()) } returns mockk(
             relaxed = true
         )
@@ -362,7 +362,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { mediaLocalDataSource.getMediaByTitleQuery(query, page,language) } returns emptyList()
         coEvery { historyLocalDataSource.getSearchHistoryQuery(query, SearchType.Query) } returns null
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+        coEvery { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
         val exception = assertFailsWith<NoInternetConnectionException> {
             repository.getMediaByQuery(query, page)

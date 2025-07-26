@@ -13,7 +13,7 @@ import com.repository.search.entity.SearchType
 import com.repository.search.mapper.toMediaEntities
 import com.repository.search.mapper.toMediaEntitiesForActors
 import com.repository.search.mapper.toMedias
-import com.repository.search.util.NetworkConnectionChecker
+import com.repository.search.util.SearchNetworkConnectionChecker
 import com.repository.search.util.detectLanguage
 import com.repository.search.util.getCurrentDate
 import kotlinx.datetime.DateTimeUnit
@@ -24,7 +24,7 @@ import kotlinx.datetime.toInstant
 import kotlin.time.ExperimentalTime
 
 class SearchMediaRepositoryImpl(
-    private val networkConnectionChecker: NetworkConnectionChecker,
+    private val searchNetworkConnectionChecker: SearchNetworkConnectionChecker,
     private val mediaLocalDataSource: MediaLocalDataSource,
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val searchHistoryLocalDataSource: HistoryLocalDataSource
@@ -41,7 +41,7 @@ class SearchMediaRepositoryImpl(
                 return localMedia.toMedias()
             }
 
-            if (networkConnectionChecker.isConnected.value) {
+            if (searchNetworkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto =
                     searchRemoteDataSource.searchPerson(query = actorName, language = language, page = page)
@@ -75,7 +75,7 @@ class SearchMediaRepositoryImpl(
                 return localMedia.toMedias()
             }
 
-            if (networkConnectionChecker.isConnected.value) {
+            if (searchNetworkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto = searchRemoteDataSource.searchCountryCode(
                     countryCode = countryName,
@@ -113,7 +113,7 @@ class SearchMediaRepositoryImpl(
                 return localMedia.toMedias()
             }
 
-            if (networkConnectionChecker.isConnected.value) {
+            if (searchNetworkConnectionChecker.isConnected.value) {
                 val language = detectLanguage()
                 val remoteDto =
                     searchRemoteDataSource.searchMulti(query = query, language = language, page = page)
