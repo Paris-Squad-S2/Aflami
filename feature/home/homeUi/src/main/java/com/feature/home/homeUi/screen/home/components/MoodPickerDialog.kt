@@ -46,7 +46,7 @@ fun MoodPickerDialog(
             rating = movie.rating.toFloat(),
             movieName = movie.title,
             mediaType = movie.type.toString(),
-            year = movie.yearOfRelease.toString(),
+            year = movie.yearOfRelease.year.toString(),
             mediaCardType = MediaCardType.UP_COMING,
             showGradientFilter = false,
             modifier = Modifier
