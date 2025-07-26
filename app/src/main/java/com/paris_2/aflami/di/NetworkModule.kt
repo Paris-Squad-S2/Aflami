@@ -5,6 +5,10 @@ import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.repository.home.GenresApiServices
 import com.repository.home.MediaApiService
+import com.repository.home.util.HomeNetworkConnectionChecker
+import com.repository.movie.util.MovieNetworkConnectionChecker
+import com.repository.search.util.SearchNetworkConnectionChecker
+import com.repository.util.TvNetworkConnectionChecker
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -16,10 +20,10 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 
 val NetworkModule = module {
 
-    single { com.repository.search.util.NetworkConnectionChecker(androidApplication().applicationContext) }
-    single { com.repository.util.NetworkConnectionChecker(androidApplication().applicationContext) }
-    single { com.repository.movie.util.NetworkConnectionChecker(androidApplication().applicationContext) }
-    single { com.repository.home.util.NetworkConnectionChecker(androidApplication().applicationContext) }
+    single { SearchNetworkConnectionChecker(androidApplication().applicationContext) }
+    single { TvNetworkConnectionChecker(androidApplication().applicationContext) }
+    single { MovieNetworkConnectionChecker(androidApplication().applicationContext) }
+    single { HomeNetworkConnectionChecker(androidApplication().applicationContext) }
 
     single { AuthInterceptor(get<AuthenticationLocalDataSource>()) }
 
