@@ -41,6 +41,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
@@ -162,7 +163,9 @@ fun MovieDetailsScreenContent(
                             DetailsImage(
                                 imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
-                                onPlayClick = movieDetailsScreenInteractionListener::onClickPlayTrailer,
+                                onPlayClick = {
+                                    activity?.openYoutubeOrBrowser( state.movieDetailsUiState.movieVideoUi.key)
+                                },
                                 hasVideo = !(state.movieDetailsUiState.movieVideoUi.site.isEmpty() ||
                                         state.movieDetailsUiState.movieVideoUi.key.isEmpty()),
                                 modifier = Modifier.padding(bottom = 12.dp)

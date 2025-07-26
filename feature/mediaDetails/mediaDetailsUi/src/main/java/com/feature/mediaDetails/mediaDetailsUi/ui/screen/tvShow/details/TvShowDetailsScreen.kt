@@ -50,6 +50,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -97,9 +98,10 @@ fun TvShowDetailsScreenContent(
         RatingDialog(
             currentRating = currentRating,
             onRatingChange = { newRating ->
-                currentRating = newRating },
+                currentRating = newRating
+            },
             onDismiss = { tvShowScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { tvShowScreenInteractionListener.onDismissRatingDialog()  }
+            onSubmit = { tvShowScreenInteractionListener.onDismissRatingDialog() }
         )
     }
 
@@ -144,7 +146,9 @@ fun TvShowDetailsScreenContent(
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
                             hasVideo = !(state.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty() ||
                                     state.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty()),
-                            onPlayClick = tvShowScreenInteractionListener::onClickPlayTvShowTrailer,
+                            onPlayClick = {
+                                activity?.openYoutubeOrBrowser(state.tvShowDetailsUiState.tvShowVideoUi.key)
+                            },
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -254,13 +258,13 @@ fun TvShowDetailsScreenContent(
                                                     ) {
 
                                                         AnimatedContent(
-                                                            targetState = if(episode.stillUrl.isNotEmpty()) episode.stillUrl else state.tvShowDetailsUiState.tvShowUi.posterUrl,
+                                                            targetState = if (episode.stillUrl.isNotEmpty()) episode.stillUrl else state.tvShowDetailsUiState.tvShowUi.posterUrl,
                                                             transitionSpec = {
                                                                 fadeIn(animationSpec = tween(300)) togetherWith
                                                                         fadeOut(animationSpec = tween(300))
                                                             },
                                                             label = "image_transition"
-                                                        ){ value ->
+                                                        ) { value ->
                                                             EpisodeCard(
                                                                 episodeRating = episode.voteAverage.toFloat(),
                                                                 episodeNumber = episode.episodeNumber.toString(),
@@ -274,13 +278,8 @@ fun TvShowDetailsScreenContent(
                                                                     .padding(horizontal = 8.dp),
                                                                 hasVideo = true,
                                                                 onPlayClick = {
-                                                                    tvShowScreenInteractionListener.onClickPlayEpisodeTrailer(
-                                                                        state.tvShowDetailsUiState.tvShowUi.id,
-                                                                        seasonIndex + 1,
-                                                                        episode.episodeNumber
-                                                                    )
+                                                                    activity?.openYoutubeOrBrowser(state.tvShowDetailsUiState.episodeVideoUi.key)
                                                                 }
-
                                                             )
                                                         }
 

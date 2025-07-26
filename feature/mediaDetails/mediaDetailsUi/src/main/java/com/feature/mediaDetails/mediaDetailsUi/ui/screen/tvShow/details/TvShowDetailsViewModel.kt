@@ -86,7 +86,6 @@ class TvShowDetailsViewModel(
 
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
-
     }
 
     init {
@@ -352,25 +351,6 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onClickPlayTvShowTrailer() {
-        if (screenState.value.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty() ||
-            screenState.value.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty()
-        ) {
-            updateState(
-                screenState.value.copy(
-                    errorMessage = "No video available"
-                )
-            )
-            return
-        }
-        navigate(
-            MediaDetailsDestinations.VideosScreen(
-                site = screenState.value.tvShowDetailsUiState.tvShowVideoUi.site,
-                key = screenState.value.tvShowDetailsUiState.tvShowVideoUi.key
-            )
-        )
-    }
-
     override fun onRetryLoadTvShowDetails() {
         updateState(
             screenState.value.copy(
@@ -439,15 +419,7 @@ class TvShowDetailsViewModel(
                     showSnackBar = true,
                 )
             )
-        } else {
-            navigate(
-                MediaDetailsDestinations.VideosScreen(
-                    site = screenState.value.tvShowDetailsUiState.episodeVideoUi.site,
-                    key = screenState.value.tvShowDetailsUiState.episodeVideoUi.key
-                )
-            )
         }
-
     }
 
     private fun onGetVideoError(error: String) {
