@@ -11,14 +11,16 @@ import com.paris_2.aflami.di.SearchRemoteDataSourceModule
 import com.paris_2.aflami.di.dataSourceModule
 import com.paris_2.aflami.di.homeRemoteDataSourceModule
 import com.paris_2.aflami.di.mediaDetailsModule
-import com.paris_2.aflami.di.mediaDetailsModule
 import com.paris_2.aflami.di.repositoryModule
 import com.paris_2.aflami.di.roomModule
 import com.paris_2.aflami.di.serviceModule
 import com.paris_2.aflami.di.useCaseModule
 import com.paris_2.aflami.di.viewModelModule
 import com.paris_2.aflami.di.workManagerModule
-import com.repository.search.util.NetworkConnectionChecker
+import com.repository.home.util.HomeNetworkConnectionChecker
+import com.repository.movie.util.MovieNetworkConnectionChecker
+import com.repository.search.util.SearchNetworkConnectionChecker
+import com.repository.util.TvNetworkConnectionChecker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -55,13 +57,9 @@ class AflamiApplication : Application() {
 
         WorkManager.initialize(this, configuration)
 
-        val networkChecker1: NetworkConnectionChecker = getKoin().get()
-        val networkChecker2: com.repository.movie.util.NetworkConnectionChecker = getKoin().get()
-        val networkChecker3: com.repository.util.NetworkConnectionChecker = getKoin().get()
-        val networkChecker4: com.repository.home.util.NetworkConnectionChecker = getKoin().get()
-        networkChecker1.startChecker()
-        networkChecker2.startChecker()
-        networkChecker3.startChecker()
-        networkChecker4.startChecker()
+        TvNetworkConnectionChecker(this)
+        SearchNetworkConnectionChecker(this)
+        MovieNetworkConnectionChecker(this)
+        HomeNetworkConnectionChecker(this)
     }
 }
