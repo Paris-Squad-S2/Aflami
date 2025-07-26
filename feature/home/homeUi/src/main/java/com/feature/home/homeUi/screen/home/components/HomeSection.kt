@@ -50,8 +50,8 @@ fun HomeSection(
         LazyRow(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 12.dp, bottom = 16.dp),
-            contentPadding = PaddingValues(16.dp)
+                .padding(top = 12.dp),
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             items(mediaList) { media ->
                 MediaCard(
