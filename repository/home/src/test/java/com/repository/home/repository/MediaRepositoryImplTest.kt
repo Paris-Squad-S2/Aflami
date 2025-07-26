@@ -13,7 +13,7 @@ import com.repository.home.dto.TvDto
 import com.repository.home.entity.MediaEntity
 import com.repository.home.entity.MediaTypeEntity
 import com.repository.home.mapper.toEntity
-import com.repository.home.util.NetworkConnectionChecker
+import com.repository.home.util.HomeNetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -27,7 +27,7 @@ import org.junit.jupiter.api.assertThrows
 class MediaRepositoryImplTest {
     private val remote: MediaRemoteDataSource = mockk()
     private val local: HomeMediaLocalDataSource = mockk(relaxed = true)
-    private val networkChecker: NetworkConnectionChecker = mockk()
+    private val networkChecker: HomeNetworkConnectionChecker = mockk()
     private lateinit var repo: MediaRepositoryImpl
 
     @BeforeEach

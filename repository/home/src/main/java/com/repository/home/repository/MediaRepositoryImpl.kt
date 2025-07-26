@@ -15,12 +15,11 @@ import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.mapper.toDomain
 import com.repository.home.mapper.toEntity
-import com.repository.home.util.NetworkConnectionChecker
+import com.repository.home.util.HomeNetworkConnectionChecker
 import com.repository.home.util.detectLanguage
-import java.util.Locale
 
 class MediaRepositoryImpl(
-    private val networkConnectionChecker: NetworkConnectionChecker,
+    private val homeNetworkConnectionChecker: HomeNetworkConnectionChecker,
     private val mediaRemoteDataSource: MediaRemoteDataSource,
     private val homeMediaLocalDataSource: HomeMediaLocalDataSource
 ) : MediaRepository {
@@ -98,7 +97,7 @@ class MediaRepositoryImpl(
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
+        if (homeNetworkConnectionChecker.isConnected.value.not()) {
             throw NoInternetConnectionException()
         }
         return try {
