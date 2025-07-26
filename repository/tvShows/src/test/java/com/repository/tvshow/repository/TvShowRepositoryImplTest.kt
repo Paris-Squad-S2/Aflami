@@ -24,7 +24,7 @@ import com.repository.tvshow.testUtils.mockTvShowLogoDto
 import com.repository.tvshow.testUtils.mockTvShowReviewsDto
 import com.repository.tvshow.testUtils.mockTvShowSimilarsDto
 import com.repository.tvshow.testUtils.mockTvShowVideosDto
-import com.repository.util.NetworkConnectionChecker
+import com.repository.util.TvNetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -45,12 +45,12 @@ class TvShowRepositoryImplTest {
     private lateinit var tvShowGalleryLocalDataSource: TvShowGalleryLocalDataSource
     private lateinit var tvShowCastLocalDataSource: TvShowCastLocalDataSource
     private lateinit var tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource
-    private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
+    private var tvNetworkConnectionChecker: TvNetworkConnectionChecker = mockk(relaxed = true)
     private lateinit var tvShowRepository: TvShowRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { tvNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
         tvShowDetailsRemoteDataSource = mockk<TvShowDetailsRemoteDataSource>(relaxed = true)
         tvShowLocalDataSource = mockk<TvShowLocalDataSource>(relaxed = true)
         tvShowSeasonLocalDataSource = mockk<TvShowSeasonLocalDataSource>(relaxed = true)
@@ -67,7 +67,7 @@ class TvShowRepositoryImplTest {
             tvShowLocalDataSource,
             tvShowSeasonLocalDataSource,
             tvShowSimilarLocalDataSource,
-            networkConnectionChecker
+            tvNetworkConnectionChecker
         )
     }
 
@@ -889,7 +889,7 @@ class TvShowRepositoryImplTest {
                 val expectedTrailers =
                     mockTvShowVideosDto.tvShowVideoResultDto?.map { it.toEntity() } ?: emptyList()
 
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+                coEvery { tvNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
                 coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns mockTvShowVideosDto
 
                 // When
@@ -904,7 +904,7 @@ class TvShowRepositoryImplTest {
         fun `getTrailerVideoForTvShow - should call remote data source when network is available`() =
             runTest {
                 // Given
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+                coEvery { tvNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
                 coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns mockTvShowVideosDto
 
                 // When
@@ -923,7 +923,7 @@ class TvShowRepositoryImplTest {
                 // Given
                 val emptyVideosDto = mockTvShowVideosDto.copy(tvShowVideoResultDto = null)
 
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+                coEvery { tvNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
                 coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns emptyVideosDto
 
                 // When
@@ -939,7 +939,7 @@ class TvShowRepositoryImplTest {
                 // Given
                 val emptyVideosDto = mockTvShowVideosDto.copy(tvShowVideoResultDto = null)
 
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+                coEvery { tvNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
                 coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns emptyVideosDto
 
                 // When
@@ -956,7 +956,7 @@ class TvShowRepositoryImplTest {
         fun `getTrailerVideoForTvShow - should throw NoInternetConnectionException when network is unavailable`() =
             runTest {
                 // Given
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+                coEvery { tvNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
                 // When & Then
                 assertThrows<NoInternetConnectionException> {
@@ -1008,7 +1008,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getTvShowRecommendations - should throw NoInternetConnectionException when offline`() = runTest {
         // Given
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+        coEvery { tvNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
         // When & Then
         assertThrows<NoInternetConnectionException> {

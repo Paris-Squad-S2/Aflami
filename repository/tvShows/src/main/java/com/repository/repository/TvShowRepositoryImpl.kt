@@ -28,7 +28,7 @@ import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
 import com.repository.mapper.toLocalDto
-import com.repository.util.NetworkConnectionChecker
+import com.repository.util.TvNetworkConnectionChecker
 import com.repository.util.detectLanguage
 
 class TvShowRepositoryImpl(
@@ -39,7 +39,7 @@ class TvShowRepositoryImpl(
     private val tvShowLocalDataSource: TvShowLocalDataSource,
     private val tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource,
     private val tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource,
-    private val networkConnectionChecker: NetworkConnectionChecker,
+    private val tvNetworkConnectionChecker: TvNetworkConnectionChecker,
 ) : TvShowRepository {
 
     private val language = detectLanguage()
@@ -192,7 +192,7 @@ class TvShowRepositoryImpl(
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
+        if (tvNetworkConnectionChecker.isConnected.value.not()) {
             throw NoInternetConnectionException()
         }
         return try {
