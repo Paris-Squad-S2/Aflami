@@ -25,11 +25,11 @@ import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
 import com.repository.movie.models.local.GalleryEntity
-import com.repository.movie.util.NetworkConnectionChecker
+import com.repository.movie.util.MovieNetworkConnectionChecker
 import com.repository.movie.util.detectLanguage
 
 class MovieRepositoryImpl(
-    private val networkConnectionChecker: NetworkConnectionChecker,
+    private val movieNetworkConnectionChecker: MovieNetworkConnectionChecker,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val movieCastLocalDataSource: MovieCastLocalDataSource,
     private val movieGalleryLocalDataSource: MovieGalleryLocalDataSource,
@@ -192,7 +192,7 @@ class MovieRepositoryImpl(
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
+        if (movieNetworkConnectionChecker.isConnected.value.not()) {
             throw NoInternetConnectionException()
         }
         return try {

@@ -25,7 +25,7 @@ import com.repository.movie.testUtils.mockMovieSimilarsDto
 import com.repository.movie.testUtils.mockMovieVideosDto
 import com.repository.movie.testUtils.review
 import com.repository.movie.testUtils.reviewRemoteDto
-import com.repository.movie.util.NetworkConnectionChecker
+import com.repository.movie.util.MovieNetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -44,15 +44,15 @@ class MovieRepositoryImplTest {
     private var movieCastLocalDataSource: MovieCastLocalDataSource = mockk(relaxed = true)
     private var movieGalleryLocalDataSource: MovieGalleryLocalDataSource = mockk(relaxed = true)
     private var movieReviewLocalDataSource: MovieReviewLocalDataSource = mockk(relaxed = true)
-    private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
+    private var movieNetworkConnectionChecker: MovieNetworkConnectionChecker = mockk(relaxed = true)
     private var movieSimilarLocalDataSource: MovieSimilarLocalDataSource = mockk()
 
     @BeforeEach
     fun setUp() {
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { movieNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
 
         movieRepository = MovieRepositoryImpl(
-            networkConnectionChecker,
+            movieNetworkConnectionChecker,
             movieLocalDataSource,
             movieCastLocalDataSource,
             movieGalleryLocalDataSource,
@@ -899,7 +899,7 @@ class MovieRepositoryImplTest {
             val expectedTrailers =
                 mockMovieVideosDto.movieVideoResultDto?.map { it.toEntity() } ?: emptyList()
 
-            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery { movieNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
             coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns mockMovieVideosDto
 
             // When
@@ -912,7 +912,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getTrailerVideoForMovie - should call remote data source exactly once`() = runTest {
         // Given
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { movieNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns mockMovieVideosDto
 
         // When
@@ -929,7 +929,7 @@ class MovieRepositoryImplTest {
             // Given
             val emptyVideosDto = mockMovieVideosDto.copy(movieVideoResultDto = null)
 
-            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery { movieNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
             coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns emptyVideosDto
 
             // When
@@ -946,7 +946,7 @@ class MovieRepositoryImplTest {
             // Given
             val emptyVideosDto = mockMovieVideosDto.copy(movieVideoResultDto = null)
 
-            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery { movieNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
             coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns emptyVideosDto
 
             // When
@@ -960,7 +960,7 @@ class MovieRepositoryImplTest {
     fun `getTrailerVideoForMovie - should throw NoInternetConnectionException when network is unavailable`() =
         runTest {
             // Given
-            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+            coEvery { movieNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When & Then
             assertThrows<NoInternetConnectionException> {
@@ -972,7 +972,7 @@ class MovieRepositoryImplTest {
     fun `getTrailerVideoForMovie - should not call remote data source when network is unavailable`() =
         runTest {
             // Given
-            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+            coEvery { movieNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When
             runCatching { movieRepository.getTrailerVideoForMovie(movieId) }
