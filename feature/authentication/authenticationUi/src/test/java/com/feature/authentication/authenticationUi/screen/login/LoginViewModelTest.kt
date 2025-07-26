@@ -6,6 +6,7 @@ import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
@@ -89,5 +90,15 @@ class LoginViewModelTest {
         Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
     }
 
+    @Test
+    fun `onClickLogin with valid credentials navigates to home`() {
+        coEvery { loginUseCase(any(), any()) } returns true
 
+        viewModel.onUsernameChange("test")
+        viewModel.onPasswordChange("1234")
+        viewModel.onClickLogin()
+
+        // Verify that navigateToHome() was called
+        coVerify { appNavigationAPI() }
+    }
 }
