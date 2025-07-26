@@ -9,7 +9,7 @@ import androidx.annotation.RequiresPermission
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-class NetworkConnectionChecker(private val context: Context) {
+class TvNetworkConnectionChecker(private val context: Context) {
     private val _isConnected = MutableStateFlow(false)
     val isConnected: StateFlow<Boolean> = _isConnected
 
@@ -22,7 +22,9 @@ class NetworkConnectionChecker(private val context: Context) {
             _isConnected.value = false
         }
     }
-
+    init {
+        startChecker()
+    }
     @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
     fun startChecker() {
         val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
