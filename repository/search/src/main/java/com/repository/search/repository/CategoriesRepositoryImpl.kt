@@ -4,7 +4,7 @@ import com.domain.search.exception.NoCategoriesFoundException
 import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.model.Category
 import com.domain.search.repository.CategoriesRepository
-import com.repository.search.util.NetworkConnectionChecker
+import com.repository.search.util.SearchNetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.mapper.toCategories
@@ -12,7 +12,7 @@ import com.repository.search.mapper.toEntity
 import java.util.Locale
 
 class CategoriesRepositoryImpl(
-    private val networkConnectionChecker: NetworkConnectionChecker,
+    private val searchNetworkConnectionChecker: SearchNetworkConnectionChecker,
     private val genresLocalDataSource: GenresLocalDataSource,
     private val genresRemoteDataSource: GenresRemoteDataSource,
 ) : CategoriesRepository {
@@ -23,7 +23,7 @@ class CategoriesRepositoryImpl(
             val genres = genresLocalDataSource.getGenres(language)
             if (genres.isNotEmpty()) return genres.toCategories()
 
-            if (!networkConnectionChecker.isConnected.value) {
+            if (!searchNetworkConnectionChecker.isConnected.value) {
                 throw NoInternetConnectionException()
             }
 
