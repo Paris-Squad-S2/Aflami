@@ -297,7 +297,6 @@ fun TvShowDetailsScreenContent(
                                                                         activity?.openYoutubeOrBrowser(
                                                                             state.tvShowDetailsUiState.episodeVideoUi.key
                                                                         )
-
                                                                     }
                                                                 }
                                                             )
