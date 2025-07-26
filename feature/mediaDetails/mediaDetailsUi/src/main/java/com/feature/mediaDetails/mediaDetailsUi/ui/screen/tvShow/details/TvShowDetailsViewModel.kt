@@ -406,13 +406,6 @@ class TvShowDetailsViewModel(
     }
 
     private fun onGetVideoEpisodeSuccess(episodeVideo: EpisodeVideo) {
-        updateState(
-            screenState.value.copy(
-                showSnackBar = false,
-                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(episodeVideoUi = episodeVideo.toUi())
-            )
-        )
-
         if (episodeVideo.site.isEmpty() || episodeVideo.key.isEmpty()) {
             updateState(
                 screenState.value.copy(
@@ -420,6 +413,13 @@ class TvShowDetailsViewModel(
                 )
             )
         }
+
+        updateState(
+            screenState.value.copy(
+                showSnackBar = false,
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(episodeVideoUi = episodeVideo.toUi())
+            )
+        )
     }
 
     private fun onGetVideoError(error: String) {

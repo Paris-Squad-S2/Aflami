@@ -141,13 +141,17 @@ fun TvShowDetailsScreenContent(
                         .navigationBarsPadding()
                 ) {
                     item {
+                        val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
+                        val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
                         DetailsImage(
                             imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl) + state.tvShowDetailsUiState.gallery,
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                            hasVideo = !(state.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty() ||
-                                    state.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty()),
+                            hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
                             onPlayClick = {
-                                activity?.openYoutubeOrBrowser(state.tvShowDetailsUiState.tvShowVideoUi.key)
+                                if (!(tvShowSite.isEmpty() || tvShowKey.isEmpty())
+                                ) {
+                                    activity?.openYoutubeOrBrowser(tvShowKey)
+                                }
                             },
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
@@ -261,7 +265,11 @@ fun TvShowDetailsScreenContent(
                                                             targetState = if (episode.stillUrl.isNotEmpty()) episode.stillUrl else state.tvShowDetailsUiState.tvShowUi.posterUrl,
                                                             transitionSpec = {
                                                                 fadeIn(animationSpec = tween(300)) togetherWith
-                                                                        fadeOut(animationSpec = tween(300))
+                                                                        fadeOut(
+                                                                            animationSpec = tween(
+                                                                                300
+                                                                            )
+                                                                        )
                                                             },
                                                             label = "image_transition"
                                                         ) { value ->
@@ -278,7 +286,19 @@ fun TvShowDetailsScreenContent(
                                                                     .padding(horizontal = 8.dp),
                                                                 hasVideo = true,
                                                                 onPlayClick = {
-                                                                    activity?.openYoutubeOrBrowser(state.tvShowDetailsUiState.episodeVideoUi.key)
+                                                                    tvShowScreenInteractionListener.onClickPlayEpisodeTrailer(
+                                                                        state.tvShowDetailsUiState.tvShowUi.id,
+                                                                        seasonIndex + 1,
+                                                                        episode.episodeNumber
+                                                                    )
+                                                                    if (!(state.tvShowDetailsUiState.episodeVideoUi.site.isEmpty() ||
+                                                                                state.tvShowDetailsUiState.episodeVideoUi.key.isEmpty())
+                                                                    ) {
+                                                                        activity?.openYoutubeOrBrowser(
+                                                                            state.tvShowDetailsUiState.episodeVideoUi.key
+                                                                        )
+
+                                                                    }
                                                                 }
                                                             )
                                                         }

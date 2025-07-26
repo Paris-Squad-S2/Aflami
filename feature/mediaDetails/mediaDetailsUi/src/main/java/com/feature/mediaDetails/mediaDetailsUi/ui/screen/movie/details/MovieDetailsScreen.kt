@@ -86,9 +86,10 @@ fun MovieDetailsScreenContent(
         RatingDialog(
             currentRating = currentRating,
             onRatingChange = { newRating ->
-                currentRating = newRating },
+                currentRating = newRating
+            },
             onDismiss = { movieDetailsScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog()  }
+            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog() }
         )
     }
 
@@ -160,14 +161,17 @@ fun MovieDetailsScreenContent(
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                         } else {
+                            val site = state.movieDetailsUiState.movieVideoUi.site
+                            val key = state.movieDetailsUiState.movieVideoUi.key
                             DetailsImage(
                                 imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
                                 onPlayClick = {
-                                    activity?.openYoutubeOrBrowser( state.movieDetailsUiState.movieVideoUi.key)
+                                    if (!(site.isEmpty() || key.isEmpty())) {
+                                        activity?.openYoutubeOrBrowser(key)
+                                    }
                                 },
-                                hasVideo = !(state.movieDetailsUiState.movieVideoUi.site.isEmpty() ||
-                                        state.movieDetailsUiState.movieVideoUi.key.isEmpty()),
+                                hasVideo = !(site.isEmpty() ||key.isEmpty()),
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                         }
