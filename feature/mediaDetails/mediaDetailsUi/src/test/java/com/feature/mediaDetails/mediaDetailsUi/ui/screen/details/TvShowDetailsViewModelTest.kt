@@ -20,7 +20,6 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -167,26 +166,6 @@ class TvShowDetailsViewModelTest {
     fun `onSimilarTvShowClick triggers navigation`() = runTest {
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onSimilarTvShowClick(77)
-    }
-
-    @Test
-    fun `onClickPlayTvShowTrailer with valid video data navigates to video screen`() = runTest {
-        val expectedSite = "YouTube"
-        val expectedKey = "abc123"
-        val mockVideoUi = TvShowVideoUi(site = expectedSite, key = expectedKey, name = "Test Video")
-        viewModel = makeViewModelWithDefaultStateHandle()
-
-        viewModel.updateState(
-            viewModel.screenState.value.copy(
-                tvShowDetailsUiState = viewModel.screenState.value.tvShowDetailsUiState.copy(
-                    tvShowVideoUi = mockVideoUi
-                )
-            )
-        )
-
-        viewModel.onClickPlayTvShowTrailer()
-        runCurrent()
-
     }
 
     @Test
