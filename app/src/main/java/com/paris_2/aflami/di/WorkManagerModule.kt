@@ -4,7 +4,7 @@ import androidx.work.WorkManager
 import androidx.work.WorkerFactory
 import com.repository.dataSource.local.workmanager.ClearTvShowDetailsWorker
 import com.repository.movie.dataSource.local.workmanager.ClearMovieDetailWorker
-import com.repository.search.dataSource.local.workManager.ClearMediaWorker
+import com.repository.search.dataSource.local.workmanager.ClearMediaWorker
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.androidx.workmanager.factory.KoinWorkerFactory
