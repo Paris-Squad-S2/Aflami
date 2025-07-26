@@ -226,7 +226,7 @@ fun HomeScreenContent(
                         rating = upcomingMedia.rating.toFloat(),
                         movieName = upcomingMedia.title,
                         mediaType = upcomingMedia.type.toString(),
-                        year = upcomingMedia.yearOfRelease.toString(),
+                        year = upcomingMedia.yearOfRelease.year.toString(),
                         mediaCardType = MediaCardType.UP_COMING,
                         showGradientFilter = false,
                         modifier = Modifier
