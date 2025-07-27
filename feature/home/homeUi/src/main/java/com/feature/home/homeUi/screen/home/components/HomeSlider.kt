@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -20,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
@@ -72,13 +72,17 @@ fun HomeSlider(
                     model = mediaState.value.imageUri,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(420.dp)
-                        .blur(18.dp),
+                        .height(400.dp)
+                        .blur(
+                            radius = 14.dp,
+                            edgeTreatment = BlurredEdgeTreatment.Unbounded,
+                        )
+                ,
                     contentScale = ContentScale.FillWidth,
                 )
 
             Column(
-                modifier = Modifier.padding(top = 96.dp, bottom = 65.dp),
+                modifier = Modifier.padding(top = 96.dp, bottom = 56.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {

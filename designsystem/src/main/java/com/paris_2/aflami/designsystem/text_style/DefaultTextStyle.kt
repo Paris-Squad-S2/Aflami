@@ -41,7 +41,7 @@ val defaultTextStyle = AflamiTextStyle(
         ),
         small = TextStyle(
             fontFamily = popPins,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
             lineHeight = 24.sp
         )
