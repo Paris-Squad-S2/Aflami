@@ -75,7 +75,7 @@ fun CastItem(
             AsyncImage(
                 model = imageUrl,
                 contentDescription = null,
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.Fit,
                 modifier = Modifier
                     .matchParentSize(),
                 onLoading = {
