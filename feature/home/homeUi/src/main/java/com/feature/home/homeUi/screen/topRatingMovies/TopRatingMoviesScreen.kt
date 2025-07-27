@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.aflami.designsystem.components.Icon
@@ -39,12 +40,11 @@ import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopRatingMoviesScreen(
-    viewModel: TopRatingMoviesViewModel = koinViewModel(),
+    viewModel: TopRatingMoviesViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
 
