@@ -2,6 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage
 
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,7 +18,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -66,7 +66,6 @@ fun DetailsImage(
                 .fillMaxWidth()
                 .height(263.dp)
         ) {
-            val color: Color = Theme.colors.surfaceHigh
             HorizontalPager(
                 state = pagerState,
                 modifier = Modifier.fillMaxSize()
@@ -116,23 +115,29 @@ fun DetailsImage(
                     .align(Alignment.BottomCenter)
                     .offset(y = 32.dp)
                     .size(72.dp)
-                    .drawBehind {
-                        drawCircle(
-                            color = color,
-                            radius = size.minDimension / 2f,
-                            center = center
-                        )
-                    }
+                    .background(
+                        color = Theme.colors.surfaceHigh,
+                        shape = CircleShape
+                    ),
+                contentAlignment = Alignment.Center
+            ) {
+            Box(
+                modifier = Modifier
+                    .size(64.dp)
                     .dropShadow(
                         shape = CircleShape,
-                        color = Color(0x1FD85895),
-                        spread = 12.dp,
-                        offsetX = (-5).dp,
+                        color = Color(0x1FD85895).copy(alpha = 0.12f),
+                        spread = 4.dp,
+                        offsetX = (-4).dp,
                         alpha = 0.08F
                     )
                     .border(
                         width = 2.dp,
                         color = Theme.colors.stroke.copy(alpha = 0.08f),
+                        shape = CircleShape
+                    )
+                    .background(
+                        color = Theme.colors.surfaceHigh,
                         shape = CircleShape
                     ),
                 contentAlignment = Alignment.Center
@@ -145,6 +150,7 @@ fun DetailsImage(
                     backGroundColor = Theme.colors.surfaceHigh
                 )
             }
+        }
             if (displayImages.size > 1) {
                 ImagePageIndicator(
                     pageSize = displayImages.size,
