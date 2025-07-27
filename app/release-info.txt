@@ -1,2 +1,2 @@
-versionName=0.3.6
-enhance the home slider and home components
+versionName=0.3.10
+fix bug in retry button of home screen
