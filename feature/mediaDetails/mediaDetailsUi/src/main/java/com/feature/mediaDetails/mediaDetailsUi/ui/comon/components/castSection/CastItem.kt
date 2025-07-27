@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,10 +11,15 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
@@ -30,7 +36,7 @@ fun CastItem(
     cornerRadius: Dp = 16.dp,
     width: Dp? = null,
     modifier: Modifier = Modifier,
-){
+) {
     Column(
         modifier = modifier
             .then(
@@ -38,7 +44,7 @@ fun CastItem(
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var showPlaceholder = imageUrl.isBlank()
+        var imageState by remember { mutableStateOf(ImageState.Loading) }
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -48,26 +54,39 @@ fun CastItem(
                 .border(
                     1.dp,
                     Theme.colors.stroke,
-                    RoundedCornerShape(cornerRadius)),
+                    RoundedCornerShape(cornerRadius)
+                ),
             contentAlignment = Alignment.Center
         ) {
-            if (showPlaceholder) {
+            androidx.compose.animation.AnimatedVisibility(visible = imageState == ImageState.Loading) {
                 PageLoadingPlaceHolder()
-            } else {
-                AsyncImage(
-                    model = imageUrl,
+            }
+            androidx.compose.animation.AnimatedVisibility(visible = imageState == ImageState.Error) {
+                Image(
+                    painter = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.img_disconnect),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .matchParentSize(),
-                    onLoading = {
-                        showPlaceholder = true
-                    },
-                    onError = {
-                        showPlaceholder = true
-                    },
+                        .matchParentSize()
+                        .padding(8.dp)
                 )
             }
+            AsyncImage(
+                model = imageUrl,
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier
+                    .matchParentSize(),
+                onLoading = {
+                    imageState = ImageState.Loading
+                },
+                onError = {
+                    imageState = ImageState.Error
+                },
+                onSuccess = {
+                    imageState = ImageState.Success
+                }
+            )
         }
         Text(
             text = name,
@@ -79,4 +98,8 @@ fun CastItem(
             modifier = Modifier.align(Alignment.Start)
         )
     }
+}
+
+private enum class ImageState {
+    Loading, Error, Success
 }
