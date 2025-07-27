@@ -3,7 +3,6 @@ package com.feature.search.searchUi.screen.search
 import CategoryUiState
 import MediaTypeUi
 import MediaUiState
-import NoopListUpdateCallback
 import SearchScreenState
 import SearchTypeUi
 import androidx.lifecycle.viewModelScope

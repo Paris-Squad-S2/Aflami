@@ -217,5 +217,26 @@ class FindByActorViewModelTest {
         assertThat(viewModel.screenState.value.uiState.searchResult.collectAllItems()).isEmpty()
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `onMediaCardClick handles error correctly`() = runTest {
+        val error = "Failure to navigate"
+        coEvery { incrementCategoryInteractionUseCase(any()) } throws Exception(error)
+
+        val media = MediaUiState(
+            id = 1,
+            title = "Crash",
+            imageUri = "",
+            type = MediaTypeUi.MOVIE,
+            categories = listOf(1),
+            yearOfRelease = LocalDate(2020, 1, 1),
+            rating = 3.5,
+        )
+
+        viewModel.onMediaCardClick(media)
+        advanceUntilIdle()
+
+        assertEquals(error, viewModel.screenState.value.errorMessage)
+    }
 
 }
