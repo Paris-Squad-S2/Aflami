@@ -300,24 +300,6 @@ class MovieDetailsViewModel(
         mediaDetailsFeatureAPI.startMovieDetails(mediaId)
     }
 
-    override fun onClickPlayTrailer() {
-        if (screenState.value.movieDetailsUiState.movieVideoUi.key.isEmpty() ||
-            screenState.value.movieDetailsUiState.movieVideoUi.site.isEmpty()
-        ) {
-            updateState(
-                screenState.value.copy(
-                    errorMessage = "No video available"
-                )
-            )
-            return
-        }
-        navigate(
-            MediaDetailsDestinations.VideosScreen(
-                site = screenState.value.movieDetailsUiState.movieVideoUi.site,
-                key = screenState.value.movieDetailsUiState.movieVideoUi.key
-            )
-        )
-    }
 
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
         updateState(

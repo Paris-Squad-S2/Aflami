@@ -1,2 +1,2 @@
 versionName=0.3.5
-- enhance network checker implementation
+- refactor play video for episode
