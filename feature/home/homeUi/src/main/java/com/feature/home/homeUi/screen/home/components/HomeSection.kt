@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -39,12 +41,13 @@ fun HomeSection(
                 leadingIconPainter?.let { it->   Icon(
                     imageVector = it,
                     contentDescription = "$title icon",
-                    modifier = Modifier.padding(start = 8.dp),
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .size(width = 16.dp, height = 18.dp),
                     tint = iconColor ?: Color.Unspecified,
                 )
             }},
             onClickViewAll = onSectionAllClick,
-            modifier = Modifier.padding(top = 6.dp)
         )
 
         LazyRow(
