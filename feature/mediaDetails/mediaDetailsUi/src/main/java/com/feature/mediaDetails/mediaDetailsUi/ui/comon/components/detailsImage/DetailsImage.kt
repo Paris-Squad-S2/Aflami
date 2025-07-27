@@ -80,7 +80,7 @@ fun DetailsImage(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.Center),
-                        contentScale = ContentScale.FillBounds,
+                        contentScale = ContentScale.Fit,
                         contentDescription = "poster",
                         placeholder = {
                             Image(
