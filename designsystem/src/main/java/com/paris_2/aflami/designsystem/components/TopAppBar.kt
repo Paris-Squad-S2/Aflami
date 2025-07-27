@@ -24,8 +24,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.text_style.nicoMoji
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
@@ -61,6 +65,7 @@ fun TopAppBar(
     leadingIcons: List<IconItem> = emptyList(),
     trailingIcons: List<IconItem> = emptyList(),
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    fontType: FontType = FontType.POPINES,
 ) {
     val scrollModifier = scrollBehavior?.let {
         Modifier.nestedScroll(it.nestedScrollConnection)
@@ -96,11 +101,22 @@ fun TopAppBar(
                 title?.let {
                     Text(
                         text = it,
-                        style = if (subtitle != null) Theme.textStyle.label.medium else Theme.textStyle.title.large,
+                        style = if (fontType == FontType.NICOMOJ)
+                            TextStyle(
+                                fontFamily = nicoMoji,
+                                fontWeight = FontWeight.Normal,
+                                fontSize = 14.sp,
+                                lineHeight = 20.sp,
+                                letterSpacing = 0.25.sp,
+                            )
+                        else if (subtitle != null) Theme.textStyle.label.medium
+                        else Theme.textStyle.title.large,
                         color = Theme.colors.text.title,
                         maxLines = 1,
                     )
                 }
+                if (fontType== FontType.NICOMOJ)
+                    Spacer(modifier = Modifier.height(4.dp))
                 subtitle?.let {
                     Text(
                         text = it,
@@ -117,6 +133,11 @@ fun TopAppBar(
             }
         }
     }
+}
+
+enum class FontType {
+    POPINES,
+    NICOMOJ
 }
 
 @Composable
