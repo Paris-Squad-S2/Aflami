@@ -60,7 +60,6 @@ fun HomeScreen(
                 onRetry = viewModel::onRetry
             )
         }
-
         else -> HomeScreenContent(
             state = homeScreenState.value,
             action = viewModel

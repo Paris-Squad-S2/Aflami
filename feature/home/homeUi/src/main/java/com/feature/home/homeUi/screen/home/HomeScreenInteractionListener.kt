@@ -13,4 +13,5 @@ interface HomeScreenInteractionListener {
     fun onAllCategoriesSelect()
     fun onDismissMoodPicker()
     fun getRandomMoodPickerMovie()
+    fun onRetry()
 }
