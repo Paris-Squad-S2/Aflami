@@ -93,12 +93,16 @@ fun HomeSlider(
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
                             contentDescription = "",
-                            modifier = Modifier.padding(start = 8.dp).size(20.dp),
+                            modifier = Modifier
+                                .padding(start = 8.dp)
+                                .size(width = 16.dp, height = 18.dp)
+
+                            ,
                             tint = Theme.colors.secondary,
                         )
                     },
                     hasViewAll = false,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(bottom = 12.dp)
                 )
 
                 if (mediaList.isNotEmpty()) {

@@ -25,11 +25,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.text_style.nicoMoji
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
@@ -61,11 +59,11 @@ fun TopAppBar(
     modifier: Modifier = Modifier,
     title: String? = null,
     subtitle: String? = null,
+    titleTextStyle: TextStyle = if (subtitle != null) Theme.textStyle.label.medium else Theme.textStyle.title.large,
     logo: IconItem? = null,
     leadingIcons: List<IconItem> = emptyList(),
     trailingIcons: List<IconItem> = emptyList(),
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    fontType: FontType = FontType.POPINES,
 ) {
     val scrollModifier = scrollBehavior?.let {
         Modifier.nestedScroll(it.nestedScrollConnection)
@@ -101,28 +99,19 @@ fun TopAppBar(
                 title?.let {
                     Text(
                         text = it,
-                        style = if (fontType == FontType.NICOMOJ)
-                            TextStyle(
-                                fontFamily = nicoMoji,
-                                fontWeight = FontWeight.Normal,
-                                fontSize = 14.sp,
-                                lineHeight = 20.sp,
-                                letterSpacing = 0.25.sp,
-                            )
-                        else if (subtitle != null) Theme.textStyle.label.medium
-                        else Theme.textStyle.title.large,
+                        style = titleTextStyle,
                         color = Theme.colors.text.title,
                         maxLines = 1,
+                        modifier = Modifier.padding(bottom = 2.dp)
                     )
                 }
-                if (fontType== FontType.NICOMOJ)
-                    Spacer(modifier = Modifier.height(4.dp))
                 subtitle?.let {
                     Text(
                         text = it,
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.text.body,
                         maxLines = 1,
+                        lineHeight = 16.sp
                     )
                 }
             }
@@ -135,16 +124,11 @@ fun TopAppBar(
     }
 }
 
-enum class FontType {
-    POPINES,
-    NICOMOJ
-}
-
 @Composable
 private fun IconBox(
     iconItem: IconItem,
-    tint: Color = iconItem.tint,
     modifier: Modifier = Modifier,
+    tint: Color = iconItem.tint,
 ) {
     Box(
         modifier = modifier
@@ -164,7 +148,9 @@ private fun IconBox(
         Icon(
             imageVector = iconItem.icon,
             contentDescription = null,
-            tint = tint
+            tint = tint,
+            modifier = Modifier
+                .size(24.dp)
         )
     }
 }
