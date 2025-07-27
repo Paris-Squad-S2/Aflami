@@ -1,3 +1,2 @@
-versionName=0.3.9
-- solve some issues of home screen
-
+versionName=0.3.10
+fix bug in retry button of home screen
