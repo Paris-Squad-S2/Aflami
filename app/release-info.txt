@@ -1,2 +1,2 @@
-versionName=0.3.4
+versionName=0.3.6
 enhance the home slider and home components

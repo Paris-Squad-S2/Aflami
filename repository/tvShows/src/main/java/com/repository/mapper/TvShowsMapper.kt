@@ -2,6 +2,7 @@ package com.repository.mapper
 
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
+import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
@@ -21,6 +22,7 @@ import com.repository.model.local.ReviewEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TvShowEntity
 import com.repository.model.local.TvShowSimilarEntity
+import com.repository.model.remote.EpisodeVideoResultDto
 import com.repository.model.remote.TvShowCastDto
 import com.repository.model.remote.TvShowDto
 import com.repository.model.remote.TvShowEpisodeDto
@@ -110,6 +112,15 @@ fun CastEntity.toEntity(): Cast {
 
 fun  TvShowVideoResultDto.toEntity(): TvShowVideo {
     return TvShowVideo(
+        key = this.key.orEmpty(),
+        name = this.name.orEmpty(),
+        site = this.site.orEmpty(),
+        type = this.type.orEmpty(),
+    )
+}
+
+fun  EpisodeVideoResultDto.toEntity(): EpisodeVideo {
+    return EpisodeVideo(
         key = this.key.orEmpty(),
         name = this.name.orEmpty(),
         site = this.site.orEmpty(),

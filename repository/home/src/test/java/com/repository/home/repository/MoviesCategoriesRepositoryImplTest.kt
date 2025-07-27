@@ -7,9 +7,11 @@ import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.dto.GenreDto
 import com.repository.home.dto.GenresDto
 import com.repository.home.mapper.toCategoryList
+import com.repository.home.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -18,11 +20,16 @@ import org.junit.jupiter.api.assertThrows
 class MoviesCategoriesRepositoryImplTest {
 
     private val genresRemoteDataSource: GenresRemoteDataSource = mockk()
+    private val networkChecker: NetworkConnectionChecker = mockk()
     private lateinit var repo: MoviesCategoriesRepositoryImpl
 
     @BeforeEach
     fun setUp() {
-        repo = MoviesCategoriesRepositoryImpl(genresRemoteDataSource)
+        every { networkChecker.isConnected } returns MutableStateFlow(true)
+        repo = MoviesCategoriesRepositoryImpl(
+            networkConnectionChecker = networkChecker,
+            genresRemoteDataSource = genresRemoteDataSource
+        )
     }
 
     @Test
