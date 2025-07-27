@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -7,10 +8,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -22,18 +22,21 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
 
+@SuppressLint("RestrictedApi")
 @Composable
 fun Slider(
     items: List<SliderMedia>,
@@ -73,8 +76,13 @@ fun Slider(
     ) {
         HorizontalPager(
             state = pagerState,
-            contentPadding = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT)
-                PaddingValues(horizontal = 80.dp)
+            contentPadding = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
+                if(pagerState.currentPage==items.lastIndex){
+                    PaddingValues(horizontal = 180.dp)
+                }else{
+                    PaddingValues(horizontal = 80.dp)
+                }
+            }
             else
                 PaddingValues(horizontal = 300.dp),
             modifier = Modifier.fillMaxWidth(),
@@ -89,6 +97,7 @@ fun Slider(
             val normalizedOffset = (distanceFromCenter / maxDistance).coerceIn(0f, 1f)
 
             val scale = 1f - (0.1f * normalizedOffset)
+
             currentMedia.value = items[pagerState.currentPage]
 
             Box(
@@ -100,16 +109,19 @@ fun Slider(
                     }
                     .graphicsLayer(
                         scaleX = scale,
-                        scaleY = scale,
+                        translationY = lerp(
+                            start = 0f,
+                            stop = -30f,
+                            amount = FastOutSlowInEasing.transform(1f - normalizedOffset)
+                        )
                     )
-                    .clickable {
-                        onClick(item)
-                    }
+
             ) {
                 MediaCard(
                     modifier = Modifier
-                        .width(244.dp)
-                        .height(300.dp),
+                        .clip(RoundedCornerShape(24.dp))
+                        .clickable{ onClick(item) }
+                    ,
                     imageUri = item.imageUri,
                     rating = item.rating,
                     mediaCardType = MediaCardType.SLIDER,
