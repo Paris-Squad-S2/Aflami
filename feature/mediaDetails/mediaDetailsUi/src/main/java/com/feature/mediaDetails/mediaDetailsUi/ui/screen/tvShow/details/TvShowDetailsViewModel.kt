@@ -7,7 +7,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.feature.mediaDetails.mediaDetailsUi.R
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.Gallery
@@ -26,6 +25,7 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
@@ -70,11 +70,12 @@ class TvShowDetailsViewModel(
         tryToExecute(
             execute = { getTvShowVideoUseCase(mediaId) },
             onSuccess = ::onGetVideoTvShowSuccess,
-            onError = ::onGetVideoTvShowError,
+            onError = ::onGetVideoError,
         )
     }
 
     private fun loadTvShowDetails(mediaId: Int) {
+
         tryToExecute(
             execute = { getTvShowDetailsUseCase(mediaId) },
             onSuccess = { tvShow -> handleTvShowDetailsSuccess(mediaId, tvShow) },
@@ -126,31 +127,22 @@ class TvShowDetailsViewModel(
     override fun onFavouriteClick(title: Int) {
         tryToExecute(
             execute = { isLoggedInUseCase() },
-            onSuccess = { isLoggedIn ->
-                if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { addRatingToTvShowUseCase() },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
-                    )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
-                }
-            },
-            onError = {
-                updateState(screenState.value.copy(errorMessage = it))
-            }
+            onSuccess = { isLoggedIn -> handleLoginCheck(isLoggedIn, title) },
+            onError = ::handleError
         )
     }
 
+    private fun handleLoginCheck(isLoggedIn: Boolean, title: Int) {
+        if (isLoggedIn) {
+            tryToExecute(
+                execute = { addRatingToTvShowUseCase() },
+                onSuccess = ::handleRatingSuccess,
+                onError = ::handleError
+            )
+        } else {
+            navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+        }
+    }
 
     override fun onAddToListClick(title: Int) {
         navigate(MediaDetailsDestinations.LoginDialogDestination(title))
@@ -419,6 +411,15 @@ class TvShowDetailsViewModel(
         )
     }
 
+    private fun handleRatingSuccess(@Suppress("UNUSED_PARAMETER") result: Unit) {
+        updateState(screenState.value.copy(showRatingDialog = true))
+    }
+
+
+    private fun handleError(error: String) {
+        updateState(screenState.value.copy(errorMessage = error))
+    }
+
     private fun onGetVideoTvShowSuccess(tvShowVideo: TvShowVideo) {
         updateState(
             screenState.value.copy(
@@ -430,7 +431,7 @@ class TvShowDetailsViewModel(
 
     }
 
-    private fun onGetVideoTvShowError(error: String) {
+    private fun onGetVideoError(error: String) {
         updateState(
             screenState.value.copy(
                 errorMessage = error
@@ -455,7 +456,7 @@ class TvShowDetailsViewModel(
         )
     }
 
-    private fun onGetVideoEpisodeError(error: String) {
+    private fun onGetVideoEpisodeError(@Suppress("UNUSED_PARAMETER") error: String) {
         updateState(
             screenState.value.copy(
                 snackBarMessage = R.string.not_found_video,
