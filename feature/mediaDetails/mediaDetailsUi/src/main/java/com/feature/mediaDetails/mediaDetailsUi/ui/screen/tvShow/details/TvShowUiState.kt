@@ -12,10 +12,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
 data class TvShowDetailsScreenState(
-    val tvShowDetailsUiState: TvShowDetailsUiState =TvShowDetailsUiState(),
-    val isLoading: Boolean =true,
-    val errorMessage: String? = null ,
-    val isEpisodesLoading: Boolean =true,
+    val tvShowDetailsUiState: TvShowDetailsUiState = TvShowDetailsUiState(),
+    val isLoading: Boolean = true,
+    val errorMessage: String? = null,
+    val isEpisodesLoading: Boolean = true,
     val isImageLoading: Boolean = false,
     val isDescriptionLoading: Boolean = false,
     val isCastLoading: Boolean = false,
@@ -27,7 +27,7 @@ data class TvShowDetailsScreenState(
     val seasonsLoadingStates: Map<Int, Boolean> = emptyMap(),
     val showRatingDialog: Boolean = false,
     @StringRes val snackBarMessage: Int = R.string.not_found_video,
-    val showSnackBar: Boolean = false
+    val showSnackBar: Boolean = false,
 )
 
 data class TvShowDetailsUiState(
@@ -37,8 +37,8 @@ data class TvShowDetailsUiState(
     val reviews: Flow<PagingData<ReviewUi>> = flowOf(PagingData.empty()),
     val gallery: List<String> = emptyList(),
     val tvShowVideoUi: TvShowVideoUi = TvShowVideoUi(),
-    val selectedRating: Float,
-    val episodeVideoUi: EpisodeVideoUi
+    val selectedRating: Float = 0f,
+    val episodeVideoUi: EpisodeVideoUi = EpisodeVideoUi(),
 )
 
 data class TvShowVideoUi(
@@ -82,7 +82,7 @@ data class EpisodeUi(
 )
 
 data class EpisodeVideoUi(
-    val key: String,
-    val name: String,
-    val site: String,
+    val key: String = "",
+    val name: String = "",
+    val site: String = "",
 )

@@ -12,7 +12,6 @@ import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.useCase.movie.AddMovieToFavoriteUseCase
 import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
@@ -29,9 +28,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
-import kotlinx.coroutines.flow.flowOf
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import kotlinx.coroutines.flow.Flow
 
 class MovieDetailsViewModel(
@@ -43,7 +41,9 @@ class MovieDetailsViewModel(
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
     private val getMovieProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase,
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
+    private val isLoggedInUseCase: IsLoggedInUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
 ) : MovieDetailsScreenInteractionListener,
     BaseViewModel<MovieDetailsScreenState>(MovieDetailsScreenState()) {
 
@@ -119,7 +119,32 @@ class MovieDetailsViewModel(
 
 
     override fun onFavouriteClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    tryToExecute(
+                        execute = { addRatingToMovieUseCase() },
+                        onSuccess = {
+                            updateState(
+                                screenState.value.copy(
+                                    showRatingDialog = true
+                                )
+                            )
+                        },
+                        onError = {
+                            updateState(screenState.value.copy(errorMessage = it))
+                        }
+                    )
+                } else {
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
+
     }
 
     override fun onAddToListClick(title: Int) {
@@ -139,13 +164,15 @@ class MovieDetailsViewModel(
         mediaDetailsFeatureAPI.startMovieDetails(mediaId)
     }
 
-    override fun onClickPlayTrailer() {
-        if (!isTrailerAvailable()) {
-            showErrorMessage("No video available")
-            return
-        }
-        navigateToTrailer()
+    override fun onDismissRatingDialog() {
+        updateState(
+            screenState.value.copy(
+                showRatingDialog = false
+            )
+        )
     }
+
+    override fun onRatingSubmitted(rating: Float) {}
 
     private fun resetStateBeforeRetry() {
         updateState(
@@ -156,28 +183,6 @@ class MovieDetailsViewModel(
         )
     }
 
-    private fun isTrailerAvailable(): Boolean {
-        val video = screenState.value.movieDetailsUiState.movieVideoUi
-        return video.key.isNotEmpty() && video.site.isNotEmpty()
-    }
-
-    private fun showErrorMessage(message: String) {
-        updateState(
-            screenState.value.copy(
-                errorMessage = message
-            )
-        )
-    }
-
-    private fun navigateToTrailer() {
-        val video = screenState.value.movieDetailsUiState.movieVideoUi
-        navigate(
-            MediaDetailsDestinations.VideosScreen(
-                site = video.site,
-                key = video.key
-            )
-        )
-    }
 
     private fun handleMovieDetailsSuccess(mediaId: Int, result: Movie) {
         updateState(
@@ -318,83 +323,12 @@ class MovieDetailsViewModel(
     }
 
     private fun handleGalleryError(errorMessage: String) {
-    private fun loadMovieGallery(mediaId: Int) {
-        tryToExecute(
-            execute = { getMovieGalleryUseCase(mediaId) },
-            onSuccess = {
-                updateState(
-                    screenState.value.copy(
-                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            gallery = it.toUi()
-                        )
-                    )
-                )
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
-                )
-            }
-        )
-    }
-
-    override fun onFavouriteClick(title: Int) {
-        tryToExecute(
-            execute = { isLoggedInUseCase() },
-            onSuccess = { isLoggedIn ->
-                if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { addRatingToMovieUseCase() },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
-                    )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
-                }
-            },
-            onError = {
-                updateState(screenState.value.copy(errorMessage = it))
-            }
-        )
-    }
-
-    override fun onAddToListClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
-    }
-
-    override fun onShowAllCastClick(movieId: Int) {
-        navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
-    }
-
-
-    override fun onRetryLoadMovieDetails() {
         updateState(
             screenState.value.copy(
                 errorMessage = errorMessage
             )
         )
     }
-                isLoading = true,
-                errorMessage = null
-            )
-        )
-        loadedMovieDetails(mediaId = movieId)
-    }
-
-    override fun onSimilarMovieClick(mediaId: Int) {
-        mediaDetailsFeatureAPI.startMovieDetails(mediaId)
-    }
-
 
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
         updateState(
@@ -404,6 +338,7 @@ class MovieDetailsViewModel(
                 )
             )
         )
+
     }
 
     private fun onGetVideoMovieError(error: String) {
@@ -413,15 +348,4 @@ class MovieDetailsViewModel(
             )
         )
     }
-
-    override fun onDismissRatingDialog() {
-        updateState(
-            screenState.value.copy(
-                showRatingDialog = false
-            )
-        )
-    }
-
-    override fun onRatingSubmitted(rating: Float) {}
-
 }
