@@ -1,5 +1,4 @@
 import androidx.paging.PagingData
-import androidx.recyclerview.widget.ListUpdateCallback
 import com.feature.search.searchUi.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -59,11 +58,4 @@ enum class SearchTypeUi(val displayNameResId: Int) {
     Country(R.string.country),
     Actor(R.string.actor);
 
-}
-
-class NoopListUpdateCallback : ListUpdateCallback {
-    override fun onInserted(position: Int, count: Int) {}
-    override fun onRemoved(position: Int, count: Int) {}
-    override fun onMoved(fromPosition: Int, toPosition: Int) {}
-    override fun onChanged(position: Int, count: Int, payload: Any?) {}
 }
