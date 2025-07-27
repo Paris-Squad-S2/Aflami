@@ -17,10 +17,6 @@ import com.paris_2.aflami.di.serviceModule
 import com.paris_2.aflami.di.useCaseModule
 import com.paris_2.aflami.di.viewModelModule
 import com.paris_2.aflami.di.workManagerModule
-import com.repository.home.util.HomeNetworkConnectionChecker
-import com.repository.movie.util.MovieNetworkConnectionChecker
-import com.repository.search.util.SearchNetworkConnectionChecker
-import com.repository.util.TvNetworkConnectionChecker
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -56,10 +52,5 @@ class AflamiApplication : Application() {
             .build()
 
         WorkManager.initialize(this, configuration)
-
-        TvNetworkConnectionChecker(this)
-        SearchNetworkConnectionChecker(this)
-        MovieNetworkConnectionChecker(this)
-        HomeNetworkConnectionChecker(this)
     }
 }
