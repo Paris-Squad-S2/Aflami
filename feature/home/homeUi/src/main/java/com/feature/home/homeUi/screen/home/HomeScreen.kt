@@ -26,7 +26,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
@@ -43,6 +46,7 @@ import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
+import com.paris_2.aflami.designsystem.text_style.nicoMoji
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -254,6 +258,13 @@ fun HomeScreenContent(
     TopAppBar(
         title = stringResource(com.feature.home.homeUi.R.string.aflami),
         subtitle = "More than just watching.",
+        titleTextStyle = TextStyle(
+            fontSize = 14.sp,
+            fontFamily = nicoMoji,
+            fontWeight = FontWeight.Normal,
+            lineHeight = 20.sp,
+            letterSpacing = 0.25.sp
+        ),
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
