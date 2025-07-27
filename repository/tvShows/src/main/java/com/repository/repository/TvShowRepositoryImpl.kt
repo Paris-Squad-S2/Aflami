@@ -2,15 +2,16 @@ package com.repository.repository
 
 import com.domain.mediaDetails.exception.AflamiException
 import com.domain.mediaDetails.exception.NoCastFoundException
-import com.domain.mediaDetails.exception.NoTvShowFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
+import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoProductionCompanyFoundException
 import com.domain.mediaDetails.exception.NoReviewFoundException
-import com.domain.mediaDetails.exception.NoSimilarFoundException
-import com.domain.mediaDetails.exception.NoVideoFoundException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoSeasonFoundException
+import com.domain.mediaDetails.exception.NoSimilarFoundException
+import com.domain.mediaDetails.exception.NoTvShowFoundException
+import com.domain.mediaDetails.exception.NoVideoFoundException
 import com.domain.mediaDetails.model.Cast
+import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
@@ -189,6 +190,21 @@ class TvShowRepositoryImpl(
                 ?.map { it.toEntity() }
                 ?: emptyList()
         }
+    }
+
+    override suspend fun getTrailerVideoForEpisode(
+        tvShowId: Int,
+        seasonNumber: Int,
+        episodeNumber: Int
+    ): List<EpisodeVideo> {
+        return tvShowDetailsRemoteDataSource.getTrailerVideoForEpisode(
+            tvShowId,
+            seasonNumber,
+            episodeNumber,
+            language
+        ).episodeVideoResultDto
+            ?.map { it.toEntity() }
+            ?: emptyList()
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
