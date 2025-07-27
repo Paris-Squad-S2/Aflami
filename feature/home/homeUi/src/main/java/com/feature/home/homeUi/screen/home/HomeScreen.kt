@@ -277,7 +277,7 @@ fun HomeScreenContent(
             IconItem(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_search),
                 onClick = action::onSearchIconClick,
-                backgroundColor = Theme.colors.surfaceHigh,
+                backgroundColor = Theme.colors.primaryVariant,
                 tint = Theme.colors.text.body
             )
         )

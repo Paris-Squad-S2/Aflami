@@ -102,6 +102,7 @@ fun TopAppBar(
                         style = titleTextStyle,
                         color = Theme.colors.text.title,
                         maxLines = 1,
+                        modifier = Modifier.padding(bottom = 2.dp)
                     )
                 }
                 subtitle?.let {
@@ -146,7 +147,9 @@ private fun IconBox(
         Icon(
             imageVector = iconItem.icon,
             contentDescription = null,
-            tint = tint
+            tint = tint,
+            modifier = Modifier
+                .size(24.dp)
         )
     }
 }
