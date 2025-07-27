@@ -152,7 +152,7 @@ fun HomeScreenContent(
                         onMediaClick = action::onMediaCardClick,
                         onSectionAllClick = action::navigateToTopRatingScreen,
                         isScrolling = isScrolling,
-                        modifier = Modifier.padding(top=8.dp)
+                        modifier = Modifier.padding(top = 24.dp)
                     )
                 }
             } else if (state.isTopRatingLoading) {
