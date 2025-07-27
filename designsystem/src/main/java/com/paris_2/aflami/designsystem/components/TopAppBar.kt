@@ -24,7 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
@@ -125,8 +127,8 @@ fun TopAppBar(
 @Composable
 private fun IconBox(
     iconItem: IconItem,
-    tint: Color = iconItem.tint,
     modifier: Modifier = Modifier,
+    tint: Color = iconItem.tint,
 ) {
     Box(
         modifier = modifier
