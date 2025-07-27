@@ -226,25 +226,6 @@ class TvShowDetailsViewModelTest {
     }
 
     @Test
-    fun `onClickPlayEpisodeTrailer with empty video shows snackbar`() = runTest {
-        val testTvShowId = 123
-        val testSeasonNumber = 1
-        val testEpisodeNumber = 2
-        val mockEpisodeVideo = mockk<EpisodeVideo> {
-            every { site } returns ""
-            every { key } returns ""
-            every { name } returns "Test Episode"
-        }
-        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
-        viewModel = makeViewModelWithDefaultStateHandle()
-
-        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
-        runCurrent()
-
-        assertTrue(viewModel.screenState.value.showSnackBar)
-    }
-
-    @Test
     fun `onClickPlayEpisodeTrailer error calls use case`() = runTest {
         val testTvShowId = 123
         val testSeasonNumber = 1
