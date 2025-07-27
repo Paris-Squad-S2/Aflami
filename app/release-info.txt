@@ -1,2 +1,4 @@
-versionName=0.3.5
-- refactor play video for episode
+versionName=0.3.6
+- Add outlined star icon for rating bar
+- Rename firebase module to logger
+- Replace Gallery Entity with list of Images in repository and use case classes
