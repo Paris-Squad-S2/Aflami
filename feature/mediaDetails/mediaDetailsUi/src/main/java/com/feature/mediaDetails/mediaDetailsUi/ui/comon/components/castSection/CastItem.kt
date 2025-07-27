@@ -64,7 +64,7 @@ fun CastItem(
             }
             androidx.compose.animation.AnimatedVisibility(visible = imageState == ImageState.Error) {
                 Image(
-                    painter = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.img_disconnect),
+                    painter = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.ic_film_roll),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
