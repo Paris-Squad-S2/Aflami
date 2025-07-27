@@ -151,8 +151,8 @@ class MovieDetailsViewModelTest {
             getMovieReviewsUseCase,
             getMovieProductionCompaniesUseCase,
             getMovieVideoUseCase,
-            mediaDetailsFeatureAPI,
             isLoggedInUseCase,
+            mediaDetailsFeatureAPI,
             addRatingToMovieUseCase
         )
     }
