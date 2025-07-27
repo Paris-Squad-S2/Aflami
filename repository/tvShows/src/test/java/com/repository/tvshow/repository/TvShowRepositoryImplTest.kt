@@ -468,10 +468,10 @@ class TvShowRepositoryImplTest {
         } returns Unit
 
         // When
-        val result = tvShowRepository.getTvShowGallery(tvShowId).images
+        val result = tvShowRepository.getTvShowGallery(tvShowId)
 
         // Then
-        assertEquals(expectedImages, result)
+        assertEquals(expectedImages.map{it.toEntity()}, result)
     }
 
     @Test
