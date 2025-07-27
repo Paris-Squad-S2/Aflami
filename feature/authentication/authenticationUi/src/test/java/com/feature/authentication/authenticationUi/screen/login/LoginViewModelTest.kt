@@ -75,6 +75,20 @@ class LoginViewModelTest {
         Assertions.assertEquals(!initial, state.showPassword)
     }
 
+    @Test
+    fun `onClickLogin with invalid credentials sets error message and disables button`() {
+        coEvery {
+            loginUseCase(
+                "user",
+                "1234"
+            )
+        } throws (InvalidCredentialsException("Invalid credentials"))
+
+        viewModel.onClickLogin()
+
+        val state = viewModel.screenState.value
+        Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
+    }
 
     @Test
     fun `onClickLogin with valid credentials navigates to home`() {
