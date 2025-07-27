@@ -1,5 +1,4 @@
-package com.paris_2.aflami.designsystem.components
-
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

@@ -22,8 +22,8 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.ExpandableText
-import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable

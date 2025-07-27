@@ -29,16 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AflamiMediaCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.paris_2.aflami.designsystem.components.AflamiMediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
@@ -218,7 +218,13 @@ fun MovieDetailsScreenContent(
                                     items(mediaList.itemCount) { mediaIndex ->
                                         mediaList[mediaIndex]?.let { media ->
                                             AflamiMediaCard(
-                                                modifier = Modifier.fillMaxWidth().padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .padding(
+                                                        start = 16.dp,
+                                                        end = 16.dp,
+                                                        bottom = 8.dp
+                                                    ),
                                                 imageUri = media.posterPath,
                                                 rating = media.voteAverage.toFloat(),
                                                 movieName = media.title,
@@ -241,7 +247,7 @@ fun MovieDetailsScreenContent(
                                             modifier = Modifier.padding(16.dp)
                                         )
                                     }
-                                } else if(reviewsList.itemSnapshotList.isEmpty()){
+                                } else if (reviewsList.itemSnapshotList.isEmpty()) {
                                     item {
                                         Box(
                                             modifier = Modifier
@@ -256,9 +262,8 @@ fun MovieDetailsScreenContent(
                                             )
                                         }
                                     }
-                                }
-                                else {
-                                    items(reviewsList.itemCount){index ->
+                                } else {
+                                    items(reviewsList.itemCount) { index ->
                                         ReviewsSection(reviewsList[index])
                                     }
                                 }
