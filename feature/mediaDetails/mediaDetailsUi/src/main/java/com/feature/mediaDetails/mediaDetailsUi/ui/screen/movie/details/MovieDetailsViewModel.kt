@@ -117,34 +117,24 @@ class MovieDetailsViewModel(
         )
     }
 
-
     override fun onFavouriteClick(title: Int) {
         tryToExecute(
             execute = { isLoggedInUseCase() },
-            onSuccess = { isLoggedIn ->
-                if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { addRatingToMovieUseCase() },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
-                    )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
-                }
-            },
-            onError = {
-                updateState(screenState.value.copy(errorMessage = it))
-            }
+            onSuccess = { isLoggedIn -> handleLoginResult(isLoggedIn, title) },
+            onError = ::handleError
         )
+    }
 
+    private fun handleLoginResult(isLoggedIn: Boolean, title: Int) {
+        if (isLoggedIn) {
+            tryToExecute(
+                execute = { addRatingToMovieUseCase() },
+                onSuccess = ::handleRatingSuccess,
+                onError = ::handleError
+            )
+        } else {
+            navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+        }
     }
 
     override fun onAddToListClick(title: Int) {
@@ -232,6 +222,14 @@ class MovieDetailsViewModel(
                 errorMessage = error
             )
         )
+    }
+
+    private fun handleRatingSuccess(@Suppress("UNUSED_PARAMETER") result: Unit) {
+        updateState(screenState.value.copy(showRatingDialog = true))
+    }
+
+    private fun handleError(error: String) {
+        updateState(screenState.value.copy(errorMessage = error))
     }
 
     private fun createReviewPager(mediaId: Int): Flow<PagingData<ReviewUi>> {
