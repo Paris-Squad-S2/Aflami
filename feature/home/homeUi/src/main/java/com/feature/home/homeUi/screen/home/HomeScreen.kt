@@ -34,6 +34,7 @@ import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.paris_2.aflami.designsystem.components.Chips
+import com.paris_2.aflami.designsystem.components.FontType
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -253,7 +254,8 @@ fun HomeScreenContent(
 
     TopAppBar(
         title = stringResource(com.feature.home.homeUi.R.string.aflami),
-        subtitle = "More than just watching.",
+        subtitle = stringResource(R.string.more_than_just_watching),
+        fontType = FontType.NICOMOJ,
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
