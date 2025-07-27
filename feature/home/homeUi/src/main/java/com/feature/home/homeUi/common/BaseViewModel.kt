@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import com.feature.home.homeApi.HomeDestination
 import com.feature.home.homeUi.navigation.HomeNavigator
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -13,15 +14,15 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
+import javax.inject.Inject
 
-open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
+@HiltViewModel
+open class BaseViewModel<S> @Inject constructor(
+    initialState: S, private val navigator: HomeNavigator
+) : ViewModel() {
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
-
-    private val navigator: HomeNavigator by inject()
 
     protected fun navigate(destination: HomeDestination, navOptions: NavOptions? = null) =
         viewModelScope.launch {
