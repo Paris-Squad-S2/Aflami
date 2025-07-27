@@ -85,6 +85,13 @@ val defaultTextStyle = AflamiTextStyle(
             fontSize = 10.sp,
             lineHeight = 16.sp
         )
+    ),
+    logoText = TextStyle(
+        fontSize = 14.sp,
+        fontFamily = nicoMoji,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp
     )
 )
 
