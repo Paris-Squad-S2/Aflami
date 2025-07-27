@@ -2,18 +2,20 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
+import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.Season
 import com.domain.mediaDetails.model.TvShow
 import com.domain.mediaDetails.model.TvShowVideo
 import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
+import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.tvShows.GetTvShowVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
@@ -51,6 +53,7 @@ class TvShowDetailsViewModelTest {
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase = mockk()
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase = mockk()
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase = mockk()
+    private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
@@ -165,6 +168,77 @@ class TvShowDetailsViewModelTest {
         viewModel.onSimilarTvShowClick(77)
     }
 
+    @Test
+    fun `onClickPlayEpisodeTrailer with valid video calls use case`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        val mockEpisodeVideo = mockk<EpisodeVideo> {
+            every { site } returns "YouTube"
+            every { key } returns "abc123"
+            every { name } returns "Test Episode"
+        }
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer with valid video does not show snackbar`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        val mockEpisodeVideo = mockk<EpisodeVideo> {
+            every { site } returns "YouTube"
+            every { key } returns "abc123"
+            every { name } returns "Test Episode"
+        }
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        assertFalse(viewModel.screenState.value.showSnackBar)
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer with empty video calls use case`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        val mockEpisodeVideo = mockk<EpisodeVideo> {
+            every { site } returns ""
+            every { key } returns ""
+            every { name } returns "Test Episode"
+        }
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } returns mockEpisodeVideo
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
+    }
+
+    @Test
+    fun `onClickPlayEpisodeTrailer error calls use case`() = runTest {
+        val testTvShowId = 123
+        val testSeasonNumber = 1
+        val testEpisodeNumber = 2
+        coEvery { getEpisodeVideoUseCase(any(), any(), any()) } throws RuntimeException("Error")
+        viewModel = makeViewModelWithDefaultStateHandle()
+
+        viewModel.onClickPlayEpisodeTrailer(testTvShowId, testSeasonNumber, testEpisodeNumber)
+        runCurrent()
+
+        coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
+    }
+    
     private fun makeViewModelWithDefaultStateHandle(): TvShowDetailsViewModel {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>() } returns MediaDetailsDestinations.TvShowDetailsScreen(
             tvShowId = testTvShowId
@@ -179,6 +253,7 @@ class TvShowDetailsViewModelTest {
             getTvShowProductionCompaniesUseCase,
             getSeasonDetailsUseCase,
             getTvShowVideoUseCase,
+            getEpisodeVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
             addRatingToTvShowUseCase

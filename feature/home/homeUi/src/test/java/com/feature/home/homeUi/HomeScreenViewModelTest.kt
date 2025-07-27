@@ -16,6 +16,7 @@ import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.aflami.designsystem.components.SliderMedia
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -162,7 +163,7 @@ HomeScreenViewModelTest {
             mediaDetailsFeatureAPI
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Failed categories")
+        assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<CategoryUiState, Boolean>())
     }
 
     @Test
@@ -180,7 +181,7 @@ HomeScreenViewModelTest {
             mediaDetailsFeatureAPI
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Popular error")
+        assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
     }
 
     @Test
@@ -198,7 +199,7 @@ HomeScreenViewModelTest {
             mediaDetailsFeatureAPI
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("TopRating error")
+        assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
     }
 
     @Test
@@ -218,7 +219,6 @@ HomeScreenViewModelTest {
                 .apply { isAccessible = true }.invoke(this)
         }
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo(oldError)
         assertThat(viewModel.screenState.value.homeUIState.continueWatchingMediaList.map { it.title }).isEqualTo(
             fakeContinueWatchingList.map { it.title })
     }
@@ -382,4 +382,33 @@ HomeScreenViewModelTest {
         assertThat(updated.moodPickerMovie?.id).isEqualTo(0)
         assertThat(updated.moodPickerMovie?.title).isEmpty()
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `onRetry loads all media and categories again`() = runTest {
+
+
+        coEvery { getPopularMediaUseCase() } returns listOf()
+
+
+        viewModel = HomeScreenViewModel(
+            getPopularMediaUseCase,
+            getTopRatingMediaUseCase,
+            getMoviesCategoriesUseCase,
+            filterUpComingMediaByCategoriesUseCase,
+            getUpcomingMediaUseCase,
+            addMediaToLocalDatabaseUseCase = mockk(relaxed = true),
+            getMediaFromLocalUseCase,
+            searchFeatureAPI = mockk(relaxed = true),
+            mediaDetailsFeatureAPI = mockk(relaxed = true)
+        )
+
+        viewModel.onRetry()
+        runCurrent()
+
+        coVerify { getPopularMediaUseCase() }
+    }
+
+
+
 }
