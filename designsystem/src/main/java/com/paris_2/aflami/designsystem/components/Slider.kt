@@ -76,14 +76,9 @@ fun Slider(
     ) {
         HorizontalPager(
             state = pagerState,
-            contentPadding = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT){
-                if(pagerState.currentPage==items.lastIndex){
-                    PaddingValues(horizontal = 180.dp)
-                }else{
-                    PaddingValues(horizontal = 80.dp)
-                }
-            }
-            else
+            contentPadding = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                PaddingValues(horizontal = 80.dp)
+            } else
                 PaddingValues(horizontal = 300.dp),
             modifier = Modifier.fillMaxWidth(),
             beyondViewportPageCount = 2,
@@ -120,8 +115,7 @@ fun Slider(
                 MediaCard(
                     modifier = Modifier
                         .clip(RoundedCornerShape(24.dp))
-                        .clickable{ onClick(item) }
-                    ,
+                        .clickable { onClick(item) },
                     imageUri = item.imageUri,
                     rating = item.rating,
                     mediaCardType = MediaCardType.SLIDER,
