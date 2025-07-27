@@ -8,7 +8,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply true
     id("com.google.firebase.crashlytics")
     alias(libs.plugins.ksp)
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -150,6 +150,7 @@ dependencies {
     //Hilt
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.work)
 
     //work manager for kotlin
     implementation(libs.work.runtime.ktx)
