@@ -128,7 +128,7 @@ fun HomeScreenContent(
                         onMediaClick = action::onMediaCardClick,
                         onSectionAllClick = action::navigateToContinueWatchingScreen,
                         isScrolling = isScrolling,
-                        modifier = Modifier.padding(top=8.dp)
+                        modifier = Modifier.padding(top = 6.dp)
                     )
                 }
             } else if (state.isContinueWatchingLoading) {
