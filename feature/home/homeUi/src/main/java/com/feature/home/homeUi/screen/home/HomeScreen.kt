@@ -26,10 +26,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
@@ -46,7 +43,6 @@ import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.text_style.nicoMoji
 import com.paris_2.aflami.designsystem.theme.Theme
 import org.koin.compose.viewmodel.koinViewModel
 
@@ -127,7 +123,7 @@ fun HomeScreenContent(
             if (state.homeUIState.continueWatchingMediaList.isNotEmpty()) {
                 item {
                     HomeSection(
-                        title = stringResource(id = com.feature.home.homeUi.R.string.continue_watching),
+                        title = stringResource(id = R.string.continue_watching),
                         mediaList = state.homeUIState.continueWatchingMediaList,
                         onMediaClick = action::onMediaCardClick,
                         onSectionAllClick = action::navigateToContinueWatchingScreen,
@@ -149,7 +145,7 @@ fun HomeScreenContent(
             if (state.homeUIState.topRatedMediaList.isNotEmpty()) {
                 item {
                     HomeSection(
-                        title = stringResource(com.feature.home.homeUi.R.string.top_rating),
+                        title = stringResource(R.string.top_rating),
                         leadingIconPainter = ImageVector.vectorResource(R.drawable.ic_fire),
                         iconColor = Theme.colors.secondary,
                         mediaList = state.homeUIState.topRatedMediaList,
@@ -172,8 +168,8 @@ fun HomeScreenContent(
 
             item {
                 MoodPicker(
-                    title = stringResource(com.feature.home.homeUi.R.string.mood_picker_get_a_movie),
-                    question = stringResource(com.feature.home.homeUi.R.string.what_s_your_vibe_today),
+                    title = stringResource(R.string.mood_picker_get_a_movie),
+                    question = stringResource(R.string.what_s_your_vibe_today),
                     onEmojiClick = { emojiMood ->
                         action.moodPickerSelected(emojiMood.tags)
                     },
@@ -190,7 +186,7 @@ fun HomeScreenContent(
             }
             item {
                 SectionTitle(
-                    title = stringResource(com.feature.home.homeUi.R.string.upcoming),
+                    title = stringResource(R.string.upcoming),
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
                 LazyRow(
@@ -198,7 +194,7 @@ fun HomeScreenContent(
                 ) {
                     item {
                         Chips(
-                            title = stringResource(com.feature.home.homeUi.R.string.all),
+                            title = stringResource(R.string.all),
                             icon = ImageVector.vectorResource(R.drawable.ic_category_all),
                             isSelected = isAllCategories,
                             onClick = {
@@ -256,15 +252,9 @@ fun HomeScreenContent(
     }
 
     TopAppBar(
-        title = stringResource(com.feature.home.homeUi.R.string.aflami),
+        title = stringResource(R.string.aflami),
         subtitle = "More than just watching.",
-        titleTextStyle = TextStyle(
-            fontSize = 14.sp,
-            fontFamily = nicoMoji,
-            fontWeight = FontWeight.Normal,
-            lineHeight = 20.sp,
-            letterSpacing = 0.25.sp
-        ),
+        titleTextStyle = Theme.textStyle.logoText,
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
