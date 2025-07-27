@@ -41,6 +41,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
@@ -85,9 +86,10 @@ fun MovieDetailsScreenContent(
         RatingDialog(
             currentRating = currentRating,
             onRatingChange = { newRating ->
-                currentRating = newRating },
+                currentRating = newRating
+            },
             onDismiss = { movieDetailsScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog()  }
+            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog() }
         )
     }
 
@@ -159,12 +161,17 @@ fun MovieDetailsScreenContent(
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                         } else {
+                            val site = state.movieDetailsUiState.movieVideoUi.site
+                            val key = state.movieDetailsUiState.movieVideoUi.key
                             DetailsImage(
                                 imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
-                                onPlayClick = movieDetailsScreenInteractionListener::onClickPlayTrailer,
-                                hasVideo = !(state.movieDetailsUiState.movieVideoUi.site.isEmpty() ||
-                                        state.movieDetailsUiState.movieVideoUi.key.isEmpty()),
+                                onPlayClick = {
+                                    if (!(site.isEmpty() || key.isEmpty())) {
+                                        activity?.openYoutubeOrBrowser(key)
+                                    }
+                                },
+                                hasVideo = !(site.isEmpty() ||key.isEmpty()),
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                         }

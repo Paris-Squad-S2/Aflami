@@ -2,6 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.mapper
 
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
+import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
@@ -19,6 +20,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieVide
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeVideoUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.SeasonUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
@@ -189,6 +191,14 @@ fun MovieVideo.toUi(): MovieVideoUi{
 
 fun TvShowVideo.toUi(): TvShowVideoUi{
     return TvShowVideoUi(
+        key = this.key,
+        name = this.name,
+        site = this.site
+    )
+}
+
+fun EpisodeVideo.toUi(): EpisodeVideoUi{
+    return EpisodeVideoUi(
         key = this.key,
         name = this.name,
         site = this.site
