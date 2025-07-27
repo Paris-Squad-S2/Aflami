@@ -2,6 +2,8 @@
 agp = "8.10.1"
 firebaseBom = "33.16.0"
 coil = "2.7.0"
+hiltAndroid = "2.57"
+hiltAndroidCompiler = "2.57"
 junitJupiterApi = "5.13.2"
 junitJupiterEngine = "5.13.2"
 junitJupiterParams = "5.13.3"
@@ -65,6 +67,8 @@ firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics" }
 firebase-perf = { module = "com.google.firebase:firebase-perf" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
