@@ -5,6 +5,7 @@ import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import com.paris_2.domain.authentication.usecase.LoginUseCase
+import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -21,6 +22,7 @@ class LoginViewModelTest {
 
     @BeforeEach
     fun setup() {
+        clearAllMocks()
         loginUseCase = mockk()
         appNavigationAPI = mockk(relaxed = true)
         viewModel = spyk(
