@@ -125,9 +125,9 @@ fun DetailsImage(
                     }
                     .dropShadow(
                         shape = CircleShape,
-                        color = Color(0x1FD85895),
-                        spread = 12.dp,
-                        offsetX = (-5).dp,
+                        color = Color(0x1FD85895).copy(alpha = 0.12f),
+                        spread = 4.dp,
+                        offsetX = (-4).dp,
                         alpha = 0.08F
                     )
                     .border(
