@@ -25,8 +25,6 @@ import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.RecentSearchItem
-import com.paris_2.aflami.designsystem.components.SearchSuggestionHub
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable

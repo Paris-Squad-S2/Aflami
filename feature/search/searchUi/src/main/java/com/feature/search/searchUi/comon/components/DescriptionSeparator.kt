@@ -1,9 +1,8 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.search.searchUi.comon.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -14,6 +13,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AflamiText
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 
@@ -34,7 +34,7 @@ fun DescriptionSeparator(
                     colorFilter = ColorFilter.tint(separatorColor)
                 )
             }
-            Text(
+            AflamiText(
                 text = text,
                 style = Theme.textStyle.label.small,
                 color = textColor,
@@ -46,49 +46,7 @@ fun DescriptionSeparator(
     }
 }
 
-@Preview
-@Composable
-fun PreviewDescriptionSeparator1() {
-    BasePreview {
-        DescriptionSeparator(
-            texts = listOf("TV show", "2016"),
-            textColor = Theme.colors.text.hint
-        )
-    }
-}
 
-@Preview
-@Composable
-fun PreviewDescriptionSeparator2() {
-    BasePreview {
-        DescriptionSeparator(
-            texts = listOf(),
-            textColor = Theme.colors.text.hint
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewDescriptionSeparator3() {
-    BasePreview {
-        DescriptionSeparator(
-            texts = listOf("Action", "Adventure", "Drama"),
-            textColor = Theme.colors.text.hint
-        )
-    }
-}
-
-@Preview
-@Composable
-fun PreviewDescriptionSeparator4() {
-    BasePreview {
-        DescriptionSeparator(
-            texts = listOf("Action", "", "Drama"),
-            textColor = Theme.colors.text.hint
-        )
-    }
-}
 
 @Preview
 @Composable
@@ -100,3 +58,4 @@ fun PreviewDescriptionSeparator5() {
         )
     }
 }
+

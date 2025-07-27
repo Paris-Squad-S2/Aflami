@@ -12,11 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.components.DescriptionSeparator
 import com.paris_2.aflami.designsystem.components.GenresChip
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
 
@@ -52,14 +49,9 @@ fun DescriptionSection(
             verticalAlignment = Alignment.CenterVertically,
             modifier = modifier.padding(start = 16.dp)
         ) {
-            DescriptionSeparator(
-                texts = listOf(releaseDate, runtime, country),
-                textColor = Theme.colors.text.body
-            )
+
         }
-        if (description.isNotBlank()) {
-            Description(description = description)
-        }
+
     }
 
 }
@@ -79,17 +71,3 @@ private fun GenreChipRow(genres: List<String>) {
     }
 }
 
-@PreviewLightDark
-@Composable
-fun DescriptionSectionPreview() {
-    AflamiTheme {
-        DescriptionSection(
-            title = "The Green Mile",
-            genres = listOf("Drama", "Fantasy", "Crime"),
-            releaseDate = "10-09-1999",
-            runtime = "3h 9m",
-            country = "USA",
-            description = "In 1935, corrections officer Paul Edgecomb oversees 'The Green Mile,' the death row section of Cold Mountain Penitentiary."
-        )
-    }
-}

@@ -32,7 +32,7 @@ import com.paris_2.aflami.appnavigation.AppDestination
 import com.paris_2.aflami.appnavigation.AppDestinations
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AflamiText
-import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.AflamiIcon
 import com.paris_2.aflami.designsystem.components.NavigationBar
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
@@ -131,7 +131,7 @@ private fun AflamiNavBarIcon(
             targetValue = if (selected) Theme.colors.primary else Theme.colors.text.hint,
             label = "NavBarIconTint"
         )
-        Icon(
+        AflamiIcon(
             imageVector = ImageVector.vectorResource(currentItem.icon),
             contentDescription = null,
             modifier = Modifier.size(24.dp),

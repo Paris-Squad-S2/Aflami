@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.search.searchUi.comon.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -93,3 +93,4 @@ fun PreviewSmallPlayButton() {
         MediaPlayButton(buttonType = MediaButtonType.MEDIUM, showBoarder = true)
     }
 }
+
