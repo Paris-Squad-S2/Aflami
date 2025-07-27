@@ -7,13 +7,13 @@ import com.domain.home.model.Category
 import com.domain.home.repository.MoviesCategoriesRepository
 import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.mapper.toCategoryList
-import com.repository.home.util.NetworkConnectionChecker
+import com.repository.home.util.HomeNetworkConnectionChecker
 import com.repository.home.util.detectLanguage
 
 class MoviesCategoriesRepositoryImpl(
     private val genresRemoteDataSource: GenresRemoteDataSource,
-    private val networkConnectionChecker: NetworkConnectionChecker,
-): MoviesCategoriesRepository {
+    private val networkConnectionChecker: HomeNetworkConnectionChecker,
+) : MoviesCategoriesRepository {
     override suspend fun getMoviesCategories(): List<Category> {
         val language = detectLanguage()
         return safeCall(NoCategoriesFoundException()) {
