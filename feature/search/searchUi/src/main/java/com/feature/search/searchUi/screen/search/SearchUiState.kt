@@ -1,28 +1,29 @@
 import androidx.paging.PagingData
 import com.feature.search.searchUi.R
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.datetime.LocalDate
 
 data class SearchScreenState(
-    val searchUiState: SearchUiState,
-    val isLoading: Boolean,
-    val errorMessage: String?
+    val searchUiState: SearchUiState = SearchUiState(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
 )
 
 
 data class SearchUiState(
-    val searchQuery: String,
-    val showFilterDialog: Boolean,
-    val recentSearches: List<SearchHistoryUiState>,
-    val selectedTabIndex: Int,
-    val moviesResult: Flow<PagingData<MediaUiState>>,
-    val tvShowsResult: Flow<PagingData<MediaUiState>>,
-    val filteredMoviesResult: Flow<PagingData<MediaUiState>>,
-    val filteredTvShowsResult: Flow<PagingData<MediaUiState>>,
-    val categories: Map<CategoryUiState, Boolean>,
-    val selectedRating: Float,
-    val isAllCategories: Boolean,
-    val isApplyFilter:Boolean,
+    val searchQuery: String = "",
+    val showFilterDialog: Boolean = false,
+    val recentSearches: List<SearchHistoryUiState> = listOf(),
+    val selectedTabIndex: Int = 0,
+    val moviesResult: Flow<PagingData<MediaUiState>> = flowOf(PagingData.empty()),
+    val tvShowsResult: Flow<PagingData<MediaUiState>> = flowOf(PagingData.empty()),
+    val filteredMoviesResult: Flow<PagingData<MediaUiState>> = flowOf(PagingData.empty()),
+    val filteredTvShowsResult: Flow<PagingData<MediaUiState>> = flowOf(PagingData.empty()),
+    val categories: Map<CategoryUiState, Boolean> = mapOf(),
+    val selectedRating: Float = 0f,
+    val isAllCategories: Boolean = true,
+    val isApplyFilter: Boolean = false,
 )
 
 
@@ -49,11 +50,12 @@ data class CategoryUiState(
 data class SearchHistoryUiState(
     val searchTitle: String,
     val searchDate: String,
-    val searchType: SearchTypeUi
+    val searchType: SearchTypeUi,
 )
 
 enum class SearchTypeUi(val displayNameResId: Int) {
     Query(R.string.query),
     Country(R.string.country),
     Actor(R.string.actor);
+
 }

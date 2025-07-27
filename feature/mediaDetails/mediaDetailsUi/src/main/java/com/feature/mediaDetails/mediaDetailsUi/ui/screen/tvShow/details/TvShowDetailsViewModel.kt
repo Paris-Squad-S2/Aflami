@@ -33,7 +33,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSourc
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsStateDefaults.initialTvShowDetailsScreenState
 import kotlinx.coroutines.flow.Flow
 
 class TvShowDetailsViewModel(
@@ -49,7 +48,7 @@ class TvShowDetailsViewModel(
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
-    initialTvShowDetailsScreenState()
+    TvShowDetailsScreenState()
 ) {
 
     private val mediaId by lazy {

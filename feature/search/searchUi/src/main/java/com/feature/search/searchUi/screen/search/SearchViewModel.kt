@@ -35,7 +35,6 @@ import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.navigation.SearchDestination
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
-import com.feature.search.searchUi.screen.search.SearchStateDefaults.initialSearchScreenState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -60,7 +59,7 @@ class SearchViewModel(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
-        initialSearchScreenState()
+        SearchScreenState()
     ) {
 
     init {

@@ -7,7 +7,6 @@ import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastDefaults.initialMovieCastUiState
 
 class MovieCastViewModel
     (
@@ -15,7 +14,7 @@ class MovieCastViewModel
     private val getMovieCastUseCase: GetMovieCastUseCase,
 ) : MovieCastScreenInteractionListener,
     BaseViewModel<MovieCastUiState>(
-        initialMovieCastUiState()
+        MovieCastUiState()
     ) {
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieCastScreen>().movieId

@@ -15,7 +15,6 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
-import com.feature.search.searchUi.screen.findByActor.FindByActorDefaults.initialFindByActorScreenState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -29,7 +28,7 @@ class FindByActorViewModel(
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
-    initialFindByActorScreenState()
+    FindByActorScreenState()
 ) {
 
     init {

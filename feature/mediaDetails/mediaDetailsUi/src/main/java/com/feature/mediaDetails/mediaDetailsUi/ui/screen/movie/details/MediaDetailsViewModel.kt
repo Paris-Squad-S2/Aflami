@@ -30,7 +30,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestina
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsStateDefaults.initialMovieDetailsScreenState
 import kotlinx.coroutines.flow.Flow
 
 class MovieDetailsViewModelViewModel(
@@ -45,7 +44,7 @@ class MovieDetailsViewModelViewModel(
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : MovieDetailsScreenInteractionListener,
-    BaseViewModel<MovieDetailsScreenState>(initialMovieDetailsScreenState()) {
+    BaseViewModel<MovieDetailsScreenState>(MovieDetailsScreenState()) {
 
     private val movieId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId

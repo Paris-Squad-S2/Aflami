@@ -18,7 +18,6 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.WorldTourPagingSource
-import com.feature.search.searchUi.screen.worldTour.WorldTourDefaults.initialWorldTourScreenStata
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -35,7 +34,7 @@ class WorldTourViewModel(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
-        initialWorldTourScreenStata()
+        WorldTourScreenState()
     ) {
 
     init {
