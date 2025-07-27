@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -87,7 +88,11 @@ fun HomeSlider(
                         Icon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
                             contentDescription = "",
-                            modifier = Modifier.padding(start = 8.dp),
+                            modifier = Modifier
+                                .padding(start = 8.dp)
+                                .size(width = 16.dp, height = 18.dp)
+
+                            ,
                             tint = Theme.colors.secondary,
                         )
                     },
