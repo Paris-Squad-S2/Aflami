@@ -2,7 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.mapper
 
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
-import com.domain.mediaDetails.model.Gallery
+import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
 import com.domain.mediaDetails.model.MovieVideo
@@ -120,8 +120,8 @@ fun LocalDate.formatToUi(): String {
     return "$day-$month-$year"
 }
 
-fun Gallery.toUi(): List<String> {
-    return this.images.map { it.url }
+fun List<Image>.toUi(): List<String> {
+    return this.map { it.url }
 }
 
 fun MovieSimilar.toUi(): SimilarMediaUI {
