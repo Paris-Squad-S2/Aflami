@@ -7,7 +7,7 @@ import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.dto.GenreDto
 import com.repository.home.dto.GenresDto
 import com.repository.home.mapper.toCategoryList
-import com.repository.home.util.NetworkConnectionChecker
+import com.repository.home.util.HomeNetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.assertThrows
 class MoviesCategoriesRepositoryImplTest {
 
     private val genresRemoteDataSource: GenresRemoteDataSource = mockk()
-    private val networkChecker: NetworkConnectionChecker = mockk()
+    private val networkChecker: HomeNetworkConnectionChecker = mockk()
     private lateinit var repo: MoviesCategoriesRepositoryImpl
 
     @BeforeEach
