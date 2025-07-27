@@ -343,7 +343,7 @@ fun TvShowDetailsScreenContent(
                                                 rating = media.voteAverage.toFloat(),
                                                 movieName = media.title,
                                                 mediaType = stringResource(featureMediaDetailsUiR.string.tvshow),
-                                                year = media.releaseDate.takeLast(4),
+                                                year = media.releaseDate.take(4),
                                                 mediaCardType = MediaCardType.UP_COMING,
                                                 showGradientFilter = true,
                                                 clickable = true,
