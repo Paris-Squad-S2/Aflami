@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test
 
 class LoginViewModelTest {
 
+
     private lateinit var viewModel: LoginViewModel
     private lateinit var loginUseCase: LoginUseCase
     private lateinit var appNavigationAPI: AppNavigationAPI
