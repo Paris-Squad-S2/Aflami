@@ -23,6 +23,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.SeasonUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
 
 fun Movie.toUi(): MovieUi {
     return MovieUi(
@@ -115,7 +116,7 @@ fun LocalDate.formatToUi(): String {
         return ""
     }
     val day = this.day.toString().padStart(2, '0')
-    val month = this.month.toString().padStart(2, '0')
+    val month = month.number.toString().padStart(2, '0')
     val year = this.year.toString()
     return "$day-$month-$year"
 }
