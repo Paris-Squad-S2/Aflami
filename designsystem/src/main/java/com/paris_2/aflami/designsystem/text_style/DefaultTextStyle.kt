@@ -62,8 +62,8 @@ val defaultTextStyle = AflamiTextStyle(
         small = TextStyle(
             fontFamily = popPins,
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
-            lineHeight = 24.sp
+            fontSize = 14.sp,
+            lineHeight = 22.sp
         )
     ),
     label = SizedTextStyle(
