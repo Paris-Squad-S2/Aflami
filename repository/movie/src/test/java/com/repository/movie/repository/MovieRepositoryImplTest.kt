@@ -502,7 +502,7 @@ class MovieRepositoryImplTest {
         // Given
         val expectedGallery = mockMovieImagesDto.toEntity()
         val localGalleryEntity = GalleryEntity(
-            images = expectedGallery.images.map { it.toLocalDto() },
+            images = expectedGallery.map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
@@ -513,7 +513,7 @@ class MovieRepositoryImplTest {
         val result = movieRepository.getMovieGallery(movieId)
 
         // Then
-        assertThat(result.images).isEqualTo(expectedGallery.images)
+        assertThat(result).isEqualTo(expectedGallery)
     }
 
     @Test
@@ -521,7 +521,7 @@ class MovieRepositoryImplTest {
         runTest {
             // Given
             val localGalleryEntity = GalleryEntity(
-                images = mockMovieImagesDto.toEntity().images.map { it.toLocalDto() },
+                images = mockMovieImagesDto.toEntity().map { it.toLocalDto() },
                 id = 0,
                 movieId = movieId
             )
@@ -539,7 +539,7 @@ class MovieRepositoryImplTest {
     fun `getMovieGallery - should not save gallery locally when it already exists`() = runTest {
         // Given
         val localGalleryEntity = GalleryEntity(
-            images = mockMovieImagesDto.toEntity().images.map { it.toLocalDto() },
+            images = mockMovieImagesDto.toEntity().map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
@@ -559,7 +559,7 @@ class MovieRepositoryImplTest {
             // Given
             val expectedGallery = mockMovieImagesDto.toEntity()
             val localGalleryEntity = GalleryEntity(
-                images = expectedGallery.images.map { it.toLocalDto() },
+                images = expectedGallery.map { it.toLocalDto() },
                 id = 0,
                 movieId = movieId
             )
@@ -573,7 +573,7 @@ class MovieRepositoryImplTest {
             val result = movieRepository.getMovieGallery(movieId)
 
             // Then
-            assertThat(result.images).isEqualTo(expectedGallery.images)
+            assertThat(result).isEqualTo(expectedGallery)
         }
 
     @Test
