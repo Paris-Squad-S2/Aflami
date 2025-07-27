@@ -23,6 +23,7 @@ class AuthenticationRepositoryImpl(
         val sessionDto = remoteDataSource.createSession(requestToken)
         sessionDto.sessionId?.let {
             localDataSource.saveSessionId(it)
+            localDataSource.setIsGuest(false)
             return@handleAuthExceptions true
         }
         false
@@ -32,6 +33,7 @@ class AuthenticationRepositoryImpl(
         val guestSessionDto = remoteDataSource.createGuestSession()
         guestSessionDto.guestSessionId?.let {
             localDataSource.saveSessionId(it)
+            localDataSource.setIsGuest(true)
             return@handleAuthExceptions true
         }
         false
@@ -64,4 +66,13 @@ class AuthenticationRepositoryImpl(
     override fun getForgetPasswordUrl (): String {
         return remoteDataSource.getForgetPasswordUrl()
     }
+
+    override fun isLoggedIn(): Boolean {
+        return localDataSource.isLoggedIn()
+    }
+
+    override fun hasAnySession(): Boolean {
+        return localDataSource.hasAnySession()
+    }
+
 }

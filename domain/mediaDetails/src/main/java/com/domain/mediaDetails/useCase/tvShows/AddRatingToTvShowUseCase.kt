@@ -2,10 +2,10 @@ package com.domain.mediaDetails.useCase.tvShows
 
 import com.domain.mediaDetails.repository.TvShowRepository
 
-class AddTvShowToFavoriteUseCase(
+class AddRatingToTvShowUseCase(
     private val tvShowRepository: TvShowRepository
 ) {
-    suspend operator fun invoke(tvShowId: Int){
-        return tvShowRepository.addTvShowToFavorite(tvShowId)
+    suspend operator fun invoke() {
+        return tvShowRepository.addRatingToTvShow()
     }
 }

@@ -16,9 +16,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -32,12 +34,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
@@ -50,7 +54,7 @@ import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsViewModelViewModel = koinViewModel(),
+    viewModel: MovieDetailsViewModel = koinViewModel(),
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     MovieDetailsScreenContent(
@@ -70,7 +74,7 @@ fun MovieDetailsScreenContent(
     val density = LocalDensity.current
     val activity = LocalActivity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
-
+    var currentRating by remember { mutableFloatStateOf(state.movieDetailsUiState.selectedRating) }
     val alpha by remember {
         derivedStateOf {
             val scroll =
@@ -78,10 +82,18 @@ fun MovieDetailsScreenContent(
             (scroll / maxScrollPx).coerceIn(0f, 1f)
         }
     }
+    if (state.showRatingDialog) {
+        RatingDialog(
+            currentRating = currentRating,
+            onRatingChange = { newRating ->
+                currentRating = newRating
+            },
+            onDismiss = { movieDetailsScreenInteractionListener.onDismissRatingDialog() },
+            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog() }
+        )
+    }
 
     val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
-
-
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
@@ -149,12 +161,17 @@ fun MovieDetailsScreenContent(
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                         } else {
+                            val site = state.movieDetailsUiState.movieVideoUi.site
+                            val key = state.movieDetailsUiState.movieVideoUi.key
                             DetailsImage(
                                 imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                                 rating = state.movieDetailsUiState.movie.rating,
-                                onPlayClick = movieDetailsScreenInteractionListener::onClickPlayTrailer,
-                                hasVideo = !(state.movieDetailsUiState.movieVideoUi.site.isEmpty() ||
-                                        state.movieDetailsUiState.movieVideoUi.key.isEmpty()),
+                                onPlayClick = {
+                                    if (!(site.isEmpty() || key.isEmpty())) {
+                                        activity?.openYoutubeOrBrowser(key)
+                                    }
+                                },
+                                hasVideo = !(site.isEmpty() ||key.isEmpty()),
                                 modifier = Modifier.padding(bottom = 12.dp)
                             )
                         }
@@ -347,7 +364,7 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate)
+                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate) // when click on this should open rating dialog
                             }
                         ),
                         iconItemWithDefaults(

@@ -5,17 +5,18 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import testUtils.fakeProductionCompanies
 
 class GetTvShowsProductionCompaniesUseCaseTest {
+
     private lateinit var getTvShowsProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase
     private val tvShowRepository: TvShowRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getTvShowsProductionCompaniesUseCase =
             GetTvShowsProductionCompaniesUseCase(tvShowRepository)
@@ -26,20 +27,19 @@ class GetTvShowsProductionCompaniesUseCaseTest {
         // Given
         coEvery { tvShowRepository.getCompanyProducts(tvShowId) } returns fakeProductionCompanies
 
-        // when
+        // When
         val result = getTvShowsProductionCompaniesUseCase(tvShowId)
 
         // Then
-        assertEquals(result, fakeProductionCompanies)
-
+        assertEquals(fakeProductionCompanies, result)
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest {
+    fun `should return empty list when no production companies found`() = runTest {
         // Given
         coEvery { tvShowRepository.getCompanyProducts(tvShowId) } returns emptyList()
 
-        // when
+        // When
         val result = getTvShowsProductionCompaniesUseCase(tvShowId)
 
         // Then
@@ -58,9 +58,7 @@ class GetTvShowsProductionCompaniesUseCaseTest {
         coVerify(exactly = 1) { tvShowRepository.getCompanyProducts(tvShowId) }
     }
 
-
     private companion object {
-        val tvShowId = 1
-
+        const val tvShowId = 1
     }
 }

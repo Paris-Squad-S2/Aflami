@@ -44,11 +44,15 @@ dependencies {
     api(libs.ktor.serialization.kotlinx.json)
     api(libs.ktor.client.auth)
 
-    testImplementation(libs.junit)
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // test
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
+    testImplementation(kotlin("test"))
 
     //retrofit
     implementation(libs.retrofit)

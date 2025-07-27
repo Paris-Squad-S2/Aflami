@@ -1,0 +1,76 @@
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.aflami.designsystem.components.ButtonType
+import com.paris_2.aflami.designsystem.components.CustomButton
+import com.paris_2.aflami.designsystem.components.Dialog
+import com.paris_2.aflami.designsystem.components.RatingBar
+import com.paris_2.aflami.designsystem.components.Text
+import com.paris_2.aflami.designsystem.theme.Theme
+
+
+@Composable
+fun RatingDialog(
+    currentRating: Float,
+    onRatingChange: (Float) -> Unit,
+    onSubmit: () -> Unit,
+    onDismiss: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Dialog(
+        onDismiss = onDismiss,
+        title = com.feature.mediaDetails.mediaDetailsUi.R.string.rate,
+        modifier = modifier
+    ){
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+        ) {
+            Text(
+                text = "Select how much you like it",
+                style = Theme.textStyle.body.small,
+                color = Theme.colors.text.title,
+                modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
+            )
+            RatingBar(
+                modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)
+                    .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
+                    .align(Alignment.CenterHorizontally),
+                rating = currentRating,
+                onRatingChange = onRatingChange
+            )
+            CustomButton(
+                text = R.string.submit,
+                onClick = onSubmit,
+                type = ButtonType.Primary,
+                state = ButtonState.Normal,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Preview(){
+    RatingDialog(
+        onDismiss = {},
+        currentRating = 1.5f,
+        onRatingChange = {},
+        onSubmit = {},
+        modifier = Modifier,
+    )
+}

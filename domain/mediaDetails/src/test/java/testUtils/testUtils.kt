@@ -2,6 +2,7 @@ package testUtils
 
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
+import com.domain.mediaDetails.model.EpisodeVideo
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
@@ -361,6 +362,15 @@ val fakeMovieVideo = listOf(
 
 val fakeTvShowVideo = listOf(
     TvShowVideo(
+        key = "dQw4w9WgXcQ",
+        name = "Trailer 1",
+        site = "YouTube",
+        type = "Trailer"
+    )
+)
+
+val fakeEpisodeVideo = listOf(
+    EpisodeVideo(
         key = "dQw4w9WgXcQ",
         name = "Trailer 1",
         site = "YouTube",

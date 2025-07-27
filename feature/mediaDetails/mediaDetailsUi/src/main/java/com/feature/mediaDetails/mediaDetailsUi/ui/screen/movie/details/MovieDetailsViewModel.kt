@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
-
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -14,6 +13,7 @@ import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieVideo
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.useCase.movie.AddMovieToFavoriteUseCase
+import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
@@ -29,10 +29,12 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
+import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import kotlinx.coroutines.flow.flowOf
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import kotlinx.coroutines.flow.Flow
 
-class MovieDetailsViewModelViewModel(
+class MovieDetailsViewModel(
     savedStateHandle: SavedStateHandle,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieCastUseCase: GetMovieCastUseCase,
@@ -40,7 +42,6 @@ class MovieDetailsViewModelViewModel(
     private val getMovieRecommendationsUseCase: GetMovieRecommendationsUseCase,
     private val getMovieReviewsUseCase: GetMovieReviewsUseCase,
     private val getMovieProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase,
-    private val addMovieToFavoriteUseCase: AddMovieToFavoriteUseCase,
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : MovieDetailsScreenInteractionListener,
@@ -317,12 +318,83 @@ class MovieDetailsViewModelViewModel(
     }
 
     private fun handleGalleryError(errorMessage: String) {
+    private fun loadMovieGallery(mediaId: Int) {
+        tryToExecute(
+            execute = { getMovieGalleryUseCase(mediaId) },
+            onSuccess = {
+                updateState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            gallery = it.toUi()
+                        )
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
+
+    override fun onFavouriteClick(title: Int) {
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    tryToExecute(
+                        execute = { addRatingToMovieUseCase() },
+                        onSuccess = {
+                            updateState(
+                                screenState.value.copy(
+                                    showRatingDialog = true
+                                )
+                            )
+                        },
+                        onError = {
+                            updateState(screenState.value.copy(errorMessage = it))
+                        }
+                    )
+                } else {
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
+    }
+
+    override fun onAddToListClick(title: Int) {
+        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+    }
+
+    override fun onShowAllCastClick(movieId: Int) {
+        navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
+    }
+
+
+    override fun onRetryLoadMovieDetails() {
         updateState(
             screenState.value.copy(
                 errorMessage = errorMessage
             )
         )
     }
+                isLoading = true,
+                errorMessage = null
+            )
+        )
+        loadedMovieDetails(mediaId = movieId)
+    }
+
+    override fun onSimilarMovieClick(mediaId: Int) {
+        mediaDetailsFeatureAPI.startMovieDetails(mediaId)
+    }
+
 
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
         updateState(
@@ -332,7 +404,6 @@ class MovieDetailsViewModelViewModel(
                 )
             )
         )
-
     }
 
     private fun onGetVideoMovieError(error: String) {
@@ -342,4 +413,15 @@ class MovieDetailsViewModelViewModel(
             )
         )
     }
+
+    override fun onDismissRatingDialog() {
+        updateState(
+            screenState.value.copy(
+                showRatingDialog = false
+            )
+        )
+    }
+
+    override fun onRatingSubmitted(rating: Float) {}
+
 }

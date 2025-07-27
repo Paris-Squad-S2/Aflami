@@ -1,6 +1,8 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
+import androidx.annotation.StringRes
 import androidx.paging.PagingData
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
@@ -23,6 +25,9 @@ data class TvShowDetailsScreenState(
     val isGalleryLoading: Boolean = false,
     val isProductionCompaniesLoading: Boolean = false,
     val seasonsLoadingStates: Map<Int, Boolean> = emptyMap(),
+    val showRatingDialog: Boolean = false,
+    @StringRes val snackBarMessage: Int = R.string.not_found_video,
+    val showSnackBar: Boolean = false
 )
 
 data class TvShowDetailsUiState(
@@ -32,6 +37,8 @@ data class TvShowDetailsUiState(
     val reviews: Flow<PagingData<ReviewUi>> = flowOf(PagingData.empty()),
     val gallery: List<String> = emptyList(),
     val tvShowVideoUi: TvShowVideoUi = TvShowVideoUi(),
+    val selectedRating: Float,
+    val episodeVideoUi: EpisodeVideoUi
 )
 
 data class TvShowVideoUi(
@@ -63,6 +70,7 @@ data class SeasonUi(
     val episodes: List<EpisodeUi>,
 )
 
+
 data class EpisodeUi(
     val episodeNumber: Int,
     val posterUrl: String,
@@ -71,4 +79,10 @@ data class EpisodeUi(
     val runtime: String,
     val description: String,
     val stillUrl: String,
+)
+
+data class EpisodeVideoUi(
+    val key: String,
+    val name: String,
+    val site: String,
 )

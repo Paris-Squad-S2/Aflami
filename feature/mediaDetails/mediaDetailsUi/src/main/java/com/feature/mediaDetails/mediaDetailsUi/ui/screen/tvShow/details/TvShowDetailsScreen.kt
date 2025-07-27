@@ -1,12 +1,16 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,10 +25,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -37,16 +43,19 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
-import com.paris_2.aflami.designsystem.components.MediaCard
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.EpisodeCard
+import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -58,7 +67,11 @@ import com.paris_2.aflami.designsystem.R as designsystemR
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = koinViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    TvShowDetailsScreenContent(state = state.value, tvShowScreenInteractionListener = viewModel)
+
+    TvShowDetailsScreenContent(
+        state = state.value,
+        tvShowScreenInteractionListener = viewModel
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -72,6 +85,7 @@ fun TvShowDetailsScreenContent(
     val density = LocalDensity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
     val activity = LocalActivity.current
+    var currentRating by remember { mutableFloatStateOf(state.tvShowDetailsUiState.selectedRating) }
 
     val alpha by remember {
         derivedStateOf {
@@ -79,6 +93,16 @@ fun TvShowDetailsScreenContent(
                 if (listState.firstVisibleItemIndex > 0) maxScrollPx else listState.firstVisibleItemScrollOffset.toFloat()
             (scroll / maxScrollPx).coerceIn(0f, 1f)
         }
+    }
+    if (state.showRatingDialog) {
+        RatingDialog(
+            currentRating = currentRating,
+            onRatingChange = { newRating ->
+                currentRating = newRating
+            },
+            onDismiss = { tvShowScreenInteractionListener.onDismissRatingDialog() },
+            onSubmit = { tvShowScreenInteractionListener.onDismissRatingDialog() }
+        )
     }
 
     val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
@@ -101,13 +125,6 @@ fun TvShowDetailsScreenContent(
             .statusBarsPadding()
     ) {
         when {
-//            state.errorMessage != null -> {
-//                NetworkError(
-//                    modifier = Modifier.fillMaxSize(),
-//                    onRetry = tvShowScreenInteractionListener::onRetryLoadTvShowDetails
-//                )
-//            }
-
             state.isLoading -> {
                 PageLoadingPlaceHolder(
                     modifier = Modifier.fillMaxSize()
@@ -124,12 +141,18 @@ fun TvShowDetailsScreenContent(
                         .navigationBarsPadding()
                 ) {
                     item {
+                        val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
+                        val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
                         DetailsImage(
                             imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl) + state.tvShowDetailsUiState.gallery,
                             rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                            hasVideo = !(state.tvShowDetailsUiState.tvShowVideoUi.site.isEmpty() ||
-                                    state.tvShowDetailsUiState.tvShowVideoUi.key.isEmpty()),
-                            onPlayClick = tvShowScreenInteractionListener::onClickPlayTrailer,
+                            hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
+                            onPlayClick = {
+                                if (!(tvShowSite.isEmpty() || tvShowKey.isEmpty())
+                                ) {
+                                    activity?.openYoutubeOrBrowser(tvShowKey)
+                                }
+                            },
                             modifier = Modifier.padding(bottom = 12.dp)
                         )
                     }
@@ -237,18 +260,48 @@ fun TvShowDetailsScreenContent(
                                                             )
                                                         ) + fadeOut()
                                                     ) {
-                                                        EpisodeCard(
-                                                            episodeRating = episode.voteAverage.toFloat(),
-                                                            episodeNumber = episode.episodeNumber.toString(),
-                                                            episodeTitle = episode.episodeNumber.toString(),
-                                                            episodeDuration = episode.runtime,
-                                                            imageUri = episode.stillUrl,
-                                                            episodeDate = episode.airDate,
-                                                            episodeDescription = episode.description,
-                                                            modifier = Modifier
-                                                                .fillMaxWidth()
-                                                                .padding(horizontal = 8.dp)
-                                                        )
+
+                                                        AnimatedContent(
+                                                            targetState = if (episode.stillUrl.isNotEmpty()) episode.stillUrl else state.tvShowDetailsUiState.tvShowUi.posterUrl,
+                                                            transitionSpec = {
+                                                                fadeIn(animationSpec = tween(300)) togetherWith
+                                                                        fadeOut(
+                                                                            animationSpec = tween(
+                                                                                300
+                                                                            )
+                                                                        )
+                                                            },
+                                                            label = "image_transition"
+                                                        ) { value ->
+                                                            EpisodeCard(
+                                                                episodeRating = episode.voteAverage.toFloat(),
+                                                                episodeNumber = episode.episodeNumber.toString(),
+                                                                episodeTitle = episode.episodeNumber.toString(),
+                                                                episodeDuration = episode.runtime,
+                                                                imageUri = value,
+                                                                episodeDate = episode.airDate,
+                                                                episodeDescription = episode.description,
+                                                                modifier = Modifier
+                                                                    .fillMaxWidth()
+                                                                    .padding(horizontal = 8.dp),
+                                                                hasVideo = true,
+                                                                onPlayClick = {
+                                                                    tvShowScreenInteractionListener.onClickPlayEpisodeTrailer(
+                                                                        state.tvShowDetailsUiState.tvShowUi.id,
+                                                                        seasonIndex + 1,
+                                                                        episode.episodeNumber
+                                                                    )
+                                                                    if (!(state.tvShowDetailsUiState.episodeVideoUi.site.isEmpty() ||
+                                                                                state.tvShowDetailsUiState.episodeVideoUi.key.isEmpty())
+                                                                    ) {
+                                                                        activity?.openYoutubeOrBrowser(
+                                                                            state.tvShowDetailsUiState.episodeVideoUi.key
+                                                                        )
+                                                                    }
+                                                                }
+                                                            )
+                                                        }
+
                                                     }
                                                 }
                                             }
@@ -357,6 +410,7 @@ fun TvShowDetailsScreenContent(
                             }
                         }
                     }
+
                 }
             }
         }
@@ -388,5 +442,22 @@ fun TvShowDetailsScreenContent(
             ),
             modifier = Modifier.background(backgroundColor)
         )
+        AnimatedVisibility(
+            visible = state.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            SnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                    .align(Alignment.TopCenter),
+                text = state.snackBarMessage,
+                isSuccess = false,
+                onClick = tvShowScreenInteractionListener::onHideSnackBar
+            )
+        }
     }
+
 }

@@ -49,3 +49,6 @@ dependencies {
     implementation(project(Modules.REPOSITORY_AUTHENTICATION))
 
 }
+tasks.withType<Test> {
+    useJUnitPlatform()
+}

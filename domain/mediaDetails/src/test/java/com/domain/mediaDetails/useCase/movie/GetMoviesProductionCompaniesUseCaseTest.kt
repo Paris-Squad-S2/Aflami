@@ -5,16 +5,17 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import testUtils.fakeProductionCompanies
 import kotlin.test.assertEquals
 
 class GetMoviesProductionCompaniesUseCaseTest {
+
     private lateinit var getMoviesProductionCompaniesUseCase: GetMoviesProductionCompaniesUseCase
     private val movieRepository: MovieRepository = mockk(relaxed = true)
 
-    @Before
+    @BeforeEach
     fun setup() {
         getMoviesProductionCompaniesUseCase = GetMoviesProductionCompaniesUseCase(movieRepository)
     }
@@ -22,27 +23,25 @@ class GetMoviesProductionCompaniesUseCaseTest {
     @Test
     fun `should return movie production from repository`() = runTest {
         // Given
-        val movieId = 1
         coEvery { movieRepository.getCompanyProducts(movieId) } returns fakeProductionCompanies
 
-        // Then
+        // When
         val result = getMoviesProductionCompaniesUseCase(movieId)
 
-        // when
-        assertEquals(result, fakeProductionCompanies)
-
+        // Then
+        assertEquals(fakeProductionCompanies, result)
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest{
+    fun `should return empty list when no companies found`() = runTest {
         // Given
         coEvery { movieRepository.getCompanyProducts(movieId) } returns emptyList()
 
-        // Then
+        // When
         val result = getMoviesProductionCompaniesUseCase(movieId)
 
-        // when
-        assertEquals(result, emptyList())
+        // Then
+        assertEquals(emptyList(), result)
     }
 
     @Test
@@ -57,10 +56,7 @@ class GetMoviesProductionCompaniesUseCaseTest {
         coVerify(exactly = 1) { movieRepository.getCompanyProducts(movieId) }
     }
 
-    private companion object{
-        val movieId = 1
-
+    private companion object {
+        const val movieId = 1
     }
-
-
 }

@@ -36,9 +36,14 @@ android {
         compose = true
     }
 }
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 
 dependencies {
 
+    implementation(project(Modules.DOMAIN_AUTHENTICATION))
     implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
@@ -53,6 +58,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     testImplementation(libs.junit)
+    testImplementation(libs.jupiter.junit.jupiter)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
