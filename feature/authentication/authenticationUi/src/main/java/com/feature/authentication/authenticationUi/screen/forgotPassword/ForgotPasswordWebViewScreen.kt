@@ -7,15 +7,15 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.comon.WebViewComposable
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
-fun ForgotPasswordWebViewScreen(viewModel: ForgotPasswordViewModel = koinViewModel()) {
+fun ForgotPasswordWebViewScreen(viewModel: ForgotPasswordViewModel = hiltViewModel()) {
 
     val uiState = viewModel.screenState.collectAsStateWithLifecycle()
     ForgotPasswordScreenContent(uiState.value, viewModel)
