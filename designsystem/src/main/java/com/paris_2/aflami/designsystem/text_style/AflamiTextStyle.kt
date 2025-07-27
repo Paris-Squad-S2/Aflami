@@ -8,6 +8,7 @@ data class AflamiTextStyle(
     val title: SizedTextStyle,
     val body: SizedTextStyle,
     val label: SizedTextStyle,
+    val logoText : TextStyle
 )
 
 data class SizedTextStyle(

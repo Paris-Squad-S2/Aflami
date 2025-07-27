@@ -76,10 +76,11 @@ fun MoodPicker(
 
         Text(
             text = title,
-            style = Theme.textStyle.title.small,
+            style = Theme.textStyle.label.medium,
             modifier = Modifier
                 .padding(start = 12.dp, top = 44.dp, bottom = 10.dp)
-                .align(Alignment.TopStart)
+                .align(Alignment.TopStart),
+            color = Theme.colors.text.title
         )
 
 
@@ -105,7 +106,9 @@ fun MoodPicker(
                 text = question,
                 style = Theme.textStyle.body.small,
                 modifier = Modifier
-                    .padding(vertical = 12.dp)
+                    .padding(vertical = 12.dp),
+                color = Theme.colors.text.body
+
             )
 
 
