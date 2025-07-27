@@ -2,6 +2,8 @@ package com.datasource.remote.tvShow
 
 import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.google.common.truth.Truth.assertThat
+import com.repository.model.remote.EpisodeVideoDto
+import com.repository.model.remote.EpisodeVideoResultDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -138,5 +140,47 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForTvShow(tvShowId)
             assertThat(result).isEqualTo(tvShowVideoDto)
         }
+
+    @Test
+    fun `getTrailerVideoForEpisode should deliver epic trailer when the API nails the audition`() = runTest {
+        val tvShowId = 456
+        val seasonNumber = 2
+        val episodeNumber = 3
+        val language = "en-US"
+        val blockbusterTrailer = EpisodeVideoDto(
+            id = 123,
+            episodeVideoResultDto = listOf(
+                EpisodeVideoResultDto(
+                    id = "trailer123",
+                    iso31661 = "US",
+                    iso6391 = "en",
+                    key = "trailer_key",
+                    name = "Epic Trailer for the Ages",
+                    official = true,
+                    publishedAt = "2024-06-01T12:00:00Z",
+                    site = "YouTube",
+                    size = 1080,
+                    type = "Trailer"
+                )
+            )
+        )
+
+        coEvery {
+            retrofitTvShowDetailsApiService.getTrailerVideoForEpisode(
+                tvShowId,
+                seasonNumber,
+                episodeNumber,
+                language
+            )
+        } returns blockbusterTrailer
+
+        val result = tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForEpisode(
+            tvShowId,
+            seasonNumber,
+            episodeNumber,
+            language
+        )
+        assertThat(result).isEqualTo(blockbusterTrailer)
+    }
 
 }
