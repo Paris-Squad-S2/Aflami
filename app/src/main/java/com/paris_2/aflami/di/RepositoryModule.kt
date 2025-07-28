@@ -10,9 +10,27 @@ import com.domain.search.repository.GenresInteractionRepository
 import com.domain.search.repository.SearchHistoryRepository
 import com.domain.search.repository.SearchMediaRepository
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
+import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.paris_2.repository.authentication.repository.AuthenticationRepositoryImpl
+import com.repository.dataSource.local.TvShowCastLocalDataSource
+import com.repository.dataSource.local.TvShowGalleryLocalDataSource
+import com.repository.dataSource.local.TvShowLocalDataSource
+import com.repository.dataSource.local.TvShowReviewLocalDataSource
+import com.repository.dataSource.local.TvShowSeasonLocalDataSource
+import com.repository.dataSource.local.TvShowSimilarLocalDataSource
+import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.home.datasource.local.HomeMediaLocalDataSource
+import com.repository.home.datasource.remote.GenresRemoteDataSource
+import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.repository.MediaRepositoryImpl
 import com.repository.home.repository.MoviesCategoriesRepositoryImpl
+import com.repository.movie.dataSource.local.MovieCastLocalDataSource
+import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
+import com.repository.movie.dataSource.local.MovieLocalDataSource
+import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
+import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
+import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.search.repository.CategoriesRepositoryImpl
@@ -48,26 +66,69 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideTvShowRepository(impl: TvShowRepositoryImpl): TvShowRepository = impl
-
-    @Provides
-    @Singleton
-    fun provideMovieRepository(impl: MovieRepositoryImpl): MovieRepository = impl
-
-    @Provides
-    @Singleton
     fun provideGenresInteractionRepository(impl: GenresInteractionRepositoryImpl): GenresInteractionRepository = impl
 
     @Provides
     @Singleton
-    fun provideMediaRepository(impl: MediaRepositoryImpl): MediaRepository = impl
+    fun provideAuthenticationRepository(
+        remoteDataSource: AuthenticationRemoteDataSource,
+        localDataSource: AuthenticationLocalDataSource
+    ): AuthenticationRepository = AuthenticationRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
-    fun provideAuthenticationRepository(impl: AuthenticationRepositoryImpl): AuthenticationRepository = impl
+    fun provideDetailedMediaRepository(
+        networkConnectionChecker: com.repository.home.util.NetworkConnectionChecker,
+        mediaRemoteDataSource: MediaRemoteDataSource,
+        homeMediaLocalDataSource: HomeMediaLocalDataSource
+    ): MediaRepository = MediaRepositoryImpl(networkConnectionChecker, mediaRemoteDataSource, homeMediaLocalDataSource)
 
     @Provides
     @Singleton
-    fun provideMoviesCategoriesRepository(impl: MoviesCategoriesRepositoryImpl): MoviesCategoriesRepository = impl
+    fun provideMoviesCategoriesRepository(
+        genresRemoteDataSource: GenresRemoteDataSource,
+        networkConnectionChecker: com.repository.home.util.NetworkConnectionChecker
+    ): MoviesCategoriesRepository = MoviesCategoriesRepositoryImpl(genresRemoteDataSource, networkConnectionChecker)
+
+    @Provides
+    @Singleton
+    fun provideDetailedMovieRepository(
+        networkConnectionChecker: com.repository.movie.util.NetworkConnectionChecker,
+        movieLocalDataSource: MovieLocalDataSource,
+        movieCastLocalDataSource: MovieCastLocalDataSource,
+        movieGalleryLocalDataSource: MovieGalleryLocalDataSource,
+        movieReviewLocalDataSource: MovieReviewLocalDataSource,
+        movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
+        movieSimilarLocalDataSource: MovieSimilarLocalDataSource
+    ): MovieRepository = MovieRepositoryImpl(
+        networkConnectionChecker,
+        movieLocalDataSource,
+        movieCastLocalDataSource,
+        movieGalleryLocalDataSource,
+        movieReviewLocalDataSource,
+        movieDetailsRemoteDataSource,
+        movieSimilarLocalDataSource
+    )
+
+    @Provides
+    @Singleton
+    fun provideDetailedTvShowRepository(
+        tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource,
+        tvShowCastLocalDataSource: TvShowCastLocalDataSource,
+        tvShowGalleryLocalDataSource: TvShowGalleryLocalDataSource,
+        tvShowReviewLocalDataSource: TvShowReviewLocalDataSource,
+        tvShowLocalDataSource: TvShowLocalDataSource,
+        tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource,
+        tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource,
+        networkConnectionChecker: com.repository.util.NetworkConnectionChecker
+    ): TvShowRepository = TvShowRepositoryImpl(
+        tvShowDetailsRemoteDataSource,
+        tvShowCastLocalDataSource,
+        tvShowGalleryLocalDataSource,
+        tvShowReviewLocalDataSource,
+        tvShowLocalDataSource,
+        tvShowSeasonLocalDataSource,
+        tvShowSimilarLocalDataSource,
+        networkConnectionChecker
+    )
 }
-
