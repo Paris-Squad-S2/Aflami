@@ -101,7 +101,13 @@ fun TvShowDetailsScreenContent(
                 currentRating = newRating
             },
             onDismiss = { tvShowScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { tvShowScreenInteractionListener.onDismissRatingDialog() }
+            onSubmit = {
+                tvShowScreenInteractionListener.onRatingSubmitted(
+                    movieId = state.tvShowDetailsUiState.tvShowUi.id,
+                    rating = currentRating
+                )
+                tvShowScreenInteractionListener.onDismissRatingDialog()
+            }
         )
     }
 
