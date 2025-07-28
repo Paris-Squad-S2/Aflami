@@ -54,6 +54,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
+
     // test
     testImplementation(kotlin("test"))
     testImplementation(libs.junit)

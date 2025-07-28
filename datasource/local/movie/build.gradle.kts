@@ -51,6 +51,9 @@ dependencies {
     implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
 
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
+
     // kotlin date time
     implementation(libs.kotlinx.datetime)
 

@@ -1,5 +1,6 @@
 package com.datasource.local.datasource
 
+import androidx.work.WorkManager
 import com.datasource.local.dao.TvShowDao
 import com.repository.model.local.GenreEntity
 import com.repository.model.local.ProductionCompanyEntity
@@ -15,13 +16,14 @@ import kotlin.test.Test
 
 class TvShowLocalDataSourceImpTest {
     private lateinit var tvShowLocalDataSourceImp: TvShowLocalDataSourceImp
+    private var workManager: WorkManager = mockk(relaxed = true)
     private lateinit var tvShowDao: TvShowDao
 
 
     @BeforeEach
     fun setUp() {
         tvShowDao = mockk(relaxed = true)
-        tvShowLocalDataSourceImp = TvShowLocalDataSourceImp(tvShowDao)
+        tvShowLocalDataSourceImp = TvShowLocalDataSourceImp(workManager,tvShowDao)
 
     }
 
