@@ -40,6 +40,7 @@ import com.domain.search.useCase.SearchByQueryUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.paris_2.domain.authentication.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.authentication.usecase.GetRegisterUrlUseCase
+import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
 import com.paris_2.domain.authentication.usecase.HasAnySessionUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
@@ -92,5 +93,6 @@ val useCaseModule = module {
     factoryOf(::AddRatingToMovieUseCase)
     factoryOf(::AddRatingToTvShowUseCase)
     factoryOf(::GetEpisodeVideoUseCase)
+    factoryOf(::GetSessionIdUseCase)
 }
 
