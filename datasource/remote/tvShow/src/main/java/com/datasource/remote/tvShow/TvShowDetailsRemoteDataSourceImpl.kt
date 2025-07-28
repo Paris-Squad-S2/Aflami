@@ -1,6 +1,5 @@
 package com.datasource.remote.tvShow
 
-import android.util.Log
 import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.model.remote.EpisodeVideoDto
@@ -76,7 +75,6 @@ class TvShowDetailsRemoteDataSourceImpl(
         rating: Float,
         sessionId: String
     ) {
-        Log.d("rating", "dataSourceImpl: $movieId, rating: $rating")
         val dto = RatingDto(value = rating)
         val response = retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, sessionId, dto)
         if (response.status_code != 1 && response.status_code != 12) {
