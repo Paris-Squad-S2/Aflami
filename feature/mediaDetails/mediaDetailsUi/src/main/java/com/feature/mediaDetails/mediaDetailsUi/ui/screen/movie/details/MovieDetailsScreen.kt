@@ -89,7 +89,13 @@ fun MovieDetailsScreenContent(
                 currentRating = newRating
             },
             onDismiss = { movieDetailsScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog() }
+            onSubmit = {
+                movieDetailsScreenInteractionListener.onRatingSubmitted(
+                    movieId = state.movieDetailsUiState.movie.id,
+                    rating = currentRating
+                )
+                movieDetailsScreenInteractionListener.onDismissRatingDialog()
+            }
         )
     }
 
