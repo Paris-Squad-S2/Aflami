@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -28,6 +29,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
+import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import kotlinx.coroutines.flow.flowOf
 
@@ -44,7 +46,8 @@ class TvShowDetailsViewModel(
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
-    private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase
+    private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
@@ -268,7 +271,7 @@ class TvShowDetailsViewModel(
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
                     tryToExecute(
-                        execute = { addRatingToTvShowUseCase() },
+                        execute = { Unit },
                         onSuccess = {
                             updateState(
                                 screenState.value.copy(
@@ -369,7 +372,22 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onRatingSubmitted(rating: Float) {}
+    override fun onRatingSubmitted(movieId: Int, rating: Float) {
+        Log.d("rating", "ViewModel: $movieId, rating: $rating")
+        tryToExecute(
+            execute = {
+                Log.d("rating", "ViewModel execute: $movieId, rating: $rating")
+                addRatingToTvShowUseCase(movieId, rating, getSessionIdUseCase()!!)
+            },
+            onSuccess = {
+                Log.d("rating", "ViewModel onSuccess: $movieId, rating: $rating")
+            },
+            onError = {
+                Log.d("rating", "ViewModel onError: $movieId, rating: $rating")
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
+    }
 
     override fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int) {
         tryToExecute(
