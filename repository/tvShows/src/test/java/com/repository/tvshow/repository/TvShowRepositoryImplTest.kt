@@ -1,5 +1,6 @@
 package com.repository.tvshow.repository
 
+import com.domain.mediaDetails.exception.FailedToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
@@ -71,6 +72,60 @@ class TvShowRepositoryImplTest {
         )
     }
 
+    @Test
+    fun `addRatingToTvShow - should call remote data source successfully`() = runTest {
+        // Given
+        val movieId = 1
+        val rating = 8.5f
+        val sessionId = "session_123"
+
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery {
+            tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating, sessionId)
+        } just Runs
+
+        // When
+        tvShowRepository.addRatingToTvShow(movieId, rating, sessionId)
+
+        // Then
+        coVerify(exactly = 1) {
+            tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating, sessionId)
+        }
+    }
+
+    @Test
+    fun `addRatingToTvShow - should throw FailedToAddRatingException when remote fails`() =
+        runTest {
+            // Given
+            val movieId = 1
+            val rating = 8.5f
+            val sessionId = "session_123"
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery {
+                tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating, sessionId)
+            } throws RuntimeException("Failed")
+
+            // When & Then
+            assertThrows<FailedToAddRatingException> {
+                tvShowRepository.addRatingToTvShow(movieId, rating, sessionId)
+            }
+        }
+
+    @Test
+    fun `addRatingToTvShow - should throw NoInternetConnectionException when offline`() = runTest {
+        // Given
+        val movieId = 1
+        val rating = 8.5f
+        val sessionId = "session_123"
+
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When & Then
+        assertThrows<NoInternetConnectionException> {
+            tvShowRepository.addRatingToTvShow(movieId, rating, sessionId)
+        }
+    }
     @Test
     fun `getTvShowDetails - should return tv show details when API delivers the goods`() = runTest {
         // Given
