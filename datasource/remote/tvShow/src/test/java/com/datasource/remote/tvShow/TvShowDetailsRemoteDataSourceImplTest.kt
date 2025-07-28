@@ -4,9 +4,12 @@ import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.google.common.truth.Truth.assertThat
 import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.EpisodeVideoResultDto
+import com.repository.movie.models.remote.RatingDto
+import com.repository.movie.models.remote.RatingResponseDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 
@@ -19,6 +22,70 @@ class TvShowDetailsRemoteDataSourceImplTest {
         retrofitTvShowDetailsApiService = mockk(relaxed = true)
         tvShowDetailsRemoteDataSourceImpl =
             TvShowDetailsRemoteDataSourceImpl(retrofitTvShowDetailsApiService)
+    }
+
+    @Test
+    fun `addRatingToTvShow should complete successfully when status code is 1`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.5f
+        val sessionId = "validSession"
+        val response = RatingResponseDto(status_code = 1, status_message = "Success")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(
+                movieId,
+                sessionId,
+                RatingDto(rating)
+            )
+        } returns response
+
+        // When (should not throw)
+        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating, sessionId)
+    }
+
+    @Test
+    fun `addRatingToTvShow should complete successfully when status code is 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.0f
+        val sessionId = "validSession"
+        val response = RatingResponseDto(status_code = 12, status_message = "Success")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(
+                movieId,
+                sessionId,
+                RatingDto(rating)
+            )
+        } returns response
+
+        // When (should not throw)
+        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating, sessionId)
+    }
+
+    @Test
+    fun `addRatingToTvShow should throw exception when status code is not 1 or 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 3.5f
+        val sessionId = "invalidSession"
+        val response = RatingResponseDto(status_code = 10, status_message = "Invalid session")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(
+                movieId,
+                sessionId,
+                RatingDto(rating)
+            )
+        } returns response
+
+        // Then
+        assertThrows(Exception::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating, sessionId)
+            }
+        }
     }
 
     @Test
