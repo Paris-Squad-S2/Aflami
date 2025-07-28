@@ -1,2 +1,2 @@
-versionName=0.3.11
-- delete media and tv show after 1 hour using work manager
+versionName=0.3.12
+- handle domain exception in home screen
