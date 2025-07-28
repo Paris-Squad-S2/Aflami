@@ -25,6 +25,146 @@ class TvShowDetailsRemoteDataSourceImplTest {
     }
 
     @Test
+    fun `getTvShowDetails should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTvShowDetails(
+                tvShowId,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowDetails(tvShowId, language) }
+        }
+    }
+
+    @Test
+    fun `getTvShowImages should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        coEvery { retrofitTvShowDetailsApiService.getTvShowImages(tvShowId) } throws RuntimeException(
+            "API error"
+        )
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowImages(tvShowId) }
+        }
+    }
+
+    @Test
+    fun `getTvShowReviews should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val page = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTvShowReviews(
+                tvShowId,
+                page,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowReviews(tvShowId, page, language) }
+        }
+    }
+
+    @Test
+    fun `getSimilarTvShows should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val page = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getSimilarTvShows(
+                tvShowId,
+                page,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.getSimilarTvShows(
+                    tvShowId,
+                    page,
+                    language
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `getTvShowCredits should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTvShowCredits(
+                tvShowId,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowCredits(tvShowId, language) }
+        }
+    }
+
+    @Test
+    fun `getSeasonDetails should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val seasonNumber = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getSeasonDetails(
+                tvShowId,
+                seasonNumber,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.getSeasonDetails(
+                    tvShowId,
+                    seasonNumber,
+                    language
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `getTrailerVideoForTvShow should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        coEvery { retrofitTvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId) } throws RuntimeException(
+            "API error"
+        )
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForTvShow(tvShowId) }
+        }
+    }
+
+    @Test
+    fun `getTrailerVideoForEpisode should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val seasonNumber = -1
+        val episodeNumber = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTrailerVideoForEpisode(
+                tvShowId,
+                seasonNumber,
+                episodeNumber,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForEpisode(
+                    tvShowId,
+                    seasonNumber,
+                    episodeNumber,
+                    language
+                )
+            }
+        }
+    }
+    @Test
     fun `addRatingToTvShow should complete successfully when status code is 1`() = runTest {
         // Given
         val movieId = 123
