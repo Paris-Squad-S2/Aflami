@@ -98,7 +98,7 @@ class MovieDetailsViewModelTest {
         coEvery { isLoggedInUseCase() } returns true
         coEvery { addRatingToMovieUseCase() } returns Unit
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testMovieId)
+        viewModel.onRateClick(testMovieId)
         runCurrent()
         assertTrue(viewModel.screenState.value.showRatingDialog)
     }
@@ -107,7 +107,7 @@ class MovieDetailsViewModelTest {
     fun `onFavouriteClick when not logged in doesn't show rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns false
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testMovieId)
+        viewModel.onRateClick(testMovieId)
         runCurrent()
         assertFalse(viewModel.screenState.value.showRatingDialog)
     }
@@ -117,7 +117,7 @@ class MovieDetailsViewModelTest {
         val errorMsg = "error_is_logged"
         coEvery { isLoggedInUseCase() } throws RuntimeException(errorMsg)
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testMovieId)
+        viewModel.onRateClick(testMovieId)
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
     }

@@ -370,7 +370,7 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate) // when click on this should open rating dialog
+                                movieDetailsScreenInteractionListener.onRateClick(R.string.rate)
                             }
                         ),
                         iconItemWithDefaults(
