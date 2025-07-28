@@ -25,6 +25,6 @@ class AddMediaToLocalUseCaseTest {
             type = MediaType.MOVIE
         )
         addMediaToLocalUseCase(media)
-        coVerify { mediaRepository.addMediaToCountineWatch(media) }
+        coVerify { mediaRepository.addMediaToLocal(media) }
     }
 }

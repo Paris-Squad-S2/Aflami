@@ -7,6 +7,6 @@ interface MediaRepository {
     suspend fun getTopRatingMedia() : List<Media>
     suspend fun getUpComingMedia() : List<Media>
     suspend fun getNowPlayingMedia() : List<Media>
-    suspend fun addMediaToCountineWatch(media: Media)
+    suspend fun addMediaToLocal(media: Media)
     suspend fun getMediaFromLocal(): List<Media>
 }

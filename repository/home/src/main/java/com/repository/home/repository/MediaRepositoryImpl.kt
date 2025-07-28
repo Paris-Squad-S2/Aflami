@@ -84,7 +84,7 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun addMediaToCountineWatch(media: Media) {
+    override suspend fun addMediaToLocal(media: Media) {
         return safeCall(CanNotAddMediaToContinueWatchingException()){
             homeMediaLocalDataSource.addMedia(media.toEntity())
         }
