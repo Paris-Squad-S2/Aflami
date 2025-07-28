@@ -14,4 +14,5 @@ interface MovieDetailsRemoteDataSource {
     suspend fun getSimilarMovies(movieId: Int, page: Int, language: String): MovieSimilarsDto
     suspend fun getMovieCredits(movieId: Int, language: String): MovieCreditsDto
     suspend fun getTrailerVideoForMovie(movieId: Int): MovieVideoDto
+    suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String)
 }
