@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class HistoryLocalDataSourceImpl @Inject constructor(
+class HistoryLocalDataSourceImpl (
     private val dao: SearchHistoryDao,
     private val workManager: WorkManager
 ) : HistoryLocalDataSource {

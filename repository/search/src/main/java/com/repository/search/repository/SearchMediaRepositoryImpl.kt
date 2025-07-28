@@ -22,9 +22,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.plus
 import kotlinx.datetime.toInstant
 import kotlin.time.ExperimentalTime
-import javax.inject.Inject
 
-class SearchMediaRepositoryImpl @Inject constructor(
+class SearchMediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val mediaLocalDataSource: MediaLocalDataSource,
     private val searchRemoteDataSource: SearchRemoteDataSource,

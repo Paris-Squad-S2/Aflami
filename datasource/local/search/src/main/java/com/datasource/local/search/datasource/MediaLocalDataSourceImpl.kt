@@ -4,9 +4,8 @@ import com.datasource.local.search.dao.MediaDao
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.SearchType
-import javax.inject.Inject
 
-class MediaLocalDataSourceImpl @Inject constructor(
+class MediaLocalDataSourceImpl (
     private val dao: MediaDao,
 ) : MediaLocalDataSource {
 

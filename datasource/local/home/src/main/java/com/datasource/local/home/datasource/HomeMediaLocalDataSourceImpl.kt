@@ -3,9 +3,8 @@ package com.datasource.local.home.datasource
 import com.datasource.local.home.dao.HomeMediaDao
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.entity.MediaEntity
-import javax.inject.Inject
 
-class HomeMediaLocalDataSourceImpl @Inject constructor(
+class HomeMediaLocalDataSourceImpl (
     private val mediaDao: HomeMediaDao
 ) : HomeMediaLocalDataSource {
 

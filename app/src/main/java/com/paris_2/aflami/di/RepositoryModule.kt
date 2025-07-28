@@ -21,7 +21,6 @@ import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
-import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.repository.MediaRepositoryImpl
 import com.repository.home.repository.MoviesCategoriesRepositoryImpl
@@ -33,11 +32,18 @@ import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
+import com.repository.search.dataSource.local.CountriesLocalDataSource
+import com.repository.search.dataSource.local.GenresInteractionDataSource
+import com.repository.search.dataSource.local.GenresLocalDataSource
+import com.repository.search.dataSource.local.HistoryLocalDataSource
+import com.repository.search.dataSource.local.MediaLocalDataSource
+import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.repository.CategoriesRepositoryImpl
 import com.repository.search.repository.CountryRepositoryImpl
 import com.repository.search.repository.GenresInteractionRepositoryImpl
 import com.repository.search.repository.SearchHistoryRepositoryImpl
 import com.repository.search.repository.SearchMediaRepositoryImpl
+import com.repository.search.util.NetworkConnectionChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -50,23 +56,58 @@ object RepositoryModule {
 
     @Provides
     @Singleton
-    fun provideSearchHistoryRepository(impl: SearchHistoryRepositoryImpl): SearchHistoryRepository = impl
+    fun provideSearchHistoryRepository(
+        historyLocalDataSource: HistoryLocalDataSource
+    ): SearchHistoryRepository {
+        return SearchHistoryRepositoryImpl(historyLocalDataSource)
+    }
 
     @Provides
     @Singleton
-    fun provideCategoriesRepository(impl: CategoriesRepositoryImpl): CategoriesRepository = impl
+    fun provideSearchMediaRepository(
+        networkConnectionChecker: NetworkConnectionChecker,
+        mediaLocalDataSource: MediaLocalDataSource,
+        searchRemoteDataSource: SearchRemoteDataSource,
+        searchHistoryLocalDataSource: HistoryLocalDataSource
+    ): SearchMediaRepository {
+        return SearchMediaRepositoryImpl(
+            networkConnectionChecker,
+            mediaLocalDataSource,
+            searchRemoteDataSource,
+            searchHistoryLocalDataSource
+        )
+    }
 
     @Provides
     @Singleton
-    fun provideCountryRepository(impl: CountryRepositoryImpl): CountryRepository = impl
+    fun provideCountryRepository(
+        countriesLocalDataSource: CountriesLocalDataSource
+    ): CountryRepository {
+        return CountryRepositoryImpl(countriesLocalDataSource)
+    }
 
     @Provides
     @Singleton
-    fun provideSearchMediaRepository(impl: SearchMediaRepositoryImpl): SearchMediaRepository = impl
+    fun provideCategoriesRepository(
+        networkConnectionChecker: NetworkConnectionChecker,
+        genresLocalDataSource: GenresLocalDataSource,
+        genresRemoteDataSource: com.repository.search.dataSource.remote.GenresRemoteDataSource
+
+    ): CategoriesRepository {
+        return CategoriesRepositoryImpl(
+            networkConnectionChecker,
+            genresLocalDataSource,
+            genresRemoteDataSource
+        )
+    }
 
     @Provides
     @Singleton
-    fun provideGenresInteractionRepository(impl: GenresInteractionRepositoryImpl): GenresInteractionRepository = impl
+    fun provideGenresInteractionRepository(
+        dataSource: GenresInteractionDataSource
+    ): GenresInteractionRepository {
+        return GenresInteractionRepositoryImpl(dataSource)
+    }
 
     @Provides
     @Singleton
@@ -86,7 +127,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideMoviesCategoriesRepository(
-        genresRemoteDataSource: GenresRemoteDataSource,
+        genresRemoteDataSource: com.repository.home.datasource.remote.GenresRemoteDataSource,
         networkConnectionChecker: com.repository.home.util.NetworkConnectionChecker
     ): MoviesCategoriesRepository = MoviesCategoriesRepositoryImpl(genresRemoteDataSource, networkConnectionChecker)
 

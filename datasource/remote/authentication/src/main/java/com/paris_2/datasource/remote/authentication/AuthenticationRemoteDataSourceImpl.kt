@@ -7,9 +7,8 @@ import com.paris_2.repository.authentication.model.remote.RequestTokenDto
 import com.paris_2.repository.authentication.model.remote.SessionDto
 import com.paris_2.repository.authentication.model.remote.GuestSessionDto
 import retrofit2.HttpException
-import javax.inject.Inject
 
-class AuthenticationRemoteDataSourceImpl @Inject constructor(
+class AuthenticationRemoteDataSourceImpl (
     private val apiService: AuthenticationApi
 ) : AuthenticationRemoteDataSource {
 
