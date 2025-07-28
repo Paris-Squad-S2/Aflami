@@ -1,5 +1,6 @@
 package com.datasource.remote.tvShow
 
+import android.util.Log
 import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.model.remote.EpisodeVideoDto
@@ -10,6 +11,7 @@ import com.repository.model.remote.TvShowReviewsDto
 import com.repository.model.remote.TvShowSeasonDto
 import com.repository.model.remote.TvShowSimilarsDto
 import com.repository.model.remote.TvShowVideoDto
+import com.repository.movie.models.remote.RatingDto
 
 class TvShowDetailsRemoteDataSourceImpl(
     private val retrofitTvShowDetailsApiService: RetrofitTvShowDetailsApiService
@@ -67,5 +69,18 @@ class TvShowDetailsRemoteDataSourceImpl(
             episodeNumber,
             language
         )
+    }
+
+    override suspend fun addRatingToTvShow(
+        movieId: Int,
+        rating: Float,
+        sessionId: String
+    ) {
+        Log.d("rating", "dataSourceImpl: $movieId, rating: $rating")
+        val dto = RatingDto(value = rating)
+        val response = retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, sessionId, dto)
+        if (response.status_code != 1 && response.status_code != 12) {
+            throw Exception("Server responded: ${response.status_message}")
+        }
     }
 }
