@@ -23,5 +23,5 @@ interface TvShowRepository {
         tvShowId: Int, seasonNumber: Int,
         episodeNumber: Int,
     ): List<EpisodeVideo>
-    suspend fun addRatingToTvShow()
+    suspend fun addRatingToTvShow(movieId: Int, rating: Float, sessionId: String)
 }
