@@ -5,10 +5,14 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.entity.SearchType
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
+import androidx.hilt.work.HiltWorker
 
-class ClearMediaWorker(
-    context: Context,
-    workerParams: WorkerParameters,
+@HiltWorker
+class ClearMediaWorker @AssistedInject constructor(
+    @Assisted context: Context,
+    @Assisted workerParams: WorkerParameters,
     private val mediaLocalDataSource: MediaLocalDataSource
 ) : CoroutineWorker(context, workerParams){
 
