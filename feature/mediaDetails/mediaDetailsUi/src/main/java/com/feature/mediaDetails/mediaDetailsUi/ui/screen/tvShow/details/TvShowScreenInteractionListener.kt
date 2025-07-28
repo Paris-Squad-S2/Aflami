@@ -8,7 +8,7 @@ interface TvShowScreenInteractionListener {
     fun onSimilarTvShowClick(mediaId: Int)
     fun onRetryLoadTvShowDetails()
     fun onDismissRatingDialog()
-    fun onRatingSubmitted(rating: Float)
+    fun onRatingSubmitted(movieId: Int, rating: Float)
     fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int)
     fun onHideSnackBar()
 }
