@@ -1,6 +1,5 @@
 package com.datasource.remote.movie
 
-import android.util.Log
 import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.models.remote.MovieCreditsDto
@@ -39,7 +38,6 @@ class MovieDetailsRemoteDataSourceImpl(
     }
 
     override suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String) {
-        Log.d("rating", "dataSourceImpl: $movieId, rating: $rating")
         val dto = RatingDto(value = rating)
         val response = retrofitMovieDetailsApiService.addRatingToMovie(movieId, sessionId, dto)
         if (response.status_code != 1 && response.status_code != 12) {
