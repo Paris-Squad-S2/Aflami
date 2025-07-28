@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -24,6 +25,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
+import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import kotlinx.coroutines.flow.flowOf
 
@@ -38,7 +40,8 @@ class MovieDetailsViewModel(
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
-    private val addRatingToMovieUseCase: AddRatingToMovieUseCase
+    private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
+    private val getSessionIdUseCase: GetSessionIdUseCase,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
@@ -255,7 +258,7 @@ class MovieDetailsViewModel(
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
                     tryToExecute(
-                        execute = { addRatingToMovieUseCase() },
+                        execute = { Unit },
                         onSuccess = {
                             updateState(
                                 screenState.value.copy(
@@ -327,6 +330,20 @@ class MovieDetailsViewModel(
         )
     }
 
-    override fun onRatingSubmitted(rating: Float) {}
-
+    override fun onRatingSubmitted(movieId: Int, rating: Float) {
+        Log.d("rating", "ViewModel: $movieId, rating: $rating")
+        tryToExecute(
+            execute = {
+                Log.d("rating", "ViewModel execute: $movieId, rating: $rating")
+                addRatingToMovieUseCase(movieId, rating, getSessionIdUseCase()!!)
+            },
+            onSuccess = {
+                Log.d("rating", "ViewModel onSuccess: $movieId, rating: $rating")
+            },
+            onError = {
+                Log.d("rating", "ViewModel onError: $movieId, rating: $rating")
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
+    }
 }
