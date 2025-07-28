@@ -20,6 +20,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
+import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -57,6 +58,7 @@ class TvShowDetailsViewModelTest {
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
+    private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
     private lateinit var viewModel: TvShowDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testTvShowId = 88
@@ -102,7 +104,13 @@ class TvShowDetailsViewModelTest {
     @Test
     fun `onFavouriteClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
-        coEvery { addRatingToTvShowUseCase() } returns Unit
+        coEvery {
+            addRatingToTvShowUseCase(
+                movieId = any(),
+                rating = any(),
+                sessionId = any()
+            )
+        } returns Unit
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onRateClick(testTvShowId)
         runCurrent()
@@ -256,7 +264,8 @@ class TvShowDetailsViewModelTest {
             getEpisodeVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
-            addRatingToTvShowUseCase
+            addRatingToTvShowUseCase,
+            getSessionIdUseCase
         )
     }
 }
