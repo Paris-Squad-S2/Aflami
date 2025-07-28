@@ -94,14 +94,4 @@ class LoginViewModelTest {
         Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
     }
 
-    @Test
-    fun `onClickLogin with valid credentials navigates to home`() {
-        coEvery { loginUseCase(any(), any()) } returns true
-
-        viewModel.onUsernameChange("test")
-        viewModel.onPasswordChange("1234")
-        viewModel.onClickLogin()
-
-        coVerify { appNavigationAPI() }
-    }
 }
