@@ -1,6 +1,7 @@
 package com.repository.home.repository
 
 import com.domain.home.exception.AflamiException
+import com.domain.home.exception.CanNotAddMediaToContinueWatchingException
 import com.domain.home.exception.NoInternetConnectionException
 import com.domain.home.exception.NoMediaPlayingFoundException
 import com.domain.home.exception.NoPopularMediaFoundException
@@ -83,8 +84,10 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun addMediaToLocal(media: Media) {
+    override suspend fun addMediaToCountineWatch(media: Media) {
+        return safeCall(CanNotAddMediaToContinueWatchingException()){
             homeMediaLocalDataSource.addMedia(media.toEntity())
+        }
     }
 
     override suspend fun getMediaFromLocal(): List<Media> {

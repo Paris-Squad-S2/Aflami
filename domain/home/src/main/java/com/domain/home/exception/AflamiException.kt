@@ -8,4 +8,5 @@ class NoPopularMediaFoundException(message: String = "No popular media found") :
 class NoTopRatingMediaFoundException(message: String = "No top rating media found") : AflamiException(message)
 class NoUpComingMediaFoundException(message: String = "No upcoming media found") : AflamiException(message)
 class NoMediaPlayingFoundException(message: String = "No media currently playing") : AflamiException(message)
+class CanNotAddMediaToContinueWatchingException(message: String = "Can't add  media to Continue Watching List") : AflamiException(message)
 class GetContinueWatchingMediaException(message: String = "Something went wrong while fetching continue watching media") : AflamiException(message)

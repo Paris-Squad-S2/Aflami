@@ -133,7 +133,7 @@ class MediaRepositoryImplTest {
     fun `addMediaToLocal delegates to data source`() = runTest {
         val media = Media(200, "Local", 8.0, "", mockk(), listOf(1), MediaType.MOVIE)
         coEvery { local.addMedia(media.toEntity()) } returns Unit
-        repo.addMediaToLocal(media)
+        repo.addMediaToCountineWatch(media)
         coVerify { local.addMedia(media.toEntity()) }
     }
 
