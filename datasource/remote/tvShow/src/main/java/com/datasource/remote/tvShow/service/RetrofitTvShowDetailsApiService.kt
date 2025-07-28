@@ -8,7 +8,11 @@ import com.repository.model.remote.TvShowReviewsDto
 import com.repository.model.remote.TvShowSeasonDto
 import com.repository.model.remote.TvShowSimilarsDto
 import com.repository.model.remote.TvShowVideoDto
+import com.repository.movie.models.remote.RatingDto
+import com.repository.movie.models.remote.RatingResponseDto
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -61,4 +65,11 @@ interface RetrofitTvShowDetailsApiService {
         @Path("episode_number") episodeNumber: Int,
         @Query("language") language: String
     ): EpisodeVideoDto
+
+    @POST("tv/{series_id}/rating")
+    suspend fun addRatingToTvShow(
+        @Path("series_id") tvShowId: Int,
+        @Query("session_id") sessionId: String,
+        @Body rating: RatingDto
+    ): RatingResponseDto
 }
