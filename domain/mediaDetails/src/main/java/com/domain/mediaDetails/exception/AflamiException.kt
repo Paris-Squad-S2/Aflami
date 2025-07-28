@@ -15,5 +15,5 @@ class NoReviewFoundException(message: String = "No found review") : AflamiExcept
 class NoSimilarFoundException(message: String = "No found similar") : AflamiException(message)
 class NoProductionCompanyFoundException(message: String = "No found production company") :
     AflamiException(message)
-class FaildToAddRatingException(message: String = "Failed to add rating") :
+class FailedToAddRatingException(message: String = "Failed to add rating") :
     AflamiException(message)
