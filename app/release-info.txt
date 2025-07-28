@@ -1,2 +1,5 @@
-versionName=0.3.12
-- refactor the di and use Hilt instead of koin
+versionName=0.3.13
+- Adds rating functionality for both movies and TV shows with authentication checks
+- Implements proper API integration with rating DTOs and response handling
+- Updates UI to support rating dialogs with submission callbacks
+- Refactors test cases to reflect the new rating parameter requirements
