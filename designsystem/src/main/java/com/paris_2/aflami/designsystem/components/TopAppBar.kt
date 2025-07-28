@@ -24,7 +24,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
@@ -57,6 +59,7 @@ fun TopAppBar(
     modifier: Modifier = Modifier,
     title: String? = null,
     subtitle: String? = null,
+    titleTextStyle: TextStyle = if (subtitle != null) Theme.textStyle.label.medium else Theme.textStyle.title.large,
     logo: IconItem? = null,
     leadingIcons: List<IconItem> = emptyList(),
     trailingIcons: List<IconItem> = emptyList(),
@@ -96,9 +99,10 @@ fun TopAppBar(
                 title?.let {
                     Text(
                         text = it,
-                        style = if (subtitle != null) Theme.textStyle.label.medium else Theme.textStyle.title.large,
+                        style = titleTextStyle,
                         color = Theme.colors.text.title,
                         maxLines = 1,
+                        modifier = Modifier.padding(bottom = 2.dp)
                     )
                 }
                 subtitle?.let {
@@ -107,6 +111,7 @@ fun TopAppBar(
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.text.body,
                         maxLines = 1,
+                        lineHeight = 16.sp
                     )
                 }
             }
@@ -122,8 +127,8 @@ fun TopAppBar(
 @Composable
 private fun IconBox(
     iconItem: IconItem,
-    tint: Color = iconItem.tint,
     modifier: Modifier = Modifier,
+    tint: Color = iconItem.tint,
 ) {
     Box(
         modifier = modifier
@@ -143,7 +148,9 @@ private fun IconBox(
         Icon(
             imageVector = iconItem.icon,
             contentDescription = null,
-            tint = tint
+            tint = tint,
+            modifier = Modifier
+                .size(24.dp)
         )
     }
 }

@@ -1,5 +1,4 @@
 package com.feature.home.homeUi.screen.home
-
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -28,7 +27,7 @@ class HomeScreenViewModel(
     private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase,
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState(
@@ -66,7 +65,7 @@ class HomeScreenViewModel(
         onAllCategoriesSelect()
     }
 
-     fun onRetry(){
+    override fun onRetry() {
         loadPopularMedia()
         loadTopRatingMedia()
         loadContinueWatchingMedia()
@@ -76,14 +75,14 @@ class HomeScreenViewModel(
 
     private fun loadCategories() {
         tryToExecute(
-            execute ={
+            execute = {
                 emitState(
                     screenState.value.copy(
-                        isCategoryLoading= true
+                        isCategoryLoading = true
                     )
                 )
                 getMoviesCategoriesUseCase.invoke()
-                     },
+            },
             onSuccess = { categories ->
                 emitState(
                     screenState.value.copy(
@@ -91,7 +90,8 @@ class HomeScreenViewModel(
                             categories = categories.toCategoryUiList().associateWith { false }
                                 .toMutableMap()
                         ),
-                        isCategoryLoading = false
+                        isCategoryLoading = false,
+                        errorMessage = null
                     )
                 )
             },
@@ -122,7 +122,9 @@ class HomeScreenViewModel(
                         homeUIState = screenState.value.homeUIState.copy(
                             popularMediaList = it.toSliderMediaList()
                         ),
-                        isPopularMediaLoading = false
+                        isPopularMediaLoading = false,
+                        errorMessage = null
+
                     )
                 )
             },
@@ -139,7 +141,7 @@ class HomeScreenViewModel(
 
     private fun loadTopRatingMedia() {
         tryToExecute(
-            execute ={
+            execute = {
                 emitState(
                     screenState.value.copy(
                         isTopRatingLoading = true
@@ -153,7 +155,9 @@ class HomeScreenViewModel(
                         homeUIState = screenState.value.homeUIState.copy(
                             topRatedMediaList = topRatingMedia.toMediaUiStateList()
                         ),
-                        isTopRatingLoading = false
+                        isTopRatingLoading = false,
+                        errorMessage = null
+
                     )
                 )
             },
@@ -170,7 +174,7 @@ class HomeScreenViewModel(
 
     private fun loadContinueWatchingMedia() {
         tryToExecute(
-            execute ={
+            execute = {
                 emitState(
                     screenState.value.copy(
                         isContinueWatchingLoading = true
@@ -184,11 +188,13 @@ class HomeScreenViewModel(
                         homeUIState = screenState.value.homeUIState.copy(
                             continueWatchingMediaList = mediaList.toMediaUiStateList()
                         ),
-                        isContinueWatchingLoading = false
+                        isContinueWatchingLoading = false,
+                        errorMessage = null
+
                     )
                 )
             },
-            onError = {errorMessage ->
+            onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
@@ -201,14 +207,14 @@ class HomeScreenViewModel(
 
     override fun onAllCategoriesSelect() {
         tryToExecute(
-            execute ={
+            execute = {
                 emitState(
                     screenState.value.copy(
                         isCategoryLoading = true
                     )
                 )
                 getUpcomingMediaUseCase.invoke()
-                     },
+            },
             onSuccess = { upcomingMovies ->
                 emitState(
                     screenState.value.copy(
@@ -219,7 +225,9 @@ class HomeScreenViewModel(
                                     this.keys.forEach { this[it] = false }
                                 },
                         ),
-                        isContinueWatchingLoading = false
+                        isContinueWatchingLoading = false,
+                        errorMessage = null
+
                     )
                 )
             },
@@ -239,7 +247,7 @@ class HomeScreenViewModel(
             execute = {
                 searchFeatureAPI()
             },
-            onError = {errorMessage ->
+            onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
@@ -274,7 +282,7 @@ class HomeScreenViewModel(
         )
     }
 
-    override fun onMediaSliderClick(media: SliderMedia){
+    override fun onMediaSliderClick(media: SliderMedia) {
         tryToExecute(
             execute = {
                 addMediaToLocalDatabaseUseCase.invoke(media.toMedia())
@@ -341,7 +349,8 @@ class HomeScreenViewModel(
                 homeUIState = screenState.value.homeUIState.copy(
                     moodPickerMovie = movies.random(),
                 )
-        ))
+            )
+        )
     }
 
     override fun moodPickerSelected(mood: List<String>) {
