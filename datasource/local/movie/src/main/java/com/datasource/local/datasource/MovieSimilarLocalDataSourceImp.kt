@@ -3,8 +3,9 @@ package com.datasource.local.datasource
 import com.datasource.local.dao.MovieSimilarDao
 import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.models.local.MovieSimilarEntity
+import javax.inject.Inject
 
-class MovieSimilarLocalDataSourceImp(
+class MovieSimilarLocalDataSourceImp @Inject constructor(
     val similarDao: MovieSimilarDao
 ) : MovieSimilarLocalDataSource {
 

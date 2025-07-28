@@ -3,8 +3,9 @@ package com.datasource.local.datasource
 import com.datasource.local.dao.TvShowSimilarDao
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.model.local.TvShowSimilarEntity
+import javax.inject.Inject
 
-class TvShowSimilarLocalDataSourceImpl(
+class TvShowSimilarLocalDataSourceImpl @Inject constructor(
     private val tvShowSimilarDao: TvShowSimilarDao
 ): TvShowSimilarLocalDataSource{
     override suspend fun addSimilarTvShows(tvShowSimilar: List<TvShowSimilarEntity>) {

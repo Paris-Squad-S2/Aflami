@@ -3,8 +3,9 @@ package com.datasource.local.datasource
 import com.datasource.local.dao.MovieCastDao
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.models.local.CastEntity
+import javax.inject.Inject
 
-class MovieCastLocalDataSourceImp(private val dao: MovieCastDao) : MovieCastLocalDataSource {
+class MovieCastLocalDataSourceImp @Inject constructor(private val dao: MovieCastDao) : MovieCastLocalDataSource {
 
     override suspend fun addCast(cast: List<CastEntity>) = dao.addCast(cast)
 

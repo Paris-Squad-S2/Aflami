@@ -8,8 +8,9 @@ import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieReviewsDto
 import com.repository.movie.models.remote.MovieSimilarsDto
 import com.repository.movie.models.remote.MovieVideoDto
+import javax.inject.Inject
 
-class MovieDetailsRemoteDataSourceImpl(
+class MovieDetailsRemoteDataSourceImpl @Inject constructor(
     private val retrofitMovieDetailsApiService: RetrofitMovieDetailsApiService
 ) : MovieDetailsRemoteDataSource {
     override suspend fun getMovieDetails(movieId: Int, language: String): MovieDto {
@@ -36,4 +37,3 @@ class MovieDetailsRemoteDataSourceImpl(
         return retrofitMovieDetailsApiService.getTrailerVideoForMovie(movieId)
     }
 }
-

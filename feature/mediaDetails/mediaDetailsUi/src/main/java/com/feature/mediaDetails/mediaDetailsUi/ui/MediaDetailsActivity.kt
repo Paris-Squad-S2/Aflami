@@ -30,7 +30,7 @@ class MediaDetailsActivity: ComponentActivity() {
         val navigator = EntryPointAccessors.fromApplication(
             applicationContext,
             MediaDetailsNavigatorEntryPoint::class.java
-        ).navigator()
+        ).mediaDetailsNavigator()
 
         setContent {
             AflamiTheme {

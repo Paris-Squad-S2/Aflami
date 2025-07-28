@@ -7,6 +7,5 @@ import dagger.hilt.components.SingletonComponent
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface MediaDetailsNavigatorEntryPoint {
-    fun navigator(): MediaDetailsNavigator
+    fun mediaDetailsNavigator(): MediaDetailsNavigator
 }
-
