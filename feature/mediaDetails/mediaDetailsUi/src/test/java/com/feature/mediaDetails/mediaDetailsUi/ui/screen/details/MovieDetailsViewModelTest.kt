@@ -16,6 +16,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
+import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -51,6 +52,7 @@ class MovieDetailsViewModelTest {
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase = mockk()
+    private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
     private lateinit var viewModel: MovieDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testMovieId = 42
@@ -96,10 +98,20 @@ class MovieDetailsViewModelTest {
     @Test
     fun `onFavouriteClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
-        coEvery { addRatingToMovieUseCase() } returns Unit
+        coEvery { getSessionIdUseCase() } returns "session_id_123"
+        coEvery {
+            addRatingToMovieUseCase(
+                movieId = testMovieId,
+                rating = any(),
+                sessionId = "session_id_123"
+            )
+        } returns Unit
+
         viewModel = makeViewModelWithDefaultStateHandle()
+
         viewModel.onRateClick(testMovieId)
         runCurrent()
+
         assertTrue(viewModel.screenState.value.showRatingDialog)
     }
 
@@ -153,7 +165,8 @@ class MovieDetailsViewModelTest {
             getMovieVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
-            addRatingToMovieUseCase
+            addRatingToMovieUseCase,
+            getSessionIdUseCase
         )
     }
 }
