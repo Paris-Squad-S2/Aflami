@@ -4,12 +4,21 @@ import com.datasource.remote.tvShow.TvShowDetailsRemoteDataSourceImpl
 import com.datasource.remote.movie.MovieDetailsRemoteDataSourceImpl
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
-import org.koin.core.module.Module
-import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val mediaDetailsModule: Module = module {
-    singleOf(::MovieDetailsRemoteDataSourceImpl) { bind<MovieDetailsRemoteDataSource>() }
-    singleOf(::TvShowDetailsRemoteDataSourceImpl) { bind<TvShowDetailsRemoteDataSource>() }
+@Module
+@InstallIn(SingletonComponent::class)
+object MediaDetailsModule {
+    @Provides
+    @Singleton
+    fun provideMovieDetailsRemoteDataSource(impl: MovieDetailsRemoteDataSourceImpl): MovieDetailsRemoteDataSource = impl
+
+    @Provides
+    @Singleton
+    fun provideTvShowDetailsRemoteDataSource(impl: TvShowDetailsRemoteDataSourceImpl): TvShowDetailsRemoteDataSource = impl
 }
+

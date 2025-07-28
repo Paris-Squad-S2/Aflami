@@ -6,17 +6,22 @@ import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.home.homeUi.navigation.HomeNavigator
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class TopRatingMoviesViewModel(
+@HiltViewModel
+class TopRatingMoviesViewModel @Inject constructor(
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
-):BaseViewModel<TopRatingMoviesUiState>(
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: HomeNavigator
+): BaseViewModel<TopRatingMoviesUiState>(
     TopRatingMoviesUiState(
         topRatingMovies = emptyList(),
         isLoading = false,
         errorMessage = null
-    )
-) ,TopRatingInteractionListener {
+    ), navigator
+), TopRatingInteractionListener {
 
     init {
         loadContinueWatchingMedia()

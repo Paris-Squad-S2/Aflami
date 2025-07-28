@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,11 +10,14 @@ import androidx.navigation.navigation
 import com.feature.search.searchUi.screen.findByActor.FindByActorScreen
 import com.feature.search.searchUi.screen.search.SearchScreen
 import com.feature.search.searchUi.screen.worldTour.WorldTourScreen
-import org.koin.compose.koinInject
+import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun SearchNavGraph(
-    navigator: SearchNavigator = koinInject(),
+    navigator: SearchNavigator = EntryPointAccessors.fromApplication(
+        LocalContext.current.applicationContext as android.app.Application,
+        SearchNavigatorEntryPoint::class.java
+    ).searchNavigator(),
     startDestination: SearchDestination? = null
 ) {
     val navController = rememberNavController()

@@ -33,7 +33,10 @@ import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
+import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,7 +47,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-class SearchViewModel(
+
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase,
     private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase,
     private val clearRecentSearchUseCase: ClearRecentSearchUseCase,
@@ -54,7 +59,8 @@ class SearchViewModel(
     private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: SearchNavigator
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -74,7 +80,8 @@ class SearchViewModel(
             ),
             isLoading = false,
             errorMessage = null
-        )
+        ),
+        navigator
     ) {
 
     init {

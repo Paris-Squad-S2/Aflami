@@ -1,4 +1,5 @@
 package com.feature.home.homeUi.screen.home
+
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -17,8 +18,12 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
+import com.feature.home.homeUi.navigation.HomeNavigator
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HomeScreenViewModel(
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor(
     private val getPopularMediaUseCase: GetPopularMediaUseCase,
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase,
@@ -28,6 +33,7 @@ class HomeScreenViewModel(
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: HomeNavigator
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState(
@@ -55,7 +61,7 @@ class HomeScreenViewModel(
             isContinueWatchingLoading = false,
             isCategoryLoading = false,
             errorMessage = null
-        )
+        ), navigator
     ) {
     init {
         loadPopularMedia()

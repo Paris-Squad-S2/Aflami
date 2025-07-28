@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.screen.login.components.CircleBackground
@@ -42,11 +43,10 @@ import com.paris_2.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import org.koin.compose.viewmodel.koinViewModel
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = koinViewModel()) {
+fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val uiState = viewModel.screenState.collectAsStateWithLifecycle()
     LoginScreenContent(uiState.value, viewModel)
 }

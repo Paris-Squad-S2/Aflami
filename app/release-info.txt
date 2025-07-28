@@ -1,2 +1,2 @@
-versionName=0.3.11
-- delete media and tv show after 1 hour using work manager
+versionName=0.3.12
+- refactor the di and use Hilt instead of koin

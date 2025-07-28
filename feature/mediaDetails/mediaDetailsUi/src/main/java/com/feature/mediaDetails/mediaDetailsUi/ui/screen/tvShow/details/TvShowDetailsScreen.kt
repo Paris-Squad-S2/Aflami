@@ -38,6 +38,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -59,13 +60,12 @@ import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.R as designsystemR
 
 
 @Composable
-fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = koinViewModel()) {
+fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
 
     TvShowDetailsScreenContent(
