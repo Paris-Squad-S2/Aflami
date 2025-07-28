@@ -1,6 +1,7 @@
 package com.datasource.local.dao
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,5 +14,9 @@ interface TvShowDao {
 
     @Query("SELECT * FROM tv_shows_table WHERE id = :tvShowId AND language = :language")
     suspend fun getTvShowById(tvShowId: Int, language: String): TvShowEntity?
+
+
+    @Query("DELETE FROM tv_shows_table WHERE id = :tvShowId AND language = :language")
+    suspend fun clearTVShowDetailsById(tvShowId: Int, language: String)
 
 }
