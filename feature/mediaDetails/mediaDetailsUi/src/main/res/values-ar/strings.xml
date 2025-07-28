@@ -31,4 +31,5 @@
     <string name="there_is_no_recommendations">لا توجد توصيات</string>
     <string name="there_is_no_seasons">لا توجد مواسم</string>
     <string name="not_found_video">الفيديو غير متوفر</string>
+    <string name="login">تسجيل الدخول</string>
 </resources>
