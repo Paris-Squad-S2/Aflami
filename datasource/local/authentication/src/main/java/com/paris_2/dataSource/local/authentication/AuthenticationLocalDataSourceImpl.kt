@@ -4,8 +4,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import dagger.hilt.android.qualifiers.ApplicationContext // Hilt qualifier for App Context
+import javax.inject.Inject
 
-class AuthenticationLocalDataSourceImpl(context: Context) : AuthenticationLocalDataSource {
+class AuthenticationLocalDataSourceImpl @Inject constructor(
+    @ApplicationContext context: Context
+) : AuthenticationLocalDataSource {
     private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     override fun saveSessionId(sessionId: String) {

@@ -7,6 +7,5 @@ import dagger.hilt.components.SingletonComponent
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface AuthenticationNavigatorEntryPoint {
-    fun navigator(): AuthenticationNavigator
+    fun authenticationNavigator(): AuthenticationNavigator
 }
-

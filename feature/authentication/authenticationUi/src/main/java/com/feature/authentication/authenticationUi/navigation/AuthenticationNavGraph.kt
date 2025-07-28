@@ -17,7 +17,7 @@ fun AuthenticationNavGraph(
     navigator: AuthenticationNavigator = EntryPointAccessors.fromApplication(
         LocalContext.current.applicationContext as android.app.Application,
         AuthenticationNavigatorEntryPoint::class.java
-    ).navigator(),
+    ).authenticationNavigator(),
     startDestination: AuthenticationDestination? = null
 ) {
     val navController = rememberNavController()
