@@ -2,6 +2,8 @@ package com.datasource.remote.movie
 
 import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
 import com.google.common.truth.Truth.assertThat
+import com.repository.movie.models.remote.RatingDto
+import com.repository.movie.models.remote.RatingResponseDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -17,6 +19,66 @@ class MovieDetailsRemoteDataSourceImplTest {
         retrofitMovieDetailsApiService = mockk(relaxed = true)
         movieDetailsRemoteDataSourceImpl =
             MovieDetailsRemoteDataSourceImpl(retrofitMovieDetailsApiService)
+    }
+
+    @Test
+    fun `addRatingToMovie should complete successfully when status code is 1`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.5f
+        val sessionId = "validSessionId"
+        val responseDto = RatingResponseDto(status_code = 1, status_message = "Success")
+
+        coEvery {
+            retrofitMovieDetailsApiService.addRatingToMovie(
+                movieId,
+                sessionId,
+                RatingDto(rating)
+            )
+        } returns responseDto
+
+        // When / Then (should not throw)
+        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating, sessionId)
+    }
+
+    @Test
+    fun `addRatingToMovie should complete successfully when status code is 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.5f
+        val sessionId = "validSessionId"
+        val responseDto = RatingResponseDto(status_code = 12, status_message = "Success")
+
+        coEvery {
+            retrofitMovieDetailsApiService.addRatingToMovie(
+                movieId,
+                sessionId,
+                RatingDto(rating)
+            )
+        } returns responseDto
+
+        // When / Then (should not throw)
+        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating, sessionId)
+    }
+
+    @Test(expected = Exception::class)
+    fun `addRatingToMovie should throw exception when status code is not 1 or 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.5f
+        val sessionId = "invalidSessionId"
+        val responseDto = RatingResponseDto(status_code = 10, status_message = "Invalid Session")
+
+        coEvery {
+            retrofitMovieDetailsApiService.addRatingToMovie(
+                movieId,
+                sessionId,
+                RatingDto(rating)
+            )
+        } returns responseDto
+
+        // When
+        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating, sessionId)
     }
 
     @Test
