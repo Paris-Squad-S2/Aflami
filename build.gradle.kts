@@ -74,6 +74,7 @@ val koverExcludedPackages = listOf(
     "**.HomeConverter*",
     "**.HomeDatabase*",
     "**.workmanager.**",
+    "**ConcreteBaseViewModel.kt.**",
 
     /*
     "**.GenreResourceMapper",
