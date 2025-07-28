@@ -19,7 +19,7 @@ fun HomeNavGraph(
     navigator: HomeNavigator = EntryPointAccessors.fromApplication(
         LocalContext.current.applicationContext as android.app.Application,
         HomeNavigatorEntryPoint::class.java
-    ).navigator(),
+    ).homeNavigator(),
     startDestination: HomeDestination? = null
 ) {
     val navController = rememberNavController()

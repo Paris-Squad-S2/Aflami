@@ -7,6 +7,5 @@ import dagger.hilt.components.SingletonComponent
 @EntryPoint
 @InstallIn(SingletonComponent::class)
 interface HomeNavigatorEntryPoint {
-    fun navigator(): HomeNavigator
+    fun homeNavigator(): HomeNavigator
 }
-
