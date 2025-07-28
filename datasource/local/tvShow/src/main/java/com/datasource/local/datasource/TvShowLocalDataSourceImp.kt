@@ -33,7 +33,7 @@ class TvShowLocalDataSourceImp(
 
         val workRequest = OneTimeWorkRequestBuilder<ClearTvShowDetailsWorker>()
             .setInputData(inputData)
-            .setInitialDelay(20, TimeUnit.SECONDS)
+            .setInitialDelay(1, TimeUnit.HOURS)
             .build()
 
         workManager.enqueue(workRequest)
