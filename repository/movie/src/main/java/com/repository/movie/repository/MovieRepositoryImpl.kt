@@ -1,6 +1,5 @@
 package com.repository.movie.repository
 
-import android.util.Log
 import com.domain.mediaDetails.exception.AflamiException
 import com.domain.mediaDetails.exception.FaildToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
@@ -190,7 +189,6 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String) {
-        Log.d("rating", "repoImpl: $rating , $movieId")
         return safeCall(FaildToAddRatingException()) {
             movieDetailsRemoteDataSource.addRatingToMovie(
                 movieId = movieId,

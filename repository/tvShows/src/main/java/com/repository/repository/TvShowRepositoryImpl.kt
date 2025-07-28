@@ -1,6 +1,5 @@
 package com.repository.repository
 
-import android.util.Log
 import com.domain.mediaDetails.exception.AflamiException
 import com.domain.mediaDetails.exception.FaildToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
@@ -182,7 +181,6 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun addRatingToTvShow(movieId: Int, rating: Float, sessionId: String) {
-        Log.d("rating", "repoImpl: $rating , $movieId")
         return safeCall(FaildToAddRatingException()) {
             tvShowDetailsRemoteDataSource.addRatingToTvShow(
                 movieId = movieId,

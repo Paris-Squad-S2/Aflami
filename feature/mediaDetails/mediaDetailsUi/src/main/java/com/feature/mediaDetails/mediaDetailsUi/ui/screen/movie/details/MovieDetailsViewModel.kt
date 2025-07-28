@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -331,17 +330,12 @@ class MovieDetailsViewModel(
     }
 
     override fun onRatingSubmitted(movieId: Int, rating: Float) {
-        Log.d("rating", "ViewModel: $movieId, rating: $rating")
         tryToExecute(
             execute = {
-                Log.d("rating", "ViewModel execute: $movieId, rating: $rating")
                 addRatingToMovieUseCase(movieId, rating, getSessionIdUseCase()!!)
             },
-            onSuccess = {
-                Log.d("rating", "ViewModel onSuccess: $movieId, rating: $rating")
-            },
+            onSuccess = {},
             onError = {
-                Log.d("rating", "ViewModel onError: $movieId, rating: $rating")
                 updateState(screenState.value.copy(errorMessage = it))
             }
         )
