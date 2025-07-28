@@ -6,8 +6,7 @@ import com.domain.home.exception.NoMediaPlayingFoundException
 import com.domain.home.exception.NoPopularMediaFoundException
 import com.domain.home.exception.NoTopRatingMediaFoundException
 import com.domain.home.exception.NoUpComingMediaFoundException
-import com.domain.home.exception.addMediaToLocalException
-import com.domain.home.exception.catchMediaFromLocalException
+import com.domain.home.exception.GetContinueWatchingMediaException
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
 import com.domain.home.repository.MediaRepository
@@ -17,7 +16,6 @@ import com.repository.home.mapper.toDomain
 import com.repository.home.mapper.toEntity
 import com.repository.home.util.NetworkConnectionChecker
 import com.repository.home.util.detectLanguage
-import java.util.Locale
 
 class MediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
@@ -86,13 +84,11 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun addMediaToLocal(media: Media) {
-        return safeCall(addMediaToLocalException()) {
             homeMediaLocalDataSource.addMedia(media.toEntity())
-        }
     }
 
     override suspend fun getMediaFromLocal(): List<Media> {
-        return safeCall(catchMediaFromLocalException()) {
+        return safeCall(GetContinueWatchingMediaException()) {
             homeMediaLocalDataSource.getAllMedia().map { it.toDomain() }
         }
     }
