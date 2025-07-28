@@ -10,8 +10,10 @@ import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
+@AndroidEntryPoint
 class AppNavigation : ComponentActivity() {
 
     @Inject

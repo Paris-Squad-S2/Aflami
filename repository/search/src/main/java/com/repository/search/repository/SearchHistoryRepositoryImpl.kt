@@ -7,8 +7,9 @@ import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.mapper.toRepositorySearchType
 import com.repository.search.mapper.toSearchHistories
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class SearchHistoryRepositoryImpl(
+class SearchHistoryRepositoryImpl @Inject constructor(
     private val historyLocalDataSource: HistoryLocalDataSource,
 ) : SearchHistoryRepository {
     override fun getAllSearchHistory(): Flow<List<SearchHistoryModel>> {

@@ -4,8 +4,9 @@ import com.domain.search.model.Country
 import com.domain.search.repository.CountryRepository
 import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.mapper.toCountry
+import javax.inject.Inject
 
-class CountryRepositoryImpl(
+class CountryRepositoryImpl @Inject constructor(
     private val countriesLocalDataSource: CountriesLocalDataSource,
 ) : CountryRepository {
 

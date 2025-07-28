@@ -3,8 +3,9 @@ package com.datasource.local.search.datasource
 import com.datasource.local.search.dao.GenresUserInteractionDao
 import com.repository.search.dataSource.local.GenresInteractionDataSource
 import com.repository.search.entity.GenreUserInteractionEntity
+import javax.inject.Inject
 
-class GenresInteractionDataSourceImpl(
+class GenresInteractionDataSourceImpl @Inject constructor(
     private val genresInteractionDao: GenresUserInteractionDao
 ) : GenresInteractionDataSource {
     override suspend fun upsertInteraction(interaction: GenreUserInteractionEntity) {

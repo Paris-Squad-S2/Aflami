@@ -10,8 +10,9 @@ import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.mapper.toCategories
 import com.repository.search.mapper.toEntity
 import java.util.Locale
+import javax.inject.Inject
 
-class CategoriesRepositoryImpl(
+class CategoriesRepositoryImpl @Inject constructor(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val genresLocalDataSource: GenresLocalDataSource,
     private val genresRemoteDataSource: GenresRemoteDataSource,
