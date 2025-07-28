@@ -1,13 +1,15 @@
 package com.repository.movie.repository
 
+import android.util.Log
 import com.domain.mediaDetails.exception.AflamiException
+import com.domain.mediaDetails.exception.FaildToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
+import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoMovieFoundException
 import com.domain.mediaDetails.exception.NoProductionCompanyFoundException
 import com.domain.mediaDetails.exception.NoReviewFoundException
 import com.domain.mediaDetails.exception.NoVideoFoundException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Movie
@@ -187,8 +189,15 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun addRatingToMovie() {
-        print("movie rating added")
+    override suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String) {
+        Log.d("rating", "repoImpl: $rating , $movieId")
+        return safeCall(FaildToAddRatingException()) {
+            movieDetailsRemoteDataSource.addRatingToMovie(
+                movieId = movieId,
+                rating = rating,
+                sessionId = sessionId
+            )
+        }
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
