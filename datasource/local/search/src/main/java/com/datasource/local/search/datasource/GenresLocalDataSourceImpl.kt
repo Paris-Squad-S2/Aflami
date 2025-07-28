@@ -3,8 +3,9 @@ package com.datasource.local.search.datasource
 import com.datasource.local.search.dao.GenresDao
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.entity.GenreEntity
+import javax.inject.Inject
 
-class GenresLocalDataSourceImpl(
+class GenresLocalDataSourceImpl @Inject constructor(
     private val dao: GenresDao
 ) : GenresLocalDataSource {
     override suspend fun addGenres(genres: List<GenreEntity>) = dao.addGenres(genres)
