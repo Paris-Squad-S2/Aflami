@@ -1,7 +1,7 @@
 package com.repository.repository
 
 import com.domain.mediaDetails.exception.AflamiException
-import com.domain.mediaDetails.exception.FaildToAddRatingException
+import com.domain.mediaDetails.exception.FailedToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
@@ -181,7 +181,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun addRatingToTvShow(movieId: Int, rating: Float, sessionId: String) {
-        return safeCall(FaildToAddRatingException()) {
+        return safeCall(FailedToAddRatingException()) {
             tvShowDetailsRemoteDataSource.addRatingToTvShow(
                 movieId = movieId,
                 rating = rating,

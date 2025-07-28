@@ -1,7 +1,7 @@
 package com.repository.movie.repository
 
 import com.domain.mediaDetails.exception.AflamiException
-import com.domain.mediaDetails.exception.FaildToAddRatingException
+import com.domain.mediaDetails.exception.FailedToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
@@ -189,7 +189,7 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String) {
-        return safeCall(FaildToAddRatingException()) {
+        return safeCall(FailedToAddRatingException()) {
             movieDetailsRemoteDataSource.addRatingToMovie(
                 movieId = movieId,
                 rating = rating,
