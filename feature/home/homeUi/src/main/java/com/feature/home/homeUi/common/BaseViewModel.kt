@@ -16,8 +16,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-open class BaseViewModel<S> @Inject constructor(
+open class BaseViewModel<S>(
     initialState: S, private val navigator: HomeNavigator
 ) : ViewModel() {
 
