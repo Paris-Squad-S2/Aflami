@@ -265,7 +265,7 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onFavouriteClick(title: Int) {
+    override fun onRateClick(title: Int) {
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->

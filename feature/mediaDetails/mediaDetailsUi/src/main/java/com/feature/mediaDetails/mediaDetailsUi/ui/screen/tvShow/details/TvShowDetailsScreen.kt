@@ -432,7 +432,7 @@ fun TvShowDetailsScreenContent(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(designsystemR.drawable.ic_star),
                     onClick = {
-                        tvShowScreenInteractionListener.onFavouriteClick(
+                        tvShowScreenInteractionListener.onRateClick(
                             featureMediaDetailsUiR.string.rate
                         )
                     }
