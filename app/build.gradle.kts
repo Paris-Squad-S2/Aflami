@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
 import java.util.Properties
 
 plugins {
@@ -106,9 +107,6 @@ android {
     compileOptions {
         sourceCompatibility = Configurations.JAVA_VERSION
         targetCompatibility = Configurations.JAVA_VERSION
-    }
-    kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
     }
     buildFeatures {
         compose = true
@@ -220,6 +218,10 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit.converter)
 
+}
+
+kotlin {
+    compilerOptions { jvmTarget.set(fromTarget(Configurations.JVM_TARGET)) }
 }
 
 kover {
