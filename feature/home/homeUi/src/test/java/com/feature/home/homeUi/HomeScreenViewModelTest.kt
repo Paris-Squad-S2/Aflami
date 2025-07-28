@@ -8,6 +8,7 @@ import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
@@ -38,13 +39,13 @@ HomeScreenViewModelTest {
     private val getPopularMediaUseCase: GetPopularMediaUseCase = mockk()
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase = mockk()
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase = mockk()
-    private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase =
-        mockk()
+    private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase = mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
     private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase = mockk()
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
+    private val navigator: HomeNavigator = mockk(relaxed = true)
 
     private lateinit var viewModel: HomeScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -114,7 +115,8 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
     }
 
@@ -160,7 +162,8 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<CategoryUiState, Boolean>())
@@ -178,7 +181,8 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
@@ -196,7 +200,8 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
@@ -400,7 +405,8 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase = mockk(relaxed = true),
             getMediaFromLocalUseCase,
             searchFeatureAPI = mockk(relaxed = true),
-            mediaDetailsFeatureAPI = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true),
+            navigator
         )
 
         viewModel.onRetry()

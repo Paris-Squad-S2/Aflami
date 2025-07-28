@@ -1,6 +1,7 @@
 package com.feature.authentication.authenticationUi.screen.login
 
 import com.feature.authentication.authenticationUi.R
+import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
@@ -15,7 +16,7 @@ import org.junit.jupiter.api.Test
 
 class LoginViewModelTest {
 
-
+    private val navigator: AuthenticationNavigator = mockk(relaxed = true)
 
     private lateinit var viewModel: LoginViewModel
     private lateinit var loginUseCase: LoginUseCase
@@ -30,6 +31,7 @@ class LoginViewModelTest {
                 appNavigationAPI = appNavigationAPI,
                 loginUseCase = loginUseCase,
                 guestLoginUseCase = mockk(relaxed = true),
+                navigator = navigator
             )
         )
     }
