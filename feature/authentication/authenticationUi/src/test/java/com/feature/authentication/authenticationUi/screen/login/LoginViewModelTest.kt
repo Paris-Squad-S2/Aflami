@@ -102,7 +102,6 @@ class LoginViewModelTest {
         viewModel.onPasswordChange("1234")
         viewModel.onClickLogin()
 
-        // Verify that navigateToHome() was called
         coVerify { appNavigationAPI() }
     }
 }
