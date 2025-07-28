@@ -6,4 +6,11 @@
     <string name="popular">المشهور</string>
     <string name="aflami">أفلامي</string>
     <string name="more_than_just_watching">أكثر من مجرد مشاهدة</string>
+    <string name="mood_picker">منتقي المزاج</string>
+    <string name="movie_that_matches_your_mood_is">الفيلم الذي يناسب مزاجك هو:</string>
+    <string name="view_details">عرض التفاصيل</string>
+    <string name="get_another_movie">احصل على فيلم آخر</string>
+    <string name="upcoming">القادم</string>
+    <string name="mood_picker_get_a_movie">منتقي المزاج (احصل على فيلم)</string>
+    <string name="what_s_your_vibe_today">ما هو شعورك اليوم؟</string>
 </resources>
