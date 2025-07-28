@@ -1,4 +1,4 @@
-package com.repository.search.dataSource.local.workManager
+package com.repository.search.dataSource.local.workmanager
 
 import android.content.Context
 import androidx.work.CoroutineWorker
@@ -25,7 +25,7 @@ class ClearMediaWorker(
 
             mediaLocalDataSource.clearAllMediaBySearchQuery(searchQuery, searchType)
             Result.success()
-        } catch (e: Exception) {
+        } catch (_: Exception) {
             Result.failure()
         }
     }

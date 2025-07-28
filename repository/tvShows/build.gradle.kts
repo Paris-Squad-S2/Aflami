@@ -53,6 +53,9 @@ dependencies {
     implementation(libs.koin.core)
     implementation(libs.koin.android)
 
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
+
     // test
     testImplementation(kotlin("test"))
     testImplementation(libs.junit)

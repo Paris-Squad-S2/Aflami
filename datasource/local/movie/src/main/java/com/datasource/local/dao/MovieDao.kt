@@ -13,4 +13,7 @@ interface MovieDao {
 
     @Query("SELECT * FROM movies_table WHERE id = :movieId AND language = :language")
     suspend fun getMovieById(movieId: Int,language: String): MovieEntity?
+
+    @Query("DELETE FROM movies_table WHERE id = :movieId AND language = :language")
+    suspend fun clearMovieDetailsById(movieId: Int, language: String)
 }
