@@ -1,5 +1,6 @@
 package com.datasource.remote.movie
 
+import android.util.Log
 import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.models.remote.MovieCreditsDto
@@ -8,6 +9,7 @@ import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieReviewsDto
 import com.repository.movie.models.remote.MovieSimilarsDto
 import com.repository.movie.models.remote.MovieVideoDto
+import com.repository.movie.models.remote.RatingDto
 
 class MovieDetailsRemoteDataSourceImpl(
     private val retrofitMovieDetailsApiService: RetrofitMovieDetailsApiService
@@ -34,6 +36,15 @@ class MovieDetailsRemoteDataSourceImpl(
 
     override suspend fun getTrailerVideoForMovie(movieId: Int): MovieVideoDto {
         return retrofitMovieDetailsApiService.getTrailerVideoForMovie(movieId)
+    }
+
+    override suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String) {
+        Log.d("rating", "dataSourceImpl: $movieId, rating: $rating")
+        val dto = RatingDto(value = rating)
+        val response = retrofitMovieDetailsApiService.addRatingToMovie(movieId, sessionId, dto)
+        if (response.status_code != 1 && response.status_code != 12) {
+            throw Exception("Server responded: ${response.status_message}")
+        }
     }
 }
 
