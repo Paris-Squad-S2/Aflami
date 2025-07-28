@@ -2,14 +2,6 @@ package com.paris_2.aflami.di
 
 import com.domain.home.repository.MediaRepository
 import com.domain.home.repository.MoviesCategoriesRepository
-import com.domain.mediaDetails.repository.MovieRepository
-import com.domain.mediaDetails.repository.TvShowRepository
-import com.domain.search.repository.CategoriesRepository
-import com.domain.search.repository.CountryRepository
-import com.domain.search.repository.GenresInteractionRepository
-import com.domain.search.repository.SearchHistoryRepository
-import com.domain.search.repository.SearchMediaRepository
-import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -17,6 +9,8 @@ import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.domain.mediaDetails.repository.MovieRepository
+import com.domain.mediaDetails.repository.TvShowRepository
 import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
@@ -35,6 +29,11 @@ import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.domain.search.repository.CategoriesRepository
+import com.domain.search.repository.CountryRepository
+import com.domain.search.repository.GenresInteractionRepository
+import com.domain.search.repository.SearchHistoryRepository
+import com.domain.search.repository.SearchMediaRepository
 import com.domain.search.useCase.AutoCompleteCountryUseCase
 import com.domain.search.useCase.ClearAllRecentSearchesUseCase
 import com.domain.search.useCase.ClearRecentSearchUseCase
@@ -48,6 +47,7 @@ import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SearchByQueryUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import com.paris_2.domain.authentication.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.authentication.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
@@ -107,5 +107,8 @@ object UseCaseModule {
     @Provides fun provideAddRatingToMovieUseCase(movieRepository: MovieRepository) = AddRatingToMovieUseCase(movieRepository)
     @Provides fun provideAddRatingToTvShowUseCase(tvShowRepository: TvShowRepository) = AddRatingToTvShowUseCase(tvShowRepository)
     @Provides fun provideGetEpisodeVideoUseCase(tvShowRepository: TvShowRepository) = GetEpisodeVideoUseCase(tvShowRepository)
+    @Provides
+    fun provideGetSessionIdUseCase(authenticationRepository: AuthenticationRepository) =
+        GetSessionIdUseCase(authenticationRepository)
 }
 
