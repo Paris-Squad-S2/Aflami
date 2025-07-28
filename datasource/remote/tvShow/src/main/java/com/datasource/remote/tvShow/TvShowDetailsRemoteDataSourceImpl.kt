@@ -11,8 +11,9 @@ import com.repository.model.remote.TvShowSeasonDto
 import com.repository.model.remote.TvShowSimilarsDto
 import com.repository.model.remote.TvShowVideoDto
 import com.repository.movie.models.remote.RatingDto
+import javax.inject.Inject
 
-class TvShowDetailsRemoteDataSourceImpl(
+class TvShowDetailsRemoteDataSourceImpl @Inject constructor(
     private val retrofitTvShowDetailsApiService: RetrofitTvShowDetailsApiService
 ) : TvShowDetailsRemoteDataSource {
 

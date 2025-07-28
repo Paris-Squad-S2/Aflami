@@ -13,15 +13,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
+open class BaseViewModel<S>(
+    initialState: S, protected val navigator: MediaDetailsNavigator
+) : ViewModel() {
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
-
-    private val navigator: MediaDetailsNavigator by inject()
 
     protected fun navigate(destination: MediaDetailsDestination, navOptions: NavOptions? = null) =
         viewModelScope.launch {

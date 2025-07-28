@@ -3,16 +3,21 @@ package com.feature.authentication.authenticationUi.screen.login
 import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
+import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris_2.aflami.appnavigation.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
 import com.paris_2.domain.authentication.usecase.LoginUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LoginViewModel(
+@HiltViewModel
+class LoginViewModel @Inject constructor(
     private val appNavigationAPI : AppNavigationAPI,
     private val loginUseCase: LoginUseCase,
-    private val guestLoginUseCase: GuestLoginUseCase
-) : BaseViewModel<LoginUIState>(LoginUIState()), LoginScreenInteractionListener {
+    private val guestLoginUseCase: GuestLoginUseCase,
+    navigator: AuthenticationNavigator,
+) : BaseViewModel<LoginUIState>(LoginUIState(), navigator), LoginScreenInteractionListener {
 
     init {
         updateStateButton()

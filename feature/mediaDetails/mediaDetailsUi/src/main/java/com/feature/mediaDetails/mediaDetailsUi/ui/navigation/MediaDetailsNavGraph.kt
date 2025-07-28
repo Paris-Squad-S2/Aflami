@@ -15,12 +15,11 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.cast.MovieCastScr
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.cast.TvShowCastScreen
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreen
-import org.koin.compose.koinInject
-import org.koin.core.context.GlobalContext
 
 @Composable
 fun MediaDetailsNavGraph(
-    navigator: MediaDetailsNavigator = koinInject(),
+    navigator: MediaDetailsNavigator,
+    authenticationFeatureAPI: AuthenticationFeatureAPI,
     mediaDetailsDestination: MediaDetailsDestination? = null,
 ) {
     val navController = rememberNavController()
@@ -40,14 +39,18 @@ fun MediaDetailsNavGraph(
         startDestination = navigator.startGraph
     ) {
 
-        buildDetailsNavGraph(mediaDetailsDestination, navController)
+        buildDetailsNavGraph(
+            startDestination = mediaDetailsDestination,
+            navController = navController,
+            authenticationFeatureAPI = authenticationFeatureAPI
+        )
     }
 }
 
 fun NavGraphBuilder.buildDetailsNavGraph(
     startDestination: MediaDetailsDestination? = null,
     navController: NavController,
-    authenticationFeatureAPI: AuthenticationFeatureAPI = GlobalContext.get().get(),
+    authenticationFeatureAPI: AuthenticationFeatureAPI,
 ) {
     navigation<MediaDetailsDestinations.MediaDetailsGraph1>(
         startDestination = startDestination ?: MediaDetailsDestinations.MovieDetailsScreen,

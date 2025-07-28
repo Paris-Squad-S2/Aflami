@@ -23,6 +23,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
+import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -60,6 +61,8 @@ class SearchViewModelTest {
     private lateinit var viewModel: SearchViewModel
 
     private val testDispatcher = StandardTestDispatcher()
+
+    private val navigator: SearchNavigator = mockk(relaxed = true)
 
     private val mockMovie1 = Media(
         id = 1,
@@ -135,7 +138,8 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                navigator
             )
         )
     }
@@ -159,7 +163,8 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            navigator
         )
 
         advanceUntilIdle()
@@ -184,7 +189,8 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            navigator
         )
 
         advanceUntilIdle()
@@ -207,7 +213,8 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            navigator
         )
 
         advanceUntilIdle()
@@ -482,7 +489,8 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                navigator
             )
             advanceUntilIdle()
 
@@ -513,7 +521,8 @@ class SearchViewModelTest {
             filterMedByListOfCategoriesUseCase,
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            navigator
         )
         advanceUntilIdle()
 
@@ -558,7 +567,8 @@ class SearchViewModelTest {
                 filterMedByListOfCategoriesUseCase,
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
-                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+                mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                navigator
             )
             advanceUntilIdle()
 

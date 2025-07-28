@@ -5,7 +5,7 @@ import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.SearchType
 
-class MediaLocalDataSourceImpl(
+class MediaLocalDataSourceImpl (
     private val dao: MediaDao,
 ) : MediaLocalDataSource {
 

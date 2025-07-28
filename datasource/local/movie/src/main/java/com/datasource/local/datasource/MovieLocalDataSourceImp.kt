@@ -9,7 +9,7 @@ import com.repository.movie.dataSource.local.workmanager.ClearMovieDetailWorker
 import com.repository.movie.models.local.MovieEntity
 import java.util.concurrent.TimeUnit
 
-class MovieLocalDataSourceImp(
+class MovieLocalDataSourceImp (
     private val workManager: WorkManager,
     private val dao: MovieDao
 ) : MovieLocalDataSource {

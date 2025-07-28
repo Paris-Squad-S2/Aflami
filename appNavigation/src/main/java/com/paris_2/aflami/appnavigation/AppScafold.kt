@@ -12,15 +12,24 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.feature.categories.categoriesApi.CategoriesFeatureAPI
+import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
+import com.feature.home.homeApi.HomeFeatureAPI
+import com.feature.lists.listsApi.ListsFeatureAPI
+import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.paris_2.aflami.designsystem.components.Scafold
 import kotlinx.coroutines.launch
-import org.koin.compose.koinInject
 
 @Composable
-internal fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
-
+internal fun AppScaffold(
+    appNavigator: AppNavigator,
+    homeFeature: HomeFeatureAPI,
+    listsFeature: ListsFeatureAPI,
+    categoriesFeature: CategoriesFeatureAPI,
+    letsPlayFeature: GuessGameFeatureAPI,
+    profileFeature: ProfileFeatureAPI
+) {
     val navController = rememberNavController()
-
     val currentBackStackEntry by navController.currentBackStackEntryAsState()
 
     val selectedDestinationIndex by remember(currentBackStackEntry) {
@@ -41,10 +50,17 @@ internal fun AppScaffold(appNavigator: AppNavigator = koinInject()) {
 
     val scope = rememberCoroutineScope()
 
-
     Scafold(
         content = {
-            AppNavGraph(navController = navController)
+            AppNavGraph(
+                navigator = appNavigator,
+                navController = navController,
+                homeFeature = homeFeature,
+                listsFeature = listsFeature,
+                categoriesFeature = categoriesFeature,
+                letsPlayFeature = letsPlayFeature,
+                profileFeature = profileFeature
+            )
         },
         bottomBar = {
             AnimatedVisibility(

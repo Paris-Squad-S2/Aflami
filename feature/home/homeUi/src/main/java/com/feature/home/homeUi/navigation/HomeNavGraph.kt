@@ -11,11 +11,15 @@ import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingScreen
 import com.feature.home.homeUi.screen.home.HomeScreen
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesScreen
-import org.koin.compose.koinInject
+import dagger.hilt.android.EntryPointAccessors
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun HomeNavGraph(
-    navigator: HomeNavigator = koinInject(),
+    navigator: HomeNavigator = EntryPointAccessors.fromApplication(
+        LocalContext.current.applicationContext as android.app.Application,
+        HomeNavigatorEntryPoint::class.java
+    ).homeNavigator(),
     startDestination: HomeDestination? = null
 ) {
     val navController = rememberNavController()

@@ -3,8 +3,9 @@ package com.repository.home
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.dto.MovieListDto
 import com.repository.home.dto.TvListDto
+import javax.inject.Inject
 
-class MediaDataSourceImpl (
+class MediaDataSourceImpl @Inject constructor(
     private val apiService: MediaApiService
 ) : MediaRemoteDataSource {
 

@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastItem
 import com.paris_2.aflami.designsystem.components.NetworkError
@@ -28,12 +29,11 @@ import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun MovieCastScreen(
-    viewModel: MovieCastViewModel = koinViewModel(),
+    viewModel: MovieCastViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     MovieScreenContent(state = state.value, movieCastScreenInteractionListener = viewModel)
