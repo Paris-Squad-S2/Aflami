@@ -400,7 +400,7 @@ fun MovieDetailsScreenContent(
                     .statusBarsPadding()
                     .padding(start = 12.dp, end = 12.dp, top = 16.dp)
                     .align(Alignment.TopCenter),
-                text = state.snackBarMessage,
+                text = state.snackBarMessage!!,
                 isSuccess = state.snackBarSuccess,
                 onClick = {
                     movieDetailsScreenInteractionListener.onHideSnackBar()
