@@ -52,7 +52,6 @@ interface RetrofitMovieDetailsApiService {
     @POST("movie/{movie_id}/rating")
     suspend fun addRatingToMovie(
         @Path("movie_id") movieId: Int,
-        @Query("session_id") sessionId: String,
         @Body rating: RatingDto
     ): RatingResponseDto
 }

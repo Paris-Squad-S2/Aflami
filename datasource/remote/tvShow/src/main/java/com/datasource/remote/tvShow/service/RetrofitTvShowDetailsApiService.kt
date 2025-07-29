@@ -69,7 +69,6 @@ interface RetrofitTvShowDetailsApiService {
     @POST("tv/{series_id}/rating")
     suspend fun addRatingToTvShow(
         @Path("series_id") tvShowId: Int,
-        @Query("session_id") sessionId: String,
         @Body rating: RatingDto
     ): RatingResponseDto
 }
