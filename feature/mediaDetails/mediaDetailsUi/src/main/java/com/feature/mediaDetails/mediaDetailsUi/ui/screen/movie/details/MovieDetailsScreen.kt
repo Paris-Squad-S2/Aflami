@@ -1,6 +1,11 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -47,6 +52,7 @@ import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
+import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -94,7 +100,6 @@ fun MovieDetailsScreenContent(
                     movieId = state.movieDetailsUiState.movie.id,
                     rating = currentRating
                 )
-                movieDetailsScreenInteractionListener.onDismissRatingDialog()
             }
         )
     }
@@ -370,7 +375,7 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onRateClick(R.string.rate)
+                                movieDetailsScreenInteractionListener.onRateClick()
                             }
                         ),
                         iconItemWithDefaults(
@@ -383,6 +388,24 @@ fun MovieDetailsScreenContent(
                     modifier = Modifier.background(backgroundColor)
                 )
             }
+        }
+        AnimatedVisibility(
+            visible = state.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            SnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                    .align(Alignment.TopCenter),
+                text = state.snackBarMessage,
+                isSuccess = state.snackBarSuccess,
+                onClick = {
+                    movieDetailsScreenInteractionListener.onHideSnackBar()
+                }
+            )
         }
     }
 }
