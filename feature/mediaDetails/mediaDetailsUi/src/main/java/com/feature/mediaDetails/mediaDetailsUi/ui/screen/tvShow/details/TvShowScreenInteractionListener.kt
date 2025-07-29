@@ -2,7 +2,8 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 interface TvShowScreenInteractionListener {
     fun onRateClick()
-    fun onAddToListClick(title: Int)
+    fun onAddToListClick()
+    fun onDismissAddToListDialog()
     fun onShowAllCastClick(tvShowId: Int)
     fun onClickOnSeason(seasonNumber: Int)
     fun onSimilarTvShowClick(mediaId: Int)

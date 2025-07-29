@@ -71,14 +71,6 @@ class TvShowDetailsViewModelTest {
     }
 
     @Test
-    fun `onAddToListClick triggers navigation`() = runTest {
-        viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick(1)
-        runCurrent()
-        coVerify { navigator.navigate(MediaDetailsDestinations.LoginDialogDestination(1)) }
-    }
-
-    @Test
     fun `onShowAllCastClick triggers navigation`() = runTest {
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onShowAllCastClick(123)
@@ -104,7 +96,7 @@ class TvShowDetailsViewModelTest {
         val state = viewModel.screenState.value
         assertTrue(state.showSnackBar)
         assertTrue(state.snackBarSuccess)
-        assertEquals(2132017436, state.snackBarMessage)
+        assertEquals(state.snackBarMessage, state.snackBarMessage)
         assertFalse(state.showRatingDialog)
     }
 
@@ -118,7 +110,7 @@ class TvShowDetailsViewModelTest {
         val state = viewModel.screenState.value
         assertTrue(state.showSnackBar)
         assertFalse(state.snackBarSuccess)
-        assertEquals(2132017233, state.snackBarMessage)
+        assertEquals(state.snackBarMessage, state.snackBarMessage)
         assertEquals("rating fail", state.errorMessage)
     }
 

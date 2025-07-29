@@ -286,8 +286,20 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onAddToListClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+    override fun onAddToListClick() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = true,
+            )
+        )
+    }
+
+    override fun onDismissAddToListDialog() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = false
+            )
+        )
     }
 
     override fun onShowAllCastClick(tvShowId: Int) {

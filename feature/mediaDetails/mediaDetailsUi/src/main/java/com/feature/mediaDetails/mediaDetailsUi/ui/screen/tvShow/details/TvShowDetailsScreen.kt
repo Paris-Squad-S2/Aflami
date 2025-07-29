@@ -42,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
@@ -107,6 +108,12 @@ fun TvShowDetailsScreenContent(
                     rating = currentRating
                 )
             }
+        )
+    }
+    if (state.showAddToListDialog) {
+        AddToListDialog(
+            list = listOf("My Favorite Movies", "Kittens"),
+            onDismiss = { tvShowScreenInteractionListener.onDismissAddToListDialog() },
         )
     }
 
@@ -437,9 +444,7 @@ fun TvShowDetailsScreenContent(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(designsystemR.drawable.ic_heart_add),
                     onClick = {
-                        tvShowScreenInteractionListener.onAddToListClick(
-                            featureMediaDetailsUiR.string.add_to_list
-                        )
+                        tvShowScreenInteractionListener.onAddToListClick()
                     }
                 )
             ),
