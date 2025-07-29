@@ -1,5 +1,6 @@
 package com.repository.movie.repository
 
+import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
 import com.domain.mediaDetails.exception.NoMovieFoundException
@@ -62,6 +63,45 @@ class MovieRepositoryImplTest {
         )
     }
 
+    @Test
+    fun `getMovieCast - should throw NoCastFoundException when remote throws it and local is empty`() =
+        runTest {
+            // Given
+            coEvery {
+                movieCastLocalDataSource.getCastByMovieId(
+                    movieId,
+                    language
+                )
+            } returns emptyList()
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieCredits(
+                    movieId,
+                    language
+                )
+            } throws NoCastFoundException(
+                "No cast found"
+            )
+
+            // When & Then
+            assertThrows<NoCastFoundException> {
+                movieRepository.getMovieCast(movieId)
+            }
+        }
+
+    @Test
+    fun `getMovieGallery - should throw NoGalleryFoundException when remote throws it and local is null`() =
+        runTest {
+            // Given
+            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
+            coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } throws NoGalleryFoundException(
+                "No gallery"
+            )
+
+            // When & Then
+            assertThrows<NoGalleryFoundException> {
+                movieRepository.getMovieGallery(movieId)
+            }
+        }
     @Test
     fun `getMovieDetails - should fetch from remote and save to local when local is null`() =
         runTest {
