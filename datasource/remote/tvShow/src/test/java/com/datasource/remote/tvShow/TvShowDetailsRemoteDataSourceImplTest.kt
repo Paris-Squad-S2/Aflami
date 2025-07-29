@@ -169,7 +169,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.5f
-        val response = RatingResponseDto(status_code = 1, status_message = "Success")
+        val response = RatingResponseDto(1, "Success")
 
         coEvery {
             retrofitTvShowDetailsApiService.addRatingToTvShow(
@@ -187,7 +187,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.0f
-        val response = RatingResponseDto(status_code = 12, status_message = "Success")
+        val response = RatingResponseDto(12, "Success")
 
         coEvery {
             retrofitTvShowDetailsApiService.addRatingToTvShow(
@@ -205,7 +205,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 3.5f
-        val response = RatingResponseDto(status_code = 10, status_message = "Invalid session")
+        val response = RatingResponseDto(10, "Invalid session")
 
         coEvery {
             retrofitTvShowDetailsApiService.addRatingToTvShow(

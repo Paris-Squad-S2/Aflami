@@ -26,7 +26,7 @@ class MovieDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.5f
-        val responseDto = RatingResponseDto(status_code = 1, status_message = "Success")
+        val responseDto = RatingResponseDto(1, "Success")
 
         coEvery {
             retrofitMovieDetailsApiService.addRatingToMovie(
@@ -44,7 +44,7 @@ class MovieDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.5f
-        val responseDto = RatingResponseDto(status_code = 12, status_message = "Success")
+        val responseDto = RatingResponseDto(12, "Success")
 
         coEvery {
             retrofitMovieDetailsApiService.addRatingToMovie(
