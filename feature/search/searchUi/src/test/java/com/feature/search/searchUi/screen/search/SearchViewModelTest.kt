@@ -271,6 +271,40 @@ class SearchViewModelTest {
 
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `searchQuery should handle NoMediaForSearchException without infinite loading`() = runTest {
+        val query = "invalid_search_term"
+
+        // Mock the use case to throw NoMediaForSearchException as it would for invalid search terms
+        coEvery { searchByQueryUseCase(query, any()) } throws com.domain.search.exception.NoMediaForSearchException()
+        
+        // Mock other dependencies for successful sorting call
+        coEvery { sortingMediaByCategoriesInteractionUseCase(any()) } returns emptyList()
+
+        viewModel.onSearchQueryChange(query)
+        advanceUntilIdle()
+
+        // Should not show loading state and should not have error message
+        // because NoMediaForSearchException should be handled as "no results" not an error
+        assertThat(viewModel.screenState.value.isLoading).isFalse()
+        assertThat(viewModel.screenState.value.errorMessage).isNull()
+
+        val moviesResult = viewModel.screenState.value.searchUiState.moviesResult.collectAllItems()
+        val tvShowsResult =
+            viewModel.screenState.value.searchUiState.tvShowsResult.collectAllItems()
+        val filteredMoviesResult =
+            viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
+        val filteredTvShowsResult =
+            viewModel.screenState.value.searchUiState.filteredTvShowsResult.collectAllItems()
+
+        // Results should be empty but pagination should stop (no infinite loading)
+        assertThat(moviesResult).isEmpty()
+        assertThat(tvShowsResult).isEmpty()
+        assertThat(filteredMoviesResult).isEmpty()
+        assertThat(filteredTvShowsResult).isEmpty()
+    }
+
     @Test
     fun `onSelectTab updates selectedTabIndex in uiState`() = runTest {
         assertThat(viewModel.screenState.value.searchUiState.selectedTabIndex).isEqualTo(0)
