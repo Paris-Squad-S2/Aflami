@@ -188,12 +188,12 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String) {
+    override suspend fun addRatingToMovie(movieId: Int, rating: Float) {
+        movieDetailsRemoteDataSource
         return safeCall(FailedToAddRatingException()) {
             movieDetailsRemoteDataSource.addRatingToMovie(
                 movieId = movieId,
-                rating = rating,
-                sessionId = sessionId
+                rating = rating
             )
         }
     }
