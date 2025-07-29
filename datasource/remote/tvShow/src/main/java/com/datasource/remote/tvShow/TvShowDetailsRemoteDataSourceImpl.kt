@@ -71,15 +71,9 @@ class TvShowDetailsRemoteDataSourceImpl @Inject constructor(
         )
     }
 
-    override suspend fun addRatingToTvShow(
-        movieId: Int,
-        rating: Float,
-        sessionId: String
-    ) {
+    override suspend fun addRatingToTvShow(movieId: Int, rating: Float): Boolean {
         val dto = RatingDto(value = rating)
-        val response = retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, sessionId, dto)
-        if (response.status_code != 1 && response.status_code != 12) {
-            throw Exception("Server responded: ${response.status_message}")
-        }
+        val response = retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, dto)
+        return !(response.status_code != 1 && response.status_code != 12)
     }
 }
