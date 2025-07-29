@@ -2,6 +2,8 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSectio
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,9 +40,14 @@ fun SeasonHeader(
             .fillMaxWidth()
             .background(Theme.colors.surface)
             .padding(horizontal = 16.dp, vertical = 12.dp)
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onToggleExpand
+            )
     ) {
         Text(
-            text = stringResource(R.string.season)+" "+seasonNumber,
+            text = stringResource(R.string.season) + " " + seasonNumber,
             style = Theme.textStyle.title.small,
             color = Theme.colors.text.title
         )
@@ -48,7 +55,7 @@ fun SeasonHeader(
         Spacer(modifier = Modifier.weight(1f))
 
         Text(
-            text = "$numberOfEpisodes "+ stringResource(R.string.episodes),
+            text = "$numberOfEpisodes " + stringResource(R.string.episodes),
             style = Theme.textStyle.label.small,
             color = Theme.colors.text.hint
         )
