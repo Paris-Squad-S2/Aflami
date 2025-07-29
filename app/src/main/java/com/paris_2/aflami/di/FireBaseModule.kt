@@ -2,10 +2,17 @@ package com.paris_2.aflami.di
 
 import com.parise_2.firebase.firebase.FireBaseCrashlyticsLogger
 import com.parise_2.firebase.repo.Logger
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val FireBaseModule = module {
-    singleOf(::FireBaseCrashlyticsLogger) bind Logger::class
+@Module
+@InstallIn(SingletonComponent::class)
+object FireBaseModule {
+    @Provides
+    @Singleton
+    fun provideLogger(impl: FireBaseCrashlyticsLogger): Logger = impl
 }
+

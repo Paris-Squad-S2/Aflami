@@ -34,9 +34,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
-import org.koin.dsl.module
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MovieDetailsViewModelTest {
@@ -54,6 +51,7 @@ class MovieDetailsViewModelTest {
     private lateinit var viewModel: MovieDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testMovieId = 42
+    private val mediaDetailsNavigator: MediaDetailsNavigator = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -63,14 +61,6 @@ class MovieDetailsViewModelTest {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>() } returns MediaDetailsDestinations.MovieDetailsScreen(
             movieId = testMovieId
         )
-        stopKoin()
-        startKoin {
-            modules(
-                module {
-                    single<MediaDetailsNavigator> { mockk(relaxed = true) }
-                }
-            )
-        }
     }
 
     @Test
@@ -153,7 +143,8 @@ class MovieDetailsViewModelTest {
             getMovieVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
-            addRatingToMovieUseCase
+            addRatingToMovieUseCase,
+            mediaDetailsNavigator
         )
     }
 }

@@ -4,12 +4,21 @@ import com.repository.home.GenresDataSourceImpl
 import com.repository.home.MediaDataSourceImpl
 import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
-import org.koin.core.module.Module
-import org.koin.core.module.dsl.bind
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val homeRemoteDataSourceModule: Module = module{
-    singleOf(::GenresDataSourceImpl) { bind<GenresRemoteDataSource>()}
-    singleOf(::MediaDataSourceImpl){bind<MediaRemoteDataSource>()}
+@Module
+@InstallIn(SingletonComponent::class)
+object HomeRemoteDataSourceModule {
+    @Provides
+    @Singleton
+    fun provideGenresRemoteDataSource(impl: GenresDataSourceImpl): GenresRemoteDataSource = impl
+
+    @Provides
+    @Singleton
+    fun provideMediaRemoteDataSource(impl: MediaDataSourceImpl): MediaRemoteDataSource = impl
 }
+

@@ -3,8 +3,9 @@ package com.repository.search
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.dto.SearchDto
 import com.repository.search.service.implementation.RetrofitSearchApiService
+import javax.inject.Inject
 
-class SearchRemoteDataSourceImpl(private val retrofitSearchApiService: RetrofitSearchApiService) :
+class SearchRemoteDataSourceImpl @Inject constructor(private val retrofitSearchApiService: RetrofitSearchApiService) :
     SearchRemoteDataSource {
 
     override suspend fun searchMulti(query: String, page: Int, language: String): SearchDto {

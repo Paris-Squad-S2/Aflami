@@ -8,6 +8,7 @@ import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
@@ -16,6 +17,7 @@ import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.aflami.designsystem.components.SliderMedia
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -37,13 +39,13 @@ HomeScreenViewModelTest {
     private val getPopularMediaUseCase: GetPopularMediaUseCase = mockk()
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase = mockk()
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase = mockk()
-    private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase =
-        mockk()
+    private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase = mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
     private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase = mockk()
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
+    private val navigator: HomeNavigator = mockk(relaxed = true)
 
     private lateinit var viewModel: HomeScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -113,7 +115,8 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
     }
 
@@ -159,10 +162,11 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Failed categories")
+        assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<CategoryUiState, Boolean>())
     }
 
     @Test
@@ -177,10 +181,11 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Popular error")
+        assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
     }
 
     @Test
@@ -195,10 +200,11 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("TopRating error")
+        assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
     }
 
     @Test
@@ -218,7 +224,6 @@ HomeScreenViewModelTest {
                 .apply { isAccessible = true }.invoke(this)
         }
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo(oldError)
         assertThat(viewModel.screenState.value.homeUIState.continueWatchingMediaList.map { it.title }).isEqualTo(
             fakeContinueWatchingList.map { it.title })
     }
@@ -382,4 +387,34 @@ HomeScreenViewModelTest {
         assertThat(updated.moodPickerMovie?.id).isEqualTo(0)
         assertThat(updated.moodPickerMovie?.title).isEmpty()
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `onRetry loads all media and categories again`() = runTest {
+
+
+        coEvery { getPopularMediaUseCase() } returns listOf()
+
+
+        viewModel = HomeScreenViewModel(
+            getPopularMediaUseCase,
+            getTopRatingMediaUseCase,
+            getMoviesCategoriesUseCase,
+            filterUpComingMediaByCategoriesUseCase,
+            getUpcomingMediaUseCase,
+            addMediaToLocalDatabaseUseCase = mockk(relaxed = true),
+            getMediaFromLocalUseCase,
+            searchFeatureAPI = mockk(relaxed = true),
+            mediaDetailsFeatureAPI = mockk(relaxed = true),
+            navigator
+        )
+
+        viewModel.onRetry()
+        runCurrent()
+
+        coVerify { getPopularMediaUseCase() }
+    }
+
+
+
 }

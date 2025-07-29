@@ -16,16 +16,17 @@ import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsApi.fromJsonToListsDestination
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileApi.fromJsonToProfileDestination
-import org.koin.compose.koinInject
 
 @Composable
-internal fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: NavHostController ) {
-    val homeFeature: HomeFeatureAPI = koinInject()
-    val listsFeature: ListsFeatureAPI = koinInject()
-    val categoriesFeature: CategoriesFeatureAPI = koinInject()
-    val letsPlayFeature: GuessGameFeatureAPI = koinInject()
-    val profileFeature: ProfileFeatureAPI = koinInject()
-
+internal fun AppNavGraph(
+    navigator: AppNavigator,
+    navController: NavHostController,
+    homeFeature: HomeFeatureAPI,
+    listsFeature: ListsFeatureAPI,
+    categoriesFeature: CategoriesFeatureAPI,
+    letsPlayFeature: GuessGameFeatureAPI,
+    profileFeature: ProfileFeatureAPI
+) {
     ObserveAsEvents(navigator.navigationEvent) { event ->
         when (event) {
             is AppNavigationEvent.Navigate -> {
@@ -33,7 +34,6 @@ internal fun AppNavGraph(navigator: AppNavigator = koinInject(), navController: 
                     route = event.destination, navOptions = event.navOptions
                 )
             }
-
             AppNavigationEvent.NavigateUp -> navController.navigateUp()
         }
     }

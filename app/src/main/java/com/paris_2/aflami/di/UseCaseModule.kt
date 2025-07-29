@@ -1,5 +1,15 @@
 package com.paris_2.aflami.di
 
+import com.domain.home.repository.MediaRepository
+import com.domain.home.repository.MoviesCategoriesRepository
+import com.domain.mediaDetails.repository.MovieRepository
+import com.domain.mediaDetails.repository.TvShowRepository
+import com.domain.search.repository.CategoriesRepository
+import com.domain.search.repository.CountryRepository
+import com.domain.search.repository.GenresInteractionRepository
+import com.domain.search.repository.SearchHistoryRepository
+import com.domain.search.repository.SearchMediaRepository
+import com.paris_2.domain.authentication.repository.AuthenticationRepository
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -44,53 +54,56 @@ import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
 import com.paris_2.domain.authentication.usecase.HasAnySessionUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import com.paris_2.domain.authentication.usecase.LoginUseCase
-import org.koin.core.module.dsl.factoryOf
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 
-val useCaseModule = module {
-    factoryOf(::GetAllRecentSearchesUseCase)
-    factoryOf(::ClearRecentSearchUseCase)
-    factoryOf(::ClearAllRecentSearchesUseCase)
-    factoryOf(::AutoCompleteCountryUseCase)
-    factoryOf(::GetCountryCodeByNameUseCase)
-    factoryOf(::FilterMediaUseCase)
-    factoryOf(::FilterMediaByRatingUseCase)
-    factoryOf(::GetAllCategoriesUseCase)
-    factoryOf(::GetMediaByActorNameUseCase)
-    factoryOf(::GetMoviesOnlyByCountryNameUseCase)
-    factoryOf(::SearchByQueryUseCase)
-    factoryOf(::GetMovieCastUseCase)
-    factoryOf(::GetMovieDetailsUseCase)
-    factoryOf(::GetMovieGalleryUseCase)
-    factoryOf(::GetMovieRecommendationsUseCase)
-    factoryOf(::GetMovieReviewsUseCase)
-    factoryOf(::GetMoviesProductionCompaniesUseCase)
-    factoryOf(::GetSeasonDetailsUseCase)
-    factoryOf(::GetTvShowCastUseCase)
-    factoryOf(::GetTvShowDetailsUseCase)
-    factoryOf(::GetTvShowGalleryUseCase)
-    factoryOf(::GetTvShowRecommendationsUseCase)
-    factoryOf(::GetTvShowReviewsUseCase)
-    factoryOf(::GetTvShowsProductionCompaniesUseCase)
-    factoryOf(::IncrementCategoryInteractionUseCase)
-    factoryOf(::SortingMediaByCategoriesInteractionUseCase)
-    factoryOf(::GetTopRatingMediaUseCase)
-    factoryOf(::GetPopularMediaUseCase)
-    factoryOf(::GetMoviesCategoriesUseCase)
-    factoryOf(::GetUpComingMediaUseCase)
-    factoryOf(::FilterUpComingMediaByCategoriesUseCase)
-    factoryOf(::AddMediaToLocalUseCase)
-    factoryOf(::GetMediaFromLocalUseCase)
-    factoryOf(::LoginUseCase)
-    factoryOf(::GuestLoginUseCase)
-    factoryOf(::GetForgetPasswordUrlUseCase)
-    factoryOf(::GetRegisterUrlUseCase)
-    factoryOf(::GetMovieVideoUseCase)
-    factoryOf(::GetTvShowVideoUseCase)
-    factoryOf(::IsLoggedInUseCase)
-    factoryOf(::HasAnySessionUseCase)
-    factoryOf(::AddRatingToMovieUseCase)
-    factoryOf(::AddRatingToTvShowUseCase)
-    factoryOf(::GetEpisodeVideoUseCase)
+@Module
+@InstallIn(SingletonComponent::class)
+object UseCaseModule {
+    @Provides fun provideGetAllRecentSearchesUseCase(searchHistoryRepository: SearchHistoryRepository) = GetAllRecentSearchesUseCase(searchHistoryRepository)
+    @Provides fun provideClearRecentSearchUseCase(searchHistoryRepository: SearchHistoryRepository) = ClearRecentSearchUseCase(searchHistoryRepository)
+    @Provides fun provideClearAllRecentSearchesUseCase(searchHistoryRepository: SearchHistoryRepository) = ClearAllRecentSearchesUseCase(searchHistoryRepository)
+    @Provides fun provideAutoCompleteCountryUseCase(countryRepository: CountryRepository) = AutoCompleteCountryUseCase(countryRepository)
+    @Provides fun provideGetCountryCodeByNameUseCase(countryRepository: CountryRepository) = GetCountryCodeByNameUseCase(countryRepository)
+    @Provides fun provideFilterMediaUseCase() = FilterMediaUseCase()
+    @Provides fun provideFilterMediaByRatingUseCase() = FilterMediaByRatingUseCase()
+    @Provides fun provideGetAllCategoriesUseCase(categoriesRepository: CategoriesRepository) = GetAllCategoriesUseCase(categoriesRepository)
+    @Provides fun provideGetMediaByActorNameUseCase(searchMediaRepository: SearchMediaRepository) = GetMediaByActorNameUseCase(searchMediaRepository)
+    @Provides fun provideGetMoviesOnlyByCountryNameUseCase(searchMediaRepository: SearchMediaRepository) = GetMoviesOnlyByCountryNameUseCase(searchMediaRepository)
+    @Provides fun provideSearchByQueryUseCase(searchMediaRepository: SearchMediaRepository) = SearchByQueryUseCase(searchMediaRepository)
+    @Provides fun provideGetMovieCastUseCase(movieRepository: MovieRepository) = GetMovieCastUseCase(movieRepository)
+    @Provides fun provideGetMovieDetailsUseCase(movieRepository: MovieRepository) = GetMovieDetailsUseCase(movieRepository)
+    @Provides fun provideGetMovieGalleryUseCase(movieRepository: MovieRepository) = GetMovieGalleryUseCase(movieRepository)
+    @Provides fun provideGetMovieRecommendationsUseCase(movieRepository: MovieRepository) = GetMovieRecommendationsUseCase(movieRepository)
+    @Provides fun provideGetMovieReviewsUseCase(movieRepository: MovieRepository) = GetMovieReviewsUseCase(movieRepository)
+    @Provides fun provideGetMoviesProductionCompaniesUseCase(movieRepository: MovieRepository) = GetMoviesProductionCompaniesUseCase(movieRepository)
+    @Provides fun provideGetSeasonDetailsUseCase(tvShowRepository: TvShowRepository) = GetSeasonDetailsUseCase(tvShowRepository)
+    @Provides fun provideGetTvShowCastUseCase(tvShowRepository: TvShowRepository) = GetTvShowCastUseCase(tvShowRepository)
+    @Provides fun provideGetTvShowDetailsUseCase(tvShowRepository: TvShowRepository) = GetTvShowDetailsUseCase(tvShowRepository)
+    @Provides fun provideGetTvShowGalleryUseCase(tvShowRepository: TvShowRepository) = GetTvShowGalleryUseCase(tvShowRepository)
+    @Provides fun provideGetTvShowRecommendationsUseCase(tvShowRepository: TvShowRepository) = GetTvShowRecommendationsUseCase(tvShowRepository)
+    @Provides fun provideGetTvShowReviewsUseCase(tvShowRepository: TvShowRepository) = GetTvShowReviewsUseCase(tvShowRepository)
+    @Provides fun provideGetTvShowsProductionCompaniesUseCase(tvShowRepository: TvShowRepository) = GetTvShowsProductionCompaniesUseCase(tvShowRepository)
+    @Provides fun provideIncrementCategoryInteractionUseCase(genresInteractionRepository: GenresInteractionRepository) = IncrementCategoryInteractionUseCase(genresInteractionRepository)
+    @Provides fun provideSortingMediaByCategoriesInteractionUseCase(genresInteractionRepository: GenresInteractionRepository) = SortingMediaByCategoriesInteractionUseCase(genresInteractionRepository)
+    @Provides fun provideGetTopRatingMediaUseCase(mediaRepository: MediaRepository) = GetTopRatingMediaUseCase(mediaRepository)
+    @Provides fun provideGetPopularMediaUseCase(mediaRepository: MediaRepository) = GetPopularMediaUseCase(mediaRepository)
+    @Provides fun provideGetMoviesCategoriesUseCase(moviesCategoriesRepository: MoviesCategoriesRepository) = GetMoviesCategoriesUseCase(moviesCategoriesRepository)
+    @Provides fun provideGetUpComingMediaUseCase(mediaRepository: MediaRepository) = GetUpComingMediaUseCase(mediaRepository)
+    @Provides fun provideFilterUpComingMediaByCategoriesUseCase(mediaRepository: MediaRepository) = FilterUpComingMediaByCategoriesUseCase(mediaRepository)
+    @Provides fun provideAddMediaToLocalUseCase(mediaRepository: MediaRepository) = AddMediaToLocalUseCase(mediaRepository)
+    @Provides fun provideGetMediaFromLocalUseCase(mediaRepository: MediaRepository) = GetMediaFromLocalUseCase(mediaRepository)
+    @Provides fun provideLoginUseCase(authenticationRepository: AuthenticationRepository) = LoginUseCase(authenticationRepository)
+    @Provides fun provideGuestLoginUseCase(authenticationRepository: AuthenticationRepository) = GuestLoginUseCase(authenticationRepository)
+    @Provides fun provideGetForgetPasswordUrlUseCase(authenticationRepository: AuthenticationRepository) = GetForgetPasswordUrlUseCase(authenticationRepository)
+    @Provides fun provideGetRegisterUrlUseCase(authenticationRepository: AuthenticationRepository) = GetRegisterUrlUseCase(authenticationRepository)
+    @Provides fun provideGetMovieVideoUseCase(movieRepository: MovieRepository) = GetMovieVideoUseCase(movieRepository)
+    @Provides fun provideGetTvShowVideoUseCase(tvShowRepository: TvShowRepository) = GetTvShowVideoUseCase(tvShowRepository)
+    @Provides fun provideIsLoggedInUseCase(authenticationRepository: AuthenticationRepository) = IsLoggedInUseCase(authenticationRepository)
+    @Provides fun provideHasAnySessionUseCase(authenticationRepository: AuthenticationRepository) = HasAnySessionUseCase(authenticationRepository)
+    @Provides fun provideAddRatingToMovieUseCase(movieRepository: MovieRepository) = AddRatingToMovieUseCase(movieRepository)
+    @Provides fun provideAddRatingToTvShowUseCase(tvShowRepository: TvShowRepository) = AddRatingToTvShowUseCase(tvShowRepository)
+    @Provides fun provideGetEpisodeVideoUseCase(tvShowRepository: TvShowRepository) = GetEpisodeVideoUseCase(tvShowRepository)
 }
-

@@ -26,12 +26,16 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOf
 
-class TvShowDetailsViewModel(
+@HiltViewModel
+class TvShowDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTvShowDetailsUseCase: GetTvShowDetailsUseCase,
     private val getTvShowCastUseCase: GetTvShowCastUseCase,
@@ -44,7 +48,8 @@ class TvShowDetailsViewModel(
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
-    private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase
+    private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
+    navigator: MediaDetailsNavigator
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
@@ -81,7 +86,7 @@ class TvShowDetailsViewModel(
         errorMessage = null,
         isEpisodesLoading = true,
         seasonsLoadingStates = emptyMap()
-    )
+    ), navigator
 ) {
 
     private val mediaId by lazy {

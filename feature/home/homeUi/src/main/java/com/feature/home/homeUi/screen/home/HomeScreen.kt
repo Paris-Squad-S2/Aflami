@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
@@ -44,11 +45,10 @@ import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun HomeScreen(
-    viewModel: HomeScreenViewModel = koinViewModel(),
+    viewModel: HomeScreenViewModel = hiltViewModel(),
 ) {
     val homeScreenState = viewModel.screenState.collectAsStateWithLifecycle()
 
@@ -59,7 +59,6 @@ fun HomeScreen(
                 onRetry = viewModel::onRetry
             )
         }
-
         else -> HomeScreenContent(
             state = homeScreenState.value,
             action = viewModel
@@ -123,12 +122,12 @@ fun HomeScreenContent(
             if (state.homeUIState.continueWatchingMediaList.isNotEmpty()) {
                 item {
                     HomeSection(
-                        title = stringResource(id = com.feature.home.homeUi.R.string.continue_watching),
+                        title = stringResource(id = R.string.continue_watching),
                         mediaList = state.homeUIState.continueWatchingMediaList,
                         onMediaClick = action::onMediaCardClick,
                         onSectionAllClick = action::navigateToContinueWatchingScreen,
                         isScrolling = isScrolling,
-                        modifier = Modifier.padding(top=8.dp)
+                        modifier = Modifier.padding(top = 6.dp)
                     )
                 }
             } else if (state.isContinueWatchingLoading) {
@@ -145,14 +144,14 @@ fun HomeScreenContent(
             if (state.homeUIState.topRatedMediaList.isNotEmpty()) {
                 item {
                     HomeSection(
-                        title = stringResource(com.feature.home.homeUi.R.string.top_rating),
+                        title = stringResource(R.string.top_rating),
                         leadingIconPainter = ImageVector.vectorResource(R.drawable.ic_fire),
                         iconColor = Theme.colors.secondary,
                         mediaList = state.homeUIState.topRatedMediaList,
                         onMediaClick = action::onMediaCardClick,
                         onSectionAllClick = action::navigateToTopRatingScreen,
                         isScrolling = isScrolling,
-                        modifier = Modifier.padding(top=8.dp)
+                        modifier = Modifier.padding(top = 24.dp)
                     )
                 }
             } else if (state.isTopRatingLoading) {
@@ -168,8 +167,8 @@ fun HomeScreenContent(
 
             item {
                 MoodPicker(
-                    title = stringResource(com.feature.home.homeUi.R.string.mood_picker_get_a_movie),
-                    question = stringResource(com.feature.home.homeUi.R.string.what_s_your_vibe_today),
+                    title = stringResource(R.string.mood_picker_get_a_movie),
+                    question = stringResource(R.string.what_s_your_vibe_today),
                     onEmojiClick = { emojiMood ->
                         action.moodPickerSelected(emojiMood.tags)
                     },
@@ -186,7 +185,7 @@ fun HomeScreenContent(
             }
             item {
                 SectionTitle(
-                    title = stringResource(com.feature.home.homeUi.R.string.upcoming),
+                    title = stringResource(R.string.upcoming),
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
                 LazyRow(
@@ -194,7 +193,7 @@ fun HomeScreenContent(
                 ) {
                     item {
                         Chips(
-                            title = stringResource(com.feature.home.homeUi.R.string.all),
+                            title = stringResource(R.string.all),
                             icon = ImageVector.vectorResource(R.drawable.ic_category_all),
                             isSelected = isAllCategories,
                             onClick = {
@@ -226,7 +225,7 @@ fun HomeScreenContent(
                         rating = upcomingMedia.rating.toFloat(),
                         movieName = upcomingMedia.title,
                         mediaType = upcomingMedia.type.toString(),
-                        year = upcomingMedia.yearOfRelease.toString(),
+                        year = upcomingMedia.yearOfRelease.year.toString(),
                         mediaCardType = MediaCardType.UP_COMING,
                         showGradientFilter = false,
                         modifier = Modifier
@@ -252,8 +251,9 @@ fun HomeScreenContent(
     }
 
     TopAppBar(
-        title = stringResource(com.feature.home.homeUi.R.string.aflami),
+        title = stringResource(R.string.aflami),
         subtitle = "More than just watching.",
+        titleTextStyle = Theme.textStyle.logoText,
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
@@ -266,7 +266,7 @@ fun HomeScreenContent(
             IconItem(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_search),
                 onClick = action::onSearchIconClick,
-                backgroundColor = Theme.colors.surfaceHigh,
+                backgroundColor = Theme.colors.primaryVariant,
                 tint = Theme.colors.text.body
             )
         )

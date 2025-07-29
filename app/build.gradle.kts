@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
 import java.util.Properties
 
 plugins {
@@ -8,6 +9,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply true
     id("com.google.firebase.crashlytics")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -106,9 +108,6 @@ android {
         sourceCompatibility = Configurations.JAVA_VERSION
         targetCompatibility = Configurations.JAVA_VERSION
     }
-    kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
-    }
     buildFeatures {
         compose = true
     }
@@ -146,12 +145,10 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.junit.platform.launcher)
 
-    //Koin
-    implementation(libs.koin.workmanager)
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
-    implementation(libs.koin.compose.viewmodel)
-    implementation(libs.koin.android)
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.work)
 
     //work manager for kotlin
     implementation(libs.work.runtime.ktx)
@@ -221,6 +218,10 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit.converter)
 
+}
+
+kotlin {
+    compilerOptions { jvmTarget.set(fromTarget(Configurations.JVM_TARGET)) }
 }
 
 kover {

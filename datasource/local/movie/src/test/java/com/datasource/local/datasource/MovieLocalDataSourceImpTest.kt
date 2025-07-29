@@ -1,5 +1,6 @@
 package com.datasource.local.datasource
 
+import androidx.work.WorkManager
 import com.datasource.local.dao.MovieDao
 import com.repository.movie.models.local.GenreEntity
 import com.repository.movie.models.local.MovieEntity
@@ -13,23 +14,27 @@ import kotlin.test.Test
 
 class MovieLocalDataSourceImpTest {
     private lateinit var movieLocalDataSource: MovieLocalDataSourceImp
+    private var workManager: WorkManager = mockk(relaxed = true)
     private lateinit var movieDao: MovieDao
 
 
     @BeforeEach
     fun setUp() {
         movieDao = mockk(relaxed = true)
-        movieLocalDataSource = MovieLocalDataSourceImp(movieDao)
+        movieLocalDataSource = MovieLocalDataSourceImp(workManager,movieDao)
     }
 
 
     @Test
     fun `addMovie should add movie when addMovie in MovieDao called successfully`() = runTest {
         //Given
+        coEvery { movieDao.addMovies(any()) } returns Unit
+
+        //When
         movieLocalDataSource.addMovie(sampleMovie)
 
-        //When&Then
-        coVerify(exactly = 1) { movieLocalDataSource.addMovie(sampleMovie) }
+        //Then
+        coVerify(exactly = 1) { movieDao.addMovies(sampleMovie) }
 
     }
 

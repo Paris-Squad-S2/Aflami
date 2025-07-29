@@ -25,6 +25,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.SeasonUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
 import kotlinx.datetime.LocalDate
+import kotlinx.datetime.number
 
 fun Movie.toUi(): MovieUi {
     return MovieUi(
@@ -34,7 +35,7 @@ fun Movie.toUi(): MovieUi {
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate.formatToUi(),
-        runtime = "${this.runtime} min",
+        runtime = this.runtime.toHoursMinutes(),
         country = this.country,
         description = this.description,
         productionCompanies = this.productionCompanies.map { it.toUi() }
@@ -49,7 +50,7 @@ fun TvShow.toUi(): TvShowUi {
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate.formatToUi(),
-        runtime = "${this.runtime} min",
+        runtime = this.runtime.toHoursMinutes(),
         country = this.country,
         seasons = this.seasons.toListOfSeasonUi(),
         description = this.description,
@@ -117,9 +118,19 @@ fun LocalDate.formatToUi(): String {
         return ""
     }
     val day = this.day.toString().padStart(2, '0')
-    val month = this.month.toString().padStart(2, '0')
+    val month = month.number.toString().padStart(2, '0')
     val year = this.year.toString()
     return "$day-$month-$year"
+}
+
+fun Int.toHoursMinutes(): String {
+    val hours = this / 60
+    val minutes = this % 60
+    return when {
+        hours > 0 && minutes > 0 -> "${hours}h ${minutes}min"
+        hours > 0 -> "${hours}h"
+        else -> "${minutes}m"
+    }
 }
 
 fun List<Image>.toUi(): List<String> {

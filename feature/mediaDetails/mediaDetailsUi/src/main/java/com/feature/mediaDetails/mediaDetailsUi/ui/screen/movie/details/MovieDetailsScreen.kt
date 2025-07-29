@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -49,12 +50,11 @@ import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsViewModel = koinViewModel(),
+    viewModel: MovieDetailsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     MovieDetailsScreenContent(
@@ -266,7 +266,7 @@ fun MovieDetailsScreenContent(
                                                 rating = media.voteAverage.toFloat(),
                                                 movieName = media.title,
                                                 mediaType = stringResource(R.string.movie),
-                                                year = media.releaseDate.takeLast(4),
+                                                year = media.releaseDate.take(4),
                                                 mediaCardType = MediaCardType.UP_COMING,
                                                 showGradientFilter = true,
                                                 clickable = true,

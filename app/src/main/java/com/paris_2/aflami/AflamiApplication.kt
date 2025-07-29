@@ -3,65 +3,38 @@ package com.paris_2.aflami
 import android.app.Application
 import android.util.Log
 import androidx.work.Configuration
-import androidx.work.WorkManager
-import androidx.work.WorkerFactory
-import com.paris_2.aflami.di.FeatureAPIModule
-import com.paris_2.aflami.di.NetworkModule
-import com.paris_2.aflami.di.SearchRemoteDataSourceModule
-import com.paris_2.aflami.di.dataSourceModule
-import com.paris_2.aflami.di.homeRemoteDataSourceModule
-import com.paris_2.aflami.di.mediaDetailsModule
-import com.paris_2.aflami.di.mediaDetailsModule
-import com.paris_2.aflami.di.repositoryModule
-import com.paris_2.aflami.di.roomModule
-import com.paris_2.aflami.di.serviceModule
-import com.paris_2.aflami.di.useCaseModule
-import com.paris_2.aflami.di.viewModelModule
-import com.paris_2.aflami.di.workManagerModule
-import com.repository.search.util.NetworkConnectionChecker
-import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
-import org.koin.core.context.startKoin
-import org.koin.mp.KoinPlatform.getKoin
+import androidx.hilt.work.HiltWorkerFactory
+import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
+import com.repository.search.util.NetworkConnectionChecker as SearchNetworkChecker
+import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkChecker
+import com.repository.util.NetworkConnectionChecker as GenericNetworkChecker
+import com.repository.home.util.NetworkConnectionChecker as HomeNetworkChecker
 
-class AflamiApplication : Application() {
+@HiltAndroidApp
+class AflamiApplication : Application(), Configuration.Provider {
+    @Inject
+    lateinit var workerFactory: HiltWorkerFactory
+    @Inject
+    lateinit var searchNetworkChecker: SearchNetworkChecker
+    @Inject
+    lateinit var movieNetworkChecker: MovieNetworkChecker
+    @Inject
+    lateinit var genericNetworkChecker: GenericNetworkChecker
+    @Inject
+    lateinit var homeNetworkChecker: HomeNetworkChecker
+
     override fun onCreate() {
         super.onCreate()
+        searchNetworkChecker.startChecker()
+        movieNetworkChecker.startChecker()
+        genericNetworkChecker.startChecker()
+        homeNetworkChecker.startChecker()
+    }
 
-        startKoin {
-            androidLogger()
-            androidContext(this@AflamiApplication)
-            modules(
-                FeatureAPIModule,
-                viewModelModule,
-                roomModule,
-                workManagerModule,
-                dataSourceModule,
-                useCaseModule,
-                repositoryModule,
-                NetworkModule,
-                SearchRemoteDataSourceModule,
-                mediaDetailsModule,
-                serviceModule,
-                homeRemoteDataSourceModule
-            )
-        }
-
-        val workerFactory: WorkerFactory = getKoin().get()
-        val configuration = Configuration.Builder()
+    override val workManagerConfiguration: Configuration
+        get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .setMinimumLoggingLevel(Log.DEBUG)
             .build()
-
-        WorkManager.initialize(this, configuration)
-
-        val networkChecker1: NetworkConnectionChecker = getKoin().get()
-        val networkChecker2: com.repository.movie.util.NetworkConnectionChecker = getKoin().get()
-        val networkChecker3: com.repository.util.NetworkConnectionChecker = getKoin().get()
-        val networkChecker4: com.repository.home.util.NetworkConnectionChecker = getKoin().get()
-        networkChecker1.startChecker()
-        networkChecker2.startChecker()
-        networkChecker3.startChecker()
-        networkChecker4.startChecker()
-    }
 }

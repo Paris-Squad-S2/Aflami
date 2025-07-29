@@ -1,5 +1,18 @@
 package com.paris_2.aflami.di
 
+import android.content.Context
+import androidx.work.WorkManager
+import com.datasource.local.dao.MovieCastDao
+import com.datasource.local.dao.MovieDao
+import com.datasource.local.dao.MovieGalleryDao
+import com.datasource.local.dao.MovieReviewDao
+import com.datasource.local.dao.MovieSimilarDao
+import com.datasource.local.dao.SeasonDao
+import com.datasource.local.dao.TvShowCastDao
+import com.datasource.local.dao.TvShowDao
+import com.datasource.local.dao.TvShowGalleryDao
+import com.datasource.local.dao.TvShowReviewDao
+import com.datasource.local.dao.TvShowSimilarDao
 import com.datasource.local.datasource.MovieCastLocalDataSourceImp
 import com.datasource.local.datasource.MovieGalleryLocalDataSourceImp
 import com.datasource.local.datasource.MovieLocalDataSourceImp
@@ -11,13 +24,20 @@ import com.datasource.local.datasource.TvShowLocalDataSourceImp
 import com.datasource.local.datasource.TvShowReviewLocalDataSourceImp
 import com.datasource.local.datasource.TvShowSeasonLocalDataSourceImp
 import com.datasource.local.datasource.TvShowSimilarLocalDataSourceImpl
+import com.datasource.local.home.dao.HomeMediaDao
 import com.datasource.local.home.datasource.HomeMediaLocalDataSourceImpl
+import com.datasource.local.search.dao.CountryDao
+import com.datasource.local.search.dao.GenresDao
+import com.datasource.local.search.dao.GenresUserInteractionDao
+import com.datasource.local.search.dao.MediaDao
+import com.datasource.local.search.dao.SearchHistoryDao
 import com.datasource.local.search.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.search.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.search.datasource.GenresLocalDataSourceImpl
 import com.datasource.local.search.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.search.datasource.MediaLocalDataSourceImpl
 import com.paris_2.dataSource.local.authentication.AuthenticationLocalDataSourceImpl
+import com.paris_2.datasource.remote.authentication.AuthenticationApi
 import com.paris_2.datasource.remote.authentication.AuthenticationRemoteDataSourceImpl
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
@@ -38,28 +58,130 @@ import com.repository.search.dataSource.local.GenresInteractionDataSource
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val dataSourceModule = module {
-    singleOf(::HistoryLocalDataSourceImpl) bind HistoryLocalDataSource::class
-    singleOf(::MediaLocalDataSourceImpl) bind MediaLocalDataSource::class
-    singleOf(::CountriesLocalDataSourceImpl) bind CountriesLocalDataSource::class
-    singleOf(::GenresLocalDataSourceImpl) bind GenresLocalDataSource::class
-    singleOf(::MovieGalleryLocalDataSourceImp) bind MovieGalleryLocalDataSource::class
-    singleOf(::MovieCastLocalDataSourceImp) bind MovieCastLocalDataSource::class
-    singleOf(::MovieLocalDataSourceImp) bind MovieLocalDataSource::class
-    singleOf(::MovieReviewLocalDataSourceImp) bind MovieReviewLocalDataSource::class
-    singleOf(::TvShowCastLocalDataSourceImp) bind TvShowCastLocalDataSource::class
-    singleOf(::TvShowGalleryLocalDataSourceImp) bind TvShowGalleryLocalDataSource::class
-    singleOf(::TvShowLocalDataSourceImp) bind TvShowLocalDataSource::class
-    singleOf(::TvShowReviewLocalDataSourceImp) bind TvShowReviewLocalDataSource::class
-    singleOf(::TvShowSeasonLocalDataSourceImp) bind TvShowSeasonLocalDataSource::class
-    singleOf(::TvShowSimilarLocalDataSourceImpl) bind TvShowSimilarLocalDataSource::class
-    singleOf(::GenresInteractionDataSourceImpl) bind GenresInteractionDataSource::class
-    singleOf(::MovieSimilarLocalDataSourceImp) bind MovieSimilarLocalDataSource::class
-    singleOf(::HomeMediaLocalDataSourceImpl) bind HomeMediaLocalDataSource::class
-    singleOf(::AuthenticationRemoteDataSourceImpl) bind AuthenticationRemoteDataSource::class
-    singleOf(::AuthenticationLocalDataSourceImpl) bind AuthenticationLocalDataSource::class
+@Module
+@InstallIn(SingletonComponent::class)
+object DataSourceModule {
+    @Provides
+    @Singleton
+    fun provideHistoryLocalDataSource(
+        searchHistoryDao: SearchHistoryDao,
+        workManager: WorkManager
+    ): HistoryLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao, workManager)
+
+    @Provides
+    @Singleton
+    fun provideCountriesLocalDataSource(
+        dao: CountryDao
+    ): CountriesLocalDataSource = CountriesLocalDataSourceImpl(dao)
+
+    @Provides
+    @Singleton
+    fun provideMediaLocalDataSource(
+        dao: MediaDao
+    ): MediaLocalDataSource = MediaLocalDataSourceImpl(dao)
+
+    @Provides
+    @Singleton
+    fun provideGenresLocalDataSource(
+        dao: GenresDao
+    ): GenresLocalDataSource = GenresLocalDataSourceImpl(dao)
+
+    @Provides
+    @Singleton
+    fun provideGenresInteractionDataSource(
+        genresInteractionDao: GenresUserInteractionDao
+    ): GenresInteractionDataSource = GenresInteractionDataSourceImpl(genresInteractionDao)
+
+    @Provides
+    @Singleton
+    fun provideMovieGalleryLocalDataSource(
+        dao: MovieGalleryDao
+    ): MovieGalleryLocalDataSource = MovieGalleryLocalDataSourceImp(dao)
+
+    @Provides
+    @Singleton
+    fun provideMovieCastLocalDataSource(
+        dao: MovieCastDao
+    ): MovieCastLocalDataSource = MovieCastLocalDataSourceImp(dao)
+
+    @Provides
+    @Singleton
+    fun provideMovieLocalDataSource(
+        workManager: WorkManager,
+        dao: MovieDao
+    ): MovieLocalDataSource = MovieLocalDataSourceImp(workManager, dao)
+
+    @Provides
+    @Singleton
+    fun provideMovieReviewLocalDataSource(
+        dao: MovieReviewDao
+    ): MovieReviewLocalDataSource = MovieReviewLocalDataSourceImp(dao)
+
+    @Provides
+    @Singleton
+    fun provideMovieSimilarLocalDataSource(
+        similarDao: MovieSimilarDao
+    ): MovieSimilarLocalDataSource = MovieSimilarLocalDataSourceImp(similarDao)
+
+    @Provides
+    @Singleton
+    fun provideTvShowCastLocalDataSource(
+        dao: TvShowCastDao
+    ): TvShowCastLocalDataSource = TvShowCastLocalDataSourceImp(dao)
+
+    @Provides
+    @Singleton
+    fun provideTvShowGalleryLocalDataSource(
+        dao: TvShowGalleryDao
+    ): TvShowGalleryLocalDataSource = TvShowGalleryLocalDataSourceImp(dao)
+
+    @Provides
+    @Singleton
+    fun provideTvShowLocalDataSource(
+        workManager: WorkManager,
+        dao: TvShowDao
+    ): TvShowLocalDataSource = TvShowLocalDataSourceImp(workManager, dao)
+
+    @Provides
+    @Singleton
+    fun provideTvShowReviewLocalDataSource(
+        dao: TvShowReviewDao
+    ): TvShowReviewLocalDataSource = TvShowReviewLocalDataSourceImp(dao)
+
+    @Provides
+    @Singleton
+    fun provideTvShowSeasonLocalDataSource(
+        dao: SeasonDao
+    ): TvShowSeasonLocalDataSource = TvShowSeasonLocalDataSourceImp(dao)
+
+    @Provides
+    @Singleton
+    fun provideTvShowSimilarLocalDataSource(
+        tvShowSimilarDao: TvShowSimilarDao
+    ): TvShowSimilarLocalDataSource = TvShowSimilarLocalDataSourceImpl(tvShowSimilarDao)
+
+    @Provides
+    @Singleton
+    fun provideHomeMediaLocalDataSource(
+        mediaDao: HomeMediaDao
+    ): HomeMediaLocalDataSource = HomeMediaLocalDataSourceImpl(mediaDao)
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationRemoteDataSource(
+        apiService: AuthenticationApi
+    ): AuthenticationRemoteDataSource = AuthenticationRemoteDataSourceImpl(apiService)
+
+    @Provides
+    @Singleton
+    fun provideAuthenticationLocalDataSource(
+        @ApplicationContext context: Context
+    ): AuthenticationLocalDataSource = AuthenticationLocalDataSourceImpl(context)
 }

@@ -27,4 +27,3 @@ class SearchHistoryRepositoryImpl(
         return historyLocalDataSource.clearAll()
     }
 }
-

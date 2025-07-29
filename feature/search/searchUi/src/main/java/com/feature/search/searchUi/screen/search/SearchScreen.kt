@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -30,14 +31,13 @@ import com.paris_2.aflami.designsystem.components.TextField
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 import com.feature.search.searchUi.R as RSearchUi
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
+fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
     val currentLanguage = remember { mutableStateOf(Locale.getDefault().language) }
 
