@@ -258,9 +258,8 @@ fun HomeScreenContent(
             .background(topBarBackground)
             .padding(top = 32.dp),
         logo = iconItemWithDefaults(
-            ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
-            {},
-            Theme.colors.primaryVariant,
+            icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
+            backgroundColor = Theme.colors.primaryVariant,
         ),
         trailingIcons = listOf(
             IconItem(

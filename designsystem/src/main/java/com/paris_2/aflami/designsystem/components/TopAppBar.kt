@@ -133,12 +133,11 @@ private fun IconBox(
     Box(
         modifier = modifier
             .size(40.dp)
-//            .border(1.dp, color = Theme.colors.stroke, shape = RoundedCornerShape(12.dp))
             .clip(RoundedCornerShape(12.dp))
             .background(iconItem.backgroundColor)
             .then(
                 if (iconItem.onClick != null) {
-                    Modifier.clickable { iconItem.onClick.invoke() }
+                    Modifier.clickable { iconItem.onClick() }
                 } else {
                     Modifier
                 }
