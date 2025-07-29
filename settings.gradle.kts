@@ -22,7 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "Aflami"
 include(":app")
 include(":designsystem")
-include(":firebase")
+include(":logger")
 include(":domain")
 include(":domain:user")
 include(":domain:guessGame")

@@ -13,7 +13,7 @@ import com.domain.mediaDetails.exception.NoTvShowFoundException
 import com.domain.mediaDetails.exception.NoVideoFoundException
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.Gallery
+import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.ProductionCompany
 import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.model.Season
@@ -106,7 +106,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getTvShowGallery(tvShowId: Int): Gallery {
+    override suspend fun getTvShowGallery(tvShowId: Int): List<Image> {
         return safeCall(NoGalleryFoundException()) {
             val localGallery = tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
             if (localGallery != null) {

@@ -3,7 +3,6 @@ package com.repository.mapper
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.ProductionCompany
@@ -212,10 +211,8 @@ private fun TvShowPosterDto.toLocalDto(): ImageEntity{
 }
 
 
-fun GalleryEntity.toEntity(): Gallery {
-    return Gallery(
-        images = this.images.map { it.toEntity() }
-    )
+fun GalleryEntity.toEntity(): List<Image> {
+    return this.images.map { it.toEntity() }
 }
 
 fun ImageEntity.toEntity(): Image {

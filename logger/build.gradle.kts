@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.parise_2.firebase"
+    namespace = "com.parise_2.logger"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
