@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -31,6 +33,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
+import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingActivity
 import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
@@ -73,6 +76,7 @@ fun HomeScreenContent(
     action: HomeScreenInteractionListener
 ) {
 
+    val context = LocalContext.current
     val lazyState = rememberLazyListState()
     val isScrolling by remember { derivedStateOf { lazyState.isScrollInProgress } }
     var isAllCategories by remember { mutableStateOf(state.homeUIState.isAllCategories) }
@@ -125,7 +129,10 @@ fun HomeScreenContent(
                         title = stringResource(id = R.string.continue_watching),
                         mediaList = state.homeUIState.continueWatchingMediaList,
                         onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = action::navigateToContinueWatchingScreen,
+                        onSectionAllClick = {
+                            val intent = Intent(context, ContinueWatchingActivity::class.java)
+                            context.startActivity(intent)
+                        },
                         isScrolling = isScrolling,
                         modifier = Modifier.padding(top = 6.dp)
                     )
