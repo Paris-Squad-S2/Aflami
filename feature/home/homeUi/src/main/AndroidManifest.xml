@@ -5,7 +5,10 @@
         <activity
             android:name=".screen.continueWatching.ContinueWatchingActivity"
             android:exported="false">
-
+        </activity>
+        <activity
+            android:name=".screen.topRatingMovies.TopRatingActivity"
+            android:exported="false">
         </activity>
     </application>
 

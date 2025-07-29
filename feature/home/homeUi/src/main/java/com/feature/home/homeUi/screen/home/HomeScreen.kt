@@ -37,6 +37,7 @@ import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingActivity
 import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
+import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
 import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.MediaCard
@@ -157,7 +158,10 @@ fun HomeScreenContent(
                         iconColor = Theme.colors.secondary,
                         mediaList = state.homeUIState.topRatedMediaList,
                         onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = action::navigateToTopRatingScreen,
+                        onSectionAllClick = {
+                            val intent = Intent(context, TopRatingActivity::class.java)
+                            context.startActivity(intent)
+                        },
                         isScrolling = isScrolling,
                         modifier = Modifier.padding(top = 24.dp)
                     )
