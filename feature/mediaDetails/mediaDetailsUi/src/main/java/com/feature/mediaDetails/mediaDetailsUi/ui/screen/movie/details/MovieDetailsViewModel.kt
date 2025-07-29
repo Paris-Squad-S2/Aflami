@@ -26,7 +26,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestina
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
-import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
@@ -45,7 +44,6 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
-    private val getSessionIdUseCase: GetSessionIdUseCase,
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
     navigator: MediaDetailsNavigator
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
@@ -278,7 +276,19 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun onAddToListClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = true
+            )
+        )
+    }
+
+    override fun onDismissAddToListDialog() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = false
+            )
+        )
     }
 
     override fun onShowAllCastClick(movieId: Int) {

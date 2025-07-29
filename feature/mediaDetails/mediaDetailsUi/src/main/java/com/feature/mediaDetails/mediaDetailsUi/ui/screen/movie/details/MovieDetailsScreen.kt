@@ -38,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
@@ -101,6 +102,12 @@ fun MovieDetailsScreenContent(
                     rating = currentRating
                 )
             }
+        )
+    }
+    if (state.showAddToListDialog) {
+        AddToListDialog(
+            list = listOf("My Favorite Movies", "Kittens"),
+            onDismiss = { movieDetailsScreenInteractionListener.onDismissAddToListDialog() },
         )
     }
 

@@ -154,7 +154,6 @@ class MovieDetailsViewModelTest {
             getMovieVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
-            getSessionIdUseCase,
             addRatingToMovieUseCase,
             mediaDetailsNavigator
         )
