@@ -22,6 +22,28 @@ class MovieDetailsRemoteDataSourceImplTest {
     }
 
     @Test
+    fun `addRatingToMovie should return false when status code is not 1 or 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 3.0f
+        val responseDto = RatingResponseDto(statusCode = 10, statusMessage = "Failed")
+
+        coEvery {
+            retrofitMovieDetailsApiService.addRatingToMovie(
+                movieId,
+                RatingDto(rating)
+            )
+        } returns responseDto
+
+        // When
+        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+
+        // Then
+        assertThat(result).isFalse()
+    }
+
+
+    @Test
     fun `addRatingToMovie should complete successfully when status code is 1`() = runTest {
         // Given
         val movieId = 123
