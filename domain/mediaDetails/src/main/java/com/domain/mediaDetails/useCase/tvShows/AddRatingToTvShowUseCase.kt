@@ -5,11 +5,10 @@ import com.domain.mediaDetails.repository.TvShowRepository
 class AddRatingToTvShowUseCase(
     private val tvShowRepository: TvShowRepository
 ) {
-    suspend operator fun invoke(movieId: Int, rating: Float, sessionId: String) {
+    suspend operator fun invoke(movieId: Int, rating: Float) {
         return tvShowRepository.addRatingToTvShow(
             movieId,
-            rating,
-            sessionId
+            rating
         )
     }
 }
