@@ -1,4 +1,4 @@
-versionName=0.3.13
+versionName=0.3.14
 - Adds rating functionality for both movies and TV shows with authentication checks
 - Implements proper API integration with rating DTOs and response handling
 - Updates UI to support rating dialogs with submission callbacks
