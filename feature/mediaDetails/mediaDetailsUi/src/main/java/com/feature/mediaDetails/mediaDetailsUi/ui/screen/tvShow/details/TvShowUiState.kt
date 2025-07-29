@@ -2,7 +2,6 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.annotation.StringRes
 import androidx.paging.PagingData
-import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
@@ -25,7 +24,7 @@ data class TvShowDetailsScreenState(
     val isProductionCompaniesLoading: Boolean = false,
     val seasonsLoadingStates: Map<Int, Boolean> = emptyMap(),
     val showRatingDialog: Boolean = false,
-    @StringRes val snackBarMessage: Int = R.string.not_found_video,
+    @StringRes val snackBarMessage: Int? = null,
     val showSnackBar: Boolean = false,
     val snackBarSuccess: Boolean = false
 )
