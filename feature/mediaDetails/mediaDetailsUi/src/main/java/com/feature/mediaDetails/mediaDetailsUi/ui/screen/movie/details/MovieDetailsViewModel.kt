@@ -17,6 +17,7 @@ import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
@@ -28,8 +29,9 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
@@ -73,7 +75,8 @@ class MovieDetailsViewModel @Inject constructor(
             selectedRating = 0f
         ),
         isLoading = true,
-        errorMessage = null
+        errorMessage = null,
+        showSnackBar = false,
     ), navigator
 ) {
 
@@ -256,26 +259,16 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onRateClick(title: Int) {
+    override fun onRateClick() { // why title don't forget TODO()
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { Unit },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
+                    updateState(
+                        screenState.value.copy(
+                            showRatingDialog = true
+                        )
                     )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
                 }
             },
             onError = {
@@ -337,12 +330,38 @@ class MovieDetailsViewModel @Inject constructor(
     override fun onRatingSubmitted(movieId: Int, rating: Float) {
         tryToExecute(
             execute = {
-                addRatingToMovieUseCase(movieId, rating, getSessionIdUseCase()!!)
+                val step = 0.5f
+                val roundedRating = ((rating / step).roundToInt() * step)
+                addRatingToMovieUseCase(movieId, roundedRating)
             },
-            onSuccess = {},
+            onSuccess = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = true,
+                        snackBarMessage = R.string.rating_submit_successfully,
+                        showRatingDialog = false
+                    )
+                )
+            },
             onError = {
-                updateState(screenState.value.copy(errorMessage = it))
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = false,
+                        snackBarMessage = R.string.failed_to_submit_rating,
+                        errorMessage = it
+                    )
+                )
             }
+        )
+    }
+
+    override fun onHideSnackBar() {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = false
+            )
         )
     }
 }
