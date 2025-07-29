@@ -21,6 +21,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -257,9 +258,10 @@ fun HomeScreenContent(
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
-        logo = iconItemWithDefaults(
+            logo = iconItemWithDefaults(
             icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
             backgroundColor = Theme.colors.primaryVariant,
+            tint = Color.Unspecified,
         ),
         trailingIcons = listOf(
             IconItem(

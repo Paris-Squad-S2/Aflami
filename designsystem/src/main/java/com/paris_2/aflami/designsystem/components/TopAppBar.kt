@@ -87,7 +87,7 @@ fun TopAppBar(
             }
 
             logo?.let {
-                IconBox(it, modifier = Modifier, tint = Color.Unspecified)
+                IconBox(it)
             }
 
             Column(
