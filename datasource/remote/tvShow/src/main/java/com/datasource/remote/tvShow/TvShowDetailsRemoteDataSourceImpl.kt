@@ -74,6 +74,11 @@ class TvShowDetailsRemoteDataSourceImpl @Inject constructor(
     override suspend fun addRatingToTvShow(movieId: Int, rating: Float): Boolean {
         val dto = RatingDto(value = rating)
         val response = retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, dto)
-        return !(response.status_code != 1 && response.status_code != 12)
+        return !(response.statusCode != STATUS_CODE_SUCCESS && response.statusCode != STATUS_CODE_UPDATED)
+    }
+
+    companion object {
+        private const val STATUS_CODE_SUCCESS = 1
+        private const val STATUS_CODE_UPDATED = 12
     }
 }
