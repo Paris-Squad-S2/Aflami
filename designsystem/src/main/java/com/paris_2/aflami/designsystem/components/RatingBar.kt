@@ -107,9 +107,9 @@ private fun StarIconFromResource(
         val starModifier = Modifier.matchParentSize()
 
         Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_filled),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_outlined),
             contentDescription = null,
-            tint = selectedColor.copy(alpha = 0.3f),
+            tint = selectedColor,
             modifier = starModifier
         )
 

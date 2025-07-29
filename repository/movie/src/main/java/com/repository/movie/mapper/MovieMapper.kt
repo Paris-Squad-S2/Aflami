@@ -1,7 +1,6 @@
 package com.repository.movie.mapper
 
 import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
@@ -78,10 +77,8 @@ fun CastEntity.toEntity(): Cast {
     )
 }
 
-fun MovieImagesDto.toEntity(): Gallery {
-    return Gallery(
-        images = this.logos?.map { it.toEntity(id = this.id ?: 0) } ?: emptyList()
-    )
+fun MovieImagesDto.toEntity(): List<Image> {
+    return  this.logos?.map { it.toEntity(id = this.id ?: 0) } ?: emptyList()
 }
 
 private fun MovieLogoDto.toEntity(id: Int): Image {
@@ -166,10 +163,8 @@ fun ImageEntity.toEntity(): Image {
     )
 }
 
-fun GalleryEntity.toEntity(): Gallery {
-    return Gallery(
-        images = this.images.map { it.toEntity() }
-    )
+fun GalleryEntity.toEntity(): List<Image> {
+    return this.images.map { it.toEntity() }
 }
 
 fun Review.toLocalDto(movieId: Int, language: String): ReviewEntity {
