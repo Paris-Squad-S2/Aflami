@@ -169,19 +169,17 @@ class TvShowDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.5f
-        val sessionId = "validSession"
         val response = RatingResponseDto(status_code = 1, status_message = "Success")
 
         coEvery {
             retrofitTvShowDetailsApiService.addRatingToTvShow(
                 movieId,
-                sessionId,
                 RatingDto(rating)
             )
         } returns response
 
         // When (should not throw)
-        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating, sessionId)
+        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
     }
 
     @Test
@@ -189,19 +187,17 @@ class TvShowDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.0f
-        val sessionId = "validSession"
         val response = RatingResponseDto(status_code = 12, status_message = "Success")
 
         coEvery {
             retrofitTvShowDetailsApiService.addRatingToTvShow(
                 movieId,
-                sessionId,
                 RatingDto(rating)
             )
         } returns response
 
         // When (should not throw)
-        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating, sessionId)
+        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
     }
 
     @Test
@@ -209,13 +205,11 @@ class TvShowDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 3.5f
-        val sessionId = "invalidSession"
         val response = RatingResponseDto(status_code = 10, status_message = "Invalid session")
 
         coEvery {
             retrofitTvShowDetailsApiService.addRatingToTvShow(
                 movieId,
-                sessionId,
                 RatingDto(rating)
             )
         } returns response
@@ -223,7 +217,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         // Then
         assertThrows(Exception::class.java) {
             runTest {
-                tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating, sessionId)
+                tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
             }
         }
     }

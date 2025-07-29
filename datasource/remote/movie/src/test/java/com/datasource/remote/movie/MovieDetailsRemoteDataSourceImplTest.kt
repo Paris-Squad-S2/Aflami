@@ -26,19 +26,17 @@ class MovieDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.5f
-        val sessionId = "validSessionId"
         val responseDto = RatingResponseDto(status_code = 1, status_message = "Success")
 
         coEvery {
             retrofitMovieDetailsApiService.addRatingToMovie(
                 movieId,
-                sessionId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When / Then (should not throw)
-        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating, sessionId)
+        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
     }
 
     @Test
@@ -46,39 +44,17 @@ class MovieDetailsRemoteDataSourceImplTest {
         // Given
         val movieId = 123
         val rating = 4.5f
-        val sessionId = "validSessionId"
         val responseDto = RatingResponseDto(status_code = 12, status_message = "Success")
 
         coEvery {
             retrofitMovieDetailsApiService.addRatingToMovie(
                 movieId,
-                sessionId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When / Then (should not throw)
-        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating, sessionId)
-    }
-
-    @Test(expected = Exception::class)
-    fun `addRatingToMovie should throw exception when status code is not 1 or 12`() = runTest {
-        // Given
-        val movieId = 123
-        val rating = 4.5f
-        val sessionId = "invalidSessionId"
-        val responseDto = RatingResponseDto(status_code = 10, status_message = "Invalid Session")
-
-        coEvery {
-            retrofitMovieDetailsApiService.addRatingToMovie(
-                movieId,
-                sessionId,
-                RatingDto(rating)
-            )
-        } returns responseDto
-
-        // When
-        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating, sessionId)
+        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
     }
 
     @Test

@@ -23,14 +23,13 @@ class AddRatingToMovieUseCaseTest {
         // Arrange
         val movieId = 123
         val rating = 8.5f
-        val sessionId = "dummy_session_id"
 
         // Act
-        useCase(movieId, rating, sessionId)
+        useCase(movieId, rating)
 
         // Assert
         coVerify(exactly = 1) {
-            repository.addRatingToMovie(movieId, rating, sessionId)
+            repository.addRatingToMovie(movieId, rating)
         }
     }
 }

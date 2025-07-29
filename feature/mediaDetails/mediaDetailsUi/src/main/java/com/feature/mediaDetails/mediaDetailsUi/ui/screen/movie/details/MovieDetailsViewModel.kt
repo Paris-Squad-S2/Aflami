@@ -259,7 +259,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onRateClick() { // why title don't forget TODO()
+    override fun onRateClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->

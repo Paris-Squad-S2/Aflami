@@ -1,8 +1,9 @@
 package com.paris_2.domain.authentication.usecase
 
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
-import io.mockk.every
+import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,9 +20,10 @@ class GetSessionIdUseCaseTest {
     }
 
     @Test
-    fun `invoke returns session ID`() {
+    fun `getSessionIdUseCase should return session ID when repository returns a valid session`() =
+        runTest {
         val expectedSessionId = "abc123"
-        every { authenticationRepository.getSessionId() } returns expectedSessionId
+            coEvery { authenticationRepository.getSessionId() } returns expectedSessionId
 
         val actual = getSessionIdUseCase()
 
@@ -29,8 +31,8 @@ class GetSessionIdUseCaseTest {
     }
 
     @Test
-    fun `invoke returns null if no session ID`() {
-        every { authenticationRepository.getSessionId() } returns null
+    fun `getSessionIdUseCase should return null when session ID is not available`() = runTest {
+        coEvery { authenticationRepository.getSessionId() } returns null
 
         val actual = getSessionIdUseCase()
 

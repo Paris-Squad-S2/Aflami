@@ -73,42 +73,20 @@ class TvShowRepositoryImplTest {
     }
 
     @Test
-    fun `addRatingToTvShow - should call remote data source successfully`() = runTest {
-        // Given
-        val movieId = 1
-        val rating = 8.5f
-        val sessionId = "session_123"
-
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery {
-            tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating, sessionId)
-        } just Runs
-
-        // When
-        tvShowRepository.addRatingToTvShow(movieId, rating, sessionId)
-
-        // Then
-        coVerify(exactly = 1) {
-            tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating, sessionId)
-        }
-    }
-
-    @Test
     fun `addRatingToTvShow - should throw FailedToAddRatingException when remote fails`() =
         runTest {
             // Given
             val movieId = 1
             val rating = 8.5f
-            val sessionId = "session_123"
 
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
             coEvery {
-                tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating, sessionId)
+                tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating)
             } throws RuntimeException("Failed")
 
             // When & Then
             assertThrows<FailedToAddRatingException> {
-                tvShowRepository.addRatingToTvShow(movieId, rating, sessionId)
+                tvShowRepository.addRatingToTvShow(movieId, rating)
             }
         }
 
@@ -117,13 +95,12 @@ class TvShowRepositoryImplTest {
         // Given
         val movieId = 1
         val rating = 8.5f
-        val sessionId = "session_123"
 
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
         // When & Then
         assertThrows<NoInternetConnectionException> {
-            tvShowRepository.addRatingToTvShow(movieId, rating, sessionId)
+            tvShowRepository.addRatingToTvShow(movieId, rating)
         }
     }
     @Test

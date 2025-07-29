@@ -23,14 +23,13 @@ class AddRatingToTvShowUseCaseTest {
         // Given
         val movieId = 123
         val rating = 8.5f
-        val sessionId = "test_session_id"
 
         // When
-        useCase(movieId, rating, sessionId)
+        useCase(movieId, rating)
 
         // Then
         coVerify(exactly = 1) {
-            repository.addRatingToTvShow(movieId, rating, sessionId)
+            repository.addRatingToTvShow(movieId, rating)
         }
     }
 }
