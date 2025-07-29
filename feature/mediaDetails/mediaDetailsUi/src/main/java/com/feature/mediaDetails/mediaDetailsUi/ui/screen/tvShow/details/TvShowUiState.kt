@@ -26,7 +26,8 @@ data class TvShowDetailsScreenState(
     val seasonsLoadingStates: Map<Int, Boolean> = emptyMap(),
     val showRatingDialog: Boolean = false,
     @StringRes val snackBarMessage: Int = R.string.not_found_video,
-    val showSnackBar: Boolean = false
+    val showSnackBar: Boolean = false,
+    val snackBarSuccess: Boolean = false
 )
 
 data class TvShowDetailsUiState(
