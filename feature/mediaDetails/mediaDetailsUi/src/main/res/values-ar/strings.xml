@@ -32,4 +32,7 @@
     <string name="there_is_no_seasons">لا توجد مواسم</string>
     <string name="not_found_video">الفيديو غير متوفر</string>
     <string name="login">تسجيل الدخول</string>
+    <string name="failed_to_submit_rating">Failed to submit rating</string>
+    <string name="rating_submit_successfully">تم ارسال التقييم بنجاح</string>
+
 </resources>
