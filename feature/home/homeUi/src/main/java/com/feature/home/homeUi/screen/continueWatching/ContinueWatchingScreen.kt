@@ -41,9 +41,11 @@ fun ContinueWatchingScreen(
 ) {
     val state = viewModel.screenState.collectAsState()
     val context = LocalActivity.current
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .background(Theme.colors.surface)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Theme.colors.surface)
+    ) {
         TopAppBar(
             logo = iconItemWithDefaults(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),

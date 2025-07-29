@@ -62,6 +62,7 @@ fun HomeScreen(
                 onRetry = viewModel::onRetry
             )
         }
+
         else -> HomeScreenContent(
             state = homeScreenState.value,
             action = viewModel
@@ -73,7 +74,7 @@ fun HomeScreen(
 @Composable
 fun HomeScreenContent(
     state: HomeScreenUIState,
-    action: HomeScreenInteractionListener
+    action: HomeScreenInteractionListener,
 ) {
 
     val context = LocalContext.current
