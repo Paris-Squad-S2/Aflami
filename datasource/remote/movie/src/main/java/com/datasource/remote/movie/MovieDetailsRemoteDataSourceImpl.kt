@@ -8,8 +8,8 @@ import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieReviewsDto
 import com.repository.movie.models.remote.MovieSimilarsDto
 import com.repository.movie.models.remote.MovieVideoDto
-import javax.inject.Inject
 import com.repository.movie.models.remote.RatingDto
+import javax.inject.Inject
 
 class MovieDetailsRemoteDataSourceImpl @Inject constructor(
     private val retrofitMovieDetailsApiService: RetrofitMovieDetailsApiService
@@ -38,12 +38,13 @@ class MovieDetailsRemoteDataSourceImpl @Inject constructor(
         return retrofitMovieDetailsApiService.getTrailerVideoForMovie(movieId)
     }
 
-    override suspend fun addRatingToMovie(movieId: Int, rating: Float, sessionId: String) {
+    override suspend fun addRatingToMovie(movieId: Int, rating: Float): Boolean {
         val dto = RatingDto(value = rating)
-        val response = retrofitMovieDetailsApiService.addRatingToMovie(movieId, sessionId, dto)
-        if (response.status_code != 1 && response.status_code != 12) {
-            throw Exception("Server responded: ${response.status_message}")
-        }
+        val response = retrofitMovieDetailsApiService.addRatingToMovie(
+            movieId = movieId,
+            rating = dto
+        )
+        return !(response.status_code != 1 && response.status_code != 12)
     }
 }
 
