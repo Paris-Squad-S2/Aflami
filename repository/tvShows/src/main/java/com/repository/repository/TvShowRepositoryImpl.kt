@@ -180,12 +180,11 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun addRatingToTvShow(movieId: Int, rating: Float, sessionId: String) {
+    override suspend fun addRatingToTvShow(movieId: Int, rating: Float) {
         return safeCall(FailedToAddRatingException()) {
             tvShowDetailsRemoteDataSource.addRatingToTvShow(
                 movieId = movieId,
-                rating = rating,
-                sessionId = sessionId
+                rating = rating
             )
         }
     }
