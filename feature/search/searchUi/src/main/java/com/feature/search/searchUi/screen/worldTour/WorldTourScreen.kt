@@ -66,7 +66,7 @@ fun WorldTourScreenContent(
         TextField(
             value = state.uiState.searchQuery,
             onValueChange = worldTourScreenInteractionListener::onSearchQueryChange,
-            placeholder = stringResource(R.string.search),
+            placeholder = stringResource(R.string.county_name),
             suggestions = state.uiState.hints.map {
                 val name = if (isArabic) {
                     it.arabicName
