@@ -61,6 +61,7 @@ fun FilterDialog(
                 rating = currentRating,
                 starSize = 24.dp,
                 spaceBetween = 6.dp,
+                isRtl = true,
                 onRatingChange = { newRating ->
                     currentRating = newRating
                 }
