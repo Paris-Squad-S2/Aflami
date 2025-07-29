@@ -41,7 +41,7 @@ fun TvShowDto.toLocalDto(language: String,tvShowId : Int): TvShowEntity {
     return TvShowEntity(
         id = tvShowId,
         title = this.name.orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage ?: -1.0,
         description = this.overview.orEmpty(),
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
@@ -77,7 +77,7 @@ private fun TvShowEpisodeDto.toLocalDto(posterUrl: String): EpisodeEntity {
         id = this.id ?: 0,
         episodeNumber = this.episodeNumber ?: 0,
         posterUrl = posterUrl,
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage ?: -1.0,
         airDate = airDate,
         runtime = this.runtime ?: 0,
         description = this.overview.orEmpty(),
@@ -188,7 +188,7 @@ fun TvShowSimilarDto.toLocalDto(tvShowId: Int,language: String,page: Int): TvSho
         title = this.title.orEmpty(),
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage ?: -1.0,
         language = language,
         page = page
 

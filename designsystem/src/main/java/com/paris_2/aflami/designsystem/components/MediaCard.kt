@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -102,12 +103,14 @@ fun MediaCard(
             }
         )
 
-        if (showRating) {
+        AnimatedVisibility(
+            showRating && rating > 0.0,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(top = 4.dp, end = 8.dp)
+        ) {
             RatingCard(
                 rating = rating,
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .padding(top = 4.dp, end = 8.dp)
             )
         }
 
