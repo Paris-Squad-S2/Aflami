@@ -106,7 +106,6 @@ fun TvShowDetailsScreenContent(
                     movieId = state.tvShowDetailsUiState.tvShowUi.id,
                     rating = currentRating
                 )
-                tvShowScreenInteractionListener.onDismissRatingDialog()
             }
         )
     }
@@ -432,9 +431,7 @@ fun TvShowDetailsScreenContent(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(designsystemR.drawable.ic_star),
                     onClick = {
-                        tvShowScreenInteractionListener.onRateClick(
-                            featureMediaDetailsUiR.string.rate
-                        )
+                        tvShowScreenInteractionListener.onRateClick()
                     }
                 ),
                 iconItemWithDefaults(
@@ -462,6 +459,24 @@ fun TvShowDetailsScreenContent(
                 text = state.snackBarMessage,
                 isSuccess = false,
                 onClick = tvShowScreenInteractionListener::onHideSnackBar
+            )
+        }
+        AnimatedVisibility(
+            visible = state.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            SnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                    .align(Alignment.TopCenter),
+                text = state.snackBarMessage,
+                isSuccess = state.snackBarSuccess,
+                onClick = {
+                    tvShowScreenInteractionListener.onHideSnackBar()
+                }
             )
         }
     }
