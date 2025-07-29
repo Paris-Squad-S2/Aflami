@@ -29,11 +29,11 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestina
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
-import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class TvShowDetailsViewModel @Inject constructor(
@@ -50,7 +50,6 @@ class TvShowDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
-    private val getSessionIdUseCase: GetSessionIdUseCase,
     navigator: MediaDetailsNavigator
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
@@ -269,26 +268,16 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onRateClick(title: Int) {
+    override fun onRateClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { Unit },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
+                    updateState(
+                        screenState.value.copy(
+                            showRatingDialog = true
+                        )
                     )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
                 }
             },
             onError = {
@@ -379,11 +368,29 @@ class TvShowDetailsViewModel @Inject constructor(
     override fun onRatingSubmitted(movieId: Int, rating: Float) {
         tryToExecute(
             execute = {
-                addRatingToTvShowUseCase(movieId, rating, getSessionIdUseCase()!!)
+                val step = 0.5f
+                val roundedRating = ((rating / step).roundToInt() * step)
+                addRatingToTvShowUseCase(movieId, roundedRating)
             },
-            onSuccess = {},
+            onSuccess = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = true,
+                        snackBarMessage = R.string.rating_submit_successfully,
+                        showRatingDialog = false
+                    )
+                )
+            },
             onError = {
-                updateState(screenState.value.copy(errorMessage = it))
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = false,
+                        snackBarMessage = R.string.failed_to_submit_rating,
+                        errorMessage = it
+                    )
+                )
             }
         )
     }
