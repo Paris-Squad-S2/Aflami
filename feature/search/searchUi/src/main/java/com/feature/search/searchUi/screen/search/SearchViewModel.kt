@@ -230,7 +230,8 @@ class SearchViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }
