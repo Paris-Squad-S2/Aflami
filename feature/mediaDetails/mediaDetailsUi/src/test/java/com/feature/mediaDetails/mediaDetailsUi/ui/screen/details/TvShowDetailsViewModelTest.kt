@@ -73,9 +73,9 @@ class TvShowDetailsViewModelTest {
     @Test
     fun `onAddToListClick triggers navigation`() = runTest {
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick(1) // Argument type mismatch: actual type is 'String', but 'Int' was expected.
+        viewModel.onAddToListClick(1)
         runCurrent()
-        coVerify { navigator.navigate(MediaDetailsDestinations.LoginDialogDestination(1)) }// Argument type mismatch: actual type is 'String', but 'Int' was expected.
+        coVerify { navigator.navigate(MediaDetailsDestinations.LoginDialogDestination(1)) }
     }
 
     @Test
