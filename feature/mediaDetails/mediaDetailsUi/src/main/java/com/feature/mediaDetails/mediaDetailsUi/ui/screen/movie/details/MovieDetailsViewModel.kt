@@ -17,6 +17,7 @@ import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
@@ -27,8 +28,9 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
@@ -71,7 +73,8 @@ class MovieDetailsViewModel @Inject constructor(
             selectedRating = 0f
         ),
         isLoading = true,
-        errorMessage = null
+        errorMessage = null,
+        showSnackBar = false,
     ), navigator
 ) {
 
@@ -254,26 +257,16 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onFavouriteClick(title: Int) {
+    override fun onRateClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { addRatingToMovieUseCase() },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
+                    updateState(
+                        screenState.value.copy(
+                            showRatingDialog = true
+                        )
                     )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
                 }
             },
             onError = {
@@ -282,8 +275,20 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onAddToListClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+    override fun onAddToListClick() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = true
+            )
+        )
+    }
+
+    override fun onDismissAddToListDialog() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = false
+            )
+        )
     }
 
     override fun onShowAllCastClick(movieId: Int) {
@@ -332,6 +337,41 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onRatingSubmitted(rating: Float) {}
+    override fun onRatingSubmitted(movieId: Int, rating: Float) {
+        tryToExecute(
+            execute = {
+                val step = 0.5f
+                val roundedRating = ((rating / step).roundToInt() * step)
+                addRatingToMovieUseCase(movieId, roundedRating)
+            },
+            onSuccess = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = true,
+                        snackBarMessage = R.string.rating_submit_successfully,
+                        showRatingDialog = false
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = false,
+                        snackBarMessage = R.string.failed_to_submit_rating,
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
 
+    override fun onHideSnackBar() {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = false
+            )
+        )
+    }
 }

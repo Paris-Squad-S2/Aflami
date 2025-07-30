@@ -29,4 +29,6 @@
     <string name="query">استعلام</string>
     <string name="country">بلد</string>
     <string name="actor">ممثل</string>
+    <string name="title_activity_search">نشاط البحث</string>
+
 </resources>
