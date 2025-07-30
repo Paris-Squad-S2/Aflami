@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -27,7 +26,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -76,18 +74,9 @@ fun MovieDetailsScreenContent(
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
     val movieChips = MovieChips.entries
-    val listState = rememberLazyListState()
-    val density = LocalDensity.current
     val activity = LocalActivity.current
-    val maxScrollPx = with(density) { 56.dp.toPx() }
     var currentRating by remember { mutableFloatStateOf(state.movieDetailsUiState.selectedRating) }
-    val alpha by remember {
-        derivedStateOf {
-            val scroll =
-                if (listState.firstVisibleItemIndex > 0) maxScrollPx else listState.firstVisibleItemScrollOffset.toFloat()
-            (scroll / maxScrollPx).coerceIn(0f, 1f)
-        }
-    }
+
     if (state.showRatingDialog) {
         RatingDialog(
             currentRating = currentRating,
@@ -110,7 +99,6 @@ fun MovieDetailsScreenContent(
         )
     }
 
-    val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
@@ -126,7 +114,6 @@ fun MovieDetailsScreenContent(
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
-                        .statusBarsPadding()
                 ) {
                     TopAppBar(
                         leadingIcons = listOf(
