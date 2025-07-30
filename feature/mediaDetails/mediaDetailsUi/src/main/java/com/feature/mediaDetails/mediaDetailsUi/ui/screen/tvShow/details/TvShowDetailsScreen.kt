@@ -46,8 +46,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDial
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TopComponent
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TopComponentDetails
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TvTopComponent
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
@@ -152,7 +152,7 @@ fun TvShowDetailsScreenContent(
                             )
                         }
                         else {
-                            TopComponent(
+                            TvTopComponent(
                                 tvShowScreenInteractionListener = tvShowScreenInteractionListener,
                                 animatedVisibilityScope = this@AnimatedContent,
                                 sharedTransitionScope = this@SharedTransitionLayout,

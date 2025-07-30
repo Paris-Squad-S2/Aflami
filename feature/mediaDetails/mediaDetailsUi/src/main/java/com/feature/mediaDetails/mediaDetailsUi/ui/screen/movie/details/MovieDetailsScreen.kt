@@ -1,11 +1,9 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.activity.compose.LocalActivity
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +31,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -41,22 +40,22 @@ import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
+import kotlinx.coroutines.flow.emptyFlow
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
@@ -70,7 +69,7 @@ fun MovieDetailsScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
@@ -116,7 +115,7 @@ fun MovieDetailsScreenContent(
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
 
-    Box(
+    Column(
         Modifier
             .fillMaxSize()
             .background(Theme.colors.surface)
@@ -166,36 +165,44 @@ fun MovieDetailsScreenContent(
             }
 
             else -> {
+                val scrollState = rememberLazyListState()
+                val isCollapsed by remember {
+                    derivedStateOf {
+                        scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+                    }
+                }
                 val mediaList =
                     state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
+                SharedTransitionLayout {
+                    AnimatedContent(
+                        targetState = isCollapsed,
+                        label = "basic_transition"
+                    ) { target ->
+                        if (!target) {
+                            MovieTopComponentDetails(
+                                state = state,
+                                movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                            )
+                        }
+                        else {
+                            MovieTopComponent(
+                                movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                                title = state.movieDetailsUiState.movie.title,
+                            )
+                        }
+
+                    }
+                }
                 LazyColumn(
-                    state = listState,
+                    state = scrollState,
                     modifier = Modifier
                         .fillMaxSize()
                         .navigationBarsPadding()
                 ) {
-                    item {
-                        if (state.isImageLoading) {
-                            PageLoadingPlaceHolder(
-                                modifier = Modifier.padding(bottom = 12.dp)
-                            )
-                        } else {
-                            val site = state.movieDetailsUiState.movieVideoUi.site
-                            val key = state.movieDetailsUiState.movieVideoUi.key
-                            DetailsImage(
-                                imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
-                                rating = state.movieDetailsUiState.movie.rating,
-                                onPlayClick = {
-                                    if (!(site.isEmpty() || key.isEmpty())) {
-                                        activity?.openYoutubeOrBrowser(key)
-                                    }
-                                },
-                                hasVideo = !(site.isEmpty() ||key.isEmpty()),
-                                modifier = Modifier.padding(bottom = 12.dp)
-                            )
-                        }
-                    }
-
                     if (state.isDescriptionLoading) {
                         item {
                             PageLoadingPlaceHolder(
@@ -400,23 +407,94 @@ fun MovieDetailsScreenContent(
                 )
             }
         }
-        AnimatedVisibility(
-            visible = state.showSnackBar,
-            enter = fadeIn() + slideInVertically(),
-            exit = fadeOut() + slideOutVertically()
-        ) {
-            SnackBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
-                    .align(Alignment.TopCenter),
-                text = state.snackBarMessage ?: RDesignSystem.string.empty,
-                isSuccess = state.snackBarSuccess,
-                onClick = {
-                    movieDetailsScreenInteractionListener.onHideSnackBar()
-                }
-            )
-        }
+//        AnimatedVisibility(
+//            visible = state.showSnackBar,
+//            enter = fadeIn() + slideInVertically(),
+//            exit = fadeOut() + slideOutVertically()
+//        ) {
+//            SnackBar(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .statusBarsPadding()
+//                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+//                    .align(Alignment.TopCenter),
+//                text = state.snackBarMessage ?: RDesignSystem.string.empty,
+//                isSuccess = state.snackBarSuccess,
+//                onClick = {
+//                    movieDetailsScreenInteractionListener.onHideSnackBar()
+//                }
+//            )
+//        }
     }
+}
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewMovieDetailsScreen() {
+    val fakeMovieDetailsUiState = MovieDetailsUiState(
+        movie = MovieUi(
+            id = 1,
+            posterUrl = "",
+            rating = 8.5f,
+            title = "Stranger Things",
+            genres = listOf("Drama", "Sci-Fi", "Horror"),
+            releaseDate = "2016-07-15",
+            runtime = "50 min",
+            country = "USA",
+            description = "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
+            productionCompanies = listOf(
+                ProductionCompanyUi("Netflix", "", ""),
+                ProductionCompanyUi("21 Laps", "", "")
+            ),
+        ),
+        recommendations = emptyFlow(),
+        cast = emptyList(),
+        reviews = emptyFlow(),
+        gallery = listOf(),
+        selectedRating = 0f,
+        movieVideoUi = MovieVideoUi(
+            key = "key",
+            name = "name",
+            site = "site"
+        )
+    )
+
+    MovieDetailsScreenContent(
+        state = MovieDetailsScreenState(
+            movieDetailsUiState = fakeMovieDetailsUiState,
+            isLoading = false,
+            errorMessage = null,
+            isImageLoading = false,
+            isDescriptionLoading = false,
+            isCastLoading = true,
+            isRecommendationsLoading = true,
+            isReviewsLoading = false,
+            isGalleryLoading = false,
+            isProductionCompaniesLoading = false,
+            showRatingDialog = false,
+            showSnackBar = false
+        ),
+        movieDetailsScreenInteractionListener = object : MovieDetailsScreenInteractionListener {
+            override fun onRateClick() {
+            }
+
+            override fun onAddToListClick() {
+            }
+
+            override fun onDismissAddToListDialog() {
+            }
+
+            override fun onShowAllCastClick(tvShowId: Int) {}
+            override fun onRetryLoadMovieDetails() {
+            }
+
+            override fun onSimilarMovieClick(mediaId: Int) {
+            }
+
+            override fun onDismissRatingDialog() {}
+            override fun onRatingSubmitted(movieId: Int, rating: Float) {
+            }
+
+            override fun onHideSnackBar() {}
+        }
+    )
 }

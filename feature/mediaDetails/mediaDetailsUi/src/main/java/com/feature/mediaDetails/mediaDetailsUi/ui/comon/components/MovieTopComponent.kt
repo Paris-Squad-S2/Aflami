@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
+
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -26,24 +27,26 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreenState
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowScreenInteractionListener
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreenInteractionListener
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreenState
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun TopComponentDetails(
-    state: TvShowDetailsScreenState,
-    tvShowScreenInteractionListener: TvShowScreenInteractionListener,
+fun MovieTopComponentDetails(
+    state: MovieDetailsScreenState,
+    movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     modifier: Modifier = Modifier
 ) {
     with(sharedTransitionScope) {
         Box(
+
             modifier
                 .background(Theme.colors.surface)
                 .navigationBarsPadding()
@@ -67,20 +70,25 @@ fun TopComponentDetails(
             }
             val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
             val activity = LocalActivity.current
-            val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
-            val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
-            DetailsImage(
-                imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl) + state.tvShowDetailsUiState.gallery,
-                rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
-                onPlayClick = {
-                    if (!(tvShowSite.isEmpty() || tvShowKey.isEmpty())
-                    ) {
-                        activity?.openYoutubeOrBrowser(tvShowKey)
-                    }
-                },
-                modifier = Modifier.padding(bottom = 12.dp)
-            )
+            val site = state.movieDetailsUiState.movieVideoUi.site
+            val key = state.movieDetailsUiState.movieVideoUi.key
+            if (state.isImageLoading) {
+                PageLoadingPlaceHolder(
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+            } else {
+                DetailsImage(
+                    imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
+                    rating = state.movieDetailsUiState.movie.rating,
+                    onPlayClick = {
+                        if (!(site.isEmpty() || key.isEmpty())) {
+                            activity?.openYoutubeOrBrowser(key)
+                        }
+                    },
+                    hasVideo = !(site.isEmpty() || key.isEmpty()),
+                    modifier = Modifier.padding(bottom = 12.dp)
+                )
+            }
             TopAppBar(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
@@ -92,13 +100,13 @@ fun TopComponentDetails(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_star),
                         onClick = {
-                            tvShowScreenInteractionListener.onRateClick()
+                            movieDetailsScreenInteractionListener.onRateClick()
                         }
                     ),
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
                         onClick = {
-                            tvShowScreenInteractionListener.onAddToListClick()
+                            movieDetailsScreenInteractionListener.onAddToListClick()
                         }
                     )
                 ),
@@ -112,8 +120,8 @@ fun TopComponentDetails(
 }
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
-fun TopComponent(
-    tvShowScreenInteractionListener: TvShowScreenInteractionListener,
+fun MovieTopComponent(
+    movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     title: String,
@@ -128,12 +136,12 @@ fun TopComponent(
                 .padding(bottom = 1.dp)
                 .background(Theme.colors.surface)
                 .sharedBounds(
-                rememberSharedContentState(key = "Top Component"),
-                animatedVisibilityScope = animatedVisibilityScope,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut(),
-                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-            ),
+                    rememberSharedContentState(key = "Top Component"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                ),
             title = title,
             leadingIcons = listOf(
                 iconItemWithDefaults(
@@ -145,13 +153,13 @@ fun TopComponent(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
                     onClick = {
-                        tvShowScreenInteractionListener.onRateClick()
+                        movieDetailsScreenInteractionListener.onRateClick()
                     }
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
                     onClick = {
-                        tvShowScreenInteractionListener.onAddToListClick()
+                        movieDetailsScreenInteractionListener.onAddToListClick()
                     }
                 )
             ),
