@@ -77,6 +77,8 @@ val koverExcludedPackages = listOf(
     "**ConcreteBaseViewModel.kt.**",
     "**.TvShowDetailsScreen.kt.**",
     "**.MovieDetailsScreen.kt.**",
+    "**.shimmerable.kt.**",
+    "**.HomeScreen.kt.**",
 )
 
 allprojects {
