@@ -378,33 +378,6 @@ fun MovieDetailsScreenContent(
                         }
                     }
                 }
-
-                TopAppBar(
-                    leadingIcons = listOf(
-                        iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                            onClick = { activity?.finish() }
-                        )
-                    ),
-                    trailingIcons = listOf(
-                        iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
-                            onClick = {
-                                movieDetailsScreenInteractionListener.onRateClick()
-                            }
-                        ),
-                        iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_heart_add),
-                            onClick = {
-                                movieDetailsScreenInteractionListener.onAddToListClick()
-                            }
-                        )
-                    ),
-                    modifier = Modifier
-                        .statusBarsPadding()
-                        .background(backgroundColor)
-
-                )
             }
         }
 //        AnimatedVisibility(
