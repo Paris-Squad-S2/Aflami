@@ -27,15 +27,16 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
 fun Chips(
+    modifier: Modifier = Modifier,
     title: String,
     icon: ImageVector,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.width(70.dp)
+        modifier = modifier.width(70.dp)
     ) {
         Box(
             modifier = Modifier.clickable { onClick() }
@@ -88,13 +89,15 @@ fun ChipsPreview(){
                 title = "All",
                 icon = ImageVector.vectorResource(R.drawable.ic_all),
                 isSelected = true,
-                onClick = {}
+                onClick = {},
+                modifier = Modifier
             )
             Chips(
                 title = "Romance",
                 icon = ImageVector.vectorResource(R.drawable.ic_romance),
                 isSelected = false,
-                onClick = {}
+                onClick = {},
+                modifier = Modifier
             )
         }
     }
