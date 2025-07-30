@@ -10,12 +10,20 @@ import androidx.compose.runtime.MutableState
 class WebViewClientImpl(
     private val isLoading: MutableState<Boolean>,
     private val hasError: MutableState<Boolean>,
+    private val onNavigationEvent: (() -> Unit)? = null
 ) : WebViewClient() {
 
     override fun shouldOverrideUrlLoading(
         view: WebView?,
         request: WebResourceRequest?
     ): Boolean {
+        val url = request?.url?.toString()
+        if (url != null) {
+            if (url == "https://www.themoviedb.org/" || url == "https://www.themoviedb.org/login") {
+                onNavigationEvent?.invoke()
+                return true
+            }
+        }
         isLoading.value = true
         hasError.value = false
         return true

@@ -31,7 +31,7 @@ fun Movie.toUi(): MovieUi {
     return MovieUi(
         id = this.id,
         posterUrl = this.posterPath,
-        rating = this.voteAverage.toFloat(),
+        rating = this.voteAverage?.toFloat(),
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate.formatToUi(),
@@ -46,7 +46,7 @@ fun TvShow.toUi(): TvShowUi {
     return TvShowUi(
         id = this.id,
         posterUrl = this.posterPath,
-        rating = this.voteAverage.toFloat(),
+        rating = this.voteAverage?.toFloat(),
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate.formatToUi(),

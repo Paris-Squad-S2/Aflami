@@ -1,7 +1,7 @@
 package com.feature.home.homeUi.screen.home
 
+import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -32,9 +33,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
+import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingActivity
 import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
+import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
 import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.MediaCard
@@ -60,6 +63,7 @@ fun HomeScreen(
                 onRetry = viewModel::onRetry
             )
         }
+
         else -> HomeScreenContent(
             state = homeScreenState.value,
             action = viewModel
@@ -71,9 +75,10 @@ fun HomeScreen(
 @Composable
 fun HomeScreenContent(
     state: HomeScreenUIState,
-    action: HomeScreenInteractionListener
+    action: HomeScreenInteractionListener,
 ) {
 
+    val context = LocalContext.current
     val lazyState = rememberLazyListState()
     val isScrolling by remember { derivedStateOf { lazyState.isScrollInProgress } }
     var isAllCategories by remember { mutableStateOf(state.homeUIState.isAllCategories) }
@@ -126,7 +131,10 @@ fun HomeScreenContent(
                         title = stringResource(id = R.string.continue_watching),
                         mediaList = state.homeUIState.continueWatchingMediaList,
                         onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = action::navigateToContinueWatchingScreen,
+                        onSectionAllClick = {
+                            val intent = Intent(context, ContinueWatchingActivity::class.java)
+                            context.startActivity(intent)
+                        },
                         isScrolling = isScrolling,
                         modifier = Modifier.padding(top = 6.dp)
                     )
@@ -150,7 +158,10 @@ fun HomeScreenContent(
                         iconColor = Theme.colors.secondary,
                         mediaList = state.homeUIState.topRatedMediaList,
                         onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = action::navigateToTopRatingScreen,
+                        onSectionAllClick = {
+                            val intent = Intent(context, TopRatingActivity::class.java)
+                            context.startActivity(intent)
+                        },
                         isScrolling = isScrolling,
                         modifier = Modifier.padding(top = 24.dp)
                     )
@@ -223,7 +234,7 @@ fun HomeScreenContent(
                 items(state.homeUIState.upComingMediaList) { upcomingMedia ->
                     MediaCard(
                         imageUri = upcomingMedia.imageUri,
-                        rating = upcomingMedia.rating.toFloat(),
+                        rating = upcomingMedia.rating?.toFloat(),
                         movieName = upcomingMedia.title,
                         mediaType = upcomingMedia.type.toString(),
                         year = upcomingMedia.yearOfRelease.year.toString(),
@@ -232,10 +243,9 @@ fun HomeScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-                            .padding(bottom = 8.dp)
-                            .clickable {
-                                action.onMediaCardClick(upcomingMedia)
-                            },
+                            .padding(bottom = 8.dp),
+                        clickable = true,
+                        onClick = { action.onMediaCardClick(upcomingMedia) }
                     )
                 }
             } else if (state.isCategoryLoading) {
@@ -258,7 +268,7 @@ fun HomeScreenContent(
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
-            logo = iconItemWithDefaults(
+        logo = iconItemWithDefaults(
             icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
             backgroundColor = Theme.colors.primaryVariant,
             tint = Color.Unspecified,

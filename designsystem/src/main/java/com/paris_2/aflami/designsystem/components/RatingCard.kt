@@ -23,7 +23,7 @@ import java.util.Locale
 @Composable
 fun RatingCard(
     modifier: Modifier = Modifier,
-    rating: Float,
+    rating: Float?,
 ) {
     Row(
         modifier = modifier

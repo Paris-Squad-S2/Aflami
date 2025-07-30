@@ -1,2 +1,2 @@
-versionName=0.3.17
-- refactor search result handling and improve error messaging
+versionName=0.3.23
+- fix home screen click Issue

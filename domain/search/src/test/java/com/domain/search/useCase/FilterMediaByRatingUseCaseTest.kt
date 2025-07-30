@@ -52,6 +52,20 @@ class FilterMediaByRatingUseCaseTest {
         assertEquals(emptyList(), result)
     }
 
+    @Test
+    fun `should filter out media with null rating`() = runTest {
+        val mediaWithNullRating = listOf(
+            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE, rating = null),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW, rating = 4.2),
+            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE, rating = null),
+            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW, rating = 3.5)
+        )
+
+        val result = filterMediaByRatingUseCase(3.0f, mediaWithNullRating)
+
+        assertEquals(mediaWithNullRating[1], result[0])
+    }
+
     companion object {
         private val mediaListAllAbove4 = listOf(
             createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE, rating = 4.0),

@@ -31,7 +31,7 @@ data class MediaUiState(
     val type: MediaTypeUi,
     val categories: List<String>,
     val yearOfRelease: LocalDate,
-    val rating: Double,
+    val rating: Double?,
 )
 
 data class CategoryUiState(
