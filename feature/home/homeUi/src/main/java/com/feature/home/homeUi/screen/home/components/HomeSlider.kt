@@ -77,7 +77,7 @@ fun HomeSlider(
                 modifier = Modifier
                     .height(400.dp)
                     .fillMaxWidth()
-                    .then(if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                    .then(if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
                         Modifier.blur(
                             radius = 12.dp,
                             edgeTreatment = BlurredEdgeTreatment.Unbounded,
