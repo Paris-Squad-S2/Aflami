@@ -20,8 +20,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.BlurredEdgeTreatment
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -39,6 +37,9 @@ import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.theme.Theme
+import io.sifr.shaded.blurProcessor.BlurEdgeTreatment
+import io.sifr.shaded.modifiers.blur
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -67,20 +68,16 @@ fun HomeSlider(
             visible = mediaState.toString().isNotEmpty(),
             enter = slideInVertically(),
             exit = slideOutVertically(),
-        ){
+        ) {
 
             SafeImageViewer(
-                    model = mediaState.value.imageUri,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(400.dp)
-                        .blur(
-                            radius = 14.dp,
-                            edgeTreatment = BlurredEdgeTreatment.Unbounded,
-                        )
-                ,
-                    contentScale = ContentScale.FillWidth,
-                )
+                model = mediaState.value.imageUri,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .height(400.dp)
+                    .fillMaxWidth()
+                    .blur(radius = 14f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED),
+            )
 
             Column(
                 modifier = Modifier.padding(top = 96.dp, bottom = 56.dp),
@@ -95,9 +92,7 @@ fun HomeSlider(
                             contentDescription = "",
                             modifier = Modifier
                                 .padding(start = 8.dp)
-                                .size(width = 16.dp, height = 18.dp)
-
-                            ,
+                                .size(width = 16.dp, height = 18.dp),
                             tint = Theme.colors.secondary,
                         )
                     },
@@ -140,7 +135,9 @@ fun HomeSlider(
                     overflow = TextOverflow.Ellipsis
                 )
                 LazyRow(
-                    Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
+                    Modifier
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     items(mediaState.value.categories.take(3)) {
                         GenresChip(
