@@ -45,8 +45,9 @@ class MovieDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
-    navigator: MediaDetailsNavigator
+    navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
+
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
             movie = MovieUi(
@@ -77,6 +78,7 @@ class MovieDetailsViewModel @Inject constructor(
         showSnackBar = false,
     ), navigator
 ) {
+
 
     private val movieId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
@@ -366,4 +368,6 @@ class MovieDetailsViewModel @Inject constructor(
             )
         )
     }
+
+
 }

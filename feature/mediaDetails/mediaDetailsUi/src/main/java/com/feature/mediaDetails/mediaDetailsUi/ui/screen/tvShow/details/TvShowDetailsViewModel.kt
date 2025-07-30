@@ -50,8 +50,9 @@ class TvShowDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
-    navigator: MediaDetailsNavigator
+    navigator: MediaDetailsNavigator,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
+
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
             tvShowUi = TvShowUi(
@@ -89,6 +90,7 @@ class TvShowDetailsViewModel @Inject constructor(
         seasonsLoadingStates = emptyMap()
     ), navigator
 ) {
+
 
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
@@ -466,4 +468,5 @@ class TvShowDetailsViewModel @Inject constructor(
             )
         )
     }
+
 }
