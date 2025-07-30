@@ -23,10 +23,9 @@ fun ChipsRowSection(
 ) {
     LazyRow(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 12.dp),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(horizontal = 0.dp)
+        contentPadding = PaddingValues(vertical = 12.dp)
     ) {
         items(items.size) { index ->
             val isSelected = index == selectedIndex

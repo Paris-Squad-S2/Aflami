@@ -14,4 +14,7 @@ interface SeasonDao {
     @Query("SELECT * FROM seasons_table WHERE tvShowId = :tvShowId")
     suspend fun getSeasonByTvShowId(tvShowId: Int): SeasonEntity?
 
+    @Query("SELECT * FROM seasons_table WHERE tvShowId = :tvShowId AND seasonNumber = :seasonNumber LIMIT 1")
+    suspend fun getSeasonByTvShowIdAndSeasonNumber(tvShowId: Int, seasonNumber: Int): SeasonEntity?
+
 }

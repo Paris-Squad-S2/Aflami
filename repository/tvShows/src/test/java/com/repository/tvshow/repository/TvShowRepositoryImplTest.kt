@@ -831,7 +831,7 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSeasonDto
 
             coEvery {
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
             } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
             coEvery {
@@ -855,7 +855,7 @@ class TvShowRepositoryImplTest {
                 tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
             } returns mockTvShowSeasonDto
 
-            coEvery { tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId) } returns mockTvShowSeasonDto.toLocalDto(
+            coEvery { tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) } returns mockTvShowSeasonDto.toLocalDto(
                 tvShowId
             )
 
@@ -880,128 +880,45 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowSeasonDto
 
         coEvery {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
         } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
         coEvery { tvShowSeasonLocalDataSource.addSeasonDetails(any()) } returns Unit
 
         // When
         tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
-        @Test
-        fun `getSeasonDetails - should throw NoSeasonFoundException when local data source returns null after adding`() =
-            runTest {
-                // Given
-                val mockTvShowSeasonDto = TvShowSeasonDto(
-                    name = "stronger things"
-                )
-
-                coEvery {
-                    tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
-                } returns mockTvShowSeasonDto
-
-                coEvery {
-                    tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
-                } returns null
-
-                coEvery {
-                    tvShowSeasonLocalDataSource.addSeasonDetails(any())
-                } just Runs
-
-                // When & Then
-                assertThrows<NoSeasonFoundException> {
-                    tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
-                }
-            }
-
-
-        @Test
-        fun `getTrailerVideoForTvShow - should return trailers from remote when network is available`() =
-            runTest {
-                // Given
-                val expectedTrailers =
-                    mockTvShowVideosDto.tvShowVideoResultDto?.map { it.toEntity() } ?: emptyList()
-
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-                coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns mockTvShowVideosDto
-
-                // When
-                val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
-
-                // Then
-                assertThat(result).isEqualTo(expectedTrailers)
-
-            }
-
-        @Test
-        fun `getTrailerVideoForTvShow - should call remote data source when network is available`() =
-            runTest {
-                // Given
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-                coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns mockTvShowVideosDto
-
-                // When
-                tvShowRepository.getTrailerVideoForTvShow(tvShowId)
-
-                // Then
-                coVerify(exactly = 1) {
-                    tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
-                }
-            }
-
-
-        @Test
-        fun `getTrailerVideoForTvShow - should return empty list when remote returns no trailers`() =
-            runTest {
-                // Given
-                val emptyVideosDto = mockTvShowVideosDto.copy(tvShowVideoResultDto = null)
-
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-                coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns emptyVideosDto
-
-                // When
-                val result = tvShowRepository.getTrailerVideoForTvShow(tvShowId)
-
-                // Then
-                assertThat(result).isEmpty()
-            }
-
-        @Test
-        fun `getTrailerVideoForTvShow - should call remote data source even if no trailers exist`() =
-            runTest {
-                // Given
-                val emptyVideosDto = mockTvShowVideosDto.copy(tvShowVideoResultDto = null)
-
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-                coEvery { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId) } returns emptyVideosDto
-
-                // When
-                tvShowRepository.getTrailerVideoForTvShow(tvShowId)
-
-                // Then
-                coVerify(exactly = 1) {
-                    tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
-                }
-            }
-
-
-        @Test
-        fun `getTrailerVideoForTvShow - should throw NoInternetConnectionException when network is unavailable`() =
-            runTest {
-                // Given
-                coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
-
-                // When & Then
-                assertThrows<NoInternetConnectionException> {
-                    tvShowRepository.getTrailerVideoForTvShow(tvShowId)
-                }
-                coVerify(exactly = 0) { tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(any()) }
-            }
 
         // Then
         coVerify(exactly = 1) {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
         }
     }
+
+    @Test
+    fun `getSeasonDetails - should throw NoSeasonFoundException when local data source returns null after adding`() =
+        runTest {
+            // Given
+            val mockTvShowSeasonDto = TvShowSeasonDto(
+                name = "stronger things"
+            )
+
+            coEvery {
+                tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
+            } returns mockTvShowSeasonDto
+
+            coEvery {
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+            } returns null
+
+            coEvery {
+                tvShowSeasonLocalDataSource.addSeasonDetails(any())
+            } just Runs
+
+            // When & Then
+            assertThrows<NoSeasonFoundException> {
+                tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
+            }
+        }
 
     @Test
     fun `getSeasonDetails - should add season details to local data source`() = runTest {
@@ -1013,7 +930,7 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowSeasonDto
 
         coEvery {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
         } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
         coEvery { tvShowSeasonLocalDataSource.addSeasonDetails(any()) } returns Unit
@@ -1026,6 +943,7 @@ class TvShowRepositoryImplTest {
             tvShowSeasonLocalDataSource.addSeasonDetails(any())
         }
     }
+    
     @Test
     fun `getTvShowCast should throw NoCastFoundException when remote throws generic exception`() = runTest {
         // Given

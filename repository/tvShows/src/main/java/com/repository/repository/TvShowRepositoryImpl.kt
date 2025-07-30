@@ -142,7 +142,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season {
         return safeCall(NoSeasonFoundException()) {
-            val localSeason = tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+            val localSeason = tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
             if (localSeason != null) {
                 localSeason.toEntity()
             } else {
@@ -152,7 +152,7 @@ class TvShowRepositoryImpl(
                     language
                 )
                 tvShowSeasonLocalDataSource.addSeasonDetails(remoteSeason.toLocalDto(tvShowId))
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)?.toEntity()
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)?.toEntity()
                     ?: throw NoSeasonFoundException()
             }
 
