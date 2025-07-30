@@ -173,7 +173,7 @@ fun HomeScreenContent(
                 SectionTitle(
                     title = stringResource(R.string.upcoming),
                     modifier = Modifier.padding(bottom = 12.dp),
-                    shimmerModifier = Modifier.shimmerable(enabled = true)
+                    shimmerModifier = Modifier.shimmerable(enabled = state.isCategoryLoading)
                 )
                 LazyRow(
                     contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
@@ -189,7 +189,7 @@ fun HomeScreenContent(
                             },
                             modifier = Modifier
                                 .padding(2.dp)
-                                .shimmerable(enabled = true)
+                                .shimmerable(enabled = state.isCategoryLoading)
                         )
                     }
                     items(state.homeUIState.categories.size) { index ->
@@ -204,7 +204,7 @@ fun HomeScreenContent(
                             },
                             modifier = Modifier
                                 .padding(2.dp)
-                                .shimmerable(enabled = true)
+                                .shimmerable(enabled = state.isCategoryLoading)
                         )
                     }
                 }
