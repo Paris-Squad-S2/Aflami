@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home.components
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -14,12 +15,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.BlurredEdgeTreatment
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -41,7 +43,6 @@ import io.sifr.shaded.blurProcessor.BlurEdgeTreatment
 import io.sifr.shaded.modifiers.blur
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeSlider(
     onMediaClick: (media: SliderMedia) -> Unit,
@@ -49,7 +50,7 @@ fun HomeSlider(
     modifier: Modifier,
 ) {
     val mediaState = remember {
-        mutableStateOf<SliderMedia>(
+        mutableStateOf(
             SliderMedia(
                 id = 0,
                 imageUri = "",
@@ -76,7 +77,15 @@ fun HomeSlider(
                 modifier = Modifier
                     .height(400.dp)
                     .fillMaxWidth()
-                    .blur(radius = 14f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED),
+                    .then(if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                        Modifier.blur(
+                            radius = 12.dp,
+                            edgeTreatment = BlurredEdgeTreatment.Unbounded,
+                        )
+                    }else {
+                Modifier
+                    .blur(radius = 12f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED)
+            })
             )
 
             Column(
