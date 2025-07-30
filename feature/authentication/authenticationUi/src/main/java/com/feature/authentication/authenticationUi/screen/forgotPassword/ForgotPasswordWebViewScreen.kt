@@ -59,6 +59,9 @@ private fun ForgotPasswordScreenContent(
                     onRetry = onRetry,
                 )
             },
+            onNavigationEvent = {
+                registerViewModel.onNavigateBack()
+            },
         )
     }
 }

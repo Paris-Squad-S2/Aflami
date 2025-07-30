@@ -135,7 +135,7 @@ data class SliderMedia(
     val title: String,
     val type: SliderMediaTypeUi,
     val categories: List<String>,
-    val rating: Float,
+    val rating: Float?,
     val yearOfRelease: String,
 )
 

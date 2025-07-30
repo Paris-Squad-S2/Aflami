@@ -1,12 +1,10 @@
 package com.feature.home.homeUi.screen.home.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -38,15 +36,17 @@ fun HomeSection(
             title = title,
             hasViewAll = true,
             icon = {
-                leadingIconPainter?.let { it->   Icon(
-                    imageVector = it,
-                    contentDescription = "$title icon",
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .size(width = 16.dp, height = 18.dp),
-                    tint = iconColor ?: Color.Unspecified,
-                )
-            }},
+                leadingIconPainter?.let { it ->
+                    Icon(
+                        imageVector = it,
+                        contentDescription = "$title icon",
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(width = 16.dp, height = 18.dp),
+                        tint = iconColor ?: Color.Unspecified,
+                    )
+                }
+            },
             onClickViewAll = onSectionAllClick,
         )
 
@@ -59,16 +59,17 @@ fun HomeSection(
             items(mediaList) { media ->
                 MediaCard(
                     modifier = Modifier
-                        .padding(end = 8.dp)
-                        .clickable { onMediaClick(media) },
+                        .padding(end = 8.dp),
                     imageUri = media.imageUri,
-                    rating = media.rating.toFloat(),
+                    rating = media.rating?.toFloat(),
                     movieName = media.title,
                     mediaType = media.type.mediaName,
                     year = media.yearOfRelease.year.toString(),
                     mediaCardType = MediaCardType.NORMAL,
                     showGradientFilter = true,
                     enabled = !isScrolling,
+                    clickable = true,
+                    onClick = { onMediaClick(media) }
                 )
             }
         }
