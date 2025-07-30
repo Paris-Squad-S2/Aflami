@@ -1,2 +1,2 @@
-versionName=0.3.24
-- fix Issues #183
+versionName=0.3.25
+- fix Issues #161
