@@ -71,6 +71,51 @@ class TvShowDetailsViewModelTest {
     }
 
     @Test
+    fun `onShowAllCastClick triggers navigation`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onShowAllCastClick(123)
+        runCurrent()
+        coVerify { navigator.navigate(MediaDetailsDestinations.TvShowCastScreen(123)) }
+    }
+
+    @Test
+    fun `onHideSnackBar sets showSnackBar to false`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(viewModel.screenState.value.copy(showSnackBar = true))
+        viewModel.onHideSnackBar()
+        assertFalse(viewModel.screenState.value.showSnackBar)
+    }
+
+    @Test
+    fun `onRatingSubmitted sets success snackbar state on success`() = runTest {
+        coEvery { addRatingToTvShowUseCase(any(), any()) } returns Unit
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onRatingSubmitted(88, 3.7f)
+        runCurrent()
+
+        val state = viewModel.screenState.value
+        assertTrue(state.showSnackBar)
+        assertTrue(state.snackBarSuccess)
+        assertEquals(state.snackBarMessage, state.snackBarMessage)
+        assertFalse(state.showRatingDialog)
+    }
+
+    @Test
+    fun `onRatingSubmitted sets error snackbar state on failure`() = runTest {
+        coEvery { addRatingToTvShowUseCase(any(), any()) } throws RuntimeException("rating fail")
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onRatingSubmitted(88, 4.0f)
+        runCurrent()
+
+        val state = viewModel.screenState.value
+        assertTrue(state.showSnackBar)
+        assertFalse(state.snackBarSuccess)
+        assertEquals(state.snackBarMessage, state.snackBarMessage)
+        assertEquals("rating fail", state.errorMessage)
+    }
+
+
+    @Test
     fun `init loads tv show details and video info`() = runTest {
         coEvery { getTvShowDetailsUseCase(any()) } returns mockk<TvShow>(relaxed = true)
         coEvery { getTvShowVideoUseCase(any()) } returns mockk<TvShowVideo>(relaxed = true)
@@ -93,9 +138,14 @@ class TvShowDetailsViewModelTest {
     @Test
     fun `onFavouriteClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
-        coEvery { addRatingToTvShowUseCase() } returns Unit
+        coEvery {
+            addRatingToTvShowUseCase(
+                movieId = any(),
+                rating = any(),
+            )
+        } returns Unit
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testTvShowId)
+        viewModel.onRateClick()
         runCurrent()
         assertTrue(viewModel.screenState.value.showRatingDialog)
     }
@@ -104,7 +154,7 @@ class TvShowDetailsViewModelTest {
     fun `onFavouriteClick when not logged in doesn't show rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns false
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testTvShowId)
+        viewModel.onRateClick()
         runCurrent()
         assertFalse(viewModel.screenState.value.showRatingDialog)
     }
@@ -114,7 +164,7 @@ class TvShowDetailsViewModelTest {
         val errorMsg = "error_is_logged"
         coEvery { isLoggedInUseCase() } throws RuntimeException(errorMsg)
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testTvShowId)
+        viewModel.onRateClick()
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
     }

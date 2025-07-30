@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import androidx.annotation.StringRes
 import androidx.paging.PagingData
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
@@ -17,6 +18,10 @@ data class MovieDetailsScreenState(
     val isGalleryLoading: Boolean = false,
     val isProductionCompaniesLoading: Boolean = false,
     val showRatingDialog: Boolean = false,
+    @StringRes val snackBarMessage: Int? = null,
+    val showSnackBar: Boolean = false,
+    val snackBarSuccess: Boolean = false,
+    val showAddToListDialog: Boolean = false
 )
 
 data class MovieDetailsUiState(
@@ -38,7 +43,7 @@ data class MovieVideoUi(
 data class MovieUi(
     val id :Int,
     override val posterUrl: String,
-    override val rating: Float,
+    override val rating: Float?,
     override val title: String,
     val genres: List<String>,
     override val releaseDate: String,
@@ -63,7 +68,7 @@ data class ReviewUi(
     val avatarUrl: String,
     val username: String,
     val name: String,
-    val rating: Double,
+    val rating: Double?,
     val createdAt : String,
     val description: String
 )

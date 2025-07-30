@@ -20,10 +20,16 @@ class AddRatingToTvShowUseCaseTest {
 
     @Test
     fun `invoke should call addRatingToTvShow on repository`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 8.5f
+
         // When
-        useCase()
+        useCase(movieId, rating)
 
         // Then
-        coVerify(exactly = 1) { repository.addRatingToTvShow() }
+        coVerify(exactly = 1) {
+            repository.addRatingToTvShow(movieId, rating)
+        }
     }
 }

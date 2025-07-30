@@ -48,6 +48,9 @@ fun RatingDialog(
                     .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .align(Alignment.CenterHorizontally),
                 rating = currentRating,
+                starSize = 32.dp,
+                spaceBetween = 12.dp,
+                maxRating = 5,
                 onRatingChange = onRatingChange
             )
             CustomButton(

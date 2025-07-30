@@ -9,7 +9,7 @@ data class Media(
     val type: MediaType,
     val categoryIds: List<Int>,
     val yearOfRelease: LocalDate,
-    val rating: Double,
+    val rating: Double?,
 )
 
 

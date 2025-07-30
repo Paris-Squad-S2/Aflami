@@ -39,7 +39,7 @@ val koverExcludedPackages = listOf(
     "**.MainActivity",
     "**.MainActivityKt",
     "**.MyClass",
-    "**.designsystem.**",
+    "**.designSystem.**",
     "**.BaseViewModel*",
     "**.*_Impl*",
     "*.ComposableSingletons*",
@@ -75,11 +75,6 @@ val koverExcludedPackages = listOf(
     "**.HomeDatabase*",
     "**.workmanager.**",
     "**ConcreteBaseViewModel.kt.**",
-
-    /*
-    "**.GenreResourceMapper",
-
- */
 )
 
 allprojects {

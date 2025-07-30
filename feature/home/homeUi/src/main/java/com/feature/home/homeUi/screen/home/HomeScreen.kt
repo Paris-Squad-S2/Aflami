@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -234,7 +235,7 @@ fun HomeScreenContent(
                 items(state.homeUIState.upComingMediaList) { upcomingMedia ->
                     MediaCard(
                         imageUri = upcomingMedia.imageUri,
-                        rating = upcomingMedia.rating.toFloat(),
+                        rating = upcomingMedia.rating?.toFloat(),
                         movieName = upcomingMedia.title,
                         mediaType = upcomingMedia.type.toString(),
                         year = upcomingMedia.yearOfRelease.year.toString(),
@@ -264,15 +265,15 @@ fun HomeScreenContent(
 
     TopAppBar(
         title = stringResource(R.string.aflami),
-        subtitle = "More than just watching.",
+        subtitle = stringResource(R.string.more_than_just_watching),
         titleTextStyle = Theme.textStyle.logoText,
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
-        logo = iconItemWithDefaults(
-            ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
-            {},
-            Theme.colors.primaryVariant,
+            logo = iconItemWithDefaults(
+            icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
+            backgroundColor = Theme.colors.primaryVariant,
+            tint = Color.Unspecified,
         ),
         trailingIcons = listOf(
             IconItem(

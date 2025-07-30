@@ -130,7 +130,8 @@ fun TopRatingMoviesScreen(
                     onClick = {
                         context?.finish()
                     },
-                    backgroundColor = Theme.colors.primaryVariant,
+                    backgroundColor = Theme.colors.surfaceHigh,
+                    tint = Theme.colors.text.title,
                 ),
                 title = stringResource(R.string.top_rating),
                 modifier = Modifier.padding(top = 23.dp, bottom = 0.dp)
@@ -176,7 +177,7 @@ fun TopRatingMoviesContent(
                         onMediaCardClick(media)
                     },
                 imageUri = media.imageUri,
-                rating = media.rating.toFloat(),
+                rating = media.rating?.toFloat(),
                 movieName = media.title,
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),

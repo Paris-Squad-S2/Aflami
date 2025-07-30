@@ -6,7 +6,11 @@ import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieReviewsDto
 import com.repository.movie.models.remote.MovieSimilarsDto
 import com.repository.movie.models.remote.MovieVideoDto
+import com.repository.movie.models.remote.RatingDto
+import com.repository.movie.models.remote.RatingResponseDto
+import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -44,4 +48,10 @@ interface RetrofitMovieDetailsApiService {
     suspend fun getTrailerVideoForMovie(
         @Path("movie_id") movieId: Int
     ): MovieVideoDto
+
+    @POST("movie/{movie_id}/rating")
+    suspend fun addRatingToMovie(
+        @Path("movie_id") movieId: Int,
+        @Body rating: RatingDto
+    ): RatingResponseDto
 }

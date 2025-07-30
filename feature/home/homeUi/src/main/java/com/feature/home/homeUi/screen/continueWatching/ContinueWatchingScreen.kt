@@ -19,7 +19,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -52,7 +51,8 @@ fun ContinueWatchingScreen(
                 onClick = {
                     context?.finish()
                 },
-                backgroundColor = Theme.colors.primaryVariant,
+                backgroundColor = Theme.colors.surfaceHigh,
+                tint = Theme.colors.text.title,
             ),
             title = stringResource(R.string.continue_watching),
             modifier = Modifier.padding(top = 23.dp)
@@ -98,7 +98,7 @@ fun ContinueWatchingContent(
                         onMediaCardClick(media)
                     },
                 imageUri = media.imageUri,
-                rating = media.rating.toFloat(),
+                rating = media.rating?.toFloat(),
                 movieName = media.title,
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),

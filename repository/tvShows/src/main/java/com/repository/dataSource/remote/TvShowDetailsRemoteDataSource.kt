@@ -27,4 +27,5 @@ interface TvShowDetailsRemoteDataSource {
         episodeNumber: Int,
         language: String
     ): EpisodeVideoDto
+    suspend fun addRatingToTvShow(movieId: Int, rating: Float): Boolean
 }

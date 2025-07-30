@@ -19,7 +19,6 @@ data class TvShowDto(
     @SerialName("last_episode_to_air") val lastEpisodeToAirDto: TvShowLastEpisodeToAirDto? = null,
     @SerialName("name") val name: String? = null,
     @SerialName("networks") val networksDto: List<TvShowNetworkDto>? = null,
-    @SerialName("next_episode_to_air") val nextEpisodeToAir: String? = null,
     @SerialName("number_of_episodes") val numberOfEpisodes: Int? = null,
     @SerialName("number_of_seasons") val numberOfSeasons: Int? = null,
     @SerialName("origin_country") val originCountry: List<String>? = null,

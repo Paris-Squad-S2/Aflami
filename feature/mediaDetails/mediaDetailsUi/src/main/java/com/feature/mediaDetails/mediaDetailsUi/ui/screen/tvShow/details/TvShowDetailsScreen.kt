@@ -42,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
@@ -101,7 +102,18 @@ fun TvShowDetailsScreenContent(
                 currentRating = newRating
             },
             onDismiss = { tvShowScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { tvShowScreenInteractionListener.onDismissRatingDialog() }
+            onSubmit = {
+                tvShowScreenInteractionListener.onRatingSubmitted(
+                    movieId = state.tvShowDetailsUiState.tvShowUi.id,
+                    rating = currentRating
+                )
+            }
+        )
+    }
+    if (state.showAddToListDialog) {
+        AddToListDialog(
+            list = listOf("My Favorite Movies", "Kittens"),
+            onDismiss = { tvShowScreenInteractionListener.onDismissAddToListDialog() },
         )
     }
 
@@ -274,7 +286,7 @@ fun TvShowDetailsScreenContent(
                                                             label = "image_transition"
                                                         ) { value ->
                                                             EpisodeCard(
-                                                                episodeRating = episode.voteAverage.toFloat(),
+                                                                episodeRating = episode.voteAverage?.toFloat(),
                                                                 episodeNumber = episode.episodeNumber.toString(),
                                                                 episodeTitle = episode.episodeNumber.toString(),
                                                                 episodeDuration = episode.runtime,
@@ -340,7 +352,7 @@ fun TvShowDetailsScreenContent(
                                                         bottom = 8.dp
                                                     ),
                                                 imageUri = media.posterPath,
-                                                rating = media.voteAverage.toFloat(),
+                                                rating = media.voteAverage?.toFloat(),
                                                 movieName = media.title,
                                                 mediaType = stringResource(featureMediaDetailsUiR.string.tvshow),
                                                 year = media.releaseDate.take(4),
@@ -426,17 +438,13 @@ fun TvShowDetailsScreenContent(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(designsystemR.drawable.ic_star),
                     onClick = {
-                        tvShowScreenInteractionListener.onFavouriteClick(
-                            featureMediaDetailsUiR.string.rate
-                        )
+                        tvShowScreenInteractionListener.onRateClick()
                     }
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(designsystemR.drawable.ic_heart_add),
                     onClick = {
-                        tvShowScreenInteractionListener.onAddToListClick(
-                            featureMediaDetailsUiR.string.add_to_list
-                        )
+                        tvShowScreenInteractionListener.onAddToListClick()
                     }
                 )
             ),
@@ -453,9 +461,27 @@ fun TvShowDetailsScreenContent(
                     .statusBarsPadding()
                     .padding(start = 12.dp, end = 12.dp, top = 16.dp)
                     .align(Alignment.TopCenter),
-                text = state.snackBarMessage,
+                text = state.snackBarMessage ?: designsystemR.string.empty,
                 isSuccess = false,
                 onClick = tvShowScreenInteractionListener::onHideSnackBar
+            )
+        }
+        AnimatedVisibility(
+            visible = state.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            SnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                    .align(Alignment.TopCenter),
+                text = state.snackBarMessage ?: designsystemR.string.empty,
+                isSuccess = state.snackBarSuccess,
+                onClick = {
+                    tvShowScreenInteractionListener.onHideSnackBar()
+                }
             )
         }
     }
