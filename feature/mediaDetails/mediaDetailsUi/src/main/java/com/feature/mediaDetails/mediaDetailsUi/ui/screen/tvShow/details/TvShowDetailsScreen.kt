@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -126,7 +127,7 @@ fun TvShowDetailsScreenContent(
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
 
-    val reviewsList = state.tvShowDetailsUiState.reviews.collectAsLazyPagingItems()
+    val reviewsList = state.tvShowDetailsUiState.reviews
 
 
     Box(
@@ -371,7 +372,7 @@ fun TvShowDetailsScreenContent(
                                 }
 
                             TvShowChips.REVIEWS ->
-                                if (reviewsList.itemSnapshotList.isEmpty()) {
+                                if (reviewsList.isEmpty()) {
                                     item {
                                         Box(
                                             modifier = Modifier
@@ -389,8 +390,8 @@ fun TvShowDetailsScreenContent(
                                         }
                                     }
                                 } else {
-                                    items(reviewsList.itemCount) { index ->
-                                        ReviewsSection(reviewsList[index])
+                                    items(reviewsList) {review ->
+                                        ReviewsSection(review)
                                     }
                                 }
 
