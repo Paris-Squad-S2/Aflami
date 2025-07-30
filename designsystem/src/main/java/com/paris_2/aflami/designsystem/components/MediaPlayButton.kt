@@ -1,5 +1,6 @@
 package com.paris_2.aflami.designsystem.components
 
+import android.R.attr.layoutDirection
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,8 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -31,8 +34,9 @@ fun MediaPlayButton(
     iconSize: Int? = null,
     hasVideo: Boolean = true,
     onButtonClick: () -> Unit = {},
-    buttonType: MediaButtonType
+    buttonType: MediaButtonType,
 ) {
+    val layoutDirection = LocalLayoutDirection.current
 
     val (finalButtonSize, finalIconSize) = when (buttonType) {
         MediaButtonType.BIG -> (buttonSize?.dp ?: 64.dp) to (iconSize?.dp ?: 32.dp)
@@ -65,11 +69,14 @@ fun MediaPlayButton(
             )
     ) {
         val iconPadding = if (buttonSize == 64) 10 else 3
-        val tint = animateColorAsState(if(hasVideo) Theme.colors.primary else Theme.colors.disable)
+        val tint = animateColorAsState(if (hasVideo) Theme.colors.primary else Theme.colors.disable)
         Icon(
             modifier = Modifier
                 .align(Alignment.Center)
-                .padding(start = iconPadding.dp)
+                .padding(
+                    start = if (layoutDirection == LayoutDirection.Ltr) iconPadding.dp else 0.dp,
+                    end = if (layoutDirection == LayoutDirection.Rtl) iconPadding.dp else 0.dp
+                )
                 .size(finalIconSize),
             painter = painterResource(R.drawable.play_media),
             tint = tint.value,

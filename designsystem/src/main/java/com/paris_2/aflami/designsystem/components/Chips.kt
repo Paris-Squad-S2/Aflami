@@ -52,7 +52,9 @@ fun Chips(
                         targetValue = if (isSelected) Theme.colors.stroke else Color.Transparent
                     ).value,
                     shape = RoundedCornerShape(16.dp)
-                ),
+                )
+                .clip(RoundedCornerShape(16.dp))
+                .clickable { onClick() },
             contentAlignment = Alignment.Center
         ) {
             Icon(
