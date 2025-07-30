@@ -47,7 +47,6 @@ fun TopComponentDetails(
             modifier
                 .background(Theme.colors.surface)
                 .navigationBarsPadding()
-                .statusBarsPadding()
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component Detail"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -103,7 +102,10 @@ fun TopComponentDetails(
                         }
                     )
                 ),
-                modifier = Modifier.background(backgroundColor)
+                modifier = Modifier
+                    .statusBarsPadding()
+                    .background(backgroundColor)
+
             )
         }
     }
@@ -114,19 +116,25 @@ fun TopComponent(
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    modifier: Modifier = Modifier
+    title: String,
+    modifier: Modifier = Modifier,
 ) {
     val activity = LocalActivity.current
     with(sharedTransitionScope) {
         TopAppBar(
             modifier = modifier
-                .background(Theme.colors.surface).sharedBounds(
+                .statusBarsPadding()
+                .background(Theme.colors.stroke)
+                .padding(bottom = 1.dp)
+                .background(Theme.colors.surface)
+                .sharedBounds(
                 rememberSharedContentState(key = "Top Component"),
                 animatedVisibilityScope = animatedVisibilityScope,
                 enter = fadeIn() + scaleIn(),
                 exit = fadeOut() + scaleOut(),
                 resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
             ),
+            title = title,
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_back),

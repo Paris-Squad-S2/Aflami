@@ -121,12 +121,13 @@ fun MovieDetailsScreenContent(
             .fillMaxSize()
             .background(Theme.colors.surface)
             .navigationBarsPadding()
-            .statusBarsPadding()
     ) {
         when {
             state.isLoading -> {
                 Column(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .statusBarsPadding()
                 ) {
                     TopAppBar(
                         leadingIcons = listOf(
@@ -392,7 +393,10 @@ fun MovieDetailsScreenContent(
                             }
                         )
                     ),
-                    modifier = Modifier.background(backgroundColor)
+                    modifier = Modifier
+                        .statusBarsPadding()
+                        .background(backgroundColor)
+
                 )
             }
         }

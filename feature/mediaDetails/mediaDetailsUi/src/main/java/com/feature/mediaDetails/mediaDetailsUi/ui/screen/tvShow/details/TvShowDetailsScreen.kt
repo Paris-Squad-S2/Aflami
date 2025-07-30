@@ -131,7 +131,7 @@ fun TvShowDetailsScreenContent(
                 val scrollState = rememberLazyListState()
                 val isCollapsed by remember {
                     derivedStateOf {
-                        scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
+                        scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
                     }
                 }
                 val mediaList =
@@ -143,19 +143,19 @@ fun TvShowDetailsScreenContent(
                         label = "basic_transition"
                     ) { target ->
                         if (!target) {
-                            TopComponentDetails(
-                                state = state,
-                                tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                animatedVisibilityScope = this@AnimatedContent,
-                                sharedTransitionScope = this@SharedTransitionLayout,
-
-                                )
+                        TopComponentDetails(
+                            state = state,
+                            tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                            animatedVisibilityScope = this@AnimatedContent,
+                            sharedTransitionScope = this@SharedTransitionLayout,
+                            )
                         }
                         else {
                             TopComponent(
                                 tvShowScreenInteractionListener = tvShowScreenInteractionListener,
                                 animatedVisibilityScope = this@AnimatedContent,
                                 sharedTransitionScope = this@SharedTransitionLayout,
+                                title = state.tvShowDetailsUiState.tvShowUi.title,
                             )
                         }
 
