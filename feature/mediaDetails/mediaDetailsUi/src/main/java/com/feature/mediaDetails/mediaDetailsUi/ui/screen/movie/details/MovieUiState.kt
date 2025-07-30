@@ -28,7 +28,7 @@ data class MovieDetailsUiState(
     val movie: MovieUi,
     val recommendations: Flow<PagingData<SimilarMediaUI>>,
     val cast: List<CastUi>,
-    val reviews: Flow<PagingData<ReviewUi>>,
+    val reviews: List<ReviewUi>,
     val gallery: List<String>,
     val movieVideoUi: MovieVideoUi,
     val selectedRating: Float
