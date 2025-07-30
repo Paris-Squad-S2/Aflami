@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import androidx.annotation.StringRes
 import androidx.paging.PagingData
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
@@ -17,6 +18,10 @@ data class MovieDetailsScreenState(
     val isGalleryLoading: Boolean = false,
     val isProductionCompaniesLoading: Boolean = false,
     val showRatingDialog: Boolean = false,
+    @StringRes val snackBarMessage: Int? = null,
+    val showSnackBar: Boolean = false,
+    val snackBarSuccess: Boolean = false,
+    val showAddToListDialog: Boolean = false
 )
 
 data class MovieDetailsUiState(

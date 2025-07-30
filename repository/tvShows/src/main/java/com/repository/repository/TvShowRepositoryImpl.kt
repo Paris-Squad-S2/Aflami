@@ -1,6 +1,7 @@
 package com.repository.repository
 
 import com.domain.mediaDetails.exception.AflamiException
+import com.domain.mediaDetails.exception.FailedToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
@@ -179,10 +180,14 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun addRatingToTvShow(){
-        print("Rating added to Tv Show")
+    override suspend fun addRatingToTvShow(movieId: Int, rating: Float) {
+        return safeCall(FailedToAddRatingException()) {
+            tvShowDetailsRemoteDataSource.addRatingToTvShow(
+                movieId = movieId,
+                rating = rating
+            )
+        }
     }
-
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
         return safeCall(NoVideoFoundException()) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
@@ -206,6 +211,7 @@ class TvShowRepositoryImpl(
             ?.map { it.toEntity() }
             ?: emptyList()
     }
+
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
         if (networkConnectionChecker.isConnected.value.not()) {

@@ -37,8 +37,8 @@ roomKtx = "2.7.2"
 roomRuntime = "2.7.2"
 roomTesting = "2.7.2"
 roomCompiler = "2.7.2"
-ksp  = "2.2.0-2.0.2"
-serializationJson ="1.6.3"
+ksp = "2.2.0-2.0.2"
+serializationJson = "1.6.3"
 navigationCompose = "2.9.0"
 ktor = "2.3.5"
 truth = "1.4.4"
@@ -52,6 +52,7 @@ junitJupiterVersion = "5.8.1"
 loggingInterceptor = "5.1.0"
 okhttp = "5.1.0"
 retrofit = "3.0.0"
+shaded = "0.2.1-alpha"
 
 
 [libraries]
@@ -124,6 +125,8 @@ retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit
 retrofit_converter = { module = "com.squareup.retrofit2:converter-kotlinx-serialization", version.ref = "retrofit" }
 logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "loggingInterceptor" }
 
+#Blur
+sifr-shaded = { module = "com.github.mohamedd-hassan:Shaded", version.ref = "shaded" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

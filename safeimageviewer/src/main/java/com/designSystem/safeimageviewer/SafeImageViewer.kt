@@ -108,6 +108,7 @@ fun SafeImageViewer(
             model = if (enabled || state.painterState is AsyncImagePainter.State.Success) {
                 remember(model) {
                     ImageRequest.Builder(context)
+                        .allowHardware(false)
                         .data(model)
                         .size(Size.ORIGINAL)
                         .crossfade(true)
