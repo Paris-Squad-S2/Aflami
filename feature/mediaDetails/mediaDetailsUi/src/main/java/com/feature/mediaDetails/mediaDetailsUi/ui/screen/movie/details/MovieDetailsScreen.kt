@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -108,7 +109,7 @@ fun MovieDetailsScreenContent(
 
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
-    val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
+
 
     Box(
         modifier = Modifier
@@ -312,7 +313,7 @@ fun MovieDetailsScreenContent(
                                                 modifier = Modifier.padding(16.dp)
                                             )
                                         }
-                                    } else if (reviewsList.itemSnapshotList.isEmpty()) {
+                                    } else if (state.movieDetailsUiState.reviews.isEmpty()) {
                                         item {
                                             Box(
                                                 modifier = Modifier
@@ -330,8 +331,8 @@ fun MovieDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(reviewsList.itemCount) { index ->
-                                            ReviewsSection(reviewsList[index])
+                                        items(state.movieDetailsUiState.reviews) { review ->
+                                            ReviewsSection(review)
                                         }
                                     }
 

@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -39,7 +40,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -57,14 +57,12 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.theme.Theme
-import kotlinx.coroutines.flow.emptyFlow
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.R as designsystemR
 
@@ -119,7 +117,7 @@ fun TvShowDetailsScreenContent(
     val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
-    val reviewsList = state.tvShowDetailsUiState.reviews.collectAsLazyPagingItems()
+    val reviewsList = state.tvShowDetailsUiState.reviews
 
     Box(
         modifier = Modifier
@@ -386,7 +384,7 @@ fun TvShowDetailsScreenContent(
                                     }
 
                                 TvShowChips.REVIEWS ->
-                                    if (reviewsList.itemSnapshotList.isEmpty()) {
+                                    if (reviewsList.isEmpty()) {
                                         item {
                                             Box(
                                                 modifier = Modifier
@@ -404,8 +402,8 @@ fun TvShowDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(reviewsList.itemCount) { index ->
-                                            ReviewsSection(reviewsList[index])
+                                        items(reviewsList) {review ->
+                                            ReviewsSection(review)
                                         }
                                     }
 

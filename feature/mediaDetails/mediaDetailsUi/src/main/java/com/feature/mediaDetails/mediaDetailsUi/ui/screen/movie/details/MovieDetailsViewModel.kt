@@ -21,10 +21,10 @@ import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,8 +45,9 @@ class MovieDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
-    navigator: MediaDetailsNavigator
+    navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
+
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
             movie = MovieUi(
@@ -62,7 +63,7 @@ class MovieDetailsViewModel @Inject constructor(
                 productionCompanies = emptyList(),
             ),
             cast = emptyList(),
-            reviews = flowOf(PagingData.empty()),
+            reviews = emptyList(),
             gallery = emptyList(),
             recommendations = flowOf(PagingData.empty()),
             movieVideoUi = MovieVideoUi(
@@ -77,6 +78,7 @@ class MovieDetailsViewModel @Inject constructor(
         showSnackBar = false,
     ), navigator
 ) {
+
 
     private val movieId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
@@ -152,21 +154,13 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        ReviewMoviePagingSource(
-                            mediaId = mediaId,
-                            getMovieReviewsUseCase = getMovieReviewsUseCase
-                        )
-                    }
-                ).flow.cachedIn(viewModelScope)
+                getMovieReviewsUseCase(mediaId,1).toListOfReviewUi()
             },
-            onSuccess = {
+            onSuccess = { reviews->
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            reviews = it
+                            reviews = reviews
                         )
                     )
                 )
@@ -290,6 +284,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     override fun onDismissAddToListDialog() {
         updateState(
             screenState.value.copy(
@@ -298,9 +293,11 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     override fun onShowAllCastClick(movieId: Int) {
         navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
     }
+
 
 
     override fun onRetryLoadMovieDetails() {
@@ -318,6 +315,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
 
+
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
         updateState(
             screenState.value.copy(
@@ -328,6 +326,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     private fun onGetVideoMovieError(error: String) {
         updateState(
             screenState.value.copy(
@@ -336,6 +335,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     override fun onDismissRatingDialog() {
         updateState(
             screenState.value.copy(
@@ -343,6 +343,7 @@ class MovieDetailsViewModel @Inject constructor(
             )
         )
     }
+
 
     override fun onRatingSubmitted(movieId: Int, rating: Float) {
         tryToExecute(
@@ -374,6 +375,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     override fun onHideSnackBar() {
         updateState(
             screenState.value.copy(
@@ -381,4 +383,6 @@ class MovieDetailsViewModel @Inject constructor(
             )
         )
     }
+
+
 }
