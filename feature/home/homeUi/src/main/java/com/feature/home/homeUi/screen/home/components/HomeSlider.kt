@@ -34,6 +34,8 @@ import com.feature.home.homeUi.R
 import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.GenresChip
 import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.MediaButtonType
+import com.paris_2.aflami.designsystem.components.MediaPlayButton
 import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.Slider
 import com.paris_2.aflami.designsystem.components.SliderMedia
@@ -122,15 +124,23 @@ fun HomeSlider(
                         shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
                     )
                 }else if(isShimmerEnabled){
-                    Slider(
-                        items = loadingList,
-                        onClick = { media ->
-                            onMediaClick(media)
-                        },
-                        modifier = modifier,
-                        currentMedia = mediaState,
-                        shimmerModifier = Modifier.shimmerable(enabled = true)
-                    )
+                    Box(
+                    ) {
+                        Slider(
+                            items = loadingList,
+                            onClick = { media ->
+                                onMediaClick(media)
+                            },
+                            modifier = modifier,
+                            currentMedia = mediaState,
+                            shimmerModifier = Modifier.shimmerable(enabled = true)
+                        )
+                        MediaPlayButton(
+                            modifier = Modifier.align(Alignment.Center),
+                            onButtonClick = {},
+                            buttonType = MediaButtonType.BIG
+                        )
+                    }
                 }
             }
         }
