@@ -4,9 +4,12 @@ import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.google.common.truth.Truth.assertThat
 import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.EpisodeVideoResultDto
+import com.repository.movie.models.remote.RatingDto
+import com.repository.movie.models.remote.RatingResponseDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Test
 
@@ -19,6 +22,276 @@ class TvShowDetailsRemoteDataSourceImplTest {
         retrofitTvShowDetailsApiService = mockk(relaxed = true)
         tvShowDetailsRemoteDataSourceImpl =
             TvShowDetailsRemoteDataSourceImpl(retrofitTvShowDetailsApiService)
+    }
+
+    @Test
+    fun `addRatingToTvShow should return true when status code is 1`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 8.0f
+        val response = RatingResponseDto(statusCode = 1, statusMessage = "Success")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+        } returns response
+
+        // When
+        val result = tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
+
+        // Then
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `addRatingToTvShow should return true when status code is 12`() = runTest {
+        // Given
+        val movieId = 456
+        val rating = 7.5f
+        val response = RatingResponseDto(statusCode = 12, statusMessage = "Updated")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+        } returns response
+
+        // When
+        val result = tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
+
+        // Then
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `addRatingToTvShow should return false when status code is not 1 or 12`() = runTest {
+        // Given
+        val movieId = 789
+        val rating = 6.0f
+        val response = RatingResponseDto(statusCode = 10, statusMessage = "Not authorized")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+        } returns response
+
+        // When
+        val result = tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
+
+        // Then
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `addRatingToTvShow should throw exception when API call fails`() = runTest {
+        // Given
+        val movieId = 999
+        val rating = 9.0f
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+        } throws RuntimeException("Server error")
+
+        // Then
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
+            }
+        }
+    }
+
+    @Test
+    fun `getTvShowDetails should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTvShowDetails(
+                tvShowId,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowDetails(tvShowId, language) }
+        }
+    }
+
+    @Test
+    fun `getTvShowImages should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        coEvery { retrofitTvShowDetailsApiService.getTvShowImages(tvShowId) } throws RuntimeException(
+            "API error"
+        )
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowImages(tvShowId) }
+        }
+    }
+
+    @Test
+    fun `getTvShowReviews should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val page = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTvShowReviews(
+                tvShowId,
+                page,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowReviews(tvShowId, page, language) }
+        }
+    }
+
+    @Test
+    fun `getSimilarTvShows should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val page = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getSimilarTvShows(
+                tvShowId,
+                page,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.getSimilarTvShows(
+                    tvShowId,
+                    page,
+                    language
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `getTvShowCredits should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTvShowCredits(
+                tvShowId,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowCredits(tvShowId, language) }
+        }
+    }
+
+    @Test
+    fun `getSeasonDetails should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val seasonNumber = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getSeasonDetails(
+                tvShowId,
+                seasonNumber,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.getSeasonDetails(
+                    tvShowId,
+                    seasonNumber,
+                    language
+                )
+            }
+        }
+    }
+
+    @Test
+    fun `getTrailerVideoForTvShow should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        coEvery { retrofitTvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId) } throws RuntimeException(
+            "API error"
+        )
+        assertThrows(RuntimeException::class.java) {
+            runTest { tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForTvShow(tvShowId) }
+        }
+    }
+
+    @Test
+    fun `getTrailerVideoForEpisode should throw when API throws exception`() = runTest {
+        val tvShowId = -1
+        val seasonNumber = -1
+        val episodeNumber = -1
+        val language = ""
+        coEvery {
+            retrofitTvShowDetailsApiService.getTrailerVideoForEpisode(
+                tvShowId,
+                seasonNumber,
+                episodeNumber,
+                language
+            )
+        } throws RuntimeException("API error")
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForEpisode(
+                    tvShowId,
+                    seasonNumber,
+                    episodeNumber,
+                    language
+                )
+            }
+        }
+    }
+    @Test
+    fun `addRatingToTvShow should complete successfully when status code is 1`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.5f
+        val response = RatingResponseDto(1, "Success")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(
+                movieId,
+                RatingDto(rating)
+            )
+        } returns response
+
+        // When (should not throw)
+        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
+    }
+
+    @Test
+    fun `addRatingToTvShow should complete successfully when status code is 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.0f
+        val response = RatingResponseDto(12, "Success")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(
+                movieId,
+                RatingDto(rating)
+            )
+        } returns response
+
+        // When (should not throw)
+        tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
+    }
+
+    @Test
+    fun `addRatingToTvShow should throw exception when status code is not 1 or 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 3.5f
+        val response = RatingResponseDto(10, "Invalid session")
+
+        coEvery {
+            retrofitTvShowDetailsApiService.addRatingToTvShow(
+                movieId,
+                RatingDto(rating)
+            )
+        } returns response
+
+        // Then
+        assertThrows(Exception::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
+            }
+        }
     }
 
     @Test
