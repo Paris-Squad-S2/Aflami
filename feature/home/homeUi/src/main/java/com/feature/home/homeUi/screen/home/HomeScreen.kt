@@ -39,6 +39,7 @@ import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
+import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.MediaCard
@@ -242,6 +243,7 @@ fun HomeScreenContent(
                         mediaCardType = MediaCardType.UP_COMING,
                         showGradientFilter = false,
                         modifier = Modifier
+                            .shimmerable(enabled = true)
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
                             .padding(bottom = 8.dp)

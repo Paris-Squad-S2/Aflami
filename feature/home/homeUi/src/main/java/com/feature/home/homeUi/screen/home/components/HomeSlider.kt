@@ -31,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
+import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.GenresChip
 import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.SectionTitle
@@ -84,7 +85,7 @@ fun HomeSlider(
                         )
                     }else {
                 Modifier
-                    .blur(radius = 12f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED)
+                    .blur(radius = 12f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED).shimmerable(enabled = true)
             })
             )
 
@@ -100,13 +101,14 @@ fun HomeSlider(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
                             contentDescription = "",
                             modifier = Modifier
+                                .shimmerable(enabled = true)
                                 .padding(start = 8.dp)
                                 .size(width = 16.dp, height = 18.dp),
                             tint = Theme.colors.secondary,
                         )
                     },
                     hasViewAll = false,
-                    modifier = Modifier.padding(bottom = 20.dp)
+                    modifier = Modifier.padding(bottom = 20.dp).shimmerable(enabled = true)
                 )
                 if (mediaList.isNotEmpty()) {
                     Slider(
@@ -116,6 +118,7 @@ fun HomeSlider(
                         },
                         modifier = modifier,
                         currentMedia = mediaState,
+                        shimmerModifier = Modifier.shimmerable(enabled = true)
                     )
                 }
             }
@@ -135,7 +138,7 @@ fun HomeSlider(
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.text.title,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp).shimmerable(enabled = true),
                     minLines = 1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
@@ -147,6 +150,7 @@ fun HomeSlider(
                 ) {
                     items(mediaState.value.categories.take(3)) {
                         GenresChip(
+                            modifier = Modifier.shimmerable(enabled = true),
                             title = it,
                             isSelected = false
                         )

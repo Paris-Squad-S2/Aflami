@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -49,6 +50,7 @@ fun HomeSection(
                 }
             },
             onClickViewAll = onSectionAllClick,
+            modifier = Modifier.shimmerable(enabled = true)
         )
 
         LazyRow(
@@ -60,6 +62,7 @@ fun HomeSection(
             items(mediaList) { media ->
                 MediaCard(
                     modifier = Modifier
+                        .shimmerable(enabled = true)
                         .padding(end = 8.dp)
                         .clickable { onMediaClick(media) },
                     imageUri = media.imageUri,
