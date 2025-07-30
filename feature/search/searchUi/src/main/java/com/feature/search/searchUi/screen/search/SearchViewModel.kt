@@ -156,16 +156,22 @@ class SearchViewModel @Inject constructor(
             screenState.value.copy(
                 searchUiState = screenState.value.searchUiState.copy(
                     searchQuery = query,
-                )
+                ),
+                isLoading = true
             )
         )
         debounceJob?.cancel()
         if (query.isNotBlank()) {
-
             debounceJob = viewModelScope.launch {
                 delay(1000)
                 searchQuery(query)
             }
+        }else{
+            updateState(
+                screenState.value.copy(
+                    isLoading = false
+                )
+            )
         }
     }
 
@@ -174,7 +180,7 @@ class SearchViewModel @Inject constructor(
             execute = {
                 updateState(
                     screenState.value.copy(
-                        errorMessage = null
+                        errorMessage = null,
                     )
                 )
                 Pager(
@@ -224,7 +230,8 @@ class SearchViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }

@@ -14,8 +14,8 @@ import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.pagging.WorldTourPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,7 +45,6 @@ class WorldTourViewModel @Inject constructor(
             ),
             errorMessage = null
         ), navigator
-
     ) {
 
     init {
@@ -65,7 +64,8 @@ class WorldTourViewModel @Inject constructor(
             screenState.value.copy(
                 uiState = screenState.value.uiState.copy(
                     searchQuery = query,
-                )
+                ),
+                errorMessage = null
             )
         )
         debounceJob?.cancel()
@@ -89,15 +89,25 @@ class WorldTourViewModel @Inject constructor(
                     updateState(
                         screenState.value.copy(
                             uiState = screenState.value.uiState.copy(
-                                searchResult = flowOf(PagingData.empty()),
-                            )
+                                searchResult = flowOf(PagingData.empty())
+                            ),
+                            errorMessage = "no data found"
                         )
                     )
                 }
             }
+        } else {
+            updateState(
+                screenState.value.copy(
+                    uiState = screenState.value.uiState.copy(
+                        searchResult = flowOf(PagingData.empty()),
+                        hints = emptyList()
+                    ),
+                    errorMessage = null
+                )
+            )
         }
     }
-
 
     private fun searchQuery(query: String): Job {
         return tryToExecute(
@@ -122,7 +132,7 @@ class WorldTourViewModel @Inject constructor(
                 updateState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult,
+                            searchResult = searchResult
                         )
                     )
                 )

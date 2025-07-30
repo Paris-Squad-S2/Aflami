@@ -73,7 +73,8 @@ fun WorldTourScreenContent(
                 } else {
                     it.englishName
                 }
-                name + " (${it.countryCode})" },
+                name + " (${it.countryCode})"
+            },
             onSuggestionSelected = {
                 worldTourScreenInteractionListener.onSearchQueryChange(
                     it.substringBefore(
@@ -82,37 +83,48 @@ fun WorldTourScreenContent(
                 )
             },
         )
-        if (state.uiState.searchQuery.isEmpty()) {
-            PlaceholderView(
-                modifier = Modifier
-                    .fillMaxSize(),
-                image = painterResource(RDesignSystem.drawable.img_world_tour),
-                title = stringResource(R.string.country_tour),
-                subTitle = stringResource(R.string.start_exploring_the_world_movie),
-                spacer = 16.dp
-            )
-        } else if (state.errorMessage != null||state.uiState.searchResult.collectAsLazyPagingItems().loadState.hasError) {
-            NetworkError(
-                modifier = Modifier.fillMaxSize(),
-                onRetry = worldTourScreenInteractionListener::onRetrySearchQuery
-            )
-        } else if (state.uiState.searchResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
-            PageLoadingPlaceHolder(
-                modifier = Modifier.fillMaxSize()
-            )
-        } else if (state.uiState.searchResult.collectAsLazyPagingItems().itemCount==0) {
-            PlaceholderView(
-                modifier = Modifier.fillMaxSize(),
-                image = painterResource(RDesignSystem.drawable.img_no_search_result),
-                title = stringResource(R.string.no_search_result),
-                subTitle = stringResource(R.string.please_try_with_another_keyword),
-                spacer = 16.dp
-            )
-        } else {
-            SearchResultContent(
-                searchResult = state.uiState.searchResult.collectAsLazyPagingItems(),
-                onMediaCardClick = worldTourScreenInteractionListener::onMediaCardClick
-            )
+        when {
+            state.uiState.searchQuery.isEmpty() -> {
+                PlaceholderView(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    image = painterResource(RDesignSystem.drawable.img_world_tour),
+                    title = stringResource(R.string.country_tour),
+                    subTitle = stringResource(R.string.start_exploring_the_world_movie),
+                    spacer = 16.dp
+                )
+            }
+
+            state.uiState.searchResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
+                    && state.errorMessage == null -> {
+                PageLoadingPlaceHolder(
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+            state.uiState.searchResult.collectAsLazyPagingItems().itemCount == 0 -> {
+                PlaceholderView(
+                    modifier = Modifier.fillMaxSize(),
+                    image = painterResource(RDesignSystem.drawable.img_no_search_result),
+                    title = stringResource(R.string.no_search_result),
+                    subTitle = stringResource(R.string.please_try_with_another_keyword),
+                    spacer = 16.dp
+                )
+            }
+
+            state.errorMessage != null || state.uiState.searchResult.collectAsLazyPagingItems().loadState.hasError -> {
+                NetworkError(
+                    modifier = Modifier.fillMaxSize(),
+                    onRetry = worldTourScreenInteractionListener::onRetrySearchQuery
+                )
+            }
+
+            else -> {
+                SearchResultContent(
+                    searchResult = state.uiState.searchResult.collectAsLazyPagingItems(),
+                    onMediaCardClick = worldTourScreenInteractionListener::onMediaCardClick
+                )
+            }
         }
     }
 }

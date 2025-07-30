@@ -1,2 +1,2 @@
-versionName=0.3.17
+versionName=0.3.18
 - fix Issues #155

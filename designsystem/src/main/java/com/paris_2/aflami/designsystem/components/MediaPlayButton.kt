@@ -59,7 +59,10 @@ fun MediaPlayButton(
             )
             .clip(CircleShape)
             .background(finalBackGroundColor)
-            .clickable { onButtonClick() }
+            .clickable(
+                enabled = hasVideo,
+                onClick = { onButtonClick() }
+            )
     ) {
         val iconPadding = if (buttonSize == 64) 10 else 3
         val tint = animateColorAsState(if(hasVideo) Theme.colors.primary else Theme.colors.disable)
