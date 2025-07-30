@@ -1,5 +1,7 @@
 package com.feature.search.searchUi.pagging
 
+import MediaUiState
+import MediaTypeUi
 import androidx.paging.PagingSource
 import com.domain.search.exception.NoInternetConnectionException
 import com.domain.search.exception.NoMediaForActorException
@@ -10,21 +12,32 @@ import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class BasePagingSourceTest {
 
-    private val mockSearchUseCase: suspend (String, Int) -> List<String> = mockk()
+    private val mockSearchUseCase: suspend (String, Int) -> List<MediaUiState> = mockk()
 
-    private fun createPagingSource(): BasePagingSource<String> {
-        return object : BasePagingSource<String>("test_query", mockSearchUseCase) {}
+    private fun createPagingSource(): BasePagingSource<MediaUiState> {
+        return object : BasePagingSource<MediaUiState>("test_query", mockSearchUseCase) {}
     }
+
+    private val mockMediaUiState = MediaUiState(
+        id = 1,
+        imageUri = "http://test.com/image.jpg",
+        title = "Test Movie",
+        type = MediaTypeUi.MOVIE,
+        categories = listOf(1, 2),
+        yearOfRelease = LocalDate(2023, 10, 15),
+        rating = 8.5
+    )
 
     @Test
     fun `load should return page with data when search is successful`() = runTest {
         // Given
-        val expectedData = listOf("result1", "result2", "result3")
+        val expectedData = listOf(mockMediaUiState)
         coEvery { mockSearchUseCase("test_query", 1) } returns expectedData
         val pagingSource = createPagingSource()
 
@@ -162,7 +175,7 @@ class BasePagingSourceTest {
     @Test
     fun `load should set correct prevKey for page 2`() = runTest {
         // Given
-        val expectedData = listOf("result1", "result2")
+        val expectedData = listOf(mockMediaUiState)
         coEvery { mockSearchUseCase("test_query", 2) } returns expectedData
         val pagingSource = createPagingSource()
 
