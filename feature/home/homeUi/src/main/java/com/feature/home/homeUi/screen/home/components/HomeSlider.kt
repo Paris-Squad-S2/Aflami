@@ -60,28 +60,23 @@ fun HomeSlider(
             )
         )
     }
-
-
     Box {
         AnimatedVisibility(
             visible = mediaState.toString().isNotEmpty(),
             enter = slideInVertically(),
             exit = slideOutVertically(),
-        ){
-
+        ) {
             SafeImageViewer(
-                    model = mediaState.value.imageUri,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(400.dp)
-                        .blur(
-                            radius = 14.dp,
-                            edgeTreatment = BlurredEdgeTreatment.Unbounded,
-                        )
-                ,
-                    contentScale = ContentScale.FillWidth,
-                )
-
+                model = mediaState.value.imageUri,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(400.dp)
+                    .blur(
+                        radius = 14.dp,
+                        edgeTreatment = BlurredEdgeTreatment.Unbounded,
+                    ),
+                contentScale = ContentScale.FillWidth,
+            )
             Column(
                 modifier = Modifier.padding(top = 96.dp, bottom = 56.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -95,16 +90,13 @@ fun HomeSlider(
                             contentDescription = "",
                             modifier = Modifier
                                 .padding(start = 8.dp)
-                                .size(width = 16.dp, height = 18.dp)
-
-                            ,
+                                .size(width = 16.dp, height = 18.dp),
                             tint = Theme.colors.secondary,
                         )
                     },
                     hasViewAll = false,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier = Modifier.padding(bottom = 20.dp)
                 )
-
                 if (mediaList.isNotEmpty()) {
                     Slider(
                         items = mediaList,
@@ -117,8 +109,6 @@ fun HomeSlider(
                 }
             }
         }
-
-
         AnimatedVisibility(
             visible = mediaState.toString().isNotEmpty(),
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -140,7 +130,9 @@ fun HomeSlider(
                     overflow = TextOverflow.Ellipsis
                 )
                 LazyRow(
-                    Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
+                    Modifier
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     items(mediaState.value.categories.take(3)) {
                         GenresChip(
@@ -151,8 +143,6 @@ fun HomeSlider(
                     }
                 }
             }
-
         }
     }
-
 }
