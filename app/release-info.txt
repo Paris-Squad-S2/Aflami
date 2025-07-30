@@ -1,3 +1,4 @@
 versionName=0.3.18
-- Handel mood picker random movie.
+- Handle mood picker random movie.
 - Handle upcoming movies in separate list than mood picker.
+

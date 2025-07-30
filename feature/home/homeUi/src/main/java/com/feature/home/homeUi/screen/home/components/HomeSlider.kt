@@ -106,9 +106,8 @@ fun HomeSlider(
                         )
                     },
                     hasViewAll = false,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier = Modifier.padding(bottom = 20.dp)
                 )
-
                 if (mediaList.isNotEmpty()) {
                     Slider(
                         items = mediaList,
@@ -121,8 +120,6 @@ fun HomeSlider(
                 }
             }
         }
-
-
         AnimatedVisibility(
             visible = mediaState.toString().isNotEmpty(),
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -157,8 +154,6 @@ fun HomeSlider(
                     }
                 }
             }
-
         }
     }
-
 }
