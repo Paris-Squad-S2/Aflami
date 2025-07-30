@@ -6,7 +6,7 @@ interface AuthenticationRepository {
     fun getRegisterUrl(): String
     fun getForgetPasswordUrl(): String
     fun saveSessionId(sessionId: String)
-    fun getSessionId(): String?
+    suspend fun getSessionId(): String?
     fun isLoggedIn(): Boolean
     fun hasAnySession(): Boolean
 }

@@ -8,6 +8,7 @@ import com.repository.movie.models.remote.MovieImagesDto
 import com.repository.movie.models.remote.MovieReviewsDto
 import com.repository.movie.models.remote.MovieSimilarsDto
 import com.repository.movie.models.remote.MovieVideoDto
+import com.repository.movie.models.remote.RatingDto
 import javax.inject.Inject
 
 class MovieDetailsRemoteDataSourceImpl @Inject constructor(
@@ -36,4 +37,19 @@ class MovieDetailsRemoteDataSourceImpl @Inject constructor(
     override suspend fun getTrailerVideoForMovie(movieId: Int): MovieVideoDto {
         return retrofitMovieDetailsApiService.getTrailerVideoForMovie(movieId)
     }
+
+    override suspend fun addRatingToMovie(movieId: Int, rating: Float): Boolean {
+        val dto = RatingDto(value = rating)
+        val response = retrofitMovieDetailsApiService.addRatingToMovie(
+            movieId = movieId,
+            rating = dto
+        )
+        return !(response.statusCode != STATUS_CODE_SUCCESS && response.statusCode != STATUS_CODE_UPDATED)
+    }
+
+    companion object {
+        private const val STATUS_CODE_SUCCESS = 1
+        private const val STATUS_CODE_UPDATED = 12
+    }
 }
+
