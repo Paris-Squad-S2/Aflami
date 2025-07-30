@@ -1,6 +1,5 @@
 package com.feature.home.homeUi.screen.home.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -60,8 +59,7 @@ fun HomeSection(
             items(mediaList) { media ->
                 MediaCard(
                     modifier = Modifier
-                        .padding(end = 8.dp)
-                        .clickable { onMediaClick(media) },
+                        .padding(end = 8.dp),
                     imageUri = media.imageUri,
                     rating = media.rating?.toFloat(),
                     movieName = media.title,
@@ -70,6 +68,8 @@ fun HomeSection(
                     mediaCardType = MediaCardType.NORMAL,
                     showGradientFilter = true,
                     enabled = !isScrolling,
+                    clickable = true,
+                    onClick = { onMediaClick(media) }
                 )
             }
         }
