@@ -37,15 +37,17 @@ fun HomeSection(
             title = title,
             hasViewAll = true,
             icon = {
-                leadingIconPainter?.let { it->   Icon(
-                    imageVector = it,
-                    contentDescription = "$title icon",
-                    modifier = Modifier
-                        .padding(start = 8.dp)
-                        .size(width = 16.dp, height = 18.dp),
-                    tint = iconColor ?: Color.Unspecified,
-                )
-            }},
+                leadingIconPainter?.let { it ->
+                    Icon(
+                        imageVector = it,
+                        contentDescription = "$title icon",
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(width = 16.dp, height = 18.dp),
+                        tint = iconColor ?: Color.Unspecified,
+                    )
+                }
+            },
             onClickViewAll = onSectionAllClick,
         )
 

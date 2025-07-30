@@ -1,5 +1,7 @@
 package com.feature.home.homeUi.screen.continueWatching
 
+import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -37,17 +39,23 @@ fun ContinueWatchingScreen(
     viewModel: ContinueWatchingViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
-
-    Column {
+    val context = LocalActivity.current
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Theme.colors.surface)
+    ) {
         TopAppBar(
             logo = iconItemWithDefaults(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
-                onClick = viewModel::onBackButtonClick,
+                onClick = {
+                    context?.finish()
+                },
                 backgroundColor = Theme.colors.surfaceHigh,
                 tint = Theme.colors.text.title,
             ),
             title = stringResource(R.string.continue_watching),
-            modifier = Modifier.padding( top = 23.dp)
+            modifier = Modifier.padding(top = 23.dp)
         )
         if (state.value.continueWatchingMediaList.isNotEmpty()) {
             ContinueWatchingContent(
