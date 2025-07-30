@@ -407,7 +407,7 @@ fun MovieDetailsScreenContent(
                     .statusBarsPadding()
                     .padding(start = 12.dp, end = 12.dp, top = 16.dp)
                     .align(Alignment.TopCenter),
-                text = state.snackBarMessage!!,
+                text = state.snackBarMessage ?: RDesignSystem.string.empty,
                 isSuccess = state.snackBarSuccess,
                 onClick = {
                     movieDetailsScreenInteractionListener.onHideSnackBar()
