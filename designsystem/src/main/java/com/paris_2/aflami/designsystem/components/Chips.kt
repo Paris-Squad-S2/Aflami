@@ -39,8 +39,9 @@ fun Chips(
         modifier = modifier.width(70.dp)
     ) {
         Box(
-            modifier = Modifier.clickable { onClick() }
+            modifier = Modifier
                 .clip(RoundedCornerShape(16.dp))
+                .clickable { onClick() }
                 .background(
                     animateColorAsState(
                         targetValue = if (isSelected) Theme.colors.secondary else Theme.colors.surfaceHigh

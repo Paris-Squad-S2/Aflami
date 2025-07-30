@@ -34,7 +34,7 @@ data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
     val recommendations: Flow<PagingData<SimilarMediaUI>>,
     val cast: List<CastUi>,
-    val reviews: Flow<PagingData<ReviewUi>>,
+    val reviews:List<ReviewUi>,
     val gallery: List<String>,
     val tvShowVideoUi: TvShowVideoUi,
     val selectedRating: Float,

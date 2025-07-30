@@ -24,10 +24,10 @@ import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -50,8 +50,9 @@ class TvShowDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
-    navigator: MediaDetailsNavigator
+    navigator: MediaDetailsNavigator,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
+
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
             tvShowUi = TvShowUi(
@@ -68,7 +69,7 @@ class TvShowDetailsViewModel @Inject constructor(
                 productionCompanies = emptyList()
             ),
             cast = emptyList(),
-            reviews = flowOf(PagingData.empty()),
+            reviews = emptyList(),
             gallery = emptyList(),
             recommendations = flowOf(PagingData.empty()),
             tvShowVideoUi = TvShowVideoUi(
@@ -89,6 +90,7 @@ class TvShowDetailsViewModel @Inject constructor(
         seasonsLoadingStates = emptyMap()
     ), navigator
 ) {
+
 
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
@@ -137,6 +139,7 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
+
     private fun loadTvShowCast(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowCastUseCase(mediaId) },
@@ -159,6 +162,7 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
+
     private fun loadTvShowGallery(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowGalleryUseCase(mediaId) },
@@ -180,6 +184,7 @@ class TvShowDetailsViewModel @Inject constructor(
             }
         )
     }
+
 
     private fun loadTvShowRecommendations(mediaId: Int) {
         tryToExecute(
@@ -210,20 +215,16 @@ class TvShowDetailsViewModel @Inject constructor(
                 )
             }
         )
+
     }
+
 
     private fun loadTvShowReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        ReviewTvShowPagingSource(
-                            mediaId = mediaId,
-                            getTvShowReviewsUseCase = getTvShowReviewsUseCase
-                        )
-                    }
-                ).flow.cachedIn(viewModelScope)
+
+                getTvShowReviewsUseCase(mediaId,1).toListOfReviewUi()
+
             },
             onSuccess = { reviews ->
                 updateState(
@@ -279,6 +280,13 @@ class TvShowDetailsViewModel @Inject constructor(
                         )
                     )
                 }
+                else{
+                    navigate(
+                        MediaDetailsDestinations.LoginDialogDestination(
+                            R.string.rate
+                        )
+                    )
+                }
             },
             onError = {
                 updateState(screenState.value.copy(errorMessage = it))
@@ -287,10 +295,26 @@ class TvShowDetailsViewModel @Inject constructor(
     }
 
     override fun onAddToListClick() {
-        updateState(
-            screenState.value.copy(
-                showAddToListDialog = true,
-            )
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState(
+                        screenState.value.copy(
+                            showAddToListDialog = true
+                        )
+                    )
+                } else {
+                    navigate(
+                        MediaDetailsDestinations.LoginDialogDestination(
+                            R.string.add_to_list
+                        )
+                    )
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
         )
     }
 
@@ -474,4 +498,5 @@ class TvShowDetailsViewModel @Inject constructor(
             )
         )
     }
+
 }
