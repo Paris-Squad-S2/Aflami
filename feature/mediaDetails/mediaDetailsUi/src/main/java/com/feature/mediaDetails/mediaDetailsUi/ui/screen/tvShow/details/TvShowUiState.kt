@@ -49,7 +49,7 @@ data class TvShowVideoUi(
 data class TvShowUi(
     val id: Int,
     override val posterUrl: String,
-    override val rating: Float,
+    override val rating: Float?,
     override val title: String,
     val genres: List<String>,
     override val releaseDate: String,
@@ -73,7 +73,7 @@ data class SeasonUi(
 data class EpisodeUi(
     val episodeNumber: Int,
     val posterUrl: String,
-    val voteAverage: Double,
+    val voteAverage: Double?,
     val airDate: String,
     val runtime: String,
     val description: String,

@@ -36,7 +36,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun MediaCard(
     modifier: Modifier = Modifier,
     imageUri: String,
-    rating: Float,
+    rating: Float?,
     movieName: String = "",
     mediaType: String = "",
     year: String = "",
@@ -104,7 +104,7 @@ fun MediaCard(
         )
 
         AnimatedVisibility(
-            showRating && rating > 0.0,
+            showRating && rating != null,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(top = 4.dp, end = 8.dp)

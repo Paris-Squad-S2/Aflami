@@ -177,7 +177,7 @@ fun TopRatingMoviesContent(
                         onMediaCardClick(media)
                     },
                 imageUri = media.imageUri,
-                rating = media.rating.toFloat(),
+                rating = media.rating?.toFloat(),
                 movieName = media.title,
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),

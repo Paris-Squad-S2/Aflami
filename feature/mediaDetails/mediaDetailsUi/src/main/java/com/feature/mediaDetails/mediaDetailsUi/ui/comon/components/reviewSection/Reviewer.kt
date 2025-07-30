@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,7 +33,7 @@ fun ReviewCard(
     createdAt: String,
     avatarUrl: String,
     username: String,
-    rating: Double,
+    rating: Double?,
     description: String,
     modifier: Modifier = Modifier,
 ) {
@@ -71,10 +72,15 @@ fun ReviewCard(
                     )
                 }
 
-                RatingCard(
-                    rating = rating.toFloat(),
+                AnimatedVisibility(
+                    rating != null,
                     modifier = Modifier.padding(start = 8.dp)
-                )
+                ) {
+                    RatingCard(
+                        rating = rating?.toFloat(),
+                    )
+                }
+
             }
 
             Spacer(modifier = Modifier.height(12.dp))

@@ -274,7 +274,7 @@ fun TvShowDetailsScreenContent(
                                                             label = "image_transition"
                                                         ) { value ->
                                                             EpisodeCard(
-                                                                episodeRating = episode.voteAverage.toFloat(),
+                                                                episodeRating = episode.voteAverage?.toFloat(),
                                                                 episodeNumber = episode.episodeNumber.toString(),
                                                                 episodeTitle = episode.episodeNumber.toString(),
                                                                 episodeDuration = episode.runtime,
@@ -340,7 +340,7 @@ fun TvShowDetailsScreenContent(
                                                         bottom = 8.dp
                                                     ),
                                                 imageUri = media.posterPath,
-                                                rating = media.voteAverage.toFloat(),
+                                                rating = media.voteAverage?.toFloat(),
                                                 movieName = media.title,
                                                 mediaType = stringResource(featureMediaDetailsUiR.string.tvshow),
                                                 year = media.releaseDate.take(4),

@@ -263,7 +263,7 @@ fun MovieDetailsScreenContent(
                                                         bottom = 8.dp
                                                     ),
                                                 imageUri = media.posterPath,
-                                                rating = media.voteAverage.toFloat(),
+                                                rating = media.voteAverage?.toFloat(),
                                                 movieName = media.title,
                                                 mediaType = stringResource(R.string.movie),
                                                 year = media.releaseDate.take(4),
