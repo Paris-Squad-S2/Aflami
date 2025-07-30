@@ -2,6 +2,8 @@ package com.feature.search.searchUi.pagging
 
 import androidx.paging.PagingSource
 import com.domain.search.exception.NoInternetConnectionException
+import com.domain.search.exception.NoMediaForActorException
+import com.domain.search.exception.NoMediaForCountryException
 import com.domain.search.exception.NoMediaForSearchException
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -47,6 +49,52 @@ class BasePagingSourceTest {
     fun `load should return empty page when NoMediaForSearchException is thrown`() = runTest {
         // Given
         coEvery { mockSearchUseCase("test_query", 1) } throws NoMediaForSearchException()
+        val pagingSource = createPagingSource()
+
+        // When
+        val result = pagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 10,
+                placeholdersEnabled = false
+            )
+        )
+
+        // Then
+        assertThat(result).isInstanceOf(PagingSource.LoadResult.Page::class.java)
+        val pageResult = result as PagingSource.LoadResult.Page
+        assertThat(pageResult.data).isEmpty()
+        assertThat(pageResult.prevKey).isNull()
+        assertThat(pageResult.nextKey).isNull() // Should stop pagination
+    }
+
+    @Test
+    fun `load should return empty page when NoMediaForActorException is thrown`() = runTest {
+        // Given
+        coEvery { mockSearchUseCase("test_query", 1) } throws NoMediaForActorException()
+        val pagingSource = createPagingSource()
+
+        // When
+        val result = pagingSource.load(
+            PagingSource.LoadParams.Refresh(
+                key = null,
+                loadSize = 10,
+                placeholdersEnabled = false
+            )
+        )
+
+        // Then
+        assertThat(result).isInstanceOf(PagingSource.LoadResult.Page::class.java)
+        val pageResult = result as PagingSource.LoadResult.Page
+        assertThat(pageResult.data).isEmpty()
+        assertThat(pageResult.prevKey).isNull()
+        assertThat(pageResult.nextKey).isNull() // Should stop pagination
+    }
+
+    @Test
+    fun `load should return empty page when NoMediaForCountryException is thrown`() = runTest {
+        // Given
+        coEvery { mockSearchUseCase("test_query", 1) } throws NoMediaForCountryException()
         val pagingSource = createPagingSource()
 
         // When

@@ -2,6 +2,8 @@ package com.feature.search.searchUi.pagging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import com.domain.search.exception.NoMediaForActorException
+import com.domain.search.exception.NoMediaForCountryException
 import com.domain.search.exception.NoMediaForSearchException
 
 abstract class BasePagingSource<Media: Any>(
@@ -21,6 +23,22 @@ abstract class BasePagingSource<Media: Any>(
         } catch (e: NoMediaForSearchException) {
             // When no media is found for the search query, return empty page to stop pagination
             // This prevents infinite loading for invalid search terms
+            LoadResult.Page(
+                data = emptyList(),
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = null // No more pages to load
+            )
+        } catch (e: NoMediaForActorException) {
+            // When no media is found for the actor, return empty page to stop pagination
+            // This prevents infinite loading for invalid actor names
+            LoadResult.Page(
+                data = emptyList(),
+                prevKey = if (page == 1) null else page - 1,
+                nextKey = null // No more pages to load
+            )
+        } catch (e: NoMediaForCountryException) {
+            // When no media is found for the country, return empty page to stop pagination
+            // This prevents infinite loading for invalid country names
             LoadResult.Page(
                 data = emptyList(),
                 prevKey = if (page == 1) null else page - 1,
