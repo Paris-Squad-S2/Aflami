@@ -14,8 +14,5 @@ sealed interface HomeDestinations : HomeGraph {
     data object ContinueWatchingScreen : HomeDestination
 
     @Serializable
-    data object MoviesBirthdayScreen : HomeDestination
-
-    @Serializable
     data object TopRatingMoviesScreen : HomeDestination
 }

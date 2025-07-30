@@ -64,7 +64,7 @@ fun FindByActorScreenContent(
         TextField(
             value = state.uiState.searchQuery,
             onValueChange = findByActorScreenInteractionListener::onSearchQueryChange,
-            placeholder = stringResource(R.string.search),
+            placeholder = stringResource(R.string.actor_name),
         )
         if (state.uiState.searchQuery.isEmpty()) {
             PlaceholderView(

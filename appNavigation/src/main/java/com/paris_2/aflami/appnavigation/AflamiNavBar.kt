@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.Icon
@@ -103,6 +104,8 @@ private fun RowScope.AflamiNavBarItem(
                     label = "NavBarItemTextColor"
                 ).value,
                 textAlign = TextAlign.Center,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
                 modifier = Modifier
                     .padding(top = 4.dp)
                     .fillMaxWidth()

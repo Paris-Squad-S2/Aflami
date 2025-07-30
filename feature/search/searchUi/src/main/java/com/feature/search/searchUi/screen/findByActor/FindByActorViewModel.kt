@@ -16,12 +16,15 @@ import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FindByActorViewModel(
+@HiltViewModel
+class FindByActorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
