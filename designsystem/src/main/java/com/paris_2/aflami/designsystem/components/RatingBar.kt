@@ -42,7 +42,8 @@ fun RatingBar(
     starSize: Dp = 24.dp,
     spaceBetween: Dp = 4.dp,
     selectedColor: Color = Theme.colors.status.yellowAccent,
-    onRatingChange: (Float) -> Unit
+    onRatingChange: (Float) -> Unit,
+    isRtl: Boolean = false
 ) {
     val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
@@ -85,8 +86,8 @@ fun RatingBar(
             }
             StarIconFromResource(
                 modifier = Modifier.size(starSize),
-                fillRatio = fillRatio,
-                layoutDirection = layoutDirection,
+                fillRatio = if (isRtl) 1 - fillRatio else fillRatio,
+                layoutDirection = if (isRtl) layoutDirection.toggle() else layoutDirection,
                 selectedColor = selectedColor
             )
         }
@@ -123,8 +124,10 @@ private fun StarIconFromResource(
                 }
                 .drawWithContent {
                     clipRect(
-                        right = if (layoutDirection == LayoutDirection.Rtl) size.width else size.width * fillRatio,
-                        left = if (layoutDirection == LayoutDirection.Rtl) size.width - size.width * fillRatio else 0f) {
+                        right =
+                            if (layoutDirection == LayoutDirection.Rtl) size.width else size.width * fillRatio,
+                        left = if (layoutDirection == LayoutDirection.Rtl) size.width - size.width * fillRatio else 0f
+                    ) {
                         this@drawWithContent.drawContent()
                     }
                 }
@@ -150,4 +153,8 @@ fun PreviewInteractiveRatingBarAdvanced() {
         Spacer(Modifier.height(8.dp))
         Text("Current Rating: %.1f / 10".format(currentRating))
     }
+}
+
+fun LayoutDirection.toggle(): LayoutDirection {
+    return if (this == LayoutDirection.Ltr) LayoutDirection.Rtl else LayoutDirection.Ltr
 }

@@ -31,8 +31,9 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSourc
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
 @HiltViewModel
 class TvShowDetailsViewModel @Inject constructor(
@@ -267,26 +268,16 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onFavouriteClick(title: Int) {
+    override fun onRateClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { addRatingToTvShowUseCase() },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
+                    updateState(
+                        screenState.value.copy(
+                            showRatingDialog = true
+                        )
                     )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
                 }
             },
             onError = {
@@ -295,8 +286,20 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onAddToListClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+    override fun onAddToListClick() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = true,
+            )
+        )
+    }
+
+    override fun onDismissAddToListDialog() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = false
+            )
+        )
     }
 
     override fun onShowAllCastClick(tvShowId: Int) {
@@ -374,7 +377,35 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onRatingSubmitted(rating: Float) {}
+    override fun onRatingSubmitted(movieId: Int, rating: Float) {
+        tryToExecute(
+            execute = {
+                val step = 0.5f
+                val roundedRating = ((rating / step).roundToInt() * step)
+                addRatingToTvShowUseCase(movieId, roundedRating)
+            },
+            onSuccess = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = true,
+                        snackBarMessage = R.string.rating_submit_successfully,
+                        showRatingDialog = false
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = false,
+                        snackBarMessage = R.string.failed_to_submit_rating,
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
 
     override fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int) {
         tryToExecute(

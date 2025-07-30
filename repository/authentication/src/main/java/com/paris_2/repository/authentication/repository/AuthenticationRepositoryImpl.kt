@@ -1,11 +1,13 @@
 package com.paris_2.repository.authentication.repository
 
-import com.paris_2.domain.authentication.exception.*
+import com.paris_2.domain.authentication.exception.AuthNetworkException
+import com.paris_2.domain.authentication.exception.InvalidCredentialsException
+import com.paris_2.domain.authentication.exception.UnknownAuthException
 import com.paris_2.domain.authentication.repository.AuthenticationRepository
-import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
-import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.paris_2.repository.authentication.exeptions.NetworkException
+import com.paris_2.repository.authentication.model.remote.LoginRequest
 
 class AuthenticationRepositoryImpl(
     private val remoteDataSource: AuthenticationRemoteDataSource,
@@ -57,7 +59,7 @@ class AuthenticationRepositoryImpl(
         localDataSource.saveSessionId(sessionId)
     }
 
-    override fun getSessionId(): String? {
+    override suspend fun getSessionId(): String? {
         return localDataSource.getSessionId()
     }
 

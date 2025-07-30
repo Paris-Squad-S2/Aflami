@@ -163,7 +163,8 @@ fun TextField(
         BasicTextField(
             value = value,
             enabled = enabled,
-            visualTransformation = if (showText) VisualTransformation.None else PasswordVisualTransformation(),
+            visualTransformation = if (showText) VisualTransformation.None else PasswordVisualTransformation('*'
+            ),
             onValueChange = { newText ->
                 if (singleLine) {
                     if (newText.length <= 100) {

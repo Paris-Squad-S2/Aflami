@@ -59,6 +59,9 @@ fun FilterDialog(
                     .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .align(Alignment.CenterHorizontally),
                 rating = currentRating,
+                starSize = 24.dp,
+                spaceBetween = 6.dp,
+                isRtl = true,
                 onRatingChange = { newRating ->
                     currentRating = newRating
                 }

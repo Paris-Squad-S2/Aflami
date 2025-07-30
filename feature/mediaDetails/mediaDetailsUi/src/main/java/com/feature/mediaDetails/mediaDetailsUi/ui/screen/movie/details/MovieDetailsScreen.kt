@@ -1,6 +1,11 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +38,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
@@ -47,6 +53,7 @@ import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
+import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -89,7 +96,18 @@ fun MovieDetailsScreenContent(
                 currentRating = newRating
             },
             onDismiss = { movieDetailsScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog() }
+            onSubmit = {
+                movieDetailsScreenInteractionListener.onRatingSubmitted(
+                    movieId = state.movieDetailsUiState.movie.id,
+                    rating = currentRating
+                )
+            }
+        )
+    }
+    if (state.showAddToListDialog) {
+        AddToListDialog(
+            list = listOf("My Favorite Movies", "Kittens"),
+            onDismiss = { movieDetailsScreenInteractionListener.onDismissAddToListDialog() },
         )
     }
 
@@ -364,19 +382,37 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate) // when click on this should open rating dialog
+                                movieDetailsScreenInteractionListener.onRateClick()
                             }
                         ),
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_heart_add),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onAddToListClick(R.string.add_to_list)
+                                movieDetailsScreenInteractionListener.onAddToListClick()
                             }
                         )
                     ),
                     modifier = Modifier.background(backgroundColor)
                 )
             }
+        }
+        AnimatedVisibility(
+            visible = state.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            SnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                    .align(Alignment.TopCenter),
+                text = state.snackBarMessage ?: RDesignSystem.string.empty,
+                isSuccess = state.snackBarSuccess,
+                onClick = {
+                    movieDetailsScreenInteractionListener.onHideSnackBar()
+                }
+            )
         }
     }
 }
