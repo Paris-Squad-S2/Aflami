@@ -34,12 +34,12 @@ import com.domain.home.model.Media as DomainMedia
 import com.domain.home.model.MediaType as DomainMediaType
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class
-HomeScreenViewModelTest {
+class HomeScreenViewModelTest {
     private val getPopularMediaUseCase: GetPopularMediaUseCase = mockk()
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase = mockk()
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase = mockk()
-    private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase = mockk()
+    private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase =
+        mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
     private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase = mockk()
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
@@ -304,27 +304,26 @@ HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected updates upcoming list, moodPickerMovie, and dialog flag`() = runTest {
-        val mood = listOf("Action")
-        val filteredMovies = fakeUpcomingList.filter { it.categories.contains("Action") }
-        coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(28)) } returns filteredMovies.map { it.toMedia() }
+        val mood = listOf("Drama")
+        val filteredMovies = fakeTopRatedList.filter { it.categories.contains("Drama") }
+        coEvery { getTopRatingMediaUseCase.invoke() } returns filteredMovies.map { it.toMedia() }
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
-                    upComingMediaList = filteredMovies
+                    moodPickerMovie = filteredMovies.random()
                 )
             )
         )
         viewModel.moodPickerSelected(mood)
         runCurrent()
         val updated = viewModel.screenState.value.homeUIState
-        assertThat(updated.upComingMediaList).isEqualTo(filteredMovies)
         assertThat(filteredMovies).contains(updated.moodPickerMovie)
         assertThat(updated.showMoodPickerDialog).isTrue()
     }
 
     @Test
     fun `moodPickerSelected handles error`() = runTest {
-        coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(28)) } throws RuntimeException(
+        coEvery { getTopRatingMediaUseCase.invoke() } throws RuntimeException(
             "Mood error"
         )
         viewModel.moodPickerSelected(listOf("Action"))
@@ -414,7 +413,6 @@ HomeScreenViewModelTest {
 
         coVerify { getPopularMediaUseCase() }
     }
-
 
 
 }

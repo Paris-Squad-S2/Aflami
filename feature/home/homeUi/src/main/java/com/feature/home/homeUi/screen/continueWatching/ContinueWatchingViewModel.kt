@@ -81,18 +81,4 @@ class ContinueWatchingViewModel @Inject constructor(
             }
         )
     }
-
-    override fun onBackButtonClick() {
-        tryToExecute(
-            execute = { navigateUp() },
-            onError = {
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
-                )
-            }
-        )
-    }
-
 }

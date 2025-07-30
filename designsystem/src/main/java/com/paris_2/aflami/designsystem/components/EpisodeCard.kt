@@ -23,7 +23,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun EpisodeCard(
     modifier: Modifier = Modifier,
     hasVideo: Boolean = true,
-    episodeRating: Float,
+    episodeRating: Float?,
     episodeNumber: String,
     episodeTitle: String,
     imageUri: String,
