@@ -388,7 +388,7 @@ fun MovieDetailsScreenContent(
                         iconItemWithDefaults(
                             icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_heart_add),
                             onClick = {
-                                movieDetailsScreenInteractionListener.onAddToListClick(R.string.add_to_list)
+                                movieDetailsScreenInteractionListener.onAddToListClick()
                             }
                         )
                     ),

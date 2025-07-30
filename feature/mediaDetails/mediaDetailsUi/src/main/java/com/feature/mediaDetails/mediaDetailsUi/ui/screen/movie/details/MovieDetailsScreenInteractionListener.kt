@@ -2,7 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 interface MovieDetailsScreenInteractionListener {
     fun onRateClick()
-    fun onAddToListClick(title:Int)
+    fun onAddToListClick()
     fun onDismissAddToListDialog()
     fun onShowAllCastClick(movieId: Int)
     fun onRetryLoadMovieDetails()

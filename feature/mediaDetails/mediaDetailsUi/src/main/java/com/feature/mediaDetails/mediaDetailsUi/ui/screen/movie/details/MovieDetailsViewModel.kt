@@ -275,7 +275,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onAddToListClick(title: Int) {
+    override fun onAddToListClick() {
         updateState(
             screenState.value.copy(
                 showAddToListDialog = true
