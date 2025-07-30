@@ -67,10 +67,30 @@ class MovieDetailsViewModelTest {
     }
 
     @Test
-    fun `onAddToListClick updates state to show AddToListDialog`() = runTest {
+    fun `onAddToListClick updates state to show AddToListDialog when user logged in`() = runTest {
+        coEvery { isLoggedInUseCase() } returns true
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onAddToListClick()
+        runCurrent()
         assertTrue(viewModel.screenState.value.showAddToListDialog)
+    }
+
+    @Test
+    fun `onAddToListClick doesn't show AddToListDialog when user not logged in`() = runTest {
+        coEvery { isLoggedInUseCase() } returns false
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onAddToListClick()
+        runCurrent()
+        assertFalse(viewModel.screenState.value.showAddToListDialog)
+    }
+
+    @Test
+    fun `onAddToListClick updates state to show error when isLoggedInUseCase fails`() = runTest {
+        coEvery { isLoggedInUseCase() } throws Exception("error")
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onAddToListClick()
+        runCurrent()
+        assertEquals(viewModel.screenState.value.errorMessage, "error")
     }
 
     @Test
@@ -121,7 +141,7 @@ class MovieDetailsViewModelTest {
     }
 
     @Test
-    fun `onFavouriteClick when logged in shows rating dialog`() = runTest {
+    fun `onRatingButtonClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
         coEvery { getSessionIdUseCase() } returns "session_id_123"
         coEvery {
@@ -140,13 +160,24 @@ class MovieDetailsViewModelTest {
     }
 
     @Test
-    fun `onFavouriteClick when not logged in doesn't show rating dialog`() = runTest {
+    fun `onRatingButtonClick when not logged in doesn't show rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns false
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onRateClick()
         runCurrent()
         assertFalse(viewModel.screenState.value.showRatingDialog)
     }
+
+    @Test
+    fun `onRatingButtonClick error hitting isLoggedIn sets error message`() = runTest {
+        val errorMsg = "error_is_logged"
+        coEvery { isLoggedInUseCase() } throws RuntimeException(errorMsg)
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onRateClick()
+        runCurrent()
+        assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
+    }
+
 
     @Test
     fun `onFavouriteClick error hitting isLoggedIn sets error message`() = runTest {

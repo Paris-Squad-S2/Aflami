@@ -1,2 +1,2 @@
-versionName=0.3.25
-- fix Issues #159 repeated reviews list
+versionName=0.3.26
+- fix Issues #161
