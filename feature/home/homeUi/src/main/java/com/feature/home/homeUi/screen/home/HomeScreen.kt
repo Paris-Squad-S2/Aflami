@@ -2,7 +2,6 @@ package com.feature.home.homeUi.screen.home
 
 import android.content.Intent
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -244,10 +243,9 @@ fun HomeScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 16.dp)
-                            .padding(bottom = 8.dp)
-                            .clickable {
-                                action.onMediaCardClick(upcomingMedia)
-                            },
+                            .padding(bottom = 8.dp),
+                        clickable = true,
+                        onClick = { action.onMediaCardClick(upcomingMedia) }
                     )
                 }
             } else if (state.isCategoryLoading) {
@@ -270,7 +268,7 @@ fun HomeScreenContent(
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
-            logo = iconItemWithDefaults(
+        logo = iconItemWithDefaults(
             icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
             backgroundColor = Theme.colors.primaryVariant,
             tint = Color.Unspecified,
