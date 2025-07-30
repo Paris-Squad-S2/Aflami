@@ -4,10 +4,10 @@ import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.authentication.exception.UnknownAuthException
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
+import com.paris_2.repository.authentication.model.remote.GuestSessionDto
 import com.paris_2.repository.authentication.model.remote.LoginRequest
 import com.paris_2.repository.authentication.model.remote.RequestTokenDto
 import com.paris_2.repository.authentication.model.remote.SessionDto
-import com.paris_2.repository.authentication.model.remote.GuestSessionDto
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -91,7 +91,7 @@ class AuthenticationRepositoryImplTest {
     }
 
     @Test
-    fun `getSessionId should return value from localDataSource`() {
+    fun `getSessionId should return value from localDataSource`() = runTest {
         val sessionId = "session123"
         every { localDataSource.getSessionId() } returns sessionId
 

@@ -1,5 +1,6 @@
 package com.repository.tvshow.repository
 
+import com.domain.mediaDetails.exception.FailedToAddRatingException
 import com.domain.mediaDetails.exception.NoCastFoundException
 import com.domain.mediaDetails.exception.NoGalleryFoundException
 import com.domain.mediaDetails.exception.NoInternetConnectionException
@@ -71,6 +72,37 @@ class TvShowRepositoryImplTest {
         )
     }
 
+    @Test
+    fun `addRatingToTvShow - should throw FailedToAddRatingException when remote fails`() =
+        runTest {
+            // Given
+            val movieId = 1
+            val rating = 8.5f
+
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+            coEvery {
+                tvShowDetailsRemoteDataSource.addRatingToTvShow(movieId, rating)
+            } throws RuntimeException("Failed")
+
+            // When & Then
+            assertThrows<FailedToAddRatingException> {
+                tvShowRepository.addRatingToTvShow(movieId, rating)
+            }
+        }
+
+    @Test
+    fun `addRatingToTvShow - should throw NoInternetConnectionException when offline`() = runTest {
+        // Given
+        val movieId = 1
+        val rating = 8.5f
+
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When & Then
+        assertThrows<NoInternetConnectionException> {
+            tvShowRepository.addRatingToTvShow(movieId, rating)
+        }
+    }
     @Test
     fun `getTvShowDetails - should return tv show details when API delivers the goods`() = runTest {
         // Given
@@ -1042,11 +1074,91 @@ class TvShowRepositoryImplTest {
         // Then
         assertThat(result).isEmpty()
     }
+
     @Test
-    fun `addRatingToTvShow - should print rating added message`() = runTest {
-        // When
-        tvShowRepository.addRatingToTvShow()
+    fun `getTvShowDetails - should throw NoInternetConnectionException when there is no internet`() =
+        runTest {
+            // Given
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getTvShowDetails(tvShowId)
+            }
     }
+
+    @Test
+    fun `getTvShowCast - should throw NoInternetConnectionException when there is no internet`() =
+        runTest {
+            // Given
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getTvShowCast(tvShowId)
+            }
+        }
+
+    @Test
+    fun `getTvShowRecommendations - should throw NoInternetConnectionException when there is no internet`() =
+        runTest {
+            // Given
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getTvShowRecommendations(tvShowId, page)
+            }
+        }
+
+    @Test
+    fun `getTvShowGallery - should throw NoInternetConnectionException when there is no internet`() =
+        runTest {
+            // Given
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getTvShowGallery(tvShowId)
+            }
+        }
+
+    @Test
+    fun `getCompanyProducts - should throw NoInternetConnectionException when there is no internet`() =
+        runTest {
+            // Given
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getCompanyProducts(tvShowId)
+            }
+        }
+
+    @Test
+    fun `getTvShowReview - should throw NoInternetConnectionException when there is no internet`() =
+        runTest {
+            // Given
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getTvShowReview(tvShowId, page)
+            }
+        }
+
+    @Test
+    fun `getSeasonDetails - should throw NoInternetConnectionException when there is no internet`() =
+        runTest {
+            // Given
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
+            }
+        }
+
 
 
     private companion object {

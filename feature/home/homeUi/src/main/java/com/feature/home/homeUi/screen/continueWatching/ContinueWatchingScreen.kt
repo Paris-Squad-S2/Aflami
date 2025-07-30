@@ -43,7 +43,8 @@ fun ContinueWatchingScreen(
             logo = iconItemWithDefaults(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
                 onClick = viewModel::onBackButtonClick,
-                backgroundColor = Theme.colors.primaryVariant,
+                backgroundColor = Theme.colors.surfaceHigh,
+                tint = Theme.colors.text.title,
             ),
             title = stringResource(R.string.continue_watching),
             modifier = Modifier.padding( top = 23.dp)

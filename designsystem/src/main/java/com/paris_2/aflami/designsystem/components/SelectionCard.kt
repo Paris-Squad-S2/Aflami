@@ -26,9 +26,9 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
 fun SelectionCard(
-    optionTitle: Int,
+    optionTitle: String,
     modifier: Modifier = Modifier,
-    optionDescription: Int? = null,
+    optionDescription: String? = null,
     isSelected: Boolean,
     isCorrect: Boolean? = null,
     icon: @Composable (() -> Unit)? = null,
@@ -82,13 +82,13 @@ fun SelectionCard(
             icon?.invoke()
         Column(modifier = Modifier.weight(1f)) {
             Text(
-                text = stringResource(optionTitle),
+                text = optionTitle,
                 color = Theme.colors.text.body,
                 style = Theme.textStyle.label.large,
             )
             if (optionDescription != null) {
                 Text(
-                    text = stringResource(optionDescription),
+                    text = optionDescription,
                     color = Theme.colors.text.hint,
                     style = Theme.textStyle.label.small,
                 )
@@ -120,7 +120,7 @@ fun ThemeOptionSelectorPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             SelectionCard(
-                optionTitle = R.string.light,
+                optionTitle = stringResource(R.string.light),
                 isSelected = true,
                 icon = {
                     Icon(
@@ -135,7 +135,7 @@ fun ThemeOptionSelectorPreview() {
                 onClick = {},
             )
             SelectionCard(
-                optionTitle = R.string.dark,
+                optionTitle = stringResource(R.string.dark),
                 isSelected = false,
                 icon = {
                     Icon(
@@ -162,7 +162,7 @@ fun LanguageSelectorPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             SelectionCard(
-                optionTitle = R.string.english,
+                optionTitle = stringResource(R.string.english),
                 isSelected = false,
                 icon = {
                     Icon(
@@ -177,7 +177,7 @@ fun LanguageSelectorPreview() {
                 onClick = {},
             )
             SelectionCard(
-                optionTitle = R.string.arabic,
+                optionTitle = stringResource(R.string.arabic),
                 isSelected = true,
                 icon = {
                     Icon(
@@ -204,19 +204,19 @@ fun SelectAnswerPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             SelectionCard(
-                optionTitle = R.string.arabic,
+                optionTitle = stringResource(R.string.arabic),
                 isSelected = false,
                 isCorrect = null,
                 onClick = {},
             )
             SelectionCard(
-                optionTitle = R.string.arabic,
+                optionTitle = stringResource(R.string.arabic),
                 isSelected = true,
                 isCorrect = true,
                 onClick = {},
             )
             SelectionCard(
-                optionTitle = R.string.arabic,
+                optionTitle = stringResource(R.string.arabic),
                 isSelected = true,
                 isCorrect = false,
                 onClick = {}
@@ -234,14 +234,14 @@ fun AddToListPreview() {
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             SelectionCard(
-                optionTitle = R.string.arabic,
-                optionDescription = R.string._11_item,
+                optionTitle = stringResource(R.string.arabic),
+                optionDescription = stringResource(R.string._11_item),
                 isSelected = false,
                 onClick = {},
             )
             SelectionCard(
-                optionTitle = R.string.arabic,
-                optionDescription = R.string._11_item,
+                optionTitle = stringResource(R.string.arabic),
+                optionDescription = stringResource(R.string._11_item),
                 isSelected = true,
                 onClick = {}
             )
