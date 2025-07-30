@@ -25,7 +25,7 @@ fun ChipsRowSection(
         modifier = Modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
-        contentPadding = PaddingValues(vertical = 12.dp)
+        contentPadding = PaddingValues( horizontal = 8.dp , vertical = 12.dp)
     ) {
         items(items.size) { index ->
             val isSelected = index == selectedIndex
