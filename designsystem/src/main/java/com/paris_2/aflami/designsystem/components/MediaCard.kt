@@ -107,7 +107,7 @@ fun MediaCard(
                 rating = rating,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
-                    .padding(top = 4.dp, end = 8.dp)
+                    .padding(top = 8.dp, end = 8.dp)
             )
         }
 
