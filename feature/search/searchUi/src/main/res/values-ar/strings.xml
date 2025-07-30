@@ -29,6 +29,8 @@
     <string name="query">استعلام</string>
     <string name="country">بلد</string>
     <string name="actor">ممثل</string>
+    <string name="county_name">اسم الدولة</string>
+    <string name="actor_name">اسم الممثل</string>
     <string name="title_activity_search">نشاط البحث</string>
 
 </resources>

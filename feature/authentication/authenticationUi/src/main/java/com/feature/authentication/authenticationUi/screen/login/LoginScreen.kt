@@ -194,7 +194,7 @@ fun LoginScreenContent(
                     .fillMaxWidth()
                     .padding(top = 12.dp),
                 leadingIcon = R.drawable.ic_password,
-                trailingIcon = if (loginUIState.showPassword) RDesignSystem.drawable.ic_eye_closed else RDesignSystem.drawable.ic_eye_opened,
+                trailingIcon = if (loginUIState.showPassword) RDesignSystem.drawable.ic_eye_opened else RDesignSystem.drawable.ic_eye_closed,
                 onClickTrailingIcon = {
                     loginScreenInteractionListener.onShowPasswordChange(
                         loginUIState.showPassword

@@ -111,16 +111,26 @@ fun CustomButton(
             }
 
             AnimatedVisibility(visible = isLoading, enter = fadeIn()) {
-                if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
-                LoadingIcon(
-                    modifier = Modifier.size(20.dp),
-                    color = buttonContentColor
-                )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
+                    LoadingIcon(
+                        modifier = Modifier.size(20.dp),
+                        color = buttonContentColor
+                    )
+                }
             }
             AnimatedVisibility(visible = !isLoading, enter = fadeIn()) {
                 icon?.let {
-                    if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
-                    it()
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
+                        it()
+                    }
                 }
             }
         }

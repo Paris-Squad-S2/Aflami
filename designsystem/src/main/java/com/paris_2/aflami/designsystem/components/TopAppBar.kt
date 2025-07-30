@@ -87,7 +87,7 @@ fun TopAppBar(
             }
 
             logo?.let {
-                IconBox(it, modifier = Modifier, tint = Color.Unspecified)
+                IconBox(it)
             }
 
             Column(
@@ -137,7 +137,7 @@ private fun IconBox(
             .background(iconItem.backgroundColor)
             .then(
                 if (iconItem.onClick != null) {
-                    Modifier.clickable { iconItem.onClick.invoke() }
+                    Modifier.clickable { iconItem.onClick() }
                 } else {
                     Modifier
                 }
