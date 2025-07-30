@@ -15,7 +15,7 @@ fun createMedia(
     id: Int,
     title: String,
     type: MediaType,
-    rating: Double = 0.0,
+    rating: Double? = 0.0,
     categories: List<Int> = listOf(),
 ): Media {
     return Media(

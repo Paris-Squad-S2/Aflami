@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -38,7 +39,7 @@ import kotlinx.coroutines.delay
 fun DetailsImage(
     modifier: Modifier = Modifier,
     imageUris: List<String>,
-    rating: Float,
+    rating: Float?,
     hasVideo: Boolean = true,
     onPlayClick: () -> Unit,
 ) {
@@ -103,13 +104,20 @@ fun DetailsImage(
                     )
                 }
             }
-            RatingCard(
-                rating = rating,
+            AnimatedVisibility(
+                rating != null,
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(start = 4.dp)
                     .padding(bottom = 4.dp)
-            )
+            ) {
+                RatingCard(
+                    rating = rating,
+                    modifier = Modifier
+
+                )
+            }
+
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)

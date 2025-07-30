@@ -43,7 +43,7 @@ data class MovieVideoUi(
 data class MovieUi(
     val id :Int,
     override val posterUrl: String,
-    override val rating: Float,
+    override val rating: Float?,
     override val title: String,
     val genres: List<String>,
     override val releaseDate: String,
@@ -68,7 +68,7 @@ data class ReviewUi(
     val avatarUrl: String,
     val username: String,
     val name: String,
-    val rating: Double,
+    val rating: Double?,
     val createdAt : String,
     val description: String
 )

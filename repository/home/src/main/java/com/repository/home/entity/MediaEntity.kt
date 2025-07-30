@@ -9,7 +9,7 @@ data class MediaEntity(
     @PrimaryKey
     val id: Int,
     val title: String,
-    val voteAverage: Double,
+    val voteAverage: Double?,
     val posterPath: String,
     val releaseDate: String,
     val genreIds: List<Int>,

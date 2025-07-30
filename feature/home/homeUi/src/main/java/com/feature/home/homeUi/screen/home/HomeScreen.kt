@@ -223,7 +223,7 @@ fun HomeScreenContent(
                 items(state.homeUIState.upComingMediaList) { upcomingMedia ->
                     MediaCard(
                         imageUri = upcomingMedia.imageUri,
-                        rating = upcomingMedia.rating.toFloat(),
+                        rating = upcomingMedia.rating?.toFloat(),
                         movieName = upcomingMedia.title,
                         mediaType = upcomingMedia.type.toString(),
                         year = upcomingMedia.yearOfRelease.year.toString(),

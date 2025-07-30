@@ -18,7 +18,7 @@ data class TvShowSimilarEntity(
     val id: Int,
     val tvShowId: Int,
     val title: String,
-    val voteAverage: Double,
+    val voteAverage: Double?,
     val posterPath: String,
     val releaseDate: String,
     val language: String,

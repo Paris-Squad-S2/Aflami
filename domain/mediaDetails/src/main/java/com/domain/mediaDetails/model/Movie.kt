@@ -5,7 +5,7 @@ import kotlinx.datetime.LocalDate
 data class Movie(
     val id: Int,
     val title: String,
-    val voteAverage: Double,
+    val voteAverage: Double?,
     val description: String,
     val posterPath: String,
     val genres: List<Genre>,
