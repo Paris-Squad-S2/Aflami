@@ -69,6 +69,7 @@ class MovieDetailsViewModelTest {
     @Test
     fun `onAddToListClick updates state to show AddToListDialog`() = runTest {
         viewModel = makeViewModelWithDefaultStateHandle()
+        coEvery { isLoggedInUseCase() } returns true
         viewModel.onAddToListClick()
         assertTrue(viewModel.screenState.value.showAddToListDialog)
     }
