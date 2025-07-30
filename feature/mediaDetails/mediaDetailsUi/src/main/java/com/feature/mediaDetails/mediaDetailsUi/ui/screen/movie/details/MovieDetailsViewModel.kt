@@ -21,10 +21,10 @@ import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -62,7 +62,7 @@ class MovieDetailsViewModel @Inject constructor(
                 productionCompanies = emptyList(),
             ),
             cast = emptyList(),
-            reviews = flowOf(PagingData.empty()),
+            reviews = emptyList(),
             gallery = emptyList(),
             recommendations = flowOf(PagingData.empty()),
             movieVideoUi = MovieVideoUi(
@@ -152,15 +152,7 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        ReviewMoviePagingSource(
-                            mediaId = mediaId,
-                            getMovieReviewsUseCase = getMovieReviewsUseCase
-                        )
-                    }
-                ).flow.cachedIn(viewModelScope)
+                getMovieReviewsUseCase(mediaId).toListOfReviewUi()
             },
             onSuccess = {
                 updateState(
