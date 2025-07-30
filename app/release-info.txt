@@ -1,2 +1,2 @@
-versionName=0.3.23
-- fix home screen click Issue
+versionName=0.3.24
+- fix Issues #183
