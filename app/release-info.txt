@@ -1,2 +1,2 @@
 versionName=0.3.21
-- fix Issues #144 Bottom nav bar should not be visible in top rating and continue watching pages
+- fix Issues #163, #150, #145
