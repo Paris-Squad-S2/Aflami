@@ -14,11 +14,11 @@ import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
+import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
-import com.feature.home.homeUi.navigation.HomeNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -369,13 +369,15 @@ class HomeScreenViewModel @Inject constructor(
                 val moodCategories = mood.map { mood ->
                     mood.nameToGenreId()
                 }
-                filterUpComingMediaByCategoriesUseCase.invoke(moodCategories)
+                val moodPickerMovies = getTopRatingMediaUseCase.invoke()
+                moodPickerMovies.filter { movie ->
+                    movie.genreIds.any { moodCategories.contains(it) }
+                }
             },
             onSuccess = { filteredMovies ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            upComingMediaList = filteredMovies.toMediaUiStateList(),
                             moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
                             showMoodPickerDialog = true
                         ),
