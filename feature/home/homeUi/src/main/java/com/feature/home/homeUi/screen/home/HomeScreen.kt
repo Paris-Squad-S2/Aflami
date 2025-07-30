@@ -105,79 +105,51 @@ fun HomeScreenContent(
             modifier = Modifier.fillMaxSize(),
         ) {
 
-            if (state.homeUIState.popularMediaList.isNotEmpty()) {
-                item {
-                    HomeSlider(
-                        onMediaClick = {
-                            action.onMediaSliderClick(it)
-                        },
-                        mediaList = state.homeUIState.popularMediaList,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            } else if (state.isPopularMediaLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+            item {
+                HomeSlider(
+                    onMediaClick = {
+                        action.onMediaSliderClick(it)
+                    },
+                    mediaList = state.homeUIState.popularMediaList,
+                    modifier = Modifier.fillMaxSize(),
+                    isShimmerEnabled = state.isPopularMediaLoading
+                )
             }
 
 
-            if (state.homeUIState.continueWatchingMediaList.isNotEmpty()) {
-                item {
-                    HomeSection(
-                        title = stringResource(id = R.string.continue_watching),
-                        mediaList = state.homeUIState.continueWatchingMediaList,
-                        onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = {
-                            val intent = Intent(context, ContinueWatchingActivity::class.java)
-                            context.startActivity(intent)
-                        },
-                        isScrolling = isScrolling,
-                        modifier = Modifier.padding(top = 6.dp)
-                    )
-                }
-            } else if (state.isContinueWatchingLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+            item {
+                HomeSection(
+                    title = stringResource(id = R.string.continue_watching),
+                    mediaList = state.homeUIState.continueWatchingMediaList,
+                    onMediaClick = action::onMediaCardClick,
+                    onSectionAllClick = {
+                        val intent = Intent(context, ContinueWatchingActivity::class.java)
+                        context.startActivity(intent)
+                    },
+                    isScrolling = isScrolling,
+                    modifier = Modifier.padding(top = 6.dp),
+                    isShimmerEnabled = state.isContinueWatchingLoading
+                )
             }
 
-            if (state.homeUIState.topRatedMediaList.isNotEmpty()) {
-                item {
-                    HomeSection(
-                        title = stringResource(R.string.top_rating),
-                        leadingIconPainter = ImageVector.vectorResource(R.drawable.ic_fire),
-                        iconColor = Theme.colors.secondary,
-                        mediaList = state.homeUIState.topRatedMediaList,
-                        onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = {
-                            val intent = Intent(context, TopRatingActivity::class.java)
-                            context.startActivity(intent)
-                        },
-                        isScrolling = isScrolling,
-                        modifier = Modifier.padding(top = 24.dp)
-                    )
-                }
-            } else if (state.isTopRatingLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+
+            item {
+                HomeSection(
+                    title = stringResource(R.string.top_rating),
+                    leadingIconPainter = ImageVector.vectorResource(R.drawable.ic_fire),
+                    iconColor = Theme.colors.secondary,
+                    mediaList = state.homeUIState.topRatedMediaList,
+                    onMediaClick = action::onMediaCardClick,
+                    onSectionAllClick = {
+                        val intent = Intent(context, TopRatingActivity::class.java)
+                        context.startActivity(intent)
+                    },
+                    isScrolling = isScrolling,
+                    modifier = Modifier.padding(top = 24.dp),
+                    isShimmerEnabled = state.isTopRatingLoading
+                )
             }
+
 
             item {
                 MoodPicker(
@@ -200,7 +172,8 @@ fun HomeScreenContent(
             item {
                 SectionTitle(
                     title = stringResource(R.string.upcoming),
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier = Modifier.padding(bottom = 12.dp),
+                    shimmerModifier = Modifier.shimmerable(enabled = true)
                 )
                 LazyRow(
                     contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
@@ -213,7 +186,10 @@ fun HomeScreenContent(
                             onClick = {
                                 action.onAllCategoriesSelect()
                                 if (!isAllCategories) isAllCategories = true
-                            }
+                            },
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .shimmerable(enabled = true)
                         )
                     }
                     items(state.homeUIState.categories.size) { index ->
@@ -225,42 +201,35 @@ fun HomeScreenContent(
                             onClick = {
                                 isAllCategories = false
                                 action.onCategorySelect(category = category)
-                            }
+                            },
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .shimmerable(enabled = true)
                         )
                     }
                 }
 
             }
 
-            if (state.homeUIState.upComingMediaList.isNotEmpty()) {
-                items(state.homeUIState.upComingMediaList) { upcomingMedia ->
-                    MediaCard(
-                        imageUri = upcomingMedia.imageUri,
-                        rating = upcomingMedia.rating?.toFloat(),
-                        movieName = upcomingMedia.title,
-                        mediaType = upcomingMedia.type.toString(),
-                        year = upcomingMedia.yearOfRelease.year.toString(),
-                        mediaCardType = MediaCardType.UP_COMING,
-                        showGradientFilter = false,
-                        modifier = Modifier
-                            .shimmerable(enabled = true)
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 8.dp)
-                            .clickable {
-                                action.onMediaCardClick(upcomingMedia)
-                            },
-                    )
-                }
-            } else if (state.isCategoryLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+            items(state.homeUIState.upComingMediaList) { upcomingMedia ->
+                MediaCard(
+                    imageUri = upcomingMedia.imageUri,
+                    rating = upcomingMedia.rating?.toFloat(),
+                    movieName = upcomingMedia.title,
+                    mediaType = upcomingMedia.type.toString(),
+                    year = upcomingMedia.yearOfRelease.year.toString(),
+                    mediaCardType = MediaCardType.UP_COMING,
+                    showGradientFilter = false,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp)
+                        .shimmerable(enabled = state.isCategoryLoading)
+                        .clickable {
+                            action.onMediaCardClick(upcomingMedia)
+                        },
+                )
+
             }
         }
     }
@@ -272,7 +241,7 @@ fun HomeScreenContent(
         modifier = Modifier
             .background(topBarBackground)
             .padding(top = 32.dp),
-            logo = iconItemWithDefaults(
+        logo = iconItemWithDefaults(
             icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
             backgroundColor = Theme.colors.primaryVariant,
             tint = Color.Unspecified,
