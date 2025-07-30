@@ -42,4 +42,10 @@ class WebViewClientImplTest {
         Assertions.assertTrue(hasError.value)
         Assertions.assertFalse(isLoading.value)
     }
+
+    @Test
+    fun `shouldOverrideUrlLoading returns false to allow normal navigation`() {
+        val result = webViewClient.shouldOverrideUrlLoading(mockk(), mockk())
+        Assertions.assertFalse(result)
+    }
 }

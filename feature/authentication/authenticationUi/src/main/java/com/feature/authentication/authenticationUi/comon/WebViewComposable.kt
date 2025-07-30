@@ -53,7 +53,8 @@ fun WebViewComposable(
         },
         modifier = modifier.fillMaxSize(),
         update = { webView ->
-            if (!hasError.value) {
+            // Only reload when explicitly triggered by retry mechanism
+            if (reloadTrigger.intValue > 0 && hasError.value) {
                 webView.loadUrl(url)
             }
         }

@@ -16,9 +16,9 @@ class WebViewClientImpl(
         view: WebView?,
         request: WebResourceRequest?
     ): Boolean {
-        isLoading.value = true
-        hasError.value = false
-        return true
+        // Allow normal URL loading in the webview
+        // Only return true if we want to handle specific URLs ourselves
+        return false
     }
 
     override fun onPageStarted(
