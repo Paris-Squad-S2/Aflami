@@ -35,10 +35,11 @@ class SeasonLocalDataSourceImpTest {
         runTest {
             //Given
             val tvShowId = 10
+            val seasonNumber = 1
             coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns sampleSeason
 
             //When
-            val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+            val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
             //Then
             assert(result == sampleSeason)
         }
@@ -47,10 +48,11 @@ class SeasonLocalDataSourceImpTest {
     fun `getSeasonByTvShowId should verify DAO is called with correct ID`() = runTest {
         // Given
         val tvShowId = 10
+        val seasonNumber = 1
         coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns sampleSeason
 
         // When
-        seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+        seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
         // Then
         coVerify(exactly = 1) { seasonDao.getSeasonByTvShowId(tvShowId) }
@@ -60,10 +62,11 @@ class SeasonLocalDataSourceImpTest {
     fun `getSeasonsByTvShowId should return null when DAO returns null`() = runTest {
         //Given
         val tvShowId = 1
+        val seasonNumber = 1
         coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns null
 
         //When
-        val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+        val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
         //Then
         assert(result == null)
@@ -73,10 +76,11 @@ class SeasonLocalDataSourceImpTest {
     fun `getSeasonDetailsByTvShowId should verify DAO is called when DAO returns null`() = runTest {
         // Given
         val tvShowId = 1
+        val seasonNumber = 1
         coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns null
 
         // When
-        seasonLocalDataSourceImp.getSeasonDetailsByTvShowId(tvShowId)
+        seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
         // Then
         coVerify(exactly = 1) { seasonDao.getSeasonByTvShowId(tvShowId) }
