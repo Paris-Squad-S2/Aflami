@@ -56,6 +56,9 @@ private fun RegisterScreenContent(uIState: RegisterUIState, registerViewModel: R
                     onRetry = onRetry,
                 )
             },
+            onNavigationEvent = {
+                registerViewModel.onNavigateBack()
+            }
         )
     }
 
