@@ -103,4 +103,45 @@ class WebViewClientImplTest {
         assertThat(hasError.value).isFalse()
         assertThat(result).isTrue()
     }
+
+    @Test
+    fun `shouldOverrideUrlLoading handles null request safely`() {
+        val isLoading = mutableStateOf(false)
+        val hasError = mutableStateOf(false)
+        val client = WebViewClientImpl(isLoading, hasError)
+        val result = client.shouldOverrideUrlLoading(mockk<WebView>(), null as WebResourceRequest?)
+        assertThat(isLoading.value).isTrue()
+        assertThat(hasError.value).isFalse()
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `shouldOverrideUrlLoading handles null url safely`() {
+        val isLoading = mutableStateOf(false)
+        val hasError = mutableStateOf(false)
+        val request = mockk<WebResourceRequest>()
+        every { request.url } returns null
+        val client = WebViewClientImpl(isLoading, hasError)
+        val result = client.shouldOverrideUrlLoading(mockk<WebView>(), request)
+        assertThat(isLoading.value).isTrue()
+        assertThat(hasError.value).isFalse()
+        assertThat(result).isTrue()
+    }
+
+
+
+    @Test
+    fun `shouldOverrideUrlLoading does not invoke onNavigationEvent for non-target url`() {
+        val isLoading = mutableStateOf(false)
+        val hasError = mutableStateOf(false)
+        var eventCalled = false
+        val onNavigationEvent = { eventCalled = true }
+        val client = WebViewClientImpl(isLoading, hasError, onNavigationEvent)
+        val mockUri = mockk<Uri>()
+        every { mockUri.toString() } returns "https://www.example.com/"
+        val request = mockk<WebResourceRequest>()
+        every { request.url } returns mockUri
+        client.shouldOverrideUrlLoading(mockk<WebView>(), request)
+        assertThat(eventCalled).isFalse()
+    }
 }
