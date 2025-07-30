@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.topRatingMovies
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,7 @@ fun TopRatingMoviesScreen(
     viewModel: TopRatingMoviesViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
+    val context = LocalActivity.current
 
     Box(
         modifier = Modifier
@@ -54,13 +56,11 @@ fun TopRatingMoviesScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = Theme.colors.gradient.pointsOverly + listOf(
-                        Theme.colors.surface.copy(alpha = 0.5f),
-                        Theme.colors.surface
+                        Theme.colors.surface.copy(alpha = 0.5f), Theme.colors.surface
                     )
                 )
             )
-    )
-    {
+    ) {
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
@@ -88,8 +88,7 @@ fun TopRatingMoviesScreen(
                 .graphicsLayer {
                     alpha = 0.1f
                 }
-                .blur(radius = 3.dp)
-        )
+                .blur(radius = 3.dp))
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
@@ -102,8 +101,7 @@ fun TopRatingMoviesScreen(
                 .graphicsLayer {
                     alpha = 0.08f
                 }
-                .blur(radius = 2.dp)
-        )
+                .blur(radius = 2.dp))
         Icon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
@@ -129,7 +127,9 @@ fun TopRatingMoviesScreen(
             TopAppBar(
                 logo = iconItemWithDefaults(
                     icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
-                    onClick = viewModel::onBackButtonClick,
+                    onClick = {
+                        context?.finish()
+                    },
                     backgroundColor = Theme.colors.surfaceHigh,
                     tint = Theme.colors.text.title,
                 ),
@@ -147,8 +147,7 @@ fun TopRatingMoviesScreen(
                 )
             } else if (state.value.errorMessage != null) {
                 NetworkError(
-                    modifier = Modifier.fillMaxSize(),
-                    onRetry = viewModel::onRetry
+                    modifier = Modifier.fillMaxSize(), onRetry = viewModel::onRetry
                 )
             }
         }
