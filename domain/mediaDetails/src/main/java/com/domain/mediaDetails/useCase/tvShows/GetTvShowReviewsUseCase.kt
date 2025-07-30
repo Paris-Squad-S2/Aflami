@@ -4,13 +4,12 @@ import com.domain.mediaDetails.model.Review
 import com.domain.mediaDetails.repository.TvShowRepository
 
 class GetTvShowReviewsUseCase(
-    private val tbShowRepository: TvShowRepository,
+    private val tvShowRepository: TvShowRepository,
 ) {
 
 
     suspend operator fun invoke(tvShowId: Int, page: Int = 1): List<Review> {
-        val currentPage = 1
-        return tbShowRepository.getTvShowReview(tvShowId, currentPage)
+        return tvShowRepository.getTvShowReview(tvShowId, page)
     }
 
 
