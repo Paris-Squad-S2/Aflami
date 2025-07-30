@@ -40,6 +40,7 @@ import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.theme.Theme
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeSlider(
