@@ -262,18 +262,10 @@ class MovieDetailsViewModel @Inject constructor(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    updateState(
-                        screenState.value.copy(
-                            showRatingDialog = true
-                        )
-                    )
+                    updateState(screenState.value.copy(showRatingDialog = true))
                 }
                 else {
-                    navigate(
-                        MediaDetailsDestinations.LoginDialogDestination(
-                            R.string.rate
-                        )
-                    )
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.rate))
                 }
             },
             onError = {
@@ -287,17 +279,9 @@ class MovieDetailsViewModel @Inject constructor(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    updateState(
-                        screenState.value.copy(
-                            showAddToListDialog = true
-                        )
-                    )
+                    updateState(screenState.value.copy(showAddToListDialog = true))
                 } else {
-                    navigate(
-                        MediaDetailsDestinations.LoginDialogDestination(
-                            R.string.add_to_list
-                        )
-                    )
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.add_to_list))
                 }
             },
             onError = {
