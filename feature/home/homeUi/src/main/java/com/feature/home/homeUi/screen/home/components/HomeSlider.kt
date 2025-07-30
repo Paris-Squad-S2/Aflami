@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home.components
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,9 +39,10 @@ import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.theme.Theme
+import io.sifr.shaded.blurProcessor.BlurEdgeTreatment
+import io.sifr.shaded.modifiers.blur
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeSlider(
     onMediaClick: (media: SliderMedia) -> Unit,
@@ -49,7 +50,7 @@ fun HomeSlider(
     modifier: Modifier,
 ) {
     val mediaState = remember {
-        mutableStateOf<SliderMedia>(
+        mutableStateOf(
             SliderMedia(
                 id = 0,
                 imageUri = "",
@@ -61,23 +62,32 @@ fun HomeSlider(
             )
         )
     }
+
+
     Box {
         AnimatedVisibility(
             visible = mediaState.toString().isNotEmpty(),
             enter = slideInVertically(),
             exit = slideOutVertically(),
         ) {
+
             SafeImageViewer(
                 model = mediaState.value.imageUri,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(400.dp)
-                    .blur(
-                        radius = 14.dp,
-                        edgeTreatment = BlurredEdgeTreatment.Unbounded,
-                    ),
                 contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .height(400.dp)
+                    .fillMaxWidth()
+                    .then(if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                        Modifier.blur(
+                            radius = 12.dp,
+                            edgeTreatment = BlurredEdgeTreatment.Unbounded,
+                        )
+                    }else {
+                Modifier
+                    .blur(radius = 12f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED)
+            })
             )
+
             Column(
                 modifier = Modifier.padding(top = 96.dp, bottom = 56.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
