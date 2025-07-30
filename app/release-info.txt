@@ -1,2 +1,2 @@
-versionName=0.3.20
-- fix Issues #135 Rating 0 shouldn't appears
+versionName=0.3.21
+- fix Issues #144 Bottom nav bar should not be visible in top rating and continue watching pages
