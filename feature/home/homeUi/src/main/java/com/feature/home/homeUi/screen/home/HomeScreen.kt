@@ -253,7 +253,7 @@ fun HomeScreenContent(
 
     TopAppBar(
         title = stringResource(R.string.aflami),
-        subtitle = "More than just watching.",
+        subtitle = stringResource(R.string.more_than_just_watching),
         titleTextStyle = Theme.textStyle.logoText,
         modifier = Modifier
             .background(topBarBackground)
