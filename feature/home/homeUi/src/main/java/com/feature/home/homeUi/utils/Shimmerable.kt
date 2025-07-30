@@ -14,7 +14,7 @@ import com.valentinilk.shimmer.shimmer
 @Composable
 fun Modifier.shimmerable(
     shape: Shape = RoundedCornerShape(8.dp),
-    color: Color = White.copy(alpha = 0.3f),
+    color: Color = White.copy(alpha = 0.24f),
     enabled: Boolean = true
 ): Modifier {
     if (!enabled) return this
