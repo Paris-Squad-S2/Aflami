@@ -36,7 +36,7 @@ class SeasonLocalDataSourceImpTest {
             //Given
             val tvShowId = 10
             val seasonNumber = 1
-            coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns sampleSeason
+            coEvery { seasonDao.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) } returns sampleSeason
 
             //When
             val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
@@ -49,13 +49,13 @@ class SeasonLocalDataSourceImpTest {
         // Given
         val tvShowId = 10
         val seasonNumber = 1
-        coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns sampleSeason
+        coEvery { seasonDao.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) } returns sampleSeason
 
         // When
         seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
         // Then
-        coVerify(exactly = 1) { seasonDao.getSeasonByTvShowId(tvShowId) }
+        coVerify(exactly = 1) { seasonDao.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) }
     }
 
     @Test
@@ -63,7 +63,7 @@ class SeasonLocalDataSourceImpTest {
         //Given
         val tvShowId = 1
         val seasonNumber = 1
-        coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns null
+        coEvery { seasonDao.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) } returns null
 
         //When
         val result = seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
@@ -77,13 +77,13 @@ class SeasonLocalDataSourceImpTest {
         // Given
         val tvShowId = 1
         val seasonNumber = 1
-        coEvery { seasonDao.getSeasonByTvShowId(tvShowId) } returns null
+        coEvery { seasonDao.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) } returns null
 
         // When
         seasonLocalDataSourceImp.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
         // Then
-        coVerify(exactly = 1) { seasonDao.getSeasonByTvShowId(tvShowId) }
+        coVerify(exactly = 1) { seasonDao.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) }
     }
 
     private companion object {
