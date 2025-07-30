@@ -1,2 +1,2 @@
-versionName=0.3.16
-- fix Issues #138, #133, #165, #157, #153, #151, #149, #148, #143, #142
+versionName=0.3.17
+- refactor search result handling and improve error messaging
