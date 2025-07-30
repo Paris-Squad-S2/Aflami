@@ -66,4 +66,41 @@ class WebViewClientImplTest {
         assertThat(eventCalled).isTrue()
         assertThat(result).isTrue()
     }
+
+    @Test
+    fun `should invoke onNavigationEvent and return true for login url`() {
+        val isLoading = mutableStateOf(false)
+        val hasError = mutableStateOf(false)
+        var eventCalled = false
+        val onNavigationEvent = { eventCalled = true }
+        val client = WebViewClientImpl(isLoading, hasError, onNavigationEvent)
+
+        val mockUri = mockk<Uri>()
+        every { mockUri.toString() } returns "https://www.themoviedb.org/login"
+        val request = mockk<WebResourceRequest>()
+        every { request.url } returns mockUri
+
+        val result = client.shouldOverrideUrlLoading(mockk<WebView>(), request)
+
+        assertThat(eventCalled).isTrue()
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `should set isLoading true and hasError false for non-matching url`() {
+        val isLoading = mutableStateOf(false)
+        val hasError = mutableStateOf(true)
+        val client = WebViewClientImpl(isLoading, hasError)
+
+        val mockUri = mockk<Uri>()
+        every { mockUri.toString() } returns "https://www.example.com/"
+        val request = mockk<WebResourceRequest>()
+        every { request.url } returns mockUri
+
+        val result = client.shouldOverrideUrlLoading(mockk<WebView>(), request)
+
+        assertThat(isLoading.value).isTrue()
+        assertThat(hasError.value).isFalse()
+        assertThat(result).isTrue()
+    }
 }
