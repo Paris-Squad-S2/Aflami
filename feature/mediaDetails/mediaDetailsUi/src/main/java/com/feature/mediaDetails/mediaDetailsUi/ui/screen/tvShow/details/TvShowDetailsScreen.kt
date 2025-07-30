@@ -1,23 +1,24 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -33,10 +34,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,23 +45,22 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDial
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TopComponent
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.paris_2.aflami.designsystem.components.EpisodeCard
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.SnackBar
-import com.paris_2.aflami.designsystem.components.TopAppBar
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
+import kotlinx.coroutines.flow.emptyFlow
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
-import com.paris_2.aflami.designsystem.R as designsystemR
 
 
 @Composable
@@ -75,26 +73,17 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@SuppressLint("SuspiciousIndentation")
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
 ) {
     val tvChips = TvShowChips.entries
-    val listState = rememberLazyListState()
-    val density = LocalDensity.current
-    val maxScrollPx = with(density) { 56.dp.toPx() }
     val activity = LocalActivity.current
     var currentRating by remember { mutableFloatStateOf(state.tvShowDetailsUiState.selectedRating) }
 
-    val alpha by remember {
-        derivedStateOf {
-            val scroll =
-                if (listState.firstVisibleItemIndex > 0) maxScrollPx else listState.firstVisibleItemScrollOffset.toFloat()
-            (scroll / maxScrollPx).coerceIn(0f, 1f)
-        }
-    }
     if (state.showRatingDialog) {
         RatingDialog(
             currentRating = currentRating,
@@ -117,7 +106,6 @@ fun TvShowDetailsScreenContent(
         )
     }
 
-    val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
 
     val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
@@ -125,16 +113,12 @@ fun TvShowDetailsScreenContent(
     val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
-
     val reviewsList = state.tvShowDetailsUiState.reviews.collectAsLazyPagingItems()
-
-
-    Box(
+    Column(
         Modifier
             .fillMaxSize()
             .background(Theme.colors.surface)
             .navigationBarsPadding()
-            .statusBarsPadding()
     ) {
         when {
             state.isLoading -> {
@@ -144,30 +128,46 @@ fun TvShowDetailsScreenContent(
             }
 
             else -> {
+                val scrollState = rememberLazyListState()
+                val isCollapsed by remember {
+                    derivedStateOf {
+                        scrollState.firstVisibleItemScrollOffset > 10 || scrollState.firstVisibleItemIndex > 0
+                    }
+                }
                 val mediaList =
                     state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
+
+                SharedTransitionLayout {
+                    AnimatedContent(
+                        targetState = isCollapsed,
+                        label = "basic_transition"
+                    ) { target ->
+                        if (!target) {
+                            TopComponentDetails(
+                                state = state,
+                                tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+
+                                )
+                        }
+                        else {
+                            TopComponent(
+                                tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                animatedVisibilityScope = this@AnimatedContent,
+                                sharedTransitionScope = this@SharedTransitionLayout,
+                            )
+                        }
+
+                    }
+                }
                 LazyColumn(
-                    state = listState,
+                    state = scrollState,
                     modifier = Modifier
                         .fillMaxSize()
                         .navigationBarsPadding()
-                ) {
-                    item {
-                        val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
-                        val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
-                        DetailsImage(
-                            imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl) + state.tvShowDetailsUiState.gallery,
-                            rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                            hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
-                            onPlayClick = {
-                                if (!(tvShowSite.isEmpty() || tvShowKey.isEmpty())
-                                ) {
-                                    activity?.openYoutubeOrBrowser(tvShowKey)
-                                }
-                            },
-                            modifier = Modifier.padding(bottom = 12.dp)
-                        )
-                    }
+                )
+                {
                     item {
                         DescriptionSection(
                             title = state.tvShowDetailsUiState.tvShowUi.title,
@@ -233,9 +233,11 @@ fun TvShowDetailsScreenContent(
                                                 isExpanded = isExpanded,
                                                 onToggleExpand = {
                                                     expandedStates.value =
-                                                        expandedStates.value.toMutableList().also {
-                                                            it[seasonIndex] = !it[seasonIndex]
-                                                        }
+                                                        expandedStates.value.toMutableList()
+                                                            .also {
+                                                                it[seasonIndex] =
+                                                                    !it[seasonIndex]
+                                                            }
                                                     tvShowScreenInteractionListener.onClickOnSeason(
                                                         season.seasonNumber
                                                     )
@@ -354,7 +356,9 @@ fun TvShowDetailsScreenContent(
                                                 imageUri = media.posterPath,
                                                 rating = media.voteAverage.toFloat(),
                                                 movieName = media.title,
-                                                mediaType = stringResource(featureMediaDetailsUiR.string.tvshow),
+                                                mediaType = stringResource(
+                                                    featureMediaDetailsUiR.string.tvshow
+                                                ),
                                                 year = media.releaseDate.take(4),
                                                 mediaCardType = MediaCardType.UP_COMING,
                                                 showGradientFilter = true,
@@ -426,64 +430,283 @@ fun TvShowDetailsScreenContent(
                 }
             }
         }
+//        AnimatedVisibility(
+//            visible = state.showSnackBar,
+//            enter = fadeIn() + slideInVertically(),
+//            exit = fadeOut() + slideOutVertically()
+//        ) {
+//            SnackBar(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .statusBarsPadding()
+//                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+//                    .align(Alignment.TopCenter),
+//                text = state.snackBarMessage ?: designsystemR.string.empty,
+//                isSuccess = false,
+//                onClick = tvShowScreenInteractionListener::onHideSnackBar
+//            )
+//        }
+//        AnimatedVisibility(
+//            visible = state.showSnackBar,
+//            enter = fadeIn() + slideInVertically(),
+//            exit = fadeOut() + slideOutVertically()
+//        ) {
+//            SnackBar(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .statusBarsPadding()
+//                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+//                    .align(Alignment.TopCenter),
+//                text = state.snackBarMessage ?: designsystemR.string.empty,
+//                isSuccess = state.snackBarSuccess,
+//                onClick = {
+//                    tvShowScreenInteractionListener.onHideSnackBar()
+//                }
+//            )
+//        }
+    }
+}
 
-        TopAppBar(
-            leadingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(designsystemR.drawable.ic_back),
-                    onClick = { activity?.finish() }
-                )
+@Preview(showSystemUi = true)
+@Composable
+fun PreviewTvShowDetailsScreen() {
+    val fakeTvShowDetailsUiState = TvShowDetailsUiState(
+        tvShowUi = TvShowUi(
+            id = 1,
+            posterUrl = "",
+            rating = 8.5f,
+            title = "Stranger Things",
+            genres = listOf("Drama", "Sci-Fi", "Horror"),
+            releaseDate = "2016-07-15",
+            runtime = "50 min",
+            country = "USA",
+            description = "When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.",
+            productionCompanies = listOf(
+                ProductionCompanyUi("Netflix", "", ""),
+                ProductionCompanyUi("21 Laps", "", "")
             ),
-            trailingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(designsystemR.drawable.ic_star),
-                    onClick = {
-                        tvShowScreenInteractionListener.onRateClick()
+            seasons = listOf(
+                SeasonUi(
+                    id = 1,
+                    name = "Season 1",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(8) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
                     }
                 ),
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(designsystemR.drawable.ic_heart_add),
-                    onClick = {
-                        tvShowScreenInteractionListener.onAddToListClick()
+                SeasonUi(
+                    id = 2,
+                    name = "Season 2",
+                    episodeCount = 9,
+                    seasonNumber = 2,
+                    isExpanded = true,
+                    episodes = List(2) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.7,
+                            airDate = "2017-10-${20 + index}",
+                            runtime = "${50 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
                     }
-                )
-            ),
-            modifier = Modifier.background(backgroundColor)
-        )
-        AnimatedVisibility(
-            visible = state.showSnackBar,
-            enter = fadeIn() + slideInVertically(),
-            exit = fadeOut() + slideOutVertically()
-        ) {
-            SnackBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
-                    .align(Alignment.TopCenter),
-                text = state.snackBarMessage ?: designsystemR.string.empty,
-                isSuccess = false,
-                onClick = tvShowScreenInteractionListener::onHideSnackBar
+                ),
+                SeasonUi(
+                    id = 3,
+                    name = "Season 3",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(8) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
+                    }
+                ),
+                SeasonUi(
+                    id = 1,
+                    name = "Season 1",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(3) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
+                    }
+                ),
+                SeasonUi(
+                    id = 1,
+                    name = "Season 1",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(3) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
+                    }
+                ),
+                SeasonUi(
+                    id = 1,
+                    name = "Season 1",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(3) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
+                    }
+                ),
+                SeasonUi(
+                    id = 1,
+                    name = "Season 1",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(3) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
+                    }
+                ),
+                SeasonUi(
+                    id = 1,
+                    name = "Season 1",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(3) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
+                    }
+                ),
+                SeasonUi(
+                    id = 1,
+                    name = "Season 1",
+                    episodeCount = 8,
+                    seasonNumber = 1,
+                    isExpanded = true,
+                    episodes = List(3) { index ->
+                        EpisodeUi(
+                            episodeNumber = index + 1,
+                            posterUrl = "",
+                            voteAverage = 8.5,
+                            airDate = "2016-07-${15 + index}",
+                            runtime = "${45 + index} min",
+                            description = "Episode ${index + 1} description...",
+                            stillUrl = ""
+                        )
+                    }
+                ),
             )
-        }
-        AnimatedVisibility(
-            visible = state.showSnackBar,
-            enter = fadeIn() + slideInVertically(),
-            exit = fadeOut() + slideOutVertically()
-        ) {
-            SnackBar(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .statusBarsPadding()
-                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
-                    .align(Alignment.TopCenter),
-                text = state.snackBarMessage ?: designsystemR.string.empty,
-                isSuccess = state.snackBarSuccess,
-                onClick = {
-                    tvShowScreenInteractionListener.onHideSnackBar()
-                }
-            )
-        }
-    }
+        ),
+        recommendations = emptyFlow(),
+        cast = emptyList(),
+        reviews = emptyFlow(),
+        gallery = listOf(),
+        tvShowVideoUi = TvShowVideoUi("", "", ""),
+        selectedRating = 0f,
+        episodeVideoUi = EpisodeVideoUi("", "", "")
+    )
 
+    TvShowDetailsScreenContent(
+        state = TvShowDetailsScreenState(
+            tvShowDetailsUiState = fakeTvShowDetailsUiState,
+            isLoading = false,
+            errorMessage = null,
+            isEpisodesLoading = true,
+            isImageLoading = false,
+            isDescriptionLoading = false,
+            isCastLoading = true,
+            isSeasonsLoading = false,
+            isRecommendationsLoading = true,
+            isReviewsLoading = false,
+            isGalleryLoading = false,
+            isProductionCompaniesLoading = false,
+            seasonsLoadingStates = mapOf(
+                1 to false,
+                2 to false
+            ),
+            showRatingDialog = false,
+            showSnackBar = false
+        ),
+        tvShowScreenInteractionListener = object : TvShowScreenInteractionListener {
+            override fun onRateClick() {
+            }
+
+            override fun onAddToListClick() {
+            }
+
+            override fun onDismissAddToListDialog() {
+            }
+
+            override fun onShowAllCastClick(tvShowId: Int) {}
+            override fun onClickOnSeason(seasonNumber: Int) {}
+            override fun onSimilarTvShowClick(mediaId: Int) {}
+            override fun onRetryLoadTvShowDetails() {}
+            override fun onDismissRatingDialog() {}
+            override fun onRatingSubmitted(movieId: Int, rating: Float) {
+            }
+
+            override fun onClickPlayEpisodeTrailer(
+                tvShowId: Int,
+                seasonNumber: Int,
+                episodeNumber: Int
+            ) {
+            }
+
+            override fun onHideSnackBar() {}
+        }
+    )
 }
+
