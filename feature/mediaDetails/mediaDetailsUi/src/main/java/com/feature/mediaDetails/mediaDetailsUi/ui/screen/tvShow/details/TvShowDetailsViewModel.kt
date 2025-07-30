@@ -223,14 +223,14 @@ class TvShowDetailsViewModel @Inject constructor(
         tryToExecute(
             execute = {
 
-                getTvShowReviewsUseCase(mediaId)
+                getTvShowReviewsUseCase(mediaId,1).toListOfReviewUi()
 
             },
             onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            reviews = reviews.toListOfReviewUi()
+                            reviews = reviews
                         )
                     )
                 )

@@ -154,15 +154,13 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-
-                getMovieReviewsUseCase(mediaId)
-
+                getMovieReviewsUseCase(mediaId,1).toListOfReviewUi()
             },
             onSuccess = { reviews->
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            reviews = reviews.toListOfReviewUi()
+                            reviews = reviews
                         )
                     )
                 )
