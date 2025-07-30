@@ -139,6 +139,7 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
+
     private fun loadTvShowCast(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowCastUseCase(mediaId) },
@@ -161,6 +162,7 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
+
     private fun loadTvShowGallery(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowGalleryUseCase(mediaId) },
@@ -182,6 +184,7 @@ class TvShowDetailsViewModel @Inject constructor(
             }
         )
     }
+
 
     private fun loadTvShowRecommendations(mediaId: Int) {
         tryToExecute(
@@ -212,18 +215,22 @@ class TvShowDetailsViewModel @Inject constructor(
                 )
             }
         )
+
     }
+
 
     private fun loadTvShowReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                getTvShowReviewsUseCase(mediaId).toListOfReviewUi()
+
+                getTvShowReviewsUseCase(mediaId)
+
             },
             onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                            reviews = reviews
+                            reviews = reviews.toListOfReviewUi()
                         )
                     )
                 )

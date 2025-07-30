@@ -154,13 +154,15 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                getMovieReviewsUseCase(mediaId).toListOfReviewUi()
+
+                getMovieReviewsUseCase(mediaId)
+
             },
-            onSuccess = {
+            onSuccess = { reviews->
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            reviews = it
+                            reviews = reviews.toListOfReviewUi()
                         )
                     )
                 )
@@ -277,6 +279,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     override fun onDismissAddToListDialog() {
         updateState(
             screenState.value.copy(
@@ -285,9 +288,11 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     override fun onShowAllCastClick(movieId: Int) {
         navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
     }
+
 
 
     override fun onRetryLoadMovieDetails() {
@@ -305,6 +310,7 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
 
+
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
         updateState(
             screenState.value.copy(
@@ -315,6 +321,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     private fun onGetVideoMovieError(error: String) {
         updateState(
             screenState.value.copy(
@@ -323,6 +330,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+
     override fun onDismissRatingDialog() {
         updateState(
             screenState.value.copy(
@@ -330,6 +338,7 @@ class MovieDetailsViewModel @Inject constructor(
             )
         )
     }
+
 
     override fun onRatingSubmitted(movieId: Int, rating: Float) {
         tryToExecute(
@@ -360,6 +369,7 @@ class MovieDetailsViewModel @Inject constructor(
             }
         )
     }
+
 
     override fun onHideSnackBar() {
         updateState(

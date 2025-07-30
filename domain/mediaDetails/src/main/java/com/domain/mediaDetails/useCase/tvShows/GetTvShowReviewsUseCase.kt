@@ -9,7 +9,8 @@ class GetTvShowReviewsUseCase(
 
 
     suspend operator fun invoke(tvShowId: Int, page: Int = 1): List<Review> {
-        return tbShowRepository.getTvShowReview(tvShowId, page)
+        val currentPage = 1
+        return tbShowRepository.getTvShowReview(tvShowId, currentPage)
     }
 
 

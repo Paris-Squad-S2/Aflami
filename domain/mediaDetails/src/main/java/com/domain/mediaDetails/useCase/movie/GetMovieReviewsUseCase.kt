@@ -9,7 +9,8 @@ class GetMovieReviewsUseCase(
 
 
     suspend operator fun invoke(movieId: Int, page: Int = 1): List<Review> {
-        return movieRepository.getMovieReview(movieId, page)
+        val currentPage = 1
+        return movieRepository.getMovieReview(movieId, currentPage)
     }
 
 
