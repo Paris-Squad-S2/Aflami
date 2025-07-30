@@ -15,7 +15,7 @@ fun List<Media>.toSliderMediaList() = this.map { it.toSliderMedia() }
 fun Media.toSliderMedia(): SliderMedia{
     return SliderMedia(
         imageUri = this.posterPath,
-        rating =  this.voteAverage.toFloat(),
+        rating =  this.voteAverage?.toFloat(),
         title = this.title,
         id = this.id,
         type = this.type.toSliderMediaTypeUi(),
@@ -35,7 +35,7 @@ fun SliderMedia.toMedia(): Media {
         id = this.id,
         title = this.title,
         posterPath = this.imageUri,
-        voteAverage = this.rating.toDouble(),
+        voteAverage = this.rating?.toDouble(),
         type = this.type.toMediaType(),
         genreIds = this.categories.map { it.nameToGenreId() },
         yearOfRelease = LocalDate.parse(this.yearOfRelease)

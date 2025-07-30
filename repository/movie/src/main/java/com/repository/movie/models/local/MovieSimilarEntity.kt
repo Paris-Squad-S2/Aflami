@@ -18,7 +18,7 @@ data class MovieSimilarEntity(
     val id: Int,
     val movieId: Int,
     val title: String,
-    val voteAverage: Double,
+    val voteAverage: Double?,
     val posterPath: String,
     val releaseDate: String,
     val language: String,

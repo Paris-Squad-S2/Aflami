@@ -99,7 +99,7 @@ fun MovieReviewDto.toEntity(): Review {
         name = this.authorDetails?.name.orEmpty(),
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
-        rating = this.authorDetails?.rating ?: 0.0,
+        rating = this.authorDetails?.rating,
         description = this.content.orEmpty()
     )
 }
@@ -109,7 +109,7 @@ fun MovieDto.toLocalDto(language: String): MovieEntity {
         id = this.id ?: 0,
         title = this.title.orEmpty(),
         posterPath = this.posterPath.toImageUrl().orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage,
         description = this.overview.orEmpty(),
         genres = this.movieGenreDto?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.releaseDate.orEmpty(),
@@ -141,7 +141,7 @@ fun MovieSimilarDto.toLocalDto(movieId: Int, page: Int, language: String): Movie
         id = this.id ?: 0,
         movieId = movieId,
         title = this.title.orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage,
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
         language = language,
