@@ -1,10 +1,14 @@
 package com.feature.home.homeUi.screen.home.components
 
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -13,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.Icon
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
@@ -27,6 +32,7 @@ fun HomeSection(
     onSectionAllClick: () -> Unit = {},
     leadingIconPainter: ImageVector? = null,
     isScrolling: Boolean,
+    isShimmerEnabled: Boolean,
     modifier: Modifier,
 ) {
     Column(
@@ -48,6 +54,7 @@ fun HomeSection(
                 }
             },
             onClickViewAll = onSectionAllClick,
+            shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
         )
 
         LazyRow(
@@ -56,10 +63,24 @@ fun HomeSection(
                 .padding(top = 12.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
+            if (isShimmerEnabled){
+                items(3) {
+                    Box(
+                        modifier = Modifier
+                            .width(156.dp)
+                            .height(222.dp)
+                            .padding(end = 8.dp)
+                            .shimmerable(enabled = isShimmerEnabled)
+                            .fillMaxWidth()
+                    )
+                }
+            }
             items(mediaList) { media ->
                 MediaCard(
                     modifier = Modifier
-                        .padding(end = 8.dp),
+                        .padding(end = 8.dp)
+                        .clickable { onMediaClick(media) }
+                    ,
                     imageUri = media.imageUri,
                     rating = media.rating?.toFloat(),
                     movieName = media.title,
@@ -68,8 +89,6 @@ fun HomeSection(
                     mediaCardType = MediaCardType.NORMAL,
                     showGradientFilter = true,
                     enabled = !isScrolling,
-                    clickable = true,
-                    onClick = { onMediaClick(media) }
                 )
             }
         }

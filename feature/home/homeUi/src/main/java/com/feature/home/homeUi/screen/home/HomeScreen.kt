@@ -2,13 +2,12 @@ package com.feature.home.homeUi.screen.home
 
 import android.content.Intent
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -38,13 +37,13 @@ import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
+import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.MoodPicker
 import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -103,79 +102,51 @@ fun HomeScreenContent(
             modifier = Modifier.fillMaxSize(),
         ) {
 
-            if (state.homeUIState.popularMediaList.isNotEmpty()) {
-                item {
-                    HomeSlider(
-                        onMediaClick = {
-                            action.onMediaSliderClick(it)
-                        },
-                        mediaList = state.homeUIState.popularMediaList,
-                        modifier = Modifier.fillMaxSize(),
-                    )
-                }
-            } else if (state.isPopularMediaLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+            item {
+                HomeSlider(
+                    onMediaClick = {
+                        action.onMediaSliderClick(it)
+                    },
+                    mediaList = state.homeUIState.popularMediaList,
+                    modifier = Modifier.fillMaxSize(),
+                    isShimmerEnabled = state.isPopularMediaLoading
+                )
             }
 
 
-            if (state.homeUIState.continueWatchingMediaList.isNotEmpty()) {
-                item {
-                    HomeSection(
-                        title = stringResource(id = R.string.continue_watching),
-                        mediaList = state.homeUIState.continueWatchingMediaList,
-                        onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = {
-                            val intent = Intent(context, ContinueWatchingActivity::class.java)
-                            context.startActivity(intent)
-                        },
-                        isScrolling = isScrolling,
-                        modifier = Modifier.padding(top = 6.dp)
-                    )
-                }
-            } else if (state.isContinueWatchingLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+            item {
+                HomeSection(
+                    title = stringResource(id = R.string.continue_watching),
+                    mediaList = state.homeUIState.continueWatchingMediaList,
+                    onMediaClick = action::onMediaCardClick,
+                    onSectionAllClick = {
+                        val intent = Intent(context, ContinueWatchingActivity::class.java)
+                        context.startActivity(intent)
+                    },
+                    isScrolling = isScrolling,
+                    modifier = Modifier.padding(top = 6.dp),
+                    isShimmerEnabled = state.isContinueWatchingLoading
+                )
             }
 
-            if (state.homeUIState.topRatedMediaList.isNotEmpty()) {
-                item {
-                    HomeSection(
-                        title = stringResource(R.string.top_rating),
-                        leadingIconPainter = ImageVector.vectorResource(R.drawable.ic_fire),
-                        iconColor = Theme.colors.secondary,
-                        mediaList = state.homeUIState.topRatedMediaList,
-                        onMediaClick = action::onMediaCardClick,
-                        onSectionAllClick = {
-                            val intent = Intent(context, TopRatingActivity::class.java)
-                            context.startActivity(intent)
-                        },
-                        isScrolling = isScrolling,
-                        modifier = Modifier.padding(top = 24.dp)
-                    )
-                }
-            } else if (state.isTopRatingLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+
+            item {
+                HomeSection(
+                    title = stringResource(R.string.top_rating),
+                    leadingIconPainter = ImageVector.vectorResource(R.drawable.ic_fire),
+                    iconColor = Theme.colors.secondary,
+                    mediaList = state.homeUIState.topRatedMediaList,
+                    onMediaClick = action::onMediaCardClick,
+                    onSectionAllClick = {
+                        val intent = Intent(context, TopRatingActivity::class.java)
+                        context.startActivity(intent)
+                    },
+                    isScrolling = isScrolling,
+                    modifier = Modifier.padding(top = 24.dp),
+                    isShimmerEnabled = state.isTopRatingLoading
+                )
             }
+
 
             item {
                 MoodPicker(
@@ -198,7 +169,8 @@ fun HomeScreenContent(
             item {
                 SectionTitle(
                     title = stringResource(R.string.upcoming),
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier = Modifier.padding(bottom = 12.dp),
+                    shimmerModifier = Modifier.shimmerable(enabled = state.isCategoryLoading)
                 )
                 LazyRow(
                     contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
@@ -211,7 +183,10 @@ fun HomeScreenContent(
                             onClick = {
                                 action.onAllCategoriesSelect()
                                 if (!isAllCategories) isAllCategories = true
-                            }
+                            },
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .shimmerable(enabled = state.isCategoryLoading)
                         )
                     }
                     items(state.homeUIState.categories.size) { index ->
@@ -223,40 +198,35 @@ fun HomeScreenContent(
                             onClick = {
                                 isAllCategories = false
                                 action.onCategorySelect(category = category)
-                            }
+                            },
+                            modifier = Modifier
+                                .padding(2.dp)
+                                .shimmerable(enabled = state.isCategoryLoading)
                         )
                     }
                 }
 
             }
 
-            if (state.homeUIState.upComingMediaList.isNotEmpty()) {
-                items(state.homeUIState.upComingMediaList) { upcomingMedia ->
-                    MediaCard(
-                        imageUri = upcomingMedia.imageUri,
-                        rating = upcomingMedia.rating?.toFloat(),
-                        movieName = upcomingMedia.title,
-                        mediaType = upcomingMedia.type.toString(),
-                        year = upcomingMedia.yearOfRelease.year.toString(),
-                        mediaCardType = MediaCardType.UP_COMING,
-                        showGradientFilter = false,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 8.dp),
-                        clickable = true,
-                        onClick = { action.onMediaCardClick(upcomingMedia) }
-                    )
-                }
-            } else if (state.isCategoryLoading) {
-                item {
-                    PageLoadingPlaceHolder(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(410.dp)
-                            .statusBarsPadding()
-                    )
-                }
+            items(state.homeUIState.upComingMediaList) { upcomingMedia ->
+                MediaCard(
+                    imageUri = upcomingMedia.imageUri,
+                    rating = upcomingMedia.rating?.toFloat(),
+                    movieName = upcomingMedia.title,
+                    mediaType = upcomingMedia.type.toString(),
+                    year = upcomingMedia.yearOfRelease.year.toString(),
+                    mediaCardType = MediaCardType.UP_COMING,
+                    showGradientFilter = false,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp)
+                        .shimmerable(enabled = state.isCategoryLoading)
+                        .clickable {
+                            action.onMediaCardClick(upcomingMedia)
+                        },
+                )
+
             }
         }
     }

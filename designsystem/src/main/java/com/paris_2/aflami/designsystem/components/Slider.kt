@@ -42,6 +42,7 @@ fun Slider(
     items: List<SliderMedia>,
     onClick: (media: SliderMedia) -> Unit,
     modifier: Modifier = Modifier,
+    shimmerModifier:Modifier,
     currentMedia: MutableState<SliderMedia>,
 ) {
     val pagerState = rememberPagerState(
@@ -113,7 +114,7 @@ fun Slider(
 
             ) {
                 MediaCard(
-                    modifier = Modifier
+                    modifier = shimmerModifier
                         .clip(RoundedCornerShape(24.dp))
                         .clickable { onClick(item) },
                     imageUri = item.imageUri,
@@ -183,7 +184,8 @@ fun SliderPreview() {
             items = sampleItems,
             currentMedia = currentMedia,
             modifier = Modifier.fillMaxWidth(),
-            onClick = {}
+            onClick = {},
+            shimmerModifier = Modifier
         )
     }
 }
