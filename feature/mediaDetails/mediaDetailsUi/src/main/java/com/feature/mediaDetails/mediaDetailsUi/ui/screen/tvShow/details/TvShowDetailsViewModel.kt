@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -279,6 +280,13 @@ class TvShowDetailsViewModel @Inject constructor(
                         )
                     )
                 }
+                else{
+                    navigate(
+                        MediaDetailsDestinations.LoginDialogDestination(
+                            R.string.rate
+                        )
+                    )
+                }
             },
             onError = {
                 updateState(screenState.value.copy(errorMessage = it))
@@ -287,10 +295,26 @@ class TvShowDetailsViewModel @Inject constructor(
     }
 
     override fun onAddToListClick() {
-        updateState(
-            screenState.value.copy(
-                showAddToListDialog = true,
-            )
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState(
+                        screenState.value.copy(
+                            showAddToListDialog = true
+                        )
+                    )
+                } else {
+                    navigate(
+                        MediaDetailsDestinations.LoginDialogDestination(
+                            R.string.add_to_list
+                        )
+                    )
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
         )
     }
 
