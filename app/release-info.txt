@@ -1,2 +1,2 @@
-versionName=0.3.18
-- fix Issues #155
+versionName=0.3.19
+- fix Issues #135 Rating 0 shouldn't appears
