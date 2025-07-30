@@ -10,6 +10,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.spyk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -79,8 +82,9 @@ class LoginViewModelTest {
         Assertions.assertEquals(!initial, state.showPassword)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun `onClickLogin with invalid credentials sets error message and disables button`() {
+    fun `onClickLogin with invalid credentials sets error message and disables button`() = runTest {
         coEvery {
             loginUseCase(
                 "user",
@@ -89,6 +93,7 @@ class LoginViewModelTest {
         } throws (InvalidCredentialsException("Invalid credentials"))
 
         viewModel.onClickLogin()
+        runCurrent()
 
         val state = viewModel.screenState.value
         Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
