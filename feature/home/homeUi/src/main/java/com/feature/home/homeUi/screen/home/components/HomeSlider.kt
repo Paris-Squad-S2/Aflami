@@ -1,8 +1,10 @@
 package com.feature.home.homeUi.screen.home.components
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -69,18 +72,40 @@ fun HomeSlider(
             exit = slideOutVertically(),
         ){
 
-            SafeImageViewer(
+            Box {
+                SafeImageViewer(
                     model = mediaState.value.imageUri,
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(400.dp)
-                        .blur(
-                            radius = 14.dp,
-                            edgeTreatment = BlurredEdgeTreatment.Unbounded,
-                        )
-                ,
+                        .then(
+                            // Use blur for API 31+ where it's more reliable, overlay for older versions
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                                Modifier.blur(
+                                    radius = 14.dp,
+                                    edgeTreatment = BlurredEdgeTreatment.Unbounded,
+                                )
+                            } else {
+                                Modifier
+                            }
+                        ),
                     contentScale = ContentScale.FillWidth,
                 )
+                
+                // Add overlay for API < 31 or as fallback
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(400.dp)
+                            .background(
+                                brush = Brush.verticalGradient(
+                                    colors = Theme.colors.gradient.overlyDark
+                                )
+                            )
+                    )
+                }
+            }
 
             Column(
                 modifier = Modifier.padding(top = 96.dp, bottom = 56.dp),
