@@ -104,7 +104,7 @@ class SeasonLocalDataSourceImpTest {
                 )
             ),
             episodeCount = 0,
-            seasonNumber = 0
+            seasonNumber = 1
         )
     }
 }
