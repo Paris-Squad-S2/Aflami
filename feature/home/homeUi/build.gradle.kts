@@ -105,4 +105,7 @@ dependencies {
     //blur
     implementation(libs.sifr.shaded)
 
+    //shimmer
+    implementation(libs.shimmer)
+
 }
