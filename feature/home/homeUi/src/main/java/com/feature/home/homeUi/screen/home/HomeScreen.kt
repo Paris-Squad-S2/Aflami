@@ -2,13 +2,16 @@ package com.feature.home.homeUi.screen.home
 
 import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -55,7 +58,6 @@ import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.MoodPicker
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.SectionTitle
-import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -188,7 +190,9 @@ fun HomeScreenContent(
                 ) {
                     item {
                         AnimatedVisibility(
-                            visible = !state.isCategoryLoading
+                            visible = !state.isCategoryLoading,
+                            enter = fadeIn(),
+                            exit = fadeOut()
                         ) {
                             Chips(
                                 title = stringResource(R.string.all),
@@ -203,8 +207,12 @@ fun HomeScreenContent(
                             )
                         }
                     }
-                    if (state.isCategoryLoading) {
-                        items(15) {
+                    items(15) {
+                        AnimatedVisibility(
+                            visible = state.isCategoryLoading,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
                             Column(
                                 verticalArrangement = Arrangement.spacedBy(4.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
@@ -216,37 +224,43 @@ fun HomeScreenContent(
                                         .clip(RoundedCornerShape(16.dp))
                                         .shimmerable(enabled = state.isCategoryLoading)
                                 )
-                                Text(
-                                    text = "loading",
+                                Box(
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
+                                        .height(30.dp)
+                                        .width(42.dp)
                                         .shimmerable(enabled = state.isCategoryLoading)
                                 )
                             }
                         }
-                    } else {
-                        items(state.homeUIState.categories.size) { index ->
-                            val category = state.homeUIState.categories.keys.elementAt(index)
-                            Chips(
-                                title = category.name,
-                                icon = ImageVector.vectorResource(getResourceId(category.id)),
-                                isSelected = state.homeUIState.categories[category] ?: false,
-                                onClick = {
-                                    isAllCategories = false
-                                    action.onCategorySelect(category = category)
-                                },
-                                modifier = Modifier
-                                    .padding(2.dp)
 
-                            )
-                        }
+                    }
+                    items(state.homeUIState.categories.size) { index ->
+                        val category = state.homeUIState.categories.keys.elementAt(index)
+                        Chips(
+                            title = category.name,
+                            icon = ImageVector.vectorResource(getResourceId(category.id)),
+                            isSelected = state.homeUIState.categories[category] ?: false,
+                            onClick = {
+                                isAllCategories = false
+                                action.onCategorySelect(category = category)
+                            },
+                            modifier = Modifier
+                                .padding(2.dp)
+
+                        )
+
                     }
                 }
 
             }
 
-            if (state.isCategoryLoading) {
-                items(5) {
+            items(5) {
+                AnimatedVisibility(
+                    visible = state.isCategoryLoading,
+                    enter = fadeIn(),
+                    exit = fadeOut()
+                ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -256,26 +270,24 @@ fun HomeScreenContent(
                             .shimmerable(enabled = state.isCategoryLoading)
                     )
                 }
-            } else {
-                items(state.homeUIState.upComingMediaList) { upcomingMedia ->
-                    MediaCard(
-                        imageUri = upcomingMedia.imageUri,
-                        rating = upcomingMedia.rating?.toFloat(),
-                        movieName = upcomingMedia.title,
-                        mediaType = upcomingMedia.type.toString(),
-                        year = upcomingMedia.yearOfRelease.year.toString(),
-                        mediaCardType = MediaCardType.UP_COMING,
-                        showGradientFilter = false,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 8.dp)
-                            .clickable {
-                                action.onMediaCardClick(upcomingMedia)
-                            },
-                    )
-
-                }
+            }
+            items(state.homeUIState.upComingMediaList) { upcomingMedia ->
+                MediaCard(
+                    imageUri = upcomingMedia.imageUri,
+                    rating = upcomingMedia.rating?.toFloat(),
+                    movieName = upcomingMedia.title,
+                    mediaType = upcomingMedia.type.toString(),
+                    year = upcomingMedia.yearOfRelease.year.toString(),
+                    mediaCardType = MediaCardType.UP_COMING,
+                    showGradientFilter = false,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 8.dp)
+                        .clickable {
+                            action.onMediaCardClick(upcomingMedia)
+                        },
+                )
             }
         }
     }
@@ -302,13 +314,18 @@ fun HomeScreenContent(
         )
     )
 
-    if (state.homeUIState.showMoodPickerDialog && state.homeUIState.moodPickerMovie != null) {
+    AnimatedVisibility(
+        visible = state.homeUIState.showMoodPickerDialog&& state.homeUIState.moodPickerMovie != null,
+        enter = slideInVertically { it },
+        exit = slideOutVertically { it }
+    ) {
         val moodPickerMovie = state.homeUIState.moodPickerMovie
         MoodPickerDialog(
-            movie = moodPickerMovie,
+            movie = moodPickerMovie!!,
             onDismiss = { action.onDismissMoodPicker() },
             onViewDetailsClick = { action.onMediaCardClick(moodPickerMovie) },
             onGetAnotherMovieClick = { action.getRandomMoodPickerMovie() }
         )
     }
+
 }
