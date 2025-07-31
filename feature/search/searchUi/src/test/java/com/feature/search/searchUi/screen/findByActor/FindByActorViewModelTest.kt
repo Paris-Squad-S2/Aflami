@@ -11,7 +11,7 @@ import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import com.feature.search.searchUi.pagging.SearchPagingSource
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -152,10 +152,15 @@ class FindByActorViewModelTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
         coEvery { getMediaByActorNameUseCase(testQuery, any()) } throws Exception(errorMessage)
-        val pagingSource = FindByActorPagingSource(
-            testQuery,
-            getMediaByActorNameUseCase,
-            sortingMediaByCategoriesInteractionUseCase
+        val pagingSource = SearchPagingSource(
+            searchUseCase = {
+                sortingMediaByCategoriesInteractionUseCase(
+                    getMediaByActorNameUseCase(
+                        testQuery,
+                        it
+                    )
+                ).toMediaUiList()
+            }
         )
         val result = pagingSource.load(
             PagingSource.LoadParams.Refresh(

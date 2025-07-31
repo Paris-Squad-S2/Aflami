@@ -15,9 +15,10 @@ import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.WorldTourPagingSource
+import com.feature.search.searchUi.pagging.SearchPagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -120,10 +121,10 @@ class WorldTourViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        WorldTourPagingSource(
-                            countryName = query,
-                            getMoviesByCountryUseCase = getMoviesByCountryUseCase,
-                            sortingMediaByCategoriesInteractionUseCase
+                        SearchPagingSource(
+                            searchUseCase = { page ->
+                                sortingMediaByCategoriesInteractionUseCase(getMoviesByCountryUseCase(query,page)).toMediaUiList()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
