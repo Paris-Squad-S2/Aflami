@@ -79,6 +79,9 @@ val koverExcludedPackages = listOf(
     "**.MovieDetailsScreen.kt.**",
     "**.shimmerable.kt.**",
     "**.HomeScreen.kt.**",
+    "**.AflamiNavBar.**",
+    "**.AflamiNavBarItem.**",
+    "**bottomNavBar**",
     "**.PagingSource.**"
 )
 

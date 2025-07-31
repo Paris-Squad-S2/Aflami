@@ -2,12 +2,11 @@ package com.feature.authentication.authenticationUi.screen.login
 
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
-import com.paris_2.aflami.appnavigation.AppNavigationAPI
+import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -15,6 +14,7 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 
 class LoginViewModelTest {
@@ -40,6 +40,7 @@ class LoginViewModelTest {
     }
 
     @Test
+    @Order(1)
     fun `init sets buttonState correctly`() {
         val state = viewModel.screenState.value
 
@@ -47,6 +48,7 @@ class LoginViewModelTest {
     }
 
     @Test
+    @Order(2)
     fun `onUsernameChange updates username and buttonState`() {
         viewModel.onUsernameChange("user")
         val state = viewModel.screenState.value
@@ -55,6 +57,7 @@ class LoginViewModelTest {
     }
 
     @Test
+    @Order(3)
     fun `onPasswordChange with short password sets errorMessage`() {
         viewModel.onPasswordChange("123")
         val state = viewModel.screenState.value
@@ -66,6 +69,7 @@ class LoginViewModelTest {
     }
 
     @Test
+    @Order(4)
     fun `onPasswordChange with valid password clears errorMessage`() {
         viewModel.onPasswordChange("1234")
         val state = viewModel.screenState.value
@@ -74,6 +78,7 @@ class LoginViewModelTest {
     }
 
     @Test
+    @Order(5)
     fun `onShowPasswordChange toggles showPassword`() {
         val initial = viewModel.screenState.value.showPassword
         viewModel.onShowPasswordChange(initial)
@@ -84,6 +89,7 @@ class LoginViewModelTest {
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
+    @Order(6)
     fun `onClickLogin with invalid credentials sets error message and disables button`() = runTest {
         coEvery {
             loginUseCase(

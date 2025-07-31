@@ -117,8 +117,6 @@ dependencies {
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
-    implementation(project(Modules.APP_NAVIGATION))
-
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
 
