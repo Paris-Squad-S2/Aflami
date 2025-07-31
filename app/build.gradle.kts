@@ -156,7 +156,7 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
 
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.APP_NAVIGATION))
+    implementation(project(Modules.BOTTOM_NAV_BAR))
 
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_HOME_API))
