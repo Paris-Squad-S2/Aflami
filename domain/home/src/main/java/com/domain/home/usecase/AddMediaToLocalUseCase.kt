@@ -7,6 +7,6 @@ class AddMediaToLocalUseCase(
     private val mediaRepository: MediaRepository
 ) {
     suspend operator fun invoke(media: Media){
-        mediaRepository.addMediaToLocal(media = media)
+        mediaRepository.AddMediaToContinueWatching(media = media)
     }
 }

@@ -84,7 +84,7 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun addMediaToLocal(media: Media) {
+    override suspend fun AddMediaToContinueWatching(media: Media) {
         return safeCall(AddMediaToContinueWatchingException()){
             homeMediaLocalDataSource.addMedia(media.toEntity())
         }
