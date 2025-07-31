@@ -43,6 +43,7 @@ fun Slider(
     onClick: (media: SliderMedia) -> Unit,
     modifier: Modifier = Modifier,
     shimmerModifier:Modifier,
+    scrollingDuration: Long = 4000,
     currentMedia: MutableState<SliderMedia>,
 ) {
     val pagerState = rememberPagerState(
@@ -55,7 +56,7 @@ fun Slider(
     LaunchedEffect(Unit) {
         scope.launch {
             while (true) {
-                kotlinx.coroutines.delay(4000)
+                kotlinx.coroutines.delay(scrollingDuration)
 
                 val nextPage = (pagerState.currentPage + 1).coerceAtMost(items.size - 1)
 

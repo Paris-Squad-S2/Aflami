@@ -23,12 +23,13 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
@@ -192,9 +193,10 @@ class TvShowDetailsViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SimilarTvShowPageSource(
-                            movieId = mediaId,
-                            getTvShowRecommendationsUseCase = getTvShowRecommendationsUseCase
+                        PagingSource(
+                            mediaUseCase ={ page ->
+                                getTvShowRecommendationsUseCase(mediaId,page).toListOfMTvShowSimilarUI()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)

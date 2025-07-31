@@ -1,17 +1,16 @@
-package com.feature.mediaDetails.mediaDetailsUi.ui.pagging
+package com.feature.search.searchUi.pagging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 
-abstract class BasePagingSource<Media: Any>(
-    protected val itemId: Int,
-    protected  val mediaUseCase:suspend (itemId: Int, page:Int)-> List<Media>
-): PagingSource<Int,Media>() {
+class PagingSource<Media: Any>(
+    val searchUseCase:suspend (page:Int)-> List<Media>
+): PagingSource<Int, Media>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Media> {
         val page = params.key ?: 1
         return try {
-            val response = mediaUseCase(itemId,page)
+            val response = searchUseCase(page)
             LoadResult.Page(
                 data = response as List<Media>,
                 prevKey = if (page == 1) null else page - 1,
@@ -23,10 +22,7 @@ abstract class BasePagingSource<Media: Any>(
     }
 
     override fun getRefreshKey(state: PagingState<Int, Media>): Int? {
-        return state.anchorPosition?.let { anchor ->
-            val anchorPage = state.closestPageToPosition(anchor)
-            (anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1))
-        }
+        return state.anchorPosition
     }
 }
 

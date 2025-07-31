@@ -1,5 +1,8 @@
 package com.feature.home.homeUi.screen.home.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,7 +57,7 @@ fun HomeSection(
                 }
             },
             onClickViewAll = onSectionAllClick,
-            shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
+            shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled&&mediaList.isEmpty())
         )
 
         LazyRow(
@@ -63,18 +66,24 @@ fun HomeSection(
                 .padding(top = 12.dp),
             contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
-            if (isShimmerEnabled){
+
                 items(3) {
-                    Box(
-                        modifier = Modifier
-                            .width(156.dp)
-                            .height(222.dp)
-                            .padding(end = 8.dp)
-                            .shimmerable(enabled = isShimmerEnabled)
-                            .fillMaxWidth()
-                    )
+                    AnimatedVisibility(
+                        visible = isShimmerEnabled&&mediaList.isEmpty(),
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        Box(
+                            modifier = Modifier
+                                .width(156.dp)
+                                .height(222.dp)
+                                .padding(end = 8.dp)
+                                .shimmerable(enabled = true)
+                                .fillMaxWidth()
+                        )
+                    }
                 }
-            }
+
             items(mediaList) { media ->
                 MediaCard(
                     modifier = Modifier

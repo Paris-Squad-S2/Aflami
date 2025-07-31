@@ -20,12 +20,13 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
@@ -181,9 +182,10 @@ class MovieDetailsViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SimilarMoviePageSource(
-                            movieId = mediaId,
-                            getMovieRecommendationsUseCase = getMovieRecommendationsUseCase,
+                        PagingSource(
+                            mediaUseCase ={ page ->
+                                getMovieRecommendationsUseCase(mediaId,page).toListOfMovieSimilarUI()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
