@@ -1,4 +1,4 @@
-package com.feature.home.homeApi
+package com.feature.home.homeUi.navigation
 
 import kotlinx.serialization.Serializable
 

@@ -6,8 +6,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.home.homeApi.HomeDestination
-import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingScreen
 import com.feature.home.homeUi.screen.home.HomeScreen
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesScreen

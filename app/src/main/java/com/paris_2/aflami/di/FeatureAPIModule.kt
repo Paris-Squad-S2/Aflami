@@ -10,7 +10,7 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
-import com.feature.home.homeApi.HomeDestinations
+import com.feature.home.homeUi.navigation.HomeDestinations
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
 import com.feature.home.homeUi.navigation.HomeNavigator
