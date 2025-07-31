@@ -1,6 +1,6 @@
 object Modules {
     const val APP = ":app"
-    const val APP_NAVIGATION = ":appNavigation"
+    const val APP_NAVIGATION = ":bottomNavBar"
     const val DESIGN_SYSTEM = ":designsystem"
     const val LOGGER = ":logger"
 

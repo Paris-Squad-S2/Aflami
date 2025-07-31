@@ -205,8 +205,6 @@ dependencies {
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
 
-    implementation(project(Modules.APP_NAVIGATION))
-
 
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.core)

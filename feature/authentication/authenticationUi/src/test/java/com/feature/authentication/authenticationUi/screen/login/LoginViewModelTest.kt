@@ -2,12 +2,11 @@ package com.feature.authentication.authenticationUi.screen.login
 
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
-import com.paris_2.aflami.appnavigation.AppNavigationAPI
+import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import com.paris_2.domain.authentication.usecase.LoginUseCase
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi

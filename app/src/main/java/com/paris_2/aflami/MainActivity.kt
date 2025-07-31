@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
-import com.paris_2.aflami.appnavigation.AppNavigationAPI
+import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.domain.authentication.usecase.HasAnySessionUseCase
 import dagger.hilt.android.AndroidEntryPoint
