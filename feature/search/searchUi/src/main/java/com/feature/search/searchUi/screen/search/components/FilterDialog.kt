@@ -97,7 +97,7 @@ fun FilterDialog(
                     val genre = CategoryGenreMapper.mapToGenre(category)
                     Chips(
                         title = category.name,
-                        icon = ImageVector.vectorResource(GenreResourceMapper.getResourceId(genre)), // Argument type mismatch: actual type is 'Genre?', but 'Genre' was expected.
+                        icon = ImageVector.vectorResource(GenreResourceMapper.getResourceId(genre)),
                         isSelected = currentCategories[category] ?: false,
                         onClick = {
                             isAllCategories = false
