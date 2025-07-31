@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search.components
 
+import CategoryUiState
 import SearchScreenState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -21,7 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.search.searchUi.R
-import com.feature.search.searchUi.comon.GenreResourceMapper.getResourceId
+import com.feature.search.searchUi.comon.CategoryGenreMapper
+import com.feature.search.searchUi.comon.GenreResourceMapper
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
@@ -89,11 +91,13 @@ fun FilterDialog(
                         }
                     )
                 }
+
                 items(currentCategories.size) { index ->
                     val category = currentCategories.keys.elementAt(index)
+                    val genre = CategoryGenreMapper.mapToGenre(category)
                     Chips(
                         title = category.name,
-                        icon = ImageVector.vectorResource(getResourceId(category.id)),
+                        icon = ImageVector.vectorResource(GenreResourceMapper.getResourceId(genre)), // Argument type mismatch: actual type is 'Genre?', but 'Genre' was expected.
                         isSelected = currentCategories[category] ?: false,
                         onClick = {
                             isAllCategories = false
@@ -110,7 +114,9 @@ fun FilterDialog(
                     searchScreenInteractionListener.onApplyFilterButtonClick(
                         selectedRating = currentRating,
                         isAllCategories = isAllCategories,
-                        selectedCategories = currentCategories.filter { it.value }.keys.toList()
+                        selectedCategories = currentCategories
+                            .filter { it.value }
+                            .map { (genre, _) -> CategoryUiState(id = genre.id, name = genre.name) }
                     )
                 },
                 type = ButtonType.Primary,
