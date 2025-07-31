@@ -3,9 +3,9 @@ package com.feature.search.searchUi.pagging
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 
-class SearchPagingSource<Media: Any>(
+class PagingSource<Media: Any>(
     val searchUseCase:suspend (page:Int)-> List<Media>
-): PagingSource<Int,Media>() {
+): PagingSource<Int, Media>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Media> {
         val page = params.key ?: 1

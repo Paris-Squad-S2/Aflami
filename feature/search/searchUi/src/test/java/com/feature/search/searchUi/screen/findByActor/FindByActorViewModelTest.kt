@@ -2,7 +2,6 @@ package com.feature.search.searchUi.screen.findByActor
 
 import MediaTypeUi
 import MediaUiState
-import androidx.paging.PagingSource
 import com.domain.search.model.Media
 import com.domain.search.model.MediaType
 import com.domain.search.useCase.GetMediaByActorNameUseCase
@@ -11,7 +10,6 @@ import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.SearchPagingSource
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -152,7 +150,7 @@ class FindByActorViewModelTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
         coEvery { getMediaByActorNameUseCase(testQuery, any()) } throws Exception(errorMessage)
-        val pagingSource = SearchPagingSource(
+        val pagingSource = com.feature.search.searchUi.pagging.PagingSource(
             searchUseCase = {
                 sortingMediaByCategoriesInteractionUseCase(
                     getMediaByActorNameUseCase(
@@ -163,7 +161,7 @@ class FindByActorViewModelTest {
             }
         )
         val result = pagingSource.load(
-            PagingSource.LoadParams.Refresh(
+            androidx.paging.PagingSource.LoadParams.Refresh(
                 key = null,
                 loadSize = 10,
                 placeholdersEnabled = false
@@ -175,7 +173,7 @@ class FindByActorViewModelTest {
 
         val currentState = viewModel.screenState.value
         assertThat(currentState.uiState.searchResult.collectAllItems()).isEmpty()
-        assertTrue(result is PagingSource.LoadResult.Error)
+        assertTrue(result is androidx.paging.PagingSource.LoadResult.Error)
         assertEquals(errorMessage, (result).throwable.message)
     }
 

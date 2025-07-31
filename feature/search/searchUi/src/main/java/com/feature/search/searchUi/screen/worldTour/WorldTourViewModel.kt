@@ -18,7 +18,7 @@ import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.SearchPagingSource
+import com.feature.search.searchUi.pagging.PagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -121,7 +121,7 @@ class WorldTourViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SearchPagingSource(
+                        PagingSource(
                             searchUseCase = { page ->
                                 sortingMediaByCategoriesInteractionUseCase(getMoviesByCountryUseCase(query,page)).toMediaUiList()
                             }
