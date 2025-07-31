@@ -81,6 +81,7 @@ val koverExcludedPackages = listOf(
     "**.HomeScreen.kt.**",
     "**.AflamiNavBar.**",
     "**.AflamiNavBarItem.**",
+    "**bottomNavBar**",
     "**.PagingSource.**"
 )
 
