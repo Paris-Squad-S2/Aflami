@@ -10,7 +10,7 @@ import com.feature.lists.listsApi.ListsDestination
 import com.feature.lists.listsApi.ListsFeatureAPI
 
 class ListsFeatureAPIImpl : ListsFeatureAPI {
-    override fun invoke(listsDestination: ListsDestination?): @Composable (() -> Unit) {
+    override fun invoke(): @Composable (() -> Unit) {
         return {
             Box(
                 modifier = Modifier.fillMaxSize(),
