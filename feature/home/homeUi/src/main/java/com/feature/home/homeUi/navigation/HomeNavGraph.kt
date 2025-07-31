@@ -19,8 +19,7 @@ fun HomeNavGraph(
     navigator: HomeNavigator = EntryPointAccessors.fromApplication(
         LocalContext.current.applicationContext as android.app.Application,
         HomeNavigatorEntryPoint::class.java
-    ).homeNavigator(),
-    startDestination: HomeDestination? = null
+    ).homeNavigator()
 ) {
     val navController = rememberNavController()
 
@@ -38,13 +37,13 @@ fun HomeNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        buildSearchNavGraph(startDestination)
+        buildSearchNavGraph()
     }
 }
 
-fun NavGraphBuilder.buildSearchNavGraph(startDestination: HomeDestination? = null) {
+fun NavGraphBuilder.buildSearchNavGraph() {
     navigation<HomeDestinations.HomeGraph1>(
-        startDestination = startDestination ?: HomeDestinations.HomeScreen
+        startDestination = HomeDestinations.HomeScreen
     ) {
         composable<HomeDestinations.HomeScreen> { HomeScreen() }
         composable<HomeDestinations.ContinueWatchingScreen> { ContinueWatchingScreen() }
