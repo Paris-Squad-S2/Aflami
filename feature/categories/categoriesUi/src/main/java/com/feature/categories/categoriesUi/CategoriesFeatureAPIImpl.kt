@@ -10,7 +10,7 @@ import com.feature.categories.categoriesApi.CategoriesDestination
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 
 class CategoriesFeatureAPIImpl : CategoriesFeatureAPI {
-    override fun invoke(categoriesDestination: CategoriesDestination?): @Composable (() -> Unit) {
+    override fun invoke(): @Composable (() -> Unit) {
         return {
             Box(
                 modifier = Modifier.fillMaxSize(),
