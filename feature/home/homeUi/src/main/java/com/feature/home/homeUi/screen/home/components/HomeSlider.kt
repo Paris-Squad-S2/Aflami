@@ -124,8 +124,7 @@ fun HomeSlider(
                         shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
                     )
                 }else if(isShimmerEnabled){
-                    Box(
-                    ) {
+                    Box{
                         Slider(
                             items = loadingList,
                             onClick = { media ->
@@ -133,6 +132,7 @@ fun HomeSlider(
                             },
                             modifier = modifier,
                             currentMedia = mediaState,
+                            scrollingDuration = Long.MAX_VALUE,
                             shimmerModifier = Modifier.shimmerable(enabled = true)
                         )
                         MediaPlayButton(

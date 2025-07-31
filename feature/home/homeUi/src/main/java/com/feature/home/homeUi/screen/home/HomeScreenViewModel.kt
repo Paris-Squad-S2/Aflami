@@ -214,11 +214,6 @@ class HomeScreenViewModel @Inject constructor(
     override fun onAllCategoriesSelect() {
         tryToExecute(
             execute = {
-                emitState(
-                    screenState.value.copy(
-                        isCategoryLoading = true
-                    )
-                )
                 getUpcomingMediaUseCase.invoke()
             },
             onSuccess = { upcomingMovies ->
@@ -231,7 +226,6 @@ class HomeScreenViewModel @Inject constructor(
                                     this.keys.forEach { this[it] = false }
                                 },
                         ),
-                        isContinueWatchingLoading = false,
                         errorMessage = null
 
                     )
@@ -241,7 +235,6 @@ class HomeScreenViewModel @Inject constructor(
                 emitState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
-                        isContinueWatchingLoading = false
                     )
                 )
             }
@@ -400,11 +393,6 @@ class HomeScreenViewModel @Inject constructor(
             execute = {
                 emitState(
                     screenState.value.copy(
-                        isCategoryLoading = true
-                    )
-                )
-                emitState(
-                    screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             categories = screenState.value.homeUIState.categories.toMutableMap()
                                 .apply {
@@ -425,7 +413,6 @@ class HomeScreenViewModel @Inject constructor(
                         homeUIState = screenState.value.homeUIState.copy(
                             upComingMediaList = filteredMovies.toMediaUiStateList(),
                         ),
-                        isCategoryLoading = false
                     )
                 )
             },
@@ -433,7 +420,6 @@ class HomeScreenViewModel @Inject constructor(
                 emitState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
-                        isCategoryLoading = false
                     )
                 )
             }
