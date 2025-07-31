@@ -7,6 +7,6 @@ import com.repository.model.local.SeasonEntity
 class TvShowSeasonLocalDataSourceImp(private val dao: SeasonDao) : TvShowSeasonLocalDataSource {
     override suspend fun addSeasonDetails(seasons: SeasonEntity) = dao.addSeason(seasons)
 
-    override suspend fun getSeasonDetailsByTvShowId(tvShowId: Int): SeasonEntity? =
-        dao.getSeasonByTvShowId(tvShowId)
+    override suspend fun getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId: Int, seasonNumber: Int): SeasonEntity? =
+        dao.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 }

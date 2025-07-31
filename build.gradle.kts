@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.kover)
+    id("com.google.dagger.hilt.android") version "2.57" apply false
 }
 
 val koverExcludedPackages = listOf(
@@ -38,7 +39,7 @@ val koverExcludedPackages = listOf(
     "**.MainActivity",
     "**.MainActivityKt",
     "**.MyClass",
-    "**.designsystem.**",
+    "**.designSystem.**",
     "**.BaseViewModel*",
     "**.*_Impl*",
     "*.ComposableSingletons*",
@@ -73,11 +74,11 @@ val koverExcludedPackages = listOf(
     "**.HomeConverter*",
     "**.HomeDatabase*",
     "**.workmanager.**",
-
-    /*
-    "**.GenreResourceMapper",
-
- */
+    "**ConcreteBaseViewModel.kt.**",
+    "**.TvShowDetailsScreen.kt.**",
+    "**.MovieDetailsScreen.kt.**",
+    "**.shimmerable.kt.**",
+    "**.HomeScreen.kt.**",
 )
 
 allprojects {

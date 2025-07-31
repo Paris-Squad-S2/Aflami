@@ -1,4 +1,5 @@
 package com.feature.home.homeUi.screen.home
+
 import com.domain.home.usecase.AddMediaToLocalUseCase
 import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
 import com.domain.home.usecase.GetMediaFromLocalUseCase
@@ -13,12 +14,16 @@ import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
+import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HomeScreenViewModel(
+@HiltViewModel
+class HomeScreenViewModel @Inject constructor(
     private val getPopularMediaUseCase: GetPopularMediaUseCase,
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase,
@@ -28,6 +33,7 @@ class HomeScreenViewModel(
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: HomeNavigator,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState(
@@ -55,7 +61,7 @@ class HomeScreenViewModel(
             isContinueWatchingLoading = false,
             isCategoryLoading = false,
             errorMessage = null
-        )
+        ), navigator
     ) {
     init {
         loadPopularMedia()
@@ -363,13 +369,15 @@ class HomeScreenViewModel(
                 val moodCategories = mood.map { mood ->
                     mood.nameToGenreId()
                 }
-                filterUpComingMediaByCategoriesUseCase.invoke(moodCategories)
+                val moodPickerMovies = getTopRatingMediaUseCase.invoke()
+                moodPickerMovies.filter { movie ->
+                    movie.genreIds.any { moodCategories.contains(it) }
+                }
             },
             onSuccess = { filteredMovies ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            upComingMediaList = filteredMovies.toMediaUiStateList(),
                             moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
                             showMoodPickerDialog = true
                         ),

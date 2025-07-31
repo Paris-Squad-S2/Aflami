@@ -24,7 +24,8 @@ fun SectionTitle(
     modifier: Modifier = Modifier,
     icon: @Composable (() -> Unit)? = null,
     hasViewAll: Boolean = false,
-    onClickViewAll: () -> Unit = {}
+    onClickViewAll: () -> Unit = {},
+    shimmerModifier:Modifier = Modifier
 ) {
     Row(
         modifier = modifier
@@ -34,6 +35,7 @@ fun SectionTitle(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
+            modifier = shimmerModifier,
             text = title,
             style = Theme.textStyle.headline.small,
             color = Theme.colors.text.title,
@@ -45,7 +47,7 @@ fun SectionTitle(
                 text = stringResource(R.string.all),
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
-                modifier = Modifier.clickable(
+                modifier = shimmerModifier.clickable(
                     indication = null,
                     interactionSource = null,
                     onClick = onClickViewAll

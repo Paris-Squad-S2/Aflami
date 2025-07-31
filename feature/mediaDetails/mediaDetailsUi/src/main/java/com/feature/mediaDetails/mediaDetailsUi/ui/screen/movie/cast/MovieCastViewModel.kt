@@ -6,18 +6,22 @@ import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class MovieCastViewModel
-    (
+@HiltViewModel
+class MovieCastViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getMovieCastUseCase: GetMovieCastUseCase,
+    navigator: MediaDetailsNavigator
 ) : MovieCastScreenInteractionListener,
     BaseViewModel<MovieCastUiState>(
         MovieCastUiState(
             cast = emptyList(),
             isLoading = false,
             errorMessage = null
-        ),
+        ), navigator
     ) {
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieCastScreen>().movieId

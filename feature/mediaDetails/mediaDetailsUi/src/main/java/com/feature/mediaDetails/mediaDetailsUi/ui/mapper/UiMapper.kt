@@ -3,7 +3,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.mapper
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.Gallery
+import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
 import com.domain.mediaDetails.model.MovieSimilar
 import com.domain.mediaDetails.model.MovieVideo
@@ -31,7 +31,7 @@ fun Movie.toUi(): MovieUi {
     return MovieUi(
         id = this.id,
         posterUrl = this.posterPath,
-        rating = this.voteAverage.toFloat(),
+        rating = this.voteAverage?.toFloat(),
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate.formatToUi(),
@@ -46,7 +46,7 @@ fun TvShow.toUi(): TvShowUi {
     return TvShowUi(
         id = this.id,
         posterUrl = this.posterPath,
-        rating = this.voteAverage.toFloat(),
+        rating = this.voteAverage?.toFloat(),
         title = this.title,
         genres = this.genres.map { it.name },
         releaseDate = this.releaseDate.formatToUi(),
@@ -133,8 +133,8 @@ fun Int.toHoursMinutes(): String {
     }
 }
 
-fun Gallery.toUi(): List<String> {
-    return this.images.map { it.url }
+fun List<Image>.toUi(): List<String> {
+    return this.map { it.url }
 }
 
 fun MovieSimilar.toUi(): SimilarMediaUI {

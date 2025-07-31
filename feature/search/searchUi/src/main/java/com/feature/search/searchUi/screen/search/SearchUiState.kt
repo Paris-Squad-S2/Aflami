@@ -33,7 +33,7 @@ data class MediaUiState(
     val type: MediaTypeUi,
     val categories: List<Int>,
     val yearOfRelease: LocalDate,
-    val rating: Double,
+    val rating: Double?,
 )
 
 enum class MediaTypeUi(val mediaName: String) {

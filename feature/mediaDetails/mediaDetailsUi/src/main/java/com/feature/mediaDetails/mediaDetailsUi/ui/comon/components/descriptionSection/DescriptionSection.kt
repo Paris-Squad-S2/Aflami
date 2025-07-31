@@ -73,7 +73,8 @@ private fun GenreChipRow(genres: List<String>) {
         items(genres.size) { index ->
             GenresChip(
                 title = genres[index],
-                isSelected = false
+                isSelected = false,
+                modifier = Modifier
             )
         }
     }

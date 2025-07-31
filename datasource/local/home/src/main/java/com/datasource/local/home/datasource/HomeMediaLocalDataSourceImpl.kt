@@ -4,7 +4,7 @@ import com.datasource.local.home.dao.HomeMediaDao
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.entity.MediaEntity
 
-class HomeMediaLocalDataSourceImpl(
+class HomeMediaLocalDataSourceImpl (
     private val mediaDao: HomeMediaDao
 ) : HomeMediaLocalDataSource {
 

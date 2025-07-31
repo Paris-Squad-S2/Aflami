@@ -14,18 +14,23 @@ import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FindByActorViewModel(
+@HiltViewModel
+class FindByActorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: SearchNavigator
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -33,7 +38,8 @@ class FindByActorViewModel(
             searchResult = flowOf(PagingData.empty()),
         ),
         errorMessage = null
-    )
+    ),
+    navigator
 ) {
 
 

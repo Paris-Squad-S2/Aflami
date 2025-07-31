@@ -1,12 +1,13 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui
 
+import android.content.Context
 import android.content.Intent
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.toJson
 
 class MediaDetailsFeatureAPIImpl(
-    private val context: android.content.Context
+    private val context: Context
 ) : MediaDetailsFeatureAPI {
 
     override fun startMovieDetails(movieId: Int) {

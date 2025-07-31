@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
+        <activity
+            android:name=".screen.continueWatching.ContinueWatchingActivity"
+            android:exported="false">
+        </activity>
+        <activity
+            android:name=".screen.topRatingMovies.TopRatingActivity"
+            android:exported="false">
+        </activity>
     </application>
 
 </manifest>

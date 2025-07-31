@@ -3,7 +3,6 @@ package com.repository.mapper
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.ProductionCompany
@@ -42,7 +41,7 @@ fun TvShowDto.toLocalDto(language: String,tvShowId : Int): TvShowEntity {
     return TvShowEntity(
         id = tvShowId,
         title = this.name.orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage,
         description = this.overview.orEmpty(),
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         genres = this.genres?.map { it.toLocalDto() } ?: emptyList(),
@@ -78,7 +77,7 @@ private fun TvShowEpisodeDto.toLocalDto(posterUrl: String): EpisodeEntity {
         id = this.id ?: 0,
         episodeNumber = this.episodeNumber ?: 0,
         posterUrl = posterUrl,
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage,
         airDate = airDate,
         runtime = this.runtime ?: 0,
         description = this.overview.orEmpty(),
@@ -189,7 +188,7 @@ fun TvShowSimilarDto.toLocalDto(tvShowId: Int,language: String,page: Int): TvSho
         title = this.title.orEmpty(),
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage,
         language = language,
         page = page
 
@@ -212,10 +211,8 @@ private fun TvShowPosterDto.toLocalDto(): ImageEntity{
 }
 
 
-fun GalleryEntity.toEntity(): Gallery {
-    return Gallery(
-        images = this.images.map { it.toEntity() }
-    )
+fun GalleryEntity.toEntity(): List<Image> {
+    return this.images.map { it.toEntity() }
 }
 
 fun ImageEntity.toEntity(): Image {
@@ -239,7 +236,7 @@ fun TvShowReviewDto.toLocalDto(tvShowId: Int,language: String): ReviewEntity{
         createdAt = createdAt,
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
-        rating = this.authorDetails?.rating ?: 0.0,
+        rating = this.authorDetails?.rating,
         tvShowId = tvShowId,
         description = this.content.orEmpty(),
         language = language

@@ -3,7 +3,6 @@ package testUtils
 import com.domain.mediaDetails.model.Cast
 import com.domain.mediaDetails.model.Episode
 import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.Gallery
 import com.domain.mediaDetails.model.Genre
 import com.domain.mediaDetails.model.Image
 import com.domain.mediaDetails.model.Movie
@@ -349,7 +348,7 @@ val fakeImages = listOf(
     Image(10, "https://image.tmdb.org/t/p/w500/tvstill4.jpg")
 )
 
-val fakeGallery = Gallery(images = fakeImages)
+val fakeGallery = fakeImages
 
 val fakeMovieVideo = listOf(
     MovieVideo(

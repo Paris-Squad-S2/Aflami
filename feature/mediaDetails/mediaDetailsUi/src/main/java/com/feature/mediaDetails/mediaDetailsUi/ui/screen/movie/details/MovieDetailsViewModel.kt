@@ -17,17 +17,23 @@ import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
 import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewMoviePagingSource
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
 import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
-class MovieDetailsViewModel(
+@HiltViewModel
+class MovieDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase,
     private val getMovieCastUseCase: GetMovieCastUseCase,
@@ -38,8 +44,10 @@ class MovieDetailsViewModel(
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
-    private val addRatingToMovieUseCase: AddRatingToMovieUseCase
+    private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
+    navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
+
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
             movie = MovieUi(
@@ -55,7 +63,7 @@ class MovieDetailsViewModel(
                 productionCompanies = emptyList(),
             ),
             cast = emptyList(),
-            reviews = flowOf(PagingData.empty()),
+            reviews = emptyList(),
             gallery = emptyList(),
             recommendations = flowOf(PagingData.empty()),
             movieVideoUi = MovieVideoUi(
@@ -66,9 +74,11 @@ class MovieDetailsViewModel(
             selectedRating = 0f
         ),
         isLoading = true,
-        errorMessage = null
-    )
+        errorMessage = null,
+        showSnackBar = false,
+    ), navigator
 ) {
+
 
     private val movieId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
@@ -144,21 +154,13 @@ class MovieDetailsViewModel(
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        ReviewMoviePagingSource(
-                            mediaId = mediaId,
-                            getMovieReviewsUseCase = getMovieReviewsUseCase
-                        )
-                    }
-                ).flow.cachedIn(viewModelScope)
+                getMovieReviewsUseCase(mediaId,1).toListOfReviewUi()
             },
-            onSuccess = {
+            onSuccess = { reviews->
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            reviews = it
+                            reviews = reviews
                         )
                     )
                 )
@@ -249,26 +251,15 @@ class MovieDetailsViewModel(
         )
     }
 
-    override fun onFavouriteClick(title: Int) {
+    override fun onRateClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { addRatingToMovieUseCase() },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
-                    )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+                    updateState(screenState.value.copy(showRatingDialog = true))
+                }
+                else {
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.rate))
                 }
             },
             onError = {
@@ -277,13 +268,36 @@ class MovieDetailsViewModel(
         )
     }
 
-    override fun onAddToListClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+    override fun onAddToListClick() {
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState(screenState.value.copy(showAddToListDialog = true))
+                } else {
+                    navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.add_to_list))
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
     }
+
+
+    override fun onDismissAddToListDialog() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = false
+            )
+        )
+    }
+
 
     override fun onShowAllCastClick(movieId: Int) {
         navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
     }
+
 
 
     override fun onRetryLoadMovieDetails() {
@@ -301,6 +315,7 @@ class MovieDetailsViewModel(
     }
 
 
+
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
         updateState(
             screenState.value.copy(
@@ -311,6 +326,7 @@ class MovieDetailsViewModel(
         )
     }
 
+
     private fun onGetVideoMovieError(error: String) {
         updateState(
             screenState.value.copy(
@@ -318,6 +334,7 @@ class MovieDetailsViewModel(
             )
         )
     }
+
 
     override fun onDismissRatingDialog() {
         updateState(
@@ -327,6 +344,45 @@ class MovieDetailsViewModel(
         )
     }
 
-    override fun onRatingSubmitted(rating: Float) {}
+
+    override fun onRatingSubmitted(movieId: Int, rating: Float) {
+        tryToExecute(
+            execute = {
+                val step = 0.5f
+                val roundedRating = ((rating / step).roundToInt() * step)
+                addRatingToMovieUseCase(movieId, roundedRating)
+            },
+            onSuccess = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = true,
+                        snackBarMessage = R.string.rating_submit_successfully,
+                        showRatingDialog = false
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = false,
+                        snackBarMessage = R.string.failed_to_submit_rating,
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
+
+
+    override fun onHideSnackBar() {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = false
+            )
+        )
+    }
+
 
 }

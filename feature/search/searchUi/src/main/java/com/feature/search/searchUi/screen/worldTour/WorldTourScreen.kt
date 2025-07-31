@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -25,12 +26,11 @@ import com.paris_2.aflami.designsystem.components.TextField
 import com.paris_2.aflami.designsystem.components.TopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
-fun WorldTourScreen(viewModel: WorldTourViewModel = koinViewModel()) {
+fun WorldTourScreen(viewModel: WorldTourViewModel = hiltViewModel()) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
 
     WorldTourScreenContent(
@@ -66,14 +66,15 @@ fun WorldTourScreenContent(
         TextField(
             value = state.uiState.searchQuery,
             onValueChange = worldTourScreenInteractionListener::onSearchQueryChange,
-            placeholder = stringResource(R.string.search),
+            placeholder = stringResource(R.string.county_name),
             suggestions = state.uiState.hints.map {
                 val name = if (isArabic) {
                     it.arabicName
                 } else {
                     it.englishName
                 }
-                name + " (${it.countryCode})" },
+                name + " (${it.countryCode})"
+            },
             onSuggestionSelected = {
                 worldTourScreenInteractionListener.onSearchQueryChange(
                     it.substringBefore(
@@ -82,37 +83,48 @@ fun WorldTourScreenContent(
                 )
             },
         )
-        if (state.uiState.searchQuery.isEmpty()) {
-            PlaceholderView(
-                modifier = Modifier
-                    .fillMaxSize(),
-                image = painterResource(RDesignSystem.drawable.img_world_tour),
-                title = stringResource(R.string.country_tour),
-                subTitle = stringResource(R.string.start_exploring_the_world_movie),
-                spacer = 16.dp
-            )
-        } else if (state.errorMessage != null||state.uiState.searchResult.collectAsLazyPagingItems().loadState.hasError) {
-            NetworkError(
-                modifier = Modifier.fillMaxSize(),
-                onRetry = worldTourScreenInteractionListener::onRetrySearchQuery
-            )
-        } else if (state.uiState.searchResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
-            PageLoadingPlaceHolder(
-                modifier = Modifier.fillMaxSize()
-            )
-        } else if (state.uiState.searchResult.collectAsLazyPagingItems().itemCount==0) {
-            PlaceholderView(
-                modifier = Modifier.fillMaxSize(),
-                image = painterResource(RDesignSystem.drawable.img_no_search_result),
-                title = stringResource(R.string.no_search_result),
-                subTitle = stringResource(R.string.please_try_with_another_keyword),
-                spacer = 16.dp
-            )
-        } else {
-            SearchResultContent(
-                searchResult = state.uiState.searchResult.collectAsLazyPagingItems(),
-                onMediaCardClick = worldTourScreenInteractionListener::onMediaCardClick
-            )
+        when {
+            state.uiState.searchQuery.isEmpty() -> {
+                PlaceholderView(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    image = painterResource(RDesignSystem.drawable.img_world_tour),
+                    title = stringResource(R.string.country_tour),
+                    subTitle = stringResource(R.string.start_exploring_the_world_movie),
+                    spacer = 16.dp
+                )
+            }
+
+            state.uiState.searchResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading
+                    && state.errorMessage == null -> {
+                PageLoadingPlaceHolder(
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+            state.uiState.searchResult.collectAsLazyPagingItems().itemCount == 0 -> {
+                PlaceholderView(
+                    modifier = Modifier.fillMaxSize(),
+                    image = painterResource(RDesignSystem.drawable.img_no_search_result),
+                    title = stringResource(R.string.no_search_result),
+                    subTitle = stringResource(R.string.please_try_with_another_keyword),
+                    spacer = 16.dp
+                )
+            }
+
+            state.errorMessage != null || state.uiState.searchResult.collectAsLazyPagingItems().loadState.hasError -> {
+                NetworkError(
+                    modifier = Modifier.fillMaxSize(),
+                    onRetry = worldTourScreenInteractionListener::onRetrySearchQuery
+                )
+            }
+
+            else -> {
+                SearchResultContent(
+                    searchResult = state.uiState.searchResult.collectAsLazyPagingItems(),
+                    onMediaCardClick = worldTourScreenInteractionListener::onMediaCardClick
+                )
+            }
         }
     }
 }

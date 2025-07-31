@@ -1,6 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
@@ -22,9 +23,9 @@ fun ChipsRowSection(
 ) {
     LazyRow(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues( horizontal = 8.dp , vertical = 12.dp)
     ) {
         items(items.size) { index ->
             val isSelected = index == selectedIndex

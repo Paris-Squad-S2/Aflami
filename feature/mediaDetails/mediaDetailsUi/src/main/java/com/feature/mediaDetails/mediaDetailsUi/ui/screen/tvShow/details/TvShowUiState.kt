@@ -2,7 +2,6 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import androidx.annotation.StringRes
 import androidx.paging.PagingData
-import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
@@ -25,15 +24,17 @@ data class TvShowDetailsScreenState(
     val isProductionCompaniesLoading: Boolean = false,
     val seasonsLoadingStates: Map<Int, Boolean> = emptyMap(),
     val showRatingDialog: Boolean = false,
-    @StringRes val snackBarMessage: Int = R.string.not_found_video,
-    val showSnackBar: Boolean = false
+    @StringRes val snackBarMessage: Int? = null,
+    val showSnackBar: Boolean = false,
+    val snackBarSuccess: Boolean = false,
+    val showAddToListDialog: Boolean = false
 )
 
 data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,
     val recommendations: Flow<PagingData<SimilarMediaUI>>,
     val cast: List<CastUi>,
-    val reviews: Flow<PagingData<ReviewUi>>,
+    val reviews:List<ReviewUi>,
     val gallery: List<String>,
     val tvShowVideoUi: TvShowVideoUi,
     val selectedRating: Float,
@@ -49,7 +50,7 @@ data class TvShowVideoUi(
 data class TvShowUi(
     val id: Int,
     override val posterUrl: String,
-    override val rating: Float,
+    override val rating: Float?,
     override val title: String,
     val genres: List<String>,
     override val releaseDate: String,
@@ -73,7 +74,7 @@ data class SeasonUi(
 data class EpisodeUi(
     val episodeNumber: Int,
     val posterUrl: String,
-    val voteAverage: Double,
+    val voteAverage: Double?,
     val airDate: String,
     val runtime: String,
     val description: String,

@@ -33,7 +33,10 @@ import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
+import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,7 +47,9 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-class SearchViewModel(
+
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase,
     private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase,
     private val clearRecentSearchUseCase: ClearRecentSearchUseCase,
@@ -54,7 +59,8 @@ class SearchViewModel(
     private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: SearchNavigator
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -74,7 +80,8 @@ class SearchViewModel(
             ),
             isLoading = false,
             errorMessage = null
-        )
+        ),
+        navigator
     ) {
 
     init {
@@ -149,16 +156,22 @@ class SearchViewModel(
             screenState.value.copy(
                 searchUiState = screenState.value.searchUiState.copy(
                     searchQuery = query,
-                )
+                ),
+                isLoading = true
             )
         )
         debounceJob?.cancel()
         if (query.isNotBlank()) {
-
             debounceJob = viewModelScope.launch {
                 delay(1000)
                 searchQuery(query)
             }
+        }else{
+            updateState(
+                screenState.value.copy(
+                    isLoading = false
+                )
+            )
         }
     }
 
@@ -167,7 +180,7 @@ class SearchViewModel(
             execute = {
                 updateState(
                     screenState.value.copy(
-                        errorMessage = null
+                        errorMessage = null,
                     )
                 )
                 Pager(
@@ -217,7 +230,8 @@ class SearchViewModel(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }

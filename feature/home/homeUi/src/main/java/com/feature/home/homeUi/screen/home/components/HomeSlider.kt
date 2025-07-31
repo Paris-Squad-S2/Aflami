@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home.components
 
+import android.os.Build
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
@@ -14,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,24 +31,30 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
+import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.GenresChip
 import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.MediaButtonType
+import com.paris_2.aflami.designsystem.components.MediaPlayButton
 import com.paris_2.aflami.designsystem.components.SectionTitle
 import com.paris_2.aflami.designsystem.components.Slider
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 import com.paris_2.aflami.designsystem.components.Text
 import com.paris_2.aflami.designsystem.theme.Theme
+import io.sifr.shaded.blurProcessor.BlurEdgeTreatment
+import io.sifr.shaded.modifiers.blur
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
 fun HomeSlider(
     onMediaClick: (media: SliderMedia) -> Unit,
     mediaList: List<SliderMedia>,
     modifier: Modifier,
+    isShimmerEnabled: Boolean
 ) {
     val mediaState = remember {
-        mutableStateOf<SliderMedia>(
+        mutableStateOf(
             SliderMedia(
                 id = 0,
                 imageUri = "",
@@ -57,7 +63,7 @@ fun HomeSlider(
                 categories = emptyList(),
                 rating = 0f,
                 yearOfRelease = "2022",
-            )
+            ),
         )
     }
 
@@ -67,20 +73,24 @@ fun HomeSlider(
             visible = mediaState.toString().isNotEmpty(),
             enter = slideInVertically(),
             exit = slideOutVertically(),
-        ){
+        ) {
 
             SafeImageViewer(
-                    model = mediaState.value.imageUri,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(400.dp)
-                        .blur(
-                            radius = 14.dp,
+                model = mediaState.value.imageUri,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .height(400.dp)
+                    .fillMaxWidth()
+                    .then(if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+                        Modifier.blur(
+                            radius = 12.dp,
                             edgeTreatment = BlurredEdgeTreatment.Unbounded,
                         )
-                ,
-                    contentScale = ContentScale.FillWidth,
-                )
+                    }else {
+                Modifier
+                    .blur(radius = 12f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED)
+            })
+            )
 
             Column(
                 modifier = Modifier.padding(top = 96.dp, bottom = 56.dp),
@@ -95,16 +105,14 @@ fun HomeSlider(
                             contentDescription = "",
                             modifier = Modifier
                                 .padding(start = 8.dp)
-                                .size(width = 16.dp, height = 18.dp)
-
-                            ,
+                                .size(width = 16.dp, height = 18.dp),
                             tint = Theme.colors.secondary,
                         )
                     },
                     hasViewAll = false,
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier = Modifier.padding(bottom = 20.dp),
+                    shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
                 )
-
                 if (mediaList.isNotEmpty()) {
                     Slider(
                         items = mediaList,
@@ -113,18 +121,68 @@ fun HomeSlider(
                         },
                         modifier = modifier,
                         currentMedia = mediaState,
+                        shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
                     )
+                }else if(isShimmerEnabled){
+                    Box(
+                    ) {
+                        Slider(
+                            items = loadingList,
+                            onClick = { media ->
+                                onMediaClick(media)
+                            },
+                            modifier = modifier,
+                            currentMedia = mediaState,
+                            shimmerModifier = Modifier.shimmerable(enabled = true)
+                        )
+                        MediaPlayButton(
+                            modifier = Modifier.align(Alignment.Center),
+                            onButtonClick = {},
+                            buttonType = MediaButtonType.BIG
+                        )
+                    }
                 }
             }
         }
-
-
         AnimatedVisibility(
             visible = mediaState.toString().isNotEmpty(),
             modifier = Modifier.align(Alignment.BottomCenter),
             enter = slideInVertically(),
             exit = slideOutVertically(),
         ) {
+            if (isShimmerEnabled){
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                ) {
+                    Text(
+                        text = "398743",
+                        style = Theme.textStyle.title.small,
+                        color = Theme.colors.text.title,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 16.dp)
+                            .shimmerable(enabled = isShimmerEnabled),
+                        minLines = 1,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                    LazyRow(
+                        Modifier
+                            .padding(top = 8.dp)
+                            .padding(horizontal = 16.dp)
+                    ) {
+                        items(3) {
+                            GenresChip(
+                                modifier = Modifier.shimmerable(enabled = isShimmerEnabled),
+                                title = "333",
+                                isSelected = false
+                            )
+                            Spacer(modifier = Modifier.width(4.dp))
+                        }
+                    }
+                }
+            }
+
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
@@ -134,16 +192,19 @@ fun HomeSlider(
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.text.title,
                     textAlign = TextAlign.Center,
-                    modifier = Modifier.padding(horizontal = 16.dp),
+                    modifier = Modifier.padding(horizontal = 16.dp).shimmerable(enabled = isShimmerEnabled),
                     minLines = 1,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
                 LazyRow(
-                    Modifier.padding(top = 8.dp).padding(horizontal = 16.dp)
+                    Modifier
+                        .padding(top = 8.dp)
+                        .padding(horizontal = 16.dp)
                 ) {
                     items(mediaState.value.categories.take(3)) {
                         GenresChip(
+                            modifier = Modifier.shimmerable(enabled = isShimmerEnabled),
                             title = it,
                             isSelected = false
                         )
@@ -151,8 +212,36 @@ fun HomeSlider(
                     }
                 }
             }
-
         }
     }
-
 }
+
+val loadingList = listOf(
+    SliderMedia(
+        id = 0,
+        imageUri = "",
+        title = "",
+        type = SliderMediaTypeUi.Movie,
+        categories = emptyList(),
+        rating = 0f,
+        yearOfRelease = "2022",
+    ),
+    SliderMedia(
+        id = 0,
+        imageUri = "",
+        title = "",
+        type = SliderMediaTypeUi.Movie,
+        categories = emptyList(),
+        rating = 0f,
+        yearOfRelease = "2022",
+    ),
+    SliderMedia(
+        id = 0,
+        imageUri = "",
+        title = "",
+        type = SliderMediaTypeUi.Movie,
+        categories = emptyList(),
+        rating = 0f,
+        yearOfRelease = "2022",
+    )
+)

@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -58,10 +60,10 @@ dependencies {
     //Navigation
     implementation(libs.navigation.compose)
 
-    //koin
-    implementation(libs.koin.android)
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
 
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))

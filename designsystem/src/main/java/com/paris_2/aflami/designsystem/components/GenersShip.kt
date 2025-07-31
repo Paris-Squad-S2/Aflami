@@ -16,10 +16,11 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
 fun GenresChip(
+    modifier: Modifier,
     isSelected:Boolean,
     title:String
 ) {
-    Box(modifier = Modifier
+    Box(modifier = modifier
             .background(
                 color = if (isSelected) Theme.colors.primary else Theme.colors.surfaceHigh,
                 shape = RoundedCornerShape(8.dp)
@@ -45,11 +46,13 @@ fun GenersChipPreview(){
         ) {
             GenresChip(
                 isSelected = false,
-                title = "Drama"
+                title = "Drama",
+                modifier = Modifier
             )
             GenresChip(
                 isSelected = true,
-                title = "Drama"
+                title = "Drama",
+                modifier = Modifier
             )
         }
     }

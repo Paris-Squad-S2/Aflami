@@ -14,22 +14,27 @@ import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.navigation.SearchDestinations
+import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.pagging.WorldTourPagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class WorldTourViewModel(
+@HiltViewModel
+class WorldTourViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val autoCompleteCountryUseCase: AutoCompleteCountryUseCase,
     private val getCountryCodeByNameUseCase: GetCountryCodeByNameUseCase,
     private val getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: SearchNavigator
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
         WorldTourScreenState(
@@ -39,7 +44,7 @@ class WorldTourViewModel(
                 hints = listOf()
             ),
             errorMessage = null
-        )
+        ), navigator
     ) {
 
     init {
@@ -59,7 +64,8 @@ class WorldTourViewModel(
             screenState.value.copy(
                 uiState = screenState.value.uiState.copy(
                     searchQuery = query,
-                )
+                ),
+                errorMessage = null
             )
         )
         debounceJob?.cancel()
@@ -83,15 +89,25 @@ class WorldTourViewModel(
                     updateState(
                         screenState.value.copy(
                             uiState = screenState.value.uiState.copy(
-                                searchResult = flowOf(PagingData.empty()),
-                            )
+                                searchResult = flowOf(PagingData.empty())
+                            ),
+                            errorMessage = "no data found"
                         )
                     )
                 }
             }
+        } else {
+            updateState(
+                screenState.value.copy(
+                    uiState = screenState.value.uiState.copy(
+                        searchResult = flowOf(PagingData.empty()),
+                        hints = emptyList()
+                    ),
+                    errorMessage = null
+                )
+            )
         }
     }
-
 
     private fun searchQuery(query: String): Job {
         return tryToExecute(
@@ -116,7 +132,7 @@ class WorldTourViewModel(
                 updateState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult,
+                            searchResult = searchResult
                         )
                     )
                 )
