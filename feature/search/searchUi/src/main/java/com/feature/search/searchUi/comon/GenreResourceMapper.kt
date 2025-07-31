@@ -34,11 +34,6 @@ enum class Genre(
     Soap(10766, "Soap"),
     Talk(10767, "Talk"),
     WarPolitics(10768, "War & Politics");
-
-    companion object {
-        fun fromId(id: Int): Genre? = values().find { it.id == id }
-        fun fromName(name: String): Genre? = values().find { it.displayName == name }
-    }
 }
 
 object GenreResourceMapper {
@@ -79,6 +74,6 @@ object GenreResourceMapper {
 
 object CategoryGenreMapper {
     fun mapToGenre(category: CategoryUiState): Genre? {
-        return Genre.values().find { it.id == category.id }
+        return Genre.entries.find { it.id == category.id }
     }
 }
