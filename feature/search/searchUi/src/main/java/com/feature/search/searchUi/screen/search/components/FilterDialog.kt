@@ -116,7 +116,12 @@ fun FilterDialog(
                         isAllCategories = isAllCategories,
                         selectedCategories = currentCategories
                             .filter { it.value }
-                            .map { (genre, _) -> CategoryUiState(id = genre.id, name = genre.name) }
+                            .map { (category, _) ->
+                                CategoryUiState(
+                                    id = category.id,
+                                    name = category.name
+                                )
+                            }
                     )
                 },
                 type = ButtonType.Primary,
