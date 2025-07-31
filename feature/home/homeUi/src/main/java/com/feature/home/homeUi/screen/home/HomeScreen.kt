@@ -1,6 +1,7 @@
 package com.feature.home.homeUi.screen.home
 
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -185,8 +186,10 @@ fun HomeScreenContent(
                 LazyRow(
                     contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
                 ) {
-                    if (!state.isCategoryLoading) {
-                        item {
+                    item {
+                        AnimatedVisibility(
+                            visible = !state.isCategoryLoading
+                        ) {
                             Chips(
                                 title = stringResource(R.string.all),
                                 icon = ImageVector.vectorResource(R.drawable.ic_category_all),
@@ -197,16 +200,15 @@ fun HomeScreenContent(
                                 },
                                 modifier = Modifier
                                     .padding(2.dp)
-
                             )
                         }
                     }
                     if (state.isCategoryLoading) {
-                        items(10) {
-                            Column (
+                        items(15) {
+                            Column(
                                 verticalArrangement = Arrangement.spacedBy(4.dp),
                                 horizontalAlignment = Alignment.CenterHorizontally
-                                ){
+                            ) {
                                 Box(
                                     modifier = Modifier
                                         .padding(8.dp)
@@ -215,7 +217,7 @@ fun HomeScreenContent(
                                         .shimmerable(enabled = state.isCategoryLoading)
                                 )
                                 Text(
-                                    text ="loading",
+                                    text = "loading",
                                     modifier = Modifier
                                         .align(Alignment.CenterHorizontally)
                                         .shimmerable(enabled = state.isCategoryLoading)
@@ -244,7 +246,7 @@ fun HomeScreenContent(
             }
 
             if (state.isCategoryLoading) {
-                items(5){
+                items(5) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -254,7 +256,7 @@ fun HomeScreenContent(
                             .shimmerable(enabled = state.isCategoryLoading)
                     )
                 }
-            }else{
+            } else {
                 items(state.homeUIState.upComingMediaList) { upcomingMedia ->
                     MediaCard(
                         imageUri = upcomingMedia.imageUri,
