@@ -10,7 +10,7 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
-import com.feature.home.homeApi.HomeDestinations
+import com.feature.home.homeUi.navigation.HomeDestinations
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
 import com.feature.home.homeUi.navigation.HomeNavigator
@@ -29,11 +29,11 @@ import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.navigation.SearchNavigatorImpl
-import com.paris_2.aflami.appnavigation.AppNavigatorImpl
-import com.paris_2.aflami.appnavigation.AppDestinations
-import com.paris_2.aflami.appnavigation.AppNavigationAPI
-import com.paris_2.aflami.appnavigation.AppNavigationAPIImpl
-import com.paris_2.aflami.appnavigation.AppNavigator
+import com.paris_2.aflami.bottomNavBar.AppNavigatorImpl
+import com.paris_2.aflami.bottomNavBar.AppDestinations
+import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
+import com.paris_2.aflami.bottomNavBar.AppNavigationAPIImpl
+import com.paris_2.aflami.bottomNavBar.AppNavigator
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

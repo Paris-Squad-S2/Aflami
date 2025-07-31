@@ -7,7 +7,7 @@ import com.domain.home.usecase.GetMoviesCategoriesUseCase
 import com.domain.home.usecase.GetPopularMediaUseCase
 import com.domain.home.usecase.GetTopRatingMediaUseCase
 import com.domain.home.usecase.GetUpComingMediaUseCase
-import com.feature.home.homeApi.HomeDestinations
+import com.feature.home.homeUi.navigation.HomeDestinations
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.nameToGenreId
 import com.feature.home.homeUi.mapper.toCategoryUiList
