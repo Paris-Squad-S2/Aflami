@@ -1,2 +1,3 @@
-versionName=0.3.28
-- handle domain exception in home screen
+versionName=0.3.29
+- enhance pagination in search and details feature
+- update loading state in home screen
