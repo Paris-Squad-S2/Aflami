@@ -1,8 +1,8 @@
 package com.repository.home.repository
 
+import com.domain.home.exception.AddMediaToContinueWatchingException
 import com.domain.home.exception.NoInternetConnectionException
-import com.domain.home.exception.addMediaToLocalException
-import com.domain.home.exception.catchMediaFromLocalException
+import com.domain.home.exception.GetContinueWatchingMediaException
 import com.domain.home.model.Media
 import com.domain.home.model.MediaType
 import com.google.common.truth.Truth.assertThat
@@ -134,7 +134,7 @@ class MediaRepositoryImplTest {
     fun `addMediaToLocal delegates to data source`() = runTest {
         val media = Media(200, "Local", 8.0, "", mockk(), listOf(1), MediaType.MOVIE)
         coEvery { local.addMedia(media.toEntity()) } returns Unit
-        repo.addMediaToLocal(media)
+        repo.AddMediaToContinueWatching(media)
         coVerify { local.addMedia(media.toEntity()) }
     }
 
@@ -169,8 +169,8 @@ class MediaRepositoryImplTest {
 
         coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
 
-        assertThrows<addMediaToLocalException> {
-            repo.addMediaToLocal(media)
+        assertThrows<AddMediaToContinueWatchingException> {
+            repo.AddMediaToContinueWatching(media)
         }
     }
 
@@ -178,7 +178,7 @@ class MediaRepositoryImplTest {
     fun `getMediaFromLocal throws catchMediaFromLocalException on failure`() = runTest {
         coEvery { local.getAllMedia() } throws RuntimeException("DB read failed")
 
-        assertThrows<catchMediaFromLocalException> {
+        assertThrows<GetContinueWatchingMediaException> {
             repo.getMediaFromLocal()
         }
     }

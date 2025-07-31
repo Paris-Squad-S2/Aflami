@@ -1,2 +1,2 @@
-versionName=0.3.27
-- add shimmer for home screen
+versionName=0.3.28
+- handle domain exception in home screen
