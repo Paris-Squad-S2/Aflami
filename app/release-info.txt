@@ -1,3 +1,2 @@
-versionName=0.3.29
-- enhance pagination in search and details feature
-- update loading state in home screen
+versionName=0.3.30
+- add app icon
