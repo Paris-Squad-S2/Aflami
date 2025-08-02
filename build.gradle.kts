@@ -103,7 +103,6 @@ dependencies {
     kover(project((Modules.DOMAIN_MEDIA)))
     kover(project((Modules.DOMAIN_LISTS)))
     kover(project((Modules.DOMAIN_HOME)))
-    kover(project((Modules.DOMAIN_CATEGORIES)))
     kover(project((Modules.REPOSITORY_USER)))
     kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_MOVIE)))
