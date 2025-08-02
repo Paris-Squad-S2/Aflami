@@ -1,4 +1,4 @@
-package com.domain.search.exception
+package com.domain.media.exception
 
 open class AflamiException(message: String) : Exception(message)
 

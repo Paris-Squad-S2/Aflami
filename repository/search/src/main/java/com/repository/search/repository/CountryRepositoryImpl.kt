@@ -1,7 +1,7 @@
 package com.repository.search.repository
 
-import com.domain.search.model.Country
-import com.domain.search.repository.CountryRepository
+import com.domain.media.model.Country
+import com.domain.media.repository.CountryRepository
 import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.mapper.toCountry
 

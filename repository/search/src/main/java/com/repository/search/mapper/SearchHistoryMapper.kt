@@ -1,7 +1,7 @@
 package com.repository.search.mapper
 
-import com.domain.search.model.SearchHistoryModel
-import com.domain.search.model.SearchType
+import com.domain.media.model.SearchHistoryModel
+import com.domain.media.model.SearchType
 import com.repository.search.entity.SearchHistoryEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

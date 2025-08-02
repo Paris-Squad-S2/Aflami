@@ -1,11 +1,11 @@
 package com.repository.search.repository
 
-import com.domain.search.exception.NoMediaForActorException
-import com.domain.search.exception.NoMediaForCountryException
-import com.domain.search.exception.NoMediaForSearchException
-import com.domain.search.exception.NoInternetConnectionException
-import com.domain.search.model.Media
-import com.domain.search.repository.SearchMediaRepository
+import com.domain.media.exception.NoMediaForActorException
+import com.domain.media.exception.NoMediaForCountryException
+import com.domain.media.exception.NoMediaForSearchException
+import com.domain.media.exception.NoInternetConnectionException
+import com.domain.media.model.Media
+import com.domain.media.repository.SearchMediaRepository
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource

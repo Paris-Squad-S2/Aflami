@@ -1,7 +1,7 @@
 package com.repository.search.mapper
 
-import com.domain.search.model.Media
-import com.domain.search.model.MediaType
+import com.domain.media.model.Media
+import com.domain.media.model.MediaType
 import com.repository.search.dto.KnownForDto
 import com.repository.search.dto.ResultDto
 import com.repository.search.dto.SearchDto
