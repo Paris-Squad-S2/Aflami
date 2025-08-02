@@ -82,7 +82,8 @@ val koverExcludedPackages = listOf(
     "**.AflamiNavBar.**",
     "**.AflamiNavBarItem.**",
     "**bottomNavBar**",
-    "**.PagingSource.**"
+    "**.PagingSource.**",
+    "**.MediaUi.**",
 )
 
 allprojects {
