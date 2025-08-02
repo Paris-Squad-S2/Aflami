@@ -1,6 +1,6 @@
 package com.paris_2.domain.media.useCase.movie
 
-import com.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.MovieRepository
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

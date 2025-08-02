@@ -1,7 +1,7 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.repository.CountryRepository
-import com.domain.media.entity.Country
+import com.paris_2.domain.media.repository.CountryRepository
+import com.paris_2.domain.media.entity.Country
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

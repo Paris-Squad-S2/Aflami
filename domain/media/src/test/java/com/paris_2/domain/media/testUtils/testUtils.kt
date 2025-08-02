@@ -1,28 +1,28 @@
 package com.paris_2.domain.media.testUtils
 
-import com.domain.media.entity.Country
-import com.domain.media.entity.Media
-import com.domain.media.entity.MediaType
+import com.paris_2.domain.media.entity.Country
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.test.assertEquals
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
-import com.domain.media.entity.Cast
-import com.domain.media.entity.Episode
-import com.domain.media.entity.EpisodeVideo
-import com.domain.media.entity.Genre
-import com.domain.media.entity.Image
-import com.domain.media.entity.Movie
-import com.domain.media.entity.MovieSimilar
-import com.domain.media.entity.MovieVideo
-import com.domain.media.entity.ProductionCompany
-import com.domain.media.entity.Review
-import com.domain.media.entity.Season
-import com.domain.media.entity.TvShow
-import com.domain.media.entity.TvShowSimilar
-import com.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.Episode
+import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.Genre
+import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.MovieSimilar
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.entity.ProductionCompany
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.entity.Season
+import com.paris_2.domain.media.entity.TvShow
+import com.paris_2.domain.media.entity.TvShowSimilar
+import com.paris_2.domain.media.entity.TvShowVideo
 
 @OptIn(ExperimentalTime::class)
 fun createMedia(

@@ -1,8 +1,8 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.entity.MediaType
-import com.domain.media.repository.SearchMediaRepository
-import com.domain.media.testUtils.createMedia
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.repository.SearchMediaRepository
+import com.paris_2.domain.media.testUtils.createMedia
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify

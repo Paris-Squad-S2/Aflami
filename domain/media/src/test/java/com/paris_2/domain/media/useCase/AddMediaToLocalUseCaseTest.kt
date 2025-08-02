@@ -1,8 +1,8 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.entity.Media
-import com.domain.media.entity.MediaType
-import com.domain.media.repository.MediaRepository
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.repository.MediaRepository
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test

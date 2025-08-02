@@ -1,7 +1,7 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.entity.MediaType
-import com.domain.media.testUtils.createMedia
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.testUtils.createMedia
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import kotlin.test.Test

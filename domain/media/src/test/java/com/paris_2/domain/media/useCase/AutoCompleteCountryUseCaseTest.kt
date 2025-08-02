@@ -1,7 +1,7 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.repository.CountryRepository
-import com.domain.media.testUtils.sampleCountries
+import com.paris_2.domain.media.repository.CountryRepository
+import com.paris_2.domain.media.testUtils.sampleCountries
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify

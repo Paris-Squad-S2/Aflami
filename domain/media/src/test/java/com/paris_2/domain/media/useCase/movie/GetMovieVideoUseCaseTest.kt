@@ -1,12 +1,12 @@
 package com.paris_2.domain.media.useCase.movie
 
-import com.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import com.domain.media.testUtils.fakeMovieVideo
+import com.paris_2.domain.media.testUtils.fakeMovieVideo
 import kotlin.test.assertEquals
 
 class GetMovieVideoUseCaseTest {

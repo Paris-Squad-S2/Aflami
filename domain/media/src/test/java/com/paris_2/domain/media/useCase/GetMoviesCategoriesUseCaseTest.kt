@@ -1,7 +1,7 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.entity.Category
-import com.domain.media.repository.MoviesCategoriesRepository
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.repository.MoviesCategoriesRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

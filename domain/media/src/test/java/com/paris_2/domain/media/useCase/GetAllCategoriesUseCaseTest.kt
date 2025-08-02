@@ -1,7 +1,7 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.entity.Category
-import com.domain.media.repository.CategoriesRepository
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.repository.CategoriesRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

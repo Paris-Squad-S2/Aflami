@@ -1,9 +1,9 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.entity.Media
-import com.domain.media.entity.MediaType
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
 import org.junit.jupiter.api.BeforeEach
-import com.domain.media.testUtils.createMedia
+import com.paris_2.domain.media.testUtils.createMedia
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

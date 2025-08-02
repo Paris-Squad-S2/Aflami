@@ -1,10 +1,10 @@
 package com.paris_2.domain.media.useCase
 
 
-import com.domain.media.entity.GenreUserInteraction
-import com.domain.media.repository.GenresInteractionRepository
-import com.domain.media.testUtils.assertIds
-import com.domain.media.testUtils.media
+import com.paris_2.domain.media.entity.GenreUserInteraction
+import com.paris_2.domain.media.repository.GenresInteractionRepository
+import com.paris_2.domain.media.testUtils.assertIds
+import com.paris_2.domain.media.testUtils.media
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

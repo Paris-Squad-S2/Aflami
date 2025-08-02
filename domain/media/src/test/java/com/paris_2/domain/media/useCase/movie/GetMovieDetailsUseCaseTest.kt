@@ -1,13 +1,13 @@
 package com.paris_2.domain.media.useCase.movie
 
-import com.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.domain.media.testUtils.fakeMovie
+import com.paris_2.domain.media.testUtils.fakeMovie
 import kotlin.test.assertEquals
 
 class GetMovieDetailsUseCaseTest {

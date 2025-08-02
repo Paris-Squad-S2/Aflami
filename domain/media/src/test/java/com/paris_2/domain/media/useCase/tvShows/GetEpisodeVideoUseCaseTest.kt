@@ -1,13 +1,13 @@
 package com.paris_2.domain.media.useCase.tvShows
 
-import com.domain.media.repository.TvShowRepository
+import com.paris_2.domain.media.repository.TvShowRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.domain.media.testUtils.fakeEpisodeVideo
+import com.paris_2.domain.media.testUtils.fakeEpisodeVideo
 
 class GetEpisodeVideoUseCaseTest {
 

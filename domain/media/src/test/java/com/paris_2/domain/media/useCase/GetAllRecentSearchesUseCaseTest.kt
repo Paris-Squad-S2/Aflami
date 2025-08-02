@@ -1,8 +1,8 @@
 package com.paris_2.domain.media.useCase
 
-import com.domain.media.entity.SearchHistoryModel
-import com.domain.media.entity.SearchType
-import com.domain.media.repository.SearchHistoryRepository
+import com.paris_2.domain.media.entity.SearchHistoryModel
+import com.paris_2.domain.media.entity.SearchType
+import com.paris_2.domain.media.repository.SearchHistoryRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
