@@ -1,13 +1,13 @@
 package com.feature.home.homeUi
 
-import com.domain.media.entity.Category
-import com.domain.media.useCase.AddMediaToLocalUseCase
-import com.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.domain.media.useCase.GetMediaFromLocalUseCase
-import com.domain.media.useCase.GetMoviesCategoriesUseCase
-import com.domain.media.useCase.GetPopularMediaUseCase
-import com.domain.media.useCase.GetTopRatingMediaUseCase
-import com.domain.media.useCase.GetUpComingMediaUseCase
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
+import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
+import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
+import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
 import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
@@ -30,8 +30,8 @@ import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.domain.media.entity.Media as DomainMedia
-import com.domain.media.entity.MediaType as DomainMediaType
+import com.paris_2.domain.media.entity.Media as DomainMedia
+import com.paris_2.domain.media.entity.MediaType as DomainMediaType
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeScreenViewModelTest {

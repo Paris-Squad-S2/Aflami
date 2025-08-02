@@ -42,7 +42,7 @@ class SearchHistoryRepositoryImplTest {
         coEvery { historyLocalDataSource.addSearchQuery(title, SearchType.Query) } just Runs
 
         // When
-        repository.addSearchHistory(title, com.domain.media.entity.SearchType.Query)
+        repository.addSearchHistory(title, com.paris_2.domain.media.entity.SearchType.Query)
 
         // Then
         coVerify(exactly = 1) { historyLocalDataSource.addSearchQuery(title, SearchType.Query) }
@@ -55,7 +55,7 @@ class SearchHistoryRepositoryImplTest {
         coEvery { historyLocalDataSource.clearSearchQueryByQuery(query, SearchType.Query) } just Runs
 
         // When
-        repository.clearSearchHistory(query, com.domain.media.entity.SearchType.Query)
+        repository.clearSearchHistory(query, com.paris_2.domain.media.entity.SearchType.Query)
 
         // Then
         coVerify(exactly = 1) { historyLocalDataSource.clearSearchQueryByQuery(query, SearchType.Query) }

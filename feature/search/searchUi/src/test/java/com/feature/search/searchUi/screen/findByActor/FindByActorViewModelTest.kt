@@ -2,11 +2,11 @@ package com.feature.search.searchUi.screen.findByActor
 
 import MediaTypeUi
 import MediaUiState
-import com.domain.media.entity.Media
-import com.domain.media.entity.MediaType
-import com.domain.media.useCase.GetMediaByActorNameUseCase
-import com.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.SearchNavigator

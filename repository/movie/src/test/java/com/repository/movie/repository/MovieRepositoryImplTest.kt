@@ -1,12 +1,12 @@
 package com.repository.movie.repository
 
-import com.domain.media.exception.NoCastFoundException
-import com.domain.media.exception.NoGalleryFoundException
-import com.domain.media.exception.NoInternetConnectionException
-import com.domain.media.exception.NoMovieFoundException
-import com.domain.media.entity.Cast
-import com.domain.media.entity.MovieSimilar
-import com.domain.media.entity.ProductionCompany
+import com.paris_2.domain.media.exception.NoCastFoundException
+import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoMovieFoundException
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.MovieSimilar
+import com.paris_2.domain.media.entity.ProductionCompany
 import com.google.common.truth.Truth.assertThat
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource

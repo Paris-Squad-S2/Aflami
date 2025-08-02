@@ -1,10 +1,10 @@
 package com.repository.home.repository
 
-import com.domain.media.exception.AddMediaToContinueWatchingException
-import com.domain.media.exception.NoInternetConnectionException
-import com.domain.media.exception.GetContinueWatchingMediaException
-import com.domain.media.entity.Media
-import com.domain.media.entity.MediaType
+import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
 import com.google.common.truth.Truth.assertThat
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource

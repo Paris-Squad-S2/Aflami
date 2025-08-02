@@ -1,11 +1,11 @@
 package com.repository.tvshow.repository
 
-import com.domain.media.exception.FailedToAddRatingException
-import com.domain.media.exception.NoCastFoundException
-import com.domain.media.exception.NoGalleryFoundException
-import com.domain.media.exception.NoInternetConnectionException
-import com.domain.media.exception.NoSeasonFoundException
-import com.domain.media.exception.NoTvShowFoundException
+import com.paris_2.domain.media.exception.FailedToAddRatingException
+import com.paris_2.domain.media.exception.NoCastFoundException
+import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoSeasonFoundException
+import com.paris_2.domain.media.exception.NoTvShowFoundException
 import com.google.common.truth.Truth.assertThat
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
@@ -24,7 +24,6 @@ import com.repository.tvshow.testUtils.mockTvShowDto
 import com.repository.tvshow.testUtils.mockTvShowLogoDto
 import com.repository.tvshow.testUtils.mockTvShowReviewsDto
 import com.repository.tvshow.testUtils.mockTvShowSimilarsDto
-import com.repository.tvshow.testUtils.mockTvShowVideosDto
 import com.repository.util.NetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery

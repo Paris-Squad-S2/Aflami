@@ -1,13 +1,13 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import MediaUiState
-import com.domain.media.entity.Country
-import com.domain.media.useCase.AutoCompleteCountryUseCase
-import com.domain.media.useCase.GetCountryCodeByNameUseCase
-import com.domain.media.useCase.GetMediaByActorNameUseCase
-import com.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.entity.Country
+import com.paris_2.domain.media.useCase.AutoCompleteCountryUseCase
+import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
+import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris_2.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.google.common.truth.Truth.assertThat
