@@ -46,7 +46,7 @@
 -dontwarn com.paris_2.aflami.designsystem.components.RecentSearchItemKt
 -dontwarn com.paris_2.aflami.designsystem.components.SearchSuggestionHubKt
 -dontwarn com.paris_2.aflami.designsystem.components.AppTextFieldsKt
--dontwarn com.paris_2.aflami.designsystem.components.AppTopAppBarKt
+-dontwarn com.paris_2.aflami.designsystem.components.AppTopBarKt
 -dontwarn com.paris_2.aflami.designsystem.text_style.AflamiTextStyle
 -dontwarn com.paris_2.aflami.designsystem.text_style.SizedTextStyle
 -dontwarn com.paris_2.aflami.designsystem.theme.AflamiThemeKt
