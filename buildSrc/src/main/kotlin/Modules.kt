@@ -14,7 +14,7 @@ object Modules {
     const val REPOSITORY_GUESS_GAME = ":repository:guessGame"
     const val REPOSITORY_SEARCH = ":repository:search"
     const val REPOSITORY_HOME = ":repository:home"
-    const val REPOSITORY_AUTHENTICATION = ":repository:authentication"
+    const val REPOSITORY_USER = ":repository:user"
 
     const val DATASOURCE_REMOTE_USER = ":datasource:remote:user"
     const val DATASOURCE_LOCAL_USER = ":datasource:local:user"

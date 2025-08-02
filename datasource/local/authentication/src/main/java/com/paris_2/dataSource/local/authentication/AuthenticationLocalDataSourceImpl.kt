@@ -3,7 +3,7 @@ package com.paris_2.dataSource.local.authentication
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class AuthenticationLocalDataSourceImpl(

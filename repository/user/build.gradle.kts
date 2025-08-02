@@ -2,12 +2,12 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    id("com.google.dagger.hilt.android")
     alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
 }
 
 android {
-    namespace = "com.paris_2.datasource.remote.authentication"
+    namespace = "com.paris_2.repository.user"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
@@ -35,39 +35,19 @@ android {
 dependencies {
 
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
     implementation(libs.kotlinx.serialization.json)
-
-    //test
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    testImplementation(kotlin("test"))
-
-    implementation(project(Modules.REPOSITORY_USER))
-
-    //retrofit
-    implementation(libs.retrofit)
 
     //Hilt
     implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
-}
 
-val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+    // test
+    testImplementation(kotlin("test"))
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
 
-kover {
-    reports {
-        total {
-            verify {
-                rule {
-                    bound {
-                        minValue = coverageMinValue
-                    }
-                }
-            }
-        }
-    }
+    implementation(project(Modules.DOMAIN_USER))
+
 }

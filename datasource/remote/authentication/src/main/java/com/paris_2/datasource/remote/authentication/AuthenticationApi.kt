@@ -1,9 +1,9 @@
 package com.paris_2.datasource.remote.authentication
 
-import com.paris_2.repository.authentication.model.remote.LoginRequest
-import com.paris_2.repository.authentication.model.remote.RequestTokenDto
-import com.paris_2.repository.authentication.model.remote.SessionDto
-import com.paris_2.repository.authentication.model.remote.GuestSessionDto
+import com.paris_2.repository.user.model.remote.LoginRequest
+import com.paris_2.repository.user.model.remote.RequestTokenDto
+import com.paris_2.repository.user.model.remote.SessionDto
+import com.paris_2.repository.user.model.remote.GuestSessionDto
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST

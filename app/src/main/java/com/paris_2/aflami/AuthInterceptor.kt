@@ -1,6 +1,6 @@
 package com.paris_2.aflami
 
-import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import okhttp3.Interceptor
 import okhttp3.Response
 

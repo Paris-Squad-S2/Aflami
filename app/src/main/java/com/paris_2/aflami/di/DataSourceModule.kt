@@ -39,8 +39,8 @@ import com.datasource.local.search.datasource.MediaLocalDataSourceImpl
 import com.paris_2.dataSource.local.authentication.AuthenticationLocalDataSourceImpl
 import com.paris_2.datasource.remote.authentication.AuthenticationApi
 import com.paris_2.datasource.remote.authentication.AuthenticationRemoteDataSourceImpl
-import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
+import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource

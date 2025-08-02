@@ -2,7 +2,7 @@ package com.paris_2.aflami.di
 
 import android.content.Context
 import com.paris_2.aflami.AuthInterceptor
-import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.repository.home.GenresApiServices
 import com.repository.home.MediaApiService
 import com.repository.search.util.NetworkConnectionChecker as SearchNetworkConnectionChecker

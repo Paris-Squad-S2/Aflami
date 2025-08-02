@@ -1,11 +1,11 @@
 package com.paris_2.datasource.remote.authentication
 
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.repository.authentication.exeptions.NetworkException
-import com.paris_2.repository.authentication.model.remote.GuestSessionDto
-import com.paris_2.repository.authentication.model.remote.LoginRequest
-import com.paris_2.repository.authentication.model.remote.RequestTokenDto
-import com.paris_2.repository.authentication.model.remote.SessionDto
+import com.paris_2.repository.user.exeptions.NetworkException
+import com.paris_2.repository.user.model.remote.GuestSessionDto
+import com.paris_2.repository.user.model.remote.LoginRequest
+import com.paris_2.repository.user.model.remote.RequestTokenDto
+import com.paris_2.repository.user.model.remote.SessionDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

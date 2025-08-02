@@ -47,7 +47,7 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(kotlin("test"))
 
-    implementation(project(Modules.REPOSITORY_AUTHENTICATION))
+    implementation(project(Modules.REPOSITORY_USER))
 
     //Hilt
     implementation(libs.hilt.android)

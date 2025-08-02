@@ -178,7 +178,7 @@ dependencies {
     implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
-    implementation(project(Modules.REPOSITORY_AUTHENTICATION))
+    implementation(project(Modules.REPOSITORY_USER))
 
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_HOME))
