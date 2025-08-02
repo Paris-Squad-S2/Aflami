@@ -1,6 +1,6 @@
 package com.domain.mediaDetails.useCase.tvShows
 
-import com.domain.mediaDetails.model.Review
+import com.domain.mediaDetails.entity.Review
 import com.domain.mediaDetails.repository.TvShowRepository
 
 class GetTvShowReviewsUseCase(

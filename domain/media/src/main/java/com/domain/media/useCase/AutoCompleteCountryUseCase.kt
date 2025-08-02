@@ -1,6 +1,6 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.Country
+import com.domain.media.entity.Country
 import com.domain.media.repository.CountryRepository
 
 class AutoCompleteCountryUseCase(

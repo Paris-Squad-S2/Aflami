@@ -7,8 +7,8 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.TvShowVideo
+import com.domain.mediaDetails.entity.EpisodeVideo
+import com.domain.mediaDetails.entity.TvShowVideo
 import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase

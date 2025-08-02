@@ -1,6 +1,6 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.SearchType
+import com.domain.media.entity.SearchType
 import com.domain.media.repository.SearchHistoryRepository
 
 class ClearRecentSearchUseCase(

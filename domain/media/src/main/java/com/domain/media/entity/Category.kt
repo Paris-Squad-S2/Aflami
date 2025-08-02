@@ -1,4 +1,4 @@
-package com.domain.media.model
+package com.domain.media.entity
 
 data class Category(
     val id: Int,

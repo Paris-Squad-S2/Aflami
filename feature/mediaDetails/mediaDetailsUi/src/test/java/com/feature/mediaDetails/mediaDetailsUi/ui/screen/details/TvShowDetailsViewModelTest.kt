@@ -2,11 +2,10 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.model.Season
-import com.domain.mediaDetails.model.TvShow
-import com.domain.mediaDetails.model.TvShowVideo
+import com.domain.mediaDetails.entity.EpisodeVideo
+import com.domain.mediaDetails.entity.Season
+import com.domain.mediaDetails.entity.TvShow
+import com.domain.mediaDetails.entity.TvShowVideo
 import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
 import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
@@ -315,7 +314,7 @@ class TvShowDetailsViewModelTest {
     @Test
     fun `loadMovieReviews updates state with review UI list on success`() = runTest {
         // Arrange
-        val domainReviews = listOf(mockk<com.domain.mediaDetails.model.Review>())
+        val domainReviews = listOf(mockk<com.domain.mediaDetails.entity.Review>())
         val uiReviews = listOf(mockk<ReviewUi>())
 
         val domainTvShow = mockk<TvShow>(relaxed = true)

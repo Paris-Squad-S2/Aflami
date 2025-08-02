@@ -1,13 +1,13 @@
 package com.repository.movie.mapper
 
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Genre
-import com.domain.mediaDetails.model.Image
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieSimilar
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.model.Review
+import com.domain.mediaDetails.entity.Cast
+import com.domain.mediaDetails.entity.Genre
+import com.domain.mediaDetails.entity.Image
+import com.domain.mediaDetails.entity.Movie
+import com.domain.mediaDetails.entity.MovieSimilar
+import com.domain.mediaDetails.entity.MovieVideo
+import com.domain.mediaDetails.entity.ProductionCompany
+import com.domain.mediaDetails.entity.Review
 import com.repository.movie.models.local.CastEntity
 import com.repository.movie.models.local.GalleryEntity
 import com.repository.movie.models.local.GenreEntity

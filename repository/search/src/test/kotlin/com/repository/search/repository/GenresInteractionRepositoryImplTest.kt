@@ -1,6 +1,6 @@
 package com.repository.search.repository
 
-import com.domain.media.model.GenreUserInteraction
+import com.domain.media.entity.GenreUserInteraction
 import com.repository.search.dataSource.local.GenresInteractionDataSource
 import com.repository.search.entity.GenreUserInteractionEntity
 import com.repository.search.mapper.toCategoryUserInteractionEntity

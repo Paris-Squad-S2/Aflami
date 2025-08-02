@@ -7,7 +7,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.model.MovieVideo
+import com.domain.mediaDetails.entity.MovieVideo
 import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase

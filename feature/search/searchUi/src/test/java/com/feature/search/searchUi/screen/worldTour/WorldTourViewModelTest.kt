@@ -1,7 +1,7 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import MediaUiState
-import com.domain.media.model.Country
+import com.domain.media.entity.Country
 import com.domain.media.useCase.AutoCompleteCountryUseCase
 import com.domain.media.useCase.GetCountryCodeByNameUseCase
 import com.domain.media.useCase.GetMediaByActorNameUseCase

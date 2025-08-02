@@ -1,6 +1,6 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.Category
+import com.domain.media.entity.Category
 import com.domain.media.repository.CategoriesRepository
 
 class GetAllCategoriesUseCase(

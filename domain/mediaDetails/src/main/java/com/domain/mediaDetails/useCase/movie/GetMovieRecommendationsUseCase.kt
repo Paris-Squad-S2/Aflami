@@ -1,6 +1,6 @@
 package com.domain.mediaDetails.useCase.movie
 
-import com.domain.mediaDetails.model.MovieSimilar
+import com.domain.mediaDetails.entity.MovieSimilar
 import com.domain.mediaDetails.repository.MovieRepository
 
 class GetMovieRecommendationsUseCase(

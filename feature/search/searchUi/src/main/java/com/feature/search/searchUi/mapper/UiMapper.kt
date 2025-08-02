@@ -5,11 +5,11 @@ import MediaTypeUi
 import MediaUiState
 import SearchHistoryUiState
 import SearchTypeUi
-import com.domain.media.model.Category
-import com.domain.media.model.Media
-import com.domain.media.model.MediaType
-import com.domain.media.model.SearchHistoryModel
-import com.domain.media.model.SearchType
+import com.domain.media.entity.Category
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
+import com.domain.media.entity.SearchHistoryModel
+import com.domain.media.entity.SearchType
 
 
 fun List<MediaUiState>.toDomainList() = this.map { it.toDomainModel() }

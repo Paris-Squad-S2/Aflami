@@ -1,7 +1,7 @@
 package com.repository.search.repository
 
-import com.domain.media.model.SearchHistoryModel
-import com.domain.media.model.SearchType
+import com.domain.media.entity.SearchHistoryModel
+import com.domain.media.entity.SearchType
 import com.domain.media.repository.SearchHistoryRepository
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.mapper.toRepositorySearchType

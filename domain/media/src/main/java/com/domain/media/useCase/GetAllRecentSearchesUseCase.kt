@@ -1,6 +1,6 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.SearchHistoryModel
+import com.domain.media.entity.SearchHistoryModel
 import com.domain.media.repository.SearchHistoryRepository
 import kotlinx.coroutines.flow.Flow
 

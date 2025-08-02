@@ -1,6 +1,6 @@
 package com.repository.search.mapper
 
-import com.domain.media.model.Country
+import com.domain.media.entity.Country
 import com.repository.search.entity.CountryEntity
 
 

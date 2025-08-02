@@ -1,6 +1,6 @@
 package com.domain.mediaDetails.useCase.tvShows
 
-import com.domain.mediaDetails.model.TvShowVideo
+import com.domain.mediaDetails.entity.TvShowVideo
 import com.domain.mediaDetails.repository.TvShowRepository
 
 class GetTvShowVideoUseCase(

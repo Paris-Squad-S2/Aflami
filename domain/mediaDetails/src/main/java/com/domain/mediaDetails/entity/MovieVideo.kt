@@ -1,6 +1,6 @@
-package com.domain.mediaDetails.model
+package com.domain.mediaDetails.entity
 
-data class EpisodeVideo(
+data class MovieVideo(
     val key: String,
     val name: String,
     val site: String,

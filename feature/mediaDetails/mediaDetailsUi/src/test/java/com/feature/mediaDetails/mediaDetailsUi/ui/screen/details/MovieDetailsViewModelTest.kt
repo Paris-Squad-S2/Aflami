@@ -2,8 +2,8 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieVideo
+import com.domain.mediaDetails.entity.Movie
+import com.domain.mediaDetails.entity.MovieVideo
 import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
 import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
@@ -212,7 +212,7 @@ class MovieDetailsViewModelTest {
     @Test
     fun `loadMovieReviews updates state with review UI list on success`() = runTest {
         // Arrange
-        val domainReviews = listOf(mockk<com.domain.mediaDetails.model.Review>())
+        val domainReviews = listOf(mockk<com.domain.mediaDetails.entity.Review>())
         val uiReviews = listOf(mockk<ReviewUi>())
 
         val domainMovie = mockk<Movie>(relaxed = true)

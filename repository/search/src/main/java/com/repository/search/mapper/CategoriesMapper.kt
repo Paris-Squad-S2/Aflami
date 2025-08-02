@@ -1,6 +1,6 @@
 package com.repository.search.mapper
 
-import com.domain.media.model.Category
+import com.domain.media.entity.Category
 import com.repository.search.dto.GenreDto
 import com.repository.search.entity.GenreEntity
 

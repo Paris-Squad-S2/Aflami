@@ -1,6 +1,6 @@
 package com.domain.mediaDetails.useCase.movie
 
-import com.domain.mediaDetails.model.Image
+import com.domain.mediaDetails.entity.Image
 import com.domain.mediaDetails.repository.MovieRepository
 
 class GetMovieGalleryUseCase(

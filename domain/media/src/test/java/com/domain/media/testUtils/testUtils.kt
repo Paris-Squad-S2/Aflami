@@ -1,8 +1,8 @@
 package com.domain.media.testUtils
 
-import com.domain.media.model.Country
-import com.domain.media.model.Media
-import com.domain.media.model.MediaType
+import com.domain.media.entity.Country
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime

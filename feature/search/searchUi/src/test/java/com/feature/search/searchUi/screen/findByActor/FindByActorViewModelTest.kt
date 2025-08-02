@@ -2,8 +2,8 @@ package com.feature.search.searchUi.screen.findByActor
 
 import MediaTypeUi
 import MediaUiState
-import com.domain.media.model.Media
-import com.domain.media.model.MediaType
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
 import com.domain.media.useCase.GetMediaByActorNameUseCase
 import com.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase

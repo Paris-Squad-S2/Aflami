@@ -1,6 +1,6 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.GenreUserInteraction
+import com.domain.media.entity.GenreUserInteraction
 import com.domain.media.repository.GenresInteractionRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

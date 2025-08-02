@@ -1,6 +1,6 @@
 package com.repository.search.mapper
 
-import com.domain.media.model.GenreUserInteraction
+import com.domain.media.entity.GenreUserInteraction
 import com.repository.search.entity.GenreUserInteractionEntity
 
 fun GenreUserInteractionEntity.toCategoryUserInteractionModel(): GenreUserInteraction {

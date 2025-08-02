@@ -1,7 +1,7 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.Media
-import com.domain.media.model.MediaType
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
 import org.junit.jupiter.api.BeforeEach
 import com.domain.media.testUtils.createMedia
 import kotlin.test.Test

@@ -1,7 +1,7 @@
 package com.domain.media.useCase
 
 
-import com.domain.media.model.GenreUserInteraction
+import com.domain.media.entity.GenreUserInteraction
 import com.domain.media.repository.GenresInteractionRepository
 import com.domain.media.testUtils.assertIds
 import com.domain.media.testUtils.media

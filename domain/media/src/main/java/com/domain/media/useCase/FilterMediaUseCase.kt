@@ -1,6 +1,6 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.Media
+import com.domain.media.entity.Media
 
 class FilterMediaUseCase {
     operator fun invoke(categories: List<Int>, mediaList: List<Media>): List<Media> {

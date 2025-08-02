@@ -1,7 +1,7 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.Media
-import com.domain.media.model.MediaType
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
 import com.domain.media.repository.SearchMediaRepository
 
 class GetMediaByActorNameUseCase(

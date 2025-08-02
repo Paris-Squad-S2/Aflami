@@ -1,4 +1,4 @@
-package com.domain.mediaDetails.model
+package com.domain.mediaDetails.entity
 
 import kotlinx.datetime.LocalDate
 

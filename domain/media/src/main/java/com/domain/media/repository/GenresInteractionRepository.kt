@@ -1,6 +1,6 @@
 package com.domain.media.repository
 
-import com.domain.media.model.GenreUserInteraction
+import com.domain.media.entity.GenreUserInteraction
 
 interface GenresInteractionRepository {
     suspend fun upsertInteraction(interaction: GenreUserInteraction)

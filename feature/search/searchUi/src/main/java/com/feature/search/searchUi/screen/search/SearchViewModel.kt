@@ -15,7 +15,7 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.domain.media.model.Media
+import com.domain.media.entity.Media
 import com.domain.media.useCase.ClearAllRecentSearchesUseCase
 import com.domain.media.useCase.ClearRecentSearchUseCase
 import com.domain.media.useCase.FilterMediaByRatingUseCase

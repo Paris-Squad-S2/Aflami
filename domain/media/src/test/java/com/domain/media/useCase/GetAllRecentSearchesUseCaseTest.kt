@@ -1,7 +1,7 @@
 package com.domain.media.useCase
 
-import com.domain.media.model.SearchHistoryModel
-import com.domain.media.model.SearchType
+import com.domain.media.entity.SearchHistoryModel
+import com.domain.media.entity.SearchType
 import com.domain.media.repository.SearchHistoryRepository
 import io.mockk.coEvery
 import io.mockk.coVerify

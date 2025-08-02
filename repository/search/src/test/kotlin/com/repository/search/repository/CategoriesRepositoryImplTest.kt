@@ -1,6 +1,6 @@
 package com.repository.search.repository
 
-import com.domain.media.model.Category
+import com.domain.media.entity.Category
 import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource

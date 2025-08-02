@@ -1,4 +1,4 @@
-package com.domain.media.model
+package com.domain.media.entity
 
 data class Country(
     val countryCode: String,

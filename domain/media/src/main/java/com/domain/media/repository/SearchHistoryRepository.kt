@@ -1,7 +1,7 @@
 package com.domain.media.repository
 
-import com.domain.media.model.SearchHistoryModel
-import com.domain.media.model.SearchType
+import com.domain.media.entity.SearchHistoryModel
+import com.domain.media.entity.SearchType
 import kotlinx.coroutines.flow.Flow
 
 interface SearchHistoryRepository {

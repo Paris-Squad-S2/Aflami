@@ -5,11 +5,11 @@ import MediaTypeUi
 import MediaUiState
 import SearchTypeUi
 import androidx.paging.PagingData
-import com.domain.media.model.Category
-import com.domain.media.model.Media
-import com.domain.media.model.MediaType
-import com.domain.media.model.SearchHistoryModel
-import com.domain.media.model.SearchType
+import com.domain.media.entity.Category
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
+import com.domain.media.entity.SearchHistoryModel
+import com.domain.media.entity.SearchType
 import com.domain.media.useCase.ClearAllRecentSearchesUseCase
 import com.domain.media.useCase.ClearRecentSearchUseCase
 import com.domain.media.useCase.FilterMediaByRatingUseCase

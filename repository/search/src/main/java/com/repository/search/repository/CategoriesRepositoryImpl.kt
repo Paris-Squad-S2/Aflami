@@ -2,7 +2,7 @@ package com.repository.search.repository
 
 import com.domain.media.exception.NoCategoriesFoundException
 import com.domain.media.exception.NoInternetConnectionException
-import com.domain.media.model.Category
+import com.domain.media.entity.Category
 import com.domain.media.repository.CategoriesRepository
 import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource

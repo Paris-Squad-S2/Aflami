@@ -1,4 +1,4 @@
-package com.domain.mediaDetails.model
+package com.domain.mediaDetails.entity
 
 data class TvShowVideo(
     val key: String,
