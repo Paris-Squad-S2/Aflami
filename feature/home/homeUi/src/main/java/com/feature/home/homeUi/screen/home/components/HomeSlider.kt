@@ -33,14 +33,14 @@ import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.GenresChip
-import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.MediaButtonType
 import com.paris_2.aflami.designsystem.components.MediaPlayButton
 import com.paris_2.aflami.designsystem.components.SectionTitle
-import com.paris_2.aflami.designsystem.components.Slider
+import com.paris_2.aflami.designsystem.components.AppSlider
 import com.paris_2.aflami.designsystem.components.SliderMedia
 import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
-import com.paris_2.aflami.designsystem.components.Text
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 import io.sifr.shaded.blurProcessor.BlurEdgeTreatment
 import io.sifr.shaded.modifiers.blur
@@ -100,7 +100,7 @@ fun HomeSlider(
                 SectionTitle(
                     title = stringResource(R.string.popular),
                     icon = {
-                        Icon(
+                        AppIcon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
                             contentDescription = "",
                             modifier = Modifier
@@ -114,7 +114,7 @@ fun HomeSlider(
                     shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
                 )
                 if (mediaList.isNotEmpty()) {
-                    Slider(
+                    AppSlider(
                         items = mediaList,
                         onClick = { media ->
                             onMediaClick(media)
@@ -125,7 +125,7 @@ fun HomeSlider(
                     )
                 }else if(isShimmerEnabled){
                     Box{
-                        Slider(
+                        AppSlider(
                             items = loadingList,
                             onClick = { media ->
                                 onMediaClick(media)
@@ -155,7 +155,7 @@ fun HomeSlider(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center,
                 ) {
-                    Text(
+                    AppText(
                         text = "398743",
                         style = Theme.textStyle.title.small,
                         color = Theme.colors.text.title,
@@ -187,7 +187,7 @@ fun HomeSlider(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
             ) {
-                Text(
+                AppText(
                     text = mediaState.value.title,
                     style = Theme.textStyle.title.small,
                     color = Theme.colors.text.title,

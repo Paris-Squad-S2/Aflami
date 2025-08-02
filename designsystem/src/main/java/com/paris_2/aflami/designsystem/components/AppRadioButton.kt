@@ -18,7 +18,7 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
-fun RadioButton(
+fun AppRadioButton(
     selected: Boolean,
     isDisable: Boolean,
     onClick: () -> Unit,
@@ -60,20 +60,20 @@ fun RadioButton(
 fun RadioButtonPreview() {
     BasePreview {
         Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-            RadioButton(
+            AppRadioButton(
                 selected = true,
                 isDisable = false,
                 icon = null,
                 onClick = {}
             )
-            RadioButton(
+            AppRadioButton(
                 selected = false,
                 isDisable = false,
                 icon = null,
                 onClick = {}
             )
 
-            RadioButton(
+            AppRadioButton(
                 selected = false,
                 isDisable = true,
                 icon = null,

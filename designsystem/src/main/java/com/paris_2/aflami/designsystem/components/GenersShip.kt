@@ -27,7 +27,7 @@ fun GenresChip(
             ),
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        AppText(
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
             text = title,
             style = Theme.textStyle.label.small,

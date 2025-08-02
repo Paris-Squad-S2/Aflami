@@ -81,7 +81,7 @@ fun GameCard(
     ) {
 
         if (isPlayButtonLocked)
-            Text(
+            AppText(
                 text = pointsToUnlock.toString() + "\t" + stringResource(R.string.pts_to_unlock),
                 style = Theme.textStyle.label.small,
                 color = Theme.colors.status.yellowAccent,
@@ -110,13 +110,13 @@ fun GameCard(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(
+                AppText(
                     text = title,
                     color = Theme.colors.text.title,
                     style = Theme.textStyle.title.small,
                     maxLines = 1,
                 )
-                Text(
+                AppText(
                     text = description,
                     color = Theme.colors.text.body,
                     style = Theme.textStyle.body.small,
@@ -139,18 +139,18 @@ fun GameCard(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         if (!isPlayButtonLocked) {
-                            Text(
+                            AppText(
                                 text = stringResource(R.string.play_now),
                                 style = Theme.textStyle.label.small,
                                 color = Theme.colors.text.title
                             )
-                            Icon(
+                            AppIcon(
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_play_circle),
                                 contentDescription = "icon play",
                                 tint = Theme.colors.text.title
                             )
                         } else
-                            Icon(
+                            AppIcon(
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_locked),
                                 contentDescription = "icon lock",
                                 tint = Theme.colors.text.title

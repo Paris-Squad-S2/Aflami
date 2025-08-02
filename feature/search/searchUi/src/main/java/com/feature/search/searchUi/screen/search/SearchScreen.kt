@@ -27,8 +27,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.search.searchUi.screen.search.components.FilterDialog
 import com.feature.search.searchUi.screen.search.components.NoSearchQueryContent
 import com.feature.search.searchUi.screen.search.components.WithSearchQueryContent
-import com.paris_2.aflami.designsystem.components.TextField
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTextField
+import com.paris_2.aflami.designsystem.components.AppTopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import java.util.Locale
@@ -86,7 +86,7 @@ private fun SearchScreenContent(
             .background(Theme.colors.surface)
             .navigationBarsPadding()
     ) {
-        TopAppBar(
+        AppTopAppBar(
             modifier = Modifier
                 .statusBarsPadding(),
             title = stringResource(RSearchUi.string.searchTitle),
@@ -97,7 +97,7 @@ private fun SearchScreenContent(
                 )
             ),
         )
-        TextField(
+        AppTextField(
             value = state.searchUiState.searchQuery,
             onValueChange = searchScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(RSearchUi.string.search),

@@ -124,7 +124,7 @@ fun AnimatedLogo() {
             }
         }
 
-        Text(
+        AppText(
             text = stringResource(R.string.aflami),
             modifier = Modifier
                 .offset(y = offsetY, x = (-10).dp)

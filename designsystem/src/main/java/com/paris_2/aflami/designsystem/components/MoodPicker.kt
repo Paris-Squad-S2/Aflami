@@ -66,7 +66,7 @@ fun MoodPicker(
                 .align(Alignment.TopStart),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
+            AppIcon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_heart),
                 contentDescription = "Icon heart",
                 tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -74,7 +74,7 @@ fun MoodPicker(
             )
         }
 
-        Text(
+        AppText(
             text = title,
             style = Theme.textStyle.label.medium,
             modifier = Modifier
@@ -102,7 +102,7 @@ fun MoodPicker(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            Text(
+            AppText(
                 text = question,
                 style = Theme.textStyle.body.small,
                 modifier = Modifier
@@ -123,7 +123,7 @@ fun MoodPicker(
                 horizontalArrangement = Arrangement.Center,
             ) {
                 MoodPickerList.forEachIndexed { index, icon ->
-                    Icon(
+                    AppIcon(
                         imageVector = ImageVector.vectorResource(id = icon),
                         contentDescription = "Icons",
                         tint = if (selectedEmojiIndex.intValue == index) Theme.colors.primary else Theme.colors.text.body,
@@ -140,7 +140,7 @@ fun MoodPicker(
                     )
                 }
             }
-            Text(
+            AppText(
                 text = "Get now",
                 style = Theme.textStyle.label.medium,
                 color = if (isEmojiSelected.value) Theme.colors.primary else Theme.colors.disable,

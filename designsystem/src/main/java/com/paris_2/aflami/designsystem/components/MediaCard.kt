@@ -138,7 +138,7 @@ fun MediaCard(
                 ),
             verticalArrangement = Arrangement.Bottom,
         ) {
-            Text(
+            AppText(
                 text = movieName,
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.onPrimaryColors.onPrimary,

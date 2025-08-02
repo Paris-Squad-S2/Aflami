@@ -20,13 +20,13 @@ import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.HorizontalDivider
+import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.RecentSearchItem
 import com.paris_2.aflami.designsystem.components.SearchSuggestionHub
-import com.paris_2.aflami.designsystem.components.Text
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -36,7 +36,7 @@ fun NoSearchQueryContent(
 ) {
     LazyColumn {
         item {
-            Text(
+            AppText(
                 text = stringResource(R.string.search_suggestions_hub),
                 style = Theme.textStyle.title.medium,
                 color = Theme.colors.text.title,
@@ -80,7 +80,7 @@ fun NoSearchQueryContent(
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(
+                    AppText(
                         text = stringResource(R.string.recent_searches),
                         style = Theme.textStyle.title.medium,
                         color = Theme.colors.text.title,
@@ -150,7 +150,7 @@ fun NoSearchQueryContent(
                     }
                 )
                 if (index < state.searchUiState.recentSearches.size - 1) {
-                    HorizontalDivider(
+                    AppHorizontalDivider(
                         modifier = Modifier.padding(
                             horizontal = 16.dp,
                             vertical = 12.dp

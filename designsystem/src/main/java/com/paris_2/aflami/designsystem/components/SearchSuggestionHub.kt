@@ -69,12 +69,12 @@ fun SearchSuggestionHub(
                     .height(40.dp)
                     .padding(bottom = 4.dp)
             )
-            Text(
+            AppText(
                 text = title,
                 color = Theme.colors.onPrimaryColors.onPrimary,
                 style = Theme.textStyle.title.small,
             )
-            Text(
+            AppText(
                 text = description,
                 color = Theme.colors.onPrimaryColors.onPrimaryBody,
                 style = Theme.textStyle.label.small,

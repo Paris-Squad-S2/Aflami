@@ -55,7 +55,7 @@ fun iconItemWithDefaults(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopAppBar(
+fun AppTopAppBar(
     modifier: Modifier = Modifier,
     title: String? = null,
     subtitle: String? = null,
@@ -97,7 +97,7 @@ fun TopAppBar(
                 verticalArrangement = Arrangement.Center
             ) {
                 title?.let {
-                    Text(
+                    AppText(
                         text = it,
                         style = titleTextStyle,
                         color = Theme.colors.text.title,
@@ -106,7 +106,7 @@ fun TopAppBar(
                     )
                 }
                 subtitle?.let {
-                    Text(
+                    AppText(
                         text = it,
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.text.body,
@@ -137,14 +137,15 @@ private fun IconBox(
             .background(iconItem.backgroundColor)
             .then(
                 if (iconItem.onClick != null) {
-                    Modifier.clickable { iconItem.onClick() }
-                } else {
+                    Modifier.clickable { iconItem.onClick.invoke() }
+                }
+                else {
                     Modifier
                 }
             ),
         contentAlignment = Alignment.Center
     ) {
-        Icon(
+        AppIcon(
             imageVector = iconItem.icon,
             contentDescription = null,
             tint = tint,
@@ -164,7 +165,7 @@ fun PreviewTopAppBar() {
             .background(color = Theme.colors.surface)
             .padding(bottom = 16.dp)
     ) {
-        TopAppBar(
+        AppTopAppBar(
             title = "AFLAMI",
             subtitle = "More than just watching.",
             logo = iconItemWithDefaults(
@@ -183,7 +184,7 @@ fun PreviewTopAppBar() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TopAppBar(
+        AppTopAppBar(
             title = "My Account",
             leadingIcons = listOf(
                 iconItemWithDefaults(
@@ -201,7 +202,7 @@ fun PreviewTopAppBar() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TopAppBar(
+        AppTopAppBar(
             title = "My Account",
             trailingIcons = listOf(
                 iconItemWithDefaults(
@@ -212,11 +213,11 @@ fun PreviewTopAppBar() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TopAppBar(title = "Settings")
+        AppTopAppBar(title = "Settings")
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        TopAppBar(
+        AppTopAppBar(
             title = "My Account",
             trailingIcons = listOf(
                 iconItemWithDefaults(

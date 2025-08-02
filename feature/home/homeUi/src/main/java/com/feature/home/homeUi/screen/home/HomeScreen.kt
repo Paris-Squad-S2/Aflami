@@ -58,7 +58,7 @@ import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.MoodPicker
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.SectionTitle
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -292,7 +292,7 @@ fun HomeScreenContent(
         }
     }
 
-    TopAppBar(
+    AppTopAppBar(
         title = stringResource(R.string.aflami),
         subtitle = stringResource(R.string.more_than_just_watching),
         titleTextStyle = Theme.textStyle.logoText,

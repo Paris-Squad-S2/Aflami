@@ -33,7 +33,7 @@ fun DescriptionSeparator(
                     colorFilter = ColorFilter.tint(separatorColor)
                 )
             }
-            Text(
+            AppText(
                 text = text,
                 style = Theme.textStyle.label.small,
                 color = textColor,

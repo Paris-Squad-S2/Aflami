@@ -58,7 +58,7 @@ fun Chips(
                 .clickable { onClick() },
             contentAlignment = Alignment.Center
         ) {
-            Icon(
+            AppIcon(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier.padding(16.dp),
@@ -68,7 +68,7 @@ fun Chips(
             )
         }
 
-        Text(
+        AppText(
             text = title,
             style = Theme.textStyle.label.small,
             color = animateColorAsState(

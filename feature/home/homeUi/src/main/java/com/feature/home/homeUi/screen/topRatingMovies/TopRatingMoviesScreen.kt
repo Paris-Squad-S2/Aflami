@@ -33,12 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -61,7 +61,7 @@ fun TopRatingMoviesScreen(
                 )
             )
     ) {
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -76,7 +76,7 @@ fun TopRatingMoviesScreen(
                 .blur(radius = 4.dp)
 
         )
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -89,7 +89,7 @@ fun TopRatingMoviesScreen(
                     alpha = 0.1f
                 }
                 .blur(radius = 3.dp))
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -102,7 +102,7 @@ fun TopRatingMoviesScreen(
                     alpha = 0.08f
                 }
                 .blur(radius = 2.dp))
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -124,7 +124,7 @@ fun TopRatingMoviesScreen(
                 .padding(top = 12.dp)
         ) {
 
-            TopAppBar(
+            AppTopAppBar(
                 logo = iconItemWithDefaults(
                     icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
                     onClick = {

@@ -31,7 +31,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDeta
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreenState
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -89,7 +89,7 @@ fun MovieTopComponentDetails(
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
             }
-            TopAppBar(
+            AppTopAppBar(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_back),
@@ -129,7 +129,7 @@ fun MovieTopComponent(
 ) {
     val activity = LocalActivity.current
     with(sharedTransitionScope) {
-        TopAppBar(
+        AppTopAppBar(
             modifier = modifier
                 .statusBarsPadding()
                 .background(Theme.colors.stroke)

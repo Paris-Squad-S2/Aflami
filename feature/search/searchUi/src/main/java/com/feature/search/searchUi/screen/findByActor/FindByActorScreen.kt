@@ -22,8 +22,8 @@ import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.TextField
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTextField
+import com.paris_2.aflami.designsystem.components.AppTopAppBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.R as RDesignSystem
@@ -50,7 +50,7 @@ fun FindByActorScreenContent(
             .background(Theme.colors.surface)
             .navigationBarsPadding()
     ) {
-        TopAppBar(
+        AppTopAppBar(
             modifier = Modifier
                 .statusBarsPadding(),
             title = stringResource(R.string.find_by_actor),
@@ -61,7 +61,7 @@ fun FindByActorScreenContent(
                 )
             ),
         )
-        TextField(
+        AppTextField(
             value = state.uiState.searchQuery,
             onValueChange = findByActorScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(R.string.actor_name),

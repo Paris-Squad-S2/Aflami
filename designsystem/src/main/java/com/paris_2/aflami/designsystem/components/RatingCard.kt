@@ -54,7 +54,7 @@ fun RatingCard(
             painter = painterResource(R.drawable.rating_star),
             contentDescription = "star"
         )
-        Text(
+        AppText(
             text = "%.1f".format(Locale.US, rating),
             color = Theme.colors.text.body,
             modifier = Modifier.padding(end = 8.dp),

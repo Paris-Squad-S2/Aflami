@@ -27,9 +27,9 @@ import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.Dialog
+import com.paris_2.aflami.designsystem.components.AppDialog
 import com.paris_2.aflami.designsystem.components.RatingBar
-import com.paris_2.aflami.designsystem.components.Text
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -40,7 +40,7 @@ fun FilterDialog(
     var currentRating by remember { mutableFloatStateOf(state.searchUiState.selectedRating) }
     var currentCategories by remember { mutableStateOf(state.searchUiState.categories) }
     var isAllCategories by remember { mutableStateOf(state.searchUiState.isAllCategories) }
-    Dialog(
+    AppDialog(
         onDismiss = searchScreenInteractionListener::onFilterButtonClick,
         title = R.string.filter_result,
     ) {
@@ -48,7 +48,7 @@ fun FilterDialog(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
+            AppText(
                 text = stringResource(R.string.imdb_rating),
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,
@@ -66,7 +66,7 @@ fun FilterDialog(
                     currentRating = newRating
                 }
             )
-            Text(
+            AppText(
                 text = stringResource(R.string.genre),
                 style = Theme.textStyle.title.small,
                 color = Theme.colors.text.title,

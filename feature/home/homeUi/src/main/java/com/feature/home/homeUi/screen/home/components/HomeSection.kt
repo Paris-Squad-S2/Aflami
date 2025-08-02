@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.utils.shimmerable
-import com.paris_2.aflami.designsystem.components.Icon
+import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.MediaCard
 import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.SectionTitle
@@ -51,7 +51,7 @@ fun HomeSection(
             hasViewAll = mediaList.size>=10,
             icon = {
                 leadingIconPainter?.let { it ->
-                    Icon(
+                    AppIcon(
                         imageVector = it,
                         contentDescription = "$title icon",
                         modifier = Modifier

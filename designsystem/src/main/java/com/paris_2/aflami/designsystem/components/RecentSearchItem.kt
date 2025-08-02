@@ -39,20 +39,20 @@ fun RecentSearchItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
             contentDescription = null,
             modifier = Modifier.padding(end = 8.dp),
             tint = Theme.colors.text.hint
         )
-        Text(
+        AppText(
             text = recentSearchTitle,
             style = Theme.textStyle.body.medium,
             color = Theme.colors.text.title,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f)
         )
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_cancel),
             contentDescription = null,
             modifier = Modifier

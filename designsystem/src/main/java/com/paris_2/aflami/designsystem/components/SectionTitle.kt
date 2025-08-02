@@ -34,7 +34,7 @@ fun SectionTitle(
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
+        AppText(
             modifier = shimmerModifier,
             text = title,
             style = Theme.textStyle.headline.small,
@@ -43,7 +43,7 @@ fun SectionTitle(
         icon?.invoke()
         Spacer(modifier = Modifier.weight(1f))
         if (hasViewAll) {
-            Text(
+            AppText(
                 text = stringResource(R.string.all),
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
@@ -65,7 +65,7 @@ fun AflamiSectionTitlePreview() {
         SectionTitle(
             title = "Home",
             hasViewAll = true,
-            icon ={Icon(
+            icon ={AppIcon(
                imageVector = ImageVector.vectorResource(R.drawable.ic_home),
                 contentDescription = "",
                 modifier = Modifier.padding(start = 8.dp),

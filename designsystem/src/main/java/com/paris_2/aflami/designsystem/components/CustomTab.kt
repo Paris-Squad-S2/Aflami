@@ -50,7 +50,7 @@ fun CustomTab(
                 interactionSource = remember { MutableInteractionSource() }
             ) { onClick() }
     ) {
-        Text(
+        AppText(
             text = title,
             color = animatedColor,
             style = Theme.textStyle.label.medium,

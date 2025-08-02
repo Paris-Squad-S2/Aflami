@@ -1,6 +1,5 @@
 package com.paris_2.aflami.designsystem.components
 
-import android.R.attr.layoutDirection
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

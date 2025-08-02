@@ -26,11 +26,11 @@
 -dontwarn com.paris_2.aflami.designsystem.color.Gradient
 -dontwarn com.paris_2.aflami.designsystem.color.TextColors
 -dontwarn com.paris_2.aflami.designsystem.components.CustomButtonKt
--dontwarn com.paris_2.aflami.designsystem.components.DialogKt
--dontwarn com.paris_2.aflami.designsystem.components.HorizontalDividerKt
+-dontwarn com.paris_2.aflami.designsystem.components.AppDialogKt
+-dontwarn com.paris_2.aflami.designsystem.components.AppHorizontalDividerKt
 -dontwarn com.paris_2.aflami.designsystem.components.MediaCardKt
 -dontwarn com.paris_2.aflami.designsystem.components.CustomTabKt
--dontwarn com.paris_2.aflami.designsystem.components.TextKt
+-dontwarn com.paris_2.aflami.designsystem.components.AppTextKt
 -dontwarn com.paris_2.aflami.designsystem.components.ButtonState
 -dontwarn com.paris_2.aflami.designsystem.components.ButtonType$Primary
 -dontwarn com.paris_2.aflami.designsystem.components.ButtonType$Secondary
@@ -45,8 +45,8 @@
 -dontwarn com.paris_2.aflami.designsystem.components.RatingBarKt
 -dontwarn com.paris_2.aflami.designsystem.components.RecentSearchItemKt
 -dontwarn com.paris_2.aflami.designsystem.components.SearchSuggestionHubKt
--dontwarn com.paris_2.aflami.designsystem.components.TextFieldsKt
--dontwarn com.paris_2.aflami.designsystem.components.TopAppBarKt
+-dontwarn com.paris_2.aflami.designsystem.components.AppTextFieldsKt
+-dontwarn com.paris_2.aflami.designsystem.components.AppTopAppBarKt
 -dontwarn com.paris_2.aflami.designsystem.text_style.AflamiTextStyle
 -dontwarn com.paris_2.aflami.designsystem.text_style.SizedTextStyle
 -dontwarn com.paris_2.aflami.designsystem.theme.AflamiThemeKt

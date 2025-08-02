@@ -51,12 +51,12 @@ fun EpisodeCard(
                     .fillMaxWidth(0.8f),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
+                AppText(
                     text = "${stringResource(R.string.episode)} $episodeNumber",
                     style = Theme.textStyle.label.large,
                     color = Theme.colors.text.title
                 )
-                Text(
+                AppText(
                     text = episodeTitle,
                     style = Theme.textStyle.label.small,
                     color = Theme.colors.text.hint,
@@ -79,7 +79,7 @@ fun EpisodeCard(
             )
 
         }
-        Text(
+        AppText(
             text = episodeDescription,
             style = Theme.textStyle.label.small,
             maxLines = 2,
