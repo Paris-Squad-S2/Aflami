@@ -3,7 +3,7 @@ package com.feature.authentication.authenticationUi.comon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.domain.user.exception.InvalidCredentialsException
+import com.paris_2.domain.user.exception.InvalidCredentialsException
 import com.feature.authentication.authenticationUi.navigation.AuthenticationDestination
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler

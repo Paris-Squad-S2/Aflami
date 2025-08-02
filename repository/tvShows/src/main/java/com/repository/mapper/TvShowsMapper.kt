@@ -1,16 +1,16 @@
 package com.repository.mapper
 
-import com.domain.media.entity.Cast
-import com.domain.media.entity.Episode
-import com.domain.media.entity.EpisodeVideo
-import com.domain.media.entity.Genre
-import com.domain.media.entity.Image
-import com.domain.media.entity.ProductionCompany
-import com.domain.media.entity.Review
-import com.domain.media.entity.Season
-import com.domain.media.entity.TvShow
-import com.domain.media.entity.TvShowSimilar
-import com.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.Episode
+import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.Genre
+import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.ProductionCompany
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.entity.Season
+import com.paris_2.domain.media.entity.TvShow
+import com.paris_2.domain.media.entity.TvShowSimilar
+import com.paris_2.domain.media.entity.TvShowVideo
 import com.repository.model.local.CastEntity
 import com.repository.model.local.EpisodeEntity
 import com.repository.model.local.GalleryEntity

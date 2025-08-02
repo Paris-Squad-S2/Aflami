@@ -1,9 +1,9 @@
 package com.repository.search.repository
 
-import com.domain.media.exception.NoCategoriesFoundException
-import com.domain.media.exception.NoInternetConnectionException
-import com.domain.media.entity.Category
-import com.domain.media.repository.CategoriesRepository
+import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.repository.CategoriesRepository
 import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource

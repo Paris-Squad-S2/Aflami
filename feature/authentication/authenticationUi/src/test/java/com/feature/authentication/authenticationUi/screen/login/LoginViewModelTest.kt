@@ -1,7 +1,7 @@
 package com.feature.authentication.authenticationUi.screen.login
 
-import com.domain.user.exception.InvalidCredentialsException
-import com.domain.user.usecase.LoginUseCase
+import com.paris_2.domain.user.exception.InvalidCredentialsException
+import com.paris_2.domain.user.usecase.LoginUseCase
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris_2.aflami.bottomNavBar.AppNavigationAPI

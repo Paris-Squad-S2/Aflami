@@ -1,7 +1,6 @@
 package com.paris_2.domain.user.usecase
 
-import com.domain.user.repository.AuthenticationRepository
-import com.domain.user.usecase.GetSessionIdUseCase
+import com.paris_2.domain.user.repository.AuthenticationRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

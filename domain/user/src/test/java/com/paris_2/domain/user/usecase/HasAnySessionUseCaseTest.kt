@@ -1,7 +1,6 @@
 package com.paris_2.domain.user.usecase
 
-import com.domain.user.repository.AuthenticationRepository
-import com.domain.user.usecase.HasAnySessionUseCase
+import com.paris_2.domain.user.repository.AuthenticationRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertFalse

@@ -13,8 +13,8 @@ import com.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.user.usecase.GetSessionIdUseCase
-import com.domain.user.usecase.IsLoggedInUseCase
+import com.paris_2.domain.user.usecase.GetSessionIdUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi

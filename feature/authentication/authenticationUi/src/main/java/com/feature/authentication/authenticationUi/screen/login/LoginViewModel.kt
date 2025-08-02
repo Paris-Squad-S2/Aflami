@@ -1,7 +1,7 @@
 package com.feature.authentication.authenticationUi.screen.login
 
-import com.domain.user.usecase.GuestLoginUseCase
-import com.domain.user.usecase.LoginUseCase
+import com.paris_2.domain.user.usecase.GuestLoginUseCase
+import com.paris_2.domain.user.usecase.LoginUseCase
 import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel

@@ -1,9 +1,9 @@
 package com.paris_2.repository.authentication.repository
 
-import com.domain.user.exception.AuthNetworkException
-import com.domain.user.exception.InvalidCredentialsException
-import com.domain.user.exception.UnknownAuthException
-import com.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.exception.AuthNetworkException
+import com.paris_2.domain.user.exception.InvalidCredentialsException
+import com.paris_2.domain.user.exception.UnknownAuthException
+import com.paris_2.domain.user.repository.AuthenticationRepository
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.paris_2.repository.authentication.exeptions.NetworkException

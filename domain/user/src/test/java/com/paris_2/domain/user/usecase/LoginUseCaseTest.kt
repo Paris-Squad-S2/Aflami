@@ -1,7 +1,6 @@
 package com.paris_2.domain.user.usecase
 
-import com.domain.user.repository.AuthenticationRepository
-import com.domain.user.usecase.LoginUseCase
+import com.paris_2.domain.user.repository.AuthenticationRepository
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk

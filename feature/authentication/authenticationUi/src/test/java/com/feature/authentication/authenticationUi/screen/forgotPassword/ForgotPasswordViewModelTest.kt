@@ -1,6 +1,6 @@
 package com.feature.authentication.authenticationUi.screen.forgotPassword
 
-import com.domain.user.usecase.GetForgetPasswordUrlUseCase
+import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import io.mockk.every
 import io.mockk.mockk

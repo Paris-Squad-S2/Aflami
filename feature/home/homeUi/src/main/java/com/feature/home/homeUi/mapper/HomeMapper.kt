@@ -1,8 +1,8 @@
 package com.feature.home.homeUi.mapper
 
-import com.domain.media.entity.Category
-import com.domain.media.entity.Media
-import com.domain.media.entity.MediaType
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState

@@ -17,7 +17,7 @@ import com.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.domain.user.usecase.IsLoggedInUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi

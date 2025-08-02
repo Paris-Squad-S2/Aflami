@@ -1,15 +1,15 @@
 package com.paris_2.aflami.di
 
-import com.domain.media.repository.MediaRepository
-import com.domain.media.repository.MoviesCategoriesRepository
-import com.domain.media.repository.MovieRepository
-import com.domain.media.repository.TvShowRepository
-import com.domain.media.repository.CategoriesRepository
-import com.domain.media.repository.CountryRepository
-import com.domain.media.repository.GenresInteractionRepository
-import com.domain.media.repository.SearchHistoryRepository
-import com.domain.media.repository.SearchMediaRepository
-import com.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.media.repository.MediaRepository
+import com.paris_2.domain.media.repository.MoviesCategoriesRepository
+import com.paris_2.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.TvShowRepository
+import com.paris_2.domain.media.repository.CategoriesRepository
+import com.paris_2.domain.media.repository.CountryRepository
+import com.paris_2.domain.media.repository.GenresInteractionRepository
+import com.paris_2.domain.media.repository.SearchHistoryRepository
+import com.paris_2.domain.media.repository.SearchMediaRepository
+import com.paris_2.domain.user.repository.AuthenticationRepository
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.paris_2.repository.authentication.repository.AuthenticationRepositoryImpl

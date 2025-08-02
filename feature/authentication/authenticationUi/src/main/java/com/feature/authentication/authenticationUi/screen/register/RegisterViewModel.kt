@@ -1,6 +1,6 @@
 package com.feature.authentication.authenticationUi.screen.register
 
-import com.domain.user.usecase.GetRegisterUrlUseCase
+import com.paris_2.domain.user.usecase.GetRegisterUrlUseCase
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import dagger.hilt.android.lifecycle.HiltViewModel

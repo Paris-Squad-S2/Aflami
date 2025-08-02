@@ -1,16 +1,16 @@
 package com.repository.home.repository
 
-import com.domain.media.exception.AflamiException
-import com.domain.media.exception.AddMediaToContinueWatchingException
-import com.domain.media.exception.NoInternetConnectionException
-import com.domain.media.exception.MediaPlayingException
-import com.domain.media.exception.PopularMediaException
-import com.domain.media.exception.TopRatingMediaException
-import com.domain.media.exception.UpComingMediaException
-import com.domain.media.exception.GetContinueWatchingMediaException
-import com.domain.media.entity.Media
-import com.domain.media.entity.MediaType
-import com.domain.media.repository.MediaRepository
+import com.paris_2.domain.media.exception.AflamiException
+import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.MediaPlayingException
+import com.paris_2.domain.media.exception.PopularMediaException
+import com.paris_2.domain.media.exception.TopRatingMediaException
+import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.exception.UpComingMediaException
+import com.paris_2.domain.media.repository.MediaRepository
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.mapper.toDomain

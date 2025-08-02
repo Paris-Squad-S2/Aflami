@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.domain.user.usecase.HasAnySessionUseCase
+import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
