@@ -47,14 +47,14 @@ import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.search.useCase.IncrementCategoryInteractionUseCase
 import com.domain.search.useCase.SearchByQueryUseCase
 import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.paris_2.domain.authentication.repository.AuthenticationRepository
-import com.paris_2.domain.authentication.usecase.GetForgetPasswordUrlUseCase
-import com.paris_2.domain.authentication.usecase.GetRegisterUrlUseCase
-import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
-import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
-import com.paris_2.domain.authentication.usecase.HasAnySessionUseCase
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
-import com.paris_2.domain.authentication.usecase.LoginUseCase
+import com.domain.user.repository.AuthenticationRepository
+import com.domain.user.usecase.GetForgetPasswordUrlUseCase
+import com.domain.user.usecase.GetRegisterUrlUseCase
+import com.domain.user.usecase.GetSessionIdUseCase
+import com.domain.user.usecase.GuestLoginUseCase
+import com.domain.user.usecase.HasAnySessionUseCase
+import com.domain.user.usecase.IsLoggedInUseCase
+import com.domain.user.usecase.LoginUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -107,8 +107,6 @@ object UseCaseModule {
     @Provides fun provideAddRatingToMovieUseCase(movieRepository: MovieRepository) = AddRatingToMovieUseCase(movieRepository)
     @Provides fun provideAddRatingToTvShowUseCase(tvShowRepository: TvShowRepository) = AddRatingToTvShowUseCase(tvShowRepository)
     @Provides fun provideGetEpisodeVideoUseCase(tvShowRepository: TvShowRepository) = GetEpisodeVideoUseCase(tvShowRepository)
-    @Provides
-    fun provideGetSessionIdUseCase(authenticationRepository: AuthenticationRepository) =
-        GetSessionIdUseCase(authenticationRepository)
+    @Provides fun provideGetSessionIdUseCase(authenticationRepository: AuthenticationRepository) = GetSessionIdUseCase(authenticationRepository)
 }
 
