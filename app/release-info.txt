@@ -1,2 +1,2 @@
-versionName=0.3.30
-- refactor/rename app navigation module to bottom navigation bar
+versionName=0.3.31
+- refactor domain layer to be combine the domains together
