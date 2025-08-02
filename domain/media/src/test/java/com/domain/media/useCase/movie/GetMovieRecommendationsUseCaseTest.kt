@@ -7,7 +7,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import testUtils.fakeMovieSimilar
+import com.domain.media.testUtils.fakeMovieSimilar
 import kotlin.test.assertEquals
 
 class GetMovieRecommendationsUseCaseTest {

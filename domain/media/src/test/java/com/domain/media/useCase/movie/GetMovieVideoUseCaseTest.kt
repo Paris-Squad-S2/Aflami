@@ -7,7 +7,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import testUtils.fakeMovieVideo
+import com.domain.media.testUtils.fakeMovieVideo
 import kotlin.test.assertEquals
 
 class GetMovieVideoUseCaseTest {

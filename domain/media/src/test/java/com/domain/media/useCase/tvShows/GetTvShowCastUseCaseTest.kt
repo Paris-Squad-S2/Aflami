@@ -9,7 +9,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
-import testUtils.fakeCast
+import com.domain.media.testUtils.fakeCast
 
 class GetTvShowCastUseCaseTest {
 

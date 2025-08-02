@@ -6,7 +6,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import testUtils.fakeCast
+import com.domain.media.testUtils.fakeCast
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

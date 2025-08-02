@@ -7,7 +7,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import testUtils.fakeGallery
+import com.domain.media.testUtils.fakeGallery
 import kotlin.test.assertEquals
 
 class GetMovieGalleryUseCaseTest {

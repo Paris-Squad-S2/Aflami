@@ -7,7 +7,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import testUtils.fakeEpisodeVideo
+import com.domain.media.testUtils.fakeEpisodeVideo
 
 class GetEpisodeVideoUseCaseTest {
 

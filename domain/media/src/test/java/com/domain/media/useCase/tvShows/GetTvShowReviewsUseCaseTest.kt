@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import testUtils.fakeReviews
+import com.domain.media.testUtils.fakeReviews
 
 class GetTvShowReviewsUseCaseTest {
 

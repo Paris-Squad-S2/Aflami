@@ -7,7 +7,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import testUtils.fakeSeasons
+import com.domain.media.testUtils.fakeSeasons
 import kotlin.test.assertEquals
 
 class GetSeasonsUseCaseTest {
