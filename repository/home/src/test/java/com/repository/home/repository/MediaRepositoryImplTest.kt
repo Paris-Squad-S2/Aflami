@@ -132,7 +132,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal delegates to data source`() = runTest {
-        val media = Media(200, "Local", 8.0, "", mockk(), listOf(1), MediaType.MOVIE)
+        val media = Media(200, "", "Local", MediaType.MOVIE,  listOf(1), mockk(), 8.0)
         coEvery { local.addMedia(media.toEntity()) } returns Unit
         repo.addMediaToContinueWatching(media)
         coVerify { local.addMedia(media.toEntity()) }
@@ -165,7 +165,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal throws addMediaToLocalException on failure`() = runTest {
-        val media = Media(123, "Fail", 4.0, "", mockk(), listOf(1), MediaType.TVSHOW)
+        val media = Media(123, "", "Fail", MediaType.TVSHOW, listOf(1), mockk(), 4.0)
 
         coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
 
