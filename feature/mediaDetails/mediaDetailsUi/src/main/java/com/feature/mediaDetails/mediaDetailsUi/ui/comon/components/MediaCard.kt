@@ -54,13 +54,10 @@ fun MediaCard(
 ) {
     val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
         MediaCardType.UP_COMING -> (cardWidth ?: 328.dp) to (cardHeight ?: 196.dp)
-        MediaCardType.NORMAL -> (cardWidth ?: 156.dp) to (cardHeight ?: 222.dp)
         MediaCardType.EPISODE -> (cardWidth ?: 116.dp) to (cardHeight ?: 78.dp)
-        MediaCardType.SLIDER -> (cardWidth ?: 244.dp) to (cardHeight ?: 300.dp)
     }
     val clipRadius = when (mediaCardType) {
         MediaCardType.EPISODE -> 12.dp
-        MediaCardType.SLIDER -> 24.dp
         else -> 16.dp
     }
 
@@ -164,26 +161,8 @@ fun MediaCard(
     }
 }
 enum class MediaCardType {
-    NORMAL,
     UP_COMING,
     EPISODE,
-    SLIDER
-}
-@PreviewLightDark
-@Composable
-fun PreviewMediaNormalCard() {
-    AflamiTheme {
-        MediaCard(
-            imageUri = R.drawable.anime_movie.toString(),
-            rating = 9.9f,
-            movieName = "Your Name",
-            mediaType = "TV show",
-            year = "2016",
-            mediaCardType = MediaCardType.NORMAL,
-            showGradientFilter = true
-        )
-    }
-
 }
 
 @PreviewLightDark
@@ -211,38 +190,6 @@ fun PreviewMediaEpisodeCard() {
             imageUri = R.drawable.attack_on_titan.toString(),
             rating = 8.8f,
             mediaCardType = MediaCardType.EPISODE
-        )
-    }
-
-}
-
-@PreviewLightDark
-@Composable
-fun PreviewMediaSliderCard() {
-    AflamiTheme {
-        MediaCard(
-            imageUri = R.drawable.shniderlist_slider.toString(),
-            rating = 8f,
-            mediaCardType = MediaCardType.SLIDER,
-            showRating = true,
-            showPlayButton = true
-        )
-    }
-
-}
-
-@PreviewLightDark
-@Composable
-fun PreviewMediaEmptySliderCard() {
-    AflamiTheme {
-        MediaCard(
-            imageUri = R.drawable.shniderlist_slider.toString(),
-            mediaCardType = MediaCardType.SLIDER,
-            showRating = false,
-            cardWidth = 207.dp,
-            cardHeight = 276.dp,
-            clickable = true,
-            rating = 3.563f,
         )
     }
 
