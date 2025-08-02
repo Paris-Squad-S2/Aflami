@@ -91,7 +91,7 @@ val koverExcludedPackages = listOf(
     "**.TopRatingMoviesScreen*",
     "**.SearchScreen*",
     "**.ContinueWatchingScreen*",
-    "**.HomeScreenUiState*"
+    "**.HomeScreenUIState*"
 )
 
 allprojects {
