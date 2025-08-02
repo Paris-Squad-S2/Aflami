@@ -45,6 +45,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDial
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCard
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
@@ -53,7 +54,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProduc
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.AppSnackBar

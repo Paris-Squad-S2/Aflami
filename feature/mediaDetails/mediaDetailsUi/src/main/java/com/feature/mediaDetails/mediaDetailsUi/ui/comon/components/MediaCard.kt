@@ -28,7 +28,6 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaCardType
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -164,7 +163,12 @@ fun MediaCard(
 
     }
 }
-
+enum class MediaCardType {
+    NORMAL,
+    UP_COMING,
+    EPISODE,
+    SLIDER
+}
 @PreviewLightDark
 @Composable
 fun PreviewMediaNormalCard() {

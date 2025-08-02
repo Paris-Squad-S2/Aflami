@@ -50,6 +50,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSecti
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.EpisodeCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCard
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TvTopComponent
@@ -59,7 +60,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaCardType
 import com.paris_2.aflami.designsystem.components.AppSnackBar
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme

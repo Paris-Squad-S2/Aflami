@@ -14,9 +14,3 @@ data class SimilarMediaUI (
     val posterPath : String,
     val releaseDate : String,
 )
-enum class MediaCardType {
-    NORMAL,
-    UP_COMING,
-    EPISODE,
-    SLIDER
-}
