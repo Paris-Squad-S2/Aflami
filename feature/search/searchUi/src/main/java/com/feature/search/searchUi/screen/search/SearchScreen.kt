@@ -28,7 +28,7 @@ import com.feature.search.searchUi.screen.search.components.FilterDialog
 import com.feature.search.searchUi.screen.search.components.NoSearchQueryContent
 import com.feature.search.searchUi.screen.search.components.WithSearchQueryContent
 import com.paris_2.aflami.designsystem.components.AppTextField
-import com.paris_2.aflami.designsystem.components.AppTopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import java.util.Locale
@@ -86,7 +86,7 @@ private fun SearchScreenContent(
             .background(Theme.colors.surface)
             .navigationBarsPadding()
     ) {
-        AppTopAppBar(
+        AppTopBar(
             modifier = Modifier
                 .statusBarsPadding(),
             title = stringResource(RSearchUi.string.searchTitle),

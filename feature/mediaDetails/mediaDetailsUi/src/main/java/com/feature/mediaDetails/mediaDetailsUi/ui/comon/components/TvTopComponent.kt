@@ -29,7 +29,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreenState
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowScreenInteractionListener
 import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppTopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -82,7 +82,7 @@ fun TopComponentDetails(
                 },
                 modifier = Modifier.padding(bottom = 12.dp)
             )
-            AppTopAppBar(
+            AppTopBar(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_back),
@@ -122,7 +122,7 @@ fun TvTopComponent(
 ) {
     val activity = LocalActivity.current
     with(sharedTransitionScope) {
-        AppTopAppBar(
+        AppTopBar(
             modifier = modifier
                 .statusBarsPadding()
                 .background(Theme.colors.stroke)

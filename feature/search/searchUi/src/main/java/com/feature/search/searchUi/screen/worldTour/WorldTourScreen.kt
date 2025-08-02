@@ -23,7 +23,7 @@ import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.AppTextField
-import com.paris_2.aflami.designsystem.components.AppTopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import java.util.Locale
@@ -51,7 +51,7 @@ fun WorldTourScreenContent(
             .background(Theme.colors.surface)
             .navigationBarsPadding()
     ) {
-        AppTopAppBar(
+        AppTopBar(
             modifier = Modifier
                 .statusBarsPadding(),
             title = stringResource(R.string.world_tour),

@@ -57,7 +57,7 @@ import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.AppSnackBar
-import com.paris_2.aflami.designsystem.components.AppTopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.R as RDesignSystem
@@ -126,7 +126,7 @@ fun MovieDetailsScreenContent(
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        AppTopAppBar(
+                        AppTopBar(
                             leadingIcons = listOf(
                                 iconItemWithDefaults(
                                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
@@ -144,7 +144,7 @@ fun MovieDetailsScreenContent(
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        AppTopAppBar(
+                        AppTopBar(
                             leadingIcons = listOf(
                                 iconItemWithDefaults(
                                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),

@@ -31,31 +31,10 @@ import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
-data class IconItem(
-    val icon: ImageVector,
-    val onClick: (() -> Unit)? = null,
-    val backgroundColor: Color,
-    val tint: Color,
-)
-
-@Composable
-fun iconItemWithDefaults(
-    icon: ImageVector,
-    onClick: (() -> Unit)? = null,
-    backgroundColor: Color = Theme.colors.surfaceHigh,
-    tint: Color = Theme.colors.text.title,
-): IconItem {
-    return IconItem(
-        icon = icon,
-        onClick = onClick,
-        backgroundColor = backgroundColor,
-        tint = tint
-    )
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppTopAppBar(
+fun AppTopBar(
     modifier: Modifier = Modifier,
     title: String? = null,
     subtitle: String? = null,
@@ -138,8 +117,7 @@ private fun IconBox(
             .then(
                 if (iconItem.onClick != null) {
                     Modifier.clickable { iconItem.onClick.invoke() }
-                }
-                else {
+                } else {
                     Modifier
                 }
             ),
@@ -165,7 +143,7 @@ fun PreviewTopAppBar() {
             .background(color = Theme.colors.surface)
             .padding(bottom = 16.dp)
     ) {
-        AppTopAppBar(
+        AppTopBar(
             title = "AFLAMI",
             subtitle = "More than just watching.",
             logo = iconItemWithDefaults(
@@ -184,7 +162,7 @@ fun PreviewTopAppBar() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AppTopAppBar(
+        AppTopBar(
             title = "My Account",
             leadingIcons = listOf(
                 iconItemWithDefaults(
@@ -202,7 +180,7 @@ fun PreviewTopAppBar() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AppTopAppBar(
+        AppTopBar(
             title = "My Account",
             trailingIcons = listOf(
                 iconItemWithDefaults(
@@ -213,11 +191,11 @@ fun PreviewTopAppBar() {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AppTopAppBar(title = "Settings")
+        AppTopBar(title = "Settings")
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        AppTopAppBar(
+        AppTopBar(
             title = "My Account",
             trailingIcons = listOf(
                 iconItemWithDefaults(
