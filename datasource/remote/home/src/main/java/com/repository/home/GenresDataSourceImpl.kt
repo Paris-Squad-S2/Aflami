@@ -1,7 +1,7 @@
 package com.repository.home
 
-import com.repository.home.datasource.remote.GenresRemoteDataSource
-import com.repository.home.dto.GenresDto
+import com.repository.media.datasource.remote.GenresRemoteDataSource
+import com.repository.media.dto.GenresDto
 import javax.inject.Inject
 
 class GenresDataSourceImpl @Inject constructor(

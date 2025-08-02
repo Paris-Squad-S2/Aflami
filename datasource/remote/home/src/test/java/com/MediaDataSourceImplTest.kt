@@ -1,13 +1,13 @@
 package com
 
 import com.google.common.truth.Truth.assertThat
-import com.repository.home.MediaApiService
-import com.repository.home.MediaDataSourceImpl
-import com.repository.home.dto.DatesDto
-import com.repository.home.dto.MovieDto
-import com.repository.home.dto.MovieListDto
-import com.repository.home.dto.TvDto
-import com.repository.home.dto.TvListDto
+import com.repository.media.MediaApiService
+import com.repository.media.MediaDataSourceImpl
+import com.repository.media.dto.DatesDto
+import com.repository.media.dto.MovieDto
+import com.repository.media.dto.MovieListDto
+import com.repository.media.dto.TvDto
+import com.repository.media.dto.TvListDto
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

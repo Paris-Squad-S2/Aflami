@@ -1,6 +1,6 @@
 package com.repository.home
 
-import com.repository.home.dto.GenresDto
+import com.repository.media.dto.GenresDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

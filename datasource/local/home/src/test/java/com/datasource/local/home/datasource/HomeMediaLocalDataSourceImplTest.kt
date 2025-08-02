@@ -2,8 +2,8 @@ package com.datasource.local.home.datasource
 
 import com.datasource.local.home.dao.HomeMediaDao
 import com.google.common.truth.Truth.assertThat
-import com.repository.home.entity.MediaEntity
-import com.repository.home.entity.MediaTypeEntity
+import com.repository.media.entity.MediaEntity
+import com.repository.media.entity.MediaTypeEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

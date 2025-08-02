@@ -1,8 +1,8 @@
 package com.datasource.local.home.datasource
 
 import com.datasource.local.home.dao.HomeMediaDao
-import com.repository.home.datasource.local.HomeMediaLocalDataSource
-import com.repository.home.entity.MediaEntity
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.entity.MediaEntity
 
 class HomeMediaLocalDataSourceImpl (
     private val mediaDao: HomeMediaDao

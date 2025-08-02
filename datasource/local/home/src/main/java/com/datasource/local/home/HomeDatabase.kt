@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.datasource.local.home.dao.HomeMediaDao
-import com.repository.home.entity.MediaEntity
+import com.repository.media.entity.MediaEntity
 
 @Database(
     entities = [MediaEntity::class],

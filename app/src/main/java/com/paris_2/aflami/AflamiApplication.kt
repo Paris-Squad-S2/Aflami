@@ -9,7 +9,7 @@ import javax.inject.Inject
 import com.repository.search.util.NetworkConnectionChecker as SearchNetworkChecker
 import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkChecker
 import com.repository.util.NetworkConnectionChecker as GenericNetworkChecker
-import com.repository.home.util.NetworkConnectionChecker as HomeNetworkChecker
+import com.repository.media.util.NetworkConnectionChecker as HomeNetworkChecker
 
 @HiltAndroidApp
 class AflamiApplication : Application(), Configuration.Provider {

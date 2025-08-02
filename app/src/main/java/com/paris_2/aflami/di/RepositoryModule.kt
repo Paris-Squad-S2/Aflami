@@ -20,10 +20,10 @@ import com.repository.dataSource.local.TvShowReviewLocalDataSource
 import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
-import com.repository.home.datasource.local.HomeMediaLocalDataSource
-import com.repository.home.datasource.remote.MediaRemoteDataSource
-import com.repository.home.repository.MediaRepositoryImpl
-import com.repository.home.repository.MoviesCategoriesRepositoryImpl
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.remote.MediaRemoteDataSource
+import com.repository.media.repository.MediaRepositoryImpl
+import com.repository.media.repository.MoviesCategoriesRepositoryImpl
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -119,7 +119,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideDetailedMediaRepository(
-        networkConnectionChecker: com.repository.home.util.NetworkConnectionChecker,
+        networkConnectionChecker: com.repository.media.util.NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
         homeMediaLocalDataSource: HomeMediaLocalDataSource
     ): MediaRepository = MediaRepositoryImpl(networkConnectionChecker, mediaRemoteDataSource, homeMediaLocalDataSource)
@@ -127,8 +127,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideMoviesCategoriesRepository(
-        genresRemoteDataSource: com.repository.home.datasource.remote.GenresRemoteDataSource,
-        networkConnectionChecker: com.repository.home.util.NetworkConnectionChecker
+        genresRemoteDataSource: com.repository.media.datasource.remote.GenresRemoteDataSource,
+        networkConnectionChecker: com.repository.media.util.NetworkConnectionChecker
     ): MoviesCategoriesRepository = MoviesCategoriesRepositoryImpl(genresRemoteDataSource, networkConnectionChecker)
 
     @Provides

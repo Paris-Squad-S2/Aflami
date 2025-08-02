@@ -196,7 +196,7 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.REPOSITORY_HOME))
+    implementation(project(Modules.REPOSITORY_MEDIA))
     implementation(project(Modules.DATASOURCE_REMOTE_HOME))
     implementation(project(Modules.DOMAIN_USER))
 

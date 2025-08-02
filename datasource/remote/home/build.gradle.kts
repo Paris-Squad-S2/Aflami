@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(project(Modules.REPOSITORY_HOME))
+    implementation(project(Modules.REPOSITORY_MEDIA))
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)

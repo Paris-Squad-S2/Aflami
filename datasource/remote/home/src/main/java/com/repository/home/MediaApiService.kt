@@ -1,7 +1,7 @@
 package com.repository.home
 
-import com.repository.home.dto.MovieListDto
-import com.repository.home.dto.TvListDto
+import com.repository.media.dto.MovieListDto
+import com.repository.media.dto.TvListDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 
