@@ -1,6 +1,7 @@
 package com.feature.home.homeUi.screen.home
 
-import com.paris_2.aflami.designsystem.components.SliderMedia
+import com.feature.home.homeUi.screen.home.components.SliderMedia
+
 
 interface HomeScreenInteractionListener {
     fun onSearchIconClick()
