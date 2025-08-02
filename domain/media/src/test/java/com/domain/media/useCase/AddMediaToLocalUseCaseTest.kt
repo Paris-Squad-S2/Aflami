@@ -1,8 +1,8 @@
-package com.domain.home.usecase
+package com.domain.media.useCase
 
-import com.domain.home.model.Media
-import com.domain.home.model.MediaType
-import com.domain.home.repository.MediaRepository
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
+import com.domain.media.repository.MediaRepository
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
@@ -18,13 +18,13 @@ class AddMediaToLocalUseCaseTest {
         val media = Media(
             id = 123,
             title = "Some Title",
-            voteAverage = 8.5,
-            posterPath = "img.jpg",
+            rating = 8.5,
+            imageUri = "img.jpg",
             yearOfRelease = LocalDate(2023, 1, 1),
-            genreIds = listOf(28, 18),
+            categoryIds = listOf(28, 18),
             type = MediaType.MOVIE
         )
         addMediaToLocalUseCase(media)
-        coVerify { mediaRepository.AddMediaToContinueWatching(media) }
+        coVerify { mediaRepository.addMediaToContinueWatching(media) }
     }
 }

@@ -1,10 +1,10 @@
 package com.repository.home.repository
 
-import com.domain.home.exception.AflamiException
-import com.domain.home.exception.NoCategoriesFoundException
-import com.domain.home.exception.NoInternetConnectionException
-import com.domain.home.model.Category
-import com.domain.home.repository.MoviesCategoriesRepository
+import com.domain.media.exception.AflamiException
+import com.domain.media.exception.NoCategoriesFoundException
+import com.domain.media.exception.NoInternetConnectionException
+import com.domain.media.entity.Category
+import com.domain.media.repository.MoviesCategoriesRepository
 import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.mapper.toCategoryList
 import com.repository.home.util.NetworkConnectionChecker

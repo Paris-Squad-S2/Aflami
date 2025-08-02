@@ -1,6 +1,6 @@
 package com.feature.home.homeUi
 
-import com.domain.home.usecase.GetTopRatingMediaUseCase
+import com.domain.media.usecase.GetTopRatingMediaUseCase
 import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
@@ -19,8 +19,8 @@ import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.domain.home.model.Media as DomainMedia
-import com.domain.home.model.MediaType as DomainMediaType
+import com.domain.media.entity.Media as DomainMedia
+import com.domain.media.entity.MediaType as DomainMediaType
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class TopRatingMoviesViewModelTest {
@@ -42,13 +42,13 @@ class TopRatingMoviesViewModelTest {
     private fun MediaUiState.toMedia() = DomainMedia(
         id = id,
         title = title,
-        voteAverage = rating,
-        posterPath = imageUri,
+        rating = rating,
+        imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        genreIds = listOf(1),
+        categoryIds = listOf(1),
         type = when (type) {
             MediaTypeUi.MOVIE -> DomainMediaType.MOVIE
-            MediaTypeUi.TVSHOW -> DomainMediaType.TV_SHOW
+            MediaTypeUi.TVSHOW -> DomainMediaType.TVSHOW
         }
     )
 

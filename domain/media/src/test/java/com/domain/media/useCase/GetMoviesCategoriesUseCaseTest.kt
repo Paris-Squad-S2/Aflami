@@ -1,7 +1,7 @@
-package com.domain.home.usecase
+package com.domain.media.useCase
 
-import com.domain.home.model.Category
-import com.domain.home.repository.MoviesCategoriesRepository
+import com.domain.media.entity.Category
+import com.domain.media.repository.MoviesCategoriesRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

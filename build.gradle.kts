@@ -101,7 +101,6 @@ dependencies {
     kover(project((Modules.DOMAIN_USER)))
     kover(project((Modules.DOMAIN_GUESS_GAME)))
     kover(project((Modules.DOMAIN_MEDIA)))
-    kover(project((Modules.DOMAIN_HOME)))
     kover(project((Modules.REPOSITORY_USER)))
     kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_MOVIE)))

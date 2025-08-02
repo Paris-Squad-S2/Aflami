@@ -1,10 +1,10 @@
 package com.repository.home.repository
 
-import com.domain.home.exception.AddMediaToContinueWatchingException
-import com.domain.home.exception.NoInternetConnectionException
-import com.domain.home.exception.GetContinueWatchingMediaException
-import com.domain.home.model.Media
-import com.domain.home.model.MediaType
+import com.domain.media.exception.AddMediaToContinueWatchingException
+import com.domain.media.exception.NoInternetConnectionException
+import com.domain.media.exception.GetContinueWatchingMediaException
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
 import com.google.common.truth.Truth.assertThat
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
@@ -68,7 +68,7 @@ class MediaRepositoryImplTest {
         coEvery { remote.getPopularMovies(any()).results } returns listOf(movie1, movie2)
         coEvery { remote.getPopularTvShows(any()).results } returns listOf(tv1)
         val result = repo.getPopularMedia()
-        assertThat(result.map { it.voteAverage }).isEqualTo(listOf(9.0, 8.0, 7.0))
+        assertThat(result.map { it.rating }).isEqualTo(listOf(9.0, 8.0, 7.0))
     }
 
     @Test
@@ -94,8 +94,8 @@ class MediaRepositoryImplTest {
         coEvery { remote.getTopRatedMovies(any()).results } returns listOf(movie)
         coEvery { remote.getTopRatedTvShows(any()).results } returns listOf(tv)
         val result = repo.getTopRatingMedia()
-        assertThat(result.first().voteAverage).isEqualTo(9.5)
-        assertThat(result.last().voteAverage).isEqualTo(8.5)
+        assertThat(result.first().rating).isEqualTo(9.5)
+        assertThat(result.last().rating).isEqualTo(8.5)
     }
 
     @Test
@@ -134,7 +134,7 @@ class MediaRepositoryImplTest {
     fun `addMediaToLocal delegates to data source`() = runTest {
         val media = Media(200, "Local", 8.0, "", mockk(), listOf(1), MediaType.MOVIE)
         coEvery { local.addMedia(media.toEntity()) } returns Unit
-        repo.AddMediaToContinueWatching(media)
+        repo.addMediaToContinueWatching(media)
         coVerify { local.addMedia(media.toEntity()) }
     }
 
@@ -165,12 +165,12 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal throws addMediaToLocalException on failure`() = runTest {
-        val media = Media(123, "Fail", 4.0, "", mockk(), listOf(1), MediaType.TV_SHOW)
+        val media = Media(123, "Fail", 4.0, "", mockk(), listOf(1), MediaType.TVSHOW)
 
         coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
 
         assertThrows<AddMediaToContinueWatchingException> {
-            repo.AddMediaToContinueWatching(media)
+            repo.addMediaToContinueWatching(media)
         }
     }
 

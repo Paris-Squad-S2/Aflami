@@ -1,8 +1,8 @@
-package com.domain.home.usecase
+package com.domain.media.useCase
 
-import com.domain.home.model.Media
-import com.domain.home.model.MediaType
-import com.domain.home.repository.MediaRepository
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
+import com.domain.media.repository.MediaRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -18,20 +18,20 @@ class GetMediaFromLocalUseCaseTest {
         Media(
             id = 1,
             title = "Action",
-            voteAverage = 8.1,
-            posterPath = "a.jpg",
+            rating = 8.1,
+            imageUri = "a.jpg",
             yearOfRelease = LocalDate(2022, 2, 2),
-            genreIds = listOf(28),
+            categoryIds = listOf(28),
             type = MediaType.MOVIE
         ),
         Media(
             id = 2,
             title = "Drama",
-            voteAverage = 7.7,
-            posterPath = "b.jpg",
+            rating = 7.7,
+            imageUri = "b.jpg",
             yearOfRelease = LocalDate(2021, 5, 7),
-            genreIds = listOf(18),
-            type = MediaType.TV_SHOW
+            categoryIds = listOf(18),
+            type = MediaType.TVSHOW
         )
     )
 

@@ -1,14 +1,14 @@
 package com.paris_2.aflami.di
 
-import com.domain.home.repository.MediaRepository
-import com.domain.home.repository.MoviesCategoriesRepository
-import com.domain.home.usecase.AddMediaToLocalUseCase
-import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
-import com.domain.home.usecase.GetMediaFromLocalUseCase
-import com.domain.home.usecase.GetMoviesCategoriesUseCase
-import com.domain.home.usecase.GetPopularMediaUseCase
-import com.domain.home.usecase.GetTopRatingMediaUseCase
-import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.domain.media.repository.MediaRepository
+import com.domain.media.repository.MoviesCategoriesRepository
+import com.domain.media.usecase.AddMediaToLocalUseCase
+import com.domain.media.usecase.FilterUpComingMediaByCategoriesUseCase
+import com.domain.media.usecase.GetMediaFromLocalUseCase
+import com.domain.media.usecase.GetMoviesCategoriesUseCase
+import com.domain.media.usecase.GetPopularMediaUseCase
+import com.domain.media.usecase.GetTopRatingMediaUseCase
+import com.domain.media.usecase.GetUpComingMediaUseCase
 import com.domain.media.repository.MovieRepository
 import com.domain.media.repository.TvShowRepository
 import com.domain.media.useCase.movie.AddRatingToMovieUseCase

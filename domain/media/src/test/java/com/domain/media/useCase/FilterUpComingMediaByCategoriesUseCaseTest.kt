@@ -1,8 +1,8 @@
-package com.domain.home.usecase
+package com.domain.media.useCase
 
-import com.domain.home.model.Media
-import com.domain.home.model.MediaType
-import com.domain.home.repository.MediaRepository
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
+import com.domain.media.repository.MediaRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -17,20 +17,20 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
     private val actionMedia = Media(
         id = 1,
         title = "Action Movie",
-        voteAverage = 7.5,
-        posterPath = "path1.jpg",
+        rating = 7.5,
+        imageUri = "path1.jpg",
         yearOfRelease = LocalDate(2023, 5, 1),
-        genreIds = listOf(28),
+        categoryIds = listOf(28),
         type = MediaType.MOVIE
     )
 
     private val comedyMedia = Media(
         id = 2,
         title = "Comedy Movie",
-        voteAverage = 7.2,
-        posterPath = "path2.jpg",
+        rating = 7.2,
+        imageUri = "path2.jpg",
         yearOfRelease = LocalDate(2022, 10, 10),
-        genreIds = listOf(35),
+        categoryIds = listOf(35),
         type = MediaType.MOVIE
     )
 

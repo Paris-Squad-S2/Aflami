@@ -1,8 +1,8 @@
-package com.domain.home.usecase
+package com.domain.media.useCase
 
-import com.domain.home.model.Media
-import com.domain.home.model.MediaType
-import com.domain.home.repository.MediaRepository
+import com.domain.media.entity.Media
+import com.domain.media.entity.MediaType
+import com.domain.media.repository.MediaRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -18,20 +18,20 @@ class GetPopularMediaUseCaseTest {
         Media(
             id = 1,
             title = "Popular One",
-            voteAverage = 8.4,
-            posterPath = "pop1.jpg",
+            rating = 8.4,
+            imageUri = "pop1.jpg",
             yearOfRelease = LocalDate(2023, 6, 6),
-            genreIds = listOf(35),
+            categoryIds = listOf(35),
             type = MediaType.MOVIE
         ),
         Media(
             id = 2,
             title = "Popular Two",
-            voteAverage = 7.9,
-            posterPath = "pop2.jpg",
+            rating = 7.9,
+            imageUri = "pop2.jpg",
             yearOfRelease = LocalDate(2022, 11, 11),
-            genreIds = listOf(18),
-            type = MediaType.TV_SHOW
+            categoryIds = listOf(18),
+            type = MediaType.TVSHOW
         )
     )
 

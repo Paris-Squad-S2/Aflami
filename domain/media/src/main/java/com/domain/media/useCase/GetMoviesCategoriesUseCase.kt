@@ -1,7 +1,7 @@
-package com.domain.home.usecase
+package com.domain.media.useCase
 
-import com.domain.home.repository.MoviesCategoriesRepository
-import com.domain.home.model.Category
+import com.domain.media.entity.Category
+import com.domain.media.repository.MoviesCategoriesRepository
 
 class GetMoviesCategoriesUseCase(
     private val categoriesRepository: MoviesCategoriesRepository

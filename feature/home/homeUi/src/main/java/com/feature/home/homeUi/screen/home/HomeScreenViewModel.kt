@@ -1,12 +1,12 @@
 package com.feature.home.homeUi.screen.home
 
-import com.domain.home.usecase.AddMediaToLocalUseCase
-import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
-import com.domain.home.usecase.GetMediaFromLocalUseCase
-import com.domain.home.usecase.GetMoviesCategoriesUseCase
-import com.domain.home.usecase.GetPopularMediaUseCase
-import com.domain.home.usecase.GetTopRatingMediaUseCase
-import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.domain.media.usecase.AddMediaToLocalUseCase
+import com.domain.media.usecase.FilterUpComingMediaByCategoriesUseCase
+import com.domain.media.usecase.GetMediaFromLocalUseCase
+import com.domain.media.usecase.GetMoviesCategoriesUseCase
+import com.domain.media.usecase.GetPopularMediaUseCase
+import com.domain.media.usecase.GetTopRatingMediaUseCase
+import com.domain.media.usecase.GetUpComingMediaUseCase
 import com.feature.home.homeUi.navigation.HomeDestinations
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.nameToGenreId
@@ -364,7 +364,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
                 val moodPickerMovies = getTopRatingMediaUseCase.invoke()
                 moodPickerMovies.filter { movie ->
-                    movie.genreIds.any { moodCategories.contains(it) }
+                    movie.categoryIds.any { moodCategories.contains(it) }
                 }
             },
             onSuccess = { filteredMovies ->

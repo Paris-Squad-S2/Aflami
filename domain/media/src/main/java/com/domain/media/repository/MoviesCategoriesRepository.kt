@@ -1,6 +1,6 @@
-package com.domain.home.repository
+package com.domain.media.repository
 
-import com.domain.home.model.Category
+import com.domain.media.entity.Category
 
 interface MoviesCategoriesRepository {
     suspend fun getMoviesCategories(): List<Category>
