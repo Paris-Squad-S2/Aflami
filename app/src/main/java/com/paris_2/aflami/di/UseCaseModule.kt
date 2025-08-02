@@ -28,7 +28,6 @@ import com.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.domain.media.useCases.movie.GetMovieVideoUseCase
 import com.domain.media.repository.CategoriesRepository
 import com.domain.media.repository.CountryRepository
 import com.domain.media.repository.GenresInteractionRepository
@@ -47,6 +46,7 @@ import com.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.domain.media.useCase.SearchByQueryUseCase
 import com.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
 import com.domain.user.repository.AuthenticationRepository
 import com.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.domain.user.usecase.GetRegisterUrlUseCase
