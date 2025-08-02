@@ -115,7 +115,6 @@ dependencies {
     kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_LISTS)))
-    kover(project((Modules.REPOSITORY_CATEGORIES)))
     kover(project((Modules.REPOSITORY_GUESS_GAME)))
     kover(project((Modules.REPOSITORY_SEARCH)))
     kover(project((Modules.DATASOURCE_REMOTE_USER)))

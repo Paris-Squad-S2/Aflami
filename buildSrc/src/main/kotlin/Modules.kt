@@ -13,7 +13,6 @@ object Modules {
     const val REPOSITORY_TV_SHOW = ":repository:tvShows"
     const val REPOSITORY_USER = ":repository:user"
     const val REPOSITORY_LISTS = ":repository:lists"
-    const val REPOSITORY_CATEGORIES = ":repository:categories"
     const val REPOSITORY_GUESS_GAME = ":repository:guessGame"
     const val REPOSITORY_SEARCH = ":repository:search"
     const val REPOSITORY_HOME = ":repository:home"
