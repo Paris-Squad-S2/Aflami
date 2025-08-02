@@ -22,9 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
-import com.paris_2.aflami.designsystem.components.SectionTitle
 
 @Composable
 fun HomeSection(

@@ -32,14 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.utils.shimmerable
-import com.paris_2.aflami.designsystem.components.GenresChip
 import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.MediaButtonType
-import com.paris_2.aflami.designsystem.components.MediaPlayButton
-import com.paris_2.aflami.designsystem.components.SectionTitle
-import com.paris_2.aflami.designsystem.components.AppSlider
-import com.paris_2.aflami.designsystem.components.SliderMedia
-import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 import io.sifr.shaded.blurProcessor.BlurEdgeTreatment

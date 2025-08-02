@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.home.homeUi.screen.home.components
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration

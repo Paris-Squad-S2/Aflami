@@ -46,19 +46,19 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingActivity
+import com.feature.home.homeUi.screen.home.components.Chips
 import com.feature.home.homeUi.screen.home.components.HomeSection
 import com.feature.home.homeUi.screen.home.components.HomeSlider
+import com.feature.home.homeUi.screen.home.components.MediaCard
+import com.feature.home.homeUi.screen.home.components.MediaCardType
+import com.feature.home.homeUi.screen.home.components.MoodPicker
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
+import com.feature.home.homeUi.screen.home.components.SectionTitle
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
 import com.feature.home.homeUi.utils.shimmerable
-import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.IconItem
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
-import com.paris_2.aflami.designsystem.components.MoodPicker
 import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.SectionTitle
-import com.paris_2.aflami.designsystem.components.AppTopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -292,7 +292,7 @@ fun HomeScreenContent(
         }
     }
 
-    AppTopAppBar(
+    AppTopBar(
         title = stringResource(R.string.aflami),
         subtitle = stringResource(R.string.more_than_just_watching),
         titleTextStyle = Theme.textStyle.logoText,
