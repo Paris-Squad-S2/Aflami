@@ -84,9 +84,8 @@ val koverExcludedPackages = listOf(
     "**bottomNavBar**",
     "**.PagingSource.**",
     "**.MediaUi.**",
-    "**.MediaUi.kt**",
-    "**.MediaUi.kt.**",
-    "**MediaUi**",
+    "**.SimilarMediaUI.**",
+    "**.MediaCardType.**",
 )
 
 allprojects {
