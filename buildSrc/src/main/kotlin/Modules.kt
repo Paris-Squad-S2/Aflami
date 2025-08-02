@@ -15,7 +15,6 @@ object Modules {
     const val FEATURE_CATEGORIES = ":feature:categories"
     const val FEATURE_LIST = ":feature:lists"
 
-    const val DOMAIN = ":domain"
     const val DOMAIN_USER = ":domain:user"
     const val DOMAIN_GUESS_GAME = ":domain:guessGame"
     const val DOMAIN_MEDIA = ":domain:media"
@@ -24,7 +23,6 @@ object Modules {
     const val DOMAIN_HOME = ":domain:home"
     const val DOMAIN_CATEGORIES = ":domain:categories"
     const val DOMAIN_MEDIA_DETAILS = ":domain:mediaDetails"
-    const val DOMAIN_AUTHENTICATION = ":domain:authentication"
 
     const val REPOSITORY = ":repository"
     const val REPOSITORY_MOVIE = ":repository:movie"
