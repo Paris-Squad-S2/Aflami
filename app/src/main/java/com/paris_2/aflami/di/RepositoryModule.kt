@@ -2,8 +2,8 @@ package com.paris_2.aflami.di
 
 import com.domain.home.repository.MediaRepository
 import com.domain.home.repository.MoviesCategoriesRepository
-import com.domain.mediaDetails.repository.MovieRepository
-import com.domain.mediaDetails.repository.TvShowRepository
+import com.domain.media.repository.MovieRepository
+import com.domain.media.repository.TvShowRepository
 import com.domain.media.repository.CategoriesRepository
 import com.domain.media.repository.CountryRepository
 import com.domain.media.repository.GenresInteractionRepository

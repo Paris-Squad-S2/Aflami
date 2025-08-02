@@ -2,16 +2,16 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.entity.Movie
-import com.domain.mediaDetails.entity.MovieVideo
-import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.domain.media.entity.Movie
+import com.domain.media.entity.MovieVideo
+import com.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.domain.media.useCase.movie.GetMovieCastUseCase
+import com.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.domain.media.useCases.movie.GetMovieVideoUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi

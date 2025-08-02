@@ -1,19 +1,19 @@
 package testUtils
 
-import com.domain.mediaDetails.entity.Cast
-import com.domain.mediaDetails.entity.Episode
-import com.domain.mediaDetails.entity.EpisodeVideo
-import com.domain.mediaDetails.entity.Genre
-import com.domain.mediaDetails.entity.Image
-import com.domain.mediaDetails.entity.Movie
-import com.domain.mediaDetails.entity.MovieSimilar
-import com.domain.mediaDetails.entity.MovieVideo
-import com.domain.mediaDetails.entity.ProductionCompany
-import com.domain.mediaDetails.entity.Review
-import com.domain.mediaDetails.entity.Season
-import com.domain.mediaDetails.entity.TvShow
-import com.domain.mediaDetails.entity.TvShowSimilar
-import com.domain.mediaDetails.entity.TvShowVideo
+import com.domain.media.entity.Cast
+import com.domain.media.entity.Episode
+import com.domain.media.entity.EpisodeVideo
+import com.domain.media.entity.Genre
+import com.domain.media.entity.Image
+import com.domain.media.entity.Movie
+import com.domain.media.entity.MovieSimilar
+import com.domain.media.entity.MovieVideo
+import com.domain.media.entity.ProductionCompany
+import com.domain.media.entity.Review
+import com.domain.media.entity.Season
+import com.domain.media.entity.TvShow
+import com.domain.media.entity.TvShowSimilar
+import com.domain.media.entity.TvShowVideo
 import kotlinx.datetime.LocalDate
 
 val fakeGenres = listOf(

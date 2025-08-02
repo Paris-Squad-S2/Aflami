@@ -1,7 +1,7 @@
 package com.domain.mediaDetails.useCase.tvShows
 
-import com.domain.mediaDetails.entity.Season
-import com.domain.mediaDetails.repository.TvShowRepository
+import com.domain.media.entity.Season
+import com.domain.media.repository.TvShowRepository
 
 class GetSeasonDetailsUseCase(
     private val tvShowRepository: TvShowRepository

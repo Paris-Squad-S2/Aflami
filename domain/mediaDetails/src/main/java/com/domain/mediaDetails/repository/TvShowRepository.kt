@@ -1,14 +1,14 @@
 package com.domain.mediaDetails.repository
 
-import com.domain.mediaDetails.entity.Cast
-import com.domain.mediaDetails.entity.EpisodeVideo
-import com.domain.mediaDetails.entity.Image
-import com.domain.mediaDetails.entity.ProductionCompany
-import com.domain.mediaDetails.entity.Review
-import com.domain.mediaDetails.entity.Season
-import com.domain.mediaDetails.entity.TvShow
-import com.domain.mediaDetails.entity.TvShowSimilar
-import com.domain.mediaDetails.entity.TvShowVideo
+import com.domain.media.entity.Cast
+import com.domain.media.entity.EpisodeVideo
+import com.domain.media.entity.Image
+import com.domain.media.entity.ProductionCompany
+import com.domain.media.entity.Review
+import com.domain.media.entity.Season
+import com.domain.media.entity.TvShow
+import com.domain.media.entity.TvShowSimilar
+import com.domain.media.entity.TvShowVideo
 
 interface TvShowRepository {
     suspend fun getTvShowDetails(tvShowId: Int): TvShow

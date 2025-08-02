@@ -193,7 +193,7 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_AUTHENTICATION))
 
     implementation(project(Modules.DOMAIN_MEDIA))
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))  //TODO: remove
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))

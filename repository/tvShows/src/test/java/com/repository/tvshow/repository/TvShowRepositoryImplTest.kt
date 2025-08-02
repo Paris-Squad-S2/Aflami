@@ -1,11 +1,11 @@
 package com.repository.tvshow.repository
 
-import com.domain.mediaDetails.exception.FailedToAddRatingException
-import com.domain.mediaDetails.exception.NoCastFoundException
-import com.domain.mediaDetails.exception.NoGalleryFoundException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
-import com.domain.mediaDetails.exception.NoSeasonFoundException
-import com.domain.mediaDetails.exception.NoTvShowFoundException
+import com.domain.media.exception.FailedToAddRatingException
+import com.domain.media.exception.NoCastFoundException
+import com.domain.media.exception.NoGalleryFoundException
+import com.domain.media.exception.NoInternetConnectionException
+import com.domain.media.exception.NoSeasonFoundException
+import com.domain.media.exception.NoTvShowFoundException
 import com.google.common.truth.Truth.assertThat
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource

@@ -1,7 +1,7 @@
 package com.domain.mediaDetails.useCase.movie
 
-import com.domain.mediaDetails.repository.MovieRepository
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.domain.media.repository.MovieRepository
+import com.domain.media.useCases.movie.GetMovieVideoUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

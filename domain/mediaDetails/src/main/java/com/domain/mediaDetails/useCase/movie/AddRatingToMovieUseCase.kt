@@ -1,6 +1,6 @@
 package com.domain.mediaDetails.useCase.movie
 
-import com.domain.mediaDetails.repository.MovieRepository
+import com.domain.media.repository.MovieRepository
 
 class AddRatingToMovieUseCase(
     private val movieRepository: MovieRepository

@@ -1,7 +1,7 @@
 package com.domain.mediaDetails.useCase.movie
 
-import com.domain.mediaDetails.entity.ProductionCompany
-import com.domain.mediaDetails.repository.MovieRepository
+import com.domain.media.entity.ProductionCompany
+import com.domain.media.repository.MovieRepository
 
 class GetMoviesProductionCompaniesUseCase(
     private val movieRepository: MovieRepository

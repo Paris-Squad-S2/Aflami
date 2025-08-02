@@ -1,7 +1,7 @@
 package com.domain.mediaDetails.useCase.tvShows
 
-import com.domain.mediaDetails.entity.TvShowVideo
-import com.domain.mediaDetails.repository.TvShowRepository
+import com.domain.media.entity.TvShowVideo
+import com.domain.media.repository.TvShowRepository
 
 class GetTvShowVideoUseCase(
     private val tvShowRepository: TvShowRepository
