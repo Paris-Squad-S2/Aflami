@@ -1,6 +1,6 @@
 package com.feature.home.homeUi
 
-import com.domain.media.usecase.GetTopRatingMediaUseCase
+import com.domain.media.useCase.GetTopRatingMediaUseCase
 import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState

@@ -1,6 +1,6 @@
 package com.feature.home.homeUi.screen.topRatingMovies
 
-import com.domain.media.usecase.GetTopRatingMediaUseCase
+import com.domain.media.useCase.GetTopRatingMediaUseCase
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.navigation.HomeNavigator

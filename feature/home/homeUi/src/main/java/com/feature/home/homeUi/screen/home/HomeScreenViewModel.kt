@@ -1,12 +1,12 @@
 package com.feature.home.homeUi.screen.home
 
-import com.domain.media.usecase.AddMediaToLocalUseCase
-import com.domain.media.usecase.FilterUpComingMediaByCategoriesUseCase
-import com.domain.media.usecase.GetMediaFromLocalUseCase
-import com.domain.media.usecase.GetMoviesCategoriesUseCase
-import com.domain.media.usecase.GetPopularMediaUseCase
-import com.domain.media.usecase.GetTopRatingMediaUseCase
-import com.domain.media.usecase.GetUpComingMediaUseCase
+import com.domain.media.useCase.AddMediaToLocalUseCase
+import com.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
+import com.domain.media.useCase.GetMediaFromLocalUseCase
+import com.domain.media.useCase.GetMoviesCategoriesUseCase
+import com.domain.media.useCase.GetPopularMediaUseCase
+import com.domain.media.useCase.GetTopRatingMediaUseCase
+import com.domain.media.useCase.GetUpComingMediaUseCase
 import com.feature.home.homeUi.navigation.HomeDestinations
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.nameToGenreId

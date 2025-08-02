@@ -1,6 +1,6 @@
 package com.feature.home.homeUi
 
-import com.domain.media.usecase.GetMediaFromLocalUseCase
+import com.domain.media.useCase.GetMediaFromLocalUseCase
 import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi
