@@ -4,14 +4,17 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.domain.media.entity.Movie
 import com.domain.media.entity.MovieVideo
+import com.domain.media.entity.Review
 import com.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.domain.media.useCase.movie.GetMovieCastUseCase
 import com.domain.media.useCase.movie.GetMovieDetailsUseCase
 import com.domain.media.useCase.movie.GetMovieGalleryUseCase
 import com.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.media.useCases.movie.GetMovieVideoUseCase
+import com.domain.user.usecase.GetSessionIdUseCase
+import com.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
@@ -21,8 +24,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
-import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -212,7 +213,7 @@ class MovieDetailsViewModelTest {
     @Test
     fun `loadMovieReviews updates state with review UI list on success`() = runTest {
         // Arrange
-        val domainReviews = listOf(mockk<com.domain.mediaDetails.entity.Review>())
+        val domainReviews = listOf(mockk<Review>())
         val uiReviews = listOf(mockk<ReviewUi>())
 
         val domainMovie = mockk<Movie>(relaxed = true)

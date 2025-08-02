@@ -3,6 +3,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.domain.media.entity.EpisodeVideo
+import com.domain.media.entity.Review
 import com.domain.media.entity.Season
 import com.domain.media.entity.TvShow
 import com.domain.media.entity.TvShowVideo
@@ -16,6 +17,7 @@ import com.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
@@ -24,7 +26,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -314,7 +315,7 @@ class TvShowDetailsViewModelTest {
     @Test
     fun `loadMovieReviews updates state with review UI list on success`() = runTest {
         // Arrange
-        val domainReviews = listOf(mockk<com.domain.mediaDetails.entity.Review>())
+        val domainReviews = listOf(mockk<Review>())
         val uiReviews = listOf(mockk<ReviewUi>())
 
         val domainTvShow = mockk<TvShow>(relaxed = true)
