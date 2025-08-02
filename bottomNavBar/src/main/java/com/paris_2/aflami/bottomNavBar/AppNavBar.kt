@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -38,7 +37,7 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import com.paris_2.aflami.designsystem.R
 
 @Composable
-fun AflamiNavBar(
+fun AppNavBar(
     modifier: Modifier = Modifier,
     selectedItem: AflamiNavBarItem,
     destinations: List<AflamiNavBarItem> = AflamiNavBarItem.destinations,
@@ -186,7 +185,7 @@ sealed class AflamiNavBarItem(
 private fun AflamiNavigationBarPreview() {
     val selectedItem by remember { mutableStateOf(AflamiNavBarItem.destinations[0]) }
     BasePreview {
-        AflamiNavBar(
+        AppNavBar(
             selectedItem = selectedItem,
             onItemClick = { }
         )

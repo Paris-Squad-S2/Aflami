@@ -68,7 +68,7 @@ internal fun AppScaffold(
                 enter = slideInVertically(initialOffsetY = { it }),
                 exit = slideOutVertically(targetOffsetY = { it }),
             ) {
-                AflamiNavBar(
+                AppNavBar(
                     selectedItem = AflamiNavBarItem.destinations[selectedDestinationIndex],
                     onItemClick = { destination ->
                         scope.launch {
