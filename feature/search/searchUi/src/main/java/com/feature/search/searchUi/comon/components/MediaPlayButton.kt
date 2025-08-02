@@ -1,0 +1,107 @@
+package com.feature.search.searchUi.comon.components
+
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.aflami.designsystem.theme.Theme
+
+@Composable
+fun MediaPlayButton(
+    modifier: Modifier = Modifier,
+    backGroundColor: Color? = null,
+    boarderColor: Color = Theme.colors.stroke,
+    showBoarder: Boolean = false,
+    buttonSize: Int? = null,
+    iconSize: Int? = null,
+    hasVideo: Boolean = true,
+    onButtonClick: () -> Unit = {},
+    buttonType: MediaButtonType,
+) {
+    val layoutDirection = LocalLayoutDirection.current
+
+    val (finalButtonSize, finalIconSize) = when (buttonType) {
+        MediaButtonType.BIG -> (buttonSize?.dp ?: 64.dp) to (iconSize?.dp ?: 32.dp)
+        MediaButtonType.MEDIUM -> (buttonSize?.dp ?: 40.dp) to (iconSize?.dp ?: 19.dp)
+    }
+
+    val finalBackGroundColor = backGroundColor ?: when (buttonType) {
+        MediaButtonType.BIG -> Theme.colors.onPrimaryColors.onPrimary
+        MediaButtonType.MEDIUM -> Theme.colors.surfaceHigh
+    }
+
+
+    Box(
+        modifier = modifier
+            .size(finalButtonSize)
+            .then(
+                if (showBoarder) {
+                    Modifier.border(
+                        width = 1.dp,
+                        color = boarderColor,
+                        shape = CircleShape
+                    )
+                } else Modifier
+            )
+            .clip(CircleShape)
+            .background(finalBackGroundColor)
+            .clickable(
+                enabled = hasVideo,
+                onClick = { onButtonClick() }
+            )
+    ) {
+        val iconPadding = if (buttonSize == 64) 10 else 3
+        val tint = animateColorAsState(if (hasVideo) Theme.colors.primary else Theme.colors.disable)
+        AppIcon(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(
+                    start = if (layoutDirection == LayoutDirection.Ltr) iconPadding.dp else 0.dp,
+                    end = if (layoutDirection == LayoutDirection.Rtl) iconPadding.dp else 0.dp
+                )
+                .size(finalIconSize),
+            imageVector = ImageVector.vectorResource(R.drawable.play_media),
+            tint = tint.value,
+            contentDescription = "play media"
+        )
+    }
+}
+
+enum class MediaButtonType {
+    BIG,
+    MEDIUM,
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewPlayButton() {
+    AflamiTheme {
+        MediaPlayButton(buttonType = MediaButtonType.BIG)
+    }
+}
+
+@PreviewLightDark
+@Composable
+fun PreviewSmallPlayButton() {
+    AflamiTheme {
+        MediaPlayButton(buttonType = MediaButtonType.MEDIUM, showBoarder = true)
+    }
+}

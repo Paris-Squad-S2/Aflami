@@ -56,7 +56,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @Composable
-fun TextField(
+fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
@@ -130,7 +130,7 @@ fun TextField(
                     .fillMaxWidth()
                     .padding(bottom = 4.dp, start = 16.dp),
             ) {
-                Text(
+                AppText(
                     text = stringResource(id = errorMessage ?: R.string.empty),
                     color = Theme.colors.onPrimaryColors.onPrimary,
                     style = Theme.textStyle.label.medium,
@@ -243,7 +243,7 @@ fun TextField(
                     .verticalScroll(rememberScrollState())
             ) {
                 filteredSuggestions.forEach { suggestion ->
-                    Text(
+                    AppText(
                         text = suggestion,
                         modifier = Modifier
                             .fillMaxWidth()
@@ -283,7 +283,7 @@ private fun HandleIcon(
 
     if (singleLine) {
         Spacer(Modifier.width(8.dp))
-        VerticalDivider(
+        AppVerticalDivider(
             color = separatorColor,
             modifier = Modifier
                 .height(24.dp),
@@ -344,7 +344,7 @@ private fun InputFieldContent(
     Column(modifier = Modifier.fillMaxWidth()) {
         if (!singleLine) Spacer(modifier = Modifier.height(8.dp))
         if (value.isEmpty()) {
-            Text(
+            AppText(
                 text = placeholder,
                 color = Theme.colors.text.hint,
                 fontSize = 14.sp,
@@ -366,7 +366,7 @@ fun PreviewTextField() {
         ) {
             var defaultText by remember { mutableStateOf("") }
             var errorMessage: Int? by remember { mutableStateOf(null) }
-            TextField(
+            AppTextField(
                 value = defaultText,
                 onValueChange = {
                     defaultText = it
@@ -381,7 +381,7 @@ fun PreviewTextField() {
 
             var text by remember { mutableStateOf("") }
             var errorMessage2: Int? by remember { mutableStateOf(R.string.incorrect_password) }
-            TextField(
+            AppTextField(
                 value = text,
                 onValueChange = {
                     text = it
@@ -395,7 +395,7 @@ fun PreviewTextField() {
 
             var defaultText2 by remember { mutableStateOf("") }
             var errorMessage3: Int? by remember { mutableStateOf(null) }
-            TextField(
+            AppTextField(
                 value = defaultText2,
                 onValueChange = {
                     defaultText2 = it
@@ -413,7 +413,7 @@ fun PreviewTextField() {
             var password by remember { mutableStateOf("") }
             var errorMessage4: Int? by remember { mutableStateOf(null) }
             var showPassword by remember { mutableStateOf(false) }
-            TextField(
+            AppTextField(
                 value = password,
                 onValueChange = {
                     password = it
@@ -434,7 +434,7 @@ fun PreviewTextField() {
 
 
             var multiLineText2 by remember { mutableStateOf("") }
-            TextField(
+            AppTextField(
                 value = multiLineText2,
                 onValueChange = { multiLineText2 = it },
                 placeholder = "Description",
@@ -445,7 +445,7 @@ fun PreviewTextField() {
 
             val hints = listOf("Apple", "Banana", "Cherry", "Date", "Elderberry")
             var text4 by remember { mutableStateOf("") }
-            TextField(
+            AppTextField(
                 value = text4,
                 onValueChange = { text4 = it },
                 placeholder = "Type fruit...",

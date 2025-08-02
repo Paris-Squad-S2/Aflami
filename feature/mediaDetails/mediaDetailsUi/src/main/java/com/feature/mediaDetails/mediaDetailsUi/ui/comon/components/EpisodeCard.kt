@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +16,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -51,12 +52,12 @@ fun EpisodeCard(
                     .fillMaxWidth(0.8f),
                 verticalArrangement = Arrangement.Center
             ) {
-                Text(
+                AppText(
                     text = "${stringResource(R.string.episode)} $episodeNumber",
                     style = Theme.textStyle.label.large,
                     color = Theme.colors.text.title
                 )
-                Text(
+                AppText(
                     text = episodeTitle,
                     style = Theme.textStyle.label.small,
                     color = Theme.colors.text.hint,
@@ -79,7 +80,7 @@ fun EpisodeCard(
             )
 
         }
-        Text(
+        AppText(
             text = episodeDescription,
             style = Theme.textStyle.label.small,
             maxLines = 2,

@@ -1,6 +1,5 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
-import android.R.attr.layoutDirection
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -9,18 +8,19 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -70,7 +70,7 @@ fun MediaPlayButton(
     ) {
         val iconPadding = if (buttonSize == 64) 10 else 3
         val tint = animateColorAsState(if (hasVideo) Theme.colors.primary else Theme.colors.disable)
-        Icon(
+        AppIcon(
             modifier = Modifier
                 .align(Alignment.Center)
                 .padding(
@@ -78,7 +78,7 @@ fun MediaPlayButton(
                     end = if (layoutDirection == LayoutDirection.Rtl) iconPadding.dp else 0.dp
                 )
                 .size(finalIconSize),
-            painter = painterResource(R.drawable.play_media),
+            imageVector = ImageVector.vectorResource(R.drawable.play_media),
             tint = tint.value,
             contentDescription = "play media"
         )

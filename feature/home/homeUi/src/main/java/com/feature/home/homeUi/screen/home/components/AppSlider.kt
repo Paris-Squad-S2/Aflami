@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.home.homeUi.screen.home.components
 
 import android.annotation.SuppressLint
 import android.content.res.Configuration
@@ -38,7 +38,7 @@ import kotlin.math.abs
 
 @SuppressLint("RestrictedApi")
 @Composable
-fun Slider(
+fun AppSlider(
     items: List<SliderMedia>,
     onClick: (media: SliderMedia) -> Unit,
     modifier: Modifier = Modifier,
@@ -181,7 +181,7 @@ fun SliderPreview() {
 
         val currentMedia = remember { mutableStateOf(sampleItems.first()) }
 
-        Slider(
+        AppSlider(
             items = sampleItems,
             currentMedia = currentMedia,
             modifier = Modifier.fillMaxWidth(),

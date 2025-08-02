@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
@@ -21,13 +22,13 @@ fun GenresChip(
     title:String
 ) {
     Box(modifier = modifier
-            .background(
-                color = if (isSelected) Theme.colors.primary else Theme.colors.surfaceHigh,
-                shape = RoundedCornerShape(8.dp)
-            ),
+        .background(
+            color = if (isSelected) Theme.colors.primary else Theme.colors.surfaceHigh,
+            shape = RoundedCornerShape(8.dp)
+        ),
         contentAlignment = Alignment.Center
     ) {
-        Text(
+        AppText(
             modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
             text = title,
             style = Theme.textStyle.label.small,

@@ -14,10 +14,10 @@ import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
 import com.feature.home.homeUi.screen.home.MediaTypeUi.TVSHOW
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.aflami.designsystem.components.SliderMedia
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.search.searchUi.comon.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,6 +17,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -39,20 +41,20 @@ fun RecentSearchItem(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_clock),
             contentDescription = null,
             modifier = Modifier.padding(end = 8.dp),
             tint = Theme.colors.text.hint
         )
-        Text(
+        AppText(
             text = recentSearchTitle,
             style = Theme.textStyle.body.medium,
             color = Theme.colors.text.title,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier.weight(1f)
         )
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_cancel),
             contentDescription = null,
             modifier = Modifier

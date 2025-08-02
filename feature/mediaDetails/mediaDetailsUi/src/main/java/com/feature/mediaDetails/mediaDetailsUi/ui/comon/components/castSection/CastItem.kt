@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +25,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -33,10 +33,10 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun CastItem(
     imageUrl: String,
     name: String,
+    modifier: Modifier = Modifier,
     height: Dp = 104.dp,
     cornerRadius: Dp = 16.dp,
     width: Dp? = null,
-    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
@@ -89,7 +89,7 @@ fun CastItem(
                 }
             )
         }
-        Text(
+        AppText(
             text = name,
             style = Theme.textStyle.label.small,
             color = Theme.colors.text.body,

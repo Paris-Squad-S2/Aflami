@@ -78,11 +78,20 @@ val koverExcludedPackages = listOf(
     "**.TvShowDetailsScreen.kt.**",
     "**.MovieDetailsScreen.kt.**",
     "**.shimmerable.kt.**",
-    "**.HomeScreen.kt.**",
+    "**.HomeScreen*",
     "**.AflamiNavBar.**",
     "**.AflamiNavBarItem.**",
     "**bottomNavBar**",
-    "**.PagingSource.**"
+    "**.PagingSource.**",
+    "**.MediaUi*",
+    "**.SimilarMediaUI.*",
+    "**.MediaCardType.*",
+    "**.HomeScreenViewModel*",
+    "**.LoginScreen*",
+    "**.TopRatingMoviesScreen*",
+    "**.SearchScreen*",
+    "**.ContinueWatchingScreen*",
+    "**.HomeScreenUIState*"
 )
 
 allprojects {

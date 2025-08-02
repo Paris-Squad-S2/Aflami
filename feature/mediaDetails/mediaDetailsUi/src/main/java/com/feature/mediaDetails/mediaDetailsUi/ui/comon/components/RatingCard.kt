@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 import java.util.Locale
@@ -54,7 +55,7 @@ fun RatingCard(
             painter = painterResource(R.drawable.rating_star),
             contentDescription = "star"
         )
-        Text(
+        AppText(
             text = "%.1f".format(Locale.US, rating),
             color = Theme.colors.text.body,
             modifier = Modifier.padding(end = 8.dp),

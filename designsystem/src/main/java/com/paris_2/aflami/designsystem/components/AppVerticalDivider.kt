@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.Dp
 
 
 @Composable
-fun VerticalDivider (
+fun AppVerticalDivider (
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,

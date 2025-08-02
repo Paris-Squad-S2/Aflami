@@ -47,7 +47,10 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.EpisodeCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCard
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TvTopComponent
@@ -57,11 +60,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
-import com.paris_2.aflami.designsystem.components.EpisodeCard
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
+import com.paris_2.aflami.designsystem.components.AppSnackBar
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.SnackBar
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.R as designsystemR
@@ -453,7 +453,7 @@ fun TvShowDetailsScreenContent(
             enter = fadeIn() + slideInVertically(),
             exit = fadeOut() + slideOutVertically()
         ) {
-            SnackBar(
+            AppSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding()

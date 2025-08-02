@@ -17,8 +17,7 @@ import com.feature.mediaDetails.mediaDetailsUi.R
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.Dialog
-import com.paris_2.aflami.designsystem.components.SelectionCard
+import com.paris_2.aflami.designsystem.components.AppDialog
 
 @Composable
 fun AddToListDialog(
@@ -27,7 +26,7 @@ fun AddToListDialog(
     modifier: Modifier = Modifier,
 ) {
     var selectedIndex by remember { mutableStateOf(-1) }
-    Dialog(
+    AppDialog(
         onDismiss = onDismiss,
         title = R.string.add_to_list,
         modifier = modifier

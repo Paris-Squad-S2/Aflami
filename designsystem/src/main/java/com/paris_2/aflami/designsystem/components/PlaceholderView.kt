@@ -47,7 +47,7 @@ fun PlaceholderView(
                 .padding(bottom = spacer)
         )
         title?.let {
-            Text(
+            AppText(
                 text = title,
                 style = Theme.textStyle.title.medium,
                 color = Theme.colors.text.title,
@@ -56,7 +56,7 @@ fun PlaceholderView(
             )
         }
         subTitle?.let {
-            Text(
+            AppText(
                 text = subTitle,
                 style = Theme.textStyle.body.medium,
                 color = Theme.colors.text.body,

@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun Scafold(
+fun AppScaffold(
     bottomBar: @Composable () -> Unit = { },
     content: @Composable () -> Unit,
 ) {

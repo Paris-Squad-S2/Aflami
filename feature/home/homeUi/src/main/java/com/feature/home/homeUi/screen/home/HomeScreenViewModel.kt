@@ -15,10 +15,10 @@ import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
 import com.feature.home.homeUi.navigation.HomeNavigator
+import com.feature.home.homeUi.screen.home.components.SliderMedia
+import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
-import com.paris_2.aflami.designsystem.components.SliderMedia
-import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

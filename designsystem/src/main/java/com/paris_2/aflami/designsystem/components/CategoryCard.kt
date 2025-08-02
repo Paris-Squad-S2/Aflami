@@ -49,7 +49,7 @@ fun CategoryCard(
                 )
                 .padding(start = 8.dp),
         ) {
-            Text(
+            AppText(
                 text = categoryName,
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.text.title,

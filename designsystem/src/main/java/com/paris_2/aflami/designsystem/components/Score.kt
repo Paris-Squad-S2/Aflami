@@ -30,7 +30,7 @@ fun Score(
             .clip(CircleShape)
             .background(backgroundColor)
     ) {
-        Text(
+        AppText(
             text = score,
             color = textColor,
             style = Theme.textStyle.label.large

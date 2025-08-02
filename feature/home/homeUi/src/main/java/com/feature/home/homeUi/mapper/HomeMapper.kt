@@ -6,8 +6,8 @@ import com.paris_2.domain.media.entity.MediaType
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.aflami.designsystem.components.SliderMedia
-import com.paris_2.aflami.designsystem.components.SliderMediaTypeUi
+import com.feature.home.homeUi.screen.home.components.SliderMedia
+import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
 import kotlinx.datetime.LocalDate
 
 fun List<Media>.toSliderMediaList() = this.map { it.toSliderMedia() }

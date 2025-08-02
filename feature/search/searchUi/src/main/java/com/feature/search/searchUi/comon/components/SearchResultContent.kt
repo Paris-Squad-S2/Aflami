@@ -14,8 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
 
 @Composable
 fun SearchResultContent(

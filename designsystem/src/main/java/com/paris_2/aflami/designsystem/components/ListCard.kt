@@ -28,7 +28,7 @@ fun ListCard(
                 onCardClick()
             }
     ) {
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_list_card),
             contentDescription = stringResource(R.string.list_card),
             tint = Theme.colors.surfaceHigh
@@ -38,12 +38,12 @@ fun ListCard(
                 .padding(start = 8.dp, bottom = 21.dp)
                 .align(Alignment.BottomStart)
         ) {
-            Text(
+            AppText(
                 text = title,
                 color = Theme.colors.text.title,
                 style = Theme.textStyle.title.medium
             )
-            Text(
+            AppText(
                 text = stringResource(R.string.item, count),
                 color = Theme.colors.text.hint,
                 style = Theme.textStyle.label.large
