@@ -65,7 +65,6 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS)) //TODO: remove
     implementation(project(Modules.DOMAIN_MEDIA))
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
