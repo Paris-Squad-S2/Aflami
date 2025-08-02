@@ -33,9 +33,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.home.homeUi.screen.home.components.MediaCard
+import com.feature.home.homeUi.screen.home.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.AppTopBar
