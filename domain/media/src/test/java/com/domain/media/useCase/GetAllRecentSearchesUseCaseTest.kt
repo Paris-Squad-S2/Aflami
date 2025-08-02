@@ -1,8 +1,8 @@
 package com.domain.media.useCase
 
-import com.domain.search.model.SearchHistoryModel
-import com.domain.search.model.SearchType
-import com.domain.search.repository.SearchHistoryRepository
+import com.domain.media.model.SearchHistoryModel
+import com.domain.media.model.SearchType
+import com.domain.media.repository.SearchHistoryRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

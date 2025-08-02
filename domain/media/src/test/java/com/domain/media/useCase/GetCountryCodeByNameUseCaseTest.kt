@@ -1,8 +1,8 @@
 package com.domain.media.useCase
 
 import com.domain.media.repository.CountryRepository
-import com.domain.search.model.Country
-import com.domain.search.repository.CountryRepository
+import com.domain.media.model.Country
+import com.domain.media.repository.CountryRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
