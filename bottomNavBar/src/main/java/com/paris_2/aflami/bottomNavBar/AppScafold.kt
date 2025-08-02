@@ -17,7 +17,7 @@ import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
-import com.paris_2.aflami.designsystem.components.Scafold
+import com.paris_2.aflami.designsystem.components.AppScaffold
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,7 +50,7 @@ internal fun AppScaffold(
 
     val scope = rememberCoroutineScope()
 
-    Scafold(
+    AppScaffold(
         content = {
             AppNavGraph(
                 navigator = appNavigator,
@@ -68,7 +68,7 @@ internal fun AppScaffold(
                 enter = slideInVertically(initialOffsetY = { it }),
                 exit = slideOutVertically(targetOffsetY = { it }),
             ) {
-                AflamiNavBar(
+                AppNavBar(
                     selectedItem = AflamiNavBarItem.destinations[selectedDestinationIndex],
                     onItemClick = { destination ->
                         scope.launch {

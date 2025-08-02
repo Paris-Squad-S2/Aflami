@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.home.homeUi.screen.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -31,6 +31,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -42,7 +44,7 @@ fun MoodPicker(
     onEmojiClick: (emojiMood: MoodType) -> Unit,
     title: String,
     question: String,
-    ) {
+) {
     Box(
         modifier = modifier
             .background(
@@ -66,7 +68,7 @@ fun MoodPicker(
                 .align(Alignment.TopStart),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
+            AppIcon(
                 imageVector = ImageVector.vectorResource(R.drawable.ic_heart),
                 contentDescription = "Icon heart",
                 tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -74,7 +76,7 @@ fun MoodPicker(
             )
         }
 
-        Text(
+        AppText(
             text = title,
             style = Theme.textStyle.label.medium,
             modifier = Modifier
@@ -102,7 +104,7 @@ fun MoodPicker(
             verticalArrangement = Arrangement.SpaceEvenly
         ) {
 
-            Text(
+            AppText(
                 text = question,
                 style = Theme.textStyle.body.small,
                 modifier = Modifier
@@ -123,7 +125,7 @@ fun MoodPicker(
                 horizontalArrangement = Arrangement.Center,
             ) {
                 MoodPickerList.forEachIndexed { index, icon ->
-                    Icon(
+                    AppIcon(
                         imageVector = ImageVector.vectorResource(id = icon),
                         contentDescription = "Icons",
                         tint = if (selectedEmojiIndex.intValue == index) Theme.colors.primary else Theme.colors.text.body,
@@ -140,7 +142,7 @@ fun MoodPicker(
                     )
                 }
             }
-            Text(
+            AppText(
                 text = "Get now",
                 style = Theme.textStyle.label.medium,
                 color = if (isEmojiSelected.value) Theme.colors.primary else Theme.colors.disable,

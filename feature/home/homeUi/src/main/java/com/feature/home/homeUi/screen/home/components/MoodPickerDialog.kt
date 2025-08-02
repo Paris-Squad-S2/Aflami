@@ -13,10 +13,8 @@ import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.Dialog
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
-import com.paris_2.aflami.designsystem.components.Text
+import com.paris_2.aflami.designsystem.components.AppDialog
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -27,13 +25,13 @@ fun MoodPickerDialog(
     onGetAnotherMovieClick: () -> Unit,
 ){
 
-    Dialog(
+    AppDialog(
         onDismiss = onDismiss,
         title = R.string.mood_picker,
         modifier = Modifier
             .padding(12.dp),
     ) {
-        Text(
+        AppText(
             text = stringResource(R.string.movie_that_matches_your_mood_is),
             style = Theme.textStyle.body.medium,
             color = Theme.colors.text.body,

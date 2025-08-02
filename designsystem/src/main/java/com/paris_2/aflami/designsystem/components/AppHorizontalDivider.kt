@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 
 @Composable
-fun HorizontalDivider (
+fun AppHorizontalDivider (
     modifier: Modifier = Modifier,
     thickness: Dp = DividerDefaults.Thickness,
     color: Color = DividerDefaults.color,

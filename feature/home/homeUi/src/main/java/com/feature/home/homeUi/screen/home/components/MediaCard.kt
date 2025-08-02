@@ -1,5 +1,6 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.home.homeUi.screen.home.components
 
+import com.paris_2.aflami.designsystem.components.AppText
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -138,7 +139,7 @@ fun MediaCard(
                 ),
             verticalArrangement = Arrangement.Bottom,
         ) {
-            Text(
+            AppText(
                 text = movieName,
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.onPrimaryColors.onPrimary,

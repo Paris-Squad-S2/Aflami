@@ -25,7 +25,7 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
-fun SnackBar(
+fun AppSnackBar(
     modifier: Modifier = Modifier,
     @StringRes text: Int,
     isSuccess: Boolean,
@@ -49,7 +49,7 @@ fun SnackBar(
             .padding(horizontal = 8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
+        AppIcon(
             modifier = Modifier.size(24.dp),
             imageVector = ImageVector.vectorResource(icon),
             contentDescription = if (isSuccess) stringResource(R.string.thumbs_up_icon) else stringResource(
@@ -57,7 +57,7 @@ fun SnackBar(
             ),
             tint = color,
         )
-        Text(
+        AppText(
             text = stringResource(id = text),
             style = Theme.textStyle.body.medium,
             modifier = Modifier.padding(start = 12.dp)
@@ -71,12 +71,12 @@ fun SnackBar(
 private fun SnackBarErrorPreview() {
     BasePreview {
         Column(Modifier.padding(50.dp)) {
-            SnackBar(
+            AppSnackBar(
                 text = R.string.some_error_happened,
                 isSuccess = false
             )
             Spacer(modifier = Modifier.height(50.dp))
-            SnackBar(
+            AppSnackBar(
                 text = R.string.added_new_list_successfully,
                 isSuccess = true
             )

@@ -33,7 +33,7 @@ fun PageLoadingPlaceHolder(
                 .padding(bottom = 8.dp),
             color = Theme.colors.primary
         )
-        Text(
+        AppText(
             text =  stringResource(R.string.loading_with_dots),
             style = Theme.textStyle.label.medium,
             color = Theme.colors.text.body

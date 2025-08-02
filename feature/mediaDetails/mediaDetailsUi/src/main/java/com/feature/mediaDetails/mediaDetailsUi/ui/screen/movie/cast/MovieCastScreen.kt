@@ -26,7 +26,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.C
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.R as RDesignSystem
@@ -51,7 +51,7 @@ fun MovieScreenContent(
             .background(Theme.colors.surface)
             .navigationBarsPadding()
     ) {
-        TopAppBar(
+        AppTopBar(
             modifier = Modifier.statusBarsPadding(),
             title = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.cast),
             leadingIcons = listOf(

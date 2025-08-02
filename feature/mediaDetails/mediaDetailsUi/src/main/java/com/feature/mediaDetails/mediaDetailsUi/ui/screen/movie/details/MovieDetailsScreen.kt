@@ -36,7 +36,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -45,6 +44,8 @@ import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCard
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
@@ -53,15 +54,12 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProduc
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.SnackBar
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppSnackBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import kotlinx.coroutines.flow.emptyFlow
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
@@ -128,7 +126,7 @@ fun MovieDetailsScreenContent(
                         modifier = Modifier
                             .fillMaxSize()
                     ) {
-                        TopAppBar(
+                        AppTopBar(
                             leadingIcons = listOf(
                                 iconItemWithDefaults(
                                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
@@ -146,7 +144,7 @@ fun MovieDetailsScreenContent(
                     Column(
                         modifier = Modifier.fillMaxSize()
                     ) {
-                        TopAppBar(
+                        AppTopBar(
                             leadingIcons = listOf(
                                 iconItemWithDefaults(
                                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
@@ -385,7 +383,7 @@ fun MovieDetailsScreenContent(
             enter = fadeIn() + slideInVertically(),
             exit = fadeOut() + slideOutVertically()
         ) {
-            SnackBar(
+            AppSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding()

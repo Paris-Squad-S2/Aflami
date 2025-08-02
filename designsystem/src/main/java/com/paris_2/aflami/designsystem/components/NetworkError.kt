@@ -37,13 +37,13 @@ fun NetworkError(
             painter = painterResource(R.drawable.ic_network_error),
             contentDescription = stringResource(R.string.network_error_icon),
         )
-        Text(
+        AppText(
             modifier = Modifier.padding(bottom = 8.dp),
             text = stringResource(R.string.network_error_message),
             style = Theme.textStyle.title.medium,
             color = Theme.colors.text.title
         )
-        Text(
+        AppText(
             text = stringResource(R.string.network_error_hint),
             style = Theme.textStyle.label.medium,
             color = Theme.colors.text.body,

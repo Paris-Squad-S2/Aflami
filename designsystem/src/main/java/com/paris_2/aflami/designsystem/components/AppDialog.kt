@@ -32,7 +32,7 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun Dialog(
+fun AppDialog(
     onDismiss: () -> Unit,
     @StringRes title: Int,
     modifier: Modifier = Modifier,
@@ -55,7 +55,7 @@ fun Dialog(
                         .padding(bottom = 24.dp, top = 12.dp, start = 12.dp, end = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Text(
+                    AppText(
                         text = stringResource(id = title),
                         style = Theme.textStyle.title.large,
                         color = Theme.colors.text.title,
@@ -64,7 +64,7 @@ fun Dialog(
                         modifier = Modifier
                             .weight(1f)
                     )
-                    Icon(
+                    AppIcon(
                        imageVector = ImageVector.vectorResource(R.drawable.ic_cancel),
                         modifier = Modifier
                             .size(40.dp)
@@ -106,7 +106,7 @@ fun PreviewAflamiDialog() {
         }
 
         if (showDialog.value) {
-            Dialog(
+            AppDialog(
                 onDismiss = { showDialog.value = false },
                 title = R.string.settings,
             ) {

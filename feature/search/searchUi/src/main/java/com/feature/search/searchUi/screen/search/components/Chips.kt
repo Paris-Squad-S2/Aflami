@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.search.searchUi.screen.search.components
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
@@ -21,6 +21,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
@@ -58,7 +60,7 @@ fun Chips(
                 .clickable { onClick() },
             contentAlignment = Alignment.Center
         ) {
-            Icon(
+            AppIcon(
                 imageVector = icon,
                 contentDescription = null,
                 modifier = Modifier.padding(16.dp),
@@ -68,7 +70,7 @@ fun Chips(
             )
         }
 
-        Text(
+        AppText(
             text = title,
             style = Theme.textStyle.label.small,
             color = animateColorAsState(

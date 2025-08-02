@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithContent
@@ -29,16 +28,16 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.components.Text
-import com.paris_2.aflami.designsystem.components.Icon
-import com.paris_2.aflami.designsystem.components.NavigationBar
+import com.paris_2.aflami.designsystem.components.AppText
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppNavigationBar
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import com.paris_2.aflami.designsystem.R
 
 @Composable
-fun AflamiNavBar(
+fun AppNavBar(
     modifier: Modifier = Modifier,
     selectedItem: AflamiNavBarItem,
     destinations: List<AflamiNavBarItem> = AflamiNavBarItem.destinations,
@@ -46,7 +45,7 @@ fun AflamiNavBar(
 ) {
     val strokeColor = Theme.colors.stroke
 
-    NavigationBar(
+    AppNavigationBar(
         containerColor = Theme.colors.surface,
         modifier = modifier.drawWithContent {
             drawContent()
@@ -96,7 +95,7 @@ private fun RowScope.AflamiNavBarItem(
                 currentItem = currentItem,
                 selected = isSelected
             )
-            Text(
+            AppText(
                 text = stringResource(currentItem.label),
                 style = Theme.textStyle.label.small,
                 color = animateColorAsState(
@@ -132,7 +131,7 @@ private fun AflamiNavBarIcon(
             targetValue = if (selected) Theme.colors.primary else Theme.colors.text.hint,
             label = "NavBarIconTint"
         )
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(currentItem.icon),
             contentDescription = null,
             modifier = Modifier.size(24.dp),
@@ -184,9 +183,9 @@ sealed class AflamiNavBarItem(
 @Composable
 @PreviewMultiDevices
 private fun AflamiNavigationBarPreview() {
-    var selectedItem by remember { mutableStateOf(AflamiNavBarItem.destinations[0]) }
+    val selectedItem by remember { mutableStateOf(AflamiNavBarItem.destinations[0]) }
     BasePreview {
-        AflamiNavBar(
+        AppNavBar(
             selectedItem = selectedItem,
             onItemClick = { }
         )

@@ -1,4 +1,4 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.home.homeUi.screen.home.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
@@ -15,6 +15,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -34,7 +36,7 @@ fun SectionTitle(
             .padding(horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
+        AppText(
             modifier = shimmerModifier,
             text = title,
             style = Theme.textStyle.headline.small,
@@ -43,7 +45,7 @@ fun SectionTitle(
         icon?.invoke()
         Spacer(modifier = Modifier.weight(1f))
         if (hasViewAll) {
-            Text(
+            AppText(
                 text = stringResource(R.string.all),
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
@@ -65,8 +67,8 @@ fun AflamiSectionTitlePreview() {
         SectionTitle(
             title = "Home",
             hasViewAll = true,
-            icon ={Icon(
-               imageVector = ImageVector.vectorResource(R.drawable.ic_home),
+            icon ={AppIcon(
+                imageVector = ImageVector.vectorResource(R.drawable.ic_home),
                 contentDescription = "",
                 modifier = Modifier.padding(start = 8.dp),
                 tint = Theme.colors.iconBackground,

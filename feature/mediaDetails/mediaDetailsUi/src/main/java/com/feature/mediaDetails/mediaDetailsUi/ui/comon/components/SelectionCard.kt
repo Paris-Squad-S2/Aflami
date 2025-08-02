@@ -1,4 +1,5 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
+
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,6 +21,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppRadioButton
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
@@ -79,15 +83,15 @@ fun SelectionCard(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-            icon?.invoke()
+        icon?.invoke()
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            AppText(
                 text = optionTitle,
                 color = Theme.colors.text.body,
                 style = Theme.textStyle.label.large,
             )
             if (optionDescription != null) {
-                Text(
+                AppText(
                     text = optionDescription,
                     color = Theme.colors.text.hint,
                     style = Theme.textStyle.label.small,
@@ -95,12 +99,12 @@ fun SelectionCard(
             }
         }
 
-        RadioButton(
+        AppRadioButton(
             selected = isSelected,
             isDisable = false,
             icon = {
-                if (radioIcon == null) return@RadioButton
-                Icon(
+                if (radioIcon == null) return@AppRadioButton
+                AppIcon(
                     imageVector = ImageVector.vectorResource(radioIcon),
                     contentDescription = "",
                     tint = radioIconTint,
@@ -123,7 +127,7 @@ fun ThemeOptionSelectorPreview() {
                 optionTitle = stringResource(R.string.light),
                 isSelected = true,
                 icon = {
-                    Icon(
+                    AppIcon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_light_theme),
                         contentDescription = null,
                         tint = Theme.colors.primary,
@@ -138,7 +142,7 @@ fun ThemeOptionSelectorPreview() {
                 optionTitle = stringResource(R.string.dark),
                 isSelected = false,
                 icon = {
-                    Icon(
+                    AppIcon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_dark_theme),
                         contentDescription = null,
                         tint = Theme.colors.text.body,
@@ -165,7 +169,7 @@ fun LanguageSelectorPreview() {
                 optionTitle = stringResource(R.string.english),
                 isSelected = false,
                 icon = {
-                    Icon(
+                    AppIcon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_english_language),
                         contentDescription = null,
                         tint = Theme.colors.text.body,
@@ -180,7 +184,7 @@ fun LanguageSelectorPreview() {
                 optionTitle = stringResource(R.string.arabic),
                 isSelected = true,
                 icon = {
-                    Icon(
+                    AppIcon(
                         imageVector = ImageVector.vectorResource(R.drawable.ic_arabic_language),
                         contentDescription = stringResource(R.string.arabic),
                         tint = Theme.colors.primary,

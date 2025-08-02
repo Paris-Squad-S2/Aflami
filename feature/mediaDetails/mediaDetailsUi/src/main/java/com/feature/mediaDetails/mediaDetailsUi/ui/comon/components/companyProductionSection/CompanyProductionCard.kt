@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -58,14 +58,14 @@ fun CompanyProductionCard(
                     bottom = 8.dp
                 )
         ) {
-            Text(
+            AppText(
                 text = companyName,
                 style = Theme.textStyle.label.large,
                 color = Theme.colors.onPrimaryColors.onPrimary,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
-            Text(
+            AppText(
                 text = countryName,
                 style = Theme.textStyle.label.small,
                 color = Theme.colors.onPrimaryColors.onPrimaryBody,
