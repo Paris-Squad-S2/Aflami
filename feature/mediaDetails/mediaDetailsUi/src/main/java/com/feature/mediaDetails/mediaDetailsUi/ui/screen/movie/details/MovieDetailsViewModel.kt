@@ -15,7 +15,7 @@ import com.domain.media.useCase.movie.GetMovieGalleryUseCase
 import com.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R

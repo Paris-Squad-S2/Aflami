@@ -46,7 +46,7 @@ import com.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.domain.media.useCase.SearchByQueryUseCase
 import com.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.domain.user.repository.AuthenticationRepository
 import com.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.domain.user.usecase.GetRegisterUrlUseCase

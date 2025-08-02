@@ -1,4 +1,4 @@
-package com.domain.mediaDetails.useCases.movie
+package com.domain.media.useCase.movie
 
 import com.domain.media.entity.MovieVideo
 import com.domain.media.repository.MovieRepository
