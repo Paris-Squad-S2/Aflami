@@ -16,6 +16,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.feature.search.searchUi.R
+import com.feature.search.searchUi.comon.components.RecentSearchItem
+import com.feature.search.searchUi.comon.components.SearchSuggestionHub
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
@@ -24,8 +26,6 @@ import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.RecentSearchItem
-import com.paris_2.aflami.designsystem.components.SearchSuggestionHub
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 

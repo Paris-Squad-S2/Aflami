@@ -25,7 +25,6 @@ import com.feature.search.searchUi.comon.GenreResourceMapper.getResourceId
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.Chips
 import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.AppDialog
 import com.paris_2.aflami.designsystem.components.RatingBar
