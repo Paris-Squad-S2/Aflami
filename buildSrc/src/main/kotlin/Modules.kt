@@ -8,7 +8,6 @@ object Modules {
     const val DOMAIN_GUESS_GAME = ":domain:guessGame"
     const val DOMAIN_MEDIA = ":domain:media"
 
-    const val REPOSITORY = ":repository"
     const val REPOSITORY_MOVIE = ":repository:movie"
     const val REPOSITORY_TV_SHOW = ":repository:tvShows"
     const val REPOSITORY_USER = ":repository:user"
@@ -18,9 +17,6 @@ object Modules {
     const val REPOSITORY_HOME = ":repository:home"
     const val REPOSITORY_AUTHENTICATION = ":repository:authentication"
 
-    const val DATASOURCE = ":datasource"
-    const val DATASOURCE_REMOTE = ":datasource:remote"
-    const val DATASOURCE_LOCAL = ":datasource:local"
     const val DATASOURCE_REMOTE_USER = ":datasource:remote:user"
     const val DATASOURCE_LOCAL_USER = ":datasource:local:user"
     const val DATASOURCE_REMOTE_MOVIE = ":datasource:remote:movie"
