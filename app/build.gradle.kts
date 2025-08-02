@@ -192,15 +192,13 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_AUTHENTICATION))
 
-    implementation(project(Modules.DOMAIN_SEARCH))
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.REPOSITORY_HOME))
     implementation(project(Modules.DATASOURCE_REMOTE_HOME))
-    implementation(project(Modules.DOMAIN_HOME))
-    implementation(project(Modules.DOMAIN_AUTHENTICATION))
+    implementation(project(Modules.DOMAIN_USER))
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)

@@ -8,11 +8,11 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.search.useCase.AutoCompleteCountryUseCase
-import com.domain.search.useCase.GetCountryCodeByNameUseCase
-import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.useCase.AutoCompleteCountryUseCase
+import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
+import com.paris_2.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toMediaUiList

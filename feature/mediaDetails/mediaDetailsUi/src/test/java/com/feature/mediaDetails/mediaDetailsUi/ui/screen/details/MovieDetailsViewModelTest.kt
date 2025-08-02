@@ -2,16 +2,19 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.GetSessionIdUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
@@ -21,8 +24,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
-import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -212,7 +213,7 @@ class MovieDetailsViewModelTest {
     @Test
     fun `loadMovieReviews updates state with review UI list on success`() = runTest {
         // Arrange
-        val domainReviews = listOf(mockk<com.domain.mediaDetails.model.Review>())
+        val domainReviews = listOf(mockk<Review>())
         val uiReviews = listOf(mockk<ReviewUi>())
 
         val domainMovie = mockk<Movie>(relaxed = true)

@@ -1,7 +1,7 @@
 package com.repository.home.repository
 
-import com.domain.home.exception.NoCategoriesFoundException
-import com.domain.home.model.Category
+import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.entity.Category
 import com.google.common.truth.Truth.assertThat
 import com.repository.home.datasource.remote.GenresRemoteDataSource
 import com.repository.home.dto.GenreDto

@@ -45,8 +45,8 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
 
-    implementation(project(Modules.DOMAIN_AUTHENTICATION))
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_USER))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
 
@@ -104,7 +104,6 @@ dependencies {
 
     implementation(project(Modules.DESIGN_SYSTEM))
 
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))

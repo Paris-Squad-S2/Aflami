@@ -74,7 +74,7 @@ dependencies {
 
     //Modules
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_HOME))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))

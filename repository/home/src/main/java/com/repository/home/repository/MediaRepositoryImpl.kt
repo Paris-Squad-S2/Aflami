@@ -1,16 +1,16 @@
 package com.repository.home.repository
 
-import com.domain.home.exception.AflamiException
-import com.domain.home.exception.AddMediaToContinueWatchingException
-import com.domain.home.exception.NoInternetConnectionException
-import com.domain.home.exception.MediaPlayingException
-import com.domain.home.exception.PopularMediaException
-import com.domain.home.exception.TopRatingMediaException
-import com.domain.home.exception.UpComingMediaException
-import com.domain.home.exception.GetContinueWatchingMediaException
-import com.domain.home.model.Media
-import com.domain.home.model.MediaType
-import com.domain.home.repository.MediaRepository
+import com.paris_2.domain.media.exception.AflamiException
+import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.MediaPlayingException
+import com.paris_2.domain.media.exception.PopularMediaException
+import com.paris_2.domain.media.exception.TopRatingMediaException
+import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.exception.UpComingMediaException
+import com.paris_2.domain.media.repository.MediaRepository
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.mapper.toDomain
@@ -34,11 +34,11 @@ class MediaRepositoryImpl(
 
             val popularTvShows =
                 mediaRemoteDataSource.getPopularTvShows(language = language).results?.mapNotNull {
-                    it.toDomain(MediaType.TV_SHOW)
+                    it.toDomain(MediaType.TVSHOW)
                 } ?: emptyList()
 
             val combined = (popularMovies + popularTvShows)
-                .sortedByDescending { it.voteAverage }
+                .sortedByDescending { it.rating }
 
             combined
         }
@@ -54,11 +54,11 @@ class MediaRepositoryImpl(
 
             val topTv =
                 mediaRemoteDataSource.getTopRatedTvShows(language = language).results?.mapNotNull {
-                    it.toDomain(MediaType.TV_SHOW)
+                    it.toDomain(MediaType.TVSHOW)
                 } ?: emptyList()
 
             val combined = (topMovies + topTv)
-                .sortedByDescending { it.voteAverage }
+                .sortedByDescending { it.rating }
 
             combined
         }
@@ -84,7 +84,7 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun AddMediaToContinueWatching(media: Media) {
+    override suspend fun addMediaToContinueWatching(media: Media) {
         return safeCall(AddMediaToContinueWatchingException()){
             homeMediaLocalDataSource.addMedia(media.toEntity())
         }

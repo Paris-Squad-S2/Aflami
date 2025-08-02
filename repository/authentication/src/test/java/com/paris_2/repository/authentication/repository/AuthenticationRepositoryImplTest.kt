@@ -1,7 +1,7 @@
 package com.paris_2.repository.authentication.repository
 
+import com.paris_2.domain.user.exception.UnknownAuthException
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.authentication.exception.UnknownAuthException
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
 import com.paris_2.repository.authentication.model.remote.GuestSessionDto

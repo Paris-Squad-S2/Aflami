@@ -48,6 +48,6 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(project(Modules.DOMAIN_AUTHENTICATION))
+    implementation(project(Modules.DOMAIN_USER))
 
 }

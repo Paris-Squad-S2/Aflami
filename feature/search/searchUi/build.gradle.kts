@@ -113,7 +113,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(project(Modules.DOMAIN_SEARCH))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 

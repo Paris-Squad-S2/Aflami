@@ -1,6 +1,6 @@
 package com.feature.home.homeUi.screen.continueWatching
 
-import com.domain.home.usecase.GetMediaFromLocalUseCase
+import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi

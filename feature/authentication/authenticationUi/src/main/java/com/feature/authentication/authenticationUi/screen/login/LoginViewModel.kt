@@ -1,13 +1,13 @@
 package com.feature.authentication.authenticationUi.screen.login
 
+import com.paris_2.domain.user.usecase.GuestLoginUseCase
+import com.paris_2.domain.user.usecase.LoginUseCase
 import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.domain.authentication.usecase.GuestLoginUseCase
-import com.paris_2.domain.authentication.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
