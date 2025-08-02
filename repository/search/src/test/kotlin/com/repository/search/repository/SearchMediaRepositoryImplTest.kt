@@ -161,7 +161,7 @@ class SearchMediaRepositoryImplTest {
             repository.getMediaByActor(actorName, page)
         }
 
-        assertEquals("Please connect your device to the internet", exception.message)
+        assertEquals("No internet connection", exception.message)
     }
 
     @Test
@@ -270,7 +270,7 @@ class SearchMediaRepositoryImplTest {
             repository.getMoviesByCountry(countryName, page)
         }
 
-        assertEquals("Please connect your device to the internet", exception.message)
+        assertEquals("No internet connection", exception.message)
     }
 
     @Test
@@ -368,7 +368,7 @@ class SearchMediaRepositoryImplTest {
             repository.getMediaByQuery(query, page)
         }
 
-        assertEquals("Please connect your device to the internet", exception.message)
+        assertEquals("No internet connection", exception.message)
     }
 
     @Test
