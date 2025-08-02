@@ -7,7 +7,6 @@ object Modules {
     const val DOMAIN_USER = ":domain:user"
     const val DOMAIN_GUESS_GAME = ":domain:guessGame"
     const val DOMAIN_MEDIA = ":domain:media"
-    const val DOMAIN_LISTS = ":domain:lists"
     const val DOMAIN_HOME = ":domain:home"
 
     const val REPOSITORY = ":repository"
