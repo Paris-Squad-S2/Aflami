@@ -45,7 +45,6 @@ fun SearchResultContent(
                     movieName = media.title,
                     mediaType = media.type.mediaName,
                     year = media.yearOfRelease.year.toString(),
-                    mediaCardType = MediaCardType.NORMAL,
                     showGradientFilter = true,
                     enabled = !isScrolling,
                 )
