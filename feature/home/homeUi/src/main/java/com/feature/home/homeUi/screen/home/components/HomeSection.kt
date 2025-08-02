@@ -41,9 +41,14 @@ fun HomeSection(
     Column(
         modifier = modifier
     ) {
+        AnimatedVisibility(
+            visible = !isShimmerEnabled&&mediaList.isNotEmpty(),
+            enter = fadeIn(),
+            exit = fadeOut()
+        ){
         SectionTitle(
             title = title,
-            hasViewAll = true,
+            hasViewAll = mediaList.size>=10,
             icon = {
                 leadingIconPainter?.let { it ->
                     Icon(
@@ -58,7 +63,7 @@ fun HomeSection(
             },
             onClickViewAll = onSectionAllClick,
             shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled&&mediaList.isEmpty())
-        )
+        )}
 
         LazyRow(
             modifier = Modifier
