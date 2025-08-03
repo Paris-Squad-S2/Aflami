@@ -16,6 +16,7 @@ import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.feature.profile.profileUi.R
@@ -76,7 +77,7 @@ fun ProfileContent(modifier: Modifier = Modifier) {
             )
 
             Text(
-                text = "Profile",
+                text = stringResource(R.string.profile),
                 color = Theme.colors.text.title,
                 style = Theme.textStyle.title.large,
                 modifier = Modifier
