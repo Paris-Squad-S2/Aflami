@@ -62,7 +62,6 @@ object RoomDatabaseModule {
     ).build()
 
     @Provides fun provideSearchHistoryDao(db: SearchDatabase): SearchHistoryDao = db.searchHistoryDao()
-    @Provides fun provideMediaDao(db: SearchDatabase): MediaDao = db.mediaDao()
     @Provides fun provideCountryDao(db: SearchDatabase): CountryDao = db.countryDao()
     @Provides fun provideGenresDao(db: SearchDatabase): GenresDao = db.genresDao()
     @Provides fun provideGenresUserInteractionDao(db: SearchDatabase): GenresUserInteractionDao = db.genreUserInteractionDao()
