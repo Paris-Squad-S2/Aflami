@@ -65,11 +65,13 @@ object RepositoryModule {
     @Singleton
     fun provideSearchMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        searchRemoteDataSource: SearchRemoteDataSource
+        searchRemoteDataSource: SearchRemoteDataSource,
+        searchHistoryLocalDataSource: HistoryLocalDataSource
     ): SearchMediaRepository {
         return SearchMediaRepositoryImpl(
             networkConnectionChecker,
-            searchRemoteDataSource
+            searchRemoteDataSource,
+            searchHistoryLocalDataSource
         )
     }
 
