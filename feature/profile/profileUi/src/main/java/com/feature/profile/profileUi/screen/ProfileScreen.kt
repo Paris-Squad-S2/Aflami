@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,7 +47,6 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 modifier = Modifier
                     .matchParentSize()
                     .background(Theme.colors.surface.copy(alpha = 0.5f))
-                    .zIndex(1f)
             )
             Box(
                 modifier = Modifier
@@ -72,6 +73,15 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                         )
                     )
                     .align(Alignment.BottomCenter)
+            )
+
+            Text(
+                text = "Profile",
+                color = Theme.colors.text.title,
+                style = Theme.textStyle.title.large,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, top = 54.dp)
             )
 
         }
