@@ -32,7 +32,7 @@ class CategoriesRepositoryImplTest {
 
 
     @Test
-    fun `getAllCategories should fetch from remote when local is empty and internet available`() = runTest {
+    fun `getAllCategories should fetch from remote`() = runTest {
         // Given
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { genresRemoteDataSource.getAllGenres(language) } returns GenresDto(
@@ -48,7 +48,7 @@ class CategoriesRepositoryImplTest {
     }
 
     @Test
-    fun `getAllCategories should throw NoInternetConnectionException when local empty and no internet`() = runTest {
+    fun `getAllCategories should throw NoInternetConnectionException when no internet`() = runTest {
         // Given
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
