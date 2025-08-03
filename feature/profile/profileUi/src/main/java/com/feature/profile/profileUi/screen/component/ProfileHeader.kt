@@ -20,7 +20,7 @@ import com.feature.profile.profileUi.R
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun ProfileBackGround(modifier: Modifier = Modifier) {
+fun ProfileHeader(modifier: Modifier = Modifier) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
