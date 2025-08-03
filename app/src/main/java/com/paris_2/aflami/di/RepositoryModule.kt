@@ -36,7 +36,6 @@ import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.dataSource.local.GenresInteractionDataSource
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.local.HistoryLocalDataSource
-import com.repository.search.dataSource.local.MediaLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.repository.CategoriesRepositoryImpl
 import com.repository.search.repository.CountryRepositoryImpl
@@ -66,15 +65,11 @@ object RepositoryModule {
     @Singleton
     fun provideSearchMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        mediaLocalDataSource: MediaLocalDataSource,
-        searchRemoteDataSource: SearchRemoteDataSource,
-        searchHistoryLocalDataSource: HistoryLocalDataSource
+        searchRemoteDataSource: SearchRemoteDataSource
     ): SearchMediaRepository {
         return SearchMediaRepositoryImpl(
             networkConnectionChecker,
-            mediaLocalDataSource,
-            searchRemoteDataSource,
-            searchHistoryLocalDataSource
+            searchRemoteDataSource
         )
     }
 
