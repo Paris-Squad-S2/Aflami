@@ -1,8 +1,8 @@
 package com
 
 import com.google.common.truth.Truth.assertThat
-import com.repository.media.GenresApiServices
-import com.repository.media.GenresDataSourceImpl
+import com.repository.home.GenresApiServices
+import com.repository.home.GenresDataSourceImpl
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
 import io.mockk.coEvery
