@@ -34,7 +34,6 @@ import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.dataSource.local.GenresInteractionDataSource
-import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.local.HistoryLocalDataSource
 import com.repository.search.dataSource.remote.SearchRemoteDataSource
 import com.repository.search.repository.CategoriesRepositoryImpl
@@ -87,13 +86,10 @@ object RepositoryModule {
     @Singleton
     fun provideCategoriesRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        genresLocalDataSource: GenresLocalDataSource,
         genresRemoteDataSource: com.repository.search.dataSource.remote.GenresRemoteDataSource
-
     ): CategoriesRepository {
         return CategoriesRepositoryImpl(
             networkConnectionChecker,
-            genresLocalDataSource,
             genresRemoteDataSource
         )
     }
