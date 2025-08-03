@@ -1,8 +1,8 @@
 package com
 
 import com.google.common.truth.Truth.assertThat
-import com.repository.media.MediaApiService
-import com.repository.media.MediaDataSourceImpl
+import com.repository.home.MediaApiService
+import com.repository.home.MediaDataSourceImpl
 import com.repository.media.dto.DatesDto
 import com.repository.media.dto.MovieDto
 import com.repository.media.dto.MovieListDto
