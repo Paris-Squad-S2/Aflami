@@ -8,6 +8,7 @@ import androidx.compose.runtime.internal.ComposableFunction0
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.feature.profile.profileApi.ProfileFeatureAPI
+import com.feature.profile.profileUi.screen.ProfileScreen
 
 class ProfileFeatureAPIImpl : ProfileFeatureAPI {
     override fun invoke(): @Composable ComposableFunction0<Unit> {
@@ -16,9 +17,7 @@ class ProfileFeatureAPIImpl : ProfileFeatureAPI {
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Text(
-                    text = "Profile Feature",
-                )
+                ProfileScreen()
             }
         }
     }

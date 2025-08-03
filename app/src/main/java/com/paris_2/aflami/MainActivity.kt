@@ -21,11 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
-                if (hasAnySessionUseCase()){
-                    appNavigationAPI()
-                } else {
-                    authenticationFeatureAPI()
-                }
+             appNavigationAPI()
             }
         }
     }
