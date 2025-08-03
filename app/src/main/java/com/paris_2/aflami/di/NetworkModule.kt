@@ -3,8 +3,8 @@ package com.paris_2.aflami.di
 import android.content.Context
 import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.repository.media.GenresApiServices
-import com.repository.media.MediaApiService
+import com.repository.home.GenresApiServices
+import com.repository.home.MediaApiService
 import com.repository.search.util.NetworkConnectionChecker as SearchNetworkConnectionChecker
 import com.repository.util.NetworkConnectionChecker as CommonNetworkConnectionChecker
 import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkConnectionChecker
