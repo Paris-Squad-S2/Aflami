@@ -2,7 +2,7 @@ package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.MediaDao
 import com.google.common.truth.Truth.assertThat
-import com.repository.search.entity.MediaEntity
+import com.repository.search.entity.MediaSearchEntity
 import com.repository.search.entity.MediaTypeEntity
 import com.repository.search.entity.SearchType
 import io.mockk.coEvery
@@ -107,7 +107,7 @@ class MediaLocalDataSourceImplTest {
 
     private companion object {
         val language = "en"
-        val sampleMedia = MediaEntity(
+        val sampleMedia = MediaSearchEntity(
             id = 0,
             searchQuery = "aa",
             imageUri = "www.image.com",

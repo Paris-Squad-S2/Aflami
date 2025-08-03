@@ -3,7 +3,7 @@ package com.datasource.local.home.datasource
 import com.datasource.local.home.dao.HomeMediaDao
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.entity.MediaEntity
-import com.repository.media.entity.MediaTypeEntity
+import com.repository.media.entity.MediaSearchTypeEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -62,7 +62,7 @@ class HomeMediaLocalDataSourceImplTest {
             posterPath = "/some/path.jpg",
             releaseDate = "2023-01-01",
             genreIds = listOf(12, 18),
-            type = MediaTypeEntity.MOVIE
+            type = MediaSearchTypeEntity.MOVIE
         )
     }
 }

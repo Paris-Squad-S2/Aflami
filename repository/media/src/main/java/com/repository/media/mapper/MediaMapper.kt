@@ -2,8 +2,8 @@ package com.repository.media.mapper
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
-import com.repository.media.dto.MovieDto
-import com.repository.media.dto.TvDto
+import com.repository.media.dto.home.MovieDto
+import com.repository.media.dto.home.TvDto
 import com.repository.media.entity.MediaEntity
 import com.repository.media.entity.MediaTypeEntity
 import kotlinx.datetime.LocalDate
@@ -50,12 +50,11 @@ fun MediaEntity.toDomain(): Media{
     )
 }
 
-fun MediaTypeEntity.toDomain(): MediaType {
-    return when (this) {
-        MediaTypeEntity.MOVIE -> MediaType.MOVIE
-        MediaTypeEntity.TV_SHOW -> MediaType.TVSHOW
-    }
+fun MediaTypeEntity.toDomain(): com.paris_2.domain.media.entity.MediaType = when (this) {
+    MediaTypeEntity.MOVIE -> com.paris_2.domain.media.entity.MediaType.MOVIE
+    MediaTypeEntity.TV_SHOW -> com.paris_2.domain.media.entity.MediaType.TVSHOW
 }
+
 
 fun Media.toEntity(): MediaEntity = MediaEntity(
     id = id,
@@ -67,7 +66,7 @@ fun Media.toEntity(): MediaEntity = MediaEntity(
     type = type.toEntity()
 )
 
-fun MediaType.toEntity(): MediaTypeEntity = when (this) {
+fun MediaType.toEntity(): MediaTypeEntity= when (this) {
     MediaType.MOVIE -> MediaTypeEntity.MOVIE
     MediaType.TVSHOW -> MediaTypeEntity.TV_SHOW
 }

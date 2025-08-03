@@ -69,7 +69,7 @@ dependencies {
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.kotlin.test.junit5)
 
-    implementation(project(Modules.REPOSITORY_SEARCH))
+    implementation(project(Modules.REPOSITORY_MEDIA))
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 

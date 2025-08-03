@@ -53,11 +53,11 @@ import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
 import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
-import com.repository.search.dataSource.local.CountriesLocalDataSource
-import com.repository.search.dataSource.local.GenresInteractionDataSource
-import com.repository.search.dataSource.local.GenresLocalDataSource
-import com.repository.search.dataSource.local.HistoryLocalDataSource
-import com.repository.search.dataSource.local.MediaLocalDataSource
+import com.repository.media.datasource.local.CountriesLocalDataSource
+import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.datasource.local.GenresLocalDataSource
+import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.MediaLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

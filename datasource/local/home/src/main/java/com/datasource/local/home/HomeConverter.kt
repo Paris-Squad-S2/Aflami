@@ -2,6 +2,7 @@ package com.datasource.local.home
 
 import kotlinx.serialization.json.Json
 import androidx.room.TypeConverter
+import com.repository.media.entity.MediaSearchTypeEntity
 import com.repository.media.entity.MediaTypeEntity
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer

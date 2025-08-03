@@ -175,7 +175,6 @@ dependencies {
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
 
-    implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.REPOSITORY_USER))

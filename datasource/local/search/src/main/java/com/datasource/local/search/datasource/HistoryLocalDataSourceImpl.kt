@@ -4,13 +4,12 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.datasource.local.search.dao.SearchHistoryDao
-import com.repository.search.dataSource.local.HistoryLocalDataSource
-import com.repository.search.dataSource.local.workmanager.ClearMediaWorker
-import com.repository.search.entity.SearchHistoryEntity
-import com.repository.search.entity.SearchType
+import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.workmanager.ClearMediaWorker
+import com.repository.media.entity.SearchHistoryEntity
+import com.repository.media.entity.SearchType
 import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
 class HistoryLocalDataSourceImpl (
     private val dao: SearchHistoryDao,

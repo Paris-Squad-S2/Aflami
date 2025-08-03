@@ -1,7 +1,6 @@
 package com.repository.search
-
-import com.repository.search.dataSource.remote.SearchRemoteDataSource
-import com.repository.search.dto.SearchDto
+import com.repository.media.datasource.remote.SearchRemoteDataSource
+import com.repository.media.dto.search.SearchDto
 import com.repository.search.service.implementation.RetrofitSearchApiService
 import javax.inject.Inject
 

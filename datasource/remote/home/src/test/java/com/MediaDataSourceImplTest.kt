@@ -3,11 +3,11 @@ package com
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.MediaApiService
 import com.repository.media.MediaDataSourceImpl
-import com.repository.media.dto.DatesDto
-import com.repository.media.dto.MovieDto
-import com.repository.media.dto.MovieListDto
-import com.repository.media.dto.TvDto
-import com.repository.media.dto.TvListDto
+import com.repository.media.dto.home.DatesDto
+import com.repository.media.dto.home.MovieDto
+import com.repository.media.dto.home.MovieListDto
+import com.repository.media.dto.home.TvDto
+import com.repository.media.dto.home.TvListDto
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

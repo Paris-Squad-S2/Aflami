@@ -1,6 +1,6 @@
 package com.repository.search.service.implementation
 
-import com.repository.search.dto.SearchDto
+import com.repository.media.dto.search.SearchDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

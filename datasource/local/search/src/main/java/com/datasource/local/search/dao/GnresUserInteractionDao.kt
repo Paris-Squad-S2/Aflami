@@ -3,7 +3,7 @@ package com.datasource.local.search.dao
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
-import com.repository.search.entity.GenreUserInteractionEntity
+import com.repository.media.entity.GenreUserInteractionEntity
 
 @Dao
 interface GenresUserInteractionDao {

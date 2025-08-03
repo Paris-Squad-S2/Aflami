@@ -37,7 +37,7 @@ android {
 
 dependencies {
     implementation(libs.androidx.core.ktx)
-    implementation(project(Modules.REPOSITORY_SEARCH))
+    implementation(project(Modules.REPOSITORY_MEDIA))
 
     api(libs.ktor.client.android)
     api(libs.ktor.client.core)

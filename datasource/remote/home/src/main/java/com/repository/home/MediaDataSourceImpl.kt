@@ -1,8 +1,8 @@
 package com.repository.home
 
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.dto.MovieListDto
-import com.repository.media.dto.TvListDto
+import com.repository.media.dto.home.MovieListDto
+import com.repository.media.dto.home.TvListDto
 import javax.inject.Inject
 
 class MediaDataSourceImpl @Inject constructor(

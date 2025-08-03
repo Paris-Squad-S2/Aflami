@@ -1,8 +1,8 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.GenresUserInteractionDao
-import com.repository.search.dataSource.local.GenresInteractionDataSource
-import com.repository.search.entity.GenreUserInteractionEntity
+import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.entity.GenreUserInteractionEntity
 
 class GenresInteractionDataSourceImpl(
     private val genresInteractionDao: GenresUserInteractionDao

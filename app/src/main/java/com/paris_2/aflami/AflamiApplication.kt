@@ -6,7 +6,6 @@ import androidx.work.Configuration
 import androidx.hilt.work.HiltWorkerFactory
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
-import com.repository.search.util.NetworkConnectionChecker as SearchNetworkChecker
 import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkChecker
 import com.repository.util.NetworkConnectionChecker as GenericNetworkChecker
 import com.repository.media.util.NetworkConnectionChecker as HomeNetworkChecker
@@ -16,8 +15,6 @@ class AflamiApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var workerFactory: HiltWorkerFactory
     @Inject
-    lateinit var searchNetworkChecker: SearchNetworkChecker
-    @Inject
     lateinit var movieNetworkChecker: MovieNetworkChecker
     @Inject
     lateinit var genericNetworkChecker: GenericNetworkChecker
@@ -26,7 +23,6 @@ class AflamiApplication : Application(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
-        searchNetworkChecker.startChecker()
         movieNetworkChecker.startChecker()
         genericNetworkChecker.startChecker()
         homeNetworkChecker.startChecker()

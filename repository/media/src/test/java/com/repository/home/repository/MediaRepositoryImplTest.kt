@@ -8,10 +8,12 @@ import com.paris_2.domain.media.entity.MediaType
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.dto.MovieDto
-import com.repository.media.dto.TvDto
+import com.repository.media.dto.home.MovieDto
+import com.repository.media.dto.home.TvDto
 import com.repository.media.entity.MediaEntity
+import com.repository.media.entity.MediaSearchTypeEntity
 import com.repository.media.entity.MediaTypeEntity
+import com.repository.media.mapper.search.toEntity
 import com.repository.media.mapper.toEntity
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery

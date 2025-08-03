@@ -1,7 +1,7 @@
 package com.datasource.local.search
 
 import androidx.room.TypeConverter
-import com.repository.search.entity.MediaTypeEntity
+import com.repository.media.entity.MediaSearchTypeEntity
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
@@ -34,10 +34,10 @@ class SearchConverter {
     }
 
     @TypeConverter
-    fun fromEnumToString(mediaTypeEntity: MediaTypeEntity): String = mediaTypeEntity.name
+    fun fromEnumToString(mediaSearchTypeEntity: MediaSearchTypeEntity): String = mediaSearchTypeEntity.name
 
     @TypeConverter
-    fun fromStringToEnum(type: String): MediaTypeEntity = MediaTypeEntity.valueOf(type)
+    fun fromStringToEnum(type: String): MediaSearchTypeEntity = MediaSearchTypeEntity.valueOf(type)
 
     @TypeConverter
     fun fromLocalDate(date: LocalDate?): String? {

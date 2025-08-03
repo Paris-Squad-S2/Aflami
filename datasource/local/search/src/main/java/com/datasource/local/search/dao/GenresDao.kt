@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.search.entity.GenreEntity
+import com.repository.media.entity.GenreEntity
 
 @Dao
 interface GenresDao {

@@ -1,8 +1,9 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.GenresDao
-import com.repository.search.dataSource.local.GenresLocalDataSource
-import com.repository.search.entity.GenreEntity
+import com.repository.media.datasource.local.GenresLocalDataSource
+import com.repository.media.entity.GenreEntity
+
 
 class GenresLocalDataSourceImpl(
     private val dao: GenresDao

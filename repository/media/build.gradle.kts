@@ -42,6 +42,7 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.hilt.common)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.jupiter)
@@ -76,6 +77,9 @@ dependencies {
 
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
 
     implementation(project(Modules.DOMAIN_MEDIA))
 }

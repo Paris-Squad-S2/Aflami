@@ -32,18 +32,19 @@ import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
-import com.repository.search.dataSource.local.CountriesLocalDataSource
-import com.repository.search.dataSource.local.GenresInteractionDataSource
-import com.repository.search.dataSource.local.GenresLocalDataSource
-import com.repository.search.dataSource.local.HistoryLocalDataSource
-import com.repository.search.dataSource.local.MediaLocalDataSource
-import com.repository.search.dataSource.remote.SearchRemoteDataSource
-import com.repository.search.repository.CategoriesRepositoryImpl
-import com.repository.search.repository.CountryRepositoryImpl
-import com.repository.search.repository.GenresInteractionRepositoryImpl
-import com.repository.search.repository.SearchHistoryRepositoryImpl
-import com.repository.search.repository.SearchMediaRepositoryImpl
-import com.repository.search.util.NetworkConnectionChecker
+import com.repository.media.datasource.local.CountriesLocalDataSource
+import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.datasource.local.GenresLocalDataSource
+import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.MediaLocalDataSource
+import com.repository.media.datasource.remote.GenresRemoteDataSource
+import com.repository.media.datasource.remote.SearchRemoteDataSource
+import com.repository.media.repository.CategoriesRepositoryImpl
+import com.repository.media.repository.CountryRepositoryImpl
+import com.repository.media.repository.GenresInteractionRepositoryImpl
+import com.repository.media.repository.SearchHistoryRepositoryImpl
+import com.repository.media.repository.SearchMediaRepositoryImpl
+import com.repository.media.util.NetworkConnectionChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -91,7 +92,7 @@ object RepositoryModule {
     fun provideCategoriesRepository(
         networkConnectionChecker: NetworkConnectionChecker,
         genresLocalDataSource: GenresLocalDataSource,
-        genresRemoteDataSource: com.repository.search.dataSource.remote.GenresRemoteDataSource
+        genresRemoteDataSource: GenresRemoteDataSource
 
     ): CategoriesRepository {
         return CategoriesRepositoryImpl(
@@ -119,7 +120,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideDetailedMediaRepository(
-        networkConnectionChecker: com.repository.media.util.NetworkConnectionChecker,
+        networkConnectionChecker: NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
         homeMediaLocalDataSource: HomeMediaLocalDataSource
     ): MediaRepository = MediaRepositoryImpl(networkConnectionChecker, mediaRemoteDataSource, homeMediaLocalDataSource)
@@ -127,8 +128,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideMoviesCategoriesRepository(
-        genresRemoteDataSource: com.repository.media.datasource.remote.GenresRemoteDataSource,
-        networkConnectionChecker: com.repository.media.util.NetworkConnectionChecker
+        genresRemoteDataSource: GenresRemoteDataSource,
+        networkConnectionChecker: NetworkConnectionChecker
     ): MoviesCategoriesRepository = MoviesCategoriesRepositoryImpl(genresRemoteDataSource, networkConnectionChecker)
 
     @Provides

@@ -1,9 +1,9 @@
 package com.datasource.local.search.datasource
 
 import com.datasource.local.search.dao.CountryDao
-import com.repository.search.dataSource.local.CountriesLocalDataSource
-import com.repository.search.entity.CountryEntity
-import com.repository.search.util.Util
+import com.repository.media.datasource.local.CountriesLocalDataSource
+import com.repository.media.entity.CountryEntity
+import com.repository.media.util.Util
 
 class CountriesLocalDataSourceImpl(
     private val dao: CountryDao

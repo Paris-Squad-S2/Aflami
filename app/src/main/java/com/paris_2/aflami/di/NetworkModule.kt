@@ -5,7 +5,6 @@ import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.repository.home.GenresApiServices
 import com.repository.home.MediaApiService
-import com.repository.search.util.NetworkConnectionChecker as SearchNetworkConnectionChecker
 import com.repository.util.NetworkConnectionChecker as CommonNetworkConnectionChecker
 import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkConnectionChecker
 import com.repository.media.util.NetworkConnectionChecker as HomeNetworkConnectionChecker
@@ -26,10 +25,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    @Provides
-    @Singleton
-    fun provideSearchNetworkConnectionChecker(@ApplicationContext context: Context): SearchNetworkConnectionChecker =
-        SearchNetworkConnectionChecker(context)
 
     @Provides
     @Singleton
