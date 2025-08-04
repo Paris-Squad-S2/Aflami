@@ -1,18 +1,18 @@
 package com.repository.search.repository
 
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.exception.NoCategoriesFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.repository.CategoriesRepository
-import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.mapper.toCategories
 import com.repository.search.mapper.toEntity
+import com.repository.search.util.SearchNetworkConnectionChecker
 import java.util.Locale
 
 class CategoriesRepositoryImpl(
-    private val networkConnectionChecker: NetworkConnectionChecker,
+    private val networkConnectionChecker: SearchNetworkConnectionChecker,
     private val genresLocalDataSource: GenresLocalDataSource,
     private val genresRemoteDataSource: GenresRemoteDataSource,
 ) : CategoriesRepository {
