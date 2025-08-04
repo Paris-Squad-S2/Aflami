@@ -1,7 +1,7 @@
 package com.paris_2.aflami.di
 
-import com.repository.home.GenresDataSourceImpl
-import com.repository.home.MediaDataSourceImpl
+import com.repository.media.GenresDataSourceImpl
+import com.repository.media.MediaDataSourceImpl
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import dagger.Module

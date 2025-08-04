@@ -1,6 +1,6 @@
 package com.paris_2.aflami.di
 
-import com.repository.search.SearchRemoteDataSourceImpl
+import com.repository.media.SearchRemoteDataSourceImpl
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import dagger.Module
 import dagger.Provides
