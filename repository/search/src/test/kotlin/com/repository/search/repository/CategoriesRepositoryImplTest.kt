@@ -1,18 +1,24 @@
 package com.repository.search.repository
 
 import com.paris_2.domain.media.entity.Category
-import com.repository.search.util.NetworkConnectionChecker
+import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.dto.GenreDto
 import com.repository.search.dto.GenresDto
 import com.repository.search.entity.GenreEntity
-import com.paris_2.domain.media.exception.NoCategoriesFoundException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import io.mockk.*
+import com.repository.search.util.SearchNetworkConnectionChecker
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -20,7 +26,7 @@ import org.junit.jupiter.api.assertThrows
 class CategoriesRepositoryImplTest {
 
     private lateinit var repository: CategoriesRepositoryImpl
-    private val networkConnectionChecker = mockk<NetworkConnectionChecker>(relaxed = true)
+    private val networkConnectionChecker = mockk<SearchNetworkConnectionChecker>(relaxed = true)
     private val genresLocalDataSource = mockk<GenresLocalDataSource>()
     private val genresRemoteDataSource = mockk<GenresRemoteDataSource>()
     private val language = "en"
