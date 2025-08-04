@@ -37,8 +37,8 @@ import com.datasource.local.media.datasource.GenresLocalDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.media.datasource.MediaLocalDataSourceImpl
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
-import com.paris_2.datasource.remote.authentication.AuthenticationApi
-import com.paris_2.datasource.remote.authentication.AuthenticationRemoteDataSourceImpl
+import com.paris_2.datasource.remote.user.AuthenticationApi
+import com.paris_2.datasource.remote.user.AuthenticationRemoteDataSourceImpl
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
 import com.repository.dataSource.local.TvShowCastLocalDataSource
