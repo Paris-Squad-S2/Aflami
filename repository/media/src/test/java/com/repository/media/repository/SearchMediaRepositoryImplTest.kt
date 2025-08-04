@@ -129,7 +129,7 @@ class SearchMediaRepositoryImplTest {
             )
         )
         coEvery { searchRemoteDataSource.searchPerson(actorName, page = page, language = any()) } returns mockDto
-        mockkStatic("com.repository.search.mapper.SearchMediaMapperKt")
+        mockkStatic("com.repository.media.mapper.search.SearchMediaMapperKt")
         every { mockDto.toMediaEntitiesForActors(actorName, page,language) } returns mockEntities
 
         coEvery { historyLocalDataSource.addSearchQuery(actorName, SearchType.Actor) } just Runs

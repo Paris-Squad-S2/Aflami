@@ -25,7 +25,7 @@ class GenresInteractionRepositoryImplTest {
     fun setUp() {
         dataSource = mockk(relaxed = true)
         repository = GenresInteractionRepositoryImpl(dataSource)
-        mockkStatic("com.repository.search.mapper.CategoryInteractionMapperKt")
+        mockkStatic("com.repository.media.mapper.search.CategoryInteractionMapperKt")
     }
 
     @Test
