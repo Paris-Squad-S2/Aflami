@@ -1,16 +1,16 @@
 package com.repository.home.repository
 
-import com.domain.home.exception.AflamiException
-import com.domain.home.exception.NoInternetConnectionException
-import com.domain.home.exception.NoMediaPlayingFoundException
-import com.domain.home.exception.NoPopularMediaFoundException
-import com.domain.home.exception.NoTopRatingMediaFoundException
-import com.domain.home.exception.NoUpComingMediaFoundException
-import com.domain.home.exception.addMediaToLocalException
-import com.domain.home.exception.catchMediaFromLocalException
-import com.domain.home.model.Media
-import com.domain.home.model.MediaType
-import com.domain.home.repository.MediaRepository
+import com.paris_2.domain.media.exception.AflamiException
+import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.MediaPlayingException
+import com.paris_2.domain.media.exception.PopularMediaException
+import com.paris_2.domain.media.exception.TopRatingMediaException
+import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.exception.UpComingMediaException
+import com.paris_2.domain.media.repository.MediaRepository
 import com.repository.home.datasource.local.HomeMediaLocalDataSource
 import com.repository.home.datasource.remote.MediaRemoteDataSource
 import com.repository.home.mapper.toDomain
@@ -26,7 +26,7 @@ class MediaRepositoryImpl(
     private val language = detectLanguage()
     override suspend fun getPopularMedia(): List<Media> {
 
-        return safeCall(NoPopularMediaFoundException()) {
+        return safeCall(PopularMediaException()) {
             val popularMovies =
                 mediaRemoteDataSource.getPopularMovies(language = language).results?.mapNotNull {
                     it.toDomain(MediaType.MOVIE)
@@ -34,11 +34,11 @@ class MediaRepositoryImpl(
 
             val popularTvShows =
                 mediaRemoteDataSource.getPopularTvShows(language = language).results?.mapNotNull {
-                    it.toDomain(MediaType.TV_SHOW)
+                    it.toDomain(MediaType.TVSHOW)
                 } ?: emptyList()
 
             val combined = (popularMovies + popularTvShows)
-                .sortedByDescending { it.voteAverage }
+                .sortedByDescending { it.rating }
 
             combined
         }
@@ -46,7 +46,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getTopRatingMedia(): List<Media> {
-        return safeCall(NoTopRatingMediaFoundException()) {
+        return safeCall(TopRatingMediaException()) {
             val topMovies =
                 mediaRemoteDataSource.getTopRatedMovies(language = language).results?.mapNotNull {
                     it.toDomain(MediaType.MOVIE)
@@ -54,18 +54,18 @@ class MediaRepositoryImpl(
 
             val topTv =
                 mediaRemoteDataSource.getTopRatedTvShows(language = language).results?.mapNotNull {
-                    it.toDomain(MediaType.TV_SHOW)
+                    it.toDomain(MediaType.TVSHOW)
                 } ?: emptyList()
 
             val combined = (topMovies + topTv)
-                .sortedByDescending { it.voteAverage }
+                .sortedByDescending { it.rating }
 
             combined
         }
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
-        return safeCall(NoUpComingMediaFoundException()) {
+        return safeCall(UpComingMediaException()) {
             val upcomingMovies =
                 mediaRemoteDataSource.getUpcomingMovies(language = language).results?.mapNotNull {
                     it.toDomain(MediaType.MOVIE)
@@ -76,7 +76,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getNowPlayingMedia(): List<Media> {
-        return safeCall(NoMediaPlayingFoundException()) {
+        return safeCall(MediaPlayingException()) {
             val nowPlaying = mediaRemoteDataSource.getNowPlayingMovies().results?.mapNotNull {
                 it.toDomain(MediaType.MOVIE)
             } ?: emptyList()
@@ -84,14 +84,14 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun addMediaToLocal(media: Media) {
-        return safeCall(addMediaToLocalException()) {
+    override suspend fun addMediaToContinueWatching(media: Media) {
+        return safeCall(AddMediaToContinueWatchingException()){
             homeMediaLocalDataSource.addMedia(media.toEntity())
         }
     }
 
     override suspend fun getMediaFromLocal(): List<Media> {
-        return safeCall(catchMediaFromLocalException()) {
+        return safeCall(GetContinueWatchingMediaException()) {
             homeMediaLocalDataSource.getAllMedia().map { it.toDomain() }
         }
     }

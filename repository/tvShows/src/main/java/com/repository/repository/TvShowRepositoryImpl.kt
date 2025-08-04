@@ -1,25 +1,26 @@
 package com.repository.repository
 
-import com.domain.mediaDetails.exception.AflamiException
-import com.domain.mediaDetails.exception.NoCastFoundException
-import com.domain.mediaDetails.exception.NoGalleryFoundException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
-import com.domain.mediaDetails.exception.NoProductionCompanyFoundException
-import com.domain.mediaDetails.exception.NoReviewFoundException
-import com.domain.mediaDetails.exception.NoSeasonFoundException
-import com.domain.mediaDetails.exception.NoSimilarFoundException
-import com.domain.mediaDetails.exception.NoTvShowFoundException
-import com.domain.mediaDetails.exception.NoVideoFoundException
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.Gallery
-import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.model.Review
-import com.domain.mediaDetails.model.Season
-import com.domain.mediaDetails.model.TvShow
-import com.domain.mediaDetails.model.TvShowSimilar
-import com.domain.mediaDetails.model.TvShowVideo
-import com.domain.mediaDetails.repository.TvShowRepository
+import com.paris_2.domain.media.exception.AflamiException
+import com.paris_2.domain.media.exception.FailedToAddRatingException
+import com.paris_2.domain.media.exception.NoCastFoundException
+import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoReviewFoundException
+import com.paris_2.domain.media.exception.NoSeasonFoundException
+import com.paris_2.domain.media.exception.NoSimilarFoundException
+import com.paris_2.domain.media.exception.NoTvShowFoundException
+import com.paris_2.domain.media.exception.NoVideoFoundException
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.ProductionCompany
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.entity.Season
+import com.paris_2.domain.media.entity.TvShow
+import com.paris_2.domain.media.entity.TvShowSimilar
+import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
+import com.paris_2.domain.media.repository.TvShowRepository
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -105,7 +106,7 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun getTvShowGallery(tvShowId: Int): Gallery {
+    override suspend fun getTvShowGallery(tvShowId: Int): List<Image> {
         return safeCall(NoGalleryFoundException()) {
             val localGallery = tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
             if (localGallery != null) {
@@ -141,7 +142,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season {
         return safeCall(NoSeasonFoundException()) {
-            val localSeason = tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)
+            val localSeason = tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
             if (localSeason != null) {
                 localSeason.toEntity()
             } else {
@@ -151,7 +152,7 @@ class TvShowRepositoryImpl(
                     language
                 )
                 tvShowSeasonLocalDataSource.addSeasonDetails(remoteSeason.toLocalDto(tvShowId))
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowId(tvShowId)?.toEntity()
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)?.toEntity()
                     ?: throw NoSeasonFoundException()
             }
 
@@ -179,10 +180,14 @@ class TvShowRepositoryImpl(
         }
     }
 
-    override suspend fun addRatingToTvShow(){
-        print("Rating added to Tv Show")
+    override suspend fun addRatingToTvShow(movieId: Int, rating: Float) {
+        return safeCall(FailedToAddRatingException()) {
+            tvShowDetailsRemoteDataSource.addRatingToTvShow(
+                movieId = movieId,
+                rating = rating
+            )
+        }
     }
-
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
         return safeCall(NoVideoFoundException()) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
@@ -206,6 +211,7 @@ class TvShowRepositoryImpl(
             ?.map { it.toEntity() }
             ?: emptyList()
     }
+
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
         if (tvNetworkConnectionChecker.isConnected.value.not()) {

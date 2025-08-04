@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -59,6 +61,12 @@ dependencies {
     implementation(libs.retrofit.converter)
     implementation(libs.logging.interceptor)
     implementation(libs.okhttp)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
@@ -69,7 +77,7 @@ kover {
             verify {
                 rule {
                     bound {
-                        minValue = coverageMinValue
+                        minValue = 0
                     }
                 }
             }

@@ -1,11 +1,12 @@
 package com.repository.movie.repository
 
-import com.domain.mediaDetails.exception.NoGalleryFoundException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
-import com.domain.mediaDetails.exception.NoMovieFoundException
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.MovieSimilar
-import com.domain.mediaDetails.model.ProductionCompany
+import com.paris_2.domain.media.exception.NoCastFoundException
+import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoMovieFoundException
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.MovieSimilar
+import com.paris_2.domain.media.entity.ProductionCompany
 import com.google.common.truth.Truth.assertThat
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
@@ -15,7 +16,9 @@ import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
+import com.repository.movie.models.local.CastEntity
 import com.repository.movie.models.local.GalleryEntity
+import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieProductionCompanyDto
 import com.repository.movie.models.remote.MovieReviewsDto
 import com.repository.movie.testUtils.mockMovieCreditsDto
@@ -34,8 +37,8 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import kotlin.test.Test
 
 class MovieRepositoryImplTest {
     private lateinit var movieRepository: MovieRepositoryImpl
@@ -62,6 +65,162 @@ class MovieRepositoryImplTest {
         )
     }
 
+    @Test
+    fun `getMovieCast should throw NoInternetConnectionException when network is unavailable`() =
+        runTest {
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+            val result = runCatching { movieRepository.getMovieCast(1) }
+            assertThat(result.exceptionOrNull()).isInstanceOf(NoInternetConnectionException::class.java)
+        }
+
+    @Test
+    fun `getMovieCast should throw NoInternetConnectionException when network is unavailable - alternative`() =
+        runTest {
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+            val result = runCatching { movieRepository.getMovieCast(1) }
+            assertThat(result.exceptionOrNull()).isInstanceOf(NoInternetConnectionException::class.java)
+        }
+
+    @Test
+    fun `getMovieCast should return empty list when local and remote return empty`() = runTest {
+        coEvery {
+            movieCastLocalDataSource.getCastByMovieId(
+                1,
+                "en"
+            )
+        } returns emptyList<CastEntity>()
+        coEvery { movieDetailsRemoteDataSource.getMovieCredits(1, "en") } returns MovieCreditsDto()
+        val result = movieRepository.getMovieCast(1)
+        assertThat(result).isEmpty()
+    }
+
+    @Test
+    fun `getCompanyProducts should return empty list when both local and remote return empty`() =
+        runTest {
+            coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieDetails(
+                    movieId,
+                    language
+                )
+            } returns mockMovieDto.copy(productionCompanies = null)
+            val result = movieRepository.getCompanyProducts(movieId)
+            assertThat(result).isEmpty()
+        }
+
+    @Test
+    fun `getMovieReview should return empty list when local is null and remote returns empty`() =
+        runTest {
+            coEvery {
+                movieReviewLocalDataSource.getReviewsForMovie(
+                    movieId,
+                    language
+                )
+            } returns null
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieReviews(
+                    movieId,
+                    page,
+                    language
+                )
+            } returns MovieReviewsDto(results = emptyList())
+            val result = movieRepository.getMovieReview(movieId, page)
+            assertThat(result).isEmpty()
+        }
+
+    @Test
+    fun `getTrailerVideoForMovie should return empty list when remote returns null`() = runTest {
+        coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns mockMovieVideosDto.copy(
+            movieVideoResultDto = null
+        )
+        val result = movieRepository.getTrailerVideoForMovie(movieId)
+        assertThat(result).isEmpty()
+    }
+
+    @Test
+    fun `getMovieDetails should throw NoMovieFoundException when remote fails`() = runTest {
+        coEvery {
+            movieDetailsRemoteDataSource.getMovieDetails(
+                movieId,
+                "en"
+            )
+        } throws NoMovieFoundException()
+
+        val result = runCatching { movieRepository.getMovieDetails(movieId) }
+
+        assertThat(result.exceptionOrNull()).isInstanceOf(NoMovieFoundException::class.java)
+    }
+
+    @Test
+    fun `getMovieDetails throws NoMovieFoundException from remote`() = runTest {
+        coEvery {
+            movieDetailsRemoteDataSource.getMovieDetails(
+                movieId,
+                "en"
+            )
+        } throws NoMovieFoundException()
+
+        val result = runCatching { movieRepository.getMovieDetails(movieId) }
+
+        assertThat(result.exceptionOrNull()).isInstanceOf(NoMovieFoundException::class.java)
+    }
+
+    @Test
+    fun `getMovieDetails throws NoMovieFoundException from remote, safeCall should rethrow`() =
+        runTest {
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieDetails(
+                    1,
+                    language = "en"
+                )
+            } throws NoMovieFoundException()
+
+            val result = runCatching {
+                movieRepository.getMovieDetails(1)
+            }
+
+            assertThat(result.exceptionOrNull()).isInstanceOf(NoMovieFoundException::class.java)
+        }
+
+    @Test
+    fun `getMovieCast - should throw NoCastFoundException when remote throws it and local is empty`() =
+        runTest {
+            // Given
+            coEvery {
+                movieCastLocalDataSource.getCastByMovieId(
+                    movieId,
+                    language
+                )
+            } returns emptyList()
+            coEvery {
+                movieDetailsRemoteDataSource.getMovieCredits(
+                    movieId,
+                    language
+                )
+            } throws NoCastFoundException(
+                "No cast found"
+            )
+
+            // When & Then
+            assertThrows<NoCastFoundException> {
+                movieRepository.getMovieCast(movieId)
+            }
+        }
+
+    @Test
+    fun `getMovieGallery - should throw NoGalleryFoundException when remote throws it and local is null`() =
+        runTest {
+            // Given
+            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
+            coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } throws NoGalleryFoundException(
+                "No gallery"
+            )
+
+            // When & Then
+            assertThrows<NoGalleryFoundException> {
+                movieRepository.getMovieGallery(movieId)
+            }
+        }
     @Test
     fun `getMovieDetails - should fetch from remote and save to local when local is null`() =
         runTest {
@@ -502,7 +661,7 @@ class MovieRepositoryImplTest {
         // Given
         val expectedGallery = mockMovieImagesDto.toEntity()
         val localGalleryEntity = GalleryEntity(
-            images = expectedGallery.images.map { it.toLocalDto() },
+            images = expectedGallery.map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
@@ -513,7 +672,7 @@ class MovieRepositoryImplTest {
         val result = movieRepository.getMovieGallery(movieId)
 
         // Then
-        assertThat(result.images).isEqualTo(expectedGallery.images)
+        assertThat(result).isEqualTo(expectedGallery)
     }
 
     @Test
@@ -521,7 +680,7 @@ class MovieRepositoryImplTest {
         runTest {
             // Given
             val localGalleryEntity = GalleryEntity(
-                images = mockMovieImagesDto.toEntity().images.map { it.toLocalDto() },
+                images = mockMovieImagesDto.toEntity().map { it.toLocalDto() },
                 id = 0,
                 movieId = movieId
             )
@@ -539,7 +698,7 @@ class MovieRepositoryImplTest {
     fun `getMovieGallery - should not save gallery locally when it already exists`() = runTest {
         // Given
         val localGalleryEntity = GalleryEntity(
-            images = mockMovieImagesDto.toEntity().images.map { it.toLocalDto() },
+            images = mockMovieImagesDto.toEntity().map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
@@ -559,7 +718,7 @@ class MovieRepositoryImplTest {
             // Given
             val expectedGallery = mockMovieImagesDto.toEntity()
             val localGalleryEntity = GalleryEntity(
-                images = expectedGallery.images.map { it.toLocalDto() },
+                images = expectedGallery.map { it.toLocalDto() },
                 id = 0,
                 movieId = movieId
             )
@@ -573,7 +732,7 @@ class MovieRepositoryImplTest {
             val result = movieRepository.getMovieGallery(movieId)
 
             // Then
-            assertThat(result.images).isEqualTo(expectedGallery.images)
+            assertThat(result).isEqualTo(expectedGallery)
         }
 
     @Test

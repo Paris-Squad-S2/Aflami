@@ -1,6 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
-import com.paris_2.aflami.designsystem.components.SliderMedia
+import com.feature.home.homeUi.screen.home.components.SliderMedia
 import kotlinx.datetime.LocalDate
 
 data class HomeScreenUIState(
@@ -31,7 +31,7 @@ data class MediaUiState(
     val type: MediaTypeUi,
     val categories: List<String>,
     val yearOfRelease: LocalDate,
-    val rating: Double,
+    val rating: Double?,
 )
 
 data class CategoryUiState(

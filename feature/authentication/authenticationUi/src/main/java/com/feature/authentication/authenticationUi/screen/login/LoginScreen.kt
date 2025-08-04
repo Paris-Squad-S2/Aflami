@@ -29,24 +29,24 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.screen.login.components.CircleBackground
 import com.feature.authentication.authenticationUi.screen.login.components.HeaderIconLogin
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.SnackBar
-import com.paris_2.aflami.designsystem.components.Text
-import com.paris_2.aflami.designsystem.components.TextField
+import com.paris_2.aflami.designsystem.components.AppSnackBar
+import com.paris_2.aflami.designsystem.components.AppText
+import com.paris_2.aflami.designsystem.components.AppTextField
 import com.paris_2.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import org.koin.compose.viewmodel.koinViewModel
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel = koinViewModel()) {
+fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {
     val uiState = viewModel.screenState.collectAsStateWithLifecycle()
     LoginScreenContent(uiState.value, viewModel)
 }
@@ -156,7 +156,7 @@ fun LoginScreenContent(
 
             HeaderIconLogin(modifier = Modifier.padding(top = 24.dp, start = 12.dp))
 
-            Text(
+            AppText(
                 text = stringResource(R.string.welcome_back),
                 style = Theme.textStyle.title.medium,
                 color = Theme.colors.text.title,
@@ -166,7 +166,7 @@ fun LoginScreenContent(
                     .padding(horizontal = 12.dp)
             )
 
-            Text(
+            AppText(
                 text = stringResource(R.string.please_enter_your_information_to_login),
                 style = Theme.textStyle.body.medium,
                 color = Theme.colors.text.body,
@@ -176,7 +176,7 @@ fun LoginScreenContent(
                     .padding(horizontal = 12.dp)
             )
 
-            TextField(
+            AppTextField(
                 value = loginUIState.username,
                 onValueChange = loginScreenInteractionListener::onUsernameChange,
                 placeholder = stringResource(R.string.user_name),
@@ -186,7 +186,7 @@ fun LoginScreenContent(
                 leadingIcon = R.drawable.ic_user,
             )
 
-            TextField(
+            AppTextField(
                 value = loginUIState.password,
                 onValueChange = loginScreenInteractionListener::onPasswordChange,
                 placeholder = stringResource(R.string.password),
@@ -194,7 +194,7 @@ fun LoginScreenContent(
                     .fillMaxWidth()
                     .padding(top = 12.dp),
                 leadingIcon = R.drawable.ic_password,
-                trailingIcon = if (loginUIState.showPassword) RDesignSystem.drawable.ic_eye_closed else RDesignSystem.drawable.ic_eye_opened,
+                trailingIcon = if (loginUIState.showPassword) RDesignSystem.drawable.ic_eye_opened else RDesignSystem.drawable.ic_eye_closed,
                 onClickTrailingIcon = {
                     loginScreenInteractionListener.onShowPasswordChange(
                         loginUIState.showPassword
@@ -203,7 +203,7 @@ fun LoginScreenContent(
                 errorMessage = loginUIState.passwordErrorMessage,
                 showText = loginUIState.showPassword
             )
-            Text(
+            AppText(
                 text = stringResource(R.string.forgot_password),
                 style = Theme.textStyle.label.medium,
                 color = Theme.colors.primary,
@@ -248,14 +248,14 @@ fun LoginScreenContent(
                     .padding(vertical = 16.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(
+                AppText(
                     text = stringResource(R.string.don_t_have_account),
                     style = Theme.textStyle.label.medium,
                     color = Theme.colors.text.hint,
                     modifier = Modifier.padding(end = 4.dp),
                     textAlign = TextAlign.Center
                 )
-                Text(
+                AppText(
                     text = stringResource(R.string.create_account),
                     style = Theme.textStyle.label.medium,
                     color = Theme.colors.primary,
@@ -276,7 +276,7 @@ fun LoginScreenContent(
             enter = fadeIn() + slideInVertically(),
             exit = fadeOut() + slideOutVertically()
         ) {
-            SnackBar(
+            AppSnackBar(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding()

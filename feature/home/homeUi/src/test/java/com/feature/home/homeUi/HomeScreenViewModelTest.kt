@@ -1,18 +1,20 @@
 package com.feature.home.homeUi
 
-import com.domain.home.model.Category
-import com.domain.home.usecase.AddMediaToLocalUseCase
-import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
-import com.domain.home.usecase.GetMediaFromLocalUseCase
-import com.domain.home.usecase.GetMoviesCategoriesUseCase
-import com.domain.home.usecase.GetPopularMediaUseCase
-import com.domain.home.usecase.GetTopRatingMediaUseCase
-import com.domain.home.usecase.GetUpComingMediaUseCase
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
+import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
+import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
+import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
+import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
 import com.feature.home.homeUi.screen.home.MediaTypeUi.TVSHOW
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
@@ -28,12 +30,11 @@ import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.domain.home.model.Media as DomainMedia
-import com.domain.home.model.MediaType as DomainMediaType
+import com.paris_2.domain.media.entity.Media as DomainMedia
+import com.paris_2.domain.media.entity.MediaType as DomainMediaType
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class
-HomeScreenViewModelTest {
+class HomeScreenViewModelTest {
     private val getPopularMediaUseCase: GetPopularMediaUseCase = mockk()
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase = mockk()
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase = mockk()
@@ -44,6 +45,7 @@ HomeScreenViewModelTest {
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
+    private val navigator: HomeNavigator = mockk(relaxed = true)
 
     private lateinit var viewModel: HomeScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -113,20 +115,21 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
     }
 
     private fun MediaUiState.toMedia() = DomainMedia(
         id = id,
         title = title,
-        voteAverage = rating,
-        posterPath = imageUri,
+        rating = rating,
+        imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        genreIds = categories.mapNotNull { categoryMap[it] },
+        categoryIds = categories.mapNotNull { categoryMap[it] },
         type = when (type) {
             MOVIE -> DomainMediaType.MOVIE
-            TVSHOW -> DomainMediaType.TV_SHOW
+            TVSHOW -> DomainMediaType.TVSHOW
         }
     )
 
@@ -159,10 +162,11 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Failed categories")
+        assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<CategoryUiState, Boolean>())
     }
 
     @Test
@@ -177,10 +181,11 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Popular error")
+        assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
     }
 
     @Test
@@ -195,10 +200,11 @@ HomeScreenViewModelTest {
             addMediaToLocalDatabaseUseCase,
             getMediaFromLocalUseCase,
             searchFeatureAPI,
-            mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI,
+            navigator
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("TopRating error")
+        assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
     }
 
     @Test
@@ -218,7 +224,6 @@ HomeScreenViewModelTest {
                 .apply { isAccessible = true }.invoke(this)
         }
         runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo(oldError)
         assertThat(viewModel.screenState.value.homeUIState.continueWatchingMediaList.map { it.title }).isEqualTo(
             fakeContinueWatchingList.map { it.title })
     }
@@ -299,27 +304,26 @@ HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected updates upcoming list, moodPickerMovie, and dialog flag`() = runTest {
-        val mood = listOf("Action")
-        val filteredMovies = fakeUpcomingList.filter { it.categories.contains("Action") }
-        coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(28)) } returns filteredMovies.map { it.toMedia() }
+        val mood = listOf("Drama")
+        val filteredMovies = fakeTopRatedList.filter { it.categories.contains("Drama") }
+        coEvery { getTopRatingMediaUseCase.invoke() } returns filteredMovies.map { it.toMedia() }
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
-                    upComingMediaList = filteredMovies
+                    moodPickerMovie = filteredMovies.random()
                 )
             )
         )
         viewModel.moodPickerSelected(mood)
         runCurrent()
         val updated = viewModel.screenState.value.homeUIState
-        assertThat(updated.upComingMediaList).isEqualTo(filteredMovies)
         assertThat(filteredMovies).contains(updated.moodPickerMovie)
         assertThat(updated.showMoodPickerDialog).isTrue()
     }
 
     @Test
     fun `moodPickerSelected handles error`() = runTest {
-        coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(28)) } throws RuntimeException(
+        coEvery { getTopRatingMediaUseCase.invoke() } throws RuntimeException(
             "Mood error"
         )
         viewModel.moodPickerSelected(listOf("Action"))
@@ -382,4 +386,33 @@ HomeScreenViewModelTest {
         assertThat(updated.moodPickerMovie?.id).isEqualTo(0)
         assertThat(updated.moodPickerMovie?.title).isEmpty()
     }
+
+    @OptIn(ExperimentalCoroutinesApi::class)
+    @Test
+    fun `onRetry loads all media and categories again`() = runTest {
+
+
+        coEvery { getPopularMediaUseCase() } returns listOf()
+
+
+        viewModel = HomeScreenViewModel(
+            getPopularMediaUseCase,
+            getTopRatingMediaUseCase,
+            getMoviesCategoriesUseCase,
+            filterUpComingMediaByCategoriesUseCase,
+            getUpcomingMediaUseCase,
+            addMediaToLocalDatabaseUseCase = mockk(relaxed = true),
+            getMediaFromLocalUseCase,
+            searchFeatureAPI = mockk(relaxed = true),
+            mediaDetailsFeatureAPI = mockk(relaxed = true),
+            navigator
+        )
+
+        viewModel.onRetry()
+        runCurrent()
+
+        coVerify { getPopularMediaUseCase() }
+    }
+
+
 }

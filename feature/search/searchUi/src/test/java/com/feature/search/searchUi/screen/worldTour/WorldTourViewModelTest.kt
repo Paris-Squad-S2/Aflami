@@ -1,14 +1,15 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import MediaUiState
-import com.domain.search.model.Country
-import com.domain.search.useCase.AutoCompleteCountryUseCase
-import com.domain.search.useCase.GetCountryCodeByNameUseCase
-import com.domain.search.useCase.GetMediaByActorNameUseCase
-import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.entity.Country
+import com.paris_2.domain.media.useCase.AutoCompleteCountryUseCase
+import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
+import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris_2.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchUi.navigation.SearchNavigator
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -33,6 +34,7 @@ class WorldTourViewModelTest {
     private lateinit var getMoviesByCountryUseCase: GetMoviesOnlyByCountryNameUseCase
     private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
     private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
+    private val navigator: SearchNavigator = mockk(relaxed = true)
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -54,7 +56,8 @@ class WorldTourViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
-            mediaDetailsFeatureAPI = mockk(relaxed = true)
+            mediaDetailsFeatureAPI = mockk(relaxed = true),
+            navigator = navigator
         )
     }
 
@@ -137,7 +140,8 @@ class WorldTourViewModelTest {
             getMoviesByCountryUseCase = getMoviesByCountryUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            navigator = navigator
         )
         val mediaUiState = MediaUiState(
             id = 12,

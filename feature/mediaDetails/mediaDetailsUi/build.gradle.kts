@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -43,8 +45,8 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
 
-    implementation(project(Modules.DOMAIN_AUTHENTICATION))
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_USER))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
 
@@ -64,15 +66,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(project(Modules.APP_NAVIGATION))
     implementation(libs.androidx.material3)
 
-    //Koin
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
-    implementation(libs.koin.compose.viewmodel)
-    implementation(libs.koin.android)
-
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
 
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     //coil
@@ -105,7 +104,6 @@ dependencies {
 
     implementation(project(Modules.DESIGN_SYSTEM))
 
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))

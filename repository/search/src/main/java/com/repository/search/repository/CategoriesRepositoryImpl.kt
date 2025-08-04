@@ -1,10 +1,10 @@
 package com.repository.search.repository
 
-import com.domain.search.exception.NoCategoriesFoundException
-import com.domain.search.exception.NoInternetConnectionException
-import com.domain.search.model.Category
-import com.domain.search.repository.CategoriesRepository
-import com.repository.search.util.SearchNetworkConnectionChecker
+import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.repository.CategoriesRepository
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.mapper.toCategories
@@ -12,7 +12,7 @@ import com.repository.search.mapper.toEntity
 import java.util.Locale
 
 class CategoriesRepositoryImpl(
-    private val searchNetworkConnectionChecker: SearchNetworkConnectionChecker,
+    private val networkConnectionChecker: NetworkConnectionChecker,
     private val genresLocalDataSource: GenresLocalDataSource,
     private val genresRemoteDataSource: GenresRemoteDataSource,
 ) : CategoriesRepository {
@@ -23,7 +23,7 @@ class CategoriesRepositoryImpl(
             val genres = genresLocalDataSource.getGenres(language)
             if (genres.isNotEmpty()) return genres.toCategories()
 
-            if (!searchNetworkConnectionChecker.isConnected.value) {
+            if (!networkConnectionChecker.isConnected.value) {
                 throw NoInternetConnectionException()
             }
 
@@ -44,4 +44,3 @@ class CategoriesRepositoryImpl(
     }
 
 }
-

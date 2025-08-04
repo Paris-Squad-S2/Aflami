@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.Companion.fromTarget
 import java.util.Properties
 
 plugins {
@@ -8,6 +9,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply true
     id("com.google.firebase.crashlytics")
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -106,9 +108,6 @@ android {
         sourceCompatibility = Configurations.JAVA_VERSION
         targetCompatibility = Configurations.JAVA_VERSION
     }
-    kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
-    }
     buildFeatures {
         compose = true
     }
@@ -132,7 +131,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(project(Modules.DOMAIN_USER))
-    implementation(project(Modules.FIREBASE))
+    implementation(project(Modules.LOGGER))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
     implementation(project(Modules.FEATURE_SEARCH_UI))
 
@@ -146,12 +145,10 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.junit.platform.launcher)
 
-    //Koin
-    implementation(libs.koin.workmanager)
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
-    implementation(libs.koin.compose.viewmodel)
-    implementation(libs.koin.android)
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.work)
 
     //work manager for kotlin
     implementation(libs.work.runtime.ktx)
@@ -159,7 +156,7 @@ dependencies {
     implementation(libs.androidx.startup.runtime)
 
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.APP_NAVIGATION))
+    implementation(project(Modules.BOTTOM_NAV_BAR))
 
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_HOME_API))
@@ -195,20 +192,16 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
     implementation(project(Modules.DATASOURCE_LOCAL_AUTHENTICATION))
 
-    implementation(project(Modules.DOMAIN_SEARCH))
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.REPOSITORY_HOME))
     implementation(project(Modules.DATASOURCE_REMOTE_HOME))
-    implementation(project(Modules.DOMAIN_HOME))
-    implementation(project(Modules.DOMAIN_AUTHENTICATION))
+    implementation(project(Modules.DOMAIN_USER))
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
-
-    implementation(project(Modules.APP_NAVIGATION))
 
 
     implementation(libs.ktor.client.android)
@@ -221,6 +214,10 @@ dependencies {
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit.converter)
 
+}
+
+kotlin {
+    compilerOptions { jvmTarget.set(fromTarget(Configurations.JVM_TARGET)) }
 }
 
 kover {

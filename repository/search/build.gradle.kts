@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -51,9 +52,10 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
-    //koin
-    implementation(libs.koin.core)
-    implementation(libs.koin.android)
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    implementation(libs.hilt.work)
 
     //work manager for kotlin
     implementation(libs.work.runtime.ktx)
@@ -64,7 +66,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(project(Modules.DOMAIN_SEARCH))
+    implementation(project(Modules.DOMAIN_MEDIA))
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 

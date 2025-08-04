@@ -1,14 +1,14 @@
 package com.repository.search.repository
 
-import com.domain.search.model.Category
-import com.repository.search.util.SearchNetworkConnectionChecker
+import com.paris_2.domain.media.entity.Category
+import com.repository.search.util.NetworkConnectionChecker
 import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.remote.GenresRemoteDataSource
 import com.repository.search.dto.GenreDto
 import com.repository.search.dto.GenresDto
 import com.repository.search.entity.GenreEntity
-import com.domain.search.exception.NoCategoriesFoundException
-import com.domain.search.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
 import io.mockk.*
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
@@ -20,7 +20,7 @@ import org.junit.jupiter.api.assertThrows
 class CategoriesRepositoryImplTest {
 
     private lateinit var repository: CategoriesRepositoryImpl
-    private val searchNetworkConnectionChecker = mockk<SearchNetworkConnectionChecker>(relaxed = true)
+    private val networkConnectionChecker = mockk<NetworkConnectionChecker>(relaxed = true)
     private val genresLocalDataSource = mockk<GenresLocalDataSource>()
     private val genresRemoteDataSource = mockk<GenresRemoteDataSource>()
     private val language = "en"
@@ -28,7 +28,7 @@ class CategoriesRepositoryImplTest {
     @BeforeEach
     fun setUp() {
         repository = CategoriesRepositoryImpl(
-            searchNetworkConnectionChecker,
+            networkConnectionChecker,
             genresLocalDataSource,
             genresRemoteDataSource
         )
@@ -52,7 +52,7 @@ class CategoriesRepositoryImplTest {
     fun `getAllCategories should fetch from remote when local is empty and internet available`() = runTest {
         // Given
         coEvery { genresLocalDataSource.getGenres(language) } returnsMany listOf(emptyList(), listOf(GenreEntity(2, "Drama" , language)))
-        every { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { genresRemoteDataSource.getAllGenres(language) } returns GenresDto(
             genreDto = listOf(GenreDto(2, "Drama"))
         )
@@ -70,7 +70,7 @@ class CategoriesRepositoryImplTest {
     fun `getAllCategories should throw NoInternetConnectionException when local empty and no internet`() = runTest {
         // Given
         coEvery { genresLocalDataSource.getGenres(language) } returns emptyList()
-        every { searchNetworkConnectionChecker.isConnected } returns MutableStateFlow(false)
+        every { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
         // When + Then
         val exception = assertThrows<NoInternetConnectionException> {

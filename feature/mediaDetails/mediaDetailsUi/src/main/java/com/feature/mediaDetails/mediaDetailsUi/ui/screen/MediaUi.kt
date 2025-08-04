@@ -2,7 +2,7 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen
 
 interface MediaUi {
     val posterUrl: String
-    val rating: Float
+    val rating: Float?
     val title: String
     val releaseDate: String
 }
@@ -10,7 +10,7 @@ interface MediaUi {
 data class SimilarMediaUI (
     val id: Int,
     val title: String,
-    val voteAverage: Double,
+    val voteAverage: Double?,
     val posterPath : String,
     val releaseDate : String,
 )

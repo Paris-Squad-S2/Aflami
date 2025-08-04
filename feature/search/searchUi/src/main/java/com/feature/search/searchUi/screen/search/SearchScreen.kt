@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -26,18 +27,17 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.search.searchUi.screen.search.components.FilterDialog
 import com.feature.search.searchUi.screen.search.components.NoSearchQueryContent
 import com.feature.search.searchUi.screen.search.components.WithSearchQueryContent
-import com.paris_2.aflami.designsystem.components.TextField
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTextField
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import java.util.Locale
 import com.feature.search.searchUi.R as RSearchUi
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 
 @Composable
-fun SearchScreen(viewModel: SearchViewModel = koinViewModel()) {
+fun SearchScreen(viewModel: SearchViewModel = hiltViewModel()) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
     val currentLanguage = remember { mutableStateOf(Locale.getDefault().language) }
 
@@ -86,7 +86,7 @@ private fun SearchScreenContent(
             .background(Theme.colors.surface)
             .navigationBarsPadding()
     ) {
-        TopAppBar(
+        AppTopBar(
             modifier = Modifier
                 .statusBarsPadding(),
             title = stringResource(RSearchUi.string.searchTitle),
@@ -97,7 +97,7 @@ private fun SearchScreenContent(
                 )
             ),
         )
-        TextField(
+        AppTextField(
             value = state.searchUiState.searchQuery,
             onValueChange = searchScreenInteractionListener::onSearchQueryChange,
             placeholder = stringResource(RSearchUi.string.search),

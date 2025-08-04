@@ -3,9 +3,9 @@ package com.feature.authentication.authenticationUi.comon
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
+import com.paris_2.domain.user.exception.InvalidCredentialsException
 import com.feature.authentication.authenticationUi.navigation.AuthenticationDestination
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
-import com.paris_2.domain.authentication.exception.InvalidCredentialsException
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -14,15 +14,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
+open class BaseViewModel<S>(
+    initialState: S, protected val navigator: AuthenticationNavigator,
+) : ViewModel() {
 
     private val _screenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = _screenState.asStateFlow()
-
-    private val navigator: AuthenticationNavigator by inject()
 
     protected fun navigate(destination: AuthenticationDestination, navOptions: NavOptions? = null) =
         viewModelScope.launch {

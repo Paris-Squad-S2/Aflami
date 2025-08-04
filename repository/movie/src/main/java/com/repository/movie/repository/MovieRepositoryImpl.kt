@@ -1,21 +1,22 @@
 package com.repository.movie.repository
 
-import com.domain.mediaDetails.exception.AflamiException
-import com.domain.mediaDetails.exception.NoCastFoundException
-import com.domain.mediaDetails.exception.NoGalleryFoundException
-import com.domain.mediaDetails.exception.NoMovieFoundException
-import com.domain.mediaDetails.exception.NoProductionCompanyFoundException
-import com.domain.mediaDetails.exception.NoReviewFoundException
-import com.domain.mediaDetails.exception.NoVideoFoundException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Gallery
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieSimilar
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.model.Review
-import com.domain.mediaDetails.repository.MovieRepository
+import com.paris_2.domain.media.exception.AflamiException
+import com.paris_2.domain.media.exception.FailedToAddRatingException
+import com.paris_2.domain.media.exception.NoCastFoundException
+import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoMovieFoundException
+import com.paris_2.domain.media.exception.NoReviewFoundException
+import com.paris_2.domain.media.exception.NoVideoFoundException
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.MovieSimilar
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.entity.ProductionCompany
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
+import com.paris_2.domain.media.repository.MovieRepository
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -104,7 +105,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getMovieGallery(movieId: Int): Gallery {
+    override suspend fun getMovieGallery(movieId: Int): List<Image> {
         return safeCall(NoGalleryFoundException()) {
             val localGallery = movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
 
@@ -112,7 +113,7 @@ class MovieRepositoryImpl(
                 localGallery.toEntity()
             } else {
                 val remoteGallery = movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity()
-                val remoteGalleryImages = remoteGallery.images
+                val remoteGalleryImages = remoteGallery
                 movieGalleryLocalDataSource.addGallery(
                     GalleryEntity(
                         movieId = movieId,
@@ -187,8 +188,14 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun addRatingToMovie() {
-        print("movie rating added")
+    override suspend fun addRatingToMovie(movieId: Int, rating: Float) {
+        movieDetailsRemoteDataSource
+        return safeCall(FailedToAddRatingException()) {
+            movieDetailsRemoteDataSource.addRatingToMovie(
+                movieId = movieId,
+                rating = rating
+            )
+        }
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {

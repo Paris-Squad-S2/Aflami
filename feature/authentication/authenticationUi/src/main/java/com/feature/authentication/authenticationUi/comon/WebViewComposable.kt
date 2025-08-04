@@ -20,6 +20,7 @@ fun WebViewComposable(
     onWebMessageReceived: (String) -> Unit,
     loadingPlaceholder: @Composable () -> Unit,
     errorPlaceholder: @Composable (onRetry: () -> Unit) -> Unit,
+    onNavigationEvent: (() -> Unit)? = null,
 ) {
     val isLoading = remember { mutableStateOf(true) }
     val hasError = remember { mutableStateOf(false) }
@@ -46,7 +47,7 @@ fun WebViewComposable(
                     "AndroidInterface"
                 )
 
-                webViewClient = WebViewClientImpl(isLoading, hasError)
+                webViewClient = WebViewClientImpl(isLoading, hasError, onNavigationEvent)
 
                 loadUrl(url)
             }

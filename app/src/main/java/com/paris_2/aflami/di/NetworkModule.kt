@@ -1,63 +1,93 @@
 package com.paris_2.aflami.di
 
-import com.feature.search.searchUi.BuildConfig
+import android.content.Context
 import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
 import com.repository.home.GenresApiServices
 import com.repository.home.MediaApiService
-import com.repository.home.util.HomeNetworkConnectionChecker
-import com.repository.movie.util.MovieNetworkConnectionChecker
-import com.repository.search.util.SearchNetworkConnectionChecker
-import com.repository.util.TvNetworkConnectionChecker
+import com.repository.search.util.NetworkConnectionChecker as SearchNetworkConnectionChecker
+import com.repository.util.NetworkConnectionChecker as CommonNetworkConnectionChecker
+import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkConnectionChecker
+import com.repository.home.util.NetworkConnectionChecker as HomeNetworkConnectionChecker
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import org.koin.android.ext.koin.androidApplication
-import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
+import javax.inject.Singleton
 
-val NetworkModule = module {
+@Module
+@InstallIn(SingletonComponent::class)
+object NetworkModule {
 
-    single { SearchNetworkConnectionChecker(androidApplication().applicationContext) }
-    single { TvNetworkConnectionChecker(androidApplication().applicationContext) }
-    single { MovieNetworkConnectionChecker(androidApplication().applicationContext) }
-    single { HomeNetworkConnectionChecker(androidApplication().applicationContext) }
+    @Provides
+    @Singleton
+    fun provideSearchNetworkConnectionChecker(@ApplicationContext context: Context): SearchNetworkConnectionChecker =
+        SearchNetworkConnectionChecker(context)
 
-    single { AuthInterceptor(get<AuthenticationLocalDataSource>()) }
+    @Provides
+    @Singleton
+    fun provideCommonNetworkConnectionChecker(@ApplicationContext context: Context): CommonNetworkConnectionChecker =
+        CommonNetworkConnectionChecker(context)
 
-    single {
+    @Provides
+    @Singleton
+    fun provideMovieNetworkConnectionChecker(@ApplicationContext context: Context): MovieNetworkConnectionChecker =
+        MovieNetworkConnectionChecker(context)
+
+    @Provides
+    @Singleton
+    fun provideHomeNetworkConnectionChecker(@ApplicationContext context: Context): HomeNetworkConnectionChecker =
+        HomeNetworkConnectionChecker(context)
+
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(localDataSource: AuthenticationLocalDataSource): AuthInterceptor =
+        AuthInterceptor(localDataSource)
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
-        OkHttpClient.Builder()
+        return OkHttpClient.Builder()
             .addInterceptor(logging)
-            .addInterceptor(get<AuthInterceptor>())
+            .addInterceptor(authInterceptor)
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${BuildConfig.API_TOKEN}")
+                    .addHeader("Authorization", "Bearer ${com.feature.search.searchUi.BuildConfig.API_TOKEN}")
                     .build()
                 chain.proceed(request)
             }
             .build()
     }
 
-    single {
+    @Provides
+    @Singleton
+    fun provideRetrofit(client: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .baseUrl("https://api.themoviedb.org/3/")
-            .client(get())
+            .client(client)
             .addConverterFactory(Json {
                 ignoreUnknownKeys = true
             }.asConverterFactory("application/json".toMediaType()))
             .build()
-    }
 
-    single<MediaApiService> {
-        get<Retrofit>().create(MediaApiService::class.java)
-    }
-    single<GenresApiServices> {
-        get<Retrofit>().create(GenresApiServices::class.java)
-    }
+    @Provides
+    @Singleton
+    fun provideMediaApiService(retrofit: Retrofit): MediaApiService =
+        retrofit.create(MediaApiService::class.java)
 
+    @Provides
+    @Singleton
+    fun provideGenresApiServices(retrofit: Retrofit): GenresApiServices =
+        retrofit.create(GenresApiServices::class.java)
 }
+

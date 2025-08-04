@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.topRatingMovies
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -29,24 +30,25 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.aflami.designsystem.components.Icon
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
+import com.feature.home.homeUi.screen.home.components.MediaCard
+import com.feature.home.homeUi.screen.home.components.MediaCardType
+import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TopRatingMoviesScreen(
-    viewModel: TopRatingMoviesViewModel = koinViewModel(),
+    viewModel: TopRatingMoviesViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
+    val context = LocalActivity.current
 
     Box(
         modifier = Modifier
@@ -54,14 +56,12 @@ fun TopRatingMoviesScreen(
             .background(
                 brush = Brush.verticalGradient(
                     colors = Theme.colors.gradient.pointsOverly + listOf(
-                        Theme.colors.surface.copy(alpha = 0.5f),
-                        Theme.colors.surface
+                        Theme.colors.surface.copy(alpha = 0.5f), Theme.colors.surface
                     )
                 )
             )
-    )
-    {
-        Icon(
+    ) {
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -76,7 +76,7 @@ fun TopRatingMoviesScreen(
                 .blur(radius = 4.dp)
 
         )
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -88,9 +88,8 @@ fun TopRatingMoviesScreen(
                 .graphicsLayer {
                     alpha = 0.1f
                 }
-                .blur(radius = 3.dp)
-        )
-        Icon(
+                .blur(radius = 3.dp))
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -102,9 +101,8 @@ fun TopRatingMoviesScreen(
                 .graphicsLayer {
                     alpha = 0.08f
                 }
-                .blur(radius = 2.dp)
-        )
-        Icon(
+                .blur(radius = 2.dp))
+        AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
             tint = Theme.colors.onPrimaryColors.onPrimary,
@@ -126,11 +124,14 @@ fun TopRatingMoviesScreen(
                 .padding(top = 12.dp)
         ) {
 
-            TopAppBar(
+            AppTopBar(
                 logo = iconItemWithDefaults(
                     icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
-                    onClick = viewModel::onBackButtonClick,
-                    backgroundColor = Theme.colors.primaryVariant,
+                    onClick = {
+                        context?.finish()
+                    },
+                    backgroundColor = Theme.colors.surfaceHigh,
+                    tint = Theme.colors.text.title,
                 ),
                 title = stringResource(R.string.top_rating),
                 modifier = Modifier.padding(top = 23.dp, bottom = 0.dp)
@@ -146,8 +147,7 @@ fun TopRatingMoviesScreen(
                 )
             } else if (state.value.errorMessage != null) {
                 NetworkError(
-                    modifier = Modifier.fillMaxSize(),
-                    onRetry = viewModel::onRetry
+                    modifier = Modifier.fillMaxSize(), onRetry = viewModel::onRetry
                 )
             }
         }
@@ -177,7 +177,7 @@ fun TopRatingMoviesContent(
                         onMediaCardClick(media)
                     },
                 imageUri = media.imageUri,
-                rating = media.rating.toFloat(),
+                rating = media.rating?.toFloat(),
                 movieName = media.title,
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),

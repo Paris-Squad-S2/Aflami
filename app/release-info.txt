@@ -1,2 +1,2 @@
-versionName=0.3.7
+versionName=0.3.34
 - enhance network checker implementation

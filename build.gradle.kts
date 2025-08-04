@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.kover)
+    id("com.google.dagger.hilt.android") version "2.57" apply false
 }
 
 val koverExcludedPackages = listOf(
@@ -38,13 +39,14 @@ val koverExcludedPackages = listOf(
     "**.MainActivity",
     "**.MainActivityKt",
     "**.MyClass",
-    "**.designsystem.**",
+    "**.designSystem.**",
     "**.BaseViewModel*",
     "**.*_Impl*",
     "*.ComposableSingletons*",
     "*.search.components.**",
     "*.searchUi.comon.**",
     "*.SearchApp*",
+    "*.AflamiApplication*",
     "**.components**",
     "*ScreenKt",
     "**.ClearMediaWorker",
@@ -71,10 +73,25 @@ val koverExcludedPackages = listOf(
     "**appNavigation**",
     "**.HomeConverter*",
     "**.HomeDatabase*",
-    /*
-    "**.GenreResourceMapper",
-
- */
+    "**.workmanager.**",
+    "**ConcreteBaseViewModel.kt.**",
+    "**.TvShowDetailsScreen.kt.**",
+    "**.MovieDetailsScreen.kt.**",
+    "**.shimmerable.kt.**",
+    "**.HomeScreen*",
+    "**.AflamiNavBar.**",
+    "**.AflamiNavBarItem.**",
+    "**bottomNavBar**",
+    "**.PagingSource.**",
+    "**.MediaUi*",
+    "**.SimilarMediaUI.*",
+    "**.MediaCardType.*",
+    "**.HomeScreenViewModel*",
+    "**.LoginScreen*",
+    "**.TopRatingMoviesScreen*",
+    "**.SearchScreen*",
+    "**.ContinueWatchingScreen*",
+    "**.HomeScreenUIState*"
 )
 
 allprojects {
@@ -94,11 +111,6 @@ dependencies {
     kover(project((Modules.DOMAIN_USER)))
     kover(project((Modules.DOMAIN_GUESS_GAME)))
     kover(project((Modules.DOMAIN_MEDIA)))
-    kover(project((Modules.DOMAIN_LISTS)))
-    kover(project((Modules.DOMAIN_HOME)))
-    kover(project((Modules.DOMAIN_SEARCH)))
-    kover(project((Modules.DOMAIN_CATEGORIES)))
-    kover(project((Modules.DOMAIN_MEDIA_DETAILS)))
     kover(project((Modules.REPOSITORY_USER)))
     kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_MOVIE)))

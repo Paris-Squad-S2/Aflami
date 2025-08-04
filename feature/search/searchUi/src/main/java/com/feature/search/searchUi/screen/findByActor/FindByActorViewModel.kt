@@ -8,24 +8,30 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.search.useCase.GetMediaByActorNameUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.pagging.FindByActorPagingSource
+import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.navigation.SearchDestinations
+import com.feature.search.searchUi.navigation.SearchNavigator
+import com.feature.search.searchUi.pagging.PagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class FindByActorViewModel(
+@HiltViewModel
+class FindByActorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getMediaByActorNameUseCase: GetMediaByActorNameUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: SearchNavigator,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -33,7 +39,8 @@ class FindByActorViewModel(
             searchResult = flowOf(PagingData.empty()),
         ),
         errorMessage = null
-    )
+    ),
+    navigator
 ) {
 
 
@@ -85,13 +92,17 @@ class FindByActorViewModel(
                     )
                 )
                 Pager(
-                 config = PagingConfig(pageSize = 10),
-                 pagingSourceFactory = {
-                     FindByActorPagingSource(
-                         query,
-                         getMediaByActorNameUseCase,
-                         sortingMediaByCategoriesInteractionUseCase)
-                 }
+                    config = PagingConfig(pageSize = 10),
+                    pagingSourceFactory = {
+                        PagingSource(
+                            searchUseCase = { page ->
+                                sortingMediaByCategoriesInteractionUseCase(
+                                    getMediaByActorNameUseCase(query, page)
+                                ).toMediaUiList()
+                            }
+
+                        )
+                    }
                 ).flow.cachedIn(viewModelScope)
 
             },
@@ -99,8 +110,7 @@ class FindByActorViewModel(
                 updateState(
                     screenState.value.copy(
                         uiState = screenState.value.uiState.copy(
-                            searchResult = searchResult
-                            ,
+                            searchResult = searchResult,
                         )
                     )
                 )

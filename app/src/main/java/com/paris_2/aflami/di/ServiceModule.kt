@@ -5,13 +5,39 @@ import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.paris_2.datasource.remote.authentication.AuthenticationApi
 import com.repository.search.service.implementation.RetrofitGenresApiServices
 import com.repository.search.service.implementation.RetrofitSearchApiService
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import javax.inject.Singleton
 
-val serviceModule = module{
-    single{get<Retrofit>().create(AuthenticationApi::class.java)}
-    single{get<Retrofit>().create(RetrofitMovieDetailsApiService::class.java)}
-    single{get<Retrofit>().create(RetrofitTvShowDetailsApiService::class.java)}
-    single{get<Retrofit>().create(RetrofitSearchApiService::class.java)}
-    single{get<Retrofit>().create(RetrofitGenresApiServices::class.java)}
+@Module
+@InstallIn(SingletonComponent::class)
+object ServiceModule {
+    @Provides
+    @Singleton
+    fun provideAuthenticationApi(retrofit: Retrofit): AuthenticationApi =
+        retrofit.create(AuthenticationApi::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMovieDetailsApiService(retrofit: Retrofit): RetrofitMovieDetailsApiService =
+        retrofit.create(RetrofitMovieDetailsApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideTvShowDetailsApiService(retrofit: Retrofit): RetrofitTvShowDetailsApiService =
+        retrofit.create(RetrofitTvShowDetailsApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideSearchApiService(retrofit: Retrofit): RetrofitSearchApiService =
+        retrofit.create(RetrofitSearchApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideGenresApiServices(retrofit: Retrofit): RetrofitGenresApiServices =
+        retrofit.create(RetrofitGenresApiServices::class.java)
 }
+

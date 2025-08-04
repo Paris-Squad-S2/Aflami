@@ -1,6 +1,14 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.activity.compose.LocalActivity
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionLayout
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +18,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -24,37 +33,38 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCard
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppSnackBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun MovieDetailsScreen(
-    viewModel: MovieDetailsViewModel = koinViewModel(),
+    viewModel: MovieDetailsViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     MovieDetailsScreenContent(
@@ -63,25 +73,16 @@ fun MovieDetailsScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
 ) {
     val movieChips = MovieChips.entries
-    val listState = rememberLazyListState()
-    val density = LocalDensity.current
     val activity = LocalActivity.current
-    val maxScrollPx = with(density) { 56.dp.toPx() }
     var currentRating by remember { mutableFloatStateOf(state.movieDetailsUiState.selectedRating) }
-    val alpha by remember {
-        derivedStateOf {
-            val scroll =
-                if (listState.firstVisibleItemIndex > 0) maxScrollPx else listState.firstVisibleItemScrollOffset.toFloat()
-            (scroll / maxScrollPx).coerceIn(0f, 1f)
-        }
-    }
+
     if (state.showRatingDialog) {
         RatingDialog(
             currentRating = currentRating,
@@ -89,207 +90,256 @@ fun MovieDetailsScreenContent(
                 currentRating = newRating
             },
             onDismiss = { movieDetailsScreenInteractionListener.onDismissRatingDialog() },
-            onSubmit = { movieDetailsScreenInteractionListener.onDismissRatingDialog() }
+            onSubmit = {
+                movieDetailsScreenInteractionListener.onRatingSubmitted(
+                    movieId = state.movieDetailsUiState.movie.id,
+                    rating = currentRating
+                )
+            }
+        )
+    }
+    if (state.showAddToListDialog) {
+        AddToListDialog(
+            list = listOf("My Favorite Movies", "Kittens"),
+            onDismiss = { movieDetailsScreenInteractionListener.onDismissAddToListDialog() },
         )
     }
 
-    val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
-    val reviewsList = state.movieDetailsUiState.reviews.collectAsLazyPagingItems()
+
 
     Box(
-        Modifier
-            .fillMaxSize()
-            .background(Theme.colors.surface)
-            .navigationBarsPadding()
-            .statusBarsPadding()
+        modifier = Modifier
+            .fillMaxSize(),
+        contentAlignment = Alignment.TopCenter
     ) {
-        when {
-            state.isLoading -> {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    TopAppBar(
-                        leadingIcons = listOf(
-                            iconItemWithDefaults(
-                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = { activity?.finish() }
+        Column(
+            Modifier
+                .fillMaxSize()
+                .background(Theme.colors.surface)
+                .navigationBarsPadding()
+        ) {
+            when {
+                state.isLoading -> {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        AppTopBar(
+                            leadingIcons = listOf(
+                                iconItemWithDefaults(
+                                    icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                                    onClick = { activity?.finish() }
+                                )
                             )
                         )
-                    )
-                    PageLoadingPlaceHolder(
+                        PageLoadingPlaceHolder(
+                            modifier = Modifier.fillMaxSize()
+                        )
+                    }
+                }
+
+                state.movieDetailsUiState.movie.title.isEmpty() -> {
+                    Column(
                         modifier = Modifier.fillMaxSize()
-                    )
-                }
-            }
-
-            state.movieDetailsUiState.movie.title.isEmpty() -> {
-                Column(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    TopAppBar(
-                        leadingIcons = listOf(
-                            iconItemWithDefaults(
-                                icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                                onClick = { activity?.finish() }
+                    ) {
+                        AppTopBar(
+                            leadingIcons = listOf(
+                                iconItemWithDefaults(
+                                    icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
+                                    onClick = { activity?.finish() }
+                                )
                             )
                         )
-                    )
-                    PlaceholderView(
-                        modifier = Modifier.fillMaxSize(),
-                        image = painterResource(RDesignSystem.drawable.ic_network_error),
-                        title = stringResource(R.string.no_movie_details),
-                        subTitle = stringResource(R.string.movie_details_not_available),
-                        spacer = 16.dp
-                    )
-                }
-            }
-
-            else -> {
-                val mediaList =
-                    state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .navigationBarsPadding()
-                ) {
-                    item {
-                        if (state.isImageLoading) {
-                            PageLoadingPlaceHolder(
-                                modifier = Modifier.padding(bottom = 12.dp)
-                            )
-                        } else {
-                            val site = state.movieDetailsUiState.movieVideoUi.site
-                            val key = state.movieDetailsUiState.movieVideoUi.key
-                            DetailsImage(
-                                imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
-                                rating = state.movieDetailsUiState.movie.rating,
-                                onPlayClick = {
-                                    if (!(site.isEmpty() || key.isEmpty())) {
-                                        activity?.openYoutubeOrBrowser(key)
-                                    }
-                                },
-                                hasVideo = !(site.isEmpty() ||key.isEmpty()),
-                                modifier = Modifier.padding(bottom = 12.dp)
-                            )
-                        }
-                    }
-
-                    if (state.isDescriptionLoading) {
-                        item {
-                            PageLoadingPlaceHolder(
-                                modifier = Modifier.padding(16.dp)
-                            )
-                        }
-                    } else if (hasDescriptionContent(state.movieDetailsUiState.movie)) {
-                        item {
-                            DescriptionSection(
-                                title = state.movieDetailsUiState.movie.title,
-                                genres = state.movieDetailsUiState.movie.genres,
-                                releaseDate = state.movieDetailsUiState.movie.releaseDate,
-                                runtime = state.movieDetailsUiState.movie.runtime,
-                                country = state.movieDetailsUiState.movie.country,
-                                description = state.movieDetailsUiState.movie.description
-                            )
-                        }
-                    }
-
-                    if (state.isCastLoading) {
-                        item {
-                            PageLoadingPlaceHolder(
-                                modifier = Modifier.padding(16.dp)
-                            )
-                        }
-                    } else if (state.movieDetailsUiState.cast.isNotEmpty()) {
-                        item {
-                            CastSection(
-                                castList = state.movieDetailsUiState.cast,
-                                onSeeAllClick = {
-                                    movieDetailsScreenInteractionListener.onShowAllCastClick(
-                                        state.movieDetailsUiState.movie.id
-                                    )
-                                }
-                            )
-                        }
-                    }
-
-                    item {
-                        ChipsRowSection(
-                            items = movieChips.map { chip ->
-                                stringResource(chip.titleResId) to chip.iconResId
-                            },
-                            selectedIndex = selectedIndex.intValue,
-                            onItemSelected = { selectedIndex.intValue = it }
+                        PlaceholderView(
+                            modifier = Modifier.fillMaxSize(),
+                            image = painterResource(RDesignSystem.drawable.ic_network_error),
+                            title = stringResource(R.string.no_movie_details),
+                            subTitle = stringResource(R.string.movie_details_not_available),
+                            spacer = 16.dp
                         )
                     }
+                }
 
-                    selectedIndex.intValue.let { index ->
-                        when (movieChips[index]) {
-                            MovieChips.MORE_LIKE_THIS ->
-                                if (state.isRecommendationsLoading) {
-                                    item {
-                                        PageLoadingPlaceHolder(
-                                            modifier = Modifier.padding(16.dp)
+                else -> {
+                    val scrollState = rememberLazyListState()
+                    val isCollapsed by remember {
+                        derivedStateOf {
+                            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+                        }
+                    }
+                    val mediaList =
+                        state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
+                    SharedTransitionLayout {
+                        AnimatedContent(
+                            targetState = isCollapsed,
+                            label = "basic_transition"
+                        ) { target ->
+                            if (!target) {
+                                MovieTopComponentDetails(
+                                    state = state,
+                                    movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                    animatedVisibilityScope = this@AnimatedContent,
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                )
+                            } else {
+                                MovieTopComponent(
+                                    movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                    animatedVisibilityScope = this@AnimatedContent,
+                                    sharedTransitionScope = this@SharedTransitionLayout,
+                                    title = state.movieDetailsUiState.movie.title,
+                                )
+                            }
+
+                        }
+                    }
+                    LazyColumn(
+                        state = scrollState,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .navigationBarsPadding()
+                    ) {
+                        if (state.isDescriptionLoading) {
+                            item {
+                                PageLoadingPlaceHolder(
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                            }
+                        } else if (hasDescriptionContent(state.movieDetailsUiState.movie)) {
+                            item {
+                                DescriptionSection(
+                                    title = state.movieDetailsUiState.movie.title,
+                                    genres = state.movieDetailsUiState.movie.genres,
+                                    releaseDate = state.movieDetailsUiState.movie.releaseDate,
+                                    runtime = state.movieDetailsUiState.movie.runtime,
+                                    country = state.movieDetailsUiState.movie.country,
+                                    description = state.movieDetailsUiState.movie.description
+                                )
+                            }
+                        }
+
+                        if (state.isCastLoading) {
+                            item {
+                                PageLoadingPlaceHolder(
+                                    modifier = Modifier.padding(16.dp)
+                                )
+                            }
+                        } else if (state.movieDetailsUiState.cast.isNotEmpty()) {
+                            item {
+                                CastSection(
+                                    castList = state.movieDetailsUiState.cast,
+                                    onSeeAllClick = {
+                                        movieDetailsScreenInteractionListener.onShowAllCastClick(
+                                            state.movieDetailsUiState.movie.id
                                         )
                                     }
-                                } else if (mediaList.itemSnapshotList.isEmpty()) {
-                                    item {
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .background(Theme.colors.surface)
-                                                .padding(vertical = 30.dp)
-                                                .navigationBarsPadding(),
-                                            contentAlignment = Alignment.Center
-                                        ) {
-                                            Text(
-                                                text = stringResource(R.string.there_is_no_recommendations),
-                                                style = Theme.textStyle.label.large,
-                                                color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                )
+                            }
+                        }
+
+                        item {
+                            ChipsRowSection(
+                                items = movieChips.map { chip ->
+                                    stringResource(chip.titleResId) to chip.iconResId
+                                },
+                                selectedIndex = selectedIndex.intValue,
+                                onItemSelected = { selectedIndex.intValue = it }
+                            )
+                        }
+
+                        selectedIndex.intValue.let { index ->
+                            when (movieChips[index]) {
+                                MovieChips.MORE_LIKE_THIS ->
+                                    if (state.isRecommendationsLoading) {
+                                        item {
+                                            PageLoadingPlaceHolder(
+                                                modifier = Modifier.padding(16.dp)
                                             )
                                         }
-                                    }
-                                } else {
-                                    items(mediaList.itemCount) { mediaIndex ->
-                                        mediaList[mediaIndex]?.let { media ->
-                                            MediaCard(
+                                    } else if (mediaList.itemSnapshotList.isEmpty()) {
+                                        item {
+                                            Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
-                                                    .padding(
-                                                        start = 16.dp,
-                                                        end = 16.dp,
-                                                        bottom = 8.dp
-                                                    ),
-                                                imageUri = media.posterPath,
-                                                rating = media.voteAverage.toFloat(),
-                                                movieName = media.title,
-                                                mediaType = stringResource(R.string.movie),
-                                                year = media.releaseDate.takeLast(4),
-                                                mediaCardType = MediaCardType.UP_COMING,
-                                                showGradientFilter = true,
-                                                clickable = true,
-                                                onClick = {
-                                                    movieDetailsScreenInteractionListener.onSimilarMovieClick(
-                                                        mediaId = media.id
-                                                    )
-                                                },
-                                                cardWidth = null
-                                            )
+                                                    .background(Theme.colors.surface)
+                                                    .padding(vertical = 30.dp)
+                                                    .navigationBarsPadding(),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.there_is_no_recommendations),
+                                                    style = Theme.textStyle.label.large,
+                                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                                )
+                                            }
+                                        }
+                                    } else {
+                                        items(mediaList.itemCount) { mediaIndex ->
+                                            mediaList[mediaIndex]?.let { media ->
+                                                MediaCard(
+                                                    modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(
+                                                            start = 16.dp,
+                                                            end = 16.dp,
+                                                            bottom = 8.dp
+                                                        ),
+                                                    imageUri = media.posterPath,
+                                                    rating = media.voteAverage?.toFloat(),
+                                                    movieName = media.title,
+                                                    mediaType = stringResource(R.string.movie),
+                                                    year = media.releaseDate.take(4),
+                                                    mediaCardType = MediaCardType.UP_COMING,
+                                                    showGradientFilter = true,
+                                                    clickable = true,
+                                                    onClick = {
+                                                        movieDetailsScreenInteractionListener.onSimilarMovieClick(
+                                                            mediaId = media.id
+                                                        )
+                                                    },
+                                                    cardWidth = null
+                                                )
+                                            }
                                         }
                                     }
-                                }
 
-                            MovieChips.REVIEWS ->
-                                if (state.isReviewsLoading) {
-                                    item {
+                                MovieChips.REVIEWS ->
+                                    if (state.isReviewsLoading) {
+                                        item {
+                                            PageLoadingPlaceHolder(
+                                                modifier = Modifier.padding(16.dp)
+                                            )
+                                        }
+                                    } else if (state.movieDetailsUiState.reviews.isEmpty()) {
+                                        item {
+                                            Box(
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .background(Theme.colors.surface)
+                                                    .padding(vertical = 30.dp)
+                                                    .navigationBarsPadding(),
+                                                contentAlignment = Alignment.Center
+                                            ) {
+                                                Text(
+                                                    text = stringResource(R.string.there_is_no_reviews),
+                                                    style = Theme.textStyle.label.large,
+                                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                                )
+                                            }
+                                        }
+                                    } else {
+                                        items(state.movieDetailsUiState.reviews) { review ->
+                                            ReviewsSection(review)
+                                        }
+                                    }
+
+                                MovieChips.GALLERY -> item {
+                                    if (state.isGalleryLoading) {
                                         PageLoadingPlaceHolder(
                                             modifier = Modifier.padding(16.dp)
                                         )
-                                    }
-                                } else if (reviewsList.itemSnapshotList.isEmpty()) {
-                                    item {
+                                    } else if (state.movieDetailsUiState.gallery.isEmpty()) {
                                         Box(
                                             modifier = Modifier
                                                 .fillMaxWidth()
@@ -299,84 +349,52 @@ fun MovieDetailsScreenContent(
                                             contentAlignment = Alignment.Center
                                         ) {
                                             Text(
-                                                text = stringResource(R.string.there_is_no_reviews),
+                                                text = stringResource(R.string.there_is_no_gallery),
                                                 style = Theme.textStyle.label.large,
                                                 color = Theme.colors.text.body.copy(alpha = 0.6f)
                                             )
                                         }
-                                    }
-                                } else {
-                                    items(reviewsList.itemCount) { index ->
-                                        ReviewsSection(reviewsList[index])
+                                    } else {
+                                        GallerySection(state.movieDetailsUiState.gallery)
                                     }
                                 }
 
-                            MovieChips.GALLERY -> item {
-                                if (state.isGalleryLoading) {
-                                    PageLoadingPlaceHolder(
-                                        modifier = Modifier.padding(16.dp)
-                                    )
-                                } else if (state.movieDetailsUiState.gallery.isEmpty()) {
-                                    Box(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .background(Theme.colors.surface)
-                                            .padding(vertical = 30.dp)
-                                            .navigationBarsPadding(),
-                                        contentAlignment = Alignment.Center
-                                    ) {
-                                        Text(
-                                            text = stringResource(R.string.there_is_no_gallery),
-                                            style = Theme.textStyle.label.large,
-                                            color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                MovieChips.COMPANY_PRODUCTION -> item {
+                                    if (state.isProductionCompaniesLoading) {
+                                        PageLoadingPlaceHolder(
+                                            modifier = Modifier.padding(16.dp)
+                                        )
+                                    } else {
+                                        ProductionCompanySection(
+                                            companies = state.movieDetailsUiState.movie.productionCompanies,
+                                            modifier = Modifier
+                                                .padding(horizontal = 16.dp)
                                         )
                                     }
-                                } else {
-                                    GallerySection(state.movieDetailsUiState.gallery)
-                                }
-                            }
-
-                            MovieChips.COMPANY_PRODUCTION -> item {
-                                if (state.isProductionCompaniesLoading) {
-                                    PageLoadingPlaceHolder(
-                                        modifier = Modifier.padding(16.dp)
-                                    )
-                                } else {
-                                    ProductionCompanySection(
-                                        companies = state.movieDetailsUiState.movie.productionCompanies,
-                                        modifier = Modifier
-                                            .padding(horizontal = 16.dp)
-                                    )
                                 }
                             }
                         }
                     }
                 }
-
-                TopAppBar(
-                    leadingIcons = listOf(
-                        iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
-                            onClick = { activity?.finish() }
-                        )
-                    ),
-                    trailingIcons = listOf(
-                        iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_star),
-                            onClick = {
-                                movieDetailsScreenInteractionListener.onFavouriteClick(R.string.rate) // when click on this should open rating dialog
-                            }
-                        ),
-                        iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_heart_add),
-                            onClick = {
-                                movieDetailsScreenInteractionListener.onAddToListClick(R.string.add_to_list)
-                            }
-                        )
-                    ),
-                    modifier = Modifier.background(backgroundColor)
-                )
             }
+        }
+        AnimatedVisibility(
+            visible = state.showSnackBar,
+            enter = fadeIn() + slideInVertically(),
+            exit = fadeOut() + slideOutVertically()
+        ) {
+            AppSnackBar(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .statusBarsPadding()
+                    .padding(start = 12.dp, end = 12.dp, top = 16.dp)
+                    .align(Alignment.TopCenter),
+                text = state.snackBarMessage ?: RDesignSystem.string.empty,
+                isSuccess = state.snackBarSuccess,
+                onClick = {
+                    movieDetailsScreenInteractionListener.onHideSnackBar()
+                }
+            )
         }
     }
 }

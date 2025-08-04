@@ -121,7 +121,7 @@ fun GuessCard(
                         .padding(16.dp),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(
+                    AppText(
                         text = textNoImage,
                         style = Theme.textStyle.title.large,
                         color = Theme.colors.text.title,
@@ -186,18 +186,18 @@ fun GuessCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(
+                    AppText(
                         text = stringResource(R.string.hint_text),
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.status.yellowAccent,
                     )
-                    Text(
+                    AppText(
                         text = hintPoints.toString() + " " + stringResource(R.string.pts),
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.status.yellowAccent,
                         modifier = Modifier.padding(start = 4.dp)
                     )
-                    Icon(
+                    AppIcon(
                         imageVector = ImageVector.vectorResource(if (imagePainter != null) R.drawable.ic_horisontal_star else R.drawable.ic_falling_star),
                         contentDescription = null,
                         modifier = Modifier.padding(start = 4.dp),
@@ -258,7 +258,7 @@ private fun GuessCharacterCardPreview() {
                 },
             )
 
-            HorizontalDivider(thickness = 5.dp)
+            AppHorizontalDivider(thickness = 5.dp)
 
             var state2 by remember { mutableStateOf(GuessCardImageState.Hard) }
             GuessCard(

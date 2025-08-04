@@ -1,25 +1,20 @@
 package com.paris_2.aflami.di
 
+import android.content.Context
 import androidx.work.WorkManager
 import androidx.work.WorkerFactory
-import com.repository.search.dataSource.local.workManager.ClearMediaWorker
-import org.koin.android.ext.koin.androidContext
-import org.koin.androidx.workmanager.dsl.worker
-import org.koin.androidx.workmanager.factory.KoinWorkerFactory
-import org.koin.dsl.module
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
+import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
-val workManagerModule = module {
-
-    single { WorkManager.getInstance(androidContext()) }
-
-    single<WorkerFactory> { KoinWorkerFactory() }
-
-    worker {
-        ClearMediaWorker(
-            context = androidContext(),
-            workerParams = get(),
-            mediaLocalDataSource = get()
-        )
-    }
-
+@Module
+@InstallIn(SingletonComponent::class)
+object WorkManagerModule {
+    @Provides
+    @Singleton
+    fun provideWorkManager(@ApplicationContext context: Context): WorkManager =
+        WorkManager.getInstance(context)
 }

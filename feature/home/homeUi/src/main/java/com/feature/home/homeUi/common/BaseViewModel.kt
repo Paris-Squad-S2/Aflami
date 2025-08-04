@@ -3,7 +3,7 @@ package com.feature.home.homeUi.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.feature.home.homeApi.HomeDestination
+import com.feature.home.homeUi.navigation.HomeDestination
 import com.feature.home.homeUi.navigation.HomeNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -13,15 +13,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.koin.core.component.KoinComponent
-import org.koin.core.component.inject
 
-open class BaseViewModel<S>(initialState: S) : ViewModel(), KoinComponent {
+open class BaseViewModel<S>(
+    initialState: S, private val navigator: HomeNavigator
+) : ViewModel() {
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
-
-    private val navigator: HomeNavigator by inject()
 
     protected fun navigate(destination: HomeDestination, navOptions: NavOptions? = null) =
         viewModelScope.launch {

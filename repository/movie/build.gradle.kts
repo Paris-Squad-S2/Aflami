@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -51,9 +52,12 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 
-    //koin
-    implementation(libs.koin.core)
-    implementation(libs.koin.android)
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+    //work manager for kotlin
+    implementation(libs.work.runtime.ktx)
 
     // test
     testImplementation(kotlin("test"))
@@ -61,7 +65,7 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_MEDIA))
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 

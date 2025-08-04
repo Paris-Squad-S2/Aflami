@@ -6,17 +6,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.home.homeApi.HomeDestination
-import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingScreen
 import com.feature.home.homeUi.screen.home.HomeScreen
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesScreen
-import org.koin.compose.koinInject
+import dagger.hilt.android.EntryPointAccessors
+import androidx.compose.ui.platform.LocalContext
 
 @Composable
 fun HomeNavGraph(
-    navigator: HomeNavigator = koinInject(),
-    startDestination: HomeDestination? = null
+    navigator: HomeNavigator = EntryPointAccessors.fromApplication(
+        LocalContext.current.applicationContext as android.app.Application,
+        HomeNavigatorEntryPoint::class.java
+    ).homeNavigator()
 ) {
     val navController = rememberNavController()
 
@@ -34,13 +35,13 @@ fun HomeNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        buildSearchNavGraph(startDestination)
+        buildSearchNavGraph()
     }
 }
 
-fun NavGraphBuilder.buildSearchNavGraph(startDestination: HomeDestination? = null) {
+fun NavGraphBuilder.buildSearchNavGraph() {
     navigation<HomeDestinations.HomeGraph1>(
-        startDestination = startDestination ?: HomeDestinations.HomeScreen
+        startDestination = HomeDestinations.HomeScreen
     ) {
         composable<HomeDestinations.HomeScreen> { HomeScreen() }
         composable<HomeDestinations.ContinueWatchingScreen> { ContinueWatchingScreen() }

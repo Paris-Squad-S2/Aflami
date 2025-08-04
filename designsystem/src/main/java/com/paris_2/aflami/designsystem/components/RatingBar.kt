@@ -42,7 +42,8 @@ fun RatingBar(
     starSize: Dp = 24.dp,
     spaceBetween: Dp = 4.dp,
     selectedColor: Color = Theme.colors.status.yellowAccent,
-    onRatingChange: (Float) -> Unit
+    onRatingChange: (Float) -> Unit,
+    isRtl: Boolean = false
 ) {
     val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
@@ -85,8 +86,8 @@ fun RatingBar(
             }
             StarIconFromResource(
                 modifier = Modifier.size(starSize),
-                fillRatio = fillRatio,
-                layoutDirection = layoutDirection,
+                fillRatio = if (isRtl) 1 - fillRatio else fillRatio,
+                layoutDirection = if (isRtl) layoutDirection.toggle() else layoutDirection,
                 selectedColor = selectedColor
             )
         }
@@ -106,14 +107,14 @@ private fun StarIconFromResource(
     ) {
         val starModifier = Modifier.matchParentSize()
 
-        Icon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_filled),
+        AppIcon(
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_outlined),
             contentDescription = null,
-            tint = selectedColor.copy(alpha = 0.3f),
+            tint = selectedColor,
             modifier = starModifier
         )
 
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_filled),
             contentDescription = null,
             tint = selectedColor,
@@ -123,8 +124,10 @@ private fun StarIconFromResource(
                 }
                 .drawWithContent {
                     clipRect(
-                        right = if (layoutDirection == LayoutDirection.Rtl) size.width else size.width * fillRatio,
-                        left = if (layoutDirection == LayoutDirection.Rtl) size.width - size.width * fillRatio else 0f) {
+                        right =
+                            if (layoutDirection == LayoutDirection.Rtl) size.width else size.width * fillRatio,
+                        left = if (layoutDirection == LayoutDirection.Rtl) size.width - size.width * fillRatio else 0f
+                    ) {
                         this@drawWithContent.drawContent()
                     }
                 }
@@ -138,7 +141,7 @@ fun PreviewInteractiveRatingBarAdvanced() {
     var currentRating by remember { mutableFloatStateOf(7.7f) } // Test with 7.7 for a 3/4 star
 
     Column(Modifier.padding(16.dp)) {
-        Text("IMDb rating", style = Theme.textStyle.title.small)
+        AppText("IMDb rating", style = Theme.textStyle.title.small)
         Spacer(Modifier.height(8.dp))
         RatingBar(
             rating = currentRating,
@@ -148,6 +151,10 @@ fun PreviewInteractiveRatingBarAdvanced() {
             }
         )
         Spacer(Modifier.height(8.dp))
-        Text("Current Rating: %.1f / 10".format(currentRating))
+        AppText("Current Rating: %.1f / 10".format(currentRating))
     }
+}
+
+fun LayoutDirection.toggle(): LayoutDirection {
+    return if (this == LayoutDirection.Ltr) LayoutDirection.Rtl else LayoutDirection.Ltr
 }

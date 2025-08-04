@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -60,12 +63,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    //Koin
-    implementation(libs.koin.core)
-    implementation(libs.koin.compose)
-    implementation(libs.koin.compose.viewmodel)
-    implementation(libs.koin.android)
-
     //Navigation
     implementation(libs.navigation.compose)
 
@@ -77,7 +74,7 @@ dependencies {
 
     //Modules
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_HOME))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
@@ -101,6 +98,15 @@ dependencies {
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+
+    //blur
+    implementation(libs.sifr.shaded)
+
+    //shimmer
+    implementation(libs.shimmer)
 
 }
-

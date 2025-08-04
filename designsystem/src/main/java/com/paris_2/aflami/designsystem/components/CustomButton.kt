@@ -103,7 +103,7 @@ fun CustomButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             text?.let {
-                Text(
+                AppText(
                     stringResource(it),
                     style = Theme.textStyle.label.large,
                     color = buttonContentColor
@@ -111,16 +111,26 @@ fun CustomButton(
             }
 
             AnimatedVisibility(visible = isLoading, enter = fadeIn()) {
-                if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
-                LoadingIcon(
-                    modifier = Modifier.size(20.dp),
-                    color = buttonContentColor
-                )
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
+                    LoadingIcon(
+                        modifier = Modifier.size(20.dp),
+                        color = buttonContentColor
+                    )
+                }
             }
             AnimatedVisibility(visible = !isLoading, enter = fadeIn()) {
                 icon?.let {
-                    if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
-                    it()
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        if (text != null) Spacer(modifier = Modifier.width(contentSpacing))
+                        it()
+                    }
                 }
             }
         }
@@ -160,7 +170,7 @@ fun PrimaryButton() {
                     type = ButtonType.Primary,
                     state = ButtonState.Normal,
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                 )
             }
@@ -203,7 +213,7 @@ fun SecondaryButton() {
                     type = ButtonType.Secondary,
                     state = ButtonState.Normal,
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                 )
             }
@@ -254,14 +264,14 @@ fun FABButton() {
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                     type = ButtonType.FloatingActionButton,
                 )
                 CustomButton(
                     modifier = Modifier.size(64.dp),
                     onClick = { },
-                    icon = { Icon(Icons.Default.Add, null) },
+                    icon = { AppIcon(Icons.Default.Add, null) },
                     type = ButtonType.FloatingActionButton,
                     state = ButtonState.Loading
                 )
@@ -269,7 +279,7 @@ fun FABButton() {
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                     type = ButtonType.FloatingActionButton,
                     state = ButtonState.Disabled
@@ -312,7 +322,7 @@ fun PrimaryNegativeButton() {
                     isNegative = true,
                     state = ButtonState.Normal,
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                 )
             }

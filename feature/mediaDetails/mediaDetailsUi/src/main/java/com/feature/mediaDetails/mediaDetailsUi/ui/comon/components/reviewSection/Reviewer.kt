@@ -1,5 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,8 +22,9 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.ExpandableText
-import com.paris_2.aflami.designsystem.components.RatingCard
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -32,7 +33,7 @@ fun ReviewCard(
     createdAt: String,
     avatarUrl: String,
     username: String,
-    rating: Double,
+    rating: Double?,
     description: String,
     modifier: Modifier = Modifier,
 ) {
@@ -59,22 +60,27 @@ fun ReviewCard(
                 Spacer(modifier = Modifier.width(12.dp))
 
                 Column(modifier = Modifier.weight(1f)) {
-                    Text(
+                    AppText(
                         text = name,
                         style = Theme.textStyle.title.medium,
                         color = Theme.colors.text.title
                     )
-                    Text(
+                    AppText(
                         text = username,
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.text.hint
                     )
                 }
 
-                RatingCard(
-                    rating = rating.toFloat(),
+                AnimatedVisibility(
+                    rating != null,
                     modifier = Modifier.padding(start = 8.dp)
-                )
+                ) {
+                    RatingCard(
+                        rating = rating?.toFloat(),
+                    )
+                }
+
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -83,7 +89,7 @@ fun ReviewCard(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            Text(
+            AppText(
                 text = createdAt,
                 style = Theme.textStyle.label.small,
                 color = Theme.colors.text.hint

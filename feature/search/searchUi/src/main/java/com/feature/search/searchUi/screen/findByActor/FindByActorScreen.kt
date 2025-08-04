@@ -13,6 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -21,15 +22,14 @@ import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.TextField
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTextField
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
-fun FindByActorScreen(viewModel: FindByActorViewModel = koinViewModel()) {
+fun FindByActorScreen(viewModel: FindByActorViewModel = hiltViewModel()) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
 
     FindByActorScreenContent(
@@ -50,7 +50,7 @@ fun FindByActorScreenContent(
             .background(Theme.colors.surface)
             .navigationBarsPadding()
     ) {
-        TopAppBar(
+        AppTopBar(
             modifier = Modifier
                 .statusBarsPadding(),
             title = stringResource(R.string.find_by_actor),
@@ -61,10 +61,10 @@ fun FindByActorScreenContent(
                 )
             ),
         )
-        TextField(
+        AppTextField(
             value = state.uiState.searchQuery,
             onValueChange = findByActorScreenInteractionListener::onSearchQueryChange,
-            placeholder = stringResource(R.string.search),
+            placeholder = stringResource(R.string.actor_name),
         )
         if (state.uiState.searchQuery.isEmpty()) {
             PlaceholderView(

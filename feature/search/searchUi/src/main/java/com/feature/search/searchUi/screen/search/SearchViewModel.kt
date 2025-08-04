@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.search
 
 import CategoryUiState
+import MediaTypeUi
 import MediaUiState
 import SearchScreenState
 import SearchTypeUi
@@ -14,18 +15,17 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.domain.search.model.Media
-import com.domain.search.useCase.ClearAllRecentSearchesUseCase
-import com.domain.search.useCase.ClearRecentSearchUseCase
-import com.domain.search.useCase.FilterMediaUseCase
-import com.domain.search.useCase.FilterMediaByRatingUseCase
-import com.domain.search.useCase.GetAllCategoriesUseCase
-import com.domain.search.useCase.GetAllRecentSearchesUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SearchByQueryUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.useCase.ClearAllRecentSearchesUseCase
+import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
+import com.paris_2.domain.media.useCase.FilterMediaByRatingUseCase
+import com.paris_2.domain.media.useCase.FilterMediaUseCase
+import com.paris_2.domain.media.useCase.GetAllCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SearchByQueryUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toDomainList
@@ -33,7 +33,9 @@ import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
-import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
+import com.feature.search.searchUi.navigation.SearchNavigator
+import com.feature.search.searchUi.pagging.PagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -44,7 +46,10 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
-class SearchViewModel(
+import javax.inject.Inject
+
+@HiltViewModel
+class SearchViewModel @Inject constructor(
     private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase,
     private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase,
     private val clearRecentSearchUseCase: ClearRecentSearchUseCase,
@@ -54,7 +59,8 @@ class SearchViewModel(
     private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase,
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
-    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    navigator: SearchNavigator
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -74,7 +80,8 @@ class SearchViewModel(
             ),
             isLoading = false,
             errorMessage = null
-        )
+        ),
+        navigator
     ) {
 
     init {
@@ -149,16 +156,22 @@ class SearchViewModel(
             screenState.value.copy(
                 searchUiState = screenState.value.searchUiState.copy(
                     searchQuery = query,
-                )
+                ),
+                isLoading = true
             )
         )
         debounceJob?.cancel()
         if (query.isNotBlank()) {
-
             debounceJob = viewModelScope.launch {
                 delay(1000)
                 searchQuery(query)
             }
+        }else{
+            updateState(
+                screenState.value.copy(
+                    isLoading = false
+                )
+            )
         }
     }
 
@@ -167,16 +180,21 @@ class SearchViewModel(
             execute = {
                 updateState(
                     screenState.value.copy(
-                        errorMessage = null
+                        errorMessage = null,
                     )
                 )
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SearchByQueryPagingSource(
-                            query = query,
-                            searchByQueryUseCase = searchByQueryUseCase,
-                            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase
+                        PagingSource(
+                            searchUseCase = {page ->
+                                sortingMediaByCategoriesInteractionUseCase(
+                                    searchByQueryUseCase(
+                                        query,
+                                        page
+                                    )
+                                ).toMediaUiList()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -217,7 +235,8 @@ class SearchViewModel(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }

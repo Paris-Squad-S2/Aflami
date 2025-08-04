@@ -7,31 +7,37 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.TvShowVideo
-import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowCastUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowDetailsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowGalleryUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.ReviewTvShowPagingSource
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
+import javax.inject.Inject
+import kotlin.math.roundToInt
 
-class TvShowDetailsViewModel(
+@HiltViewModel
+class TvShowDetailsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val getTvShowDetailsUseCase: GetTvShowDetailsUseCase,
     private val getTvShowCastUseCase: GetTvShowCastUseCase,
@@ -44,8 +50,10 @@ class TvShowDetailsViewModel(
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
-    private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase
+    private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
+    navigator: MediaDetailsNavigator,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
+
     TvShowDetailsScreenState(
         TvShowDetailsUiState(
             tvShowUi = TvShowUi(
@@ -62,7 +70,7 @@ class TvShowDetailsViewModel(
                 productionCompanies = emptyList()
             ),
             cast = emptyList(),
-            reviews = flowOf(PagingData.empty()),
+            reviews = emptyList(),
             gallery = emptyList(),
             recommendations = flowOf(PagingData.empty()),
             tvShowVideoUi = TvShowVideoUi(
@@ -81,8 +89,9 @@ class TvShowDetailsViewModel(
         errorMessage = null,
         isEpisodesLoading = true,
         seasonsLoadingStates = emptyMap()
-    )
+    ), navigator
 ) {
+
 
     private val mediaId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>().tvShowId
@@ -131,6 +140,7 @@ class TvShowDetailsViewModel(
         )
     }
 
+
     private fun loadTvShowCast(mediaId: Int) {
         tryToExecute(
             execute = { getTvShowCastUseCase(mediaId) },
@@ -152,6 +162,7 @@ class TvShowDetailsViewModel(
             }
         )
     }
+
 
     private fun loadTvShowGallery(mediaId: Int) {
         tryToExecute(
@@ -175,15 +186,17 @@ class TvShowDetailsViewModel(
         )
     }
 
+
     private fun loadTvShowRecommendations(mediaId: Int) {
         tryToExecute(
             execute = {
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SimilarTvShowPageSource(
-                            movieId = mediaId,
-                            getTvShowRecommendationsUseCase = getTvShowRecommendationsUseCase
+                        PagingSource(
+                            mediaUseCase ={ page ->
+                                getTvShowRecommendationsUseCase(mediaId,page).toListOfMTvShowSimilarUI()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -204,20 +217,16 @@ class TvShowDetailsViewModel(
                 )
             }
         )
+
     }
+
 
     private fun loadTvShowReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        ReviewTvShowPagingSource(
-                            mediaId = mediaId,
-                            getTvShowReviewsUseCase = getTvShowReviewsUseCase
-                        )
-                    }
-                ).flow.cachedIn(viewModelScope)
+
+                getTvShowReviewsUseCase(mediaId,1).toListOfReviewUi()
+
             },
             onSuccess = { reviews ->
                 updateState(
@@ -262,26 +271,23 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onFavouriteClick(title: Int) {
+    override fun onRateClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
-                    tryToExecute(
-                        execute = { addRatingToTvShowUseCase() },
-                        onSuccess = {
-                            updateState(
-                                screenState.value.copy(
-                                    showRatingDialog = true
-                                )
-                            )
-                        },
-                        onError = {
-                            updateState(screenState.value.copy(errorMessage = it))
-                        }
+                    updateState(
+                        screenState.value.copy(
+                            showRatingDialog = true
+                        )
                     )
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+                }
+                else{
+                    navigate(
+                        MediaDetailsDestinations.LoginDialogDestination(
+                            R.string.rate
+                        )
+                    )
                 }
             },
             onError = {
@@ -290,8 +296,36 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onAddToListClick(title: Int) {
-        navigate(MediaDetailsDestinations.LoginDialogDestination(title))
+    override fun onAddToListClick() {
+        tryToExecute(
+            execute = { isLoggedInUseCase() },
+            onSuccess = { isLoggedIn ->
+                if (isLoggedIn) {
+                    updateState(
+                        screenState.value.copy(
+                            showAddToListDialog = true
+                        )
+                    )
+                } else {
+                    navigate(
+                        MediaDetailsDestinations.LoginDialogDestination(
+                            R.string.add_to_list
+                        )
+                    )
+                }
+            },
+            onError = {
+                updateState(screenState.value.copy(errorMessage = it))
+            }
+        )
+    }
+
+    override fun onDismissAddToListDialog() {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = false
+            )
+        )
     }
 
     override fun onShowAllCastClick(tvShowId: Int) {
@@ -369,7 +403,35 @@ class TvShowDetailsViewModel(
         )
     }
 
-    override fun onRatingSubmitted(rating: Float) {}
+    override fun onRatingSubmitted(movieId: Int, rating: Float) {
+        tryToExecute(
+            execute = {
+                val step = 0.5f
+                val roundedRating = ((rating / step).roundToInt() * step)
+                addRatingToTvShowUseCase(movieId, roundedRating)
+            },
+            onSuccess = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = true,
+                        snackBarMessage = R.string.rating_submit_successfully,
+                        showRatingDialog = false
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        showSnackBar = true,
+                        snackBarSuccess = false,
+                        snackBarMessage = R.string.failed_to_submit_rating,
+                        errorMessage = it
+                    )
+                )
+            }
+        )
+    }
 
     override fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int) {
         tryToExecute(
@@ -438,4 +500,5 @@ class TvShowDetailsViewModel(
             )
         )
     }
+
 }

@@ -14,8 +14,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
 
 @Composable
 fun SearchResultContent(
@@ -43,11 +41,10 @@ fun SearchResultContent(
                             onMediaCardClick(media)
                         },
                     imageUri = media.imageUri,
-                    rating = media.rating.toFloat(),
+                    rating = media.rating?.toFloat(),
                     movieName = media.title,
                     mediaType = media.type.mediaName,
                     year = media.yearOfRelease.year.toString(),
-                    mediaCardType = MediaCardType.NORMAL,
                     showGradientFilter = true,
                     enabled = !isScrolling,
                 )

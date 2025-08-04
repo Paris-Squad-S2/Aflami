@@ -41,7 +41,7 @@ val defaultTextStyle = AflamiTextStyle(
         ),
         small = TextStyle(
             fontFamily = popPins,
-            fontWeight = FontWeight.SemiBold,
+            fontWeight = FontWeight.Medium,
             fontSize = 16.sp,
             lineHeight = 24.sp
         )
@@ -62,8 +62,8 @@ val defaultTextStyle = AflamiTextStyle(
         small = TextStyle(
             fontFamily = popPins,
             fontWeight = FontWeight.Normal,
-            fontSize = 16.sp,
-            lineHeight = 24.sp
+            fontSize = 14.sp,
+            lineHeight = 22.sp
         )
     ),
     label = SizedTextStyle(
@@ -85,6 +85,13 @@ val defaultTextStyle = AflamiTextStyle(
             fontSize = 10.sp,
             lineHeight = 16.sp
         )
+    ),
+    logoText = TextStyle(
+        fontSize = 14.sp,
+        fontFamily = nicoMoji,
+        fontWeight = FontWeight.Normal,
+        lineHeight = 20.sp,
+        letterSpacing = 0.25.sp
     )
 )
 

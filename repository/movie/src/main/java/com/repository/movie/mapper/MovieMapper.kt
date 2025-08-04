@@ -1,14 +1,13 @@
 package com.repository.movie.mapper
 
-import com.domain.mediaDetails.model.Cast
-import com.domain.mediaDetails.model.Gallery
-import com.domain.mediaDetails.model.Genre
-import com.domain.mediaDetails.model.Image
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieSimilar
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.model.ProductionCompany
-import com.domain.mediaDetails.model.Review
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.Genre
+import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.MovieSimilar
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.entity.ProductionCompany
+import com.paris_2.domain.media.entity.Review
 import com.repository.movie.models.local.CastEntity
 import com.repository.movie.models.local.GalleryEntity
 import com.repository.movie.models.local.GenreEntity
@@ -78,10 +77,8 @@ fun CastEntity.toEntity(): Cast {
     )
 }
 
-fun MovieImagesDto.toEntity(): Gallery {
-    return Gallery(
-        images = this.logos?.map { it.toEntity(id = this.id ?: 0) } ?: emptyList()
-    )
+fun MovieImagesDto.toEntity(): List<Image> {
+    return  this.logos?.map { it.toEntity(id = this.id ?: 0) } ?: emptyList()
 }
 
 private fun MovieLogoDto.toEntity(id: Int): Image {
@@ -102,7 +99,7 @@ fun MovieReviewDto.toEntity(): Review {
         name = this.authorDetails?.name.orEmpty(),
         avatarUrl = this.authorDetails?.avatarPath.toImageUrl().orEmpty(),
         username = this.authorDetails?.username.orEmpty(),
-        rating = this.authorDetails?.rating ?: 0.0,
+        rating = this.authorDetails?.rating,
         description = this.content.orEmpty()
     )
 }
@@ -112,7 +109,7 @@ fun MovieDto.toLocalDto(language: String): MovieEntity {
         id = this.id ?: 0,
         title = this.title.orEmpty(),
         posterPath = this.posterPath.toImageUrl().orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage,
         description = this.overview.orEmpty(),
         genres = this.movieGenreDto?.map { it.toLocalDto() } ?: emptyList(),
         releaseDate = this.releaseDate.orEmpty(),
@@ -144,7 +141,7 @@ fun MovieSimilarDto.toLocalDto(movieId: Int, page: Int, language: String): Movie
         id = this.id ?: 0,
         movieId = movieId,
         title = this.title.orEmpty(),
-        voteAverage = this.voteAverage ?: 0.0,
+        voteAverage = this.voteAverage,
         posterPath = this.posterPath.toImageUrl().orEmpty(),
         releaseDate = this.releaseDate.orEmpty(),
         language = language,
@@ -166,10 +163,8 @@ fun ImageEntity.toEntity(): Image {
     )
 }
 
-fun GalleryEntity.toEntity(): Gallery {
-    return Gallery(
-        images = this.images.map { it.toEntity() }
-    )
+fun GalleryEntity.toEntity(): List<Image> {
+    return this.images.map { it.toEntity() }
 }
 
 fun Review.toLocalDto(movieId: Int, language: String): ReviewEntity {

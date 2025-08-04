@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.Dialog
+import com.paris_2.aflami.designsystem.components.AppDialog
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -44,7 +44,7 @@ fun LoginDialog(
     image: Painter = painterResource(R.drawable.profile_placholder),
     @StringRes buttonTextResId: Int = R.string.login,
 ) {
-    Dialog(
+    AppDialog(
         onDismiss = onDismiss,
         title = title,
         modifier = modifier

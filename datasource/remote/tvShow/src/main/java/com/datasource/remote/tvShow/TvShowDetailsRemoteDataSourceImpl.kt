@@ -10,8 +10,10 @@ import com.repository.model.remote.TvShowReviewsDto
 import com.repository.model.remote.TvShowSeasonDto
 import com.repository.model.remote.TvShowSimilarsDto
 import com.repository.model.remote.TvShowVideoDto
+import com.repository.movie.models.remote.RatingDto
+import javax.inject.Inject
 
-class TvShowDetailsRemoteDataSourceImpl(
+class TvShowDetailsRemoteDataSourceImpl @Inject constructor(
     private val retrofitTvShowDetailsApiService: RetrofitTvShowDetailsApiService
 ) : TvShowDetailsRemoteDataSource {
 
@@ -67,5 +69,16 @@ class TvShowDetailsRemoteDataSourceImpl(
             episodeNumber,
             language
         )
+    }
+
+    override suspend fun addRatingToTvShow(movieId: Int, rating: Float): Boolean {
+        val dto = RatingDto(value = rating)
+        val response = retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, dto)
+        return !(response.statusCode != STATUS_CODE_SUCCESS && response.statusCode != STATUS_CODE_UPDATED)
+    }
+
+    companion object {
+        private const val STATUS_CODE_SUCCESS = 1
+        private const val STATUS_CODE_UPDATED = 12
     }
 }

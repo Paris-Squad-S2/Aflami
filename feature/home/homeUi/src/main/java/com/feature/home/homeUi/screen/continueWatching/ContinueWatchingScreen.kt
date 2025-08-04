@@ -1,5 +1,7 @@
 package com.feature.home.homeUi.screen.continueWatching
 
+import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -20,33 +22,40 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.aflami.designsystem.components.MediaCard
-import com.paris_2.aflami.designsystem.components.MediaCardType
+import com.feature.home.homeUi.screen.home.components.MediaCard
+import com.feature.home.homeUi.screen.home.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
-import org.koin.compose.viewmodel.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ContinueWatchingScreen(
-    viewModel: ContinueWatchingViewModel = koinViewModel(),
+    viewModel: ContinueWatchingViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
-
-    Column {
-        TopAppBar(
+    val context = LocalActivity.current
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Theme.colors.surface)
+    ) {
+        AppTopBar(
             logo = iconItemWithDefaults(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
-                onClick = viewModel::onBackButtonClick,
-                backgroundColor = Theme.colors.primaryVariant,
+                onClick = {
+                    context?.finish()
+                },
+                backgroundColor = Theme.colors.surfaceHigh,
+                tint = Theme.colors.text.title,
             ),
             title = stringResource(R.string.continue_watching),
-            modifier = Modifier.padding( top = 23.dp)
+            modifier = Modifier.padding(top = 23.dp)
         )
         if (state.value.continueWatchingMediaList.isNotEmpty()) {
             ContinueWatchingContent(
@@ -89,7 +98,7 @@ fun ContinueWatchingContent(
                         onMediaCardClick(media)
                     },
                 imageUri = media.imageUri,
-                rating = media.rating.toFloat(),
+                rating = media.rating?.toFloat(),
                 movieName = media.title,
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),

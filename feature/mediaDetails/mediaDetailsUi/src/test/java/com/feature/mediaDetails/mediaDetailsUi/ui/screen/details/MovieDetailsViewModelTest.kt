@@ -2,21 +2,28 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.GetSessionIdUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -34,9 +41,6 @@ import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.koin.core.context.startKoin
-import org.koin.core.context.stopKoin
-import org.koin.dsl.module
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MovieDetailsViewModelTest {
@@ -51,9 +55,11 @@ class MovieDetailsViewModelTest {
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase = mockk()
+    private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
     private lateinit var viewModel: MovieDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testMovieId = 42
+    private val mediaDetailsNavigator: MediaDetailsNavigator = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -63,16 +69,62 @@ class MovieDetailsViewModelTest {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>() } returns MediaDetailsDestinations.MovieDetailsScreen(
             movieId = testMovieId
         )
-        stopKoin()
-        startKoin {
-            modules(
-                module {
-                    single<MediaDetailsNavigator> { mockk(relaxed = true) }
-                }
-            )
-        }
     }
 
+    @Test
+    fun `onAddToListClick updates state to show AddToListDialog when user logged in`() = runTest {
+        coEvery { isLoggedInUseCase() } returns true
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onAddToListClick()
+        runCurrent()
+        assertTrue(viewModel.screenState.value.showAddToListDialog)
+    }
+
+    @Test
+    fun `onAddToListClick doesn't show AddToListDialog when user not logged in`() = runTest {
+        coEvery { isLoggedInUseCase() } returns false
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onAddToListClick()
+        runCurrent()
+        assertFalse(viewModel.screenState.value.showAddToListDialog)
+    }
+
+    @Test
+    fun `onAddToListClick updates state to show error when isLoggedInUseCase fails`() = runTest {
+        coEvery { isLoggedInUseCase() } throws Exception("error")
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onAddToListClick()
+        runCurrent()
+        assertEquals(viewModel.screenState.value.errorMessage, "error")
+    }
+
+    @Test
+    fun `onDismissAddToListDialog hides dialog`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(viewModel.screenState.value.copy(showAddToListDialog = true))
+        viewModel.onDismissAddToListDialog()
+        assertFalse(viewModel.screenState.value.showAddToListDialog)
+    }
+
+    @Test
+    fun `onRatingSubmitted updates state on success`() = runTest {
+        coEvery { addRatingToMovieUseCase(any(), any()) } returns Unit
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onRatingSubmitted(testMovieId, 4.7f)
+        runCurrent()
+        val state = viewModel.screenState.value
+        assertTrue(state.showSnackBar)
+        assertTrue(state.snackBarSuccess)
+        assertEquals(R.string.rating_submit_successfully, state.snackBarMessage)
+        assertFalse(state.showRatingDialog)
+    }
+
+    @Test
+    fun `onSimilarMovieClick starts new movie details`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onSimilarMovieClick(99)
+        coVerify { mediaDetailsFeatureAPI.startMovieDetails(99) }
+    }
     @Test
     fun `init loads movie details and video info`() = runTest {
         coEvery { getMovieDetailsUseCase(any()) } returns mockk<Movie>(relaxed = true)
@@ -94,30 +146,50 @@ class MovieDetailsViewModelTest {
     }
 
     @Test
-    fun `onFavouriteClick when logged in shows rating dialog`() = runTest {
+    fun `onRatingButtonClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
-        coEvery { addRatingToMovieUseCase() } returns Unit
+        coEvery { getSessionIdUseCase() } returns "session_id_123"
+        coEvery {
+            addRatingToMovieUseCase(
+                movieId = testMovieId,
+                rating = any(),
+            )
+        } returns Unit
+
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testMovieId)
+
+        viewModel.onRateClick()
         runCurrent()
+
         assertTrue(viewModel.screenState.value.showRatingDialog)
     }
 
     @Test
-    fun `onFavouriteClick when not logged in doesn't show rating dialog`() = runTest {
+    fun `onRatingButtonClick when not logged in doesn't show rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns false
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testMovieId)
+        viewModel.onRateClick()
         runCurrent()
         assertFalse(viewModel.screenState.value.showRatingDialog)
     }
+
+    @Test
+    fun `onRatingButtonClick error hitting isLoggedIn sets error message`() = runTest {
+        val errorMsg = "error_is_logged"
+        coEvery { isLoggedInUseCase() } throws RuntimeException(errorMsg)
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onRateClick()
+        runCurrent()
+        assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
+    }
+
 
     @Test
     fun `onFavouriteClick error hitting isLoggedIn sets error message`() = runTest {
         val errorMsg = "error_is_logged"
         coEvery { isLoggedInUseCase() } throws RuntimeException(errorMsg)
         viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onFavouriteClick(testMovieId)
+        viewModel.onRateClick()
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
     }
@@ -138,6 +210,33 @@ class MovieDetailsViewModelTest {
         assertTrue(viewModel.screenState.value.isLoading)
     }
 
+    @Test
+    fun `loadMovieReviews updates state with review UI list on success`() = runTest {
+        // Arrange
+        val domainReviews = listOf(mockk<Review>())
+        val uiReviews = listOf(mockk<ReviewUi>())
+
+        val domainMovie = mockk<Movie>(relaxed = true)
+        val movieUi = mockk<MovieUi>()
+
+        coEvery { getMovieDetailsUseCase(testMovieId) } returns domainMovie
+        coEvery { getMovieVideoUseCase(testMovieId) } returns mockk<MovieVideo>(relaxed = true)
+        coEvery { getMovieReviewsUseCase(testMovieId, 1) } returns domainReviews
+
+        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
+        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
+        every { domainMovie.toUi() } returns movieUi
+        every { domainReviews.toListOfReviewUi() } returns uiReviews
+
+        viewModel = makeViewModelWithDefaultStateHandle()
+        runCurrent()
+
+
+        val actualReviews = viewModel.screenState.value.movieDetailsUiState.reviews
+        assertEquals(uiReviews, actualReviews)
+    }
+
+
     private fun makeViewModelWithDefaultStateHandle(): MovieDetailsViewModel {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>() } returns MediaDetailsDestinations.MovieDetailsScreen(
             movieId = testMovieId
@@ -153,7 +252,8 @@ class MovieDetailsViewModelTest {
             getMovieVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
-            addRatingToMovieUseCase
+            addRatingToMovieUseCase,
+            mediaDetailsNavigator
         )
     }
 }

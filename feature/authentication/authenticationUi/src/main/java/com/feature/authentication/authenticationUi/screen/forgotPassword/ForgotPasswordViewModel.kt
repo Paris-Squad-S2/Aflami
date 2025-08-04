@@ -1,11 +1,19 @@
 package com.feature.authentication.authenticationUi.screen.forgotPassword
 
+import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
-import com.paris_2.domain.authentication.usecase.GetForgetPasswordUrlUseCase
+import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ForgotPasswordViewModel(
+@HiltViewModel
+class ForgotPasswordViewModel @Inject constructor(
+    navigator: AuthenticationNavigator,
     getForgetPasswordUrlUseCase: GetForgetPasswordUrlUseCase
-) : BaseViewModel<ForgotPasswordUIState>(ForgotPasswordUIState()) {
+) : BaseViewModel<ForgotPasswordUIState>(
+    initialState = ForgotPasswordUIState(),
+    navigator = navigator
+) {
 
     init {
         updateState(
@@ -18,5 +26,4 @@ class ForgotPasswordViewModel(
     fun onNavigateBack() {
         navigateUp()
     }
-
 }
