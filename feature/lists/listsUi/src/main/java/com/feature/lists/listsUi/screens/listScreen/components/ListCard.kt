@@ -1,9 +1,10 @@
-package com.paris_2.aflami.designsystem.components
+package com.feature.lists.listsUi.screens.listScreen.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,6 +13,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
@@ -20,15 +23,18 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 fun ListCard(
     title: String,
     count: Int,
-    onCardClick: () -> Unit
-){
+    onCardClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     Box(
-        modifier = Modifier
-            .clickable {
-                onCardClick()
-            }
+        modifier = modifier
+            .size(width = 160.dp, height = 147.dp)
+
     ) {
         AppIcon(
+            modifier = Modifier.clickable {
+                onCardClick()
+            },
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_list_card),
             contentDescription = stringResource(R.string.list_card),
             tint = Theme.colors.surfaceHigh
@@ -55,7 +61,7 @@ fun ListCard(
 
 @PreviewMultiDevices
 @Composable
-fun ListCardPreview(){
+fun ListCardPreview() {
     BasePreview {
         ListCard(title = "My favourite", count = 12, {})
     }
