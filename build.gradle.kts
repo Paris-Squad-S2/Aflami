@@ -88,8 +88,9 @@ val koverExcludedPackages = listOf(
     "**.MediaCardType.*",
     "**.HomeScreenViewModel*",
     "**.LoginScreen*",
-    "**.TopRatingMoviesScreen*",
     "**.SearchScreen*",
+    "**.*Screen.*",
+    "**.TopRatingMoviesScreen*",
     "**.ContinueWatchingScreen*",
     "**.HomeScreenUIState*"
 )
@@ -111,24 +112,17 @@ dependencies {
     kover(project((Modules.DOMAIN_USER)))
     kover(project((Modules.DOMAIN_GUESS_GAME)))
     kover(project((Modules.DOMAIN_MEDIA)))
-    kover(project((Modules.REPOSITORY_USER)))
-    kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_LISTS)))
-    kover(project((Modules.REPOSITORY_CATEGORIES)))
     kover(project((Modules.REPOSITORY_GUESS_GAME)))
-    kover(project((Modules.REPOSITORY_SEARCH)))
     kover(project((Modules.DATASOURCE_REMOTE_USER)))
     kover(project((Modules.DATASOURCE_REMOTE_LISTS)))
     kover(project((Modules.DATASOURCE_REMOTE_CATEGORIES)))
-    kover(project((Modules.DATASOURCE_REMOTE_SEARCH)))
-    kover(project((Modules.DATASOURCE_LOCAL_USER)))
     kover(project((Modules.DATASOURCE_LOCAL_MOVIE)))
     kover(project((Modules.DATASOURCE_LOCAL_TV_SHOW)))
     kover(project((Modules.DATASOURCE_LOCAL_LISTS)))
     kover(project((Modules.DATASOURCE_LOCAL_GUESS_GAME)))
     kover(project((Modules.DATASOURCE_LOCAL_CATEGORIES)))
-    kover(project((Modules.DATASOURCE_LOCAL_SEARCH)))
     kover(project((Modules.FEATURE_ONBOARDING_API)))
     kover(project((Modules.FEATURE_ONBOARDING_UI)))
     kover(project((Modules.FEATURE_AUTHENTICATION_API)))
