@@ -6,27 +6,21 @@ import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.datasource.local.search.dao.CountryDao
-import com.datasource.local.search.dao.GenresDao
 import com.datasource.local.search.dao.GenresUserInteractionDao
-import com.datasource.local.search.dao.MediaDao
 import com.datasource.local.search.dao.SearchHistoryDao
 import com.repository.search.entity.CountryEntity
-import com.repository.search.entity.GenreEntity
 import com.repository.search.entity.GenreUserInteractionEntity
-import com.repository.search.entity.MediaEntity
 import com.repository.search.entity.SearchHistoryEntity
 
 
 @Database(
-    entities = [SearchHistoryEntity::class, MediaEntity::class, CountryEntity::class, GenreEntity::class, GenreUserInteractionEntity::class],
+    entities = [SearchHistoryEntity::class, CountryEntity::class, GenreUserInteractionEntity::class],
     version = 2,
 )
 @TypeConverters(SearchConverter::class)
 abstract class SearchDatabase : RoomDatabase() {
     abstract fun searchHistoryDao(): SearchHistoryDao
-    abstract fun mediaDao(): MediaDao
     abstract fun countryDao(): CountryDao
-    abstract fun genresDao(): GenresDao
     abstract fun genreUserInteractionDao(): GenresUserInteractionDao
 
     companion object {

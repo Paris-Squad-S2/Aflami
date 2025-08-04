@@ -27,15 +27,11 @@ import com.datasource.local.datasource.TvShowSimilarLocalDataSourceImpl
 import com.datasource.local.home.dao.HomeMediaDao
 import com.datasource.local.home.datasource.HomeMediaLocalDataSourceImpl
 import com.datasource.local.search.dao.CountryDao
-import com.datasource.local.search.dao.GenresDao
 import com.datasource.local.search.dao.GenresUserInteractionDao
-import com.datasource.local.search.dao.MediaDao
 import com.datasource.local.search.dao.SearchHistoryDao
 import com.datasource.local.search.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.search.datasource.GenresInteractionDataSourceImpl
-import com.datasource.local.search.datasource.GenresLocalDataSourceImpl
 import com.datasource.local.search.datasource.HistoryLocalDataSourceImpl
-import com.datasource.local.search.datasource.MediaLocalDataSourceImpl
 import com.paris_2.dataSource.local.authentication.AuthenticationLocalDataSourceImpl
 import com.paris_2.datasource.remote.authentication.AuthenticationApi
 import com.paris_2.datasource.remote.authentication.AuthenticationRemoteDataSourceImpl
@@ -55,9 +51,7 @@ import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
 import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.search.dataSource.local.CountriesLocalDataSource
 import com.repository.search.dataSource.local.GenresInteractionDataSource
-import com.repository.search.dataSource.local.GenresLocalDataSource
 import com.repository.search.dataSource.local.HistoryLocalDataSource
-import com.repository.search.dataSource.local.MediaLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -72,26 +66,13 @@ object DataSourceModule {
     @Singleton
     fun provideHistoryLocalDataSource(
         searchHistoryDao: SearchHistoryDao,
-        workManager: WorkManager
-    ): HistoryLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao, workManager)
+    ): HistoryLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao)
 
     @Provides
     @Singleton
     fun provideCountriesLocalDataSource(
         dao: CountryDao
     ): CountriesLocalDataSource = CountriesLocalDataSourceImpl(dao)
-
-    @Provides
-    @Singleton
-    fun provideMediaLocalDataSource(
-        dao: MediaDao
-    ): MediaLocalDataSource = MediaLocalDataSourceImpl(dao)
-
-    @Provides
-    @Singleton
-    fun provideGenresLocalDataSource(
-        dao: GenresDao
-    ): GenresLocalDataSource = GenresLocalDataSourceImpl(dao)
 
     @Provides
     @Singleton
