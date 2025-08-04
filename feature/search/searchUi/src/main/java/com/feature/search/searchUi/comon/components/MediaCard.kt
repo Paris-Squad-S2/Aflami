@@ -25,7 +25,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
@@ -43,37 +42,23 @@ fun MediaCard(
     year: String = "",
     clickable: Boolean = false,
     onClick: () -> Unit = {},
-    mediaCardType: MediaCardType,
     showRating: Boolean = true,
     showGradientFilter: Boolean = false,
-    cardWidth: Dp? = null,
-    cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
     onPlayButtonClick: () -> Unit = {},
     enabled: Boolean = true
 ) {
-    val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
-        MediaCardType.UP_COMING -> (cardWidth ?: 328.dp) to (cardHeight ?: 196.dp)
-        MediaCardType.NORMAL -> (cardWidth ?: 156.dp) to (cardHeight ?: 222.dp)
-        MediaCardType.EPISODE -> (cardWidth ?: 116.dp) to (cardHeight ?: 78.dp)
-        MediaCardType.SLIDER -> (cardWidth ?: 244.dp) to (cardHeight ?: 300.dp)
-    }
-    val clipRadius = when (mediaCardType) {
-        MediaCardType.EPISODE -> 12.dp
-        MediaCardType.SLIDER -> 24.dp
-        else -> 16.dp
-    }
 
     Box(
         modifier = modifier
-            .width(finalCardWidth)
-            .height(finalCardHeight)
+            .width(156.dp)
+            .height(222.dp)
             .border(
                 width = 1.dp,
                 color = Color.White.copy(alpha = 0.08f),
-                shape = RoundedCornerShape(clipRadius)
+                shape = RoundedCornerShape(16.dp)
             )
-            .clip(RoundedCornerShape(clipRadius))
+            .clip(RoundedCornerShape(16.dp))
             .then(
                 if (clickable) {
                     Modifier.clickable { onClick() }
@@ -119,7 +104,7 @@ fun MediaCard(
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(finalCardHeight - 114.dp)
+                    .height(108.dp)
                     .align(Alignment.BottomCenter)
                     .background(
                         brush = Brush.verticalGradient(
@@ -132,7 +117,7 @@ fun MediaCard(
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(
-                    top = finalCardHeight - 48.dp,
+                    top = 174.dp,
                     start = 8.dp,
                     end = 8.dp,
                     bottom = 8.dp
@@ -166,9 +151,6 @@ fun MediaCard(
 
 enum class MediaCardType {
     NORMAL,
-    UP_COMING,
-    EPISODE,
-    SLIDER
 }
 
 @PreviewLightDark
@@ -181,70 +163,7 @@ fun PreviewMediaNormalCard() {
             movieName = "Your Name",
             mediaType = "TV show",
             year = "2016",
-            mediaCardType = MediaCardType.NORMAL,
             showGradientFilter = true
-        )
-    }
-
-}
-
-@PreviewLightDark
-@Composable
-fun PreviewMediaUpComingCard() {
-    AflamiTheme {
-        MediaCard(
-            imageUri = R.drawable.anime_horizontal.toString(),
-            rating = 9f,
-            movieName = "Grave of the Fireflies",
-            mediaType = "TV show",
-            year = "2016",
-            mediaCardType = MediaCardType.UP_COMING,
-            showGradientFilter = true
-        )
-    }
-
-}
-
-@PreviewLightDark
-@Composable
-fun PreviewMediaEpisodeCard() {
-    AflamiTheme {
-        MediaCard(
-            imageUri = R.drawable.attack_on_titan.toString(),
-            rating = 8.8f,
-            mediaCardType = MediaCardType.EPISODE
-        )
-    }
-
-}
-
-@PreviewLightDark
-@Composable
-fun PreviewMediaSliderCard() {
-    AflamiTheme {
-        MediaCard(
-            imageUri = R.drawable.shniderlist_slider.toString(),
-            rating = 8f,
-            mediaCardType = MediaCardType.SLIDER,
-            showRating = true,
-            showPlayButton = true
-        )
-    }
-
-}
-
-@PreviewLightDark
-@Composable
-fun PreviewMediaEmptySliderCard() {
-    AflamiTheme {
-        MediaCard(
-            imageUri = R.drawable.shniderlist_slider.toString(),
-            mediaCardType = MediaCardType.SLIDER,
-            showRating = false,
-            cardWidth = 207.dp,
-            cardHeight = 276.dp,
-            clickable = true,
-            rating = 3.563f,
         )
     }
 
