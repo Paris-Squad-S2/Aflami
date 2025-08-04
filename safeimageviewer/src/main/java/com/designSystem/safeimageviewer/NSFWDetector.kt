@@ -19,7 +19,7 @@ internal class NSFWDetector(private val context: Context) {
     private companion object {
         const val MODEL_PATH = "NSFW.tflite"
         const val LABELS_PATH = "dict.txt"
-        const val CONFIDENCE_THRESHOLD = 0.8f
+        const val CONFIDENCE_THRESHOLD = 0.6f
         const val INPUT_SIZE = 224
     }
 
@@ -56,23 +56,24 @@ internal class NSFWDetector(private val context: Context) {
      * @param confidenceThreshold: Float 0 to 1 (Default is 0.7)
      * @param callback: Callback with isNSFW(Boolean), confidence(Float), and image(Bitmap)
      */
+    private val nsfwLabels = setOf("nude", "porn", "sexy", "erotic", "xxx", "hentai")
     fun isNSFW(
         bitmap: Bitmap,
         confidenceThreshold: Float = CONFIDENCE_THRESHOLD,
         callback: (Boolean, Float, Bitmap) -> Unit
     ) {
-        if (!isModelLoaded) {
+        if (!isModelLoaded|| interpreter == null) {
             Log.e(TAG, "Model not loaded")
             callback(false, 0.0f, bitmap)
             return
         }
 
         try {
-            val threshold = if (confidenceThreshold in 0.0f..1.0f) {
-                confidenceThreshold
-            } else {
-                CONFIDENCE_THRESHOLD
-            }
+//            val threshold = if (confidenceThreshold in 0.0f..1.0f) {
+//                confidenceThreshold
+//            } else {
+//                CONFIDENCE_THRESHOLD
+//            }
 
             val tensorImage = TensorImage.fromBitmap(bitmap)
             val processedImage = imageProcessor.process(tensorImage)
@@ -94,19 +95,9 @@ internal class NSFWDetector(private val context: Context) {
 
                 Log.d(TAG, "Detected: $label with confidence: $confidence")
 
-                when (label.lowercase()) {
-                    "nude" -> {
-                        val isNSFW = confidence >= threshold
-                        callback(isNSFW, confidence, bitmap)
-                    }
-                    "nonnude" -> {
-                        val isNSFW = confidence < threshold
-                        callback(isNSFW, 1.0f - confidence, bitmap)
-                    }
-                    else -> {
-                        callback(false, 0.0f, bitmap)
-                    }
-                }
+                val isNSFW = label in nsfwLabels && confidence >= confidenceThreshold
+                callback(isNSFW, confidence, bitmap)
+
             } else {
                 callback(false, 0.0f, bitmap)
             }
