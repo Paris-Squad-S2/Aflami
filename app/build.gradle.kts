@@ -175,32 +175,28 @@ dependencies {
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
 
-    implementation(project(Modules.REPOSITORY_SEARCH))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_LISTS))
     implementation(project(Modules.REPOSITORY_MOVIE))
-    implementation(project(Modules.REPOSITORY_AUTHENTICATION))
+    implementation(project(Modules.REPOSITORY_USER))
 
-    implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
-    implementation(project(Modules.DATASOURCE_LOCAL_HOME))
-    implementation(project(Modules.DATASOURCE_REMOTE_SEARCH))
+    implementation(project(Modules.DATASOURCE_LOCAL_MEDIA))
     implementation(project(Modules.DATASOURCE_REMOTE_LISTS))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
     implementation(project(Modules.DATASOURCE_REMOTE_MOVIE))
-    implementation(project(Modules.DATASOURCE_REMOTE_AUTHENTICATION))
+    implementation(project(Modules.DATASOURCE_REMOTE_USER))
 
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
-    implementation(project(Modules.DATASOURCE_LOCAL_SEARCH))
-    implementation(project(Modules.DATASOURCE_LOCAL_AUTHENTICATION))
+    implementation(project(Modules.DATASOURCE_LOCAL_USER))
 
     implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.DOMAIN_LISTS))
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.REPOSITORY_HOME))
-    implementation(project(Modules.DATASOURCE_REMOTE_HOME))
+    implementation(project(Modules.REPOSITORY_MEDIA))
+    implementation(project(Modules.DATASOURCE_REMOTE_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
 
     implementation(libs.androidx.room.runtime)
@@ -216,6 +212,9 @@ dependencies {
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
     implementation(libs.retrofit.converter)
+
+    // Kotlinx Serialization
+    implementation(libs.kotlinx.serialization.json)
 
 }
 

@@ -2,13 +2,12 @@ package com.paris_2.aflami.di
 
 import android.content.Context
 import com.paris_2.aflami.AuthInterceptor
-import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
-import com.repository.home.GenresApiServices
-import com.repository.home.MediaApiService
-import com.repository.search.util.NetworkConnectionChecker as SearchNetworkConnectionChecker
+import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
+import com.repository.media.services.GenresApiServices
+import com.repository.media.services.MediaApiService
 import com.repository.util.NetworkConnectionChecker as CommonNetworkConnectionChecker
 import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkConnectionChecker
-import com.repository.home.util.NetworkConnectionChecker as HomeNetworkConnectionChecker
+import com.repository.media.util.NetworkConnectionChecker as HomeNetworkConnectionChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,10 +25,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    @Provides
-    @Singleton
-    fun provideSearchNetworkConnectionChecker(@ApplicationContext context: Context): SearchNetworkConnectionChecker =
-        SearchNetworkConnectionChecker(context)
 
     @Provides
     @Singleton
@@ -80,14 +75,5 @@ object NetworkModule {
             }.asConverterFactory("application/json".toMediaType()))
             .build()
 
-    @Provides
-    @Singleton
-    fun provideMediaApiService(retrofit: Retrofit): MediaApiService =
-        retrofit.create(MediaApiService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideGenresApiServices(retrofit: Retrofit): GenresApiServices =
-        retrofit.create(GenresApiServices::class.java)
 }
 

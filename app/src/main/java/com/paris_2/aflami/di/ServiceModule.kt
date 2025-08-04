@@ -2,9 +2,10 @@ package com.paris_2.aflami.di
 
 import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
 import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
-import com.paris_2.datasource.remote.authentication.AuthenticationApi
-import com.repository.search.service.implementation.RetrofitGenresApiServices
-import com.repository.search.service.implementation.RetrofitSearchApiService
+import com.paris_2.datasource.remote.user.AuthenticationApi
+import com.repository.media.services.GenresApiServices
+import com.repository.media.services.MediaApiService
+import com.repository.media.services.RetrofitSearchApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,7 +38,13 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideGenresApiServices(retrofit: Retrofit): RetrofitGenresApiServices =
-        retrofit.create(RetrofitGenresApiServices::class.java)
+    fun provideGenresApiServices(retrofit: Retrofit): GenresApiServices =
+        retrofit.create(GenresApiServices::class.java)
+
+    @Provides
+    @Singleton
+    fun provideMediaApiService(retrofit: Retrofit): MediaApiService =
+        retrofit.create(MediaApiService::class.java)
+
 }
 
