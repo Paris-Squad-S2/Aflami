@@ -1,5 +1,6 @@
 package com.paris_2.repository.user.repository
 
+import android.util.Log
 import com.paris_2.domain.user.repository.LanguageRepository
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import kotlinx.coroutines.flow.Flow
@@ -16,6 +17,7 @@ class LanguageRepositoryImp(
     }
 
     override suspend fun setLanguage(language: Locale) {
+        Log.d("TAG", "setLanguageRepositoryImp:${language.language} ")
         languageLocalDataSource.setLanguage(language = language.language)
     }
 

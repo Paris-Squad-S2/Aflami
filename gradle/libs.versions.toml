@@ -6,6 +6,7 @@ coil = "2.7.0"
 hiltAndroid = "2.57"
 hiltAndroidCompiler = "2.57"
 hiltNavigationCompose = "1.2.0"
+javaxInject = "1"
 junitJupiterApi = "5.13.2"
 junitJupiterEngine = "5.13.2"
 junitJupiterParams = "5.13.3"
@@ -73,6 +74,7 @@ firebase-perf = { module = "com.google.firebase:firebase-perf" }
 hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hiltAndroid" }
 hilt-work = { module = "androidx.hilt:hilt-work", version = "1.2.0" }
 hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hiltAndroidCompiler" }
+javax-inject = { module = "javax.inject:javax.inject", version.ref = "javaxInject" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

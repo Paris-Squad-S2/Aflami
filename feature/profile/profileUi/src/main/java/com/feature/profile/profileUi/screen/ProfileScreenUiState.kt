@@ -1,7 +1,7 @@
 package com.feature.profile.profileUi.screen
 
-import androidx.compose.ui.text.intl.Locale
 import com.paris_2.aflami.designsystem.R
+import java.util.Locale
 
 data class ProfileScreenUiState(
     val profile: ProfileUIState = ProfileUIState(),
@@ -37,4 +37,8 @@ enum class ContentRestriction() {
     STRICT,
     MODERATE,
     OFF
+}
+
+fun Locale.toLanguage(): Language {
+    return if (this.language == "en") Language.ENGLISH else Language.ARABIC
 }

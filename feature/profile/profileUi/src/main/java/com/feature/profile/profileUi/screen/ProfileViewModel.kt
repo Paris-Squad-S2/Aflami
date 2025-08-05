@@ -1,12 +1,38 @@
 package com.feature.profile.profileUi.screen
 
+import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.feature.profile.profileUi.utils.BaseViewModel
+import com.paris_2.domain.user.usecase.GetLanguageUseCase
+import com.paris_2.domain.user.usecase.SetLanguageUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.launch
+import java.util.Locale
 
+@Suppress("DEPRECATION")
 @HiltViewModel
-class ProfileViewModel @Inject constructor() :
+class ProfileViewModel @Inject constructor(
+    private val getLanguageUseCase: GetLanguageUseCase,
+    private val setLanguageUseCase: SetLanguageUseCase,
+) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
+
+
+    init {
+        viewModelScope.launch {
+            getLanguageUseCase.invoke().collect {
+                Log.d("TAG", "ViewModel:$it ")
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            language = it.toLanguage()
+                        )
+                    )
+                )
+            }
+        }
+    }
 
     override fun onChooseLanguageClicked() {
         updateState(
@@ -56,8 +82,12 @@ class ProfileViewModel @Inject constructor() :
         TODO("Not yet implemented")
     }
 
-    override fun onLanguageApplyClicked() {
-        TODO("Not yet implemented")
+    override fun onLanguageApplyClicked(language: Language) {
+        viewModelScope.launch {
+            Log.d("TAG", "onLanguageApplyClicked: $language")
+            Log.d("TAG", "setLanguageUseCase is null: ${setLanguageUseCase == null}")
+            setLanguageUseCase.invoke(Locale(language.name))
+        }
     }
 
     override fun onLogoutApplyClicked() {

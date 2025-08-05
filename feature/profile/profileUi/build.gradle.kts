@@ -60,6 +60,8 @@ dependencies {
 
     implementation(project(Modules.FEATURE_PROFILE_API))
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.DOMAIN_USER))
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     //Hilt
