@@ -1,12 +1,11 @@
 package com.feature.home.homeUi
 
-import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
-import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -28,7 +27,6 @@ class ContinueWatchingViewModelTest {
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private lateinit var viewModel: ContinueWatchingViewModel
     private val testDispatcher = StandardTestDispatcher()
-    private val navigator: HomeNavigator = mockk(relaxed = true)
 
     private val fakeMediaList = listOf(
         MediaUiState(
@@ -72,7 +70,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `init loads media and updates state`() = runTest {
         coEvery { getMediaFromLocalUseCase() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,mediaDetailsFeatureAPI,navigator)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,mediaDetailsFeatureAPI)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.continueWatchingMediaList.map { it.title }).isEqualTo(fakeMediaList.map { it.title })
@@ -83,7 +81,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `error from useCase updates errorMessage and sets isLoading false`() = runTest {
         coEvery { getMediaFromLocalUseCase() } throws RuntimeException("Failed to load")
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,mediaDetailsFeatureAPI,navigator)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,mediaDetailsFeatureAPI)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.errorMessage).isEqualTo("Failed to load")
@@ -97,14 +95,14 @@ class ContinueWatchingViewModelTest {
             assertThat(viewModel.screenState.value.isLoading).isTrue()
             fakeMediaList.map { it.toMedia() }
         }
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,mediaDetailsFeatureAPI,navigator)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase,mediaDetailsFeatureAPI)
         runCurrent()
     }
 
     @Test
     fun `onMediaCardClick for tv show triggers correct navigation`() = runTest {
         coEvery { getMediaFromLocalUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, mediaDetailsFeatureAPI,navigator)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, mediaDetailsFeatureAPI)
         runCurrent()
 
         val tvShow = fakeMediaList[0]
@@ -117,7 +115,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `onMediaCardClick for movie triggers correct navigation`() = runTest {
         coEvery { getMediaFromLocalUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, mediaDetailsFeatureAPI,navigator)
+        viewModel = ContinueWatchingViewModel(getMediaFromLocalUseCase, mediaDetailsFeatureAPI)
         runCurrent()
 
         val movie = fakeMediaList[1]

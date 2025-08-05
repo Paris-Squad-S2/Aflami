@@ -1,5 +1,16 @@
 package com.feature.home.homeUi.screen.home
 
+import com.feature.home.homeUi.common.BaseViewModel
+import com.feature.home.homeUi.mapper.nameToGenreId
+import com.feature.home.homeUi.mapper.toCategoryUiList
+import com.feature.home.homeUi.mapper.toMedia
+import com.feature.home.homeUi.mapper.toMediaUiStateList
+import com.feature.home.homeUi.mapper.toSliderMediaList
+import com.feature.home.homeUi.navigation.HomeDestinations
+import com.feature.home.homeUi.screen.home.components.SliderMedia
+import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
@@ -7,18 +18,6 @@ import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
-import com.feature.home.homeUi.navigation.HomeDestinations
-import com.feature.home.homeUi.common.BaseViewModel
-import com.feature.home.homeUi.mapper.nameToGenreId
-import com.feature.home.homeUi.mapper.toCategoryUiList
-import com.feature.home.homeUi.mapper.toMedia
-import com.feature.home.homeUi.mapper.toMediaUiStateList
-import com.feature.home.homeUi.mapper.toSliderMediaList
-import com.feature.home.homeUi.navigation.HomeNavigator
-import com.feature.home.homeUi.screen.home.components.SliderMedia
-import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchApi.SearchFeatureAPI
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -33,7 +32,6 @@ class HomeScreenViewModel @Inject constructor(
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: HomeNavigator,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState(
@@ -61,7 +59,7 @@ class HomeScreenViewModel @Inject constructor(
             isContinueWatchingLoading = false,
             isCategoryLoading = false,
             errorMessage = null
-        ), navigator
+        ),
     ) {
     init {
         loadPopularMedia()
