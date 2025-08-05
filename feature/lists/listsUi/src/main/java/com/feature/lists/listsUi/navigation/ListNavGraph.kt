@@ -1,23 +1,21 @@
 package com.feature.lists.listsUi.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import dagger.hilt.android.EntryPointAccessors
-import androidx.compose.ui.platform.LocalContext
 import com.feature.lists.listsUi.screens.listDetails.ListDetailsScreen
 import com.feature.lists.listsUi.screens.listScreen.ListsScreen
+import com.feature.lists.listsUi.screens.listScreen.ListsViewModel
 
 @Composable
 fun ListNavGraph(
-    navigator: ListNavigator = EntryPointAccessors.fromApplication(
-        LocalContext.current.applicationContext as android.app.Application,
-        ListNavigatorEntryPoint::class.java
-    ).ListNavigator()
+    viewModel: ListsViewModel = hiltViewModel()
 ) {
+    val navigator = viewModel.navigator
     val navController = rememberNavController()
 
     ObserveAsEvents(navigator.listNavigationEvent) { event ->

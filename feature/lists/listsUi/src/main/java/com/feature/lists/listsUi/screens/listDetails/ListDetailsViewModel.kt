@@ -5,7 +5,6 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
-import com.feature.lists.listsUi.navigation.ListNavigator
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.DeleteListUseCase
@@ -13,7 +12,6 @@ import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
-import kotlin.invoke
 
 @HiltViewModel
 class ListDetailsViewModel @Inject constructor(
@@ -22,11 +20,9 @@ class ListDetailsViewModel @Inject constructor(
     private val removeMovieFromListUseCase: RemoveMovieFromListUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val addMovieToListUseCase: AddMovieToListUseCase,
-    savedStateHandle: SavedStateHandle,
-    navigator: ListNavigator
+    savedStateHandle: SavedStateHandle
 ): BaseViewModel<ListDetailsScreenState>(
     initialState = ListDetailsScreenState(),
-    navigator = navigator
 ),ListDetailsScreenInteractionListener{
     private val listId = savedStateHandle.toRoute<ListDestinations.ListDetails>().listId
 

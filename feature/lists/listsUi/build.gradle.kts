@@ -55,7 +55,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    implementation(project(Modules.FEATURE_LISTS_API))
+
 
     //test
     testImplementation(libs.junit)
@@ -69,7 +69,9 @@ dependencies {
     //Modules
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.DOMAIN_LISTS))
-
+    implementation(project(Modules.FEATURE_LISTS_API))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
 
     //Hilt
     implementation(libs.hilt.android)
@@ -78,6 +80,11 @@ dependencies {
 
     //Navigation
     implementation(libs.navigation.compose)
+
+    // paging 3
+    implementation(libs.androidx.paging.runtime)
+    implementation (libs.androidx.paging.compose)
+
 
 
 }

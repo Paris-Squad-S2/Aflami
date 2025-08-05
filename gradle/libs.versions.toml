@@ -148,68 +148,18 @@ kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 
 [bundles]
-
 compose = [
+    "androidx-core-ktx",
+    "androidx-lifecycle-runtime-ktx",
+    "androidx-paging-runtime",
     "androidx-activity-compose",
     "androidx-compose-bom",
     "androidx-lifecycle-viewmodel-compose",
-    "androidx-ui",
-    "androidx-ui-graphics",
-    "androidx-ui-tooling",
-    "androidx-ui-tooling-preview",
-    "androidx-ui-test-manifest",
-    "androidx-ui-test-junit4",
-    "androidx-material3"
+    "androidx-paging-compose",
+    "androidx-hilt-navigation-compose"
 ]
-
-core = [
-    "androidx-core-ktx",
-    "androidx-lifecycle-runtime-ktx",
-    "androidx-paging-runtime"
-]
-
-hilt = [
-    "hilt-android",
-    "androidx-hilt-navigation-compose",
-    "hilt-work"
-]
-
-retrofit = [
-    "okhttp",
-    "retrofit",
-    "retrofit_converter",
-    "logging-interceptor"
-]
-
-ktor = [
-    "ktor-client-core",
-    "ktor-client-android",
-    "ktor-client-content-negotiation",
-    "ktor-client-logging",
-    "ktor-serialization-kotlinx-json",
-    "ktor-client-auth"
-]
-
-room = [
-    "androidx-room-ktx",
-    "androidx-room-runtime"
-]
-
-roomCompiler = [
-    "room-compiler"
-]
-
 test = [
-    "junit-jupiter-api",
-    "junit-jupiter-engine",
-    "junit-jupiter-params",
-    "junit-platform-launcher",
-    "kotlin-test-junit5",
-    "junit-jupiter",
     "junit",
     "androidx-junit",
-    "androidx-espresso-core",
-    "mockk",
-    "truth",
-    "kotlinx-coroutines-test"
+    "androidx-espresso-core"
 ]

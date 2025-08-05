@@ -5,7 +5,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.map
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
-import com.feature.lists.listsUi.navigation.ListNavigator
 import com.feature.lists.listsUi.pagging.PagingSource
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
@@ -18,10 +17,8 @@ import javax.inject.Inject
 class ListsViewModel @Inject constructor(
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
-    navigator: ListNavigator
 ) : BaseViewModel<ListScreenUIState>(
-    initialState = ListScreenUIState(),
-    navigator
+    initialState = ListScreenUIState()
 ), ListsInteractionListener {
     init {
         getLists()

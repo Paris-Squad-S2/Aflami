@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import com.feature.lists.listsUi.navigation.ListDestination
 import com.feature.lists.listsUi.navigation.ListNavigator
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -15,8 +16,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 open class BaseViewModel<S>(
-    initialState: S , private val navigator: ListNavigator
+    initialState: S
 ) : ViewModel() {
+    @Inject
+    lateinit var navigator: ListNavigator
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
