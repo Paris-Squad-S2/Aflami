@@ -12,13 +12,9 @@ import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private const val DATA_STORE_NAME = "app_preferences"
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DATA_STORE_NAME)
-
 class LanguageLocalDataSourceRepositoryImp @Inject constructor(
-    private val context: Context,
+    private val dataStore: DataStore<Preferences>
 ) : LanguageLocalDataSourceRepository {
-    private val dataStore = context.dataStore
     private val LANGUAGE_KEY = stringPreferencesKey("language_code")
 
     override fun getLanguage(): Flow<String> {
