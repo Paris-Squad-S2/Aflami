@@ -1,4 +1,4 @@
-package com.feature.profile.profileUi.screen.utils
+package com.feature.profile.profileUi.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

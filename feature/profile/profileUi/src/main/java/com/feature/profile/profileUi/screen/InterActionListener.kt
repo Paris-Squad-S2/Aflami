@@ -1,0 +1,19 @@
+package com.feature.profile.profileUi.screen
+
+interface InterActionListener {
+    fun onChooseLanguageClicked()
+    fun onChooseAppearanceClicked()
+    fun onSettingClicked()
+    fun onLogoutClicked()
+    fun onContentRestrictionClicked()
+    fun onAppearanceApplyClicked()
+    fun onLanguageApplyClicked()
+    fun onLogoutApplyClicked()
+    fun onChangePasswordClicked()
+    fun onSaveContentRestrictionClicked()
+    fun onDismissAppearanceDialog()
+    fun onDismissLanguageDialog()
+    fun onDismissSettingDialog()
+    fun onDismissLogoutDialog()
+    fun onDismissContentRestrictionDialog()
+}
