@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import dagger.hilt.android.EntryPointAccessors
 import androidx.compose.ui.platform.LocalContext
+import com.feature.lists.listsUi.screens.listDetails.ListDetailsScreen
 import com.feature.lists.listsUi.screens.listScreen.ListsScreen
 
 @Composable
@@ -42,5 +43,6 @@ fun NavGraphBuilder.buildListNavGraph() {
         startDestination = ListDestinations.ListScreen
     ) {
         composable<ListDestinations.ListScreen> { ListsScreen() }
+        composable<ListDestinations.ListDetails> { ListDetailsScreen() }
     }
 }
