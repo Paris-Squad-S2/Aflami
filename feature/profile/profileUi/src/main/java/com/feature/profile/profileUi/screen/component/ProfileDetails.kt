@@ -20,6 +20,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
 import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -33,7 +34,7 @@ fun ProfileDetails(modifier: Modifier = Modifier) {
             painter = painterResource(R.drawable.ic_profile_image),
             contentDescription = null,
         )
-        Text(
+        AppText(
             text = "@Ahmed_Salah",
             style = Theme.textStyle.label.medium,
             color = Theme.colors.text.body,
@@ -48,7 +49,7 @@ fun ProfileDetails(modifier: Modifier = Modifier) {
                 .padding(vertical = 4.dp, horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            AppText(
                 text = "325 Pts.",
                 style = Theme.textStyle.label.small,
                 color = Theme.colors.onPrimaryColors.onPrimary
