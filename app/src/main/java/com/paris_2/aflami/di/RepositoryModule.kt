@@ -34,9 +34,7 @@ import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
-import com.repository.media.datasource.local.GenresLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.media.repository.CategoriesRepositoryImpl
@@ -67,13 +65,11 @@ object RepositoryModule {
     @Singleton
     fun provideSearchMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        mediaLocalDataSource: MediaLocalDataSource,
         searchRemoteDataSource: SearchRemoteDataSource,
         searchHistoryLocalDataSource: HistoryLocalDataSource
     ): SearchMediaRepository {
         return SearchMediaRepositoryImpl(
             networkConnectionChecker,
-            mediaLocalDataSource,
             searchRemoteDataSource,
             searchHistoryLocalDataSource
         )
@@ -91,13 +87,11 @@ object RepositoryModule {
     @Singleton
     fun provideCategoriesRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        genresLocalDataSource: GenresLocalDataSource,
         genresRemoteDataSource: GenresRemoteDataSource
 
     ): CategoriesRepository {
         return CategoriesRepositoryImpl(
             networkConnectionChecker,
-            genresLocalDataSource,
             genresRemoteDataSource
         )
     }

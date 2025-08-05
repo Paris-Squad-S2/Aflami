@@ -1,2 +1,2 @@
-versionName=0.3.34
-- refactor repository and data sources
+versionName=0.3.36
+- remove search cache

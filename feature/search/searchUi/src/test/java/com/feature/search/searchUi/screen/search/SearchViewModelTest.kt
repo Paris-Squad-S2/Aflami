@@ -62,8 +62,6 @@ class SearchViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
-    private val navigator: SearchNavigator = mockk(relaxed = true)
-
     private val mockMovie1 = Media(
         id = 1,
         imageUri = "http://image.url/movie1.jpg",
@@ -139,7 +137,6 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                navigator
             )
         )
     }
@@ -164,7 +161,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
 
         advanceUntilIdle()
@@ -190,7 +186,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
 
         advanceUntilIdle()
@@ -214,7 +209,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
 
         advanceUntilIdle()
@@ -490,7 +484,6 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                navigator
             )
             advanceUntilIdle()
 
@@ -522,7 +515,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
         advanceUntilIdle()
 
@@ -568,7 +560,6 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                navigator
             )
             advanceUntilIdle()
 

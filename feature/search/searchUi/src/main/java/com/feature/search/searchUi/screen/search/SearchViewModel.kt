@@ -15,6 +15,15 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toCategoryUiList
+import com.feature.search.searchUi.mapper.toDomainList
+import com.feature.search.searchUi.mapper.toDomainModel
+import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.mapper.toSearchHistoryUiList
+import com.feature.search.searchUi.navigation.SearchDestinations
+import com.feature.search.searchUi.pagging.PagingSource
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.useCase.ClearAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
@@ -25,16 +34,6 @@ import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SearchByQueryUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.mapper.toCategoryUiList
-import com.feature.search.searchUi.mapper.toDomainList
-import com.feature.search.searchUi.mapper.toDomainModel
-import com.feature.search.searchUi.mapper.toMediaUiList
-import com.feature.search.searchUi.mapper.toSearchHistoryUiList
-import com.feature.search.searchUi.navigation.SearchDestinations
-import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.PagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +59,6 @@ class SearchViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: SearchNavigator
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -81,7 +79,6 @@ class SearchViewModel @Inject constructor(
             isLoading = false,
             errorMessage = null
         ),
-        navigator
     ) {
 
     init {
