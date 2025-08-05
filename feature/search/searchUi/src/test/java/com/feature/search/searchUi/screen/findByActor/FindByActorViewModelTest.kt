@@ -2,16 +2,15 @@ package com.feature.search.searchUi.screen.findByActor
 
 import MediaTypeUi
 import MediaUiState
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.screen.utils.collectAllItems
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
 import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.mapper.toMediaUiList
-import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.screen.utils.collectAllItems
-import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -37,7 +36,6 @@ class FindByActorViewModelTest {
     private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
 
     private val testDispatcher = StandardTestDispatcher()
-    private val navigator: SearchNavigator = mockk(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -52,7 +50,6 @@ class FindByActorViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            navigator
         )
     }
 
@@ -187,7 +184,6 @@ class FindByActorViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
         val mediaUiState = MediaUiState(
             id = 42,
