@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
 import com.feature.search.searchUi.navigation.SearchDestination
 import com.feature.search.searchUi.navigation.SearchNavigator
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -14,8 +15,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-open class BaseViewModel<S> (
-    initialState: S, private val navigator: SearchNavigator
+open class BaseViewModel<S> @Inject constructor(
+    initialState: S,  val navigator: SearchNavigator
 ) : ViewModel() {
 
     private val privateScreenState = MutableStateFlow(initialState)
