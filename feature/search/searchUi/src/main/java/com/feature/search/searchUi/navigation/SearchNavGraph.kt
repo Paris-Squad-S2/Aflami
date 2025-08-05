@@ -1,7 +1,6 @@
 package com.feature.search.searchUi.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
@@ -12,7 +11,6 @@ import com.feature.search.searchUi.screen.findByActor.FindByActorScreen
 import com.feature.search.searchUi.screen.search.SearchScreen
 import com.feature.search.searchUi.screen.search.SearchViewModel
 import com.feature.search.searchUi.screen.worldTour.WorldTourScreen
-import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun SearchNavGraph(
