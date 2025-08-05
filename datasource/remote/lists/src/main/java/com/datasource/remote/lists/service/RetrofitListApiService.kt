@@ -2,14 +2,14 @@ package com.datasource.remote.lists.service
 
 import com.repository.lists.model.dto.AccountDto
 import com.repository.lists.model.dto.ListDetailsDto
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
 import com.repository.lists.model.dto.ListsDto
 import com.repository.lists.model.dto.ResponseDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
+import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface RetrofitListApiService {
 

@@ -1,6 +1,5 @@
 package com.datasource.remote.lists
 
-import retrofit2.HttpException
 import com.datasource.remote.lists.service.RetrofitListApiService
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.lists.exeptions.NetworkException
@@ -8,6 +7,7 @@ import com.repository.lists.model.dto.ListDetailsDto
 import com.repository.lists.model.dto.ListsDto
 import com.repository.lists.model.dto.ResponseDto
 import jakarta.inject.Inject
+import retrofit2.HttpException
 
 class ListsRemoteDataSourceImp @Inject constructor(
     private val listApiService: RetrofitListApiService

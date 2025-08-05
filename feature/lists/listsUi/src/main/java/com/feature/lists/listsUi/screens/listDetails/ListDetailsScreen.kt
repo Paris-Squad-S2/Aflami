@@ -18,8 +18,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.lists.listsUi.R
-import com.feature.lists.listsUi.screens.listDetails.components.ListDetailsResultContent
 import com.feature.lists.listsUi.screens.listDetails.components.DeleteListDialog
+import com.feature.lists.listsUi.screens.listDetails.components.ListDetailsResultContent
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder

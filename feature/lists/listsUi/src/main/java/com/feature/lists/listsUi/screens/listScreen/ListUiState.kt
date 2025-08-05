@@ -2,9 +2,9 @@ package com.feature.lists.listsUi.screens.listScreen
 
 import androidx.paging.PagingData
 import com.paris.domain.lists.entity.Lists
+import com.paris_2.aflami.designsystem.components.ButtonState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import com.paris_2.aflami.designsystem.components.ButtonState
 
 data class ListUiState(
     val id: Int,
