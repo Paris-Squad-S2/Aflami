@@ -33,6 +33,7 @@ import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
 import com.paris_2.domain.media.useCase.FilterMediaByRatingUseCase
 import com.paris_2.domain.media.useCase.FilterMediaUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
+import com.paris_2.domain.media.useCase.FilterWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetAllCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
@@ -96,6 +97,9 @@ object UseCaseModule {
     @Provides fun provideGetUpComingMediaUseCase(mediaRepository: MediaRepository) = GetUpComingMediaUseCase(mediaRepository)
     @Provides fun provideFilterUpComingMediaByCategoriesUseCase(mediaRepository: MediaRepository) = FilterUpComingMediaByCategoriesUseCase(mediaRepository)
     @Provides fun provideAddMediaToLocalUseCase(mediaRepository: MediaRepository) = AddWatchHistoryUseCase(mediaRepository)
+
+    @Provides fun provideFilterWatchHistoryUseCase(mediaRepository: MediaRepository) = FilterWatchHistoryUseCase(mediaRepository)
+
     @Provides fun provideGetMediaFromLocalUseCase(mediaRepository: MediaRepository) = GetWatchHistoryUseCase(mediaRepository)
     @Provides fun provideLoginUseCase(authenticationRepository: AuthenticationRepository) = LoginUseCase(authenticationRepository)
     @Provides fun provideGuestLoginUseCase(authenticationRepository: AuthenticationRepository) = GuestLoginUseCase(authenticationRepository)
