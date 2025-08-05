@@ -53,6 +53,9 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+
+    //Data Store
+    implementation(libs.androidx.datastore.preferences)
 }
 tasks.withType<Test> {
     useJUnitPlatform()
