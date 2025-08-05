@@ -12,7 +12,7 @@ interface GenresApiServices {
     ): GenresDto
 
     @GET("genre/tv/list")
-    suspend fun getAllGenresTvShow(
+    suspend fun getTvShowsGenres(
         @Query("language")
         language: String
     ): GenresDto
