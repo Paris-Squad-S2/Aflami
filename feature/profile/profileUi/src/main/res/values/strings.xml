@@ -1,5 +1,8 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
     <string name="profile">Profile</string>
     <string name="app_theme">App Theme</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="language">Language</string>
+    <string name="apply">Apply</string>
 </resources>

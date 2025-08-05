@@ -2,4 +2,8 @@
 <resources>
     <string name="profile">حسابك</string>
     <string name="app_theme">App Theme</string>
+    <string name="english">أنجليزي</string>
+    <string name="arabic">عربي</string>
+    <string name="language">اللغة</string>
+    <string name="apply">Apply</string>
 </resources>

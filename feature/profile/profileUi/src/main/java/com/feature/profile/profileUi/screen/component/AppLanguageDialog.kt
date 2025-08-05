@@ -16,26 +16,28 @@ import com.paris_2.aflami.designsystem.components.AppDialog
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
 
+import  com.paris_2.aflami.designsystem.R as resDesignSystem
+
 @Composable
-fun AppThemeDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
+fun AppLanguageDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
     if (isVisible) {
-        AppDialog(onDismiss = {}, title = R.string.app_theme, modifier = modifier) {
+        AppDialog(onDismiss = {}, title = R.string.language, modifier = modifier) {
             Column(
                 modifier = Modifier.padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
 
                 SelectionCard(
-                    optionTitle = stringResource(com.paris_2.aflami.designsystem.R.string.dark),
+                    optionTitle = stringResource(R.string.english),
                     isSelected = true,
-                    icon = com.paris_2.aflami.designsystem.R.drawable.ic_dark_theme,
+                    icon = resDesignSystem.drawable.ic_english_language,
                     onClick = {}
                 )
 
                 SelectionCard(
-                    optionTitle = stringResource(com.paris_2.aflami.designsystem.R.string.light),
+                    optionTitle = stringResource(R.string.arabic),
                     isSelected = false,
-                    icon = com.paris_2.aflami.designsystem.R.drawable.ic_light_theme,
+                    icon = resDesignSystem.drawable.ic_arabic_language,
                     onClick = {},
                 )
                 Spacer(modifier = Modifier.height(24.dp))
@@ -50,9 +52,8 @@ fun AppThemeDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
     }
 }
 
-
 @PreviewLightDark
 @Composable
 private fun AppThemeDialogPrev() {
-    AppThemeDialog(isVisible = true)
+    AppLanguageDialog(isVisible = true)
 }
