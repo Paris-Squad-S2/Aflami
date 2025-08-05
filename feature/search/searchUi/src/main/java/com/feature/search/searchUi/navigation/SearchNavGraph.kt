@@ -1,7 +1,7 @@
 package com.feature.search.searchUi.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -9,17 +9,15 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.feature.search.searchUi.screen.findByActor.FindByActorScreen
 import com.feature.search.searchUi.screen.search.SearchScreen
+import com.feature.search.searchUi.screen.search.SearchViewModel
 import com.feature.search.searchUi.screen.worldTour.WorldTourScreen
-import dagger.hilt.android.EntryPointAccessors
 
 @Composable
 fun SearchNavGraph(
-    navigator: SearchNavigator = EntryPointAccessors.fromApplication(
-        LocalContext.current.applicationContext as android.app.Application,
-        SearchNavigatorEntryPoint::class.java
-    ).searchNavigator(),
-    startDestination: SearchDestination? = null
+    startDestination: SearchDestination? = null,
+    viewModel: SearchViewModel = hiltViewModel()
 ) {
+    val navigator = viewModel.navigator
     val navController = rememberNavController()
 
     ObserveAsEvents(navigator.searchNavigationEvent) { event ->

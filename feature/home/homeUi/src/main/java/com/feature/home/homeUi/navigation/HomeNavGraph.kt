@@ -9,16 +9,15 @@ import androidx.navigation.navigation
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingScreen
 import com.feature.home.homeUi.screen.home.HomeScreen
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesScreen
-import dagger.hilt.android.EntryPointAccessors
-import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 
 @Composable
 fun HomeNavGraph(
-    navigator: HomeNavigator = EntryPointAccessors.fromApplication(
-        LocalContext.current.applicationContext as android.app.Application,
-        HomeNavigatorEntryPoint::class.java
-    ).homeNavigator()
+    viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
+    val navigator = viewModel.navigator
+
     val navController = rememberNavController()
 
     ObserveAsEvents(navigator.homeNavigationEvent) { event ->
