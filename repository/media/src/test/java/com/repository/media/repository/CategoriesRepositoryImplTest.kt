@@ -34,7 +34,7 @@ class CategoriesRepositoryImplTest {
     fun `getAllCategories should fetch from remote`() = runTest {
         // Given
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { genresRemoteDataSource.getMoviesGenres(language) } returns GenresDto(
+        coEvery { genresRemoteDataSource.getAllGenres(language) } returns GenresDto(
             genreDto = listOf(GenreDto(2, "Drama"))
         )
 
