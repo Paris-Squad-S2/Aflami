@@ -20,11 +20,11 @@ fun SearchHistoryEntity.toSearchHistoryModel(): SearchHistoryModel {
     )
 }
 
-fun com.paris_2.domain.media.entity.SearchType.toRepositorySearchType(): com.repository.media.entity.SearchType {
+fun com.paris_2.domain.media.entity.SearchType.toRepositorySearchType(): SearchType {
     return when (this) {
-        com.paris_2.domain.media.entity.SearchType.Query -> com.repository.media.entity.SearchType.Query
-        com.paris_2.domain.media.entity.SearchType.Country -> com.repository.media.entity.SearchType.Country
-        com.paris_2.domain.media.entity.SearchType.Actor -> com.repository.media.entity.SearchType.Actor
+        com.paris_2.domain.media.entity.SearchType.Query -> SearchType.Query
+        com.paris_2.domain.media.entity.SearchType.Country -> SearchType.Country
+        com.paris_2.domain.media.entity.SearchType.Actor -> SearchType.Actor
     }
 }
 
