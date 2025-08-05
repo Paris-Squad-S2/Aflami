@@ -104,5 +104,4 @@ class LoginViewModelTest {
         val state = viewModel.screenState.value
         Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
     }
-
 }

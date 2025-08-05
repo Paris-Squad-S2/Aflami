@@ -1,12 +1,11 @@
 package com.feature.home.homeUi.screen.continueWatching
 
-import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.home.homeUi.navigation.HomeNavigator
+import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,13 +13,12 @@ import javax.inject.Inject
 class ContinueWatchingViewModel @Inject constructor(
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: HomeNavigator
 ):BaseViewModel<ContinueWatchingUiState>(
     ContinueWatchingUiState(
         continueWatchingMediaList = emptyList(),
         isLoading = false,
         errorMessage = null
-    ), navigator
+    )
 ), ContinueWatchingInteractionListener {
 
     init {

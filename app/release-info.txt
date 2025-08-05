@@ -1,2 +1,3 @@
-versionName=0.3.34
-- refactor repository and data sources
+versionName=0.3.35
+- refactor di of home navigator and search navigator
+- separate di files in each module

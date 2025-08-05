@@ -1,14 +1,5 @@
 package com.feature.home.homeUi
 
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
-import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
-import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
-import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
-import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
-import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
@@ -18,6 +9,14 @@ import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
+import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
+import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
+import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -45,7 +44,6 @@ class HomeScreenViewModelTest {
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
-    private val navigator: HomeNavigator = mockk(relaxed = true)
 
     private lateinit var viewModel: HomeScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -116,7 +114,6 @@ class HomeScreenViewModelTest {
             getMediaFromLocalUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
         )
     }
 
@@ -163,7 +160,6 @@ class HomeScreenViewModelTest {
             getMediaFromLocalUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<CategoryUiState, Boolean>())
@@ -182,7 +178,7 @@ class HomeScreenViewModelTest {
             getMediaFromLocalUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
+
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
@@ -201,7 +197,7 @@ class HomeScreenViewModelTest {
             getMediaFromLocalUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
+
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
@@ -405,7 +401,6 @@ class HomeScreenViewModelTest {
             getMediaFromLocalUseCase,
             searchFeatureAPI = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            navigator
         )
 
         viewModel.onRetry()
