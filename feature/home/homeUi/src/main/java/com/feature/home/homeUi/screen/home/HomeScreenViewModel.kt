@@ -33,7 +33,6 @@ class HomeScreenViewModel @Inject constructor(
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: HomeNavigator,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState(
@@ -61,7 +60,7 @@ class HomeScreenViewModel @Inject constructor(
             isContinueWatchingLoading = false,
             isCategoryLoading = false,
             errorMessage = null
-        ), navigator
+        ),
     ) {
     init {
         loadPopularMedia()

@@ -14,13 +14,12 @@ import javax.inject.Inject
 class ContinueWatchingViewModel @Inject constructor(
     private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: HomeNavigator
 ):BaseViewModel<ContinueWatchingUiState>(
     ContinueWatchingUiState(
         continueWatchingMediaList = emptyList(),
         isLoading = false,
         errorMessage = null
-    ), navigator
+    )
 ), ContinueWatchingInteractionListener {
 
     init {

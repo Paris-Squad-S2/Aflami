@@ -14,11 +14,10 @@ import javax.inject.Inject
 class TopRatingMoviesViewModel @Inject constructor(
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: HomeNavigator,
 ) : BaseViewModel<TopRatingMoviesUiState>(
     TopRatingMoviesUiState(
         topRatingMovies = emptyList(), isLoading = false, errorMessage = null
-    ), navigator
+    )
 ), TopRatingInteractionListener {
 
     init {
