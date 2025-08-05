@@ -18,7 +18,7 @@ import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.component.ProfileDetails
 import com.feature.profile.profileUi.screen.component.ProfileHeader
 import com.feature.profile.profileUi.screen.component.ProfileSetUp
-
+import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
 import com.paris_2.aflami.designsystem.components.CategoryCard
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -30,34 +30,42 @@ fun ProfileScreen(modifier: Modifier = Modifier) {
 
 @Composable
 fun ProfileContent(modifier: Modifier = Modifier) {
-    Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
-        ProfileHeader()
-        ProfileDetails()
-        Row(
+    Column(modifier = modifier.fillMaxSize()) {
+        ProfileHeader(modifier = Modifier)
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .padding(top = 24.dp)
+                .offset(y = (-56).dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CategoryCard(
-                "Watch history",
-                painterResource(R.drawable.ic_clock_3d),
-                onCategoryClick = { },
-                modifier = Modifier.weight(1F)
+
+            ProfileDetails(modifier)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(top = 24.dp)
+            ) {
+                CategoryCard(
+                    "Watch history",
+                    painterResource(R.drawable.ic_clock_3d),
+                    onCategoryClick = { },
+                    modifier = Modifier.weight(1F)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                CategoryCard(
+                    "My rating",
+                    painterResource(R.drawable.ic_star_3d),
+                    onCategoryClick = { },
+                    modifier = Modifier.weight(1F)
+                )
+            }
+            AppHorizontalDivider(
+                thickness = 1.dp,
+                color = Theme.colors.stroke,
+                modifier = Modifier.padding(vertical = 24.dp)
             )
-            Spacer(modifier = Modifier.width(8.dp))
-            CategoryCard(
-                "My rating",
-                painterResource(R.drawable.ic_star_3d),
-                onCategoryClick = { },
-                modifier = Modifier.weight(1F)
-            )
+            ProfileSetUp()
         }
-        HorizontalDivider(
-            thickness = 1.dp,
-            color = Theme.colors.stroke,
-            modifier = Modifier.padding(vertical = 24.dp)
-        )
-        ProfileSetUp()
     }
 }
