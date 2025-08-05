@@ -1,20 +1,13 @@
 package com.datasource.local.media.datasource
 
-
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
 import com.datasource.local.media.dao.SearchHistoryDao
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.datasource.local.workmanager.ClearMediaWorker
 import com.repository.media.entity.SearchHistoryEntity
 import com.repository.media.entity.SearchType
 import kotlinx.coroutines.flow.Flow
-import java.util.concurrent.TimeUnit
 
 class HistoryLocalDataSourceImpl (
     private val dao: SearchHistoryDao,
-    private val workManager: WorkManager
 ) : HistoryLocalDataSource {
     override suspend fun addSearchQuery(title: String, searchType: SearchType) {
         val entity = SearchHistoryEntity(
@@ -22,7 +15,6 @@ class HistoryLocalDataSourceImpl (
             searchType = searchType
         )
         dao.addSearchQuery(entity)
-        scheduleClearMediaWork(title, searchType)
     }
 
     override fun getAllSearchQueries(): Flow<List<SearchHistoryEntity>> {
@@ -39,20 +31,6 @@ class HistoryLocalDataSourceImpl (
 
     override suspend fun clearAll() {
         dao.clearAllSearchQueries()
-    }
-
-    private fun scheduleClearMediaWork(searchQuery: String, searchType: SearchType) {
-        val inputData = workDataOf(
-            ClearMediaWorker.SEARCH_QUERY to searchQuery,
-            ClearMediaWorker.SEARCH_TYPE to searchType.name
-        )
-
-        val workRequest = OneTimeWorkRequestBuilder<ClearMediaWorker>()
-            .setInputData(inputData)
-            .setInitialDelay(1, TimeUnit.HOURS)
-            .build()
-
-        workManager.enqueue(workRequest)
     }
 
 }
