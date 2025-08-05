@@ -4,6 +4,8 @@ import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.TvDto
+import com.repository.media.entity.Category
+import com.repository.media.entity.HomeMediaEntity
 import com.repository.media.entity.MediaEntity
 import com.repository.media.entity.MediaTypeEntity
 import kotlinx.datetime.LocalDate
@@ -50,12 +52,37 @@ fun MediaEntity.toDomain(): Media{
     )
 }
 
-fun MediaTypeEntity.toDomain(): com.paris_2.domain.media.entity.MediaType = when (this) {
-    MediaTypeEntity.MOVIE -> com.paris_2.domain.media.entity.MediaType.MOVIE
-    MediaTypeEntity.TV_SHOW -> com.paris_2.domain.media.entity.MediaType.TVSHOW
+fun MediaTypeEntity.toDomain(): MediaType = when (this) {
+    MediaTypeEntity.MOVIE -> MediaType.MOVIE
+    MediaTypeEntity.TV_SHOW -> MediaType.TVSHOW
 }
 
+fun HomeMediaEntity.toDomain(): Media? {
+    val parsedDate = releaseDate.let {
+        runCatching { LocalDate.parse(it) }.getOrNull()
+    } ?: return null
 
+    return Media(
+        id = id,
+        imageUri = posterPath,
+        title = title,
+        rating = voteAverage ?: 0.0,
+        yearOfRelease = parsedDate,
+        categoryIds = genreIds,
+        type = type.toDomain()
+    )
+}
+
+fun Media.toMediaEntity(category: Category): HomeMediaEntity = HomeMediaEntity(
+    id = id,
+    title = title,
+    voteAverage = rating,
+    posterPath = imageUri,
+    releaseDate = yearOfRelease.toString(),
+    genreIds = categoryIds,
+    type = type.toEntity(),
+    category = category
+)
 fun Media.toEntity(): MediaEntity = MediaEntity(
     id = id,
     title = title,
