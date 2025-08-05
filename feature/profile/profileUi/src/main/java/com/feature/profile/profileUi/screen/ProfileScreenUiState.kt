@@ -1,5 +1,6 @@
 package com.feature.profile.profileUi.screen
 
+import androidx.compose.ui.text.intl.Locale
 import com.paris_2.aflami.designsystem.R
 
 data class ProfileScreenUiState(
@@ -16,6 +17,7 @@ data class ProfileUIState(
     val isAppearanceDialogOpen: Boolean = false,
     val language: Language = Language.ENGLISH,
     val isLanguageDialogOpen: Boolean = false,
+    val isSettingDialogOpen: Boolean = false,
     val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
     val isContentRestrictionDialogOpen: Boolean = false,
     val isLogoutDialogOpen: Boolean = false,
@@ -26,9 +28,9 @@ enum class Appearance(val display: Int) {
     LIGHT(R.string.light)
 }
 
-enum class Language(val display: Int) {
-    ENGLISH(R.string.english),
-    ARABIC(R.string.arabic)
+enum class Language(val local: Locale) {
+    ENGLISH(local = Locale("en")),
+    ARABIC(local = Locale("ar"))
 }
 
 enum class ContentRestriction() {

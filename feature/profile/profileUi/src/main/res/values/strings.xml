@@ -9,4 +9,6 @@
     <string name="content_restriction">Content Restriction</string>
     <string name="tired_of_watching">Tired of watching?</string>
     <string name="setting">Setting</string>
+    <string name="watch_history">Watch history</string>
+    <string name="my_rating">My rating</string>
 </resources>

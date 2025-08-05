@@ -9,19 +9,20 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
+import com.feature.profile.profileUi.screen.InterActionListener
 import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun ProfileSetUp(modifier: Modifier = Modifier) {
+fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterActionListener) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
     ) {
         SettingsItem(
-            onClick = {},
+            onClick = interactionListener::onChooseLanguageClicked,
             title = "Language",
             icon = R.drawable.ic_translate,
             content = {

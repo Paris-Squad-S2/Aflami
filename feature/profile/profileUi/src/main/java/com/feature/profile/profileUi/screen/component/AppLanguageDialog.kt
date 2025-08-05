@@ -7,11 +7,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
+import com.feature.profile.profileUi.screen.Language
 import com.paris_2.aflami.designsystem.components.AppDialog
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
@@ -19,9 +24,16 @@ import com.paris_2.aflami.designsystem.components.CustomButton
 import  com.paris_2.aflami.designsystem.R as resDesignSystem
 
 @Composable
-fun AppLanguageDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
+fun AppLanguageDialog(
+    isVisible: Boolean,
+    modifier: Modifier = Modifier,
+    onDismiss: () -> Unit,
+    languageState: Language,
+    onLanguageSelected: (Language) -> Unit,
+) {
     if (isVisible) {
-        AppDialog(onDismiss = {}, title = R.string.language, modifier = modifier) {
+        var dialogSelectedLanguage by remember(languageState) { mutableStateOf(languageState) }
+        AppDialog(onDismiss = onDismiss, title = R.string.language, modifier = modifier) {
             Column(
                 modifier = Modifier.padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -29,20 +41,27 @@ fun AppLanguageDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
 
                 SelectionCard(
                     optionTitle = stringResource(R.string.english),
-                    isSelected = true,
+                    isSelected = dialogSelectedLanguage == Language.ENGLISH,
                     icon = resDesignSystem.drawable.ic_english_language,
-                    onClick = {}
+                    onClick = {
+                        dialogSelectedLanguage = Language.ENGLISH
+                    }
                 )
 
                 SelectionCard(
                     optionTitle = stringResource(R.string.arabic),
-                    isSelected = false,
+                    isSelected = dialogSelectedLanguage == Language.ARABIC,
                     icon = resDesignSystem.drawable.ic_arabic_language,
-                    onClick = {},
+                    onClick = {
+                        dialogSelectedLanguage = Language.ARABIC
+                    },
                 )
                 Spacer(modifier = Modifier.height(24.dp))
                 CustomButton(
-                    onClick = {},
+                    onClick = {
+                        onLanguageSelected(dialogSelectedLanguage)
+                        onDismiss()
+                    },
                     text = R.string.apply,
                     type = ButtonType.TextButton,
                     modifier = Modifier.fillMaxWidth()
@@ -55,5 +74,11 @@ fun AppLanguageDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
 @PreviewLightDark
 @Composable
 private fun AppThemeDialogPrev() {
-    AppLanguageDialog(isVisible = true)
+    AppLanguageDialog(
+        isVisible = true,
+        onDismiss = {},
+        languageState = Language.ENGLISH,
+        onLanguageSelected = {}
+    )
+
 }

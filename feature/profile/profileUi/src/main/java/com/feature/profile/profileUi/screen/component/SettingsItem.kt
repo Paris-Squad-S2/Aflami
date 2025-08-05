@@ -2,6 +2,7 @@ package com.feature.profile.profileUi.screen.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -28,7 +29,8 @@ fun SettingsItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(bottom = 8.dp),
+            .padding(bottom = 8.dp)
+            .clickable(enabled = true, onClick = onClick),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Box(

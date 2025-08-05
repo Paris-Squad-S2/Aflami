@@ -16,4 +16,5 @@ interface InterActionListener {
     fun onDismissSettingDialog()
     fun onDismissLogoutDialog()
     fun onDismissContentRestrictionDialog()
+    fun onLanguageSelected(language: Language)
 }

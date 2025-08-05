@@ -8,13 +8,16 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
+import com.feature.profile.profileUi.screen.component.AppLanguageDialog
 import com.feature.profile.profileUi.screen.component.ProfileDetails
 import com.feature.profile.profileUi.screen.component.ProfileHeader
 import com.feature.profile.profileUi.screen.component.ProfileSetUp
@@ -24,12 +27,17 @@ import com.paris_2.aflami.designsystem.theme.Theme
 
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier) {
-    ProfileContent(modifier = modifier)
+fun ProfileScreen(modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()) {
+    val state = viewModel.screenState.collectAsStateWithLifecycle()
+    ProfileContent(modifier = modifier, state = state.value, profileInteractionListener = viewModel)
 }
 
 @Composable
-fun ProfileContent(modifier: Modifier = Modifier) {
+fun ProfileContent(
+    state: ProfileScreenUiState,
+    profileInteractionListener: InterActionListener,
+    modifier: Modifier = Modifier,
+) {
     Column(modifier = modifier.fillMaxSize()) {
         ProfileHeader(modifier = Modifier)
         Column(
@@ -47,15 +55,15 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                     .padding(top = 24.dp)
             ) {
                 CategoryCard(
-                    "Watch history",
+                    stringResource(R.string.watch_history),
                     painterResource(R.drawable.ic_clock_3d),
                     onCategoryClick = { },
                     modifier = Modifier.weight(1F)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 CategoryCard(
-                    "My rating",
-                    painterResource(R.drawable.ic_star_3d),
+                    categoryName = stringResource(R.string.my_rating),
+                    categoryImage = painterResource(R.drawable.ic_star_3d),
                     onCategoryClick = { },
                     modifier = Modifier.weight(1F)
                 )
@@ -65,7 +73,17 @@ fun ProfileContent(modifier: Modifier = Modifier) {
                 color = Theme.colors.stroke,
                 modifier = Modifier.padding(vertical = 24.dp)
             )
-            ProfileSetUp()
+            ProfileSetUp(interactionListener = profileInteractionListener)
         }
+
+
+        AppLanguageDialog(
+            isVisible = state.profile.isLanguageDialogOpen,
+            onDismiss = profileInteractionListener::onDismissLanguageDialog,
+            languageState = state.profile.language,
+            onLanguageSelected = profileInteractionListener::onLanguageSelected
+        )
+
+
     }
 }

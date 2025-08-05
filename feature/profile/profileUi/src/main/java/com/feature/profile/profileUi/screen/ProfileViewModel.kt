@@ -1,24 +1,51 @@
 package com.feature.profile.profileUi.screen
 
 import com.feature.profile.profileUi.utils.BaseViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 
-class ProfileViewModel() :
-    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener
-{
+@HiltViewModel
+class ProfileViewModel @Inject constructor() :
+    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
+
     override fun onChooseLanguageClicked() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isLanguageDialogOpen = true
+                )
+            )
+        )
     }
 
     override fun onChooseAppearanceClicked() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isAppearanceDialogOpen = true
+                )
+            )
+        )
     }
 
     override fun onSettingClicked() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isSettingDialogOpen = true
+                )
+            )
+        )
     }
 
     override fun onLogoutClicked() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isLogoutDialogOpen = true
+                )
+            )
+        )
     }
 
     override fun onContentRestrictionClicked() {
@@ -46,22 +73,62 @@ class ProfileViewModel() :
     }
 
     override fun onDismissAppearanceDialog() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isAppearanceDialogOpen = false
+                )
+            )
+        )
     }
 
     override fun onDismissLanguageDialog() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isLanguageDialogOpen = false
+                )
+            )
+        )
     }
 
     override fun onDismissSettingDialog() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isSettingDialogOpen = false
+                )
+            )
+        )
     }
 
     override fun onDismissLogoutDialog() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isLogoutDialogOpen = false
+                )
+            )
+        )
     }
 
     override fun onDismissContentRestrictionDialog() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isContentRestrictionDialogOpen = false
+                )
+            )
+        )
+    }
+
+    override fun onLanguageSelected(language: Language) {
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    language = language,
+                )
+            )
+        )
     }
 }
