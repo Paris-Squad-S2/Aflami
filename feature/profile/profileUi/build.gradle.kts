@@ -2,11 +2,14 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
     namespace = "com.feature.profile.profileUi"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
@@ -58,4 +61,9 @@ dependencies {
     implementation(project(Modules.FEATURE_PROFILE_API))
     implementation(project(Modules.DESIGN_SYSTEM))
     androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
 }
