@@ -10,9 +10,9 @@ import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 
-class GetMediaFromLocalUseCaseTest {
+class GetWatchHistoryUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
-    private val useCase = GetMediaFromLocalUseCase(mediaRepository)
+    private val useCase = GetWatchHistoryUseCase(mediaRepository)
 
     private val fakeMediaList = listOf(
         Media(

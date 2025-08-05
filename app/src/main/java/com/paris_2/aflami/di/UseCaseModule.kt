@@ -3,7 +3,7 @@ package com.paris_2.aflami.di
 import com.paris_2.domain.media.repository.MediaRepository
 import com.paris_2.domain.media.repository.MoviesCategoriesRepository
 import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
-import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
+import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
@@ -96,7 +96,7 @@ object UseCaseModule {
     @Provides fun provideGetUpComingMediaUseCase(mediaRepository: MediaRepository) = GetUpComingMediaUseCase(mediaRepository)
     @Provides fun provideFilterUpComingMediaByCategoriesUseCase(mediaRepository: MediaRepository) = FilterUpComingMediaByCategoriesUseCase(mediaRepository)
     @Provides fun provideAddMediaToLocalUseCase(mediaRepository: MediaRepository) = AddMediaToLocalUseCase(mediaRepository)
-    @Provides fun provideGetMediaFromLocalUseCase(mediaRepository: MediaRepository) = GetMediaFromLocalUseCase(mediaRepository)
+    @Provides fun provideGetMediaFromLocalUseCase(mediaRepository: MediaRepository) = GetWatchHistoryUseCase(mediaRepository)
     @Provides fun provideLoginUseCase(authenticationRepository: AuthenticationRepository) = LoginUseCase(authenticationRepository)
     @Provides fun provideGuestLoginUseCase(authenticationRepository: AuthenticationRepository) = GuestLoginUseCase(authenticationRepository)
     @Provides fun provideGetForgetPasswordUrlUseCase(authenticationRepository: AuthenticationRepository) = GetForgetPasswordUrlUseCase(authenticationRepository)
