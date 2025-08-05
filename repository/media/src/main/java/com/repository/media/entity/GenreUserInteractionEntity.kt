@@ -1,20 +1,9 @@
 package com.repository.media.entity
 
 import androidx.room.Entity
-import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
-@Entity(
-    tableName = "genres_user_interaction",
-    foreignKeys = [
-        ForeignKey(
-            entity = GenreEntity::class,
-            parentColumns = ["id"],
-            childColumns = ["genreId"],
-            onDelete = ForeignKey.CASCADE
-        )
-    ]
-)
+@Entity(tableName = "genres_user_interaction")
 data class GenreUserInteractionEntity(
     @PrimaryKey
     val genreId: Int,

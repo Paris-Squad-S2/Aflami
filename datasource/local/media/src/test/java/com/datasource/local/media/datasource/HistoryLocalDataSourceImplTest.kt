@@ -1,7 +1,5 @@
 package com.datasource.local.media.datasource
 
-import androidx.work.OneTimeWorkRequest
-import androidx.work.WorkManager
 import com.datasource.local.media.dao.SearchHistoryDao
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.entity.SearchHistoryEntity
@@ -9,7 +7,6 @@ import com.repository.media.entity.SearchType
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
@@ -19,11 +16,10 @@ import org.junit.jupiter.api.Test
 class HistoryLocalDataSourceImplTest {
     private lateinit var historyLocalDataSource: HistoryLocalDataSourceImpl
     private val searchHistoryDao: SearchHistoryDao = mockk(relaxed = true)
-    private val workManager: WorkManager = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
-        historyLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao, workManager)
+        historyLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao)
     }
 
     @Test
@@ -53,14 +49,6 @@ class HistoryLocalDataSourceImplTest {
         coVerify(exactly = 1) { searchHistoryDao.addSearchQuery(any()) }
     }
 
-    @Test
-    fun `addSearchQuery should enqueue work request`() = runTest {
-        //Given
-        historyLocalDataSource.addSearchQuery("aaa", SearchType.Query)
-
-        //When&Then
-        verify(exactly = 1) { workManager.enqueue(any<OneTimeWorkRequest>()) }
-    }
 
     @Test
     fun `clearSearchQueryByQuery should clear SearchQuery when clear in SearchHistoryDao called successfully`() =
