@@ -5,5 +5,9 @@
     <string name="english">أنجليزي</string>
     <string name="arabic">عربي</string>
     <string name="language">اللغة</string>
-    <string name="apply">Apply</string>
+    <string name="apply">تطبيق</string>
+    <string name="change_password">تغيير كلمة المرور</string>
+    <string name="content_restriction">المحتوه</string>
+    <string name="tired_of_watching">تعبت من المشاهده؟</string>
+    <string name="setting">الاعدادات</string>
 </resources>

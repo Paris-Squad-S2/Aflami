@@ -5,4 +5,8 @@
     <string name="arabic">Arabic</string>
     <string name="language">Language</string>
     <string name="apply">Apply</string>
+    <string name="change_password">Change Password</string>
+    <string name="content_restriction">Content Restriction</string>
+    <string name="tired_of_watching">Tired of watching?</string>
+    <string name="setting">Setting</string>
 </resources>
