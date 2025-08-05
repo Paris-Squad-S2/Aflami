@@ -18,7 +18,6 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
-import io.mockk.mockkStatic
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -38,7 +37,6 @@ class SearchMediaRepositoryImplTest {
     private val networkConnectionChecker = mockk<NetworkConnectionChecker>()
     private val searchRemoteDataSource = mockk<SearchRemoteDataSource>()
     private val historyLocalDataSource = mockk<HistoryLocalDataSource>()
-    private val language = "en"
 
     @BeforeEach
     fun setup() {
