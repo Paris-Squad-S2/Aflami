@@ -9,14 +9,12 @@ import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
 import com.datasource.local.media.dao.SearchHistoryDao
 import com.repository.media.entity.CountryEntity
-import com.repository.media.entity.GenreEntity
 import com.repository.media.entity.GenreUserInteractionEntity
-import com.repository.media.entity.MediaSearchEntity
 import com.repository.media.entity.SearchHistoryEntity
 
 
 @Database(
-    entities = [SearchHistoryEntity::class, MediaSearchEntity::class, CountryEntity::class, GenreEntity::class, GenreUserInteractionEntity::class],
+    entities = [SearchHistoryEntity::class, CountryEntity::class, GenreUserInteractionEntity::class],
     version = 2,
 )
 @TypeConverters(SearchConverter::class)
