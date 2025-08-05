@@ -1,12 +1,11 @@
 package com.feature.home.homeUi.screen.topRatingMovies
 
-import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.toMediaUiStateList
-import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
