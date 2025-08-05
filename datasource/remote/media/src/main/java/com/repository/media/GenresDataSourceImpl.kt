@@ -11,4 +11,10 @@ class GenresDataSourceImpl @Inject constructor(
     override suspend fun getMoviesGenres(language: String): GenresDto {
         return apiService.getMoviesGenres(language)
     }
+
+    override suspend fun getAllGenres(language: String): GenresDto {
+        val movieDto = apiService.getMoviesGenres(language)
+        val tvShowDto = apiService.getTvShowsGenres(language)
+        return movieDto.copy(genreDto = movieDto.genreDto.orEmpty() + tvShowDto.genreDto.orEmpty())
+    }
 }

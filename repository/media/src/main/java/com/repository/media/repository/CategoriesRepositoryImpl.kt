@@ -17,7 +17,7 @@ class CategoriesRepositoryImpl(
     override suspend fun getAllCategories(): List<Category> {
         val language = Locale.getDefault().language
         return safeCall(NoCategoriesFoundException()) {
-            val remoteGenres = genresRemoteDataSource.getMoviesGenres(language).genreDto
+            val remoteGenres = genresRemoteDataSource.getAllGenres(language).genreDto
             remoteGenres?.toCategories() ?: emptyList()
         }
     }
