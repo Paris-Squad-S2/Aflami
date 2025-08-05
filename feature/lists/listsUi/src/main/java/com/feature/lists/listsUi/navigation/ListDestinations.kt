@@ -11,6 +11,8 @@ sealed interface ListDestinations : ListGraph {
     data object ListScreen : ListDestination
 
     @Serializable
-    data object ListDetails : ListDestination
+    data class ListDetails(
+        val listId: String
+    ) : ListDestination
 
 }
