@@ -11,7 +11,7 @@ import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
-import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
@@ -28,7 +28,7 @@ class HomeScreenViewModel @Inject constructor(
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase,
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase,
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase,
-    private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase,
+    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase,
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,

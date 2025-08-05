@@ -10,7 +10,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
@@ -40,7 +40,7 @@ class HomeScreenViewModelTest {
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase =
         mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
-    private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase = mockk()
+    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase = mockk()
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
