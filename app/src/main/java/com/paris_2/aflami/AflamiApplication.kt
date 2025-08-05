@@ -5,7 +5,7 @@ import android.content.Context
 import android.util.Log
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
-import com.paris_2.dataSource.local.user.LanguageLocalDataSourceImp
+import com.paris_2.dataSource.local.user.LanguageLocalDataSourceRepositoryImp
 import dagger.hilt.android.HiltAndroidApp
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
@@ -39,7 +39,7 @@ class AflamiApplication : Application(), Configuration.Provider {
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
         val locale = runBlocking {
-            LanguageLocalDataSourceImp(base).getLanguage().first()
+            LanguageLocalDataSourceRepositoryImp(base).getLanguage().first()
         }
         updateAppLocale(base, locale)
     }
