@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.feature.profile.profileUi.screen.watchHistory.WatchHistoryScreen
 import dagger.hilt.android.EntryPointAccessors
 
 
@@ -42,6 +43,6 @@ fun NavGraphBuilder.buildProfileNavGraph() {
     navigation<ProfileDestinations.ProfileGraph1>(
         startDestination = ProfileDestinations.WatchHistoryScreen
     ) {
-      //  composable<ProfileDestinations.WatchHistoryScreen> { WatchHistoryScreen() }
+        composable<ProfileDestinations.WatchHistoryScreen> { WatchHistoryScreen() }
     }
 }
