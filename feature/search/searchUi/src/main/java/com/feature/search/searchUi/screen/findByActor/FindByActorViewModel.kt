@@ -31,7 +31,6 @@ class FindByActorViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: SearchNavigator,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -40,7 +39,6 @@ class FindByActorViewModel @Inject constructor(
         ),
         errorMessage = null
     ),
-    navigator
 ) {
 
 

@@ -60,7 +60,6 @@ class SearchViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: SearchNavigator
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -81,7 +80,6 @@ class SearchViewModel @Inject constructor(
             isLoading = false,
             errorMessage = null
         ),
-        navigator
     ) {
 
     init {

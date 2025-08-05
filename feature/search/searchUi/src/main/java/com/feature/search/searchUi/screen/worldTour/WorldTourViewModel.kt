@@ -35,7 +35,6 @@ class WorldTourViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: SearchNavigator
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
         WorldTourScreenState(
@@ -45,7 +44,7 @@ class WorldTourViewModel @Inject constructor(
                 hints = listOf()
             ),
             errorMessage = null
-        ), navigator
+        ),
     ) {
 
     init {

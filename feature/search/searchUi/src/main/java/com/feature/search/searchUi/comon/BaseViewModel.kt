@@ -16,8 +16,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 open class BaseViewModel<S> @Inject constructor(
-    initialState: S,  val navigator: SearchNavigator
+    initialState: S,
 ) : ViewModel() {
+
+    @Inject
+    lateinit var navigator: SearchNavigator
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
