@@ -25,7 +25,7 @@ class FilterWatchHistoryUseCaseTest {
     @Test
     fun `should return only movies when MediaType is MOVIE`() = runTest {
         // Given
-        coEvery { mediaRepository.getMediaFromLocal() } returns mediaList
+        coEvery { mediaRepository.getContinueWatchingMedia() } returns mediaList
 
         // When
         val result = filterWatchHistoryUseCase(MediaType.MOVIE)
@@ -38,7 +38,7 @@ class FilterWatchHistoryUseCaseTest {
     @Test
     fun `should return only TV shows when MediaType is TVSHOW`() = runTest {
         // Given
-        coEvery { mediaRepository.getMediaFromLocal() } returns mediaList
+        coEvery { mediaRepository.getContinueWatchingMedia() } returns mediaList
 
         // When
         val result = filterWatchHistoryUseCase(MediaType.TVSHOW)
@@ -54,7 +54,7 @@ class FilterWatchHistoryUseCaseTest {
         val mediaList = listOf(
             createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE)
         )
-        coEvery { mediaRepository.getMediaFromLocal() } returns mediaList
+        coEvery { mediaRepository.getContinueWatchingMedia() } returns mediaList
 
         // When
         val result = filterWatchHistoryUseCase(MediaType.TVSHOW)
@@ -66,7 +66,7 @@ class FilterWatchHistoryUseCaseTest {
     @Test
     fun `should return empty list when media list is empty`() = runTest {
         // Given
-        coEvery { mediaRepository.getMediaFromLocal() } returns emptyList()
+        coEvery { mediaRepository.getContinueWatchingMedia() } returns emptyList()
 
         // When
         val result = filterWatchHistoryUseCase(MediaType.MOVIE)

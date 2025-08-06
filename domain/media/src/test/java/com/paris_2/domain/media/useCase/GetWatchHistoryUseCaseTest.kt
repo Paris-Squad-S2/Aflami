@@ -37,7 +37,7 @@ class GetWatchHistoryUseCaseTest {
 
     @Test
     fun `invoke returns local media list from repository`() = runTest {
-        coEvery { mediaRepository.getMediaFromLocal() } returns fakeMediaList
+        coEvery { mediaRepository.getContinueWatchingMedia() } returns fakeMediaList
         val result = useCase()
         assertThat(result).isEqualTo(fakeMediaList)
     }
