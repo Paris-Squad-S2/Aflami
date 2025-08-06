@@ -1,28 +1,35 @@
 package com.paris_2.dataSource.local.user
 
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
+import android.content.Context
+import android.content.SharedPreferences
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.MutableStateFlow
 
 class LanguageLocalDataSourceRepositoryImp @Inject constructor(
-    private val dataStore: DataStore<Preferences>,
+    @ApplicationContext private val context: Context,
 ) : LanguageLocalDataSourceRepository {
-    private val LANGUAGE_KEY = stringPreferencesKey("language_code")
 
-    override fun getLanguage(): Flow<String> {
-        return dataStore.data.map { preferences ->
-            preferences[LANGUAGE_KEY] ?: "en"
-        }
+    companion object {
+        private const val PREF_NAME = "settings"
+        private const val LANGUAGE_KEY = "language_code"
     }
+
+    private val prefs: SharedPreferences
+        get() = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
+
+    private val languageFlow = MutableStateFlow(getLanguageSync())
+
+    override fun getLanguage(): Flow<String> = languageFlow
 
     override suspend fun setLanguage(language: String) {
-        dataStore.edit { preferences ->
-            preferences[LANGUAGE_KEY] = language
-        }
+        prefs.edit().putString(LANGUAGE_KEY, language).apply()
     }
+
+    fun getLanguageSync(): String {
+        return prefs.getString(LANGUAGE_KEY, "en") ?: "en"
+    }
+
 }

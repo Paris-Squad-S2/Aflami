@@ -182,7 +182,7 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideLanguageLocalDataSource(
-        dataStore: DataStore<Preferences>,
-    ): LanguageLocalDataSourceRepository = LanguageLocalDataSourceRepositoryImp(dataStore)
+       @ApplicationContext context: Context,
+    ): LanguageLocalDataSourceRepository = LanguageLocalDataSourceRepositoryImp(context)
 
 }
