@@ -227,7 +227,7 @@ class MediaRepositoryImplTest {
             releaseDate = "2023-09-09"
         )
         coEvery { local.getAllMedia() } returns listOf(entity)
-        val result = repo.getMediaFromLocal()
+        val result = repo.getContinueWatchingMedia()
         assertThat(result.single().id).isEqualTo(300)
     }
 
@@ -256,7 +256,7 @@ class MediaRepositoryImplTest {
         coEvery { local.getAllMedia() } throws RuntimeException("DB read failed")
 
         assertThrows<GetContinueWatchingMediaException> {
-            repo.getMediaFromLocal()
+            repo.getContinueWatchingMedia()
         }
     }
 }
