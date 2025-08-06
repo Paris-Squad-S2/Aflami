@@ -22,14 +22,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -50,7 +53,9 @@ fun MediaCard(
     cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
     onPlayButtonClick: () -> Unit = {},
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    isRated: Boolean = false,
+    onFavouriteIconClick: () -> Unit = {},
 ) {
     val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
         MediaCardType.UP_COMING -> (cardWidth ?: 328.dp) to (cardHeight ?: 196.dp)
@@ -111,6 +116,31 @@ fun MediaCard(
             RatingCard(
                 rating = rating,
             )
+        }
+        if (isRated){
+            AnimatedVisibility(
+                showRating && rating != null,
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(top = 8.dp, start = 8.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .size(32.dp)
+                        .clip(RoundedCornerShape(12.dp))
+                        .background(Theme.colors.iconBackground.copy(alpha = 0.7f))
+                        .clickable { onFavouriteIconClick() }
+                ){
+                    AppIcon(
+                        imageVector = ImageVector.vectorResource(com.feature.profile.profileUi.R.drawable.star_off),
+                        contentDescription = null,
+                        tint = Theme.colors.status.redAccent,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .align(Alignment.Center)
+                    )
+                }
+            }
         }
 
         if (showGradientFilter) {
