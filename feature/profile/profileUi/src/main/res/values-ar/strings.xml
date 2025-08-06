@@ -4,4 +4,5 @@
     <string name="watch_history">تاريخ المشاهدة</string>
     <string name="movies">أفلام</string>
     <string name="tv_shows">مسلسلات</string>
+    <string name="my_rating">تقييمي</string>
 </resources>
