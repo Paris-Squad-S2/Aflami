@@ -7,7 +7,7 @@ import com.paris_2.domain.media.repository.MediaRepository
 class FilterRatedMediaUseCase(
     private val mediaRepository: MediaRepository
 ) {
-    suspend operator fun invoke(mediaType: MediaType): List<Media> {
-        return mediaRepository.getRatedMedia().filter { it.type == mediaType }
+    suspend operator fun invoke(accountId: Int,sessionId: String,mediaType: MediaType): List<Media> {
+        return mediaRepository.getRatedMedia(accountId, sessionId).filter { it.type == mediaType }
     }
 }
