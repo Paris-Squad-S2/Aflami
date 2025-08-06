@@ -8,6 +8,7 @@ import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
 import com.google.common.truth.Truth.assertThat
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -30,10 +31,11 @@ class GetListDetailsUseCaseTest {
         val listId = "list123"
         val mediaItems = listOf(
             Media(
+                id = 1,
                 posterPath = "/poster1.jpg",
                 title = "Movie 1",
                 voteAverage = 8.5,
-                releaseDate = "2023-01-01"
+                releaseDate = LocalDate.parse("2023-01-01")
             )
         )
         val expectedListDetails = ListDetails(
