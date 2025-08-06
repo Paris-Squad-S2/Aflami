@@ -1,17 +1,21 @@
 package com.datasource.local.media.dao
 
-import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.media.entity.MediaEntity
+import androidx.room.Dao
+import com.repository.media.entity.Category
+import com.repository.media.entity.HomeMediaEntity
+
 
 @Dao
 interface HomeMediaDao {
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMedia(media: MediaEntity)
+    suspend fun addMediaList(media: List<HomeMediaEntity>)
 
-    @Query("SELECT * FROM media_table")
-    suspend fun getAllMedia(): List<MediaEntity>
+    @Query("SELECT * FROM home_media_table WHERE category = :category")
+    suspend fun getMediaListByCategory(category: Category): List<HomeMediaEntity>
+
+    @Query("DELETE FROM home_media_table WHERE category = :category")
+    suspend fun clearMediaByCategory(category: Category)
 }
