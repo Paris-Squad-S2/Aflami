@@ -9,15 +9,14 @@ plugins {
 
 android {
     namespace = "com.feature.profile.profileUi"
-    compileSdk = 35
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 26
+        minSdk = Configurations.MIN_SDK_26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -31,11 +30,13 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = Configurations.JVM_TARGET
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -77,6 +78,24 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+
+    //test
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.junit)
+
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(kotlin("test"))
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
