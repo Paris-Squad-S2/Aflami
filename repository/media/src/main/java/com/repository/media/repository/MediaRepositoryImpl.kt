@@ -7,6 +7,7 @@ import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
 import com.paris_2.domain.media.exception.MediaPlayingException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.paris_2.domain.media.exception.PopularMediaException
 import com.paris_2.domain.media.exception.TopRatingMediaException
 import com.paris_2.domain.media.exception.UpComingMediaException
@@ -115,8 +116,17 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun getRatedMedia(): List<Media> {
-        TODO("Not yet implemented")
+    override suspend fun getRatedMedia(accountId: Int,sessionId: String): List<Media> {
+        return safeCall(NoRatedMediaFoundException()) {
+            val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, sessionId, language)
+                .results.mapNotNull { it.toDomain(MediaType.MOVIE) }
+
+            val ratedTvShows = mediaRemoteDataSource.getRatedTvShows(accountId, sessionId, language)
+                .results.mapNotNull {
+                    it.toDomain(MediaType.TVSHOW)
+                }
+            ratedMovies + ratedTvShows
+        }
     }
 
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
