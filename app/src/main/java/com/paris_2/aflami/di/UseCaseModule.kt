@@ -39,6 +39,7 @@ import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
 import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
 import com.paris_2.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
+import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
 import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
 import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SearchByQueryUseCase
@@ -113,5 +114,6 @@ object UseCaseModule {
     @Provides fun provideAddRatingToTvShowUseCase(tvShowRepository: TvShowRepository) = AddRatingToTvShowUseCase(tvShowRepository)
     @Provides fun provideGetEpisodeVideoUseCase(tvShowRepository: TvShowRepository) = GetEpisodeVideoUseCase(tvShowRepository)
     @Provides fun provideGetSessionIdUseCase(authenticationRepository: AuthenticationRepository) = GetSessionIdUseCase(authenticationRepository)
+    @Provides fun provideGetRatedMediaUseCase(): FilterRatedMediaUseCase = FilterRatedMediaUseCase
 }
 
