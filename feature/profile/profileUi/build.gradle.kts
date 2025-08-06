@@ -67,6 +67,7 @@ dependencies {
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(project(Modules.DOMAIN_USER))
 
     //Kotlinx DateTime
     implementation(libs.kotlinx.datetime)
