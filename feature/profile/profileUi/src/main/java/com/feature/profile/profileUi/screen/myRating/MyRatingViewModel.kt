@@ -92,6 +92,10 @@ class MyRatingViewModel @Inject constructor(
         )
     }
 
+    override fun onFavouriteIconClick(media: MediaUiState) {
+        TODO("Not yet implemented")
+    }
+
     fun onTabSelected(mediaTypeUi: MediaTypeUi) {
         selectedMediaType = mediaTypeUi
         loadMyRatingMedia(mediaTypeUi)
