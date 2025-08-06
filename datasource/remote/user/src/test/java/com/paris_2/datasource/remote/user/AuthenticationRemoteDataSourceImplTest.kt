@@ -15,13 +15,13 @@ import retrofit2.HttpException
 import kotlin.test.assertFailsWith
 
 class AuthenticationRemoteDataSourceImplTest {
-    private lateinit var api: AuthenticationApi
-    private lateinit var dataSource: AuthenticationRemoteDataSourceImpl
+    private lateinit var api: UserApi
+    private lateinit var dataSource: UserRemoteDataSourceImpl
 
     @Before
     fun setUp() {
         api = mockk()
-        dataSource = AuthenticationRemoteDataSourceImpl(api)
+        dataSource = UserRemoteDataSourceImpl(api)
     }
 
     @Test

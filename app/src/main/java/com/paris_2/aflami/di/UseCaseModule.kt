@@ -49,7 +49,8 @@ import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.user.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.user.usecase.GetSessionIdUseCase
@@ -102,18 +103,20 @@ object UseCaseModule {
     @Provides fun provideFilterWatchHistoryUseCase(mediaRepository: MediaRepository) = FilterWatchHistoryUseCase(mediaRepository)
 
     @Provides fun provideGetMediaFromLocalUseCase(mediaRepository: MediaRepository) = GetWatchHistoryUseCase(mediaRepository)
-    @Provides fun provideLoginUseCase(authenticationRepository: AuthenticationRepository) = LoginUseCase(authenticationRepository)
-    @Provides fun provideGuestLoginUseCase(authenticationRepository: AuthenticationRepository) = GuestLoginUseCase(authenticationRepository)
-    @Provides fun provideGetForgetPasswordUrlUseCase(authenticationRepository: AuthenticationRepository) = GetForgetPasswordUrlUseCase(authenticationRepository)
-    @Provides fun provideGetRegisterUrlUseCase(authenticationRepository: AuthenticationRepository) = GetRegisterUrlUseCase(authenticationRepository)
+    @Provides fun provideLoginUseCase(userRepository: UserRepository) = LoginUseCase(userRepository)
+    @Provides fun provideGetAccountIdUseCase(userRepository: UserRepository) =
+        GetAccountIdUseCase(userRepository)
+    @Provides fun provideGuestLoginUseCase(userRepository: UserRepository) = GuestLoginUseCase(userRepository)
+    @Provides fun provideGetForgetPasswordUrlUseCase(userRepository: UserRepository) = GetForgetPasswordUrlUseCase(userRepository)
+    @Provides fun provideGetRegisterUrlUseCase(userRepository: UserRepository) = GetRegisterUrlUseCase(userRepository)
     @Provides fun provideGetMovieVideoUseCase(movieRepository: MovieRepository) = GetMovieVideoUseCase(movieRepository)
     @Provides fun provideGetTvShowVideoUseCase(tvShowRepository: TvShowRepository) = GetTvShowVideoUseCase(tvShowRepository)
-    @Provides fun provideIsLoggedInUseCase(authenticationRepository: AuthenticationRepository) = IsLoggedInUseCase(authenticationRepository)
-    @Provides fun provideHasAnySessionUseCase(authenticationRepository: AuthenticationRepository) = HasAnySessionUseCase(authenticationRepository)
+    @Provides fun provideIsLoggedInUseCase(userRepository: UserRepository) = IsLoggedInUseCase(userRepository)
+    @Provides fun provideHasAnySessionUseCase(userRepository: UserRepository) = HasAnySessionUseCase(userRepository)
     @Provides fun provideAddRatingToMovieUseCase(movieRepository: MovieRepository) = AddRatingToMovieUseCase(movieRepository)
     @Provides fun provideAddRatingToTvShowUseCase(tvShowRepository: TvShowRepository) = AddRatingToTvShowUseCase(tvShowRepository)
     @Provides fun provideGetEpisodeVideoUseCase(tvShowRepository: TvShowRepository) = GetEpisodeVideoUseCase(tvShowRepository)
-    @Provides fun provideGetSessionIdUseCase(authenticationRepository: AuthenticationRepository) = GetSessionIdUseCase(authenticationRepository)
+    @Provides fun provideGetSessionIdUseCase(userRepository: UserRepository) = GetSessionIdUseCase(userRepository)
     @Provides fun provideFilterRatedMediaUseCase(mediaRepository: MediaRepository): FilterRatedMediaUseCase = FilterRatedMediaUseCase(mediaRepository)
 }
 

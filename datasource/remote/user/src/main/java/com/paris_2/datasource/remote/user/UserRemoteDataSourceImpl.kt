@@ -1,16 +1,17 @@
 package com.paris_2.datasource.remote.user
 
-import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris_2.repository.user.exeptions.NetworkException
+import com.paris_2.repository.user.model.remote.AccountDto
 import com.paris_2.repository.user.model.remote.LoginRequest
 import com.paris_2.repository.user.model.remote.RequestTokenDto
 import com.paris_2.repository.user.model.remote.SessionDto
 import com.paris_2.repository.user.model.remote.GuestSessionDto
 import retrofit2.HttpException
 
-class AuthenticationRemoteDataSourceImpl (
-    private val apiService: AuthenticationApi
-) : AuthenticationRemoteDataSource {
+class UserRemoteDataSourceImpl (
+    private val apiService: UserApi
+) : UserRemoteDataSource {
 
     override suspend fun getRequestToken(): RequestTokenDto = safeApiCall {
         apiService.getRequestToken()
@@ -44,6 +45,9 @@ class AuthenticationRemoteDataSourceImpl (
 
     override fun getRegisterUrl() = REGISTER_URL
     override fun getForgetPasswordUrl() = FORGET_PASSWORD_URL
+    override suspend fun getAccountDetails(): AccountDto {
+        return apiService.getAccountDetails()
+    }
 
     companion object{
         const val REGISTER_URL = "https://www.themoviedb.org/signup"

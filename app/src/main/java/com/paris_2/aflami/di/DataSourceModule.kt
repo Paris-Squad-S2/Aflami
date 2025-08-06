@@ -35,10 +35,10 @@ import com.datasource.local.media.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
-import com.paris_2.datasource.remote.user.AuthenticationApi
-import com.paris_2.datasource.remote.user.AuthenticationRemoteDataSourceImpl
+import com.paris_2.datasource.remote.user.UserApi
+import com.paris_2.datasource.remote.user.UserRemoteDataSourceImpl
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -170,8 +170,8 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideAuthenticationRemoteDataSource(
-        apiService: AuthenticationApi
-    ): AuthenticationRemoteDataSource = AuthenticationRemoteDataSourceImpl(apiService)
+        apiService: UserApi
+    ): UserRemoteDataSource = UserRemoteDataSourceImpl(apiService)
 
     @Provides
     @Singleton

@@ -2,10 +2,10 @@ package com.paris_2.domain.user.usecase
 
 import com.paris_2.domain.user.repository.UserRepository
 
-class GetForgetPasswordUrlUseCase(
+class GetAccountIdUseCase(
     private val userRepository: UserRepository
 ) {
-    operator fun invoke(): String {
-        return userRepository.getForgetPasswordUrl()
+    suspend operator fun invoke(): Int? {
+        return userRepository.getAccountId()
     }
 }

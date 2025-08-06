@@ -1,5 +1,6 @@
 package com.paris_2.datasource.remote.user
 
+import com.paris_2.repository.user.model.remote.AccountDto
 import com.paris_2.repository.user.model.remote.LoginRequest
 import com.paris_2.repository.user.model.remote.RequestTokenDto
 import com.paris_2.repository.user.model.remote.SessionDto
@@ -8,7 +9,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
-interface AuthenticationApi {
+interface UserApi {
     @GET("authentication/token/new")
     suspend fun getRequestToken(): RequestTokenDto
 
@@ -20,4 +21,8 @@ interface AuthenticationApi {
 
     @GET("authentication/guest_session/new")
     suspend fun createGuestSession(): GuestSessionDto
+
+    @GET("account")
+    suspend fun getAccountDetails(): AccountDto
+
 }
