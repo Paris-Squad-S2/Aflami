@@ -8,6 +8,8 @@ import com.repository.media.entity.Category
 import com.repository.media.entity.HomeMediaEntity
 import com.repository.media.entity.MediaEntity
 import com.repository.media.entity.MediaTypeEntity
+import com.repository.media.dto.profile.MovieResult
+import com.repository.media.dto.profile.TvShowResult
 import kotlinx.datetime.LocalDate
 
 fun MovieDto.toDomain(type: MediaType): Media? {
@@ -96,4 +98,30 @@ fun Media.toEntity(): MediaEntity = MediaEntity(
 fun MediaType.toEntity(): MediaTypeEntity= when (this) {
     MediaType.MOVIE -> MediaTypeEntity.MOVIE
     MediaType.TVSHOW -> MediaTypeEntity.TV_SHOW
+}
+
+fun MovieResult.toDomain(type: MediaType): Media? {
+    val parsedDate = runCatching { LocalDate.parse(release_date) }.getOrNull() ?: return null
+    return Media(
+        id = id,
+        imageUri = poster_path.orEmpty(),
+        title = title,
+        type = type,
+        categoryIds = genre_ids,
+        yearOfRelease = parsedDate,
+        rating = vote_average
+    )
+}
+
+fun TvShowResult.toDomain(type: MediaType): Media? {
+    val parsedDate = runCatching { LocalDate.parse(first_air_date) }.getOrNull() ?: return null
+    return Media(
+        id = id,
+        imageUri = poster_path.orEmpty(),
+        title = name,
+        type = type,
+        categoryIds = genre_ids,
+        yearOfRelease = parsedDate,
+        rating = vote_average
+    )
 }
