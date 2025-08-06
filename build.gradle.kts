@@ -83,6 +83,7 @@ val koverExcludedPackages = listOf(
     "**.AflamiNavBarItem.**",
     "**bottomNavBar**",
     "**.PagingSource.**",
+    "**.ListDetailsViewModel*",
     "**.MediaUi*",
     "**.SimilarMediaUI.*",
     "**.MediaCardType.*",
@@ -94,7 +95,8 @@ val koverExcludedPackages = listOf(
     "**.ContinueWatchingScreen*",
     "**.HomeScreenUIState*",
     "**.RetrofitListApiService*",
-    "**.PagingSource.kt*"
+    "**/PagingSource*.class",
+    "**.ListDetailsViewModel*",
 )
 
 allprojects {
