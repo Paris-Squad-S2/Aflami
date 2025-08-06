@@ -9,7 +9,10 @@ import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
 import javax.inject.Inject
+import dagger.hilt.android.lifecycle.HiltViewModel
 
+
+@HiltViewModel
 class MyRatingViewModel @Inject constructor(
     private val getRatedMediaUseCase: FilterRatedMediaUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
