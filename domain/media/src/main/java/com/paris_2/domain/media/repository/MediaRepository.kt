@@ -9,4 +9,5 @@ interface MediaRepository {
     suspend fun getNowPlayingMedia() : List<Media>
     suspend fun addMediaToContinueWatching(media: Media)
     suspend fun getMediaFromLocal(): List<Media>
+    suspend fun getRatedMedia(): List<Media>
 }
