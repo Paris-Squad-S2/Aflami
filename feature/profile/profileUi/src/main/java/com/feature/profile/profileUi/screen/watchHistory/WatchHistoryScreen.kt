@@ -55,7 +55,10 @@ fun WatchHistoryScreen(
             title = stringResource(R.string.watch_history),
         )
         TabRow(
-            tabItems = listOf("Movies", "TV Shows"),
+            tabItems = listOf(
+                stringResource(R.string.movies),
+                stringResource(R.string.tv_shows)
+            ),
             selectedIndex = selectedIndex,
             onTabSelected = { tabIndex ->
                 selectedIndex = tabIndex
