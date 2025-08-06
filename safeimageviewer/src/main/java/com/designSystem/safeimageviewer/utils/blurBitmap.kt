@@ -1,18 +1,23 @@
-package com.designSystem.safeimageviewer.algorithm
+package com.designSystem.safeimageviewer.utils
 
 import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.compose.runtime.Stable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-
 @Stable
 internal suspend fun blurBitmap(input: Bitmap, radius: Int): Bitmap =
     withContext(Dispatchers.Default) {
-        val w = input.width
-        val h = input.height
+        val softwareBitmap = if (input.config == Bitmap.Config.HARDWARE) {
+            input.copy(Bitmap.Config.ARGB_8888, false)
+        } else {
+            input
+        }
+
+        val w = softwareBitmap.width
+        val h = softwareBitmap.height
         val pixels = IntArray(w * h)
-        input.getPixels(pixels, 0, w, 0, 0, w, h)
+        softwareBitmap.getPixels(pixels, 0, w, 0, 0, w, h)
 
         val result = pixels.copyOf()
         val div = radius * 2 + 1
@@ -75,5 +80,5 @@ internal suspend fun blurBitmap(input: Bitmap, radius: Int): Bitmap =
             }
         }
 
-        Bitmap.createBitmap(pixels, w, h, input.config)
+        Bitmap.createBitmap(pixels, w, h, softwareBitmap.config)
     }

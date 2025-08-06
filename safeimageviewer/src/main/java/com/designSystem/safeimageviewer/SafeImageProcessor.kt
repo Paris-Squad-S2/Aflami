@@ -1,0 +1,259 @@
+@file:OptIn(ExperimentalCoroutinesApi::class)
+
+package com.designSystem.safeimageviewer
+
+import android.content.Context
+import android.graphics.Bitmap
+import android.util.Log
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import java.util.concurrent.ConcurrentHashMap
+
+data class ImageAnalysisResult(
+    val originalBitmap: Bitmap,
+    val processedBitmap: Bitmap,
+    val isNSFW: Boolean,
+    val nsfwConfidence: Float,
+    val isFemale: Boolean,
+    val genderConfidence: Float,
+    val shouldBlur: Boolean,
+    val blurReason: String
+)
+
+class SafeImageProcessor(private val context: Context) {
+    private companion object {
+        const val TAG = "SafeImageProcessor"
+        const val MAX_CONCURRENT_PROCESSING = 3
+    }
+
+    private val nsfwDetector = NSFWDetector(context)
+    private val genderClassifier = GenderClassifier(context)
+    
+    private val resultCache = ConcurrentHashMap<String, ImageAnalysisResult>()
+    
+    private val processingDispatcher: CoroutineDispatcher = Dispatchers.Default.limitedParallelism(MAX_CONCURRENT_PROCESSING)
+
+    fun processImage(
+        bitmap: Bitmap,
+        blurFemales: Boolean = true,
+        blurNSFW: Boolean = true,
+        nsfwThreshold: Float = 0.8f,
+        genderThreshold: Float = 0.6f,
+        callback: (ImageAnalysisResult) -> Unit
+    ) {
+        Log.d(TAG, "Starting image analysis...")
+        
+        val cacheKey = "${bitmap.width}x${bitmap.height}_${bitmap.byteCount}"
+        
+        resultCache[cacheKey]?.let { cachedResult ->
+            Log.d(TAG, "Returning cached result for key: $cacheKey")
+            callback(cachedResult)
+            return
+        }
+
+        var isNSFW = false
+        var nsfwConfidence = 0f
+        var isFemale = false
+        var genderConfidence = 0f
+        var shouldBlur = false
+        var blurReason = ""
+        var processedBitmap = bitmap
+
+        try {
+            nsfwDetector.isNSFW(bitmap, nsfwThreshold) { nsfw, confidence, _ ->
+                isNSFW = nsfw
+                nsfwConfidence = confidence
+
+                if (isNSFW && blurNSFW) {
+                    shouldBlur = true
+                    blurReason = "NSFW content detected"
+                    Log.d(TAG, "NSFW detected with confidence: $confidence")
+                }
+
+                if (!shouldBlur && blurFemales) {
+                    val genderResult = genderClassifier.classifyGender(bitmap, genderThreshold)
+                    genderResult?.let { result ->
+                        isFemale = result.isFemale
+                        genderConfidence = result.confidence
+
+                        if (result.isFemale) {
+                            shouldBlur = true
+                            blurReason = "Female subject detected"
+                            Log.d(TAG, "Female detected with confidence: ${result.confidence}")
+                        }
+                    }
+                }
+
+                processedBitmap = when {
+                    isNSFW && blurNSFW -> {
+                        ImageBlurUtils.createNSFWBlur(bitmap) ?: bitmap
+                    }
+                    isFemale && blurFemales -> {
+                        ImageBlurUtils.createFemaleBlur(bitmap) ?: bitmap
+                    }
+                    else -> bitmap
+                }
+
+                val result = ImageAnalysisResult(
+                    originalBitmap = bitmap,
+                    processedBitmap = processedBitmap,
+                    isNSFW = isNSFW,
+                    nsfwConfidence = nsfwConfidence,
+                    isFemale = isFemale,
+                    genderConfidence = genderConfidence,
+                    shouldBlur = shouldBlur,
+                    blurReason = blurReason
+                )
+                
+                resultCache[cacheKey] = result
+
+                Log.d(TAG, "Image analysis complete. Should blur: $shouldBlur, Reason: $blurReason")
+                callback(result)
+            }
+        } catch (e: Exception) {
+            Log.e(TAG, "Error processing image: ${e.message}")
+            callback(
+                ImageAnalysisResult(
+                    originalBitmap = bitmap,
+                    processedBitmap = bitmap,
+                    isNSFW = false,
+                    nsfwConfidence = 0f,
+                    isFemale = false,
+                    genderConfidence = 0f,
+                    shouldBlur = false,
+                    blurReason = "Error during analysis: ${e.message}"
+                )
+            )
+        }
+    }
+
+    fun processImageSync(
+        bitmap: Bitmap,
+        blurFemales: Boolean = true,
+        blurNSFW: Boolean = true,
+        nsfwThreshold: Float = 0.8f,
+        genderThreshold: Float = 0.6f
+    ): ImageAnalysisResult {
+        Log.d(TAG, "Starting sync image analysis - blurFemales: $blurFemales, blurNSFW: $blurNSFW")
+
+        val cacheKey = "${bitmap.width}x${bitmap.height}_${bitmap.byteCount}"
+
+        resultCache[cacheKey]?.let { cachedResult ->
+            Log.d(TAG, "Returning cached result")
+            return cachedResult
+        }
+
+        var isNSFW = false
+        var nsfwConfidence = 0f
+        var isFemale = false
+        var genderConfidence = 0f
+        var shouldBlur = false
+        var blurReason = ""
+        var processedBitmap = bitmap
+
+        try {
+            if (blurNSFW) {
+                Log.d(TAG, "Checking for NSFW content...")
+                var nsfwCompleted = false
+
+                nsfwDetector.isNSFW(bitmap, nsfwThreshold) { nsfw, confidence, _ ->
+                    isNSFW = nsfw
+                    nsfwConfidence = confidence
+                    nsfwCompleted = true
+                    Log.d(TAG, "NSFW check complete - isNSFW: $nsfw, confidence: $confidence")
+                }
+
+                while (!nsfwCompleted) {
+                    Thread.sleep(10)
+                }
+
+                if (isNSFW) {
+                    shouldBlur = true
+                    blurReason = "NSFW content detected (confidence: $nsfwConfidence)"
+                    Log.d(TAG, "Will blur due to NSFW content")
+                }
+            }
+
+            if (!shouldBlur && blurFemales) {
+                Log.d(TAG, "Checking for gender classification...")
+                val genderResult = genderClassifier.classifyGender(bitmap, genderThreshold)
+
+                if (genderResult != null) {
+                    isFemale = genderResult.isFemale
+                    genderConfidence = genderResult.confidence
+
+                    Log.d(TAG, "Gender classification complete - isFemale: $isFemale, confidence: $genderConfidence, threshold: $genderThreshold")
+
+                    if (genderResult.isFemale && genderResult.confidence >= genderThreshold) {
+                        shouldBlur = true
+                        blurReason = "Female subject detected (confidence: $genderConfidence)"
+                        Log.d(TAG, "Will blur due to female detection")
+                    }
+                } else {
+                    Log.w(TAG, "Gender classification returned null result")
+                }
+            }
+
+            if (shouldBlur) {
+                Log.d(TAG, "Applying blur: $blurReason")
+                processedBitmap = when {
+                    isNSFW && blurNSFW -> {
+                        Log.d(TAG, "Applying NSFW blur")
+                        ImageBlurUtils.createNSFWBlur(bitmap) ?: bitmap
+                    }
+                    isFemale && blurFemales -> {
+                        Log.d(TAG, "Applying female blur")
+                        ImageBlurUtils.createFemaleBlur(bitmap) ?: bitmap
+                    }
+                    else -> bitmap
+                }
+            } else {
+                Log.d(TAG, "No blur needed - NSFW: $isNSFW (conf: $nsfwConfidence), Female: $isFemale (conf: $genderConfidence)")
+            }
+
+            val result = ImageAnalysisResult(
+                originalBitmap = bitmap,
+                processedBitmap = processedBitmap,
+                isNSFW = isNSFW,
+                nsfwConfidence = nsfwConfidence,
+                isFemale = isFemale,
+                genderConfidence = genderConfidence,
+                shouldBlur = shouldBlur,
+                blurReason = blurReason
+            )
+
+            resultCache[cacheKey] = result
+
+            Log.d(TAG, "Image analysis complete. Should blur: $shouldBlur, Reason: $blurReason")
+            return result
+
+        } catch (e: Exception) {
+            Log.e(TAG, "Error processing image: ${e.message}", e)
+            return ImageAnalysisResult(
+                originalBitmap = bitmap,
+                processedBitmap = bitmap,
+                isNSFW = false,
+                nsfwConfidence = 0f,
+                isFemale = false,
+                genderConfidence = 0f,
+                shouldBlur = false,
+                blurReason = "Error during analysis: ${e.message}"
+            )
+        }
+    }
+
+
+    fun getProcessingDispatcher(): CoroutineDispatcher = processingDispatcher
+
+
+    fun release() {
+        try {
+            nsfwDetector.close()
+            genderClassifier.release()
+            resultCache.clear()
+        } catch (e: Exception) {
+            Log.e(TAG, "Error releasing resources: ${e.message}")
+        }
+    }
+}
