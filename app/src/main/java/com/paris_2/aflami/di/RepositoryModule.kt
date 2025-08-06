@@ -1,14 +1,17 @@
 package com.paris_2.aflami.di
 
-import com.paris_2.domain.media.repository.MediaRepository
-import com.paris_2.domain.media.repository.MoviesCategoriesRepository
-import com.paris_2.domain.media.repository.MovieRepository
-import com.paris_2.domain.media.repository.TvShowRepository
+import com.datasource.local.onboarding.OnboardingPreferences
+import com.datasource.local.onboarding.OnboardingRepositoryImpl
+import com.domain.onboarding.repository.OnboardingRepository
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
+import com.paris_2.domain.media.repository.MediaRepository
+import com.paris_2.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.MoviesCategoriesRepository
 import com.paris_2.domain.media.repository.SearchHistoryRepository
 import com.paris_2.domain.media.repository.SearchMediaRepository
+import com.paris_2.domain.media.repository.TvShowRepository
 import com.paris_2.domain.user.repository.AuthenticationRepository
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
@@ -21,9 +24,21 @@ import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
+import com.repository.media.datasource.local.CountriesLocalDataSource
+import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
+import com.repository.media.datasource.remote.SearchRemoteDataSource
+import com.repository.media.repository.CategoriesRepositoryImpl
+import com.repository.media.repository.CountryRepositoryImpl
+import com.repository.media.repository.GenresInteractionRepositoryImpl
 import com.repository.media.repository.MediaRepositoryImpl
 import com.repository.media.repository.MoviesCategoriesRepositoryImpl
+import com.repository.media.repository.SearchHistoryRepositoryImpl
+import com.repository.media.repository.SearchMediaRepositoryImpl
+import com.repository.media.util.NetworkConnectionChecker
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -32,18 +47,6 @@ import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
-import com.repository.media.datasource.local.CountriesLocalDataSource
-import com.repository.media.datasource.local.GenresInteractionDataSource
-import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
-import com.repository.media.datasource.remote.GenresRemoteDataSource
-import com.repository.media.datasource.remote.SearchRemoteDataSource
-import com.repository.media.repository.CategoriesRepositoryImpl
-import com.repository.media.repository.CountryRepositoryImpl
-import com.repository.media.repository.GenresInteractionRepositoryImpl
-import com.repository.media.repository.SearchHistoryRepositoryImpl
-import com.repository.media.repository.SearchMediaRepositoryImpl
-import com.repository.media.util.NetworkConnectionChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -169,4 +172,9 @@ object RepositoryModule {
         tvShowSimilarLocalDataSource,
         networkConnectionChecker
     )
+
+    @Provides
+    fun provideOnboardingRepository(preferences: OnboardingPreferences): OnboardingRepository {
+        return OnboardingRepositoryImpl(preferences)
+    }
 }

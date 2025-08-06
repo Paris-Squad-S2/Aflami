@@ -1,19 +1,23 @@
 package com.feature.onboarding.onboardingUi.ui
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.domain.onboarding.usecase.CompleteOnboardingUseCase
 import com.feature.onboarding.onboardingUi.R
 import com.paris_2.aflami.designsystem.components.UiDrawable
 import com.paris_2.aflami.designsystem.components.UiText
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
+import kotlinx.coroutines.launch
 
-class OnBoardingViewModel() : ViewModel() {
+@HiltViewModel
+class OnBoardingViewModel @Inject constructor(
+    private val completeOnboardingUseCase: CompleteOnboardingUseCase,
+) : ViewModel() {
 
-    //    private val _currentScreen = MutableStateFlow(0)
-//    val currentScreen: StateFlow<Int> = _currentScreen
+
     fun updateCurrentPage(index: Int) {
         _currentScreen.intValue = index
     }
@@ -21,6 +25,12 @@ class OnBoardingViewModel() : ViewModel() {
     private val _currentScreen = mutableIntStateOf(0)
     val currentScreen: State<Int> get() = _currentScreen
 
+    fun completeOnboarding(onCompleted: () -> Unit) {
+        viewModelScope.launch {
+            completeOnboardingUseCase()
+            onCompleted()
+        }
+    }
     fun getTitle(): UiText {
         return when (_currentScreen.intValue) {
 

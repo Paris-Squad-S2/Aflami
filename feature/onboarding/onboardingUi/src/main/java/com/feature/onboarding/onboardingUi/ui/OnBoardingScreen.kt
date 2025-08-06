@@ -20,8 +20,8 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import com.feature.onboarding.onboardingUi.R
 import com.feature.onboarding.onboardingUi.components.OnboardingContent
 import com.feature.onboarding.onboardingUi.components.OnboardingPage
@@ -29,14 +29,13 @@ import com.feature.onboarding.onboardingUi.components.PageIndicator
 import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingScreen(
     viewModel: OnBoardingViewModel,
-    onFinish: () -> Unit
+    navController: NavHostController,
 ) {
     val pageCount = 4
     val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -69,7 +68,11 @@ fun OnboardingScreen(
         }
         CustomButton(
             onClick = {
-                onFinish()
+                viewModel.completeOnboarding {
+                    navController.navigate("HomeScreen") {
+                        popUpTo("Onboarding") { inclusive = true }
+                    }
+                }
             },
             text = R.string.skip,
             type = ButtonType.TextButton,
@@ -134,7 +137,11 @@ fun OnboardingScreen(
                         modifier = Modifier.size(64.dp),
                         onClick = {
                             if (pagerState.currentPage == 3) {
-                                onFinish()
+                                viewModel.completeOnboarding {
+                                    navController.navigate("HomeScreen") {
+                                        popUpTo("Onboarding") { inclusive = true }
+                                    }
+                                }
                             } else
                             scope.launch {
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
@@ -152,15 +159,3 @@ fun OnboardingScreen(
             }
         }
     }
-
-
-@Preview(apiLevel = 33)
-@Composable
-private fun OnBoardingScreenPreview() {
-    AflamiTheme {
-        OnboardingScreen(
-            viewModel = OnBoardingViewModel()
-        ) { }
-    }
-
-}

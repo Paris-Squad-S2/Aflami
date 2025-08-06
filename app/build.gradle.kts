@@ -174,10 +174,12 @@ dependencies {
     implementation(project(Modules.FEATURE_AUTHENTICATION_UI))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
+    implementation(project(Modules.FEATURE_ONBOARDING))
 
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.REPOSITORY_USER))
+    implementation(project(Modules.REPOSITORY_ONBOARDING))
 
     implementation(project(Modules.DATASOURCE_LOCAL_MEDIA))
     implementation(project(Modules.DATASOURCE_REMOTE_TV_SHOW))
@@ -187,14 +189,17 @@ dependencies {
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DATASOURCE_LOCAL_USER))
+    implementation(project(Modules.DATASOURCE_LOCAL_ONBOARDING))
 
     implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(project(Modules.DOMAIN_ONBOARDING))
     implementation(project(Modules.DATASOURCE_LOCAL_MOVIE))
     implementation(project(Modules.DATASOURCE_LOCAL_TV_SHOW))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.REPOSITORY_MEDIA))
     implementation(project(Modules.DATASOURCE_REMOTE_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
+
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
