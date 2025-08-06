@@ -40,8 +40,8 @@ class MyRatingViewModel @Inject constructor(
                         isLoading = true
                     )
                 )
-                getRatedMediaUseCase.invoke(
-                    sessionId = getSessionIdUseCase.invoke() ?: "",
+                getRatedMediaUseCase(
+                    sessionId = getSessionIdUseCase() ?: "",
                     accountId = 1234,
                     mediaType =  mediaType.toMediaType()
                 )
