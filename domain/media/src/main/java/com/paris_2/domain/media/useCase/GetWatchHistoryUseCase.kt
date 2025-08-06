@@ -7,6 +7,6 @@ class GetWatchHistoryUseCase(
     private val mediaRepository: MediaRepository
 ) {
     suspend operator fun invoke(): List<Media> {
-        return mediaRepository.getMediaFromLocal()
+        return mediaRepository.getContinueWatchingMedia()
     }
 }

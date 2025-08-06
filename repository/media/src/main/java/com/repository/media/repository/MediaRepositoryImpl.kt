@@ -109,7 +109,7 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun getMediaFromLocal(): List<Media> {
+    override suspend fun getContinueWatchingMedia(): List<Media> {
         return safeCall(GetContinueWatchingMediaException()) {
             continueWatchingLocalDataSource.getAllMedia().map { it.toDomain() }
         }

@@ -8,6 +8,6 @@ class FilterWatchHistoryUseCase(
     private val mediaRepository: MediaRepository
 ) {
     suspend operator fun invoke(mediaType: MediaType): List<Media> {
-        return mediaRepository.getMediaFromLocal().filter { it.type == mediaType }
+        return mediaRepository.getContinueWatchingMedia().filter { it.type == mediaType }
     }
 }

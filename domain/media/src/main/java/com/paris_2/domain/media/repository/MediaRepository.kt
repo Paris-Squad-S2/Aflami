@@ -8,6 +8,6 @@ interface MediaRepository {
     suspend fun getUpComingMedia() : List<Media>
     suspend fun getNowPlayingMedia() : List<Media>
     suspend fun addMediaToContinueWatching(media: Media)
-    suspend fun getMediaFromLocal(): List<Media>
+    suspend fun getContinueWatchingMedia(): List<Media>
     suspend fun getRatedMedia(): List<Media>
 }
