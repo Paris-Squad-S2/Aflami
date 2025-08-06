@@ -10,15 +10,15 @@ import java.util.Locale
 class LanguageRepositoryImp(
     private val languageLocalDataSource: LanguageLocalDataSourceRepository,
 ) : LanguageRepository {
-    override fun getLanguage(): Flow<Locale> {
+    override fun getLanguage(): Flow<String> {
         return languageLocalDataSource.getLanguage().map { language ->
-            Locale(language)
+            language
         }
     }
 
-    override suspend fun setLanguage(language: Locale) {
-        Log.d("TAG", "setLanguageRepositoryImp:${language.displayLanguage} ")
-        languageLocalDataSource.setLanguage(language = language.language)
+    override suspend fun setLanguage(language: String) {
+        Log.d("TAG", "setLanguageRepositoryImp:${language} ")
+        languageLocalDataSource.setLanguage(language = language)
     }
 
 }

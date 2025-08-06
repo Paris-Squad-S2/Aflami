@@ -1,7 +1,6 @@
 package com.feature.profile.profileUi.screen
 
 import com.paris_2.aflami.designsystem.R
-import java.util.Locale
 
 data class ProfileScreenUiState(
     val profile: ProfileUIState = ProfileUIState(),
@@ -28,9 +27,9 @@ enum class Appearance(val display: Int) {
     LIGHT(R.string.light)
 }
 
-enum class Language(val local: Locale) {
-    ENGLISH(local = Locale("en")),
-    ARABIC(local = Locale("ar"))
+enum class Language(val local: String) {
+    ENGLISH("en"),
+    ARABIC("ar")
 }
 
 enum class ContentRestriction() {
@@ -39,6 +38,6 @@ enum class ContentRestriction() {
     OFF
 }
 
-fun Locale.toLanguage(): Language {
-    return if (this.language == "english") Language.ENGLISH else Language.ARABIC
+fun String.toLanguage(): Language {
+    return if (this == "en") Language.ENGLISH else Language.ARABIC
 }

@@ -3,25 +3,23 @@ package com.feature.profile.profileUi.screen
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.feature.profile.profileUi.utils.BaseViewModel
-import com.paris_2.domain.user.usecase.GetLanguageUseCase
-import com.paris_2.domain.user.usecase.SetLanguageUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 @Suppress("DEPRECATION")
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val getLanguageUseCase: GetLanguageUseCase,
-    private val setLanguageUseCase: SetLanguageUseCase,
-) :
+    private val settingsUseCase: SettingsUseCase,
+
+    ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
 
     init {
         viewModelScope.launch {
-            getLanguageUseCase.invoke().collect {
+            settingsUseCase.getLanguage().collect {
                 Log.d("TAG", "ViewModel:$it ")
                 updateState(
                     screenState.value.copy(
@@ -86,7 +84,7 @@ class ProfileViewModel @Inject constructor(
     override fun onLanguageApplyClicked(language: Language) {
         viewModelScope.launch {
             Log.d("TAG", "onLanguageApplyClicked: $language")
-            setLanguageUseCase.invoke(Locale(language.name))
+            settingsUseCase.setLanguage(language.local)
         }
     }
 

@@ -50,14 +50,13 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUse
 import com.paris_2.domain.user.repository.AuthenticationRepository
 import com.paris_2.domain.user.repository.LanguageRepository
 import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
-import com.paris_2.domain.user.usecase.GetLanguageUseCase
 import com.paris_2.domain.user.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import com.paris_2.domain.user.usecase.GuestLoginUseCase
 import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.LoginUseCase
-import com.paris_2.domain.user.usecase.SetLanguageUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -245,12 +244,9 @@ object UseCaseModule {
         GetSessionIdUseCase(authenticationRepository)
 
     @Provides
-    fun provideGetLanguageUseCase(languageRepository: LanguageRepository) =
-        GetLanguageUseCase(languageRepository)
+    fun provideLanguageUseCase(languageRepository: LanguageRepository) =
+        SettingsUseCase(languageRepository)
 
 
-    @Provides
-    fun provideSetLanguageUseCase(languageRepository: LanguageRepository) =
-        SetLanguageUseCase(languageRepository)
 }
 
