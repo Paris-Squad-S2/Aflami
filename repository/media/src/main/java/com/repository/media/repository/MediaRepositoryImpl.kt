@@ -115,6 +115,10 @@ class MediaRepositoryImpl(
         }
     }
 
+    override suspend fun getRatedMedia(): List<Media> {
+        TODO("Not yet implemented")
+    }
+
     private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
         if (networkConnectionChecker.isConnected.value.not()) {
             throw NoInternetConnectionException()

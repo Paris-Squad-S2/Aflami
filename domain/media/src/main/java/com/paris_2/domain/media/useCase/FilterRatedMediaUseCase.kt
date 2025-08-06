@@ -8,6 +8,6 @@ class FilterRatedMediaUseCase(
     private val mediaRepository: MediaRepository
 ) {
     suspend operator fun invoke(mediaType: MediaType): List<Media> {
-        return mediaRepository.getMediaFromLocal().filter { it.type == mediaType }
+        return mediaRepository.getRatedMedia().filter { it.type == mediaType }
     }
 }
