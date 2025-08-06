@@ -29,12 +29,11 @@ class MediaRepositoryImpl(
 ) : MediaRepository {
     private val language = detectLanguage()
     override suspend fun getPopularMedia(): List<Media> {
+
+        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.POPULAR)
+        if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
+
         return safeCall(PopularMediaException()) {
-            val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.POPULAR)
-
-
-            if (localMedia.isNotEmpty()) return@safeCall localMedia.mapNotNull { it.toDomain() }
-
             val remoteMovies = mediaRemoteDataSource.getPopularMovies(language).results?.mapNotNull {
                 it.toDomain(MediaType.MOVIE)
             } ?: emptyList()
@@ -48,15 +47,17 @@ class MediaRepositoryImpl(
             val entities = combined.map {
                 it.toMediaEntity(category = Category.POPULAR)
             }
+
             homeMediaLocalDataSource.addMediaList(entities)
             combined
         }
     }
     override suspend fun getTopRatingMedia(): List<Media> {
-        return safeCall(TopRatingMediaException()) {
-            val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.TOP_RATED)
+        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.TOP_RATED)
 
-            if (localMedia.isNotEmpty()) return@safeCall localMedia.mapNotNull { it.toDomain() }
+        if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
+
+        return safeCall(TopRatingMediaException()) {
 
             val remoteMovies = mediaRemoteDataSource.getTopRatedMovies(language).results?.mapNotNull {
                 it.toDomain(MediaType.MOVIE)
@@ -77,9 +78,10 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
+        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.UPCOMING)
+        if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
+
         return safeCall(UpComingMediaException()) {
-            val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.UPCOMING)
-            if (localMedia.isNotEmpty()) return@safeCall localMedia.mapNotNull { it.toDomain() }
             val upcomingMovies = mediaRemoteDataSource.getUpcomingMovies(language = language)
                 .results?.mapNotNull {
                     it.toDomain(MediaType.MOVIE)
