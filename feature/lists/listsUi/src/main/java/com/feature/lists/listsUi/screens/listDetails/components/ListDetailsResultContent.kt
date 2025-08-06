@@ -41,8 +41,8 @@ fun ListDetailsResultContent(
                         .clickable {
                             onMediaCardClick(media)
                         },
-                    imageUri = media.imageUri,
-                    rating = media.rating?.toFloat(),
+                    imageUri = media.imageUrl,
+                    rating = media.rating,
                     movieName = media.title,
                     year = media.yearOfRelease.year.toString(),
                     showGradientFilter = true,

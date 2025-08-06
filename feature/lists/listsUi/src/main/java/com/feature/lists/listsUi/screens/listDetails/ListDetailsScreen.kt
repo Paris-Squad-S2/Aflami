@@ -53,7 +53,7 @@ fun ListDetailsScreenContent(
         AppTopBar(
             modifier = Modifier
                 .statusBarsPadding(),
-            title = state.searchUiState.listName,
+            title = state.listTitle,
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(RDesignSystem.drawable.ic_back),
@@ -67,7 +67,7 @@ fun ListDetailsScreenContent(
                 )
             )
         )
-        if (state.searchUiState.moviesResult.collectAsLazyPagingItems().itemCount == 0) {
+        if (state.mediaItems.collectAsLazyPagingItems().itemCount == 0) {
             PlaceholderView(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -76,18 +76,18 @@ fun ListDetailsScreenContent(
                 spacer = 24.dp,
                 imageSize = 188.dp
             )
-        } else if (state.errorMessage != null || state.searchUiState.moviesResult.collectAsLazyPagingItems().loadState.hasError) {
+        } else if (state.errorMessage != null || state.mediaItems.collectAsLazyPagingItems().loadState.hasError) {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = listDetailsScreenInteractionListener::onRetryListsDetails
             )
-        } else if (state.searchUiState.moviesResult.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
+        } else if (state.mediaItems.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
             PageLoadingPlaceHolder(
                 modifier = Modifier.fillMaxSize()
             )
         } else {
             ListDetailsResultContent(
-                listDetailResult = state.searchUiState.moviesResult.collectAsLazyPagingItems(),
+                listDetailResult = state.mediaItems.collectAsLazyPagingItems(),
                 onMediaCardClick = listDetailsScreenInteractionListener::onMediaCardClick,
                 onRemoveClick = listDetailsScreenInteractionListener::onRemoveClick,
             )

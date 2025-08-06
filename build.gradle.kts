@@ -94,7 +94,7 @@ val koverExcludedPackages = listOf(
     "**.ContinueWatchingScreen*",
     "**.HomeScreenUIState*",
     "**.RetrofitListApiService*",
-    "**.PagingSource.kt.*"
+    "**.PagingSource.kt*"
 )
 
 allprojects {
@@ -115,10 +115,8 @@ dependencies {
     kover(project((Modules.DOMAIN_GUESS_GAME)))
     kover(project((Modules.DOMAIN_MEDIA)))
     kover(project((Modules.REPOSITORY_MOVIE)))
-    kover(project((Modules.REPOSITORY_LISTS)))
     kover(project((Modules.REPOSITORY_GUESS_GAME)))
     kover(project((Modules.DATASOURCE_REMOTE_USER)))
-    kover(project((Modules.DATASOURCE_REMOTE_LISTS)))
     kover(project((Modules.DATASOURCE_REMOTE_CATEGORIES)))
     kover(project((Modules.DATASOURCE_LOCAL_MOVIE)))
     kover(project((Modules.DATASOURCE_LOCAL_TV_SHOW)))
@@ -140,5 +138,4 @@ dependencies {
     kover(project((Modules.FEATURE_CATEGORIES_API)))
     kover(project((Modules.FEATURE_CATEGORIES_UI)))
     kover(project((Modules.FEATURE_LISTS_API)))
-    kover(project((Modules.FEATURE_LISTS_UI)))
 }

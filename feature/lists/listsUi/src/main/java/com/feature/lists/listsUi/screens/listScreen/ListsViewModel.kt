@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.map
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
-import com.feature.lists.listsUi.pagging.PagingSource
+import com.feature.lists.listsUi.pagging.PagingSourceFactory
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
@@ -33,9 +33,7 @@ class ListsViewModel @Inject constructor(
                         enablePlaceholders = false
                     ),
                     pagingSourceFactory = {
-                        PagingSource { page: Int ->
-                            getListsUseCase.invoke(page)
-                        }
+                        PagingSourceFactory.createForLists(getListsUseCase::invoke)
                     }
                 ).flow.map { pagingData ->
                     pagingData.map { list -> list.toUiState() }

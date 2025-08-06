@@ -85,6 +85,8 @@ dependencies {
     implementation(libs.androidx.paging.runtime)
     implementation (libs.androidx.paging.compose)
 
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
 
 
 }
