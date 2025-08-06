@@ -40,5 +40,5 @@ enum class ContentRestriction() {
 }
 
 fun Locale.toLanguage(): Language {
-    return if (this.language == "en") Language.ENGLISH else Language.ARABIC
+    return if (this.language == "english") Language.ENGLISH else Language.ARABIC
 }

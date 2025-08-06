@@ -81,7 +81,7 @@ fun ProfileContent(
             isVisible = state.profile.isLanguageDialogOpen,
             onDismiss = profileInteractionListener::onDismissLanguageDialog,
             languageState = state.profile.language,
-            onLanguageSelected = profileInteractionListener::onLanguageSelected
+            onLanguageSelected = profileInteractionListener::onLanguageApplyClicked
         )
 
 

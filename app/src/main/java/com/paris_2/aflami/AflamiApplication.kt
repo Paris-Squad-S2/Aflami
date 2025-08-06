@@ -29,12 +29,15 @@ class AflamiApplication : Application(), Configuration.Provider {
         movieNetworkChecker.startChecker()
         genericNetworkChecker.startChecker()
         homeNetworkChecker.startChecker()
+
+
     }
-    
 
     override val workManagerConfiguration: Configuration
         get() = Configuration.Builder()
             .setWorkerFactory(workerFactory)
             .setMinimumLoggingLevel(Log.DEBUG)
             .build()
+
+
 }

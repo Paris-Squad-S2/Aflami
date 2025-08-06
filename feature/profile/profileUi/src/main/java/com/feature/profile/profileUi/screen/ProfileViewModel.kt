@@ -30,6 +30,7 @@ class ProfileViewModel @Inject constructor(
                         )
                     )
                 )
+                Log.d("TAG", "ViewModelState:${screenState.value.profile.language} ")
             }
         }
     }
@@ -85,7 +86,6 @@ class ProfileViewModel @Inject constructor(
     override fun onLanguageApplyClicked(language: Language) {
         viewModelScope.launch {
             Log.d("TAG", "onLanguageApplyClicked: $language")
-            Log.d("TAG", "setLanguageUseCase is null: ${setLanguageUseCase == null}")
             setLanguageUseCase.invoke(Locale(language.name))
         }
     }

@@ -17,7 +17,7 @@ class LanguageRepositoryImp(
     }
 
     override suspend fun setLanguage(language: Locale) {
-        Log.d("TAG", "setLanguageRepositoryImp:${language.language} ")
+        Log.d("TAG", "setLanguageRepositoryImp:${language.displayLanguage} ")
         languageLocalDataSource.setLanguage(language = language.language)
     }
 

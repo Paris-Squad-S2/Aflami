@@ -1,6 +1,5 @@
 package com.paris_2.dataSource.local.user
 
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
@@ -22,11 +21,8 @@ class LanguageLocalDataSourceRepositoryImp @Inject constructor(
     }
 
     override suspend fun setLanguage(language: String) {
-        Log.d("TAG", "setLanguage: $language")
         dataStore.edit { preferences ->
             preferences[LANGUAGE_KEY] = language
         }
-        val ds = dataStore.data.map { it[LANGUAGE_KEY] }
-        Log.d("TAG", "setLanguage: $ds")
     }
 }
