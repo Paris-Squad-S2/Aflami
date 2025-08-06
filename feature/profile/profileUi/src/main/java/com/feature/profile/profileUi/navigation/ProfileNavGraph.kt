@@ -42,7 +42,7 @@ fun ProfileNavGraph(
 
 fun NavGraphBuilder.buildProfileNavGraph() {
     navigation<ProfileDestinations.ProfileGraph1>(
-        startDestination = ProfileDestinations.WatchHistoryScreen
+        startDestination = ProfileDestinations.MyRatingScreen
     ) {
         composable<ProfileDestinations.WatchHistoryScreen> { WatchHistoryScreen() }
         composable<ProfileDestinations.MyRatingScreen> { MyRatingScreen() }
