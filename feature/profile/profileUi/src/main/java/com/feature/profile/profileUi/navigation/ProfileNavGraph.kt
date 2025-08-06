@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.feature.profile.profileUi.screen.myRating.MyRatingScreen
 import com.feature.profile.profileUi.screen.watchHistory.WatchHistoryScreen
 import dagger.hilt.android.EntryPointAccessors
 
@@ -44,5 +45,6 @@ fun NavGraphBuilder.buildProfileNavGraph() {
         startDestination = ProfileDestinations.WatchHistoryScreen
     ) {
         composable<ProfileDestinations.WatchHistoryScreen> { WatchHistoryScreen() }
+        composable<ProfileDestinations.MyRatingScreen> { MyRatingScreen() }
     }
 }

@@ -10,4 +10,7 @@ sealed interface ProfileDestinations : ProfileGraph {
     @Serializable
     data object WatchHistoryScreen : ProfileDestination
 
+    @Serializable
+    data object MyRatingScreen : ProfileDestination
+
 }
