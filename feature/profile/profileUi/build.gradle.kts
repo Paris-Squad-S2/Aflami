@@ -9,14 +9,15 @@ plugins {
 
 android {
     namespace = "com.feature.profile.profileUi"
-    compileSdk = Configurations.COMPILE_SDK
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_26
+        minSdk = 26
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
     }
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -30,13 +31,11 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-
     kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
+        jvmTarget = "11"
     }
     buildFeatures {
         compose = true
-        buildConfig = true
     }
 }
 
