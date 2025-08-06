@@ -114,6 +114,6 @@ object UseCaseModule {
     @Provides fun provideAddRatingToTvShowUseCase(tvShowRepository: TvShowRepository) = AddRatingToTvShowUseCase(tvShowRepository)
     @Provides fun provideGetEpisodeVideoUseCase(tvShowRepository: TvShowRepository) = GetEpisodeVideoUseCase(tvShowRepository)
     @Provides fun provideGetSessionIdUseCase(authenticationRepository: AuthenticationRepository) = GetSessionIdUseCase(authenticationRepository)
-    @Provides fun provideGetRatedMediaUseCase(): FilterRatedMediaUseCase = FilterRatedMediaUseCase
+    @Provides fun provideFilterRatedMediaUseCase(mediaRepository: MediaRepository): FilterRatedMediaUseCase = FilterRatedMediaUseCase(mediaRepository)
 }
 
