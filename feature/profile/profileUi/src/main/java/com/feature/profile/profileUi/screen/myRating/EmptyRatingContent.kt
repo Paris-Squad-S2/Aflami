@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -43,8 +45,16 @@ fun EmptyRatingContent(
                 text = if (isMovie) stringResource(R.string.open_a_movie)
                 else stringResource(R.string.open_a_tv_show),
                 style = Theme.textStyle.body.small,
-                color = Theme.colors.text.body
+                color = Theme.colors.text.body,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
         }
     }
+}
+
+@Composable
+@Preview(showBackground = true,showSystemUi = true)
+fun EmptyRatingContentPreview(){
+    EmptyRatingContent(isMovie = true)
 }
