@@ -2,7 +2,8 @@ package com.repository.media.services
 
 import com.repository.media.dto.home.MovieListDto
 import com.repository.media.dto.home.TvListDto
-import com.repository.media.dto.profile.AccountRatedListDto
+import com.repository.media.dto.profile.RatedMovieDto
+import com.repository.media.dto.profile.RatedTvShowDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -50,7 +51,7 @@ interface MediaApiService {
         sessionId: String,
         @Query("language")
         language: String
-    ): AccountRatedListDto
+    ): RatedMovieDto
 
     @GET("account/{account_id}/rated/tv")
     suspend fun getRatedTvShows(
@@ -60,7 +61,7 @@ interface MediaApiService {
         sessionId: String,
         @Query("language")
         language: String
-    ): AccountRatedListDto
+    ): RatedTvShowDto
 
 }
 
