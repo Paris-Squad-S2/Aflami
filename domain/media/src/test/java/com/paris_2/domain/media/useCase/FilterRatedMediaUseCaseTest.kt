@@ -15,6 +15,9 @@ class FilterRatedMediaUseCaseTest {
     private lateinit var mediaRepository: MediaRepository
     private lateinit var filterRatedMediaUseCase: FilterRatedMediaUseCase
 
+    private val accountId = 1
+    private val sessionId = "testSession"
+
     @BeforeEach
     fun setUp() {
         mediaRepository = mockk()
@@ -24,10 +27,10 @@ class FilterRatedMediaUseCaseTest {
     @Test
     fun `should return only movies when MediaType is MOVIE`() = runTest {
         // Given
-        coEvery { mediaRepository.getRatedMedia() } returns mediaList
+        coEvery { mediaRepository.getRatedMedia(accountId, sessionId) } returns mediaList
 
         // When
-        val result = filterRatedMediaUseCase(MediaType.MOVIE)
+        val result = filterRatedMediaUseCase(accountId, sessionId,MediaType.MOVIE)
 
         // Then
         val expected = listOf(mediaList[0])
@@ -37,10 +40,10 @@ class FilterRatedMediaUseCaseTest {
     @Test
     fun `should return only TV shows when MediaType is TVSHOW`() = runTest {
         // Given
-        coEvery { mediaRepository.getRatedMedia() } returns mediaList
+        coEvery { mediaRepository.getRatedMedia(accountId, sessionId) } returns mediaList
 
         // When
-        val result = filterRatedMediaUseCase(MediaType.TVSHOW)
+        val result = filterRatedMediaUseCase(accountId, sessionId,MediaType.TVSHOW)
 
         // Then
         val expected = listOf(mediaList[1], mediaList[2])
@@ -54,10 +57,10 @@ class FilterRatedMediaUseCaseTest {
         val mediaList = listOf(
             createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE)
         )
-        coEvery { mediaRepository.getRatedMedia() } returns mediaList
+        coEvery { mediaRepository.getRatedMedia(accountId, sessionId) } returns mediaList
 
         // When
-        val result = filterRatedMediaUseCase(MediaType.TVSHOW)
+        val result = filterRatedMediaUseCase(accountId, sessionId,MediaType.TVSHOW)
 
         // Then
         assertEquals(emptyList(), result)
@@ -66,10 +69,10 @@ class FilterRatedMediaUseCaseTest {
     @Test
     fun `should return empty list when media list is empty`() = runTest {
         // Given
-        coEvery { mediaRepository.getRatedMedia() } returns emptyList()
+        coEvery { mediaRepository.getRatedMedia(accountId, sessionId) } returns emptyList()
 
         // When
-        val result = filterRatedMediaUseCase(MediaType.MOVIE)
+        val result = filterRatedMediaUseCase(accountId, sessionId,MediaType.MOVIE)
 
         // Then
         assertEquals(emptyList(), result)
