@@ -1,36 +1,54 @@
 package com.feature.onboarding.onboardingUi.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
-import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @Composable
-fun PageIndicator(totalPages: Int, currentPage: Int) {
+fun PageIndicator(
+    totalPages: Int,
+    currentPage: Int,
+    modifier: Modifier = Modifier,
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center
+        modifier = modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         repeat(totalPages) { index ->
+            val boxColor by animateColorAsState(
+                targetValue = if (index == currentPage)
+                    Theme.colors.onPrimaryColors.onPrimary
+                else
+                    Theme.colors.onPrimaryColors.onPrimaryHint,
+                label = "BoxColor"
+            )
+
             Box(
                 modifier = Modifier
-                    .padding(4.dp)
-                    .clip(CircleShape)
-                    .border(1.dp,Theme.colors.stroke,
-                        CircleShape)
-                    .background(if (index == currentPage) Theme.colors.onPrimaryColors.onPrimary else Theme.colors.onPrimaryColors.onPrimaryBody,
-                        CircleShape)
+                    .weight(1f)
+                    .height(8.dp)
+                    .border(
+                        1.dp, Theme.colors.stroke,
+                        CircleShape
+                    )
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(boxColor)
             )
         }
     }
@@ -39,7 +57,7 @@ fun PageIndicator(totalPages: Int, currentPage: Int) {
 @Preview
 @Composable
 private fun PageIndicatorPreview() {
-    BasePreview{
+    AflamiTheme {
       PageIndicator(
           4,1
       )

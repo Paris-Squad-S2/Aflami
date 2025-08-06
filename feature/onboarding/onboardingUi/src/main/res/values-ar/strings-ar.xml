@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="title_activity_main">النشاط الرئيسي</string>
+    <string name="movies_that_feel_you">أفلام تلامسك</string>
+    <string name="this_isn_t_just_a_movie_app_it_s_a_mood_experience_tap_your_vibe_and_let_the_story_begin">
+        هذا ليس مجرد تطبيق أفلام — إنه تجربة مزاجية. اختر حالتك ودع القصة تبدأ.
+    </string>
+    <string name="build_your_watchlist_show_love">كوّن قائمة مشاهداتك، واظهر حبك</string>
+    <string name="save_your_favorite_picks_track_your_moods_and_come_back_to_find_something_new_every_day">
+        احفظ اختياراتك المفضلة، تابع حالتك المزاجية، وارجع لتكتشف شيئًا جديدًا كل يوم.
+    </string>
+    <string name="your_movie_journal">دفتر يوميات أفلامك</string>
+    <string name="keep_track_of_what_you_ve_watched_how_you_felt_and_what_you_loved_your_film_journey_remembered">
+        تابع ما شاهدته، كيف شعرت، وما أحببته. رحلتك السينمائية محفوظة.
+    </string>
+    <string name="guess_play">خمن والعب!</string>
+    <string name="put_your_film_knowledge_to_the_test_with_exciting_quizzes_every_right_guess_brings_you_closer_to_the_next_movie_adventure">
+        اختبر معرفتك بالأفلام مع اختبارات ممتعة. كل إجابة صحيحة تقربك من مغامرة الفيلم التالية.
+    </string>
+    <string name="skip">تخطي</string>
+</resources>

@@ -4,9 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -21,15 +19,16 @@ import com.paris_2.aflami.designsystem.components.UiDrawable
 import com.paris_2.aflami.designsystem.components.UiText
 import com.paris_2.aflami.designsystem.components.asPainter
 import com.paris_2.aflami.designsystem.components.asString
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
-import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @Composable
 fun OnboardingContent(
     page: OnboardingPage
 ) {
     Box(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
             .background(Theme.colors.surface, RoundedCornerShape(24.dp))
     ) {
         page.backgroundRes.asPainter()?.let {
@@ -44,7 +43,7 @@ fun OnboardingContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(start = 12.dp,end  = 12.dp,bottom = 96.dp),
+                .padding(start = 12.dp, end = 12.dp, bottom = 96.dp),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.Start
         ) {
@@ -71,7 +70,7 @@ data class OnboardingPage(
 @Preview
 @Composable
 private fun OnBoardingContentPreview() {
-    BasePreview {
+    AflamiTheme {
         OnboardingContent(
             page = OnboardingPage(
               title = UiText.StringResource(R.string.your_movie_journal),
