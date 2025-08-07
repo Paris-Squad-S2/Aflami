@@ -55,6 +55,7 @@ import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import com.paris_2.domain.user.usecase.GuestLoginUseCase
 import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
+import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
 import com.paris_2.domain.user.usecase.LoginUseCase
 import dagger.Module
 import dagger.Provides
@@ -115,7 +116,9 @@ object UseCaseModule {
         CompleteOnboardingUseCase(authenticationRepository)
 
     @Provides
-    fun provideIsOnboardingCompletedUseCase(authenticationRepository: AuthenticationRepository) =
-        CompleteOnboardingUseCase(authenticationRepository)
+    fun provideIsOnboardingCompletedUseCase(
+        authenticationRepository: AuthenticationRepository,
+    ) = IsOnboardingCompletedUseCase(authenticationRepository)
+
 }
 

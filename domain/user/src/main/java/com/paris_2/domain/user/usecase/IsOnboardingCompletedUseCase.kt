@@ -2,11 +2,9 @@ package com.paris_2.domain.user.usecase
 
 import com.paris_2.domain.user.repository.AuthenticationRepository
 
-
 class IsOnboardingCompletedUseCase(
     private val authenticationRepository: AuthenticationRepository,
 ) {
-    suspend operator fun invoke(): Boolean {
-        return authenticationRepository.isOnboardingCompleted()
-    }
+    suspend operator fun invoke(): Boolean =
+        authenticationRepository.isOnboardingCompleted()
 }
