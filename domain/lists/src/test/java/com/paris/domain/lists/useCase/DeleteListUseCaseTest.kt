@@ -28,7 +28,8 @@ class DeleteListUseCaseTest {
         val listId = "list123"
         val expectedResponse = Response(
             statusCode = 200,
-            statusMessage = "List deleted successfully"
+            statusMessage = "List deleted successfully",
+            success = true
         )
         coEvery { listsRepository.deleteList(listId) } returns expectedResponse
 
@@ -42,7 +43,8 @@ class DeleteListUseCaseTest {
         val listId = "list456"
         val expectedResponse = Response(
             statusCode = 200,
-            statusMessage = "List deleted successfully"
+            statusMessage = "List deleted successfully",
+            success = true
         )
         coEvery { listsRepository.deleteList(listId) } returns expectedResponse
 
@@ -56,7 +58,8 @@ class DeleteListUseCaseTest {
         val listId = "list789"
         val expectedResponse = Response(
             statusCode = 404,
-            statusMessage = "List not found"
+            statusMessage = "List not found",
+            success = true
         )
         coEvery { listsRepository.deleteList(listId) } returns expectedResponse
 

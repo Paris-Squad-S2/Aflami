@@ -103,7 +103,7 @@ class ListsRepositoryImpTest {
         assertThat(result.items[0]).isEqualTo(
             Media(
                 id = 1,
-                imageUrl = "/poster1.jpg",
+                imageUrl = "https://image.tmdb.org/t/p/w500//poster1.jpg",
                 title = "Movie 1",
                 voteAverage = 8.5,
                 releaseDate =  LocalDate.parse("2023-01-01")
@@ -116,7 +116,8 @@ class ListsRepositoryImpTest {
         val listId = "list123"
         val responseDto = ResponseDto(
             statusCode = 200,
-            statusMessage = "List deleted successfully"
+            statusMessage = "List deleted successfully",
+            success = true
         )
         coEvery { listsRemoteDataSource.deleteList(listId) } returns responseDto
 
@@ -136,7 +137,8 @@ class ListsRepositoryImpTest {
         val listName = "New List"
         val responseDto = ResponseDto(
             statusCode = 201,
-            statusMessage = "List created successfully"
+            statusMessage = "List created successfully",
+            success = true
         )
         coEvery { listsRemoteDataSource.createList(listName) } returns responseDto
 
@@ -157,7 +159,8 @@ class ListsRepositoryImpTest {
         val movieId = 456
         val responseDto = ResponseDto(
             statusCode = 200,
-            statusMessage = "Movie added successfully"
+            statusMessage = "Movie added successfully",
+            success = true
         )
         coEvery { listsRemoteDataSource.addMovieToList(listId, movieId) } returns responseDto
 

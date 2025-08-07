@@ -28,7 +28,8 @@ class CreateListUseCaseTest {
         val listName = "My New List"
         val expectedResponse = Response(
             statusCode = 200,
-            statusMessage = "List created successfully"
+            statusMessage = "List created successfully",
+            success = true
         )
         coEvery { listsRepository.createList(listName) } returns expectedResponse
 
@@ -42,7 +43,8 @@ class CreateListUseCaseTest {
         val listName = "Another List"
         val expectedResponse = Response(
             statusCode = 200,
-            statusMessage = "List created successfully"
+            statusMessage = "List created successfully",
+            success = true
         )
         coEvery { listsRepository.createList(listName) } returns expectedResponse
 
@@ -56,7 +58,8 @@ class CreateListUseCaseTest {
         val listName = "Invalid List"
         val expectedResponse = Response(
             statusCode = 400,
-            statusMessage = "Invalid list name"
+            statusMessage = "Invalid list name",
+            success = true
         )
         coEvery { listsRepository.createList(listName) } returns expectedResponse
 
