@@ -1,8 +1,5 @@
 package com.paris_2.aflami.di
 
-import com.datasource.local.onboarding.OnboardingPreferences
-import com.datasource.local.onboarding.OnboardingRepositoryImpl
-import com.domain.onboarding.repository.OnboardingRepository
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -173,8 +170,4 @@ object RepositoryModule {
         networkConnectionChecker
     )
 
-    @Provides
-    fun provideOnboardingRepository(preferences: OnboardingPreferences): OnboardingRepository {
-        return OnboardingRepositoryImpl(preferences)
-    }
 }

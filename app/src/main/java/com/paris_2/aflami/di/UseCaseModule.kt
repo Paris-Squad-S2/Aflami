@@ -1,7 +1,5 @@
 package com.paris_2.aflami.di
 
-import com.domain.onboarding.repository.OnboardingRepository
-import com.domain.onboarding.usecase.CompleteOnboardingUseCase
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -50,6 +48,7 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
 import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.user.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.user.usecase.GetSessionIdUseCase
@@ -111,10 +110,12 @@ object UseCaseModule {
     @Provides fun provideAddRatingToTvShowUseCase(tvShowRepository: TvShowRepository) = AddRatingToTvShowUseCase(tvShowRepository)
     @Provides fun provideGetEpisodeVideoUseCase(tvShowRepository: TvShowRepository) = GetEpisodeVideoUseCase(tvShowRepository)
     @Provides fun provideGetSessionIdUseCase(authenticationRepository: AuthenticationRepository) = GetSessionIdUseCase(authenticationRepository)
+    @Provides
+    fun provideCompleteOnboardingUseCase(authenticationRepository: AuthenticationRepository) =
+        CompleteOnboardingUseCase(authenticationRepository)
 
     @Provides
-    fun provideCompleteOnboardingUseCase(repository: OnboardingRepository): CompleteOnboardingUseCase {
-        return CompleteOnboardingUseCase(repository)
-    }
+    fun provideIsOnboardingCompletedUseCase(authenticationRepository: AuthenticationRepository) =
+        CompleteOnboardingUseCase(authenticationRepository)
 }
 
