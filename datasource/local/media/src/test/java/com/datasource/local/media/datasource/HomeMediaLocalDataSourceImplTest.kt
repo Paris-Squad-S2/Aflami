@@ -1,68 +1,87 @@
 package com.datasource.local.media.datasource
 
+import androidx.work.OneTimeWorkRequest
+import androidx.work.WorkManager
 import com.datasource.local.media.dao.HomeMediaDao
 import com.google.common.truth.Truth.assertThat
-import com.repository.media.entity.MediaEntity
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.entity.Category
+import com.repository.media.entity.HomeMediaEntity
 import com.repository.media.entity.MediaTypeEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.verify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class HomeMediaLocalDataSourceImplTest {
-    private lateinit var homeMediaLocalDataSource: HomeMediaLocalDataSourceImpl
-    private val mediaDao: HomeMediaDao = mockk(relaxed = false)
+    private val homeMediaDao: HomeMediaDao = mockk(relaxed = true)
+    private val workManager: WorkManager = mockk(relaxed = true)
+    private lateinit var dataSource: HomeMediaLocalDataSource
 
     @BeforeEach
     fun setUp() {
-        homeMediaLocalDataSource = HomeMediaLocalDataSourceImpl(mediaDao)
+        dataSource = HomeMediaLocalDataSourceImpl(homeMediaDao, workManager)
     }
 
     @Test
-    fun `getAllMedia should return media list when getAllMedia in HomeMediaDao called successfully`() =
-        runTest {
-            // Given
-            coEvery { mediaDao.getAllMedia() } returns listOf(sampleMedia)
-            // When
-            val result = homeMediaLocalDataSource.getAllMedia()
-            // Then
-            assertThat(result).containsExactly(sampleMedia)
-        }
+    fun `addMediaList should insert media list into DAO`() = runTest {
+        // When
+        dataSource.addMediaList(listOf(sampleEntity))
+
+        // Then
+        coVerify(exactly = 1) { homeMediaDao.addMediaList(listOf(sampleEntity)) }
+    }
 
     @Test
-    fun `getAllMedia should return empty list when HomeMediaDao returns nothing`() =
-        runTest {
-            // Given
-            coEvery { mediaDao.getAllMedia() } returns emptyList()
-            // When
-            val result = homeMediaLocalDataSource.getAllMedia()
-            // Then
-            Assertions.assertTrue(result.isEmpty())
-        }
+    fun `addMediaList should enqueue WorkManager request for each distinct category`() = runTest {
+        // Given
+        val mediaList = listOf(
+            sampleEntity,
+            sampleEntity.copy(id = 3, category = Category.TOP_RATED)
+        )
+
+        // When
+        dataSource.addMediaList(mediaList)
+
+        // Then
+        verify(exactly = 2) { workManager.enqueue(any<OneTimeWorkRequest>()) }
+    }
 
     @Test
-    fun `addMedia should add media when addMedia in HomeMediaDao called successfully`() =
-        runTest {
-            // Given
-            coEvery { mediaDao.addMedia(any()) } returns Unit
-            // When
-            homeMediaLocalDataSource.addMedia(sampleMedia)
-            // Then
-            coVerify { mediaDao.addMedia(sampleMedia) }
-        }
+    fun `getMediaListByCategory should return list from DAO`() = runTest {
+        // Given
+        coEvery { homeMediaDao.getMediaListByCategory(Category.UPCOMING) } returns listOf(sampleEntity)
 
-    private companion object {
-        val sampleMedia = MediaEntity(
+        // When
+        val result = dataSource.getMediaListByCategory(Category.UPCOMING)
+
+        // Then
+        assertThat(result).hasSize(1)
+        coVerify { homeMediaDao.getMediaListByCategory(Category.UPCOMING) }
+    }
+
+    @Test
+    fun `clearMediaByCategory should call DAO method`() = runTest {
+        // When
+        dataSource.clearMediaByCategory(Category.TOP_RATED)
+
+        // Then
+        coVerify(exactly = 1) { homeMediaDao.clearMediaByCategory(Category.TOP_RATED) }
+    }
+
+    companion object{
+        private val sampleEntity = HomeMediaEntity(
             id = 1,
-            title = "Test Movie",
-            voteAverage = 8.5,
-            posterPath = "/some/path.jpg",
-            releaseDate = "2023-01-01",
-            genreIds = listOf(12, 18),
-            type = MediaTypeEntity.MOVIE
+            title = "Test Title",
+            voteAverage = 8.1,
+            posterPath = "poster.jpg",
+            releaseDate = "2023-08-01",
+            genreIds = listOf(1, 2),
+            type = MediaTypeEntity.MOVIE,
+            category = Category.POPULAR
         )
     }
 }

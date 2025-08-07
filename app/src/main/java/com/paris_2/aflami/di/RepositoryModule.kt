@@ -20,7 +20,7 @@ import com.repository.dataSource.local.TvShowReviewLocalDataSource
 import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.repository.MediaRepositoryImpl
 import com.repository.media.repository.MoviesCategoriesRepositoryImpl
@@ -35,6 +35,7 @@ import com.repository.repository.TvShowRepositoryImpl
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.media.repository.CategoriesRepositoryImpl
@@ -116,8 +117,9 @@ object RepositoryModule {
     fun provideDetailedMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
+        continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
         homeMediaLocalDataSource: HomeMediaLocalDataSource
-    ): MediaRepository = MediaRepositoryImpl(networkConnectionChecker, mediaRemoteDataSource, homeMediaLocalDataSource)
+    ): MediaRepository = MediaRepositoryImpl(networkConnectionChecker, mediaRemoteDataSource, continueWatchingLocalDataSource,homeMediaLocalDataSource)
 
     @Provides
     @Singleton

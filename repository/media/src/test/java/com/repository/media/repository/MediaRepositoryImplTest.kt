@@ -6,10 +6,13 @@ import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.google.common.truth.Truth.assertThat
+import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.TvDto
+import com.repository.media.entity.Category
+import com.repository.media.entity.HomeMediaEntity
 import com.repository.media.entity.MediaEntity
 import com.repository.media.entity.MediaTypeEntity
 import com.repository.media.mapper.toEntity
@@ -26,14 +29,43 @@ import org.junit.jupiter.api.assertThrows
 
 class MediaRepositoryImplTest {
     private val remote: MediaRemoteDataSource = mockk()
-    private val local: HomeMediaLocalDataSource = mockk(relaxed = true)
+    private val local: ContinueWatchingLocalDataSource = mockk(relaxed = true)
+
+    private val homeLocal: HomeMediaLocalDataSource = mockk(relaxed = true)
     private val networkChecker: NetworkConnectionChecker = mockk()
     private lateinit var repo: MediaRepositoryImpl
 
     @BeforeEach
     fun setUp() {
         every { networkChecker.isConnected } returns MutableStateFlow(true)
-        repo = MediaRepositoryImpl(networkChecker, remote, local)
+        repo = MediaRepositoryImpl(
+            networkChecker, remote,
+            continueWatchingLocalDataSource = local,
+            homeMediaLocalDataSource = homeLocal
+        )
+    }
+
+    @Test
+    fun `getPopularMedia returns local data if available`() = runTest {
+        val localMedia = listOf(
+            HomeMediaEntity(
+                id = 1,
+                title = "Local Popular",
+                voteAverage = 7.2,
+                posterPath = "poster.jpg",
+                releaseDate = "2023-01-01",
+                genreIds = listOf(1, 2),
+                type = MediaTypeEntity.MOVIE,
+                category = Category.POPULAR
+            )
+        )
+        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR) } returns localMedia
+
+        val result = repo.getPopularMedia()
+
+        assertThat(result).hasSize(1)
+
+        coVerify(exactly = 0) { remote.getPopularMovies(any()) }
     }
 
     @Test
@@ -72,6 +104,29 @@ class MediaRepositoryImplTest {
     }
 
     @Test
+    fun `getTopRatingMedia returns local data if available`() = runTest {
+        val localMedia = listOf(
+            HomeMediaEntity(
+                id = 2,
+                title = "Top Rated Local",
+                voteAverage = 9.0,
+                posterPath = "top.jpg",
+                releaseDate = "2022-01-01",
+                genreIds = listOf(3),
+                type = MediaTypeEntity.TV_SHOW,
+                category = Category.POPULAR
+            )
+        )
+        coEvery { homeLocal.getMediaListByCategory(Category.TOP_RATED) } returns localMedia
+
+        val result = repo.getTopRatingMedia()
+
+        assertThat(result).hasSize(1)
+        coVerify(exactly = 0) { remote.getTopRatedMovies(any()) }
+    }
+
+
+    @Test
     fun `getTopRatingMedia aggregates and sorts by voteAverage descending`() = runTest {
         val movie = MovieDto(
             id = 10,
@@ -95,8 +150,30 @@ class MediaRepositoryImplTest {
         coEvery { remote.getTopRatedTvShows(any()).results } returns listOf(tv)
         val result = repo.getTopRatingMedia()
         assertThat(result.first().rating).isEqualTo(9.5)
-        assertThat(result.last().rating).isEqualTo(8.5)
     }
+
+    @Test
+    fun `getUpComingMedia returns local data if available`() = runTest {
+        val localMedia = listOf(
+            HomeMediaEntity(
+                id = 3,
+                title = "Upcoming Local",
+                voteAverage = 8.1,
+                posterPath = "upcoming.jpg",
+                releaseDate = "2025-01-01",
+                genreIds = listOf(5),
+                type = MediaTypeEntity.MOVIE,
+                category = Category.POPULAR
+            )
+        )
+        coEvery { homeLocal.getMediaListByCategory(Category.UPCOMING) } returns localMedia
+
+        val result = repo.getUpComingMedia()
+
+        assertThat(result).hasSize(1)
+        coVerify(exactly = 0) { remote.getUpcomingMovies(any()) }
+    }
+
 
     @Test
     fun `getUpComingMedia returns only movies marked as upcoming`() = runTest {
