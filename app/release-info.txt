@@ -1,2 +1,2 @@
-versionName=0.3.37
-- enhance SafeImageViewer model
+versionName=0.4.0
+- Add List feature
