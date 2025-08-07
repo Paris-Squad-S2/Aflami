@@ -1,6 +1,9 @@
 package com.feature.profile.profileUi.screen
 
+import android.content.Context
 import android.content.Intent
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -25,14 +29,63 @@ import com.feature.profile.profileUi.screen.component.ProfileDetails
 import com.feature.profile.profileUi.screen.component.ProfileHeader
 import com.feature.profile.profileUi.screen.component.ProfileSetUp
 import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
+import com.paris_2.aflami.designsystem.components.AppText
+import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CategoryCard
+import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.theme.Theme
 
 
 @Composable
 fun ProfileScreen(modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()) {
+    val context = LocalContext.current
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    ProfileContent(modifier = modifier, state = state.value, profileInteractionListener = viewModel)
+    if (state.value.isLogin)
+        ProfileContent(
+            modifier = modifier,
+            state = state.value,
+            profileInteractionListener = viewModel,
+            context = context
+        )
+    else
+        LoggedOutContent(
+            modifier = modifier,
+            profileInteractionListener = viewModel,
+        )
+}
+
+@Composable
+fun LoggedOutContent(
+    modifier: Modifier,
+    profileInteractionListener: ProfileViewModel,
+
+    ) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(R.drawable.ic_profile_image),
+            contentDescription = null,
+        )
+        AppText(
+            text = stringResource(R.string.please_login_to_access_your_account_details_and_other_features),
+            style = Theme.textStyle.body.small,
+            color = Theme.colors.text.body,
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .padding(horizontal = 48.dp),
+            textAlign = TextAlign.Center
+        )
+        CustomButton(
+            onClick = {},
+            text = com.paris_2.aflami.designsystem.R.string.login,
+            type = ButtonType.Secondary,
+            modifier = Modifier.padding(top = 24.dp)
+        )
+
+    }
 }
 
 @Composable
@@ -40,8 +93,9 @@ fun ProfileContent(
     state: ProfileScreenUiState,
     profileInteractionListener: InterActionListener,
     modifier: Modifier = Modifier,
+    context: Context,
 ) {
-    val context = LocalContext.current
+
     Column(modifier = modifier.fillMaxSize()) {
         ProfileHeader(modifier = Modifier)
         Column(

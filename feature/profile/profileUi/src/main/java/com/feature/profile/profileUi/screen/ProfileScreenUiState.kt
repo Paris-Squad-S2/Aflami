@@ -6,7 +6,7 @@ data class ProfileScreenUiState(
     val profile: ProfileUIState = ProfileUIState(),
     val isLoading: Boolean = false,
     val errorMessage: String = "",
-    val isLogin: Boolean = true,
+    val isLogin: Boolean = false,
 )
 
 data class ProfileUIState(

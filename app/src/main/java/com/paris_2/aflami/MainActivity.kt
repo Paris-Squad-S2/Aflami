@@ -19,8 +19,10 @@ import javax.inject.Inject
 class MainActivity : ComponentActivity() {
     @Inject
     lateinit var authenticationFeatureAPI: AuthenticationFeatureAPI
+
     @Inject
     lateinit var hasAnySessionUseCase: HasAnySessionUseCase
+
     @Inject
     lateinit var appNavigationAPI: AppNavigationAPI
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,7 +30,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
-                appNavigationAPI()
+                if (hasAnySessionUseCase())
+                    appNavigationAPI()
+                else
+                    authenticationFeatureAPI()
             }
         }
     }

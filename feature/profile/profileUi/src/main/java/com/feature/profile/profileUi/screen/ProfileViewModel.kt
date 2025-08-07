@@ -3,6 +3,7 @@ package com.feature.profile.profileUi.screen
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.feature.profile.profileUi.utils.BaseViewModel
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -12,14 +13,16 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
+    private val isLoggedInUseCase: IsLoggedInUseCase,
 ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
 
     init {
+        checkUserLoggedIn()
+        Log.d("TAG", ": isLoggedIn ${isLoggedInUseCase()}")
         viewModelScope.launch {
             settingsUseCase.getLanguage().collect {
-                Log.d("TAG", ": In Init view mode from use case $it")
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
@@ -28,11 +31,17 @@ class ProfileViewModel @Inject constructor(
                     )
                 )
             }
-            Log.d(
-                "TAG",
-                ": In Init view mode from ViewModel ${screenState.value.profile.language.local}"
-            )
+
+
         }
+    }
+
+    private fun checkUserLoggedIn() {
+        updateState(
+            screenState.value.copy(
+                isLogin = isLoggedInUseCase()
+            )
+        )
     }
 
     override fun onChooseLanguageClicked() {

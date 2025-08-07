@@ -22,7 +22,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun ProfileHeader(modifier: Modifier = Modifier) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(Theme.colors.surface.copy(alpha = 0.5F))
     )
@@ -67,13 +67,5 @@ fun ProfileHeader(modifier: Modifier = Modifier) {
                 .align(Alignment.BottomCenter)
         )
 
-        AppText(
-            text = stringResource(R.string.profile),
-            color = Theme.colors.text.title,
-            style = Theme.textStyle.title.large,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 16.dp, top = 54.dp)
-        )
     }
 }
