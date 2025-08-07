@@ -12,7 +12,6 @@ import com.feature.onboarding.onboardingUi.ui.OnboardingScreen
 @Composable
 fun OnBoardingNavGraph(
     navigator: OnBoardingNavigator,
-
     ) {
     val navController = rememberNavController()
 
