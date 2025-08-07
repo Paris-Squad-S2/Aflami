@@ -226,4 +226,5 @@ class MyRatingViewModelTest {
         assertEquals(1, state.myRatingMedia.size)
     }
 
+
 }
