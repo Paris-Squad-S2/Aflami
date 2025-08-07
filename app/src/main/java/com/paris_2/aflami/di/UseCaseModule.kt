@@ -44,6 +44,7 @@ import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
 import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SearchByQueryUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
@@ -83,6 +84,9 @@ object UseCaseModule {
     @Provides fun provideGetMovieGalleryUseCase(movieRepository: MovieRepository) = GetMovieGalleryUseCase(movieRepository)
     @Provides fun provideGetMovieRecommendationsUseCase(movieRepository: MovieRepository) = GetMovieRecommendationsUseCase(movieRepository)
     @Provides fun provideGetMovieReviewsUseCase(movieRepository: MovieRepository) = GetMovieReviewsUseCase(movieRepository)
+
+    @Provides fun provideDeleteMovieRatingUseCase(movieRepository: MovieRepository) = DeleteMovieRatingUseCase(movieRepository)
+
     @Provides fun provideGetMoviesProductionCompaniesUseCase(movieRepository: MovieRepository) = GetMoviesProductionCompaniesUseCase(movieRepository)
     @Provides fun provideGetSeasonDetailsUseCase(tvShowRepository: TvShowRepository) = GetSeasonDetailsUseCase(tvShowRepository)
     @Provides fun provideGetTvShowCastUseCase(tvShowRepository: TvShowRepository) = GetTvShowCastUseCase(tvShowRepository)
