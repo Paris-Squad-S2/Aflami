@@ -4,11 +4,11 @@ import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.TvDto
+import com.repository.media.dto.profile.MovieResult
 import com.repository.media.entity.Category
 import com.repository.media.entity.HomeMediaEntity
 import com.repository.media.entity.MediaEntity
 import com.repository.media.entity.MediaTypeEntity
-import com.repository.media.dto.profile.MovieResult
 import com.repository.media.dto.profile.TvShowResult
 import kotlinx.datetime.LocalDate
 
@@ -104,12 +104,12 @@ fun MovieResult.toDomain(type: MediaType): Media? {
     val parsedDate = runCatching { LocalDate.parse(release_date) }.getOrNull() ?: return null
     return Media(
         id = id,
-        imageUri = poster_path.orEmpty(),
+        imageUri = poster_path,
         title = title,
         type = type,
         categoryIds = genre_ids,
         yearOfRelease = parsedDate,
-        rating = vote_average
+        rating = rating.toDouble()
     )
 }
 
@@ -117,7 +117,7 @@ fun TvShowResult.toDomain(type: MediaType): Media? {
     val parsedDate = runCatching { LocalDate.parse(first_air_date) }.getOrNull() ?: return null
     return Media(
         id = id,
-        imageUri = poster_path.orEmpty(),
+        imageUri = poster_path,
         title = name,
         type = type,
         categoryIds = genre_ids,

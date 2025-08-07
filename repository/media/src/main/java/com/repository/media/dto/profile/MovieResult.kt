@@ -8,7 +8,7 @@ data class MovieResult(
     @SerialName("adult")
     val adult: Boolean,
     @SerialName("backdrop_path")
-    val backdrop_path: String?,
+    val backdrop_path: String,
     @SerialName("genre_ids")
     val genre_ids: List<Int>,
     @SerialName("id")
@@ -22,7 +22,9 @@ data class MovieResult(
     @SerialName("popularity")
     val popularity: Double,
     @SerialName("poster_path")
-    val poster_path: String?,
+    val poster_path: String,
+    @SerialName("rating")
+    val rating: Int,
     @SerialName("release_date")
     val release_date: String,
     @SerialName("title")
@@ -30,9 +32,7 @@ data class MovieResult(
     @SerialName("video")
     val video: Boolean,
     @SerialName("vote_average")
-    val vote_average: Double,
+    val vote_average: Int,
     @SerialName("vote_count")
-    val vote_count: Int,
-    @SerialName("rating")
-    val rating: Int
+    val vote_count: Int
 )
