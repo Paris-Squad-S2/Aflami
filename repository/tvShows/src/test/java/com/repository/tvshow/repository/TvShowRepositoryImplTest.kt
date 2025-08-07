@@ -7,6 +7,7 @@ import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoSeasonFoundException
 import com.paris_2.domain.media.exception.NoTvShowFoundException
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -1076,7 +1077,49 @@ class TvShowRepositoryImplTest {
             }
         }
 
+    @Test
+    fun `deleteTvShowRating should return FailedToDeleteRatingException when remote throws exception`() = runTest {
+        // Given
+        val causeException = RuntimeException("Network error")
+        coEvery { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) } throws causeException
 
+        // When
+        val result = runCatching {
+            tvShowRepository.deleteTvShowRating(123)
+        }
+
+        // Then
+        assertThat(result.exceptionOrNull())
+            .isInstanceOf(FailedToDeleteRatingException::class.java)
+        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) }
+    }
+
+    @Test
+    fun `deleteTvShowRating should succeed when remote call succeeds`() = runTest {
+        // Given
+        coEvery { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) } coAnswers {true}
+
+        // When
+        val result = runCatching {
+            tvShowRepository.deleteTvShowRating(123)
+        }
+
+        // Then
+        assertThat(result.isSuccess).isTrue()
+        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) }
+    }
+
+    @Test
+    fun `deleteTvShowRating should throw NoInternetConnectionException when offline`() = runTest {
+        // Given
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When & Then
+        assertThrows<NoInternetConnectionException> {
+            tvShowRepository.deleteTvShowRating(123)
+        }
+        coVerify(exactly = 0) { tvShowDetailsRemoteDataSource.deleteTvShowRating(any()) }
+    }
 
     private companion object {
         val tvShowId = 123

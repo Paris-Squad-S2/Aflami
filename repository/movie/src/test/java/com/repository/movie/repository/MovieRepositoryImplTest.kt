@@ -1141,6 +1141,20 @@ class MovieRepositoryImplTest {
             coVerify(exactly = 0) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(any()) }
         }
 
+    @Test
+    fun `deleteMovieRating should succeed when remote call succeeds`() = runTest {
+        // Given
+        coEvery { movieDetailsRemoteDataSource.deleteMovieRating(movieId = 550) } coAnswers {true}
+
+        // When
+        val result = runCatching {
+            movieRepository.deleteMovieRating(550)
+        }
+
+        // Then
+        assertThat(result.isSuccess).isTrue()
+        coVerify(exactly = 1) { movieDetailsRemoteDataSource.deleteMovieRating(movieId = 550) }
+    }
 
     @Test
     fun `deleteMovieRating should throw FailedToDeleteRatingException when remote throws exception`() = runTest {
