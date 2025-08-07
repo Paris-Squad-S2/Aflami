@@ -73,6 +73,42 @@ class WatchHistoryViewModelTest {
     }
 
     @Test
+    fun `onTabSelected should update selectedMediaType and reload data`() = runTest {
+        coEvery { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } returns fakeMediaList.map { it.toDomain() }
+
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        runCurrent()
+
+        viewModel.onTabSelected(MediaTypeUi.TVSHOW)
+        runCurrent()
+
+        coVerify { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) }
+        assertThat(viewModel.screenState.value.watchHistoryMedia).hasSize(2)
+    }
+
+    @Test
+    fun `initial load should fetch data for MOVIE by default`() = runTest {
+        coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns fakeMediaList.map { it.toDomain() }
+
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        runCurrent()
+
+        coVerify { filterWatchHistoryUseCase(DomainMediaType.MOVIE) }
+        assertThat(viewModel.screenState.value.watchHistoryMedia).hasSize(2)
+    }
+
+    @Test
+    fun `empty result should show no media but no error`() = runTest {
+        coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns emptyList()
+
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        runCurrent()
+
+        assertThat(viewModel.screenState.value.isLoading).isFalse()
+    }
+
+
+    @Test
     fun `onMediaCardClick for TVSHOW triggers navigation`() = runTest {
         coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
         viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
