@@ -96,12 +96,6 @@ fun TopComponentDetails(
                             tvShowScreenInteractionListener.onRateClick()
                         }
                     ),
-                    iconItemWithDefaults(
-                        icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                        onClick = {
-                            tvShowScreenInteractionListener.onAddToListClick()
-                        }
-                    )
                 ),
                 modifier = Modifier
                     .statusBarsPadding()
@@ -149,12 +143,6 @@ fun TvTopComponent(
                         tvShowScreenInteractionListener.onRateClick()
                     }
                 ),
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = {
-                        tvShowScreenInteractionListener.onAddToListClick()
-                    }
-                )
             ),
         )
     }

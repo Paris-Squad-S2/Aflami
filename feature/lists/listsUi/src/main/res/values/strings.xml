@@ -1,3 +1,11 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="no_items_yet">No saved items here!</string>
+    <string name="create_new_list">Create new List</string>
+    <string name="list_title">List title</string>
+    <string name="add">Add</string>
+    <string name="confirm_delete">Are you sure to continue deleting?</string>
+    <string name="delete">Delete</string>
+    <string name="no_lists_yet">No lists yet!</string>
+    <string name="create_your_first_list">Oدماغنا لا يزال فارغًا، انقر على + وابدأ بحفظ العناصر والعروض المفضلة التي تحبها!</string>
 </resources>

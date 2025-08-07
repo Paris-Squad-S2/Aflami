@@ -29,6 +29,7 @@ fun PlaceholderView(
     image: Painter,
     title: String? = null,
     subTitle: String? = null,
+    imageSize:Dp = 100.dp,
     spacer: Dp
 ) {
     Column(
@@ -43,7 +44,7 @@ fun PlaceholderView(
             painter = image,
             contentDescription = "Empty View Image",
             modifier = Modifier
-                .size(100.dp)
+                .size(imageSize)
                 .padding(bottom = spacer)
         )
         title?.let {
