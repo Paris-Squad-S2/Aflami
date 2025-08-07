@@ -59,10 +59,12 @@ fun WatchHistoryScreen(
             ),
             selectedIndex = selectedIndex,
             onTabSelected = { tabIndex ->
-                selectedIndex = tabIndex
-                viewModel.onTabSelected(
-                    if (tabIndex == 0) MediaTypeUi.MOVIE else MediaTypeUi.TVSHOW
-                )
+                if (tabIndex != selectedIndex) {
+                    selectedIndex = tabIndex
+                    viewModel.onTabSelected(
+                        if (tabIndex == 0) MediaTypeUi.MOVIE else MediaTypeUi.TVSHOW
+                    )
+                }
             }
         )
         if (state.value.watchHistoryMedia.isNotEmpty()) {

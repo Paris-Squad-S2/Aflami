@@ -89,6 +89,7 @@ class WatchHistoryViewModel @Inject constructor(
     }
 
     fun onTabSelected(mediaTypeUi: MediaTypeUi) {
+        if (mediaTypeUi == selectedMediaType) return
         selectedMediaType = mediaTypeUi
         loadWatchHistoryMedia(mediaTypeUi)
     }

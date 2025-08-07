@@ -120,6 +120,7 @@ class MyRatingViewModel @Inject constructor(
     }
 
     fun onTabSelected(mediaTypeUi: MediaTypeUi) {
+        if (mediaTypeUi == selectedMediaType) return
         selectedMediaType = mediaTypeUi
         loadMyRatingMedia(mediaTypeUi)
     }
