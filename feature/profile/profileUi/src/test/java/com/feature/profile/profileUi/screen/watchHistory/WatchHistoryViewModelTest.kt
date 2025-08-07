@@ -135,7 +135,6 @@ class WatchHistoryViewModelTest {
 
     }
 
-
     @Test
     fun `onTabSelected should reload data with selected type`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } returns fakeMediaList.map { it.toDomain() }
@@ -159,6 +158,47 @@ class WatchHistoryViewModelTest {
         runCurrent()
 
         coVerify(exactly = 2) { filterWatchHistoryUseCase(DomainMediaType.MOVIE) }
+    }
+
+    @Test
+    fun `onMediaCardClick for MOVIE triggers navigation`() = runTest {
+        coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        runCurrent()
+
+        viewModel.onMediaCardClick(fakeMediaList[0]) // Movie
+        runCurrent()
+
+        coVerify { mediaDetailsFeatureAPI.startMovieDetails(1) }
+    }
+
+    @Test
+    fun `onTabSelected should not reload when selecting same tab`() = runTest {
+        coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns fakeMediaList.map { it.toDomain() }
+
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        runCurrent()
+
+        viewModel.onTabSelected(MediaTypeUi.MOVIE)
+        runCurrent()
+
+        coVerify(exactly = 1) { filterWatchHistoryUseCase(DomainMediaType.MOVIE) }
+    }
+
+    @Test
+    fun `onRetry should reload with TV shows when TV show tab is selected`() = runTest {
+        coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
+
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        runCurrent()
+
+        viewModel.onTabSelected(MediaTypeUi.TVSHOW)
+        runCurrent()
+
+        viewModel.onRetry()
+        runCurrent()
+
+        coVerify(atLeast = 2) { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) }
     }
 
 }
