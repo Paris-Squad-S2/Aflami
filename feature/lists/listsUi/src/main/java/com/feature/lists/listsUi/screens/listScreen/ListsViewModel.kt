@@ -5,7 +5,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.map
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
-import com.feature.lists.listsUi.pagging.PagingSourceFactory
+import com.feature.lists.listsUi.pagging.PagingSource
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
@@ -33,7 +33,9 @@ class ListsViewModel @Inject constructor(
                         enablePlaceholders = false
                     ),
                     pagingSourceFactory = {
-                        PagingSourceFactory.createForLists(getListsUseCase::invoke)
+                        PagingSource { page ->
+                            getListsUseCase.invoke(page)
+                        }
                     }
                 ).flow.map { pagingData ->
                     pagingData.map { list -> list.toUiState() }
@@ -64,12 +66,14 @@ class ListsViewModel @Inject constructor(
             execute = {
                 createListUseCase.invoke(name)
             },
-            onSuccess = {
+            onSuccess = { result ->
                 emitState(
                     screenState.value.copy(
                         showCreateListDialog = false,
                         createListName = "",
-                        createListButtonState = ButtonState.Normal
+                        createListButtonState = ButtonState.Normal,
+                        showSnackBar = true,
+                        snackBarSuccess = result.success
                     )
                 )
                 getLists()
@@ -131,5 +135,16 @@ class ListsViewModel @Inject constructor(
 
     override fun onRetryLists() {
         getLists()
+    }
+
+    override fun onHideSnackBar() {
+        emitState(
+            screenState.value.copy(showSnackBar = false)
+        )    }
+
+    override fun onShowSnackBar() {
+        emitState(
+            screenState.value.copy(showSnackBar = true)
+        )
     }
 }

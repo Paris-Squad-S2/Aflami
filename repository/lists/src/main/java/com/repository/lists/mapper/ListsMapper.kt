@@ -20,5 +20,6 @@ fun ResponseDto.toDomain(): Response {
     return Response(
         statusCode = this.statusCode?: 0,
         statusMessage = this.statusMessage.orEmpty(),
+        success = this.success  ?: false
     )
 }

@@ -78,11 +78,11 @@ class ListsRepositoryImpTest {
     @Test
     fun `getListDetails when remote data source returns valid data then return mapped domain list details`() = runTest {
         val page = 1
-        val listId = "list123"
+        val listId = 123
         val listDetailsDto = ListDetailsDto(
             id = listId,
             name = "My List Details",
-            mediaDetailsDto = listOf(
+            items = listOf(
                 MediaDetailsDto(
                     id= 1,
                     posterPath = "/poster1.jpg",
@@ -93,9 +93,9 @@ class ListsRepositoryImpTest {
             ),
             itemCount = 1
         )
-        coEvery { listsRemoteDataSource.getListDetails(page, listId) } returns listDetailsDto
+        coEvery { listsRemoteDataSource.getListDetails(page, listId.toString()) } returns listDetailsDto
 
-        val result = listsRepositoryImp.getListDetails(page, listId)
+        val result = listsRepositoryImp.getListDetails(page, listId.toString())
 
         assertThat(result.id).isEqualTo(listId)
         assertThat(result.name).isEqualTo("My List Details")
@@ -103,7 +103,7 @@ class ListsRepositoryImpTest {
         assertThat(result.items[0]).isEqualTo(
             Media(
                 id = 1,
-                posterPath = "/poster1.jpg",
+                imageUrl = "/poster1.jpg",
                 title = "Movie 1",
                 voteAverage = 8.5,
                 releaseDate =  LocalDate.parse("2023-01-01")

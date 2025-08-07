@@ -7,4 +7,6 @@ interface ListsInteractionListener {
     fun onCreateListConfirm()
     fun onCreateListNameChange(name: String)
     fun onRetryLists()
+    fun onHideSnackBar()
+    fun onShowSnackBar()
 }

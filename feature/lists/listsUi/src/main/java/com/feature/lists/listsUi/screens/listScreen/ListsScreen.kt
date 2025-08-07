@@ -2,10 +2,17 @@
 
 package com.feature.lists.listsUi.screens.listScreen
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -13,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -24,11 +32,14 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.lists.listsUi.R
 import com.feature.lists.listsUi.screens.listScreen.components.CreateListDialog
 import com.feature.lists.listsUi.screens.listScreen.components.ListCard
+import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris_2.aflami.designsystem.components.AppSnackBar
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
+import kotlinx.coroutines.delay
 
 @Composable
 fun ListsScreen(viewModel: ListsViewModel = hiltViewModel()) {
@@ -45,6 +56,12 @@ private fun ListsScreenContent(
     state: ListScreenUIState,
     action: ListsInteractionListener
 ) {
+    LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
+        if (state.showSnackBar && state.snackBarSuccess) {
+            delay(3000)
+            action.onHideSnackBar()
+        }
+    }
     Column(
         modifier = Modifier.statusBarsPadding()
     ) {
@@ -115,24 +132,22 @@ private fun ListsScreenContent(
         listName = state.createListName,
         showDialog = state.showCreateListDialog
     )
-}
 
-/*@PreviewLightDark
-@Composable
-fun ListsScreenContentPreview() {
-    BasePreview {
-        ListsScreenContent(
-            state = ListScreenUIState(
-                lists = listOf(
-                    ListUiState(id = 1, title = "Favorites", count = 12),
-                    ListUiState(id = 2, title = "Watch Later", count = 5),
-                    ListUiState(id = 3, title = "Comedies", count = 8),
-                    ListUiState(id = 4, title = "Dramas", count = 3)
-                ),
-                isLoading = false,
-                errorMessage = null
-            ),
-            onListClick = {}
+    AnimatedVisibility(
+        visible = state.showSnackBar,
+        enter = fadeIn() + slideInVertically(),
+        exit = fadeOut() + slideOutVertically()
+    ) {
+        AppSnackBar(
+            modifier = Modifier
+                .fillMaxWidth()
+                .statusBarsPadding()
+                .padding(start = 12.dp, end = 12.dp, top = 16.dp),
+            text = if (state.snackBarSuccess) RDesignSystem.string.added_new_list_successfully else RDesignSystem.string.some_error_happened,
+            isSuccess = state.snackBarSuccess,
+            onClick = {
+                action.onHideSnackBar()
+            }
         )
     }
-}*/
+}

@@ -27,18 +27,3 @@ class PagingSource<T: Any>(
         return state.anchorPosition
     }
 }
-
-object PagingSourceFactory {
-
-    fun <T: Any> createForLists(
-        getListsUseCase: suspend (page: Int) -> List<T>
-    ): PagingSource<Int, T> = PagingSource(getListsUseCase)
-
-    fun createForListDetails(
-        listId: String,
-        getListDetailsUseCase: suspend (page: Int, listId: String) -> ListDetails
-    ): PagingSource<Int, Media> = PagingSource { page ->
-        val listDetails = getListDetailsUseCase(page, listId)
-        listDetails.items
-    }
-}
