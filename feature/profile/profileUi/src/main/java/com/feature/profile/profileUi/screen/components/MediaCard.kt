@@ -53,7 +53,6 @@ fun MediaCard(
     cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
     onPlayButtonClick: () -> Unit = {},
-    enabled: Boolean = true,
     isRated: Boolean = false,
     onFavouriteIconClick: () -> Unit = {},
 ) {
@@ -84,12 +83,11 @@ fun MediaCard(
             )
     ) {
         SafeImageViewer(
-            model = imageUri,
+            imageUrl = imageUri,
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
-            enabled = enabled,
-            placeholder = {
+            loadingContent = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_film_roll),
                     contentDescription = null,
@@ -97,7 +95,7 @@ fun MediaCard(
                     contentScale = ContentScale.Crop
                 )
             },
-            errorPlaceholder = {
+            errorContent = {
                 Image(
                     painter = painterResource(id = R.drawable.img_disconnect),
                     contentDescription = null,

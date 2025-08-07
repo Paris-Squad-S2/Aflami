@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -88,7 +87,6 @@ fun WatchHistoryScreenContent(
     onMediaCardClick: (MediaUiState) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
-    val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
 
     LazyVerticalGrid(
         state = lazyGridState,
@@ -108,8 +106,7 @@ fun WatchHistoryScreenContent(
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
-                showGradientFilter = true,
-                enabled = !isScrolling,
+                showGradientFilter = true
             )
         }
     }

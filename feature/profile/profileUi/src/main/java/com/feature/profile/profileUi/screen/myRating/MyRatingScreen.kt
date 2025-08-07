@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -98,7 +97,6 @@ fun MyRatingScreenContent(
     onFavouriteIconClick: (MediaUiState) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
-    val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
     LazyVerticalGrid(
         state = lazyGridState,
         columns = GridCells.Adaptive(minSize = 160.dp),
@@ -118,7 +116,6 @@ fun MyRatingScreenContent(
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,
-                enabled = !isScrolling,
                 isRated = true,
                 onFavouriteIconClick = {onFavouriteIconClick(media)}
             )
