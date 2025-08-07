@@ -7,7 +7,6 @@ object Modules {
     const val DOMAIN_USER = ":domain:user"
     const val DOMAIN_GUESS_GAME = ":domain:guessGame"
     const val DOMAIN_MEDIA = ":domain:media"
-    const val DOMAIN_ONBOARDING = ":domain:onboarding"
 
     const val REPOSITORY_MOVIE = ":repository:movie"
     const val REPOSITORY_TV_SHOW = ":repository:tvShows"
@@ -15,7 +14,6 @@ object Modules {
     const val REPOSITORY_GUESS_GAME = ":repository:guessGame"
     const val REPOSITORY_MEDIA = ":repository:media"
     const val REPOSITORY_USER = ":repository:user"
-    const val REPOSITORY_ONBOARDING = ":repository:onboarding"
 
     const val DATASOURCE_REMOTE_MOVIE = ":datasource:remote:movie"
     const val DATASOURCE_LOCAL_MOVIE = ":datasource:local:movie"
@@ -30,7 +28,6 @@ object Modules {
     const val DATASOURCE_REMOTE_MEDIA = ":datasource:remote:media"
     const val DATASOURCE_LOCAL_USER = ":datasource:local:user"
     const val DATASOURCE_REMOTE_USER = ":datasource:remote:user"
-    const val DATASOURCE_LOCAL_ONBOARDING = ":datasource:local:onboarding"
 
     const val FEATURE_ONBOARDING_API = ":feature:onboarding:onboardingApi"
     const val FEATURE_ONBOARDING_UI = ":feature:onboarding:onboardingUi"
@@ -52,7 +49,5 @@ object Modules {
     const val FEATURE_PROFILE_UI = ":feature:profile:profileUi"
 
     const val SAFE_IMAGE_VIEWER = ":safeimageviewer"
-
-    const val FEATURE_ONBOARDING = ":feature:onboarding"
 
 }

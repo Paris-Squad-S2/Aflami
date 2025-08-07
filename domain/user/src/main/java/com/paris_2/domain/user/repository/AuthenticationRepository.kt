@@ -9,4 +9,6 @@ interface AuthenticationRepository {
     suspend fun getSessionId(): String?
     fun isLoggedIn(): Boolean
     fun hasAnySession(): Boolean
+    suspend fun setOnboardingCompleted()
+    suspend fun isOnboardingCompleted(): Boolean
 }

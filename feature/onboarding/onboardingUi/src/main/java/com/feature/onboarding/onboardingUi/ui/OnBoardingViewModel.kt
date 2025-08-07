@@ -4,12 +4,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.domain.onboarding.usecase.CompleteOnboardingUseCase
 import com.feature.onboarding.onboardingUi.R
 import com.feature.onboarding.onboardingUi.navigation.OnBoardingDestinations
 import com.feature.onboarding.onboardingUi.navigation.OnBoardingNavigator
 import com.paris_2.aflami.designsystem.components.UiDrawable
 import com.paris_2.aflami.designsystem.components.UiText
+import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
+import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.launch
@@ -17,6 +18,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val completeOnboardingUseCase: CompleteOnboardingUseCase,
+    private val isOnboardingCompletedUseCase: IsOnboardingCompletedUseCase,
     val navigator: OnBoardingNavigator,
 ) : ViewModel() {
 
@@ -28,6 +30,13 @@ class OnBoardingViewModel @Inject constructor(
     private val _currentScreen = mutableIntStateOf(0)
     val currentScreen: State<Int> get() = _currentScreen
 
+    init {
+        viewModelScope.launch {
+            if (isOnboardingCompletedUseCase()) {
+                navigator.navigate(OnBoardingDestinations.HomeScreen)
+            }
+        }
+    }
 
     fun completeOnboarding() {
         viewModelScope.launch {

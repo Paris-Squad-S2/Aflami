@@ -57,7 +57,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_ONBOARDING))
+    implementation(project(Modules.DOMAIN_USER))
     implementation(project(Modules.FEATURE_ONBOARDING_API))
     implementation(libs.accompanist.pager.v0340)
     //Hilt

@@ -115,7 +115,6 @@ dependencies {
     kover(project((Modules.REPOSITORY_MOVIE)))
     kover(project((Modules.REPOSITORY_LISTS)))
     kover(project((Modules.REPOSITORY_GUESS_GAME)))
-    kover(project((Modules.REPOSITORY_ONBOARDING)))
     kover(project((Modules.DATASOURCE_REMOTE_USER)))
     kover(project((Modules.DATASOURCE_REMOTE_LISTS)))
     kover(project((Modules.DATASOURCE_REMOTE_CATEGORIES)))
@@ -124,7 +123,6 @@ dependencies {
     kover(project((Modules.DATASOURCE_LOCAL_LISTS)))
     kover(project((Modules.DATASOURCE_LOCAL_GUESS_GAME)))
     kover(project((Modules.DATASOURCE_LOCAL_CATEGORIES)))
-    kover(project((Modules.DATASOURCE_LOCAL_ONBOARDING)))
     kover(project((Modules.FEATURE_ONBOARDING_API)))
     kover(project((Modules.FEATURE_ONBOARDING_UI)))
     kover(project((Modules.FEATURE_AUTHENTICATION_API)))
@@ -141,5 +139,4 @@ dependencies {
     kover(project((Modules.FEATURE_CATEGORIES_UI)))
     kover(project((Modules.FEATURE_LISTS_API)))
     kover(project((Modules.FEATURE_LISTS_UI)))
-    kover(project(Modules.FEATURE_ONBOARDING))
 }

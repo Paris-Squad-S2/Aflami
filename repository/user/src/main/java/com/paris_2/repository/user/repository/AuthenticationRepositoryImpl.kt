@@ -78,4 +78,12 @@ class AuthenticationRepositoryImpl(
         return localDataSource.hasAnySession()
     }
 
+    override suspend fun setOnboardingCompleted() {
+        localDataSource.setOnboardingCompleted()
+    }
+
+    override suspend fun isOnboardingCompleted(): Boolean {
+        return localDataSource.isOnboardingCompleted()
+    }
+
 }
