@@ -2,7 +2,6 @@ package com.feature.profile.profileUi.screen
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
-import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.utils.BaseViewModel
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -13,9 +12,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
-    navigator: ProfileNavigator
 ) :
-    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState(),navigator), InterActionListener {
+    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
 
     init {

@@ -24,9 +24,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigatorImpl
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileUi.ProfileFeatureAPIImpl
-import com.feature.profile.profileUi.navigation.ProfileDestinations
-import com.feature.profile.profileUi.navigation.ProfileNavigator
-import com.feature.profile.profileUi.navigation.ProfileNavigatorImpl
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchDestinations
@@ -66,10 +63,6 @@ object FeatureAPIModule {
     fun provideAuthenticationNavigator(): AuthenticationNavigator =
         AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1)
 
-    @Provides
-    @Singleton
-    fun provideProfileNavigator(): ProfileNavigator =
-        ProfileNavigatorImpl(startGraph = ProfileDestinations.ProfileMainGraph)
 
     @Provides
     @Singleton
