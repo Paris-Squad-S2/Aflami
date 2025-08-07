@@ -116,12 +116,12 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun getRatedMedia(accountId: Int,sessionId: String): List<Media> {
+    override suspend fun getRatedMedia(accountId: Int): List<Media> {
         return safeCall(NoRatedMediaFoundException()) {
-            val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, sessionId, language)
+            val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, language)
                 .results.mapNotNull { it.toDomain(MediaType.MOVIE) }
 
-            val ratedTvShows = mediaRemoteDataSource.getRatedTvShows(accountId, sessionId, language)
+            val ratedTvShows = mediaRemoteDataSource.getRatedTvShows(accountId, language)
                 .results.mapNotNull {
                     it.toDomain(MediaType.TVSHOW)
                 }

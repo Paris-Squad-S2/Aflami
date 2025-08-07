@@ -9,7 +9,6 @@ import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
-import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
 
@@ -18,7 +17,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 class MyRatingViewModel @Inject constructor(
     private val getRatedMediaUseCase: FilterRatedMediaUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val getSessionIdUseCase: GetSessionIdUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
     navigator: ProfileNavigator,
 ) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(
@@ -43,7 +41,6 @@ class MyRatingViewModel @Inject constructor(
                     )
                 )
                 getRatedMediaUseCase(
-                    sessionId = getSessionIdUseCase() ?: "",
                     accountId = getAccountIdUseCase() ?: 0,
                     mediaType =  mediaType.toMediaType()
                 )
