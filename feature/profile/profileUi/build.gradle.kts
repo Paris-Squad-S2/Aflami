@@ -80,22 +80,14 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     //test
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
     testImplementation(libs.junit.jupiter.api)
     testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
-
-    // Junit 5
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(kotlin("test"))
 
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
+
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
