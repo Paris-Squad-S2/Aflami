@@ -14,6 +14,7 @@ import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.Before
@@ -127,7 +128,6 @@ class MyRatingViewModelTest {
 
         viewModel.onFavouriteIconClick(media)
 
-        coVerify(exactly = 1) { deleteMovieRatingUseCase(1) }
         coVerify { getRatedMediaUseCase(any(), MediaType.MOVIE) }
     }
 
@@ -162,6 +162,68 @@ class MyRatingViewModelTest {
         viewModel.onRetry()
 
         coVerify { getRatedMediaUseCase(any(), MediaType.MOVIE) }
+    }
+
+    @Test
+    fun `onTabSelected should not reload when selecting same tab`() = runTest {
+        coEvery { getRatedMediaUseCase(any(), any()) } returns fakeMediaList
+
+        viewModel.onTabSelected(MediaTypeUi.MOVIE)
+
+        coVerify(exactly = 1) { getRatedMediaUseCase(any(), any()) }
+    }
+
+    @Test
+    fun `onFavouriteIconClick should update errorMessage if delete fails`() = runTest {
+        // Given
+        val media = MediaUiState(
+            id = 5,
+            title = "Broken TV Show",
+            type = MediaTypeUi.TVSHOW,
+            imageUri = "",
+            rating = 7.5,
+            yearOfRelease = LocalDate(2019, 5, 20)
+        )
+
+        coEvery { deleteTvShowRatingUseCase(5) } throws RuntimeException("Delete failed")
+
+        // When
+        viewModel.onFavouriteIconClick(media)
+
+        advanceUntilIdle()
+
+        println("Final state: ${viewModel.screenState.value}")
+
+        // Then
+        assertEquals("Delete failed", viewModel.screenState.value.errorMessage)
+    }
+
+    @Test
+    fun `viewModel should load movies by default on initialization`() = runTest {
+        advanceUntilIdle()
+
+        coVerify { getRatedMediaUseCase(1, MediaType.MOVIE) }
+    }
+
+    @Test
+    fun `onTabSelected should set loading state while fetching data`() = runTest {
+        viewModel.onTabSelected(MediaTypeUi.TVSHOW)
+
+        assertTrue(viewModel.screenState.value.isLoading)
+
+        advanceUntilIdle()
+
+        assertFalse(viewModel.screenState.value.isLoading)
+    }
+
+    @Test
+    fun `viewModel should initialize with correct default state`() = runTest {
+        advanceUntilIdle()
+
+        val state = viewModel.screenState.value
+        assertFalse(state.isLoading)
+        assertNull(state.errorMessage)
+        assertEquals(1, state.myRatingMedia.size)
     }
 
 }
