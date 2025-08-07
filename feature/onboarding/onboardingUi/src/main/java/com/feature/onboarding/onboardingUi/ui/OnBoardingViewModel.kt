@@ -4,9 +4,8 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.onboarding.onboardingUi.R
-import com.feature.onboarding.onboardingUi.navigation.OnBoardingDestinations
-import com.feature.onboarding.onboardingUi.navigation.OnBoardingNavigator
 import com.paris_2.aflami.designsystem.components.UiDrawable
 import com.paris_2.aflami.designsystem.components.UiText
 import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
@@ -19,7 +18,7 @@ import kotlinx.coroutines.launch
 class OnBoardingViewModel @Inject constructor(
     private val completeOnboardingUseCase: CompleteOnboardingUseCase,
     private val isOnboardingCompletedUseCase: IsOnboardingCompletedUseCase,
-    val navigator: OnBoardingNavigator,
+    private val authenticationFeatureAPI: AuthenticationFeatureAPI,
 ) : ViewModel() {
 
 
@@ -33,7 +32,7 @@ class OnBoardingViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             if (isOnboardingCompletedUseCase()) {
-                navigator.navigate(OnBoardingDestinations.HomeScreen)
+                authenticationFeatureAPI()
             }
         }
     }
@@ -41,7 +40,7 @@ class OnBoardingViewModel @Inject constructor(
     fun completeOnboarding() {
         viewModelScope.launch {
             completeOnboardingUseCase()
-            navigator.navigate(OnBoardingDestinations.HomeScreen)
+            authenticationFeatureAPI()
         }
     }
 
@@ -69,7 +68,7 @@ class OnBoardingViewModel @Inject constructor(
     fun getBackground(): UiDrawable {
         return when (_currentScreen.intValue) {
             0 -> UiDrawable.Resource(R.drawable.on_boarding)
-            1 -> UiDrawable.Resource(R.drawable.on_boarding__1_)
+            1 -> UiDrawable.Resource(R.drawable.on_boarding_second)
             2 -> UiDrawable.Resource(R.drawable.on_boarding__2_)
             3 -> UiDrawable.Resource(R.drawable.on_boarding__3_)
             else -> UiDrawable.Resource(R.drawable.on_boarding)

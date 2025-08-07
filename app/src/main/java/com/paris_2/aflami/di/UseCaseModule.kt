@@ -117,8 +117,10 @@ object UseCaseModule {
 
     @Provides
     fun provideIsOnboardingCompletedUseCase(
-        authenticationRepository: AuthenticationRepository,
-    ) = IsOnboardingCompletedUseCase(authenticationRepository)
+        authenticationRepository: AuthenticationRepository
+    ): IsOnboardingCompletedUseCase {
+        return IsOnboardingCompletedUseCase(authenticationRepository)
+    }
 
 }
 

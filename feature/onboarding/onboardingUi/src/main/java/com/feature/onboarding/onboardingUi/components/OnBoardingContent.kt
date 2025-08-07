@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -43,6 +44,8 @@ fun OnboardingContent(
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .navigationBarsPadding()
+
                 .padding(start = 12.dp, end = 12.dp, bottom = 96.dp),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.Start

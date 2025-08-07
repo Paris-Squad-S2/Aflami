@@ -10,5 +10,5 @@ interface AuthenticationRepository {
     fun isLoggedIn(): Boolean
     fun hasAnySession(): Boolean
     suspend fun setOnboardingCompleted()
-    suspend fun isOnboardingCompleted(): Boolean
+     fun isOnboardingCompleted(): Boolean
 }

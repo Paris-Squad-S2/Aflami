@@ -57,7 +57,6 @@ internal fun AppScaffold(
             AppNavGraph(
                 navigator = appNavigator,
                 navController = navController,
-                onboardingFeature= onBoardingFeature,
                 homeFeature = homeFeature,
                 listsFeature = listsFeature,
                 categoriesFeature = categoriesFeature,

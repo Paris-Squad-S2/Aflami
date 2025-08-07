@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".MainActivity"
+            android:name=".OnboardingActivity"
             android:exported="false"
             android:label="@string/title_activity_main"
             android:theme="@style/Theme.Aflami" />

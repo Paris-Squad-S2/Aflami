@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -49,6 +50,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.ui.tooling.preview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -67,4 +69,8 @@ dependencies {
 
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.FEATURE_HOME_UI))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+
+    // Kotlinx Serialization
+    implementation(libs.kotlinx.serialization.json)
 }

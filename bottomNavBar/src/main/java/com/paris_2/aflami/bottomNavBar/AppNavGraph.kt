@@ -9,14 +9,12 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
-import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
 
 @Composable
 internal fun AppNavGraph(
     navigator: AppNavigator,
     navController: NavHostController,
-    onboardingFeature: OnBoardingFeatureAPI,
     homeFeature: HomeFeatureAPI,
     listsFeature: ListsFeatureAPI,
     categoriesFeature: CategoriesFeatureAPI,
@@ -38,12 +36,7 @@ internal fun AppNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-
-        navigation<AppDestinations.AppGraph1>(startDestination = AppDestinations.OnBoardingFeature) {
-            composable<AppDestinations.OnBoardingFeature> {
-                onboardingFeature()()
-            }
-
+        navigation<AppDestinations.AppGraph1>(startDestination = AppDestinations.HomeFeature) {
             composable<AppDestinations.HomeFeature> {
                 homeFeature()()
             }
