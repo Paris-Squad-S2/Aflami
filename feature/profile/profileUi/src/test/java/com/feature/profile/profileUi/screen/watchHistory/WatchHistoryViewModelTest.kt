@@ -95,6 +95,7 @@ class WatchHistoryViewModelTest {
         runCurrent()
 
         coVerify { navigator.navigateUp() }
+
     }
 
 
