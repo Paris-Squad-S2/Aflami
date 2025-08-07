@@ -148,6 +148,7 @@ class WatchHistoryViewModelTest {
         coVerify { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) }
     }
 
+
     @Test
     fun `onRetry should reload data with last selected type`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns fakeMediaList.map { it.toDomain() }
