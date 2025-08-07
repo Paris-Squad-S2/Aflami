@@ -18,7 +18,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.AppRadioButton
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -48,16 +47,9 @@ fun SelectionCard(
         else -> Color.Gray
     }
 
-    val radioIcon = when {
-        isSelected && optionDescription != null -> com.paris_2.aflami.designsystem.R.drawable.ic_radio_true
-        !isSelected && optionDescription != null -> com.paris_2.aflami.designsystem.R.drawable.ic_radio_add
-        isCorrect == true && isSelected -> com.paris_2.aflami.designsystem.R.drawable.ic_radio_true
-        isCorrect == false && isSelected -> com.paris_2.aflami.designsystem.R.drawable.ic_radio_false
-        isCorrect == null && isSelected -> null
-        else -> null
-    }
 
-    val radioIconTint = when {
+
+    val iconTint = when {
         isSelected && optionDescription != null -> Theme.colors.primary
         !isSelected && optionDescription != null -> Theme.colors.text.hint
         else -> Color.Unspecified
@@ -80,7 +72,7 @@ fun SelectionCard(
         AppIcon(
             imageVector = ImageVector.vectorResource(icon),
             contentDescription = null,
-            tint = radioIconTint,
+            tint = iconTint,
             modifier = Modifier
                 .size(24.dp)
                 .padding(end = 8.dp)
@@ -100,18 +92,5 @@ fun SelectionCard(
             }
         }
 
-        AppRadioButton(
-            selected = isSelected,
-            isDisable = false,
-            icon = {
-                if (radioIcon == null) return@AppRadioButton
-                AppIcon(
-                    imageVector = ImageVector.vectorResource(radioIcon),
-                    contentDescription = "",
-                    tint = radioIconTint,
-                )
-            },
-            onClick = onClick
-        )
     }
 }

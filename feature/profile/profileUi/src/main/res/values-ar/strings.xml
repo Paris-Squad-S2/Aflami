@@ -13,4 +13,5 @@
     <string name="watch_history">سجل المشاهدات</string>
     <string name="my_rating">تقيمي</string>
     <string name="currunt_lang">عربي </string>
+    <string name="logout">تسجيل خروج</string>
 </resources>

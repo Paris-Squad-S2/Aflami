@@ -12,4 +12,5 @@
     <string name="watch_history">Watch history</string>
     <string name="my_rating">My rating</string>
     <string name="currunt_lang">ENG</string>
+    <string name="logout">Logout</string>
 </resources>

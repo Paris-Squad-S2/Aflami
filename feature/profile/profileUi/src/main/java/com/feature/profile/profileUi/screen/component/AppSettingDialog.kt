@@ -39,8 +39,7 @@ fun AppSettingDialog(
                             contentDescription = null,
                             tint = Theme.colors.text.hint,
                         )
-                    }
-                )
+                    })
                 SettingsItem(
                     onClick = {},
                     title = stringResource(R.string.content_restriction),
@@ -51,8 +50,7 @@ fun AppSettingDialog(
                             contentDescription = null,
                             tint = Theme.colors.text.hint,
                         )
-                    }
-                )
+                    })
 
                 SettingsItem(
                     onClick = {},
@@ -60,14 +58,13 @@ fun AppSettingDialog(
                     icon = R.drawable.ic_dead,
                     content = {
                         AppText(
-                            text = "Logout",
+                            text = stringResource(R.string.logout),
                             style = Theme.textStyle.label.medium,
                             color = Theme.colors.primary,
                             modifier = Modifier.padding(end = 12.dp)
                         )
 
-                    }
-                )
+                    })
 
             }
         }

@@ -28,7 +28,7 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
             icon = R.drawable.ic_translate,
             content = {
                 AppText(
-                    text = "ENG",
+                    text = stringResource(R.string.currunt_lang),
                     style = Theme.textStyle.label.small,
                     color = Theme.colors.text.body,
                     modifier = Modifier.padding(end = 8.dp)
@@ -47,7 +47,7 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
             icon = R.drawable.ic_moon,
             content = {
                 AppText(
-                    text = stringResource(R.string.currunt_lang),
+                    text = "Dark",
                     style = Theme.textStyle.label.small,
                     color = Theme.colors.text.body,
                     modifier = Modifier.padding(end = 8.dp)
@@ -65,13 +65,6 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
             title = stringResource(R.string.setting),
             icon = R.drawable.ic_customize,
             content = {
-                AppText(
-                    text = "ENG",
-                    style = Theme.textStyle.label.small,
-                    color = Theme.colors.text.body,
-                    modifier = Modifier.padding(end = 8.dp)
-                )
-
                 AppIcon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
                     contentDescription = null,
