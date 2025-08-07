@@ -15,6 +15,7 @@ import com.paris_2.domain.media.entity.MovieSimilar
 import com.paris_2.domain.media.entity.MovieVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
 import com.paris_2.domain.media.repository.MovieRepository
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
@@ -194,6 +195,14 @@ class MovieRepositoryImpl(
             movieDetailsRemoteDataSource.addRatingToMovie(
                 movieId = movieId,
                 rating = rating
+            )
+        }
+    }
+
+    override suspend fun deleteMovieRating(movieId: Int) {
+        return safeCall(FailedToDeleteRatingException()) {
+            movieDetailsRemoteDataSource.deleteMovieRating(
+                movieId = movieId
             )
         }
     }

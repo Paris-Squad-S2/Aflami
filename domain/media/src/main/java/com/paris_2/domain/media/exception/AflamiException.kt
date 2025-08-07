@@ -22,6 +22,9 @@ class NoProductionCompanyFoundException(message: String = "No found production c
 class FailedToAddRatingException(message: String = "Failed to add rating") :
     AflamiException(message)
 
+class FailedToDeleteRatingException(message: String = "Failed to delete rating") :
+    AflamiException(message)
+
 class PopularMediaException(message: String = "No popular media found") : AflamiException(message)
 class TopRatingMediaException(message: String = "No top rating media found") : AflamiException(message)
 class UpComingMediaException(message: String = "No upcoming media found") : AflamiException(message)

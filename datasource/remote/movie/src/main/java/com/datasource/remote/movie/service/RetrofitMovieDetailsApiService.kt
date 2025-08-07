@@ -8,7 +8,9 @@ import com.repository.movie.models.remote.MovieSimilarsDto
 import com.repository.movie.models.remote.MovieVideoDto
 import com.repository.movie.models.remote.RatingDto
 import com.repository.movie.models.remote.RatingResponseDto
+import com.repository.movie.models.remote.RemoveRatingDto
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -54,4 +56,9 @@ interface RetrofitMovieDetailsApiService {
         @Path("movie_id") movieId: Int,
         @Body rating: RatingDto
     ): RatingResponseDto
+
+    @DELETE("movie/{movie_id}/rating")
+    suspend fun deleteMovieRating(
+        @Path("movie_id") movieId: Int
+    ): RemoveRatingDto
 }
