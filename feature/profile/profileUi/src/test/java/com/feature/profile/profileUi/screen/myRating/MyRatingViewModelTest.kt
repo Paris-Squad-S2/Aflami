@@ -101,6 +101,7 @@ class MyRatingViewModelTest {
             yearOfRelease = LocalDate(2022, 1, 1)
         )
 
+
         viewModel.onMediaCardClick(media)
 
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(123) }
