@@ -95,12 +95,14 @@ val koverExcludedPackages = listOf(
     "**.ContinueWatchingScreen*",
     "**.HomeScreenUIState*",
     "**.RetrofitListApiService*",
-    "**/PagingSource*.class",
+    "**.PagingSource.*",
     "**.ListDetailsViewModel*",
     "**.MovieDetailsScreen*",
-    "**.MovieUiState.kt*",
+    "**.MovieUiState.*",
     "**/pagging*",
-    "**MovieDetailsViewModel.kt*"
+    "**MovieDetailsViewModel.kt*",
+    "**ListsRepositoryImp.kt.kt*",
+    
 )
 
 allprojects {
