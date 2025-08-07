@@ -47,14 +47,12 @@ class MyRatingViewModelTest {
         coEvery {
             getRatedMediaUseCase(
                 accountId = any<Int>(),
-                sessionId = any<String>(),
                 mediaType = any<MediaType>()
             )
         } returns fakeMediaList
 
         viewModel = MyRatingViewModel(
             getRatedMediaUseCase = getRatedMediaUseCase,
-            getSessionIdUseCase = getSessionIdUseCase,
             getAccountIdUseCase = getAccountIdUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
             navigator = profileNavigator
@@ -64,7 +62,7 @@ class MyRatingViewModelTest {
     @Test
     fun `onTabSelected should trigger media load for selected type`() = runTest {
         coEvery {
-            getRatedMediaUseCase(any(), any(),MediaType.TVSHOW)
+            getRatedMediaUseCase(any(),MediaType.TVSHOW)
         } returns fakeMediaList
 
         viewModel.onTabSelected(MediaTypeUi.TVSHOW)
