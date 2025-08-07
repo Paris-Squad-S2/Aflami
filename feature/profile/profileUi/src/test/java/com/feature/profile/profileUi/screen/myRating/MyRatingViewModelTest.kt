@@ -214,6 +214,7 @@ class MyRatingViewModelTest {
         advanceUntilIdle()
 
         assertFalse(viewModel.screenState.value.isLoading)
+
     }
 
     @Test
@@ -224,6 +225,7 @@ class MyRatingViewModelTest {
         assertFalse(state.isLoading)
         assertNull(state.errorMessage)
         assertEquals(1, state.myRatingMedia.size)
+
     }
 
 
