@@ -97,6 +97,7 @@ class WatchHistoryViewModelTest {
         coVerify { navigator.navigateUp() }
     }
 
+
     @Test
     fun `onTabSelected should reload data with selected type`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } returns fakeMediaList.map { it.toDomain() }
