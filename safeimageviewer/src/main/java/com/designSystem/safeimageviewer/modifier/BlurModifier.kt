@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.nativeCanvas
-import com.designSystem.safeimageviewer.algorithm.blurBitmap
+import com.designSystem.safeimageviewer.utils.blurBitmap
 
 @Stable
 fun Modifier.blur(
