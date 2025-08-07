@@ -39,5 +39,7 @@
     <string name="_11_items">11 items</string>
     <string name="my_favorite_movies">My favorite movies</string>
     <string name="kittens">Kittens</string>
-
+    <string name="Item">%1$d عنصر</string>
+    <string name="movie_added_to_list_successfully">تمت إضافة الفيلم إلى القائمة بنجاح</string>
+    <string name="list_title">اسم القائمة</string>
 </resources>

@@ -296,37 +296,6 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onAddToListClick() {
-        tryToExecute(
-            execute = { isLoggedInUseCase() },
-            onSuccess = { isLoggedIn ->
-                if (isLoggedIn) {
-                    updateState(
-                        screenState.value.copy(
-                            showAddToListDialog = true
-                        )
-                    )
-                } else {
-                    navigate(
-                        MediaDetailsDestinations.LoginDialogDestination(
-                            R.string.add_to_list
-                        )
-                    )
-                }
-            },
-            onError = {
-                updateState(screenState.value.copy(errorMessage = it))
-            }
-        )
-    }
-
-    override fun onDismissAddToListDialog() {
-        updateState(
-            screenState.value.copy(
-                showAddToListDialog = false
-            )
-        )
-    }
 
     override fun onShowAllCastClick(tvShowId: Int) {
         navigate(MediaDetailsDestinations.TvShowCastScreen(tvShowId = tvShowId))

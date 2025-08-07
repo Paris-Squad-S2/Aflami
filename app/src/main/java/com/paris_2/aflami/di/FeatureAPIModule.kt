@@ -17,6 +17,10 @@ import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.navigation.HomeNavigatorImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsUi.ListsFeatureAPIImpl
+import com.feature.lists.listsUi.navigation.ListDestinations
+import com.feature.lists.listsUi.navigation.ListNavigator
+import com.feature.lists.listsUi.navigation.ListNavigatorImpl
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.MediaDetailsFeatureAPIImpl
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
@@ -68,6 +72,10 @@ object FeatureAPIModule {
     @Singleton
     fun provideHomeNavigator(): HomeNavigator =
         HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1)
+
+    @Provides
+    @Singleton
+    fun provideListNavigator(): ListNavigator = ListNavigatorImpl(startGraph = ListDestinations.ListGraph1)
 
     @Provides
     fun provideHomeFeatureAPI(): HomeFeatureAPI = HomeFeatureAPIImpl()

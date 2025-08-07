@@ -27,7 +27,6 @@ data class TvShowDetailsScreenState(
     @StringRes val snackBarMessage: Int? = null,
     val showSnackBar: Boolean = false,
     val snackBarSuccess: Boolean = false,
-    val showAddToListDialog: Boolean = false
 )
 
 data class TvShowDetailsUiState(

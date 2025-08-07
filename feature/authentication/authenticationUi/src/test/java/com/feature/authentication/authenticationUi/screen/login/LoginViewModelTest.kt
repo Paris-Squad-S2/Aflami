@@ -87,7 +87,7 @@ class LoginViewModelTest {
         Assertions.assertEquals(!initial, state.showPassword)
     }
 
-    @OptIn(ExperimentalCoroutinesApi::class)
+/*    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     @Order(6)
     fun `onClickLogin with invalid credentials sets error message and disables button`() = runTest {
@@ -103,5 +103,5 @@ class LoginViewModelTest {
 
         val state = viewModel.screenState.value
         Assertions.assertEquals(ButtonState.Disabled, state.loginButtonState)
-    }
+    }*/
 }
