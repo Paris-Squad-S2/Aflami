@@ -8,6 +8,7 @@ import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.MovieSimilar
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -1140,6 +1141,33 @@ class MovieRepositoryImplTest {
             coVerify(exactly = 0) { movieDetailsRemoteDataSource.getTrailerVideoForMovie(any()) }
         }
 
+
+    @Test
+    fun `deleteMovieRating should throw FailedToDeleteRatingException when remote throws exception`() = runTest {
+        // Given
+        val causeException = RuntimeException("Network error")
+        coEvery { movieDetailsRemoteDataSource.deleteMovieRating(movieId = 550) } throws causeException
+
+        // When & Then
+        val result = runCatching {
+            movieRepository.deleteMovieRating(550)
+        }
+
+        assertThat(result.exceptionOrNull()).isInstanceOf(FailedToDeleteRatingException()::class.java)
+        coVerify(exactly = 1) { movieDetailsRemoteDataSource.deleteMovieRating(movieId = 550) }
+    }
+
+    @Test
+    fun `deleteMovieRating should throw NoInternetConnectionException when offline`() = runTest {
+        // Given
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When & Then
+        assertThrows<NoInternetConnectionException> {
+            movieRepository.deleteMovieRating(550)
+        }
+        coVerify(exactly = 0) { movieDetailsRemoteDataSource.deleteMovieRating(any()) }
+    }
 
     private companion object {
         const val movieId = 550
