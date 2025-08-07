@@ -7,6 +7,8 @@ import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
+import com.paris_2.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import io.mockk.coEvery
@@ -22,6 +24,10 @@ class MyRatingViewModelTest {
 
     private val getRatedMediaUseCase: FilterRatedMediaUseCase = mockk()
     private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
+
+    private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase = mockk()
+
+    private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase = mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val profileNavigator: ProfileNavigator = mockk(relaxed = true)
@@ -54,6 +60,8 @@ class MyRatingViewModelTest {
         viewModel = MyRatingViewModel(
             getRatedMediaUseCase = getRatedMediaUseCase,
             getAccountIdUseCase = getAccountIdUseCase,
+            deleteMovieRatingUseCase = deleteMovieRatingUseCase,
+            deleteTvShowRatingUseCase = deleteTvShowRatingUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
             navigator = profileNavigator
         )
