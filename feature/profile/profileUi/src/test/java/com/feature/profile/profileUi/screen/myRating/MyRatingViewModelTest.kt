@@ -106,4 +106,72 @@ class MyRatingViewModelTest {
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(123) }
     }
 
+    @Test
+    fun `onMediaCardClick starts tv show details`() = runTest {
+        val media = MediaUiState(
+            id = 456,
+            title = "Sample TV Show",
+            type = MediaTypeUi.TVSHOW,
+            imageUri = "",
+            rating = 7.3,
+            yearOfRelease = LocalDate(2023, 5, 1)
+        )
+
+        viewModel.onMediaCardClick(media)
+
+        coVerify { mediaDetailsFeatureAPI.startTvShowDetails(456) }
+    }
+
+    @Test
+    fun `onFavouriteIconClick should delete movie rating and reload data`() = runTest {
+        val media = MediaUiState(
+            id = 1,
+            title = "Movie 1",
+            type = MediaTypeUi.MOVIE,
+            imageUri = "",
+            rating = 8.5,
+            yearOfRelease = LocalDate(2022, 1, 1)
+        )
+
+        coEvery { deleteMovieRatingUseCase(1) } returns Unit
+
+        viewModel.onFavouriteIconClick(media)
+
+        coVerify(exactly = 1) { deleteMovieRatingUseCase(1) }
+        coVerify { getRatedMediaUseCase(any(), MediaType.MOVIE) }
+    }
+
+    @Test
+    fun `onFavouriteIconClick should delete tv show rating and reload data`() = runTest {
+        val media = MediaUiState(
+            id = 2,
+            title = "TV Show 1",
+            type = MediaTypeUi.TVSHOW,
+            imageUri = "",
+            rating = 7.1,
+            yearOfRelease = LocalDate(2021, 3, 15)
+        )
+
+        coEvery { deleteTvShowRatingUseCase(2) } returns Unit
+        coEvery { getRatedMediaUseCase(any(), MediaType.TVSHOW) } returns fakeMediaList
+
+        viewModel.onFavouriteIconClick(media)
+
+        coVerify(exactly = 1) { deleteTvShowRatingUseCase(2) }
+    }
+
+    @Test
+    fun `onBackClick should call navigateUp`() = runTest {
+        viewModel.onBackClick()
+
+        coVerify { profileNavigator.navigateUp() }
+    }
+
+    @Test
+    fun `onRetry should reload data for selected media type`() = runTest {
+        viewModel.onRetry()
+
+        coVerify { getRatedMediaUseCase(any(), MediaType.MOVIE) }
+    }
+
 }
