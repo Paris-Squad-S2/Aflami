@@ -48,24 +48,6 @@ class ListsRemoteDataSourceImpTest {
         coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
     }
 
-    @Test
-    fun `getLists should throw ServerException when HttpException with 5xx status code occurs`() = runTest {
-        // Given
-        val page = 1
-        val accountId = "123"
-        val httpException = mockk<HttpException>()
-        coEvery { httpException.code() } returns 500
-        coEvery { httpException.message() } returns "Internal Server Error"
-        coEvery { retrofitListApiService.getLists(accountId, page) } throws httpException
-
-        // When & Then
-        val exception = assertFailsWith<NetworkException.ServerException> {
-            listsRemoteDataSource.getLists(page, accountId)
-        }
-
-        assertThat(exception.message).isEqualTo("Server error: Internal Server Error")
-        coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
-    }
 
     @Test
     fun `getLists should throw UnknownException when HttpException with non-5xx status code occurs`() = runTest {
@@ -233,5 +215,24 @@ class ListsRemoteDataSourceImpTest {
         // Then
         assertThat(result).isEqualTo(expectedResponseDto)
         coVerify(exactly = 1) { retrofitListApiService.removeMovieFromList(listId, expectedRequestBody) }
+    }
+
+    @Test
+    fun `getLists should throw ServerException when HttpException with 5xx status code occurs`() = runTest {
+        // Given
+        val page = 1
+        val accountId = "123"
+        val httpException = mockk<HttpException>()
+        coEvery { httpException.code() } returns 500
+        coEvery { httpException.message() } returns "Internal Server Error"
+        coEvery { retrofitListApiService.getLists(accountId, page) } throws httpException
+
+        // When & Then
+        val exception = assertFailsWith<NetworkException.ServerException> {
+            listsRemoteDataSource.getLists(page, accountId)
+        }
+
+        assertThat(exception.message).isEqualTo("Server error: Internal Server Error")
+        coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
     }
 }
