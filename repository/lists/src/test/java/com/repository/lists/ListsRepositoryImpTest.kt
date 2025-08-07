@@ -189,4 +189,182 @@ class ListsRepositoryImpTest {
             )
         )
     }
+
+    @Test
+    fun `getLists when remote data source throws unknown exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val page = 1
+        val accountId = "account123"
+        val errorMessage = "Unknown error occurred"
+        
+        coEvery { listsRemoteDataSource.getAccountId() } returns accountId
+        coEvery { listsRemoteDataSource.getLists(page, accountId) } throws NetworkException.UnknownException(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.getLists(page)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `getLists when remote data source throws generic exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val page = 1
+        val accountId = "account123"
+        val errorMessage = "Generic error occurred"
+        
+        coEvery { listsRemoteDataSource.getAccountId() } returns accountId
+        coEvery { listsRemoteDataSource.getLists(page, accountId) } throws Exception(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.getLists(page)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `getListDetails when remote data source throws unknown exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val page = 1
+        val listId = "list123"
+        val errorMessage = "Unknown error occurred"
+        
+        coEvery { listsRemoteDataSource.getListDetails(page, listId) } throws NetworkException.UnknownException(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.getListDetails(page, listId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `getListDetails when remote data source throws generic exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val page = 1
+        val listId = "list123"
+        val errorMessage = "Generic error occurred"
+        
+        coEvery { listsRemoteDataSource.getListDetails(page, listId) } throws Exception(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.getListDetails(page, listId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `deleteList when remote data source throws unknown exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listId = "list123"
+        val errorMessage = "Unknown error occurred"
+        
+        coEvery { listsRemoteDataSource.deleteList(listId) } throws NetworkException.UnknownException(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.deleteList(listId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `deleteList when remote data source throws generic exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listId = "list123"
+        val errorMessage = "Generic error occurred"
+        
+        coEvery { listsRemoteDataSource.deleteList(listId) } throws Exception(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.deleteList(listId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `createList when remote data source throws unknown exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listName = "New List"
+        val errorMessage = "Unknown error occurred"
+        
+        coEvery { listsRemoteDataSource.createList(listName) } throws NetworkException.UnknownException(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.createList(listName)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `createList when remote data source throws generic exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listName = "New List"
+        val errorMessage = "Generic error occurred"
+        
+        coEvery { listsRemoteDataSource.createList(listName) } throws Exception(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.createList(listName)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `addMovieToList when remote data source throws unknown exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listId = "list123"
+        val movieId = 456
+        val errorMessage = "Unknown error occurred"
+        
+        coEvery { listsRemoteDataSource.addMovieToList(listId, movieId) } throws NetworkException.UnknownException(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.addMovieToList(listId, movieId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `addMovieToList when remote data source throws generic exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listId = "list123"
+        val movieId = 456
+        val errorMessage = "Generic error occurred"
+        
+        coEvery { listsRemoteDataSource.addMovieToList(listId, movieId) } throws Exception(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.addMovieToList(listId, movieId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `removeMovieFromList when remote data source throws unknown exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listId = "list123"
+        val movieId = 456
+        val errorMessage = "Unknown error occurred"
+        
+        coEvery { listsRemoteDataSource.removeMovieFromList(listId, movieId) } throws NetworkException.UnknownException(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.removeMovieFromList(listId, movieId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
+
+    @Test
+    fun `removeMovieFromList when remote data source throws generic exception then throw ListsNetworkException with unknown error message`() = runTest {
+        val listId = "list123"
+        val movieId = 456
+        val errorMessage = "Generic error occurred"
+        
+        coEvery { listsRemoteDataSource.removeMovieFromList(listId, movieId) } throws Exception(errorMessage)
+
+        val exception = assertThrows<ListsNetworkException> {
+            listsRepositoryImp.removeMovieFromList(listId, movieId)
+        }
+        
+        assertThat(exception.message).isEqualTo(errorMessage)
+    }
 }

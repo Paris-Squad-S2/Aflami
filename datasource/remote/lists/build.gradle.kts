@@ -34,24 +34,14 @@ android {
 
 dependencies {
 
-
     implementation(libs.androidx.core.ktx)
 
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
-
-    // Junit 5
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-
     // test
+    testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     testImplementation(kotlin("test"))
-
 
     //retrofit
     implementation(libs.retrofit)
