@@ -1,10 +1,10 @@
-package com.repository.movie.models.remote
+package com.repository.model.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class RemoveRatingDto(
+data class RemoveTvRatingDto(
     @SerialName("status_code")
     val status_code: Int,
     @SerialName("status_message")
