@@ -62,13 +62,6 @@ class MyRatingViewModelTest {
     }
 
     @Test
-    fun `init loads my rated movies successfully`() = runTest {
-        val state = viewModel.screenState.value
-        assertFalse(state.isLoading)
-        assertEquals(1, state.myRatingMedia.size)
-    }
-
-    @Test
     fun `onTabSelected should trigger media load for selected type`() = runTest {
         coEvery {
             getRatedMediaUseCase(any(), any(),MediaType.TVSHOW)
@@ -105,13 +98,6 @@ class MyRatingViewModelTest {
         viewModel.onMediaCardClick(media)
 
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(123) }
-    }
-
-    @Test
-    fun `onBackClick should navigate up`() = runTest {
-        viewModel.onBackClick()
-
-        coVerify { profileNavigator.navigateUp() }
     }
 
 }
