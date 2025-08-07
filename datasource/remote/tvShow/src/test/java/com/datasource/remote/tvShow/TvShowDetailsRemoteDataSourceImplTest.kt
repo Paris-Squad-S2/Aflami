@@ -4,6 +4,7 @@ import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.google.common.truth.Truth.assertThat
 import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.EpisodeVideoResultDto
+import com.repository.model.remote.RemoveTvRatingDto
 import com.repository.movie.models.remote.RatingDto
 import com.repository.movie.models.remote.RatingResponseDto
 import io.mockk.coEvery
@@ -455,5 +456,57 @@ class TvShowDetailsRemoteDataSourceImplTest {
         )
         assertThat(result).isEqualTo(blockbusterTrailer)
     }
+
+    @Test
+    fun `deleteTvShowRating should return true when status code is 13`() = runTest {
+        // Given
+        val tvShowId = 123
+        val response = RemoveTvRatingDto(status_code = 13, status_message = "Deleted successfully", success = true)
+
+        coEvery {
+            retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
+        } returns response
+
+        // When
+        val result = tvShowDetailsRemoteDataSourceImpl.deleteTvShowRating(tvShowId)
+
+        // Then
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `deleteTvShowRating should return false when status code is not 13`() = runTest {
+        // Given
+        val tvShowId = 456
+        val response = RemoveTvRatingDto(status_code = 10, status_message = "Not authorized",success = false)
+
+        coEvery {
+            retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
+        } returns response
+
+        // When
+        val result = tvShowDetailsRemoteDataSourceImpl.deleteTvShowRating(tvShowId)
+
+        // Then
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `deleteTvShowRating should throw exception when API call fails`() = runTest {
+        // Given
+        val tvShowId = 789
+
+        coEvery {
+            retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
+        } throws RuntimeException("Server error")
+
+        // Then
+        assertThrows(RuntimeException::class.java) {
+            runTest {
+                tvShowDetailsRemoteDataSourceImpl.deleteTvShowRating(tvShowId)
+            }
+        }
+    }
+
 
 }
