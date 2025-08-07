@@ -12,6 +12,7 @@ import org.tensorflow.lite.support.label.TensorLabel
 import org.tensorflow.lite.support.tensorbuffer.TensorBuffer
 import java.io.IOException
 import java.nio.MappedByteBuffer
+import java.util.concurrent.ConcurrentHashMap
 
 const val TAG = "NSFWDetector"
 
@@ -30,6 +31,8 @@ internal class NSFWDetector(private val context: Context) {
     private val imageProcessor = ImageProcessor.Builder()
         .add(ResizeOp(INPUT_SIZE, INPUT_SIZE, ResizeOp.ResizeMethod.BILINEAR))
         .build()
+        
+    private val nsfwCache = ConcurrentHashMap<String, Pair<Boolean, Float>>()
 
     init {
         loadModel()
@@ -50,12 +53,7 @@ internal class NSFWDetector(private val context: Context) {
         }
     }
 
-    /**
-     * This function returns whether the bitmap is NSFW or not
-     * @param bitmap: Bitmap Image
-     * @param confidenceThreshold: Float 0 to 1 (Default is 0.7)
-     * @param callback: Callback with isNSFW(Boolean), confidence(Float), and image(Bitmap)
-     */
+
     fun isNSFW(
         bitmap: Bitmap,
         confidenceThreshold: Float = CONFIDENCE_THRESHOLD,
@@ -66,52 +64,48 @@ internal class NSFWDetector(private val context: Context) {
             callback(false, 0.0f, bitmap)
             return
         }
+        
+        val cacheKey = "${bitmap.width}x${bitmap.height}_${bitmap.byteCount}"
+        
+        nsfwCache[cacheKey]?.let { cachedResult ->
+            callback(cachedResult.first, cachedResult.second, bitmap)
+            return
+        }
 
         try {
-            val threshold = if (confidenceThreshold in 0.0f..1.0f) {
-                confidenceThreshold
+            val argbBitmap = if (bitmap.config != Bitmap.Config.ARGB_8888) {
+                bitmap.copy(Bitmap.Config.ARGB_8888, false)
             } else {
-                CONFIDENCE_THRESHOLD
+                bitmap
             }
 
-            val tensorImage = TensorImage.fromBitmap(bitmap)
+            val tensorImage = TensorImage.fromBitmap(argbBitmap)
             val processedImage = imageProcessor.process(tensorImage)
 
-            val outputBuffer = TensorBuffer.createFixedSize(
-                interpreter!!.getOutputTensor(0).shape(),
-                interpreter!!.getOutputTensor(0).dataType()
-            )
+            val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, labels.size), org.tensorflow.lite.DataType.FLOAT32)
 
-            interpreter!!.run(processedImage.buffer, outputBuffer.buffer)
+            interpreter?.run(processedImage.buffer, outputBuffer.buffer)
 
-            val labeledProbability = TensorLabel(labels, outputBuffer).mapWithFloatValue.toMap()
+            val labeledOutput = TensorLabel(labels, outputBuffer)
+            val scores = labeledOutput.mapWithFloatValue
 
-            val maxEntry = labeledProbability.maxByOrNull { it.value }
+            val maxEntry = scores.maxByOrNull { it.value }
+            val isNSFWResult = maxEntry?.let { entry ->
+                val isNSFW = entry.key.lowercase().contains("porn") ||
+                           entry.key.lowercase().contains("sexy") ||
+                           entry.key.lowercase().contains("nsfw")
+                isNSFW && entry.value >= confidenceThreshold
+            } ?: false
 
-            if (maxEntry != null) {
-                val label = maxEntry.key
-                val confidence = maxEntry.value
+            val confidence = maxEntry?.value ?: 0.0f
+            
+            nsfwCache[cacheKey] = Pair(isNSFWResult, confidence)
 
-                Log.d(TAG, "Detected: $label with confidence: $confidence")
+            Log.d(TAG, "NSFW Detection - IsNSFW: $isNSFWResult, Confidence: $confidence")
+            callback(isNSFWResult, confidence, bitmap)
 
-                when (label.lowercase()) {
-                    "nude" -> {
-                        val isNSFW = confidence >= threshold
-                        callback(isNSFW, confidence, bitmap)
-                    }
-                    "nonnude" -> {
-                        val isNSFW = confidence < threshold
-                        callback(isNSFW, 1.0f - confidence, bitmap)
-                    }
-                    else -> {
-                        callback(false, 0.0f, bitmap)
-                    }
-                }
-            } else {
-                callback(false, 0.0f, bitmap)
-            }
         } catch (e: Exception) {
-            Log.e(TAG, "Error during inference: ${e.message}")
+            Log.e(TAG, "Error during NSFW detection: ${e.message}")
             callback(false, 0.0f, bitmap)
         }
     }
@@ -120,5 +114,6 @@ internal class NSFWDetector(private val context: Context) {
         interpreter?.close()
         interpreter = null
         isModelLoaded = false
+        nsfwCache.clear()
     }
 }

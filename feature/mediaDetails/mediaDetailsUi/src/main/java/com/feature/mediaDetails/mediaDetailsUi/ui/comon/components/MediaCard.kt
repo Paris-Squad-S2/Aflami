@@ -78,24 +78,23 @@ fun MediaCard(
             )
     ) {
         SafeImageViewer(
-            model = imageUri,
+            imageUrl = imageUri,
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
-            enabled = enabled,
-            placeholder = {
+            loadingContent = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_film_roll),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(48.dp).align(Alignment.Center),
                     contentScale = ContentScale.Crop
                 )
             },
-            errorPlaceholder = {
+            errorContent = { errorMessage ->
                 Image(
                     painter = painterResource(id = R.drawable.img_disconnect),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp),
+                    modifier = Modifier.size(48.dp).align(Alignment.Center),
                     contentScale = ContentScale.Crop
                 )
             }

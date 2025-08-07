@@ -77,28 +77,26 @@ fun DetailsImage(
                         .align(Alignment.Center)
                 ) {
                     SafeImageViewer(
-                        model = displayImages[page],
+                        imageUrl = displayImages[page],
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.Center),
                         contentScale = ContentScale.Fit,
                         contentDescription = "poster",
-                        placeholder = {
+                        loadingContent = {
                             Image(
                                 painter = painterResource(id = R.drawable.ic_film_roll),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .align(Alignment.Center)
+                                modifier = Modifier.size(48.dp).align(Alignment.Center),
+                                contentScale = ContentScale.Crop
                             )
                         },
-                        errorPlaceholder = {
+                        errorContent ={
                             Image(
                                 painter = painterResource(id = R.drawable.img_disconnect),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .align(Alignment.Center)
+                                modifier = Modifier.size(48.dp).align(Alignment.Center),
+                                contentScale = ContentScale.Crop
                             )
                         }
                     )

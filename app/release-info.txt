@@ -1,2 +1,2 @@
-versionName=0.3.36
-- remove search cache
+versionName=0.3.37
+- enhance SafeImageViewer model
