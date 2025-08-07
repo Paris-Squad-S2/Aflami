@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel<S>(
     initialState: S,
+    //protected val navigator:ProfileNa
 ) : ViewModel() {
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()

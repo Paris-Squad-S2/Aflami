@@ -71,4 +71,10 @@ dependencies {
 
     //WebView
     implementation(libs.androidx.webkit)
+
+    //kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
+
+    //Navigation
+    implementation(libs.navigation.compose)
 }
