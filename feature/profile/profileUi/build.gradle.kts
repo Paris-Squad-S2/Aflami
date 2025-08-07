@@ -68,4 +68,7 @@ dependencies {
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
+
+    //WebView
+    implementation(libs.androidx.webkit)
 }
