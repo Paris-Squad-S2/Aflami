@@ -146,3 +146,20 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+
+[bundles]
+compose = [
+    "androidx-core-ktx",
+    "androidx-lifecycle-runtime-ktx",
+    "androidx-paging-runtime",
+    "androidx-activity-compose",
+    "androidx-compose-bom",
+    "androidx-lifecycle-viewmodel-compose",
+    "androidx-paging-compose",
+    "androidx-hilt-navigation-compose"
+]
+test = [
+    "junit",
+    "androidx-junit",
+    "androidx-espresso-core"
+]

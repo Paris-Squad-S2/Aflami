@@ -103,13 +103,6 @@ fun TvShowDetailsScreenContent(
             }
         )
     }
-    if (state.showAddToListDialog) {
-        AddToListDialog(
-            list = listOf("My Favorite Movies", "Kittens"),
-            onDismiss = { tvShowScreenInteractionListener.onDismissAddToListDialog() },
-        )
-    }
-
 
     val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }

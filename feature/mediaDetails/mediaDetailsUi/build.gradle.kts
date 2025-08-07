@@ -49,6 +49,7 @@ dependencies {
     implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_MOVIE))
+    implementation(project(Modules.DOMAIN_LISTS))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
