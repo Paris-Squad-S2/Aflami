@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.paging.PagingData
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import com.paris_2.aflami.designsystem.components.ButtonState
 import kotlinx.coroutines.flow.Flow
 
 data class MovieDetailsScreenState(
@@ -21,7 +22,12 @@ data class MovieDetailsScreenState(
     @StringRes val snackBarMessage: Int? = null,
     val showSnackBar: Boolean = false,
     val snackBarSuccess: Boolean = false,
-    val showAddToListDialog: Boolean = false
+    val showAddToListDialog: Boolean = false,
+    val availableLists: List<ListItemUi> = emptyList(),
+    val selectedListIndex: Int = -1,
+    val showCreateListDialog: Boolean = false,
+    val createListName: String = "",
+    val createListButtonState: ButtonState = ButtonState.Normal
 )
 
 data class MovieDetailsUiState(
@@ -73,3 +79,8 @@ data class ReviewUi(
     val description: String
 )
 
+data class ListItemUi(
+    val id: String,
+    val name: String,
+    val itemCount: Int
+)

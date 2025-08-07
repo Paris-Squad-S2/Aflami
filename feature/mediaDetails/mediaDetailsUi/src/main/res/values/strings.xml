@@ -40,4 +40,7 @@
     <string name="_11_items">11 items</string>
     <string name="my_favorite_movies">My favorite movies</string>
     <string name="kittens">Kittens</string>
+    <string name="Item">%1$d item</string>
+    <string name="movie_added_to_list_successfully">Movie added to list successfully</string>
+    <string name="list_title">List title</string>
 </resources>

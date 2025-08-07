@@ -13,7 +13,6 @@ import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -24,6 +23,10 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
+import com.paris.domain.lists.entity.Response
+import com.paris.domain.lists.useCase.AddMovieToListUseCase
+import com.paris.domain.lists.useCase.CreateListUseCase
+import com.paris.domain.lists.useCase.GetListUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -55,7 +58,10 @@ class MovieDetailsViewModelTest {
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase = mockk()
-    private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
+    private val addMovieToListUseCase: AddMovieToListUseCase = mockk()
+    private val getListsUseCase: GetListUseCase = mockk()
+    private val createListUseCase: CreateListUseCase = mockk()
+    private val getSessionIdUseCase: AddMovieToListUseCase = mockk()
     private lateinit var viewModel: MovieDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testMovieId = 42
@@ -125,6 +131,7 @@ class MovieDetailsViewModelTest {
         viewModel.onSimilarMovieClick(99)
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(99) }
     }
+
     @Test
     fun `init loads movie details and video info`() = runTest {
         coEvery { getMovieDetailsUseCase(any()) } returns mockk<Movie>(relaxed = true)
@@ -140,6 +147,7 @@ class MovieDetailsViewModelTest {
         val errorMsg = "videoFail"
         coEvery { getMovieDetailsUseCase(any()) } returns mockk<Movie>(relaxed = true)
         coEvery { getMovieVideoUseCase(any()) } throws RuntimeException(errorMsg)
+        coEvery { getListsUseCase(any()) } returns emptyList()
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
@@ -148,7 +156,12 @@ class MovieDetailsViewModelTest {
     @Test
     fun `onRatingButtonClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
-        coEvery { getSessionIdUseCase() } returns "session_id_123"
+        coEvery { getSessionIdUseCase(any(), any()) } returns Response(
+            statusCode = 200,
+            success = true,
+            statusMessage = ""
+        )
+
         coEvery {
             addRatingToMovieUseCase(
                 movieId = testMovieId,
@@ -253,7 +266,11 @@ class MovieDetailsViewModelTest {
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
             addRatingToMovieUseCase,
+            addMovieToListUseCase,
+            getListsUseCase,
+            createListUseCase,
             mediaDetailsNavigator
         )
     }
 }
+

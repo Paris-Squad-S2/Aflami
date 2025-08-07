@@ -54,6 +54,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProduc
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.components.CreateListDialog
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.AppSnackBar
@@ -100,8 +101,18 @@ fun MovieDetailsScreenContent(
     }
     if (state.showAddToListDialog) {
         AddToListDialog(
-            list = listOf("My Favorite Movies", "Kittens"),
+            lists = state.availableLists,
+            selectedIndex = state.selectedListIndex,
             onDismiss = { movieDetailsScreenInteractionListener.onDismissAddToListDialog() },
+            onListSelectionChanged = { index ->
+                movieDetailsScreenInteractionListener.onListSelectionChanged(index)
+            },
+            onAddToSelectedList = {
+                movieDetailsScreenInteractionListener.onAddToSelectedList()
+            },
+            onCreateNewList = {
+                movieDetailsScreenInteractionListener.onCreateListShow()
+            }
         )
     }
 
@@ -378,6 +389,16 @@ fun MovieDetailsScreenContent(
                 }
             }
         }
+
+        CreateListDialog(
+            onDismiss = movieDetailsScreenInteractionListener::onCreateListDismiss,
+            onAddClicked = movieDetailsScreenInteractionListener::onCreateListConfirm,
+            onListNameValueChange = movieDetailsScreenInteractionListener::onCreateListNameChange,
+            buttonState = state.createListButtonState,
+            listName = state.createListName,
+            showDialog = state.showCreateListDialog
+        )
+
         AnimatedVisibility(
             visible = state.showSnackBar,
             enter = fadeIn() + slideInVertically(),
