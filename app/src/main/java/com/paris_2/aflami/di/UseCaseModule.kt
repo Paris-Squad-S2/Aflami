@@ -48,6 +48,7 @@ import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.paris_2.domain.user.repository.UserRepository
@@ -90,6 +91,7 @@ object UseCaseModule {
     @Provides fun provideGetMoviesProductionCompaniesUseCase(movieRepository: MovieRepository) = GetMoviesProductionCompaniesUseCase(movieRepository)
     @Provides fun provideGetSeasonDetailsUseCase(tvShowRepository: TvShowRepository) = GetSeasonDetailsUseCase(tvShowRepository)
     @Provides fun provideGetTvShowCastUseCase(tvShowRepository: TvShowRepository) = GetTvShowCastUseCase(tvShowRepository)
+    @Provides fun provideDeleteTvShowRatingUseCase(tvShowRepository: TvShowRepository) = DeleteTvShowRatingUseCase(tvShowRepository)
     @Provides fun provideGetTvShowDetailsUseCase(tvShowRepository: TvShowRepository) = GetTvShowDetailsUseCase(tvShowRepository)
     @Provides fun provideGetTvShowGalleryUseCase(tvShowRepository: TvShowRepository) = GetTvShowGalleryUseCase(tvShowRepository)
     @Provides fun provideGetTvShowRecommendationsUseCase(tvShowRepository: TvShowRepository) = GetTvShowRecommendationsUseCase(tvShowRepository)

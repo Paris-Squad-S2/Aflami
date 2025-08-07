@@ -8,16 +8,19 @@ import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
+import com.paris_2.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import javax.inject.Inject
 import dagger.hilt.android.lifecycle.HiltViewModel
-
 
 @HiltViewModel
 class MyRatingViewModel @Inject constructor(
     private val getRatedMediaUseCase: FilterRatedMediaUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val getAccountIdUseCase: GetAccountIdUseCase,
+    private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase,
+    private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase,
     navigator: ProfileNavigator,
 ) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(
     navigator = navigator,
@@ -98,7 +101,22 @@ class MyRatingViewModel @Inject constructor(
     }
 
     override fun onFavouriteIconClick(media: MediaUiState) {
-        TODO("Not yet implemented")
+        tryToExecute(
+            execute = {
+                when (media.type) {
+                    MediaTypeUi.MOVIE -> deleteMovieRatingUseCase(media.id)
+                    MediaTypeUi.TVSHOW -> deleteTvShowRatingUseCase(media.id)
+                }
+                loadMyRatingMedia(selectedMediaType)
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     fun onTabSelected(mediaTypeUi: MediaTypeUi) {
