@@ -125,7 +125,8 @@ class ListsRepositoryImpTest {
         assertThat(result).isEqualTo(
             Response(
                 statusCode = 200,
-                statusMessage = "List deleted successfully"
+                statusMessage = "List deleted successfully",
+                success = true
             )
         )
     }
@@ -144,7 +145,8 @@ class ListsRepositoryImpTest {
         assertThat(result).isEqualTo(
             Response(
                 statusCode = 201,
-                statusMessage = "List created successfully"
+                statusMessage = "List created successfully",
+                success = true
             )
         )
     }
@@ -164,7 +166,8 @@ class ListsRepositoryImpTest {
         assertThat(result).isEqualTo(
             Response(
                 statusCode = 200,
-                statusMessage = "Movie added successfully"
+                statusMessage = "Movie added successfully",
+                success = true
             )
         )
     }
@@ -175,7 +178,8 @@ class ListsRepositoryImpTest {
         val movieId = 456
         val responseDto = ResponseDto(
             statusCode = 200,
-            statusMessage = "Movie removed successfully"
+            statusMessage = "Movie removed successfully",
+            success = true
         )
         coEvery { listsRemoteDataSource.removeMovieFromList(listId, movieId) } returns responseDto
 
@@ -185,7 +189,8 @@ class ListsRepositoryImpTest {
         assertThat(result).isEqualTo(
             Response(
                 statusCode = 200,
-                statusMessage = "Movie removed successfully"
+                statusMessage = "Movie removed successfully",
+                success = true
             )
         )
     }
