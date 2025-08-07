@@ -103,6 +103,11 @@ class MyRatingViewModel @Inject constructor(
     override fun onFavouriteIconClick(media: MediaUiState) {
         tryToExecute(
             execute = {
+                updateState(
+                    screenState.value.copy(
+                        isLoading = true
+                    )
+                )
                 when (media.type) {
                     MediaTypeUi.MOVIE -> deleteMovieRatingUseCase(media.id)
                     MediaTypeUi.TVSHOW -> deleteTvShowRatingUseCase(media.id)
@@ -112,7 +117,8 @@ class MyRatingViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }
@@ -122,6 +128,11 @@ class MyRatingViewModel @Inject constructor(
     fun onTabSelected(mediaTypeUi: MediaTypeUi) {
         if (mediaTypeUi == selectedMediaType) return
         selectedMediaType = mediaTypeUi
+        updateState(
+            screenState.value.copy(
+                isLoading = true
+            )
+        )
         loadMyRatingMedia(mediaTypeUi)
     }
 

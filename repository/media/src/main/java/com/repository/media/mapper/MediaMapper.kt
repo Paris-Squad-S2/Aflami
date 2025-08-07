@@ -101,15 +101,15 @@ fun MediaType.toEntity(): MediaTypeEntity= when (this) {
 }
 
 fun MovieResult.toDomain(type: MediaType): Media? {
-    val parsedDate = runCatching { LocalDate.parse(release_date) }.getOrNull() ?: return null
+    val parsedDate = runCatching { LocalDate.parse(releaseDate ?: "") }.getOrNull() ?: return null
     return Media(
-        id = id,
-        imageUri = poster_path,
-        title = title,
+        id = id ?: -1,
+        imageUri = posterPath.toImageUrl().orEmpty(),
+        title = title.orEmpty(),
         type = type,
-        categoryIds = genre_ids,
+        categoryIds = genreIds,
         yearOfRelease = parsedDate,
-        rating = rating.toDouble()
+        rating = rating ?: 0.0
     )
 }
 
@@ -117,11 +117,15 @@ fun TvShowResult.toDomain(type: MediaType): Media? {
     val parsedDate = runCatching { LocalDate.parse(first_air_date) }.getOrNull() ?: return null
     return Media(
         id = id,
-        imageUri = poster_path,
+        imageUri = poster_path.toImageUrl().orEmpty(),
         title = name,
         type = type,
         categoryIds = genre_ids,
         yearOfRelease = parsedDate,
         rating = vote_average
     )
+}
+
+fun String?.toImageUrl(): String? {
+    return this?.let { "https://image.tmdb.org/t/p/w500/$it" }
 }

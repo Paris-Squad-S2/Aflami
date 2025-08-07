@@ -70,17 +70,17 @@ fun MyRatingScreen(
                 }
             }
         )
-        if (state.value.myRatingMedia.isNotEmpty()) {
+        if (state.value.isLoading) {
+            PageLoadingPlaceHolder(
+                modifier = Modifier.fillMaxSize()
+            )
+        } else if (state.value.myRatingMedia.isNotEmpty()) {
             MyRatingScreenContent(
                 myRatingList = state.value.myRatingMedia,
                 onMediaCardClick = viewModel::onMediaCardClick,
                 onFavouriteIconClick = viewModel::onFavouriteIconClick
             )
-        } else if (state.value.isLoading) {
-            PageLoadingPlaceHolder(
-                modifier = Modifier.fillMaxSize()
-            )
-        }else if (state.value.myRatingMedia.isEmpty()) {
+        } else if (state.value.myRatingMedia.isEmpty() && state.value.errorMessage == null) {
             EmptyRatingContent(
                 isMovie = selectedIndex == 0
             )
