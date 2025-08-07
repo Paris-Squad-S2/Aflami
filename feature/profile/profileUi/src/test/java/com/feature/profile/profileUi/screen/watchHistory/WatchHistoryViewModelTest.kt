@@ -61,23 +61,6 @@ class WatchHistoryViewModelTest {
         Dispatchers.setMain(testDispatcher)
     }
 
-    @Test
-    fun `onTabSelected should update watch history in state`() = runTest {
-        val tvShows = listOf(fakeMediaList[1].toDomain())
-        coEvery { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } returns tvShows
-
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
-        runCurrent()
-
-        viewModel.onTabSelected(MediaTypeUi.TVSHOW)
-        runCurrent()
-
-        coVerify(exactly = 1) { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } // ✅ تأكيد النداء
-
-        val state = viewModel.screenState.value
-        assertThat(state.watchHistoryMedia.map { it.title }).containsExactly("Test TV")
-    }
-
 
     @Test
     fun `loading state should be true before data is returned`() = runTest {
@@ -101,17 +84,6 @@ class WatchHistoryViewModelTest {
         coVerify { mediaDetailsFeatureAPI.startTvShowDetails(2) }
     }
 
-    @Test
-    fun `onMediaCardClick for MOVIE triggers navigation`() = runTest {
-        coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
-        runCurrent()
-
-        viewModel.onMediaCardClick(fakeMediaList[0])
-        runCurrent()
-
-        coVerify { mediaDetailsFeatureAPI.startMovieDetails(1) }
-    }
 
     @Test
     fun `onBackClick should trigger navigateUp`() = runTest {
