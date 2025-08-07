@@ -8,7 +8,7 @@ sealed interface ProfileDestinations : ProfileGraph {
     data object ProfileMainGraph : ProfileGraph
 
     @Serializable
-    data object Profile : ProfileDestination
+    data object ProfileScreen : ProfileDestination
 
     @Serializable
     data object WebView : ProfileDestination

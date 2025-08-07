@@ -2,6 +2,9 @@ package com.feature.profile.profileUi.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavOptions
+import com.feature.profile.profileUi.navigation.ProfileDestination
+import com.feature.profile.profileUi.navigation.ProfileNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -13,7 +16,7 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel<S>(
     initialState: S,
-    //protected val navigator:ProfileNa
+    protected val navigator: ProfileNavigator,
 ) : ViewModel() {
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
@@ -22,6 +25,14 @@ open class BaseViewModel<S>(
     fun updateState(newState: S) {
         privateScreenState.update { newState }
     }
+
+    protected fun navigate(destination: ProfileDestination, navOptions: NavOptions? = null) =
+        viewModelScope.launch {
+            navigator.navigate(destination = destination, navOptions = navOptions)
+        }
+
+    protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
+
 
     protected fun <T> tryToExecute(
         onSuccess: (suspend (T) -> Unit)? = null,

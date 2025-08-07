@@ -4,8 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.feature.profile.profileUi.screen.ProfileScreen
+import com.feature.profile.profileUi.screen.changepassword.ChangePasswordWebViewScreen
 import dagger.hilt.android.EntryPointAccessors
 
 @Composable
@@ -38,8 +41,9 @@ fun ProfileNavGraph(
 
 fun NavGraphBuilder.buildSearchNavGraph(startDestination: ProfileDestination? = null) {
     navigation<ProfileDestinations.ProfileMainGraph>(
-        startDestination = startDestination ?: ProfileDestinations.ProfileMainGraph
+        startDestination = startDestination ?: ProfileDestinations.ProfileScreen
     ) {
-
+        composable<ProfileDestinations.ProfileScreen> { ProfileScreen() }
+        composable<ProfileDestinations.WebView> { ChangePasswordWebViewScreen() }
     }
 }
