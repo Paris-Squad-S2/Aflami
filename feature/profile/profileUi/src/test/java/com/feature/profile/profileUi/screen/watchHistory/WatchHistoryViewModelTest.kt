@@ -97,6 +97,7 @@ class WatchHistoryViewModelTest {
         assertThat(viewModel.screenState.value.watchHistoryMedia).hasSize(2)
     }
 
+
     @Test
     fun `empty result should show no media but no error`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns emptyList()
