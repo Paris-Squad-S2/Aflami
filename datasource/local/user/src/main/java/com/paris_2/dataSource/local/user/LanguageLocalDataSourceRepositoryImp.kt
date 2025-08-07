@@ -7,6 +7,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.core.content.edit
 
 class LanguageLocalDataSourceRepositoryImp @Inject constructor(
     @ApplicationContext private val context: Context,
@@ -25,7 +26,7 @@ class LanguageLocalDataSourceRepositoryImp @Inject constructor(
     override fun getLanguage(): Flow<String> = languageFlow
 
     override suspend fun setLanguage(language: String) {
-        prefs.edit().putString(LANGUAGE_KEY, language).apply()
+        prefs.edit { putString(LANGUAGE_KEY, language) }
     }
 
     fun getLanguageSync(): String {

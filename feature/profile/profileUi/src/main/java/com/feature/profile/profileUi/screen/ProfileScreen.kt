@@ -1,5 +1,6 @@
 package com.feature.profile.profileUi.screen
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +12,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -38,6 +40,7 @@ fun ProfileContent(
     profileInteractionListener: InterActionListener,
     modifier: Modifier = Modifier,
 ) {
+    val context = LocalContext.current
     Column(modifier = modifier.fillMaxSize()) {
         ProfileHeader(modifier = Modifier)
         Column(
@@ -81,7 +84,20 @@ fun ProfileContent(
             isVisible = state.profile.isLanguageDialogOpen,
             onDismiss = profileInteractionListener::onDismissLanguageDialog,
             languageState = state.profile.language,
-            onLanguageSelected = profileInteractionListener::onLanguageApplyClicked
+            onLanguageSelected = {
+                profileInteractionListener.onLanguageApplyClicked(it)
+                val intent =
+                    context.packageManager.getLaunchIntentForPackage(context.packageName)
+                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                context.startActivities(arrayOf(intent))
+//                context.startActivity(
+//                    Intent(
+//                        context,
+//                        Class.forName("com.paris_2.aflami.MainActivity")
+//                    )
+//                )
+
+            }
         )
 
 

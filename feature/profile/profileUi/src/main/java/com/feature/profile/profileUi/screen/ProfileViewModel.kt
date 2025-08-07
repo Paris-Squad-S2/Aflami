@@ -20,7 +20,7 @@ class ProfileViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             settingsUseCase.getLanguage().collect {
-                Log.d("TAG", "ViewModel:$it ")
+                Log.d("TAG", ": In Init view mode from use case $it")
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
@@ -28,8 +28,11 @@ class ProfileViewModel @Inject constructor(
                         )
                     )
                 )
-                Log.d("TAG", "ViewModelState:${screenState.value.profile.language} ")
             }
+            Log.d(
+                "TAG",
+                ": In Init view mode from ViewModel ${screenState.value.profile.language.local}"
+            )
         }
     }
 
@@ -83,7 +86,6 @@ class ProfileViewModel @Inject constructor(
 
     override fun onLanguageApplyClicked(language: Language) {
         viewModelScope.launch {
-            Log.d("TAG", "onLanguageApplyClicked: $language")
             settingsUseCase.setLanguage(language.local)
         }
     }

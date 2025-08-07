@@ -71,6 +71,7 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
     implementation(project(Modules.FEATURE_PROFILE_API))
+    implementation(project(Modules.DOMAIN_USER))
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
