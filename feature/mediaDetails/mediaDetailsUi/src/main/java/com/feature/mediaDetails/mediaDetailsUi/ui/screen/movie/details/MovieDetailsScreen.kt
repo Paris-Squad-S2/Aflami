@@ -23,6 +23,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -61,6 +62,7 @@ import com.paris_2.aflami.designsystem.components.AppSnackBar
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
+import kotlinx.coroutines.delay
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
@@ -83,6 +85,13 @@ fun MovieDetailsScreenContent(
     val movieChips = MovieChips.entries
     val activity = LocalActivity.current
     var currentRating by remember { mutableFloatStateOf(state.movieDetailsUiState.selectedRating) }
+
+    LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
+        if (state.showSnackBar && state.snackBarSuccess) {
+            delay(3000)
+            movieDetailsScreenInteractionListener.onHideSnackBar()
+        }
+    }
 
     if (state.showRatingDialog) {
         RatingDialog(
