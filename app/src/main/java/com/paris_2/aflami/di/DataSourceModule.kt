@@ -34,7 +34,6 @@ import com.datasource.local.media.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.media.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
-import com.datasource.local.onboarding.OnboardingPreferences
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
 import com.paris_2.datasource.remote.user.AuthenticationApi
 import com.paris_2.datasource.remote.user.AuthenticationRemoteDataSourceImpl
@@ -179,9 +178,4 @@ object DataSourceModule {
     fun provideAuthenticationLocalDataSource(
         @ApplicationContext context: Context
     ): AuthenticationLocalDataSource = AuthenticationLocalDataSourceImpl(context)
-
-    @Provides
-    fun provideOnboardingPreferences(@ApplicationContext context: Context): OnboardingPreferences {
-        return OnboardingPreferences(context)
-    }
 }
