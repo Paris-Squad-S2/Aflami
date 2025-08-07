@@ -11,6 +11,7 @@ import com.paris_2.domain.media.exception.PopularMediaException
 import com.paris_2.domain.media.exception.TopRatingMediaException
 import com.paris_2.domain.media.exception.UpComingMediaException
 import com.paris_2.domain.media.repository.MediaRepository
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
@@ -19,17 +20,18 @@ import com.repository.media.mapper.toDomain
 import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toMediaEntity
 import com.repository.media.util.NetworkConnectionChecker
-import com.repository.media.util.detectLanguage
+import kotlinx.coroutines.flow.first
 
 class MediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val mediaRemoteDataSource: MediaRemoteDataSource,
     private val continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
-    private val homeMediaLocalDataSource: HomeMediaLocalDataSource
+    private val homeMediaLocalDataSource: HomeMediaLocalDataSource,
+    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository
 ) : MediaRepository {
-    private val language = detectLanguage()
-    override suspend fun getPopularMedia(): List<Media> {
 
+    override suspend fun getPopularMedia(): List<Media> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.POPULAR)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
@@ -53,6 +55,7 @@ class MediaRepositoryImpl(
         }
     }
     override suspend fun getTopRatingMedia(): List<Media> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.TOP_RATED)
 
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
@@ -78,6 +81,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.UPCOMING)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
