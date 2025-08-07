@@ -10,7 +10,7 @@
     <string name="content_restriction">المحتوه</string>
     <string name="tired_of_watching">تعبت من المشاهده؟</string>
     <string name="setting">الاعدادات</string>
-    <string name="watch_history">Watch history</string>
-    <string name="my_rating">My rating</string>
-    <string name="currunt_lang">ENG</string>
+    <string name="watch_history">سجل المشاهدات</string>
+    <string name="my_rating">تقيمي</string>
+    <string name="currunt_lang">عربي </string>
 </resources>
