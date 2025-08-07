@@ -60,8 +60,7 @@ fun SettingsItem(
                 .padding(start = 12.dp)
                 .weight(1F)
         )
-        content
-
+        content()
 
     }
 }

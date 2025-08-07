@@ -17,9 +17,13 @@ import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun AppSettingDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
+fun AppSettingDialog(
+    isVisible: Boolean,
+    modifier: Modifier = Modifier,
+    onDismiss: () -> Unit,
+) {
     if (isVisible) {
-        AppDialog(onDismiss = {}, title = R.string.setting, modifier = modifier) {
+        AppDialog(onDismiss = onDismiss, title = R.string.setting, modifier = modifier) {
             Column(
                 modifier = Modifier.padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -73,5 +77,5 @@ fun AppSettingDialog(isVisible: Boolean, modifier: Modifier = Modifier) {
 @PreviewLightDark
 @Composable
 private fun AppSettingDialogPrev() {
-    AppSettingDialog(isVisible = true)
+    AppSettingDialog(isVisible = true, onDismiss = {})
 }

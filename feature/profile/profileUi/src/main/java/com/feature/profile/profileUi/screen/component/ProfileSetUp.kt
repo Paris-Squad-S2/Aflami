@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
@@ -23,7 +24,7 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
     ) {
         SettingsItem(
             onClick = interactionListener::onChooseLanguageClicked,
-            title = "Language",
+            title = stringResource(R.string.language),
             icon = R.drawable.ic_translate,
             content = {
                 AppText(
@@ -42,11 +43,11 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
         )
         SettingsItem(
             onClick = {},
-            title = "App Theme",
+            title = stringResource(R.string.app_theme),
             icon = R.drawable.ic_moon,
             content = {
                 AppText(
-                    text = "ENG",
+                    text = stringResource(R.string.currunt_lang),
                     style = Theme.textStyle.label.small,
                     color = Theme.colors.text.body,
                     modifier = Modifier.padding(end = 8.dp)
@@ -60,8 +61,8 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
             }
         )
         SettingsItem(
-            onClick = {},
-            title = "Setting",
+            onClick = interactionListener::onSettingClicked,
+            title = stringResource(R.string.setting),
             icon = R.drawable.ic_customize,
             content = {
                 AppText(

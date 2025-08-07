@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
-
     ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 

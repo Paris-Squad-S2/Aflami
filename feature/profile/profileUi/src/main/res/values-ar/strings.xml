@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="profile">حسابك</string>
-    <string name="app_theme">App Theme</string>
+    <string name="app_theme">السمة</string>
     <string name="english">أنجليزي</string>
     <string name="arabic">عربي</string>
     <string name="language">اللغة</string>
@@ -12,4 +12,5 @@
     <string name="setting">الاعدادات</string>
     <string name="watch_history">Watch history</string>
     <string name="my_rating">My rating</string>
+    <string name="currunt_lang">ENG</string>
 </resources>

@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.component.AppLanguageDialog
+import com.feature.profile.profileUi.screen.component.AppSettingDialog
 import com.feature.profile.profileUi.screen.component.ProfileDetails
 import com.feature.profile.profileUi.screen.component.ProfileHeader
 import com.feature.profile.profileUi.screen.component.ProfileSetUp
@@ -98,6 +99,10 @@ fun ProfileContent(
 //                )
 
             }
+        )
+        AppSettingDialog(
+            isVisible = state.profile.isSettingDialogOpen,
+            onDismiss = profileInteractionListener::onDismissSettingDialog
         )
 
 
