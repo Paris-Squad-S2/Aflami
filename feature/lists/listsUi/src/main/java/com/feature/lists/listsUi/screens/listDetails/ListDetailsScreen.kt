@@ -44,6 +44,7 @@ fun ListDetailsScreenContent(
     state: ListDetailsScreenState,
     listDetailsScreenInteractionListener: ListDetailsScreenInteractionListener,
 ) {
+    val pagingItems = state.mediaItems.collectAsLazyPagingItems()
     Column(
         Modifier
             .fillMaxSize()
@@ -67,7 +68,18 @@ fun ListDetailsScreenContent(
                 )
             )
         )
-        if (state.mediaItems.collectAsLazyPagingItems().itemCount == 0) {
+        if (pagingItems.loadState.refresh == LoadState.Loading) {
+            PageLoadingPlaceHolder(
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+        else if (state.errorMessage != null || pagingItems.loadState.hasError) {
+            NetworkError(
+                modifier = Modifier.fillMaxSize(),
+                onRetry = listDetailsScreenInteractionListener::onRetryListsDetails
+            )
+        }
+        else if (pagingItems.itemCount == 0) {
             PlaceholderView(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -76,18 +88,10 @@ fun ListDetailsScreenContent(
                 spacer = 24.dp,
                 imageSize = 188.dp
             )
-        } else if (state.errorMessage != null || state.mediaItems.collectAsLazyPagingItems().loadState.hasError) {
-            NetworkError(
-                modifier = Modifier.fillMaxSize(),
-                onRetry = listDetailsScreenInteractionListener::onRetryListsDetails
-            )
-        } else if (state.mediaItems.collectAsLazyPagingItems().loadState.refresh == LoadState.Loading) {
-            PageLoadingPlaceHolder(
-                modifier = Modifier.fillMaxSize()
-            )
-        } else {
+        }
+        else {
             ListDetailsResultContent(
-                listDetailResult = state.mediaItems.collectAsLazyPagingItems(),
+                listDetailResult = pagingItems,
                 onMediaCardClick = listDetailsScreenInteractionListener::onMediaCardClick,
                 onRemoveClick = listDetailsScreenInteractionListener::onRemoveClick,
             )

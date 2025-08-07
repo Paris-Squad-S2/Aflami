@@ -28,11 +28,11 @@ class GetListDetailsUseCaseTest {
     @Test
     fun `getListDetailsUseCase when valid page and listId then return list details`() = runTest {
         val page = 1
-        val listId = "list123"
+        val listId = 100
         val mediaItems = listOf(
             Media(
                 id = 1,
-                posterPath = "/poster1.jpg",
+                imageUrl = "/poster1.jpg",
                 title = "Movie 1",
                 voteAverage = 8.5,
                 releaseDate = LocalDate.parse("2023-01-01")
@@ -43,9 +43,9 @@ class GetListDetailsUseCaseTest {
             name = "My Favorite Movies",
             items = mediaItems
         )
-        coEvery { listsRepository.getListDetails(page, listId) } returns expectedListDetails
+        coEvery { listsRepository.getListDetails(page, listId.toString()) } returns expectedListDetails
 
-        val result = getListDetailsUseCase.invoke(page, listId)
+        val result = getListDetailsUseCase.invoke(page, listId.toString())
 
         assertThat(result).isEqualTo(expectedListDetails)
     }
@@ -53,31 +53,31 @@ class GetListDetailsUseCaseTest {
     @Test
     fun `getListDetailsUseCase when valid page and listId then call repository with correct parameters`() = runTest {
         val page = 2
-        val listId = "list456"
+        val listId = 456
         val expectedListDetails = ListDetails(
             id = listId,
             name = "Watchlist",
             items = emptyList()
         )
-        coEvery { listsRepository.getListDetails(page, listId) } returns expectedListDetails
+        coEvery { listsRepository.getListDetails(page, listId.toString()) } returns expectedListDetails
 
-        getListDetailsUseCase.invoke(page, listId)
+        getListDetailsUseCase.invoke(page, listId.toString())
 
-        coEvery { listsRepository.getListDetails(page, listId) }
+        coEvery { listsRepository.getListDetails(page, listId.toString()) }
     }
 
     @Test
     fun `getListDetailsUseCase when empty items list returned then return list details with empty items`() = runTest {
         val page = 1
-        val listId = "list789"
+        val listId = 789
         val expectedListDetails = ListDetails(
             id = listId,
             name = "Empty List",
             items = emptyList()
         )
-        coEvery { listsRepository.getListDetails(page, listId) } returns expectedListDetails
+        coEvery { listsRepository.getListDetails(page, listId.toString()) } returns expectedListDetails
 
-        val result = getListDetailsUseCase.invoke(page, listId)
+        val result = getListDetailsUseCase.invoke(page, listId.toString())
 
         assertThat(result.items).isEmpty()
     }

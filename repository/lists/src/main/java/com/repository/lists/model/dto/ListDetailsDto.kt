@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ListDetailsDto(
-    @SerialName("id") val id: String? = null,
+    @SerialName("id") val id: Int? = null,
     @SerialName("name") val name: String? = null,
-    @SerialName("items") val mediaDetailsDto: List<MediaDetailsDto>? = null,
+    @SerialName("items") val items: List<MediaDetailsDto>? = null,
     @SerialName("created_by") val createdBy: String? = null,
     @SerialName("description") val description: String? = null,
     @SerialName("favorite_count") val favoriteCount: Int? = null,

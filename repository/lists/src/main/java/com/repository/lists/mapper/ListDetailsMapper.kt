@@ -7,17 +7,18 @@ import com.repository.lists.model.dto.MediaDetailsDto
 import kotlinx.datetime.LocalDate
 
 fun ListDetailsDto.toDomain(): ListDetails {
+    val mappedItems = this.items?.map { it.toDomain() } ?: emptyList()
     return ListDetails(
-        id = this.id.orEmpty(),
+        id = this.id?:0,
         name = this.name.orEmpty(),
-        items = this.mediaDetailsDto?.map { it.toDomain() } ?: emptyList()
+        items = mappedItems
     )
 }
 
 fun MediaDetailsDto.toDomain(): Media {
     return Media(
         id = this.id ?: 0,
-        posterPath = this.posterPath.orEmpty(),
+        imageUrl = this.posterPath.toImageUrl().orEmpty(),
         title = this.title.orEmpty(),
         voteAverage = this.voteAverage ?: 0.0,
         releaseDate = try {
@@ -26,4 +27,8 @@ fun MediaDetailsDto.toDomain(): Media {
             LocalDate(9999, 1, 1)
         }
     )
+}
+
+fun String?.toImageUrl(): String? {
+    return this?.let { "https://image.tmdb.org/t/p/w500/$it" }
 }

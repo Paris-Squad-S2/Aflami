@@ -5,17 +5,14 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.map
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
-import com.feature.lists.listsUi.pagging.PagingSourceFactory
+import com.feature.lists.listsUi.pagging.PagingSource
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,9 +21,8 @@ class ListDetailsViewModel @Inject constructor(
     private val getListDetailsUseCase: GetListDetailsUseCase,
     private val removeMovieFromListUseCase: RemoveMovieFromListUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val addMovieToListUseCase: AddMovieToListUseCase,
     savedStateHandle: SavedStateHandle
-): BaseViewModel<ListDetailsScreenState>(
+) : BaseViewModel<ListDetailsScreenState>(
     initialState = ListDetailsScreenState(),
 ), ListDetailsScreenInteractionListener {
     private val listId = savedStateHandle.toRoute<ListDestinations.ListDetails>().listId
@@ -36,52 +32,67 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     override fun onMediaCardClick(mediaUiState: MediaUiState) {
-        tryToExecute(
-            execute = {
-                mediaDetailsFeatureAPI.startMovieDetails(movieId = mediaUiState.id)
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage
-                    )
+        tryToExecute(execute = {
+            mediaDetailsFeatureAPI.startMovieDetails(movieId = mediaUiState.id)
+        }, onError = { errorMessage ->
+            emitState(
+                screenState.value.copy(
+                    errorMessage = errorMessage
                 )
-            }
-        )
+            )
+        })
     }
 
     private fun getListDetails(listId: String) {
+        emitState(
+            screenState.value.copy(
+                isLoading = true, errorMessage = null
+            )
+        )
+
         tryToExecute(
             execute = {
                 Pager(
                     config = PagingConfig(
-                        pageSize = 20,
-                        enablePlaceholders = false
+                        pageSize = 20, enablePlaceholders = false
                     ),
                     pagingSourceFactory = {
-                        PagingSourceFactory.createForListDetails(
-                            listId = listId,
-                            getListDetailsUseCase = getListDetailsUseCase::invoke
+                        PagingSource { page: Int ->
+                            val listDetails = getListDetailsUseCase.invoke(page, listId)
+                            listDetails.items.map { it.toUiState() }
+                        }
+                    }
+                ).flow
+            },
+            onSuccess = { pagingFlow ->
+                tryToExecute(
+                    execute = {
+                        val listDetails = getListDetailsUseCase.invoke(1, listId)
+                        listDetails.name
+                    },
+                    onSuccess = { name ->
+                        emitState(
+                            screenState.value.copy(
+                                listTitle = name,
+                                mediaItems = pagingFlow,
+                                isLoading = false,
+                                errorMessage = null
+                            )
+                        )
+                    },
+                    onError = { errorMessage ->
+                        emitState(
+                            screenState.value.copy(
+                                errorMessage = errorMessage, isLoading = false
+                            )
                         )
                     }
-                ).flow.map { pagingData ->
-                    pagingData.map { media -> media.toUiState() }
-                }
-            },
-            onSuccess = { pagingDataFlow ->
-                emitState(
-                    screenState.value.copy(
-                        mediaItems = pagingDataFlow,
-                        isLoading = false,
-                        errorMessage = null
-                    )
                 )
             },
             onError = { errorMessage ->
                 emitState(
                     screenState.value.copy(
-                        errorMessage = errorMessage,
-                        isLoading = false
+                        errorMessage = errorMessage, isLoading = false
                     )
                 )
             }
@@ -89,42 +100,34 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     private fun deleteList(listId: String) {
-        tryToExecute(
-            execute = {
-                deleteListUseCase.invoke(listId)
-            },
-            onSuccess = {
-                Log.i("TAG", "deleteItemFromList: $it")
-                navigateUp()
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
+        tryToExecute(execute = {
+            val result = deleteListUseCase.invoke(listId)
+            result
+        }, onSuccess = {
+
+            navigateUp()
+        }, onError = { errorMessage ->
+            emitState(
+                screenState.value.copy(
+                    errorMessage = errorMessage,
                 )
-            }
-        )
+            )
+        })
     }
 
     private fun removeMovieFromList(listId: String, movieId: Int) {
-        tryToExecute(
-            execute = {
-                removeMovieFromListUseCase.invoke(listId, movieId)
-            },
-            onSuccess = {
-                Log.i("TAG", "removeMovieFromList: $it")
-                // Refresh the list details to update the UI
-                getListDetails(listId)
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
+        tryToExecute(execute = {
+            val result = removeMovieFromListUseCase.invoke(listId, movieId)
+            result
+        }, onSuccess = {
+            getListDetails(listId)
+        }, onError = { errorMessage ->
+            emitState(
+                screenState.value.copy(
+                    errorMessage = errorMessage,
                 )
-            }
-        )
+            )
+        })
     }
 
     override fun onRemoveClick(mediaUiState: MediaUiState) {
