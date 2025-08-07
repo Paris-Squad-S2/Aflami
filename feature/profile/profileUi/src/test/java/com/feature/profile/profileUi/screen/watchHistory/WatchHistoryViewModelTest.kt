@@ -142,6 +142,7 @@ class WatchHistoryViewModelTest {
         runCurrent()
 
         viewModel.onTabSelected(MediaTypeUi.TVSHOW)
+
         runCurrent()
 
         coVerify { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) }
@@ -155,6 +156,7 @@ class WatchHistoryViewModelTest {
         runCurrent()
 
         viewModel.onRetry()
+
         runCurrent()
 
         coVerify(exactly = 2) { filterWatchHistoryUseCase(DomainMediaType.MOVIE) }
