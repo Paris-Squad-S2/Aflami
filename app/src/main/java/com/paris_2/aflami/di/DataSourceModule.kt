@@ -28,6 +28,8 @@ import com.datasource.local.datasource.TvShowLocalDataSourceImp
 import com.datasource.local.datasource.TvShowReviewLocalDataSourceImp
 import com.datasource.local.datasource.TvShowSeasonLocalDataSourceImp
 import com.datasource.local.datasource.TvShowSimilarLocalDataSourceImpl
+import com.datasource.local.media.dao.ContinueWatchingDao
+import com.datasource.local.media.datasource.ContinueWatchingLocalDataSourceImpl
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
 import com.datasource.local.media.dao.HomeMediaDao
@@ -52,12 +54,16 @@ import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
 import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
+import com.repository.media.datasource.local.CountriesLocalDataSource
+import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -73,6 +79,16 @@ object DataSourceModule {
     fun provideHistoryLocalDataSource(
         searchHistoryDao: SearchHistoryDao,
     ): HistoryLocalDataSource = HistoryLocalDataSourceImpl(searchHistoryDao)
+
+    @Provides
+    @Singleton
+    fun provideHomeLocalDataSource(
+        dao: HomeMediaDao,
+        workManager: WorkManager,
+    ): HomeMediaLocalDataSource = HomeMediaLocalDataSourceImpl(
+        dao,
+        workManager = workManager
+    )
 
     @Provides
     @Singleton
@@ -157,8 +173,8 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideHomeMediaLocalDataSource(
-        mediaDao: HomeMediaDao,
-    ): HomeMediaLocalDataSource = HomeMediaLocalDataSourceImpl(mediaDao)
+        mediaDao: ContinueWatchingDao
+    ): ContinueWatchingLocalDataSource = ContinueWatchingLocalDataSourceImpl(mediaDao)
 
     @Provides
     @Singleton

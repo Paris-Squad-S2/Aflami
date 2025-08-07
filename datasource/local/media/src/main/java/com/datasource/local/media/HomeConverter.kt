@@ -2,6 +2,7 @@ package com.datasource.local.media
 
 import kotlinx.serialization.json.Json
 import androidx.room.TypeConverter
+import com.repository.media.entity.Category
 import com.repository.media.entity.MediaTypeEntity
 import kotlinx.serialization.builtins.ListSerializer
 import kotlinx.serialization.builtins.serializer
@@ -25,5 +26,15 @@ class HomeConverter {
 
     @TypeConverter
     fun fromStringToMediaType(type: String): MediaTypeEntity = MediaTypeEntity.valueOf(type)
+
+    @TypeConverter
+    fun fromCategory(category: Category): String {
+        return category.name
+    }
+
+    @TypeConverter
+    fun toCategory(category: String): Category {
+        return Category.valueOf(category)
+    }
 
 }

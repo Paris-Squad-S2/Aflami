@@ -28,6 +28,7 @@ import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
+import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.media.repository.CategoriesRepositoryImpl
@@ -46,6 +47,18 @@ import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
+import com.repository.media.datasource.local.CountriesLocalDataSource
+import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.remote.GenresRemoteDataSource
+import com.repository.media.datasource.remote.SearchRemoteDataSource
+import com.repository.media.repository.CategoriesRepositoryImpl
+import com.repository.media.repository.CountryRepositoryImpl
+import com.repository.media.repository.GenresInteractionRepositoryImpl
+import com.repository.media.repository.SearchHistoryRepositoryImpl
+import com.repository.media.repository.SearchMediaRepositoryImpl
+import com.repository.media.util.NetworkConnectionChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -125,11 +138,12 @@ object RepositoryModule {
     fun provideDetailedMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
+        continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
         homeMediaLocalDataSource: HomeMediaLocalDataSource,
     ): MediaRepository = MediaRepositoryImpl(
         networkConnectionChecker,
         mediaRemoteDataSource,
-        homeMediaLocalDataSource
+        continueWatchingLocalDataSource,homeMediaLocalDataSource
     )
 
     @Provides

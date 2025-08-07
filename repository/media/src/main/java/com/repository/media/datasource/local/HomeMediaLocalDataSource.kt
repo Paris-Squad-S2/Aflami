@@ -1,8 +1,10 @@
 package com.repository.media.datasource.local
 
-import com.repository.media.entity.MediaEntity
+import com.repository.media.entity.Category
+import com.repository.media.entity.HomeMediaEntity
 
 interface HomeMediaLocalDataSource {
-    suspend fun addMedia(media: MediaEntity)
-    suspend fun getAllMedia(): List<MediaEntity>
+    suspend fun addMediaList(mediaList: List<HomeMediaEntity>)
+    suspend fun getMediaListByCategory(category: Category): List<HomeMediaEntity>
+    suspend fun clearMediaByCategory(category: Category)
 }
