@@ -29,5 +29,5 @@ interface TvShowDetailsRemoteDataSource {
     ): EpisodeVideoDto
     suspend fun addRatingToTvShow(movieId: Int, rating: Float): Boolean
 
-    suspend fun deleteTvShowRating(movieId: Int): Boolean
+    suspend fun deleteTvShowRating(tvShowId : Int): Boolean
 }

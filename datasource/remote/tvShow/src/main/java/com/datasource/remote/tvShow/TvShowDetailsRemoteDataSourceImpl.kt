@@ -77,8 +77,8 @@ class TvShowDetailsRemoteDataSourceImpl @Inject constructor(
         return !(response.statusCode != STATUS_CODE_SUCCESS && response.statusCode != STATUS_CODE_UPDATED)
     }
 
-    override suspend fun deleteTvShowRating(movieId: Int): Boolean {
-        return retrofitTvShowDetailsApiService.deleteTvShowRating(movieId).success
+    override suspend fun deleteTvShowRating(tvShowId : Int): Boolean {
+        return retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId).success
     }
 
     companion object {

@@ -24,4 +24,6 @@ interface TvShowRepository {
         episodeNumber: Int,
     ): List<EpisodeVideo>
     suspend fun addRatingToTvShow(movieId: Int, rating: Float)
+
+    suspend fun deleteTvShowRating(tvShowId: Int)
 }
