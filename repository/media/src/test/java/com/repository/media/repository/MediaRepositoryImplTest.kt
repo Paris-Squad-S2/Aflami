@@ -6,6 +6,7 @@ import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
@@ -68,6 +69,7 @@ class MediaRepositoryImplTest {
         coVerify(exactly = 0) { remote.getPopularMovies(any()) }
     }
 
+
     @Test
     fun `getPopularMedia aggregates and sorts by voteAverage descending`() = runTest {
         val movie1 = MovieDto(
@@ -124,6 +126,16 @@ class MediaRepositoryImplTest {
         assertThat(result).hasSize(1)
         coVerify(exactly = 0) { remote.getTopRatedMovies(any()) }
     }
+
+    @Test
+    fun `getTopRatingMedia throws NoInternetConnectionException when offline`() = runTest {
+        every { networkChecker.isConnected } returns MutableStateFlow(false)
+
+        assertThrows<NoInternetConnectionException> {
+            repo.getTopRatingMedia()
+        }
+    }
+
 
 
     @Test
@@ -192,6 +204,16 @@ class MediaRepositoryImplTest {
     }
 
     @Test
+    fun `getUpComingMedia throws NoInternetConnectionException when offline`() = runTest {
+        every { networkChecker.isConnected } returns MutableStateFlow(false)
+
+        assertThrows<NoInternetConnectionException> {
+            repo.getUpComingMedia()
+        }
+    }
+
+
+    @Test
     fun `getNowPlayingMedia returns only now playing movies`() = runTest {
         val movie = MovieDto(
             id = 105,
@@ -205,6 +227,15 @@ class MediaRepositoryImplTest {
         coEvery { remote.getNowPlayingMovies().results } returns listOf(movie)
         val result = repo.getNowPlayingMedia()
         assertThat(result.first().id).isEqualTo(105)
+    }
+
+    @Test
+    fun `getNowPlayingMedia throws NoInternetConnectionException when offline`() = runTest {
+        every { networkChecker.isConnected } returns MutableStateFlow(false)
+
+        assertThrows<NoInternetConnectionException> {
+            repo.getNowPlayingMedia()
+        }
     }
 
     @Test
@@ -259,4 +290,19 @@ class MediaRepositoryImplTest {
             repo.getContinueWatchingMedia()
         }
     }
+
+
+    @Test
+    fun `getRatedMedia throws NoRatedMediaFoundException when remote call fails`() = runTest {
+        coEvery { remote.getRatedMovies(any(), any()) } throws RuntimeException("Failed")
+        coEvery { remote.getRatedTvShows(any(), any()) } returns mockk(relaxed = true)
+
+        assertThrows<NoRatedMediaFoundException> {
+            repo.getRatedMedia(accountId = 1)
+        }
+    }
+
+
+
+
 }
