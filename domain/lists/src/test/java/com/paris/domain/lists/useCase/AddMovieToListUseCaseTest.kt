@@ -30,7 +30,8 @@ class AddMovieToListUseCaseTest {
         val movieId = 456
         val expectedResponse = Response(
             statusCode = 200,
-            statusMessage = "Movie added successfully"
+            statusMessage = "Movie added successfully",
+            success = true
         )
         coEvery { listsRepository.addMovieToList(listId, movieId) } returns expectedResponse
 
@@ -48,7 +49,8 @@ class AddMovieToListUseCaseTest {
         val movieId = 789
         val expectedResponse = Response(
             statusCode = 200,
-            statusMessage = "Movie added successfully"
+            statusMessage = "Movie added successfully",
+            success = true
         )
         coEvery { listsRepository.addMovieToList(listId, movieId) } returns expectedResponse
 
@@ -66,7 +68,8 @@ class AddMovieToListUseCaseTest {
         val movieId = 123
         val expectedResponse = Response(
             statusCode = 404,
-            statusMessage = "List not found"
+            statusMessage = "List not found",
+            success = false
         )
         coEvery { listsRepository.addMovieToList(listId, movieId) } returns expectedResponse
 
