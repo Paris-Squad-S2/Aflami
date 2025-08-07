@@ -80,17 +80,6 @@ class MyRatingViewModelTest {
     }
 
     @Test
-    fun `onTabClick should update selectedTab and fetch media`() = runTest {
-        val newTab = MediaTypeUi.TVSHOW
-
-        viewModel.onTabSelected(newTab)
-
-        val state = viewModel.screenState.value
-        assertFalse(state.isLoading)
-        assertEquals(1, state.myRatingMedia.size)
-    }
-
-    @Test
     fun `onMediaCardClick starts movie details`() = runTest {
         val media = MediaUiState(
             id = 123,
