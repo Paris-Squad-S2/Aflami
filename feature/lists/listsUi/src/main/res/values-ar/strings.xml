@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="no_items_yet">لا توجد عناصر محفوظة هنا!</string>
+    <string name="create_new_list">إنشاء قائمة جديدة</string>
+    <string name="list_title">عنوان القائمة</string>
+    <string name="add">إضافة</string>
+    <string name="confirm_delete">هل أنت متأكد من الاستمرار في الحذف؟</string>
+    <string name="delete">حذف</string>
+    <string name="no_lists_yet">لا توجد قوائم بعد!</string>
+    <string name="create_your_first_list">عقلنا لا يزال فارغًا، اضغط على + وابدأ في حفظ العناصر والعروض المفضلة لديك!</string>
+</resources>

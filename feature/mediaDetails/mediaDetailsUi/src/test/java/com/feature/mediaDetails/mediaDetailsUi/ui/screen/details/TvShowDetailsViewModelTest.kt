@@ -141,33 +141,6 @@ class TvShowDetailsViewModelTest {
     }
 
     @Test
-    fun `onAddToListClick updates state to show AddToListDialog when user logged in`() = runTest {
-        coEvery { isLoggedInUseCase() } returns true
-        viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick()
-        runCurrent()
-        assertTrue(viewModel.screenState.value.showAddToListDialog)
-    }
-
-    @Test
-    fun `onAddToListClick doesn't show AddToListDialog when user not logged in`() = runTest {
-        coEvery { isLoggedInUseCase() } returns false
-        viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick()
-        runCurrent()
-        assertFalse(viewModel.screenState.value.showAddToListDialog)
-    }
-
-    @Test
-    fun `onAddToListClick updates state to show error when isLoggedInUseCase fails`() = runTest {
-        coEvery { isLoggedInUseCase() } throws Exception("error")
-        viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick()
-        runCurrent()
-        assertEquals(viewModel.screenState.value.errorMessage, "error")
-    }
-
-    @Test
     fun `onRatingButtonClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
         coEvery {

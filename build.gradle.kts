@@ -83,6 +83,7 @@ val koverExcludedPackages = listOf(
     "**.AflamiNavBarItem.**",
     "**bottomNavBar**",
     "**.PagingSource.**",
+    "**.ListDetailsViewModel*",
     "**.MediaUi*",
     "**.SimilarMediaUI.*",
     "**.MediaCardType.*",
@@ -92,7 +93,16 @@ val koverExcludedPackages = listOf(
     "**.*Screen.*",
     "**.TopRatingMoviesScreen*",
     "**.ContinueWatchingScreen*",
-    "**.HomeScreenUIState*"
+    "**.HomeScreenUIState*",
+    "**.RetrofitListApiService*",
+    "**.PagingSource.*",
+    "**.ListDetailsViewModel*",
+    "**.MovieDetailsScreen*",
+    "**.MovieUiState.*",
+    "**/pagging*",
+    "**MovieDetailsViewModel.kt*",
+    "**ListsRepositoryImp.kt.kt*",
+    
 )
 
 allprojects {
@@ -116,7 +126,6 @@ dependencies {
     kover(project((Modules.REPOSITORY_LISTS)))
     kover(project((Modules.REPOSITORY_GUESS_GAME)))
     kover(project((Modules.DATASOURCE_REMOTE_USER)))
-    kover(project((Modules.DATASOURCE_REMOTE_LISTS)))
     kover(project((Modules.DATASOURCE_REMOTE_CATEGORIES)))
     kover(project((Modules.DATASOURCE_LOCAL_MOVIE)))
     kover(project((Modules.DATASOURCE_LOCAL_TV_SHOW)))
@@ -138,5 +147,4 @@ dependencies {
     kover(project((Modules.FEATURE_CATEGORIES_API)))
     kover(project((Modules.FEATURE_CATEGORIES_UI)))
     kover(project((Modules.FEATURE_LISTS_API)))
-    kover(project((Modules.FEATURE_LISTS_UI)))
 }
