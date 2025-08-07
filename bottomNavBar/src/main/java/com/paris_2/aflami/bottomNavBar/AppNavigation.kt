@@ -8,6 +8,7 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
+import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,6 +19,8 @@ class AppNavigation : ComponentActivity() {
 
     @Inject
     lateinit var appNavigator: AppNavigator
+    @Inject
+    lateinit var onBoardingFeature: OnBoardingFeatureAPI
     @Inject
     lateinit var homeFeature: HomeFeatureAPI
     @Inject
@@ -36,6 +39,7 @@ class AppNavigation : ComponentActivity() {
             AflamiTheme {
                 AppScaffold(
                     appNavigator = appNavigator,
+                    onBoardingFeature = onBoardingFeature,
                     homeFeature = homeFeature,
                     listsFeature = listsFeature,
                     categoriesFeature = categoriesFeature,

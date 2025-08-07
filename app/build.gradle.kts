@@ -165,6 +165,8 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    implementation(project(Modules.FEATURE_ONBOARDING_API))
+    implementation(project(Modules.FEATURE_ONBOARDING_UI))
 
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_LISTS_UI))

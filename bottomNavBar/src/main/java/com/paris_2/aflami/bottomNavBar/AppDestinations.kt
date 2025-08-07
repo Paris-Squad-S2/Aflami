@@ -9,6 +9,9 @@ sealed interface AppDestinations : AppGraph {
     data object AppGraph1 : AppGraph
 
     @Serializable
+    data object OnBoardingFeature : AppDestination
+
+    @Serializable
     data object HomeFeature : AppDestination
 
     @Serializable

@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.domain.onboarding.usecase.CompleteOnboardingUseCase
 import com.feature.onboarding.onboardingUi.R
+import com.feature.onboarding.onboardingUi.navigation.OnBoardingDestinations
+import com.feature.onboarding.onboardingUi.navigation.OnBoardingNavigator
 import com.paris_2.aflami.designsystem.components.UiDrawable
 import com.paris_2.aflami.designsystem.components.UiText
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val completeOnboardingUseCase: CompleteOnboardingUseCase,
+    val navigator: OnBoardingNavigator,
 ) : ViewModel() {
 
 
@@ -25,12 +28,14 @@ class OnBoardingViewModel @Inject constructor(
     private val _currentScreen = mutableIntStateOf(0)
     val currentScreen: State<Int> get() = _currentScreen
 
-    fun completeOnboarding(onCompleted: () -> Unit) {
+
+    fun completeOnboarding() {
         viewModelScope.launch {
             completeOnboardingUseCase()
-            onCompleted()
+            navigator.navigate(OnBoardingDestinations.HomeScreen)
         }
     }
+
     fun getTitle(): UiText {
         return when (_currentScreen.intValue) {
 

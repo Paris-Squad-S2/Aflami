@@ -1,0 +1,3 @@
+package com.feature.onboarding.onboardingUi.navigation
+
+interface OnBoardingGraph

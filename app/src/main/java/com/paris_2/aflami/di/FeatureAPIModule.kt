@@ -22,6 +22,11 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.MediaDetailsFeatureAPIImpl
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigatorImpl
+import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
+import com.feature.onboarding.onboardingUi.OnBoardingFeatureAPIImpl
+import com.feature.onboarding.onboardingUi.navigation.OnBoardingDestinations
+import com.feature.onboarding.onboardingUi.navigation.OnBoardingNavigator
+import com.feature.onboarding.onboardingUi.navigation.OnBoardingNavigatorImpl
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileUi.ProfileFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchDestinations
@@ -47,6 +52,13 @@ object FeatureAPIModule {
     @Provides
     @Singleton
     fun provideAppNavigator(): AppNavigator = AppNavigatorImpl(AppDestinations.AppGraph1)
+    @Provides
+    @Singleton
+    fun provideOnBoardingNavigator(): OnBoardingNavigator = OnBoardingNavigatorImpl(startGraph = OnBoardingDestinations.OnBoardingGraph1)
+
+    @Provides
+    @Singleton
+    fun provideOnBoardingFeatureAPI(): OnBoardingFeatureAPI = OnBoardingFeatureAPIImpl()
 
     @Provides
     @Singleton

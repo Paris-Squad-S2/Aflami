@@ -16,6 +16,7 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
+import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.paris_2.aflami.designsystem.components.AppScaffold
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun AppScaffold(
     appNavigator: AppNavigator,
+    onBoardingFeature: OnBoardingFeatureAPI,
     homeFeature: HomeFeatureAPI,
     listsFeature: ListsFeatureAPI,
     categoriesFeature: CategoriesFeatureAPI,
@@ -55,11 +57,12 @@ internal fun AppScaffold(
             AppNavGraph(
                 navigator = appNavigator,
                 navController = navController,
+                onboardingFeature= onBoardingFeature,
                 homeFeature = homeFeature,
                 listsFeature = listsFeature,
                 categoriesFeature = categoriesFeature,
                 letsPlayFeature = letsPlayFeature,
-                profileFeature = profileFeature
+                profileFeature = profileFeature,
             )
         },
         bottomBar = {

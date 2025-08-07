@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.feature.onboarding.onboardingUi.R
 import com.feature.onboarding.onboardingUi.components.OnboardingContent
@@ -34,8 +35,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OnboardingScreen(
-    viewModel: OnBoardingViewModel,
-    navController: NavHostController,
+    viewModel: OnBoardingViewModel= hiltViewModel(),
 ) {
     val pageCount = 4
     val pagerState = rememberPagerState(pageCount = { pageCount })
@@ -68,11 +68,7 @@ fun OnboardingScreen(
         }
         CustomButton(
             onClick = {
-                viewModel.completeOnboarding {
-                    navController.navigate("HomeScreen") {
-                        popUpTo("Onboarding") { inclusive = true }
-                    }
-                }
+                viewModel.completeOnboarding()
             },
             text = R.string.skip,
             type = ButtonType.TextButton,
@@ -137,11 +133,7 @@ fun OnboardingScreen(
                         modifier = Modifier.size(64.dp),
                         onClick = {
                             if (pagerState.currentPage == 3) {
-                                viewModel.completeOnboarding {
-                                    navController.navigate("HomeScreen") {
-                                        popUpTo("Onboarding") { inclusive = true }
-                                    }
-                                }
+                                viewModel.completeOnboarding()
                             } else
                             scope.launch {
                                 pagerState.animateScrollToPage(pagerState.currentPage + 1)
