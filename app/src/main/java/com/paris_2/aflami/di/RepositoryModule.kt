@@ -94,11 +94,12 @@ object RepositoryModule {
     fun provideCategoriesRepository(
         networkConnectionChecker: NetworkConnectionChecker,
         genresRemoteDataSource: GenresRemoteDataSource,
-
-        ): CategoriesRepository {
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    ): CategoriesRepository {
         return CategoriesRepositoryImpl(
             networkConnectionChecker,
-            genresRemoteDataSource
+            genresRemoteDataSource,
+            languageLocalDataSourceRepository
         )
     }
 

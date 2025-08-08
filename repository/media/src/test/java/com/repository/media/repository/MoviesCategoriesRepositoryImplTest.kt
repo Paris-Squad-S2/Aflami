@@ -1,8 +1,9 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.exception.NoCategoriesFoundException
-import com.paris_2.domain.media.entity.Category
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
@@ -21,6 +22,7 @@ class MoviesCategoriesRepositoryImplTest {
 
     private val genresRemoteDataSource: GenresRemoteDataSource = mockk()
     private val networkChecker: NetworkConnectionChecker = mockk()
+    private val languageLocalDataSourceRepository = mockk<LanguageLocalDataSourceRepository>()
     private lateinit var repo: MoviesCategoriesRepositoryImpl
 
     @BeforeEach
@@ -28,7 +30,8 @@ class MoviesCategoriesRepositoryImplTest {
         every { networkChecker.isConnected } returns MutableStateFlow(true)
         repo = MoviesCategoriesRepositoryImpl(
             networkConnectionChecker = networkChecker,
-            genresRemoteDataSource = genresRemoteDataSource
+            genresRemoteDataSource = genresRemoteDataSource,
+            languageLocalDataSourceRepository = languageLocalDataSourceRepository
         )
     }
 

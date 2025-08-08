@@ -20,7 +20,6 @@ import com.feature.lists.listsUi.ListsFeatureAPIImpl
 import com.feature.lists.listsUi.navigation.ListDestinations
 import com.feature.lists.listsUi.navigation.ListNavigator
 import com.feature.lists.listsUi.navigation.ListNavigatorImpl
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.MediaDetailsFeatureAPIImpl
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations

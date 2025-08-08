@@ -4,6 +4,7 @@ import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoMediaForActorException
 import com.paris_2.domain.media.exception.NoMediaForCountryException
 import com.paris_2.domain.media.exception.NoMediaForSearchException
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.media.dto.search.KnownForDto
@@ -37,13 +38,15 @@ class SearchMediaRepositoryImplTest {
     private val networkConnectionChecker = mockk<NetworkConnectionChecker>()
     private val searchRemoteDataSource = mockk<SearchRemoteDataSource>()
     private val historyLocalDataSource = mockk<HistoryLocalDataSource>()
+    private val languageLocalDataSourceRepository = mockk<LanguageLocalDataSourceRepository>()
 
     @BeforeEach
     fun setup() {
         repository = SearchMediaRepositoryImpl(
             networkConnectionChecker,
             searchRemoteDataSource,
-            historyLocalDataSource
+            historyLocalDataSource,
+            languageLocalDataSourceRepository
         )
     }
 

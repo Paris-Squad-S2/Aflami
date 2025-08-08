@@ -3,14 +3,18 @@ package com.repository.media.repository
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.exception.NoCategoriesFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
 import com.repository.media.util.NetworkConnectionChecker
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.every
+import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -20,13 +24,15 @@ class CategoriesRepositoryImplTest {
     private lateinit var repository: CategoriesRepositoryImpl
     private val networkConnectionChecker = mockk<NetworkConnectionChecker>(relaxed = true)
     private val genresRemoteDataSource = mockk<GenresRemoteDataSource>()
+    private val languageLocalDataSourceRepository = mockk<LanguageLocalDataSourceRepository>()
     private val language = "en"
 
     @BeforeEach
     fun setUp() {
         repository = CategoriesRepositoryImpl(
             networkConnectionChecker,
-            genresRemoteDataSource
+            genresRemoteDataSource,
+            languageLocalDataSourceRepository
         )
     }
 
@@ -55,6 +61,7 @@ class CategoriesRepositoryImplTest {
         }
         assertNotNull(exception)
     }
+
     @Test
     fun `getAllCategories should throw NoCategoriesFoundException on exception`() = runTest {
 

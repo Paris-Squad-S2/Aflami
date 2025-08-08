@@ -41,7 +41,8 @@ class MediaRepositoryImplTest {
         repo = MediaRepositoryImpl(
             networkChecker, remote,
             continueWatchingLocalDataSource = local,
-            homeMediaLocalDataSource = homeLocal
+            homeMediaLocalDataSource = homeLocal,
+            languageLocalDataSourceRepository = mockk()
         )
     }
 
@@ -56,10 +57,11 @@ class MediaRepositoryImplTest {
                 releaseDate = "2023-01-01",
                 genreIds = listOf(1, 2),
                 type = MediaTypeEntity.MOVIE,
-                category = Category.POPULAR
+                category = Category.POPULAR,
+                language = "en"
             )
         )
-        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR) } returns localMedia
+        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR,"en") } returns localMedia
 
         val result = repo.getPopularMedia()
 
@@ -114,10 +116,11 @@ class MediaRepositoryImplTest {
                 releaseDate = "2022-01-01",
                 genreIds = listOf(3),
                 type = MediaTypeEntity.TV_SHOW,
-                category = Category.POPULAR
+                category = Category.POPULAR,
+                language = "en"
             )
         )
-        coEvery { homeLocal.getMediaListByCategory(Category.TOP_RATED) } returns localMedia
+        coEvery { homeLocal.getMediaListByCategory(Category.TOP_RATED,"en") } returns localMedia
 
         val result = repo.getTopRatingMedia()
 
@@ -163,10 +166,11 @@ class MediaRepositoryImplTest {
                 releaseDate = "2025-01-01",
                 genreIds = listOf(5),
                 type = MediaTypeEntity.MOVIE,
-                category = Category.POPULAR
+                category = Category.POPULAR,
+                language = "en"
             )
         )
-        coEvery { homeLocal.getMediaListByCategory(Category.UPCOMING) } returns localMedia
+        coEvery { homeLocal.getMediaListByCategory(Category.UPCOMING,"en") } returns localMedia
 
         val result = repo.getUpComingMedia()
 
