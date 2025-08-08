@@ -76,7 +76,7 @@ private fun ListsScreenContent(
     ) {
         AppTopBar(
             title = stringResource(R.string.lists),
-            trailingIcons = if (!state.isLoading) {
+            trailingIcons = if (!state.isLoading&&state.isLoggedIn) {
                 listOf(
                     iconItemWithDefaults(icon = Icons.Default.Add, onClick = { action.onAddClicked() })
                 )
