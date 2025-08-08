@@ -1,14 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.serialization)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.hilt)
+    id("com.google.devtools.ksp")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
-    namespace = "com.feature.authentication.authenticationUi"
+    namespace = "com.paris_2.aflami.bottomNavBar.bottomNavBarUI"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
@@ -32,17 +32,14 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
+        jvmTarget = "11"
     }
+
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
-
-tasks.withType<Test>().configureEach {
-    useJUnitPlatform()
-}
-
 
 dependencies {
 
@@ -56,40 +53,28 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
-    //test
     testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
-    // Junit 5
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(kotlin("test"))
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
+    androidTestImplementation(libs.androidx.espresso.core)
 
     //Navigation
     implementation(libs.navigation.compose)
 
-    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    //Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+
+
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_LISTS_API))
+    implementation(project(Modules.FEATURE_CATEGORIES_API))
+    implementation(project(Modules.FEATURE_GUESS_GAME_API))
+    implementation(project(Modules.FEATURE_PROFILE_API))
     implementation(project(Modules.FEATURE_BOTTOM_NAV_BAR_API))
     implementation(project(Modules.DOMAIN_USER))
-
-    //WebView
-    implementation(libs.androidx.webkit)
-
-    //kotlinx serialization
-    implementation(libs.kotlinx.serialization.json)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
 }
