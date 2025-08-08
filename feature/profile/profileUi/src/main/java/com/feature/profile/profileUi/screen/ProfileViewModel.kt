@@ -6,6 +6,7 @@ import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.ProfileDestinations
 import com.feature.profile.profileUi.navigation.ProfileNavigator
+import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,6 +19,7 @@ class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
+    private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
     navigator: ProfileNavigator,
 ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState(), navigator), InterActionListener {
@@ -83,7 +85,8 @@ class ProfileViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 profile = screenState.value.profile.copy(
-                    isLogoutDialogOpen = true
+                    isLogoutDialogOpen = true,
+                    isSettingDialogOpen = false
                 )
             )
         )
@@ -105,7 +108,15 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLogoutApplyClicked() {
-        authenticationFeatureAPI()
+        tryToExecute(
+            onSuccess = {
+                authenticationFeatureAPI()
+            },
+            onError = {},
+            execute = {
+                deleteSessionIdUseCase()
+            }
+        )
     }
 
     override fun onChangePasswordClicked() {

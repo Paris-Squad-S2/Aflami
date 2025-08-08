@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.components.AppLanguageDialog
+import com.feature.profile.profileUi.screen.components.AppLogOutDialog
 import com.feature.profile.profileUi.screen.components.AppSettingDialog
 import com.feature.profile.profileUi.screen.components.AppThemeDialog
 import com.feature.profile.profileUi.screen.components.ProfileDetails
@@ -148,10 +149,7 @@ fun ProfileContent(
                 context.startActivities(arrayOf(intent))
             }
         )
-        AppSettingDialog(
-            isVisible = state.profile.isSettingDialogOpen,
-            onDismiss = profileInteractionListener::onDismissSettingDialog
-        )
+
 
         AppThemeDialog(
             isVisible = state.profile.isThemeDialogOpen,
@@ -159,6 +157,15 @@ fun ProfileContent(
             onThemeSelected = profileInteractionListener::onAppearanceApplyClicked,
             themeState = state.profile.theme
         )
-
+        AppSettingDialog(
+            isVisible = state.profile.isSettingDialogOpen,
+            onDismiss = profileInteractionListener::onDismissSettingDialog,
+            isLogoutDialogVisible = profileInteractionListener::onLogoutClicked
+        )
+        AppLogOutDialog(
+            isVisible = state.profile.isLogoutDialogOpen,
+            onDismiss = profileInteractionListener::onDismissLogoutDialog,
+            onLogout = profileInteractionListener::onLogoutApplyClicked
+        )
     }
 }
