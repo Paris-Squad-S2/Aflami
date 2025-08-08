@@ -36,7 +36,7 @@ class ListsRemoteDataSourceImpTest {
     fun `getLists should return ListsDto when api call succeeds`() = runTest {
         // Given
         val page = 1
-        val accountId = "123"
+        val accountId = 123
         val expectedListsDto = mockk<ListsDto>()
         coEvery { retrofitListApiService.getLists(accountId, page) } returns expectedListsDto
 
@@ -53,7 +53,7 @@ class ListsRemoteDataSourceImpTest {
     fun `getLists should throw UnknownException when HttpException with non-5xx status code occurs`() = runTest {
         // Given
         val page = 1
-        val accountId = "123"
+        val accountId = 123
         val httpException = mockk<HttpException>()
         coEvery { httpException.code() } returns 400
         coEvery { httpException.message() } returns "Bad Request"
@@ -72,7 +72,7 @@ class ListsRemoteDataSourceImpTest {
     fun `getLists should throw UnknownException when generic exception occurs`() = runTest {
         // Given
         val page = 1
-        val accountId = "123"
+        val accountId = 123
         coEvery { retrofitListApiService.getLists(accountId, page) } throws IOException("Network error")
 
         // When & Then
@@ -82,54 +82,6 @@ class ListsRemoteDataSourceImpTest {
 
         assertThat(exception.message).isEqualTo("Unexpected error: Network error")
         coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
-    }
-
-    @Test
-    fun `getAccountId should return account id when api call succeeds`() = runTest {
-        // Given
-        val accountDto = AccountDto(id = 123, name = "Test User", username = "testuser")
-        coEvery { retrofitListApiService.getAccountDetails() } returns accountDto
-
-        // When
-        val result = listsRemoteDataSource.getAccountId()
-
-        // Then
-        assertThat(result).isEqualTo("123")
-        coVerify(exactly = 1) { retrofitListApiService.getAccountDetails() }
-    }
-
-    @Test
-    fun `getAccountId should throw ServerException when HttpException with 5xx status code occurs`() = runTest {
-        // Given
-        val httpException = mockk<HttpException>()
-        coEvery { httpException.code() } returns 503
-        coEvery { httpException.message() } returns "Service Unavailable"
-        coEvery { retrofitListApiService.getAccountDetails() } throws httpException
-
-        // When & Then
-        val exception = assertFailsWith<NetworkException.ServerException> {
-            listsRemoteDataSource.getAccountId()
-        }
-
-        assertThat(exception.message).isEqualTo("Server error: Service Unavailable")
-        coVerify(exactly = 1) { retrofitListApiService.getAccountDetails() }
-    }
-
-    @Test
-    fun `getAccountId should throw UnknownException when HttpException with non-5xx status code occurs`() = runTest {
-        // Given
-        val httpException = mockk<HttpException>()
-        coEvery { httpException.code() } returns 401
-        coEvery { httpException.message() } returns "Unauthorized"
-        coEvery { retrofitListApiService.getAccountDetails() } throws httpException
-
-        // When & Then
-        val exception = assertFailsWith<NetworkException.UnknownException> {
-            listsRemoteDataSource.getAccountId()
-        }
-
-        assertThat(exception.message).isEqualTo("HTTP error: Unauthorized")
-        coVerify(exactly = 1) { retrofitListApiService.getAccountDetails() }
     }
 
     @Test
@@ -221,7 +173,7 @@ class ListsRemoteDataSourceImpTest {
     fun `getLists should throw ServerException when HttpException with 5xx status code occurs`() = runTest {
         // Given
         val page = 1
-        val accountId = "123"
+        val accountId = 123
         val httpException = mockk<HttpException>()
         coEvery { httpException.code() } returns 500
         coEvery { httpException.message() } returns "Internal Server Error"
