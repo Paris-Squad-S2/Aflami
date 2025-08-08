@@ -5,7 +5,7 @@ import com.repository.media.dto.GenresDto
 import com.repository.media.services.GenresApiServices
 import javax.inject.Inject
 
-class GenresDataSourceImpl @Inject constructor(
+class GenresRemoteDataSourceImpl @Inject constructor(
     private val apiService: GenresApiServices
 ): GenresRemoteDataSource {
     override suspend fun getMoviesGenres(language: String): GenresDto {

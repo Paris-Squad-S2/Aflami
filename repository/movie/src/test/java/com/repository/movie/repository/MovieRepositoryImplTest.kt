@@ -35,6 +35,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
@@ -941,156 +942,159 @@ class MovieRepositoryImplTest {
             }
         }
 
-    @Test
-    fun `getMovieReview - should return movie reviews from local when available`() = runTest {
-        // Given
-        val expectedReviews = listOf(review.toEntity())
-        val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
-
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-        coEvery {
-            movieLocalDataSource.getReviewsByMovieId(movieId, language)
-        } returns localReviews
-
-        // When
-        val result = movieRepository.getMovieReview(movieId, page)
-
-        // Then
-        assertThat(result).isEqualTo(expectedReviews)
-    }
-
-    @Test
-    fun `getMovieReview - should not call remote when local reviews are available`() = runTest {
-        // Given
-        val expectedReviews = listOf(review.toEntity())
-        val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
-
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-        coEvery {
-            movieLocalDataSource.getReviewsByMovieId(movieId, language)
-        } returns localReviews
-
-        // When
-        movieRepository.getMovieReview(movieId, page)
-
-        // Then
-        coVerify(exactly = 0) {
-            movieRemoteDataSource.getMovieReviews(any(), any(), any())
-        }
-    }
-
-    @Test
-    fun `getMovieReview - should not add review when local reviews are available`() = runTest {
-        // Given
-        val expectedReviews = listOf(review.toEntity())
-        val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
-
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-        coEvery {
-            movieLocalDataSource.getReviewsByMovieId(movieId, language)
-        } returns localReviews
-
-        // When
-        movieRepository.getMovieReview(movieId, page)
-
-        // Then
-        coVerify(exactly = 0) {
-            movieLocalDataSource.addMovieReviews(any())
-        }
-    }
-
-    @Test
-    fun `getMovieReview - should return empty list if remote returns no reviews`() = runTest {
-        // Given
-        val emptyReviewsDto = MovieReviewsDto(results = null)
-
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-        coEvery {
-            movieLocalDataSource.getReviewsByMovieId(movieId, language)
-        } returns emptyList()
-        coEvery {
-            movieRemoteDataSource.getMovieReviews(movieId, page, language)
-        } returns emptyReviewsDto
-        coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
-
-        // When
-        val result = movieRepository.getMovieReview(movieId, page)
-
-        // Then
-        assertThat(result).isEmpty()
-    }
-
-    @Test
-    fun `getMovieReview - should call remote once when local reviews are empty`() = runTest {
-        // Given
-        val emptyReviewsDto = MovieReviewsDto(results = null)
-
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-        coEvery {
-            movieLocalDataSource.getReviewsByMovieId(movieId, language)
-        } returns emptyList()
-        coEvery {
-            movieRemoteDataSource.getMovieReviews(movieId, page, language)
-        } returns emptyReviewsDto
-        coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
-
-        // When
-        movieRepository.getMovieReview(movieId, page)
-
-        // Then
-        coVerify(exactly = 1) {
-            movieRemoteDataSource.getMovieReviews(movieId, page, language)
-        }
-    }
-
-    @Test
-    fun `getMovieReview - should not add review when remote returns no reviews`() = runTest {
-        // Given
-        val emptyReviewsDto = MovieReviewsDto(results = null)
-
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-        coEvery {
-            movieLocalDataSource.getReviewsByMovieId(movieId, language)
-        } returns emptyList()
-        coEvery {
-            movieRemoteDataSource.getMovieReviews(movieId, page, language)
-        } returns emptyReviewsDto
-        coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
-
-        // When
-        movieRepository.getMovieReview(movieId, page)
-
-        // Then
-        coVerify(exactly = 0) { movieLocalDataSource.addMovieReviews(any()) }
-    }
-
-    @Test
-    fun `getMovieReview - should fetch from remote and save to local when local is empty`() =
-        runTest {
+    @Nested
+    inner class MovieReviewsTest{
+        @Test
+        fun `getMovieReview - should return movie reviews from local when available`() = runTest {
             // Given
-            val remoteReviews = listOf(reviewRemoteDto)
+            val expectedReviews = listOf(review.toEntity())
+            val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieLocalDataSource.getReviewsByMovieId(movieId, language)
-            } returns emptyList() andThen listOf(reviewRemoteDto).map {
-                it.toEntity().toLocalDto(movieId, language)
-            }
-            coEvery {
-                movieRemoteDataSource.getMovieReviews(movieId, page, language)
-            } returns MovieReviewsDto(results = listOf(reviewRemoteDto))
-            coEvery {
-                movieLocalDataSource.addMovieReviews(any())
-            } just Runs
-
+            } returns localReviews
 
             // When
             val result = movieRepository.getMovieReview(movieId, page)
 
             // Then
-            assertThat(result.first().name).isEqualTo(remoteReviews.map { it.toEntity() }
-                .first().name)
+            assertThat(result).isEqualTo(expectedReviews)
         }
+
+        @Test
+        fun `getMovieReview - should not call remote when local reviews are available`() = runTest {
+            // Given
+            val expectedReviews = listOf(review.toEntity())
+            val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
+
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery {
+                movieLocalDataSource.getReviewsByMovieId(movieId, language)
+            } returns localReviews
+
+            // When
+            movieRepository.getMovieReview(movieId, page)
+
+            // Then
+            coVerify(exactly = 0) {
+                movieRemoteDataSource.getMovieReviews(any(), any(), any())
+            }
+        }
+
+        @Test
+        fun `getMovieReview - should not add review when local reviews are available`() = runTest {
+            // Given
+            val expectedReviews = listOf(review.toEntity())
+            val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
+
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery {
+                movieLocalDataSource.getReviewsByMovieId(movieId, language)
+            } returns localReviews
+
+            // When
+            movieRepository.getMovieReview(movieId, page)
+
+            // Then
+            coVerify(exactly = 0) {
+                movieLocalDataSource.addMovieReviews(any())
+            }
+        }
+
+        @Test
+        fun `getMovieReview - should return empty list if remote returns no reviews`() = runTest {
+            // Given
+            val emptyReviewsDto = MovieReviewsDto(results = null)
+
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery {
+                movieLocalDataSource.getReviewsByMovieId(movieId, language)
+            } returns emptyList()
+            coEvery {
+                movieRemoteDataSource.getMovieReviews(movieId, page, language)
+            } returns emptyReviewsDto
+            coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
+
+            // When
+            val result = movieRepository.getMovieReview(movieId, page)
+
+            // Then
+            assertThat(result).isEmpty()
+        }
+
+        @Test
+        fun `getMovieReview - should call remote once when local reviews are empty`() = runTest {
+            // Given
+            val emptyReviewsDto = MovieReviewsDto(results = null)
+
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery {
+                movieLocalDataSource.getReviewsByMovieId(movieId, language)
+            } returns emptyList()
+            coEvery {
+                movieRemoteDataSource.getMovieReviews(movieId, page, language)
+            } returns emptyReviewsDto
+            coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
+
+            // When
+            movieRepository.getMovieReview(movieId, page)
+
+            // Then
+            coVerify(exactly = 1) {
+                movieRemoteDataSource.getMovieReviews(movieId, page, language)
+            }
+        }
+
+        @Test
+        fun `getMovieReview - should not add review when remote returns no reviews`() = runTest {
+            // Given
+            val emptyReviewsDto = MovieReviewsDto(results = null)
+
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery {
+                movieLocalDataSource.getReviewsByMovieId(movieId, language)
+            } returns emptyList()
+            coEvery {
+                movieRemoteDataSource.getMovieReviews(movieId, page, language)
+            } returns emptyReviewsDto
+            coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
+
+            // When
+            movieRepository.getMovieReview(movieId, page)
+
+            // Then
+            coVerify(exactly = 0) { movieLocalDataSource.addMovieReviews(any()) }
+        }
+
+        @Test
+        fun `getMovieReview - should fetch from remote and save to local when local is empty`() =
+            runTest {
+                // Given
+                val remoteReviews = listOf(reviewRemoteDto)
+
+                coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+                coEvery {
+                    movieLocalDataSource.getReviewsByMovieId(movieId, language)
+                } returns emptyList() andThen listOf(reviewRemoteDto).map {
+                    it.toEntity().toLocalDto(movieId, language)
+                }
+                coEvery {
+                    movieRemoteDataSource.getMovieReviews(movieId, page, language)
+                } returns MovieReviewsDto(results = listOf(reviewRemoteDto))
+                coEvery {
+                    movieLocalDataSource.addMovieReviews(any())
+                } just Runs
+
+
+                // When
+                val result = movieRepository.getMovieReview(movieId, page)
+
+                // Then
+                assertThat(result.first().name).isEqualTo(remoteReviews.map { it.toEntity() }
+                    .first().name)
+            }
+    }
 
 
     @Test

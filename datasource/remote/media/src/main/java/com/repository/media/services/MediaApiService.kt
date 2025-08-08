@@ -4,6 +4,7 @@ import com.repository.media.dto.home.MovieListDto
 import com.repository.media.dto.home.TvListDto
 import com.repository.media.dto.profile.RatedMoviesDto
 import com.repository.media.dto.profile.RatedTvShowDtoo
+import com.repository.media.dto.search.SearchDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -58,6 +59,27 @@ interface MediaApiService {
         @Query("language")
         language: String
     ): RatedTvShowDtoo
+
+    @GET("search/multi")
+    suspend fun searchMulti(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("language") language: String
+    ): SearchDto
+
+    @GET("search/person")
+    suspend fun searchPerson(
+        @Query("query") query: String,
+        @Query("page") page: Int,
+        @Query("language") language: String
+    ): SearchDto
+
+    @GET("discover/movie")
+    suspend fun searchCountryCode(
+        @Query("page") page: Int,
+        @Query("language") language: String,
+        @Query("with_origin_country") countryCode: String,
+    ): SearchDto
 
 }
 

@@ -38,6 +38,8 @@ class MediaRepositoryImplTest {
     private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository = mockk()
     private lateinit var repo: MediaRepositoryImpl
 
+    val language = "ar"
+
     @BeforeEach
     fun setUp() {
         every { networkChecker.isConnected } returns MutableStateFlow(true)
@@ -75,7 +77,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getPopularMedia fetches remote data when local is empty`() = runTest {
-        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR) } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR,language) } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Remote Movie", releaseDate = "2023-01-01",
@@ -98,7 +100,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getPopularMedia handles partial remote data`() = runTest {
-        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR) } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR,language) } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Movie", releaseDate = "2023-01-01",
@@ -175,7 +177,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getTopRatingMedia fetches remote data when local is empty`() = runTest {
-        coEvery { homeLocal.getHomeMediaByCategory(Category.TOP_RATED) } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.TOP_RATED,language) } returns emptyList()
 
         val movie = MovieDto(
             id = 3, title = "Top Movie", releaseDate = "2022-01-01",
@@ -256,7 +258,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getUpComingMedia fetches remote data when local is empty`() = runTest {
-        coEvery { homeLocal.getHomeMediaByCategory(Category.UPCOMING) } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.UPCOMING,language) } returns emptyList()
 
         val upcomingMovie = MovieDto(
             id = 4, title = "Upcoming Movie", releaseDate = "2025-06-01",

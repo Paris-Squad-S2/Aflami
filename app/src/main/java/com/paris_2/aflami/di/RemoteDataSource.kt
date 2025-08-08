@@ -3,8 +3,8 @@ package com.paris_2.aflami.di
 import com.datasource.remote.movie.MovieRemoteDataSourceImpl
 import com.datasource.remote.tvShow.TvShowDetailsRemoteDataSourceImpl
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
-import com.repository.media.GenresDataSourceImpl
-import com.repository.media.MediaDataSourceImpl
+import com.repository.media.GenresRemoteDataSourceImpl
+import com.repository.media.MediaRemoteDataSourceImpl
 import com.repository.media.SearchRemoteDataSourceImpl
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
@@ -21,11 +21,11 @@ import javax.inject.Singleton
 object RemoteDataSource {
     @Provides
     @Singleton
-    fun provideGenresRemoteDataSource(impl: GenresDataSourceImpl): GenresRemoteDataSource = impl
+    fun provideGenresRemoteDataSource(impl: GenresRemoteDataSourceImpl): GenresRemoteDataSource = impl
 
     @Provides
     @Singleton
-    fun provideMediaRemoteDataSource(impl: MediaDataSourceImpl): MediaRemoteDataSource = impl
+    fun provideMediaRemoteDataSource(impl: MediaRemoteDataSourceImpl): MediaRemoteDataSource = impl
 
     @Provides
     @Singleton

@@ -2,7 +2,7 @@ package com
 
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.services.GenresApiServices
-import com.repository.media.GenresDataSourceImpl
+import com.repository.media.GenresRemoteDataSourceImpl
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
 import io.mockk.coEvery
@@ -14,12 +14,12 @@ import org.junit.Test
 
 class GenresDataSourceImplTest {
     private lateinit var apiService: GenresApiServices
-    private lateinit var genresDataSource: GenresDataSourceImpl
+    private lateinit var genresDataSource: GenresRemoteDataSourceImpl
 
     @Before
     fun setUp() {
         apiService = mockk(relaxed = true)
-        genresDataSource = GenresDataSourceImpl(apiService)
+        genresDataSource = GenresRemoteDataSourceImpl(apiService)
     }
 
     @Test

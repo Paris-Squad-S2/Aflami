@@ -7,19 +7,9 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.work.WorkManager
 import com.datasource.local.dao.MovieDao
-import com.datasource.local.dao.SeasonDao
-import com.datasource.local.dao.TvShowCastDao
 import com.datasource.local.dao.TvShowDao
-import com.datasource.local.dao.TvShowGalleryDao
-import com.datasource.local.dao.TvShowReviewDao
-import com.datasource.local.dao.TvShowSimilarDao
 import com.datasource.local.datasource.MovieLocalDataSourceImp
-import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
-import com.datasource.local.datasource.TvShowGalleryLocalDataSourceImp
 import com.datasource.local.datasource.TvShowLocalDataSourceImp
-import com.datasource.local.datasource.TvShowReviewLocalDataSourceImp
-import com.datasource.local.datasource.TvShowSeasonLocalDataSourceImp
-import com.datasource.local.datasource.TvShowSimilarLocalDataSourceImpl
 import com.datasource.local.media.dao.ContinueWatchingDao
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
@@ -31,7 +21,7 @@ import com.datasource.local.media.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
 import com.datasource.remote.lists.ListsRemoteDataSourceImp
-import com.datasource.remote.lists.service.RetrofitListApiService
+import com.datasource.remote.lists.service.ListApiService
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
 import com.paris_2.dataSource.local.user.LanguageLocalDataSourceRepositoryImp
 import com.paris_2.datasource.remote.user.UserApi
@@ -39,12 +29,7 @@ import com.paris_2.datasource.remote.user.UserRemoteDataSourceImpl
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
-import com.repository.dataSource.local.TvShowCastLocalDataSource
-import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
-import com.repository.dataSource.local.TvShowReviewLocalDataSource
-import com.repository.dataSource.local.TvShowSeasonLocalDataSource
-import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
@@ -90,7 +75,6 @@ object DataSourceModule {
         genresInteractionDao: GenresUserInteractionDao,
     ): GenresInteractionDataSource = GenresInteractionDataSourceImpl(genresInteractionDao)
 
-
     @Provides
     @Singleton
     fun provideMovieLocalDataSource(
@@ -100,40 +84,10 @@ object DataSourceModule {
 
     @Provides
     @Singleton
-    fun provideTvShowCastLocalDataSource(
-        dao: TvShowCastDao,
-    ): TvShowCastLocalDataSource = TvShowCastLocalDataSourceImp(dao)
-
-    @Provides
-    @Singleton
-    fun provideTvShowGalleryLocalDataSource(
-        dao: TvShowGalleryDao,
-    ): TvShowGalleryLocalDataSource = TvShowGalleryLocalDataSourceImp(dao)
-
-    @Provides
-    @Singleton
     fun provideTvShowLocalDataSource(
         workManager: WorkManager,
         dao: TvShowDao,
     ): TvShowLocalDataSource = TvShowLocalDataSourceImp(workManager, dao)
-
-    @Provides
-    @Singleton
-    fun provideTvShowReviewLocalDataSource(
-        dao: TvShowReviewDao,
-    ): TvShowReviewLocalDataSource = TvShowReviewLocalDataSourceImp(dao)
-
-    @Provides
-    @Singleton
-    fun provideTvShowSeasonLocalDataSource(
-        dao: SeasonDao,
-    ): TvShowSeasonLocalDataSource = TvShowSeasonLocalDataSourceImp(dao)
-
-    @Provides
-    @Singleton
-    fun provideTvShowSimilarLocalDataSource(
-        tvShowSimilarDao: TvShowSimilarDao,
-    ): TvShowSimilarLocalDataSource = TvShowSimilarLocalDataSourceImpl(tvShowSimilarDao)
 
     @Provides
     @Singleton
@@ -169,7 +123,7 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideListRemoteDataSource(
-        listApiService: RetrofitListApiService
+        listApiService: ListApiService
     ): ListsRemoteDataSource {
         return ListsRemoteDataSourceImp(listApiService)
     }

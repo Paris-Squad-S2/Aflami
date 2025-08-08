@@ -7,15 +7,9 @@ import com.paris_2.domain.media.exception.NoGalleryFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoSeasonFoundException
 import com.paris_2.domain.media.exception.NoTvShowFoundException
-import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
-import com.repository.dataSource.local.TvShowCastLocalDataSource
-import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
-import com.repository.dataSource.local.TvShowReviewLocalDataSource
-import com.repository.dataSource.local.TvShowSeasonLocalDataSource
-import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
 import com.repository.mapper.toLocalDto
@@ -43,35 +37,19 @@ import kotlin.test.Test
 class TvShowRepositoryImplTest {
     private lateinit var tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource
     private lateinit var tvShowLocalDataSource: TvShowLocalDataSource
-    private lateinit var tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource
-    private lateinit var tvShowReviewLocalDataSource: TvShowReviewLocalDataSource
-    private lateinit var tvShowGalleryLocalDataSource: TvShowGalleryLocalDataSource
-    private lateinit var tvShowCastLocalDataSource: TvShowCastLocalDataSource
-    private lateinit var tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource
     private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
+    private var languageLocalDataSourceRepository: LanguageLocalDataSourceRepository = mockk(relaxed = true)
     private lateinit var tvShowRepository: TvShowRepositoryImpl
-    private var languageLocalDataSourceRepository: LanguageLocalDataSourceRepository =
-        mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         tvShowDetailsRemoteDataSource = mockk<TvShowDetailsRemoteDataSource>(relaxed = true)
         tvShowLocalDataSource = mockk<TvShowLocalDataSource>(relaxed = true)
-        tvShowSeasonLocalDataSource = mockk<TvShowSeasonLocalDataSource>(relaxed = true)
-        tvShowReviewLocalDataSource = mockk<TvShowReviewLocalDataSource>(relaxed = true)
-        tvShowGalleryLocalDataSource = mockk<TvShowGalleryLocalDataSource>(relaxed = true)
-        tvShowCastLocalDataSource = mockk<TvShowCastLocalDataSource>(relaxed = true)
-        tvShowSimilarLocalDataSource = mockk<TvShowSimilarLocalDataSource>(relaxed = true)
 
         tvShowRepository = TvShowRepositoryImpl(
             tvShowDetailsRemoteDataSource,
-            tvShowCastLocalDataSource,
-            tvShowGalleryLocalDataSource,
-            tvShowReviewLocalDataSource,
             tvShowLocalDataSource,
-            tvShowSeasonLocalDataSource,
-            tvShowSimilarLocalDataSource,
             networkConnectionChecker,
             languageLocalDataSourceRepository
         )
@@ -252,11 +230,11 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowCreditsDto
 
         coEvery {
-            tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
+            tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
         } returns expectedTvShowCast.map { it.toLocalDto(language, tvShowId) }
 
         coEvery {
-            tvShowCastLocalDataSource.addCast(any())
+            tvShowLocalDataSource.addTvShowCast(any())
         } returns Unit
 
         // When
@@ -277,11 +255,11 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowCreditsDto
 
         coEvery {
-            tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
+            tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
         } returns expectedTvShowCast.map { it.toLocalDto(language, tvShowId) }
 
         coEvery {
-            tvShowCastLocalDataSource.addCast(any())
+            tvShowLocalDataSource.addTvShowCast(any())
         } returns Unit
 
         // When
@@ -304,11 +282,11 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowCreditsDto
 
         coEvery {
-            tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
+            tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
         } returns expectedTvShowCast.map { it.toLocalDto(language, tvShowId) }
 
         coEvery {
-            tvShowCastLocalDataSource.addCast(any())
+            tvShowLocalDataSource.addTvShowCast(any())
         } returns Unit
 
         // When
@@ -316,7 +294,7 @@ class TvShowRepositoryImplTest {
 
         // Then
         coVerify(exactly = 1) {
-            tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
+            tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
         }
     }
 
@@ -331,11 +309,11 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowCreditsDto
 
         coEvery {
-            tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
+            tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
         } returns expectedTvShowCast.map { it.toLocalDto(language, tvShowId) }
 
         coEvery {
-            tvShowCastLocalDataSource.addCast(any())
+            tvShowLocalDataSource.addTvShowCast(any())
         } returns Unit
 
         // When
@@ -343,7 +321,7 @@ class TvShowRepositoryImplTest {
 
         // Then
         coVerify(exactly = 0) {
-            tvShowCastLocalDataSource.addCast(any())
+            tvShowLocalDataSource.addTvShowCast(any())
         }
     }
 
@@ -356,7 +334,7 @@ class TvShowRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
+                tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
             } returns emptyList() andThen
                     remoteCast.map { it.toLocalDto(language, tvShowId) }
 
@@ -365,7 +343,7 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowCreditsDto
 
             coEvery {
-                tvShowCastLocalDataSource.addCast(any())
+                tvShowLocalDataSource.addTvShowCast(any())
             } just Runs
 
             // When
@@ -408,14 +386,14 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSimilarsDto
 
             coEvery {
-                tvShowSimilarLocalDataSource.getSimilarTvShows(
+                tvShowLocalDataSource.getSimilarTvShows(
                     tvShowId,
                     page,
                     language
                 )
             } returns localDto
 
-            coEvery { tvShowSimilarLocalDataSource.addSimilarTvShows(any()) } returns Unit
+            coEvery { tvShowLocalDataSource.addSimilarTvShows(any()) } returns Unit
 
             val result = tvShowRepository.getTvShowRecommendations(tvShowId, page)
 
@@ -432,10 +410,10 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowSimilarsDto
 
         coEvery {
-            tvShowSimilarLocalDataSource.getSimilarTvShows(tvShowId, page, language)
+            tvShowLocalDataSource.getSimilarTvShows(tvShowId, page, language)
         } returns emptyList()
 
-        coEvery { tvShowSimilarLocalDataSource.addSimilarTvShows(any()) } returns Unit
+        coEvery { tvShowLocalDataSource.addSimilarTvShows(any()) } returns Unit
 
         // When
         tvShowRepository.getTvShowRecommendations(tvShowId, page)
@@ -456,17 +434,17 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSimilarsDto
 
             coEvery {
-                tvShowSimilarLocalDataSource.getSimilarTvShows(tvShowId, page, language)
+                tvShowLocalDataSource.getSimilarTvShows(tvShowId, page, language)
             } returns emptyList()
 
-            coEvery { tvShowSimilarLocalDataSource.addSimilarTvShows(any()) } returns Unit
+            coEvery { tvShowLocalDataSource.addSimilarTvShows(any()) } returns Unit
 
             // When
             tvShowRepository.getTvShowRecommendations(tvShowId, page)
 
             // Then
             coVerify(exactly = 1) {
-                tvShowSimilarLocalDataSource.addSimilarTvShows(any())
+                tvShowLocalDataSource.addSimilarTvShows(any())
             }
         }
 
@@ -479,7 +457,7 @@ class TvShowRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                tvShowSimilarLocalDataSource.getSimilarTvShows(tvShowId, page, language)
+                tvShowLocalDataSource.getSimilarTvShows(tvShowId, page, language)
             } returns emptyList() andThen
                     remoteRecommendations.map { it.toLocalDto(tvShowId, language, page) }
 
@@ -488,7 +466,7 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSimilarsDto
 
             coEvery {
-                tvShowSimilarLocalDataSource.addSimilarTvShows(any())
+                tvShowLocalDataSource.addSimilarTvShows(any())
             } just Runs
 
             // When
@@ -508,7 +486,7 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowLogoDto
 
         coEvery {
-            tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
+            tvShowLocalDataSource.getGalleryByTvShowId(tvShowId)
         } returns GalleryEntity(
             id = 0,
             tvShowId = 123,
@@ -516,7 +494,7 @@ class TvShowRepositoryImplTest {
         )
 
         coEvery {
-            tvShowGalleryLocalDataSource.addGallery(any())
+            tvShowLocalDataSource.addTvShowGallery(any())
         } returns Unit
 
         // When
@@ -531,10 +509,10 @@ class TvShowRepositoryImplTest {
         runTest {
             // Given
             coEvery { tvShowDetailsRemoteDataSource.getTvShowImages(tvShowId) } returns mockTvShowLogoDto
-            coEvery { tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId) } returns mockTvShowLogoDto.toLocalDto(
+            coEvery { tvShowLocalDataSource.getGalleryByTvShowId(tvShowId) } returns mockTvShowLogoDto.toLocalDto(
                 tvShowId
             )
-            coEvery { tvShowGalleryLocalDataSource.addGallery(any()) } returns Unit
+            coEvery { tvShowLocalDataSource.addTvShowGallery(any()) } returns Unit
 
             // When
             tvShowRepository.getTvShowGallery(tvShowId)
@@ -549,17 +527,17 @@ class TvShowRepositoryImplTest {
     fun `getTvShowGallery - should get gallery from local data source`() = runTest {
         // Given
         coEvery { tvShowDetailsRemoteDataSource.getTvShowImages(tvShowId) } returns mockTvShowLogoDto
-        coEvery { tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId) } returns mockTvShowLogoDto.toLocalDto(
+        coEvery { tvShowLocalDataSource.getGalleryByTvShowId(tvShowId) } returns mockTvShowLogoDto.toLocalDto(
             tvShowId
         )
-        coEvery { tvShowGalleryLocalDataSource.addGallery(any()) } returns Unit
+        coEvery { tvShowLocalDataSource.addTvShowGallery(any()) } returns Unit
 
         // When
         tvShowRepository.getTvShowGallery(tvShowId)
 
         // Then
         coVerify(exactly = 1) {
-            tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
+            tvShowLocalDataSource.getGalleryByTvShowId(tvShowId)
         }
     }
 
@@ -567,17 +545,17 @@ class TvShowRepositoryImplTest {
     fun `getTvShowGallery - should not save gallery locally when it already exists`() = runTest {
         // Given
         coEvery { tvShowDetailsRemoteDataSource.getTvShowImages(tvShowId) } returns mockTvShowLogoDto
-        coEvery { tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId) } returns mockTvShowLogoDto.toLocalDto(
+        coEvery { tvShowLocalDataSource.getGalleryByTvShowId(tvShowId) } returns mockTvShowLogoDto.toLocalDto(
             tvShowId
         )
-        coEvery { tvShowGalleryLocalDataSource.addGallery(any()) } returns Unit
+        coEvery { tvShowLocalDataSource.addTvShowGallery(any()) } returns Unit
 
         // When
         tvShowRepository.getTvShowGallery(tvShowId)
 
         // Then
         coVerify(exactly = 0) {
-            tvShowGalleryLocalDataSource.addGallery(any())
+            tvShowLocalDataSource.addTvShowGallery(any())
         }
     }
 
@@ -593,11 +571,11 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowLogoDto
 
             coEvery {
-                tvShowGalleryLocalDataSource.getGalleryByTvShowId(tvShowId)
+                tvShowLocalDataSource.getGalleryByTvShowId(tvShowId)
             } returns null
 
             coEvery {
-                tvShowGalleryLocalDataSource.addGallery(any())
+                tvShowLocalDataSource.addTvShowGallery(any())
             } just Runs
 
             // When & Then
@@ -750,11 +728,11 @@ class TvShowRepositoryImplTest {
             val dto =
                 mockTvShowReviewsDto.results ?: emptyList()
             coEvery {
-                tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
+                tvShowLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             } returns dto.map { it.toLocalDto(tvShowId, language) }
 
             coEvery {
-                tvShowReviewLocalDataSource.addReview(any())
+                tvShowLocalDataSource.addTvShowReviews(any())
             } just Runs
 
             // When
@@ -776,10 +754,10 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowReviewsDto
 
         coEvery {
-            tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
+            tvShowLocalDataSource.getReviewsByTvShowId(tvShowId, language)
         } returns emptyList()
 
-        coEvery { tvShowReviewLocalDataSource.addReview(any()) } just Runs
+        coEvery { tvShowLocalDataSource.addTvShowReviews(any()) } just Runs
 
         // When
         tvShowRepository.getTvShowReview(tvShowId, page)
@@ -803,17 +781,17 @@ class TvShowRepositoryImplTest {
             mockTvShowReviewsDto.results?.map { it.toLocalDto(tvShowId, language) } ?: emptyList()
 
         coEvery {
-            tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
+            tvShowLocalDataSource.getReviewsByTvShowId(tvShowId, language)
         } returns dtoList
 
-        coEvery { tvShowReviewLocalDataSource.addReview(any()) } just Runs
+        coEvery { tvShowLocalDataSource.addTvShowReviews(any()) } just Runs
 
         // When
         tvShowRepository.getTvShowReview(tvShowId, page)
 
         // Then
         coVerify(exactly = 0) {
-            tvShowReviewLocalDataSource.addReview(any())
+            tvShowLocalDataSource.addTvShowReviews(any())
         }
     }
 
@@ -825,7 +803,7 @@ class TvShowRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
+                tvShowLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             } returns emptyList() andThen remoteReviews.map { it.toLocalDto(tvShowId, language) }
 
             coEvery {
@@ -833,7 +811,7 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowReviewsDto
 
             coEvery {
-                tvShowReviewLocalDataSource.addReview(any())
+                tvShowLocalDataSource.addTvShowReviews(any())
             } just Runs
 
             // When
@@ -861,14 +839,14 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSeasonDto
 
             coEvery {
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                     tvShowId,
                     seasonNumber
                 )
             } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
             coEvery {
-                tvShowSeasonLocalDataSource.addSeasonDetails(any())
+                tvShowLocalDataSource.addTvShowSeason(any())
             } returns Unit
 
             // When
@@ -890,7 +868,7 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSeasonDto
 
             coEvery {
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                     tvShowId,
                     seasonNumber
                 )
@@ -898,7 +876,7 @@ class TvShowRepositoryImplTest {
                 tvShowId
             )
 
-            coEvery { tvShowSeasonLocalDataSource.addSeasonDetails(any()) } returns Unit
+            coEvery { tvShowLocalDataSource.addTvShowSeason(any()) } returns Unit
 
             // When
             tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
@@ -920,20 +898,20 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowSeasonDto
 
         coEvery {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+            tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                 tvShowId,
                 seasonNumber
             )
         } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
-        coEvery { tvShowSeasonLocalDataSource.addSeasonDetails(any()) } returns Unit
+        coEvery { tvShowLocalDataSource.addTvShowSeason(any()) } returns Unit
 
         // When
         tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
 
         // Then
         coVerify(exactly = 1) {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+            tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                 tvShowId,
                 seasonNumber
             )
@@ -954,14 +932,14 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSeasonDto
 
             coEvery {
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                     tvShowId,
                     seasonNumber
                 )
             } returns null
 
             coEvery {
-                tvShowSeasonLocalDataSource.addSeasonDetails(any())
+                tvShowLocalDataSource.addTvShowSeason(any())
             } just Runs
 
             // When & Then
@@ -981,20 +959,20 @@ class TvShowRepositoryImplTest {
         } returns mockTvShowSeasonDto
 
         coEvery {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+            tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                 tvShowId,
                 seasonNumber
             )
         } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
-        coEvery { tvShowSeasonLocalDataSource.addSeasonDetails(any()) } returns Unit
+        coEvery { tvShowLocalDataSource.addTvShowSeason(any()) } returns Unit
 
         // When
         tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
 
         // Then
         coVerify(exactly = 0) {
-            tvShowSeasonLocalDataSource.addSeasonDetails(any())
+            tvShowLocalDataSource.addTvShowSeason(any())
         }
     }
 
@@ -1004,7 +982,7 @@ class TvShowRepositoryImplTest {
             // Given
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                tvShowCastLocalDataSource.getCastByTvShowId(
+                tvShowLocalDataSource.getCastByTvShowId(
                     tvShowId,
                     language
                 )
@@ -1059,7 +1037,7 @@ class TvShowRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            tvShowReviewLocalDataSource.getReviewsByTvShowId(
+            tvShowLocalDataSource.getReviewsByTvShowId(
                 tvShowId,
                 language
             )
