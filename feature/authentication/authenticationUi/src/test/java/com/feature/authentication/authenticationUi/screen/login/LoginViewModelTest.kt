@@ -1,10 +1,10 @@
 package com.feature.authentication.authenticationUi.screen.login
 
+import com.paris_2.domain.user.usecase.LoginUseCase
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
-import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
+import com.paris_2.aflami.bottomNavBar.BottomNavBarAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.domain.user.usecase.LoginUseCase
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
@@ -18,15 +18,15 @@ class LoginViewModelTest {
 
     private lateinit var viewModel: LoginViewModel
     private lateinit var loginUseCase: LoginUseCase
-    private lateinit var appNavigationAPI: AppNavigationAPI
+    private lateinit var bottomNavBarAPI: BottomNavBarAPI
 
     @BeforeEach
     fun setup() {
         loginUseCase = mockk()
-        appNavigationAPI = mockk(relaxed = true)
+        bottomNavBarAPI = mockk(relaxed = true)
         viewModel = spyk(
             LoginViewModel(
-                appNavigationAPI = appNavigationAPI,
+                bottomNavBarAPI = bottomNavBarAPI,
                 loginUseCase = loginUseCase,
                 guestLoginUseCase = mockk(relaxed = true),
                 navigator = navigator
