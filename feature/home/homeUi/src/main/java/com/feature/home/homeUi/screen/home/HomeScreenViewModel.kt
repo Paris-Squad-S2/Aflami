@@ -1,7 +1,7 @@
 package com.feature.home.homeUi.screen.home
 
 import com.feature.home.homeUi.common.BaseViewModel
-import com.feature.home.homeUi.mapper.nameToGenreId
+import com.feature.home.homeUi.mapper.GenreResourceMapper.toGenre
 import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
@@ -13,11 +13,11 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
+import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -357,8 +357,8 @@ class HomeScreenViewModel @Inject constructor(
                     screenState.value.copy(
                     )
                 )
-                val moodCategories = mood.map { mood ->
-                    mood.nameToGenreId()
+                val moodCategories = mood.mapNotNull { mood ->
+                    mood.toGenre()?.id
                 }
                 val moodPickerMovies = getTopRatingMediaUseCase.invoke()
                 moodPickerMovies.filter { movie ->
