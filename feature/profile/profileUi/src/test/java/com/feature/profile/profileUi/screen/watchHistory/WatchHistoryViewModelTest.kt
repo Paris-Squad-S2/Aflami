@@ -80,6 +80,7 @@ class WatchHistoryViewModelTest {
         viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
         runCurrent()
 
+
         viewModel.onTabSelected(MediaTypeUi.TVSHOW)
         runCurrent()
 
