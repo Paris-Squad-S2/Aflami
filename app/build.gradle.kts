@@ -119,42 +119,19 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.datastore.core.android)
-    implementation(libs.androidx.datastore.preferences)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.datastore)
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.hilt)
+    implementation(libs.bundles.workManager)
+    implementation(libs.bundles.room)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.serialization)
 
-    //Navigation
-    implementation(libs.navigation.compose)
-
-    // JUnit 5
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.mockk)
-    testImplementation(libs.junit.platform.launcher)
-
-    //Hilt
-    implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-    implementation(libs.hilt.work)
-
-    //work manager for kotlin
-    implementation(libs.work.runtime.ktx)
-    implementation(libs.androidx.startup.runtime)
+    ksp(libs.room.compiler)
 
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.LOGGER))
@@ -205,16 +182,6 @@ dependencies {
     implementation(project(Modules.REPOSITORY_MEDIA))
     implementation(project(Modules.DATASOURCE_REMOTE_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
-
-    //Room
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.room.compiler)
-
-    //retrofit
-    implementation(libs.bundles.retrofit)
-
-    // Kotlinx Serialization
-    implementation(libs.kotlinx.serialization.json)
 
 }
 

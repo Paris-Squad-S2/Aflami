@@ -12,11 +12,8 @@ kotlin {
     }
 }
 dependencies{
-
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines.core)
-
-    // test
     testImplementation(libs.bundles.test)
 }
 

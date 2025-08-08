@@ -172,12 +172,18 @@ compose = [
     "androidx-ui-graphics",
     "androidx-ui-tooling",
     "androidx-ui-tooling-preview",
+    "androidx-lifecycle-runtime-ktx",
+    "androidx-ui-test-manifest",
                                     #TODO
-#    "androidx-lifecycle-runtime-ktx",
 #    "androidx-paging-runtime",
 #    "androidx-lifecycle-viewmodel-compose",
 #    "androidx-paging-compose",
 #    "androidx-hilt-navigation-compose"
+]
+
+navigation = [
+    "navigation-compose",
+    "androidx-hilt-navigation-compose"
 ]
 
 test = [
@@ -187,9 +193,15 @@ test = [
     "mockk",
     "kotlinx-coroutines-test",
     "truth",
-    "kotlin-test"
+    "kotlin-test",
+    "junit-jupiter-params",
+    "junit-platform-launcher",
+]
 
-
+hilt = [
+    "hilt-android",
+    "hilt-work",
+    "androidx-hilt-navigation-compose",
 ]
 
 retrofit = [
@@ -197,4 +209,22 @@ retrofit = [
     "retrofit_converter",
     "logging-interceptor",
     "okhttp"
+]
+
+room = [
+    "androidx-room-runtime",
+]
+
+workManager = [
+    "work-runtime-ktx",
+    "androidx-startup-runtime"
+]
+
+serialization = [
+    "kotlinx-serialization-json"
+]
+
+datastore = [
+    "androidx-datastore-preferences",
+    "androidx-datastore-core-android"
 ]
