@@ -13,6 +13,7 @@ data class HomeMediaEntity(
     val genreIds: List<Int>,
     val type: MediaTypeEntity,
     val category: Category,
+    val language: String
 )
 
 enum class Category {

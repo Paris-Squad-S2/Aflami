@@ -7,10 +7,12 @@ import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
 import com.paris_2.domain.media.exception.MediaPlayingException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.paris_2.domain.media.exception.PopularMediaException
 import com.paris_2.domain.media.exception.TopRatingMediaException
 import com.paris_2.domain.media.exception.UpComingMediaException
 import com.paris_2.domain.media.repository.MediaRepository
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
@@ -19,49 +21,56 @@ import com.repository.media.mapper.toDomain
 import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toMediaEntity
 import com.repository.media.util.NetworkConnectionChecker
-import com.repository.media.util.detectLanguage
+import kotlinx.coroutines.flow.first
 
 class MediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val mediaRemoteDataSource: MediaRemoteDataSource,
     private val continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
-    private val homeMediaLocalDataSource: HomeMediaLocalDataSource
+    private val homeMediaLocalDataSource: HomeMediaLocalDataSource,
+    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
 ) : MediaRepository {
-    private val language = detectLanguage()
-    override suspend fun getPopularMedia(): List<Media> {
 
-        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.POPULAR)
+    override suspend fun getPopularMedia(): List<Media> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.POPULAR, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(PopularMediaException()) {
-            val remoteMovies = mediaRemoteDataSource.getPopularMovies(language).results?.mapNotNull {
-                it.toDomain(MediaType.MOVIE)
-            } ?: emptyList()
+            val remoteMovies =
+                mediaRemoteDataSource.getPopularMovies(language).results?.mapNotNull {
+                    it.toDomain(MediaType.MOVIE)
+                } ?: emptyList()
 
-            val remoteTvShows = mediaRemoteDataSource.getPopularTvShows(language).results?.mapNotNull {
-                it.toDomain(MediaType.TVSHOW)
-            } ?: emptyList()
+            val remoteTvShows =
+                mediaRemoteDataSource.getPopularTvShows(language).results?.mapNotNull {
+                    it.toDomain(MediaType.TVSHOW)
+                } ?: emptyList()
 
             val combined = (remoteMovies + remoteTvShows).sortedByDescending { it.rating }
 
             val entities = combined.map {
-                it.toMediaEntity(category = Category.POPULAR)
+                it.toMediaEntity(category = Category.POPULAR, language)
             }
 
             homeMediaLocalDataSource.addMediaList(entities)
             combined
         }
     }
+
     override suspend fun getTopRatingMedia(): List<Media> {
-        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.TOP_RATED)
+        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val localMedia =
+            homeMediaLocalDataSource.getMediaListByCategory(Category.TOP_RATED, language)
 
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(TopRatingMediaException()) {
 
-            val remoteMovies = mediaRemoteDataSource.getTopRatedMovies(language).results?.mapNotNull {
-                it.toDomain(MediaType.MOVIE)
-            } ?: emptyList()
+            val remoteMovies =
+                mediaRemoteDataSource.getTopRatedMovies(language).results?.mapNotNull {
+                    it.toDomain(MediaType.MOVIE)
+                } ?: emptyList()
 
             val remoteTv = mediaRemoteDataSource.getTopRatedTvShows(language).results?.mapNotNull {
                 it.toDomain(MediaType.TVSHOW)
@@ -70,7 +79,7 @@ class MediaRepositoryImpl(
             val combined = (remoteMovies + remoteTv).sortedByDescending { it.rating }
 
             val entities = combined.map {
-                it.toMediaEntity(category = Category.TOP_RATED)
+                it.toMediaEntity(category = Category.TOP_RATED, language)
             }
             homeMediaLocalDataSource.addMediaList(entities)
             combined
@@ -78,16 +87,18 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
-        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.UPCOMING)
+        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val localMedia =
+            homeMediaLocalDataSource.getMediaListByCategory(Category.UPCOMING, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(UpComingMediaException()) {
-            val upcomingMovies = mediaRemoteDataSource.getUpcomingMovies(language = language)
-                .results?.mapNotNull {
+            val upcomingMovies =
+                mediaRemoteDataSource.getUpcomingMovies(language = language).results?.mapNotNull {
                     it.toDomain(MediaType.MOVIE)
                 } ?: emptyList()
             val entities = upcomingMovies.map {
-                it.toMediaEntity(category = Category.UPCOMING)
+                it.toMediaEntity(category = Category.UPCOMING, language)
             }
             homeMediaLocalDataSource.addMediaList(entities)
             upcomingMovies
@@ -104,14 +115,28 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun addMediaToContinueWatching(media: Media) {
-        return safeCall(AddMediaToContinueWatchingException()){
+        return safeCall(AddMediaToContinueWatchingException()) {
             continueWatchingLocalDataSource.addMedia(media.toEntity())
         }
     }
 
-    override suspend fun getMediaFromLocal(): List<Media> {
+    override suspend fun getContinueWatchingMedia(): List<Media> {
         return safeCall(GetContinueWatchingMediaException()) {
             continueWatchingLocalDataSource.getAllMedia().map { it.toDomain() }
+        }
+    }
+
+    override suspend fun getRatedMedia(accountId: Int): List<Media> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
+        return safeCall(NoRatedMediaFoundException()) {
+            val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, language)
+                .results.mapNotNull { it.toDomain(MediaType.MOVIE) }
+
+            val ratedTvShows = mediaRemoteDataSource.getRatedTvShows(accountId, language)
+                .results.mapNotNull {
+                    it.toDomain(MediaType.TVSHOW)
+                }
+            ratedMovies + ratedTvShows
         }
     }
 

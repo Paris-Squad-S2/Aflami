@@ -1,11 +1,11 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 
 class GuestLoginUseCase(
-    private val authenticationRepository: AuthenticationRepository
+    private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(): Boolean {
-        return authenticationRepository.guestLogin()
+        return userRepository.guestLogin()
     }
 }

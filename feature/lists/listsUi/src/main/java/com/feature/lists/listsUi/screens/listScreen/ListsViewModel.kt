@@ -9,6 +9,7 @@ import com.feature.lists.listsUi.pagging.PagingSource
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -17,11 +18,36 @@ import javax.inject.Inject
 class ListsViewModel @Inject constructor(
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
+    private val isLoggedInUseCase: IsLoggedInUseCase
 ) : BaseViewModel<ListScreenUIState>(
     initialState = ListScreenUIState()
 ), ListsInteractionListener {
     init {
         getLists()
+        getIsUserLoggedIn()
+    }
+
+    private fun getIsUserLoggedIn() {
+        tryToExecute(
+            execute = {
+                isLoggedInUseCase.invoke()
+            },
+            onSuccess = {
+                emitState(
+                    screenState.value.copy(
+                       isLoggedIn = it
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                emitState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage,
+                        isLoading = false
+                    )
+                )
+            }
+        )
     }
 
     private fun getLists() {
@@ -89,7 +115,6 @@ class ListsViewModel @Inject constructor(
         )
     }
 
-
     override fun onListClicked(listId: String) {
         navigate(ListDestinations.ListDetails(listId))
     }
@@ -147,4 +172,5 @@ class ListsViewModel @Inject constructor(
             screenState.value.copy(showSnackBar = true)
         )
     }
+
 }

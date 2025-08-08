@@ -1,2 +1,2 @@
-versionName=0.4.1
+versionName=0.7.0
 - Add onboarding feature

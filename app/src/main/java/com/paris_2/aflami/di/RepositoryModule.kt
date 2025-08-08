@@ -10,9 +10,14 @@ import com.paris_2.domain.media.repository.SearchHistoryRepository
 import com.paris_2.domain.media.repository.SearchMediaRepository
 import com.paris_2.domain.media.repository.TvShowRepository
 import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.media.repository.TvShowRepository
+import com.paris_2.domain.user.repository.LanguageRepository
+import com.paris_2.domain.user.repository.UserRepository
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
-import com.paris_2.repository.user.repository.AuthenticationRepositoryImpl
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
+import com.paris_2.repository.user.repository.LanguageRepositoryImp
+import com.paris_2.repository.user.repository.UserRepositoryImpl
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -57,7 +62,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideSearchHistoryRepository(
-        historyLocalDataSource: HistoryLocalDataSource
+        historyLocalDataSource: HistoryLocalDataSource,
     ): SearchHistoryRepository {
         return SearchHistoryRepositoryImpl(historyLocalDataSource)
     }
@@ -67,19 +72,21 @@ object RepositoryModule {
     fun provideSearchMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
         searchRemoteDataSource: SearchRemoteDataSource,
-        searchHistoryLocalDataSource: HistoryLocalDataSource
+        searchHistoryLocalDataSource: HistoryLocalDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): SearchMediaRepository {
         return SearchMediaRepositoryImpl(
             networkConnectionChecker,
             searchRemoteDataSource,
-            searchHistoryLocalDataSource
+            searchHistoryLocalDataSource,
+            languageLocalDataSourceRepository
         )
     }
 
     @Provides
     @Singleton
     fun provideCountryRepository(
-        countriesLocalDataSource: CountriesLocalDataSource
+        countriesLocalDataSource: CountriesLocalDataSource,
     ): CountryRepository {
         return CountryRepositoryImpl(countriesLocalDataSource)
     }
@@ -88,19 +95,20 @@ object RepositoryModule {
     @Singleton
     fun provideCategoriesRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        genresRemoteDataSource: GenresRemoteDataSource
-
+        genresRemoteDataSource: GenresRemoteDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): CategoriesRepository {
         return CategoriesRepositoryImpl(
             networkConnectionChecker,
-            genresRemoteDataSource
+            genresRemoteDataSource,
+            languageLocalDataSourceRepository
         )
     }
 
     @Provides
     @Singleton
     fun provideGenresInteractionRepository(
-        dataSource: GenresInteractionDataSource
+        dataSource: GenresInteractionDataSource,
     ): GenresInteractionRepository {
         return GenresInteractionRepositoryImpl(dataSource)
     }
@@ -108,9 +116,15 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        remoteDataSource: AuthenticationRemoteDataSource,
-        localDataSource: AuthenticationLocalDataSource
-    ): AuthenticationRepository = AuthenticationRepositoryImpl(remoteDataSource, localDataSource)
+        remoteDataSource: UserRemoteDataSource,
+        localDataSource: AuthenticationLocalDataSource,
+    ): UserRepository = UserRepositoryImpl(remoteDataSource, localDataSource)
+
+    @Provides
+    @Singleton
+    fun provideLanguageRepository(
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    ): LanguageRepository = LanguageRepositoryImp(languageLocalDataSourceRepository)
 
     @Provides
     @Singleton
@@ -118,15 +132,27 @@ object RepositoryModule {
         networkConnectionChecker: NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
         continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
-        homeMediaLocalDataSource: HomeMediaLocalDataSource
-    ): MediaRepository = MediaRepositoryImpl(networkConnectionChecker, mediaRemoteDataSource, continueWatchingLocalDataSource,homeMediaLocalDataSource)
+        homeMediaLocalDataSource: HomeMediaLocalDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    ): MediaRepository = MediaRepositoryImpl(
+        networkConnectionChecker,
+        mediaRemoteDataSource,
+        continueWatchingLocalDataSource, homeMediaLocalDataSource,
+        languageLocalDataSourceRepository
+    )
 
     @Provides
     @Singleton
     fun provideMoviesCategoriesRepository(
         genresRemoteDataSource: GenresRemoteDataSource,
-        networkConnectionChecker: NetworkConnectionChecker
-    ): MoviesCategoriesRepository = MoviesCategoriesRepositoryImpl(genresRemoteDataSource, networkConnectionChecker)
+        networkConnectionChecker: NetworkConnectionChecker,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    ): MoviesCategoriesRepository =
+        MoviesCategoriesRepositoryImpl(
+            genresRemoteDataSource,
+            networkConnectionChecker,
+            languageLocalDataSourceRepository
+        )
 
     @Provides
     @Singleton
@@ -137,7 +163,8 @@ object RepositoryModule {
         movieGalleryLocalDataSource: MovieGalleryLocalDataSource,
         movieReviewLocalDataSource: MovieReviewLocalDataSource,
         movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
-        movieSimilarLocalDataSource: MovieSimilarLocalDataSource
+        movieSimilarLocalDataSource: MovieSimilarLocalDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): MovieRepository = MovieRepositoryImpl(
         networkConnectionChecker,
         movieLocalDataSource,
@@ -145,7 +172,8 @@ object RepositoryModule {
         movieGalleryLocalDataSource,
         movieReviewLocalDataSource,
         movieDetailsRemoteDataSource,
-        movieSimilarLocalDataSource
+        movieSimilarLocalDataSource,
+        languageLocalDataSourceRepository
     )
 
     @Provides
@@ -158,7 +186,8 @@ object RepositoryModule {
         tvShowLocalDataSource: TvShowLocalDataSource,
         tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource,
         tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource,
-        networkConnectionChecker: com.repository.util.NetworkConnectionChecker
+        networkConnectionChecker: com.repository.util.NetworkConnectionChecker,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): TvShowRepository = TvShowRepositoryImpl(
         tvShowDetailsRemoteDataSource,
         tvShowCastLocalDataSource,
@@ -167,7 +196,8 @@ object RepositoryModule {
         tvShowLocalDataSource,
         tvShowSeasonLocalDataSource,
         tvShowSimilarLocalDataSource,
-        networkConnectionChecker
+        networkConnectionChecker,
+        languageLocalDataSourceRepository
     )
 
 }

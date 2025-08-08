@@ -4,6 +4,7 @@ import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
 import com.google.common.truth.Truth.assertThat
 import com.repository.movie.models.remote.RatingDto
 import com.repository.movie.models.remote.RatingResponseDto
+import com.repository.movie.models.remote.RemoveRatingDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -179,5 +180,97 @@ class MovieDetailsRemoteDataSourceImplTest {
                 movieDetailsRemoteDataSourceImpl.getTrailerVideoForMovie(movieId)
             assertThat(result).isEqualTo(movieVideoDto)
         }
+
+    @Test
+    fun `deleteMovieRating should return true when API returns success true`() = runTest {
+        // Given
+        val movieId = 123
+        val responseDto = mockk<RemoveRatingDto> {
+            coEvery { success } returns true
+        }
+        coEvery { retrofitMovieDetailsApiService.deleteMovieRating(movieId) } returns responseDto
+
+        // When
+        val result = movieDetailsRemoteDataSourceImpl.deleteMovieRating(movieId)
+
+        // Then
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `deleteMovieRating should return false when API returns success false`() = runTest {
+        // Given
+        val movieId = 123
+        val responseDto = mockk<RemoveRatingDto> {
+            coEvery { success } returns false
+        }
+        coEvery { retrofitMovieDetailsApiService.deleteMovieRating(movieId) } returns responseDto
+
+        // When
+        val result = movieDetailsRemoteDataSourceImpl.deleteMovieRating(movieId)
+
+        // Then
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `addRatingToMovie should return false when API returns unexpected status code`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 2.5f
+        val responseDto = RatingResponseDto(statusCode = 33, statusMessage = "Error")
+        coEvery {
+            retrofitMovieDetailsApiService.addRatingToMovie(
+                movieId,
+                RatingDto(rating)
+            )
+        } returns responseDto
+
+        // When
+        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+
+        // Then
+        assertThat(result).isFalse()
+    }
+
+    @Test
+    fun `addRatingToMovie should return true when API returns status code 1`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.0f
+        val responseDto = RatingResponseDto(statusCode = 1, statusMessage = "Success")
+        coEvery {
+            retrofitMovieDetailsApiService.addRatingToMovie(
+                movieId,
+                RatingDto(rating)
+            )
+        } returns responseDto
+
+        // When
+        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+
+        // Then
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `addRatingToMovie should return true when API returns status code 12`() = runTest {
+        // Given
+        val movieId = 123
+        val rating = 4.0f
+        val responseDto = RatingResponseDto(statusCode = 12, statusMessage = "Updated")
+        coEvery {
+            retrofitMovieDetailsApiService.addRatingToMovie(
+                movieId,
+                RatingDto(rating)
+            )
+        } returns responseDto
+
+        // When
+        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+
+        // Then
+        assertThat(result).isTrue()
+    }
 
 }

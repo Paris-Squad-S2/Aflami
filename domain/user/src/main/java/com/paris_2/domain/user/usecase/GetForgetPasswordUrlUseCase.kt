@@ -1,11 +1,11 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 
 class GetForgetPasswordUrlUseCase(
-    private val authenticationRepository: AuthenticationRepository
+    private val userRepository: UserRepository
 ) {
     operator fun invoke(): String {
-        return authenticationRepository.getForgetPasswordUrl()
+        return userRepository.getForgetPasswordUrl()
     }
 }
