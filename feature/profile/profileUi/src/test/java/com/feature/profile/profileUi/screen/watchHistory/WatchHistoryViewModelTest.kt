@@ -74,6 +74,7 @@ class WatchHistoryViewModelTest {
 
     @Test
     fun `onTabSelected should update selectedMediaType and reload data`() = runTest {
+
         coEvery { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } returns fakeMediaList.map { it.toDomain() }
 
         viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
@@ -113,6 +114,7 @@ class WatchHistoryViewModelTest {
 
     @Test
     fun `onBackClick should trigger navigateUp`() = runTest {
+
         coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
         viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
         runCurrent()
