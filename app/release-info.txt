@@ -1,2 +1,2 @@
-versionName=0.7.1
-- update list feature state
+versionName=0.7.2
+- update list feature add button
