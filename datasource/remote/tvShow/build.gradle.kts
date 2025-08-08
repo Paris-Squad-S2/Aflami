@@ -51,10 +51,7 @@ dependencies {
 
 
     //retrofit
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter)
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
+    implementation(libs.bundles.retrofit)
 
     //Hilt
     implementation(libs.hilt.android)

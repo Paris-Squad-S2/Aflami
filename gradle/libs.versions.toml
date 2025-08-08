@@ -172,7 +172,15 @@ compose = [
     "androidx-paging-compose",
     "androidx-hilt-navigation-compose"
 ]
+
 test = [
     "junit",
     "androidx-junit",
+]
+
+retrofit = [
+    "retrofit",
+    "retrofit_converter",
+    "logging-interceptor",
+    "okhttp"
 ]
