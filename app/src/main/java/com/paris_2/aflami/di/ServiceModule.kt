@@ -1,5 +1,6 @@
 package com.paris_2.aflami.di
 
+import com.datasource.remote.lists.service.RetrofitListApiService
 import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
 import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.paris_2.datasource.remote.user.UserApi
@@ -46,5 +47,9 @@ object ServiceModule {
     fun provideMediaApiService(retrofit: Retrofit): MediaApiService =
         retrofit.create(MediaApiService::class.java)
 
+    @Provides
+    fun provideRetrofitListApiService(retrofit: Retrofit): RetrofitListApiService {
+        return retrofit.create(RetrofitListApiService::class.java)
+    }
 }
 

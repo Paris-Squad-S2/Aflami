@@ -5,8 +5,7 @@ import com.repository.lists.model.dto.ListsDto
 import com.repository.lists.model.dto.ResponseDto
 
 interface ListsRemoteDataSource {
-    suspend fun getLists(page: Int, accountId: String): ListsDto
-    suspend fun getAccountId(): String
+    suspend fun getLists(page: Int, accountId: Int): ListsDto
     suspend fun getListDetails(page: Int, listId: String): ListDetailsDto
     suspend fun deleteList(listId: String): ResponseDto
     suspend fun createList(name: String): ResponseDto
