@@ -105,7 +105,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onAppearanceApplyClicked(appearance: Appearance) {
-        TODO("Not yet implemented")
+
     }
 
 
