@@ -1,2 +1,4 @@
-versionName=0.7.3
-- rename bottom navigation bar components
+versionName=0.7.4
+- Introduces a Genre enum with predefined genre types and their corresponding IDs and display names
+- Updates GenreResourceMapper to use the new enum instead of integer-based mapping
+- Adds CategoryGenreMapper to convert between CategoryUiState and the new Genre enum
