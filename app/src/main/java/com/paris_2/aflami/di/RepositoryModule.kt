@@ -157,20 +157,12 @@ object RepositoryModule {
     fun provideDetailedMovieRepository(
         networkConnectionChecker: com.repository.movie.util.NetworkConnectionChecker,
         movieLocalDataSource: MovieLocalDataSource,
-        movieCastLocalDataSource: MovieCastLocalDataSource,
-        movieGalleryLocalDataSource: MovieGalleryLocalDataSource,
-        movieReviewLocalDataSource: MovieReviewLocalDataSource,
         movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
-        movieSimilarLocalDataSource: MovieSimilarLocalDataSource,
         languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): MovieRepository = MovieRepositoryImpl(
         networkConnectionChecker,
         movieLocalDataSource,
-        movieCastLocalDataSource,
-        movieGalleryLocalDataSource,
-        movieReviewLocalDataSource,
         movieDetailsRemoteDataSource,
-        movieSimilarLocalDataSource,
         languageLocalDataSourceRepository
     )
 

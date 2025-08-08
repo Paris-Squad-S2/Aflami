@@ -8,10 +8,6 @@ import com.paris_2.domain.media.exception.NoCastFoundException
 import com.paris_2.domain.media.exception.NoGalleryFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoMovieFoundException
-import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.MovieSimilar
-import com.paris_2.domain.media.entity.ProductionCompany
-import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
@@ -50,11 +46,7 @@ class MovieRepositoryImplTest {
     private lateinit var movieRepository: MovieRepositoryImpl
     private var movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource = mockk(relaxed = true)
     private var movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
-    private var movieCastLocalDataSource: MovieCastLocalDataSource = mockk(relaxed = true)
-    private var movieGalleryLocalDataSource: MovieGalleryLocalDataSource = mockk(relaxed = true)
-    private var movieReviewLocalDataSource: MovieReviewLocalDataSource = mockk(relaxed = true)
     private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
-    private var movieSimilarLocalDataSource: MovieSimilarLocalDataSource = mockk()
     private var languageLocalDataSourceRepository: LanguageLocalDataSourceRepository =
         mockk(relaxed = true)
 
@@ -65,11 +57,7 @@ class MovieRepositoryImplTest {
         movieRepository = MovieRepositoryImpl(
             networkConnectionChecker,
             movieLocalDataSource,
-            movieCastLocalDataSource,
-            movieGalleryLocalDataSource,
-            movieReviewLocalDataSource,
             movieDetailsRemoteDataSource,
-            movieSimilarLocalDataSource,
             languageLocalDataSourceRepository
         )
     }
@@ -96,7 +84,7 @@ class MovieRepositoryImplTest {
     fun `getMovieCast should return empty list when local and remote return empty`() = runTest {
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieCastLocalDataSource.getCastByMovieId(
+            movieLocalDataSource.getCastByMovieId(
                 1,
                 "en"
             )
@@ -127,7 +115,7 @@ class MovieRepositoryImplTest {
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
 
             coEvery {
-                movieReviewLocalDataSource.getReviewsForMovie(
+                movieLocalDataSource.getReviewsByMovieId(
                     movieId,
                     language
                 )
@@ -208,7 +196,7 @@ class MovieRepositoryImplTest {
             // Given
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieCastLocalDataSource.getCastByMovieId(
+                movieLocalDataSource.getCastByMovieId(
                     movieId,
                     language
                 )
@@ -233,7 +221,7 @@ class MovieRepositoryImplTest {
         runTest {
             // Given
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } throws NoGalleryFoundException(
                 "No gallery"
             )
@@ -358,7 +346,7 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieCastLocalDataSource.getCastByMovieId(
+            movieLocalDataSource.getCastByMovieId(
                 movieId,
                 language
             )
@@ -380,7 +368,7 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieCastLocalDataSource.getCastByMovieId(
+            movieLocalDataSource.getCastByMovieId(
                 movieId,
                 language
             )
@@ -402,7 +390,7 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieCastLocalDataSource.getCastByMovieId(
+            movieLocalDataSource.getCastByMovieId(
                 movieId,
                 language
             )
@@ -412,7 +400,7 @@ class MovieRepositoryImplTest {
         movieRepository.getMovieCast(movieId)
 
         // Then
-        coVerify(exactly = 0) { movieCastLocalDataSource.addCast(any()) }
+        coVerify(exactly = 0) { movieLocalDataSource.addMovieCast(any()) }
     }
 
     @Test
@@ -421,14 +409,14 @@ class MovieRepositoryImplTest {
             // Given
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieCastLocalDataSource.getCastByMovieId(movieId, language)
+                movieLocalDataSource.getCastByMovieId(movieId, language)
             } returns emptyList()
 
             coEvery {
                 movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
             } returns mockMovieCreditsDto
 
-            coEvery { movieCastLocalDataSource.addCast(any()) } just Runs
+            coEvery { movieLocalDataSource.addMovieCast(any()) } just Runs
 
             // When
             val result = movieRepository.getMovieCast(movieId)
@@ -442,7 +430,7 @@ class MovieRepositoryImplTest {
         // Given
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieCastLocalDataSource.getCastByMovieId(
+            movieLocalDataSource.getCastByMovieId(
                 movieId,
                 language
             )
@@ -453,7 +441,7 @@ class MovieRepositoryImplTest {
                 language
             )
         } returns mockMovieCreditsDto
-        coEvery { movieCastLocalDataSource.addCast(any()) } just Runs
+        coEvery { movieLocalDataSource.addMovieCast(any()) } just Runs
 
         // When
         movieRepository.getMovieCast(movieId)
@@ -472,7 +460,7 @@ class MovieRepositoryImplTest {
         // Given
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieCastLocalDataSource.getCastByMovieId(
+            movieLocalDataSource.getCastByMovieId(
                 movieId,
                 language
             )
@@ -483,13 +471,13 @@ class MovieRepositoryImplTest {
                 language
             )
         } returns mockMovieCreditsDto
-        coEvery { movieCastLocalDataSource.addCast(any()) } just Runs
+        coEvery { movieLocalDataSource.addMovieCast(any()) } just Runs
 
         // When
         movieRepository.getMovieCast(movieId)
 
         // Then
-        coVerify(exactly = 1) { movieCastLocalDataSource.addCast(any()) }
+        coVerify(exactly = 1) { movieLocalDataSource.addMovieCast(any()) }
     }
 
     @Test
@@ -499,7 +487,7 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieCastLocalDataSource.getCastByMovieId(
+            movieLocalDataSource.getCastByMovieId(
                 movieId,
                 language
             )
@@ -510,7 +498,7 @@ class MovieRepositoryImplTest {
                 language
             )
         } returns emptyCreditsDto
-        coEvery { movieCastLocalDataSource.addCast(any()) } just Runs
+        coEvery { movieLocalDataSource.addMovieCast(any()) } just Runs
 
         // When
         val result = movieRepository.getMovieCast(movieId)
@@ -529,7 +517,7 @@ class MovieRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns localRecommendations
 
             // When
@@ -552,7 +540,7 @@ class MovieRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns localRecommendations
 
             // When
@@ -575,7 +563,7 @@ class MovieRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns localRecommendations
 
             // When
@@ -583,7 +571,7 @@ class MovieRepositoryImplTest {
 
             // Then
             coVerify(exactly = 0) {
-                movieSimilarLocalDataSource.addSimilarMovies(any())
+                movieLocalDataSource.addSimilarMovies(any())
             }
         }
 
@@ -593,12 +581,12 @@ class MovieRepositoryImplTest {
             // Given
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns emptyList()
             coEvery {
                 movieDetailsRemoteDataSource.getSimilarMovies(movieId, page, language)
             } returns mockMovieSimilarsDto
-            coEvery { movieSimilarLocalDataSource.addSimilarMovies(any()) } just Runs
+            coEvery { movieLocalDataSource.addSimilarMovies(any()) } just Runs
 
             // When
             val result = movieRepository.getMovieRecommendations(movieId, page)
@@ -612,12 +600,12 @@ class MovieRepositoryImplTest {
         // Given
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+            movieLocalDataSource.getSimilarMovies(movieId, page, language)
         } returns emptyList()
         coEvery {
             movieDetailsRemoteDataSource.getSimilarMovies(movieId, page, language)
         } returns mockMovieSimilarsDto
-        coEvery { movieSimilarLocalDataSource.addSimilarMovies(any()) } just Runs
+        coEvery { movieLocalDataSource.addSimilarMovies(any()) } just Runs
 
         // When
         movieRepository.getMovieRecommendations(movieId, page)
@@ -635,19 +623,19 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+            movieLocalDataSource.getSimilarMovies(movieId, page, language)
         } returns emptyList()
         coEvery {
             movieDetailsRemoteDataSource.getSimilarMovies(movieId, page, language)
         } returns mockMovieSimilarsDto
-        coEvery { movieSimilarLocalDataSource.addSimilarMovies(any()) } just Runs
+        coEvery { movieLocalDataSource.addSimilarMovies(any()) } just Runs
 
         // When
         movieRepository.getMovieRecommendations(movieId, page)
 
         // Then
         coVerify(exactly = 1) {
-            movieSimilarLocalDataSource.addSimilarMovies(
+            movieLocalDataSource.addSimilarMovies(
                 expectedRecommendations.map { it.toLocalDto(movieId, page, language) }
             )
         }
@@ -661,12 +649,12 @@ class MovieRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns emptyList()
             coEvery {
                 movieDetailsRemoteDataSource.getSimilarMovies(movieId, page, language)
             } returns emptySimilarDto
-            coEvery { movieSimilarLocalDataSource.addSimilarMovies(any()) } just Runs
+            coEvery { movieLocalDataSource.addSimilarMovies(any()) } just Runs
 
             // When
             val result = movieRepository.getMovieRecommendations(movieId, page)
@@ -683,19 +671,19 @@ class MovieRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns emptyList()
             coEvery {
                 movieDetailsRemoteDataSource.getSimilarMovies(movieId, page, language)
             } returns emptySimilarsDto
-            coEvery { movieSimilarLocalDataSource.addSimilarMovies(any()) } just Runs
+            coEvery { movieLocalDataSource.addSimilarMovies(any()) } just Runs
 
             // When
             movieRepository.getMovieRecommendations(movieId, page)
 
             // Then
             coVerify(exactly = 0) {
-                movieSimilarLocalDataSource.addSimilarMovies(any())
+                movieLocalDataSource.addSimilarMovies(any())
             }
         }
 
@@ -710,7 +698,7 @@ class MovieRepositoryImplTest {
         )
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
-        coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+        coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
 
         // When
         val result = movieRepository.getMovieGallery(movieId)
@@ -729,7 +717,7 @@ class MovieRepositoryImplTest {
                 movieId = movieId
             )
 
-            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
 
             // When
             movieRepository.getMovieGallery(movieId)
@@ -747,13 +735,13 @@ class MovieRepositoryImplTest {
             movieId = movieId
         )
 
-        coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+        coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
 
         // When
         movieRepository.getMovieGallery(movieId)
 
         // Then
-        coVerify(exactly = 0) { movieGalleryLocalDataSource.addGallery(any()) }
+        coVerify(exactly = 0) { movieLocalDataSource.addMovieGallery(any()) }
     }
 
     @Test
@@ -767,10 +755,10 @@ class MovieRepositoryImplTest {
                 movieId = movieId
             )
 
-            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
-            coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
-            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+            coEvery { movieLocalDataSource.addMovieGallery(any()) } just Runs
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
 
             // When
             val result = movieRepository.getMovieGallery(movieId)
@@ -783,10 +771,10 @@ class MovieRepositoryImplTest {
     fun `getMovieGallery - should throw NoFundGalleryMovieException when remote fetch succeeds but local save fails to retrieve`() =
         runTest {
             // Given
-            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
-            coEvery { movieGalleryLocalDataSource.addGallery(any()) } just Runs
-            coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returnsMany listOf(
+            coEvery { movieLocalDataSource.addMovieGallery(any()) } just Runs
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returnsMany listOf(
                 null, null
             )
 
@@ -965,7 +953,7 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            movieLocalDataSource.getReviewsByMovieId(movieId, language)
         } returns localReviews
 
         // When
@@ -983,7 +971,7 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            movieLocalDataSource.getReviewsByMovieId(movieId, language)
         } returns localReviews
 
         // When
@@ -1003,7 +991,7 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            movieLocalDataSource.getReviewsByMovieId(movieId, language)
         } returns localReviews
 
         // When
@@ -1011,7 +999,7 @@ class MovieRepositoryImplTest {
 
         // Then
         coVerify(exactly = 0) {
-            movieReviewLocalDataSource.addReview(any())
+            movieLocalDataSource.addMovieReviews(any())
         }
     }
 
@@ -1022,12 +1010,12 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            movieLocalDataSource.getReviewsByMovieId(movieId, language)
         } returns emptyList()
         coEvery {
             movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
         } returns emptyReviewsDto
-        coEvery { movieReviewLocalDataSource.addReview(any()) } just Runs
+        coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
 
         // When
         val result = movieRepository.getMovieReview(movieId, page)
@@ -1043,12 +1031,12 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            movieLocalDataSource.getReviewsByMovieId(movieId, language)
         } returns emptyList()
         coEvery {
             movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
         } returns emptyReviewsDto
-        coEvery { movieReviewLocalDataSource.addReview(any()) } just Runs
+        coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
 
         // When
         movieRepository.getMovieReview(movieId, page)
@@ -1066,18 +1054,18 @@ class MovieRepositoryImplTest {
 
         coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
-            movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            movieLocalDataSource.getReviewsByMovieId(movieId, language)
         } returns emptyList()
         coEvery {
             movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
         } returns emptyReviewsDto
-        coEvery { movieReviewLocalDataSource.addReview(any()) } just Runs
+        coEvery { movieLocalDataSource.addMovieReviews(any()) } just Runs
 
         // When
         movieRepository.getMovieReview(movieId, page)
 
         // Then
-        coVerify(exactly = 0) { movieReviewLocalDataSource.addReview(any()) }
+        coVerify(exactly = 0) { movieLocalDataSource.addMovieReviews(any()) }
     }
 
     @Test
@@ -1088,7 +1076,7 @@ class MovieRepositoryImplTest {
 
             coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
-                movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+                movieLocalDataSource.getReviewsByMovieId(movieId, language)
             } returns emptyList() andThen listOf(reviewRemoteDto).map {
                 it.toEntity().toLocalDto(movieId, language)
             }
@@ -1096,7 +1084,7 @@ class MovieRepositoryImplTest {
                 movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
             } returns MovieReviewsDto(results = listOf(reviewRemoteDto))
             coEvery {
-                movieReviewLocalDataSource.addReview(any())
+                movieLocalDataSource.addMovieReviews(any())
             } just Runs
 
 

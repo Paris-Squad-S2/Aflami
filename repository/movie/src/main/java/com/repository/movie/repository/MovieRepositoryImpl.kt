@@ -9,21 +9,17 @@ import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.FailedToAddRatingException
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoCastFoundException
 import com.paris_2.domain.media.exception.NoGalleryFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoMovieFoundException
-import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
 import com.paris_2.domain.media.exception.NoReviewFoundException
 import com.paris_2.domain.media.exception.NoVideoFoundException
 import com.paris_2.domain.media.repository.MovieRepository
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
-import com.repository.movie.dataSource.local.MovieCastLocalDataSource
-import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
-import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
@@ -34,11 +30,7 @@ import kotlinx.coroutines.flow.first
 class MovieRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val movieCastLocalDataSource: MovieCastLocalDataSource,
-    private val movieGalleryLocalDataSource: MovieGalleryLocalDataSource,
-    private val movieReviewLocalDataSource: MovieReviewLocalDataSource,
     private val movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
-    private val movieSimilarLocalDataSource: MovieSimilarLocalDataSource,
     private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
 ) : MovieRepository {
 
@@ -61,7 +53,7 @@ class MovieRepositoryImpl(
     override suspend fun getMovieCast(movieId: Int): List<Cast> {
         val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoCastFoundException()) {
-            val localCast = movieCastLocalDataSource.getCastByMovieId(movieId, language)
+            val localCast = movieLocalDataSource.getCastByMovieId(movieId, language)
 
             if (localCast.isNotEmpty()) {
                 localCast.map { it.toEntity() }
@@ -69,13 +61,13 @@ class MovieRepositoryImpl(
                 val remoteCast = movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
                     .cast?.map { it.toEntity() } ?: emptyList()
 
-                movieCastLocalDataSource.addCast(remoteCast.map {
+                movieLocalDataSource.addMovieCast(remoteCast.map {
                     it.toLocalDto(
                         movieId,
                         language
                     )
                 })
-                movieCastLocalDataSource.getCastByMovieId(movieId, language).map { it.toEntity() }
+                movieLocalDataSource.getCastByMovieId(movieId, language).map { it.toEntity() }
             }
 
         }
@@ -86,7 +78,7 @@ class MovieRepositoryImpl(
         return safeCall(NoMovieFoundException()) {
 
             val localMoviesSimilar =
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
 
             if (localMoviesSimilar.isNotEmpty()) {
                 localMoviesSimilar.map { it.toEntity() }
@@ -100,10 +92,10 @@ class MovieRepositoryImpl(
                     }
 
                 moviesSimilarToCache?.let {
-                    movieSimilarLocalDataSource.addSimilarMovies(it)
+                    movieLocalDataSource.addSimilarMovies(it)
                 }
 
-                movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
+                movieLocalDataSource.getSimilarMovies(movieId, page, language)
                     .map { it.toEntity() }
 
             }
@@ -112,20 +104,20 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieGallery(movieId: Int): List<Image> {
         return safeCall(NoGalleryFoundException()) {
-            val localGallery = movieGalleryLocalDataSource.getGalleryByMovieId(movieId)
+            val localGallery = movieLocalDataSource.getGalleryByMovieId(movieId)
 
             if (localGallery != null) {
                 localGallery.toEntity()
             } else {
                 val remoteGallery = movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity()
                 val remoteGalleryImages = remoteGallery
-                movieGalleryLocalDataSource.addGallery(
+                movieLocalDataSource.addMovieGallery(
                     GalleryEntity(
                         movieId = movieId,
                         images = remoteGalleryImages.map { it.toLocalDto() },
                     )
                 )
-                movieGalleryLocalDataSource.getGalleryByMovieId(movieId)?.toEntity()
+                movieLocalDataSource.getGalleryByMovieId(movieId)?.toEntity()
                     ?: throw NoGalleryFoundException()
             }
         }
@@ -161,7 +153,7 @@ class MovieRepositoryImpl(
         val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoReviewFoundException()) {
 
-            val localReviews = movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+            val localReviews = movieLocalDataSource.getReviewsByMovieId(movieId, language)
 
             if (!localReviews.isNullOrEmpty()) {
                 localReviews.map { it.toEntity() }
@@ -172,7 +164,7 @@ class MovieRepositoryImpl(
                     remoteReviewsResponse.results?.map { it.toEntity() } ?: emptyList()
 
                 if (remoteReviews.isNotEmpty()) {
-                    movieReviewLocalDataSource.addReview(remoteReviews.map {
+                    movieLocalDataSource.addMovieReviews(remoteReviews.map {
                         it.toLocalDto(
                             movieId,
                             language
@@ -180,7 +172,7 @@ class MovieRepositoryImpl(
                     })
                 }
 
-                movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
+                movieLocalDataSource.getReviewsByMovieId(movieId, language)
                     ?.map { it.toEntity() } ?: emptyList()
             }
         }

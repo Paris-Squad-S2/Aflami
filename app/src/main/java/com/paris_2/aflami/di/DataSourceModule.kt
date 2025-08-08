@@ -6,22 +6,14 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.work.WorkManager
-import com.datasource.local.dao.MovieCastDao
 import com.datasource.local.dao.MovieDao
-import com.datasource.local.dao.MovieGalleryDao
-import com.datasource.local.dao.MovieReviewDao
-import com.datasource.local.dao.MovieSimilarDao
 import com.datasource.local.dao.SeasonDao
 import com.datasource.local.dao.TvShowCastDao
 import com.datasource.local.dao.TvShowDao
 import com.datasource.local.dao.TvShowGalleryDao
 import com.datasource.local.dao.TvShowReviewDao
 import com.datasource.local.dao.TvShowSimilarDao
-import com.datasource.local.datasource.MovieCastLocalDataSourceImp
-import com.datasource.local.datasource.MovieGalleryLocalDataSourceImp
 import com.datasource.local.datasource.MovieLocalDataSourceImp
-import com.datasource.local.datasource.MovieReviewLocalDataSourceImp
-import com.datasource.local.datasource.MovieSimilarLocalDataSourceImp
 import com.datasource.local.datasource.TvShowCastLocalDataSourceImp
 import com.datasource.local.datasource.TvShowGalleryLocalDataSourceImp
 import com.datasource.local.datasource.TvShowLocalDataSourceImp
@@ -56,11 +48,7 @@ import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
-import com.repository.movie.dataSource.local.MovieCastLocalDataSource
-import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
-import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -99,36 +87,13 @@ object DataSourceModule {
         genresInteractionDao: GenresUserInteractionDao,
     ): GenresInteractionDataSource = GenresInteractionDataSourceImpl(genresInteractionDao)
 
-    @Provides
-    @Singleton
-    fun provideMovieGalleryLocalDataSource(
-        dao: MovieGalleryDao,
-    ): MovieGalleryLocalDataSource = MovieGalleryLocalDataSourceImp(dao)
-
-    @Provides
-    @Singleton
-    fun provideMovieCastLocalDataSource(
-        dao: MovieCastDao,
-    ): MovieCastLocalDataSource = MovieCastLocalDataSourceImp(dao)
 
     @Provides
     @Singleton
     fun provideMovieLocalDataSource(
         workManager: WorkManager,
-        dao: MovieDao,
-    ): MovieLocalDataSource = MovieLocalDataSourceImp(workManager, dao)
-
-    @Provides
-    @Singleton
-    fun provideMovieReviewLocalDataSource(
-        dao: MovieReviewDao,
-    ): MovieReviewLocalDataSource = MovieReviewLocalDataSourceImp(dao)
-
-    @Provides
-    @Singleton
-    fun provideMovieSimilarLocalDataSource(
-        similarDao: MovieSimilarDao,
-    ): MovieSimilarLocalDataSource = MovieSimilarLocalDataSourceImp(similarDao)
+        movieDao: MovieDao,
+    ): MovieLocalDataSource = MovieLocalDataSourceImp(workManager, movieDao)
 
     @Provides
     @Singleton
