@@ -22,9 +22,15 @@ class NoProductionCompanyFoundException(message: String = "No found production c
 class FailedToAddRatingException(message: String = "Failed to add rating") :
     AflamiException(message)
 
+class FailedToDeleteRatingException(message: String = "Failed to delete rating") :
+    AflamiException(message)
+
 class PopularMediaException(message: String = "No popular media found") : AflamiException(message)
 class TopRatingMediaException(message: String = "No top rating media found") : AflamiException(message)
 class UpComingMediaException(message: String = "No upcoming media found") : AflamiException(message)
 class MediaPlayingException(message: String = "No media currently playing") : AflamiException(message)
 class AddMediaToContinueWatchingException(message: String = "Can't add  media to Continue Watching List") : AflamiException(message)
 class GetContinueWatchingMediaException(message: String = "Something went wrong while fetching continue watching media") : AflamiException(message)
+
+class NoRatedMediaFoundException(message: String = "No Rated Media Found Exception") : AflamiException(message)
+

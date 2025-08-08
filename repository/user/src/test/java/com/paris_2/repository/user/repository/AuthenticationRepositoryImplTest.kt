@@ -3,7 +3,7 @@ package com.paris_2.repository.user.repository
 import com.paris_2.domain.user.exception.UnknownAuthException
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris_2.repository.user.model.remote.GuestSessionDto
 import com.paris_2.repository.user.model.remote.LoginRequest
 import com.paris_2.repository.user.model.remote.RequestTokenDto
@@ -19,15 +19,15 @@ import org.junit.Test
 import kotlin.test.assertFailsWith
 
 class AuthenticationRepositoryImplTest {
-    private lateinit var remoteDataSource: AuthenticationRemoteDataSource
+    private lateinit var remoteDataSource: UserRemoteDataSource
     private lateinit var localDataSource: AuthenticationLocalDataSource
-    private lateinit var repository: AuthenticationRepositoryImpl
+    private lateinit var repository: UserRepositoryImpl
 
     @Before
     fun setUp() {
         remoteDataSource = mockk()
         localDataSource = mockk(relaxed = true)
-        repository = AuthenticationRepositoryImpl(remoteDataSource, localDataSource)
+        repository = UserRepositoryImpl(remoteDataSource, localDataSource)
     }
 
     @Test

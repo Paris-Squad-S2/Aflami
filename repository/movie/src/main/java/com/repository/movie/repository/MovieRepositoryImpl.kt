@@ -13,6 +13,7 @@ import com.paris_2.domain.media.exception.NoCastFoundException
 import com.paris_2.domain.media.exception.NoGalleryFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoMovieFoundException
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
 import com.paris_2.domain.media.exception.NoReviewFoundException
 import com.paris_2.domain.media.exception.NoVideoFoundException
@@ -200,6 +201,14 @@ class MovieRepositoryImpl(
             movieDetailsRemoteDataSource.addRatingToMovie(
                 movieId = movieId,
                 rating = rating
+            )
+        }
+    }
+
+    override suspend fun deleteMovieRating(movieId: Int) {
+        return safeCall(FailedToDeleteRatingException()) {
+            movieDetailsRemoteDataSource.deleteMovieRating(
+                movieId = movieId
             )
         }
     }

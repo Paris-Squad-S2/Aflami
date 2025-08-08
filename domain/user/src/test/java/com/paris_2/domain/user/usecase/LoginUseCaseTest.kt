@@ -1,6 +1,6 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -9,7 +9,7 @@ import org.junit.Before
 import org.junit.Test
 
 class LoginUseCaseTest {
-    private lateinit var repository: AuthenticationRepository
+    private lateinit var repository: UserRepository
     private lateinit var useCase: LoginUseCase
 
     @Before

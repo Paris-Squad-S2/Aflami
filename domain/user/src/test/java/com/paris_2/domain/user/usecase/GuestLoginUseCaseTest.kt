@@ -1,6 +1,6 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -11,29 +11,29 @@ import org.junit.Before
 import org.junit.Test
 
 class GuestLoginUseCaseTest {
-    private lateinit var authenticationRepository: AuthenticationRepository
+    private lateinit var userRepository: UserRepository
     private lateinit var guestLoginUseCase: GuestLoginUseCase
 
     @Before
     fun setUp() {
-        authenticationRepository = mockk(relaxed = true)
-        guestLoginUseCase = GuestLoginUseCase(authenticationRepository)
+        userRepository = mockk(relaxed = true)
+        guestLoginUseCase = GuestLoginUseCase(userRepository)
     }
 
     @Test
     fun `guest login returns true on success`() = runBlocking {
-        coEvery { authenticationRepository.guestLogin() } returns true
+        coEvery { userRepository.guestLogin() } returns true
         val result = guestLoginUseCase()
         assertTrue(result)
-        coVerify { authenticationRepository.guestLogin() }
+        coVerify { userRepository.guestLogin() }
     }
 
     @Test
     fun `guest login returns false on failure`() = runBlocking {
-        coEvery { authenticationRepository.guestLogin() } returns false
+        coEvery { userRepository.guestLogin() } returns false
         val result = guestLoginUseCase()
         assertFalse(result)
-        coVerify { authenticationRepository.guestLogin() }
+        coVerify { userRepository.guestLogin() }
     }
 }
 

@@ -9,9 +9,9 @@ import org.junit.jupiter.api.Test
 import io.mockk.coVerify
 import io.mockk.mockk
 
-class AddMediaToLocalUseCaseTest {
+class AddWatchHistoryUseCaseTest {
     private val mediaRepository: MediaRepository = mockk(relaxed = true)
-    private val addMediaToLocalUseCase = AddMediaToLocalUseCase(mediaRepository)
+    private val addWatchHistoryUseCase = AddWatchHistoryUseCase(mediaRepository)
 
     @Test
     fun `invoke calls repository addMediaToLocal with given media`() = runTest {
@@ -24,7 +24,7 @@ class AddMediaToLocalUseCaseTest {
             categoryIds = listOf(28, 18),
             type = MediaType.MOVIE
         )
-        addMediaToLocalUseCase(media)
+        addWatchHistoryUseCase(media)
         coVerify { mediaRepository.addMediaToContinueWatching(media) }
     }
 }

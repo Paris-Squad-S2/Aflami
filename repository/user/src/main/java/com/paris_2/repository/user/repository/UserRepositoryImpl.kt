@@ -3,16 +3,16 @@ package com.paris_2.repository.user.repository
 import com.paris_2.domain.user.exception.AuthNetworkException
 import com.paris_2.domain.user.exception.InvalidCredentialsException
 import com.paris_2.domain.user.exception.UnknownAuthException
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris_2.repository.user.exeptions.NetworkException
 import com.paris_2.repository.user.model.remote.LoginRequest
 
-class AuthenticationRepositoryImpl(
-    private val remoteDataSource: AuthenticationRemoteDataSource,
+class UserRepositoryImpl(
+    private val remoteDataSource: UserRemoteDataSource,
     private val localDataSource: AuthenticationLocalDataSource
-) : AuthenticationRepository {
+) : UserRepository {
 
 
     override suspend fun login(username: String, password: String): Boolean = handleAuthExceptions {
@@ -76,6 +76,10 @@ class AuthenticationRepositoryImpl(
 
     override fun hasAnySession(): Boolean {
         return localDataSource.hasAnySession()
+    }
+
+    override suspend fun getAccountId(): Int? {
+        return remoteDataSource.getAccountDetails().id
     }
 
 }

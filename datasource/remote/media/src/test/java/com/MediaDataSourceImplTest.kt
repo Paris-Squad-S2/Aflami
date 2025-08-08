@@ -8,6 +8,8 @@ import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.MovieListDto
 import com.repository.media.dto.home.TvDto
 import com.repository.media.dto.home.TvListDto
+import com.repository.media.dto.profile.RatedMoviesDto
+import com.repository.media.dto.profile.RatedTvShowDtoo
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -84,6 +86,29 @@ class MediaDataSourceImplTest {
         assertThat(result).isEqualTo(tvListDto)
         coVerify(exactly = 1) { apiService.getTopRatedTv(any()) }
     }
+
+    @Test
+    fun `getRatedMovies should return data from api`() = runTest {
+        val ratedMoviesDto = mockk<RatedMoviesDto>()
+        coEvery { apiService.getRatedMovies(any(), any()) } returns ratedMoviesDto
+
+        val result = mediaDataSource.getRatedMovies(123, "en")
+
+        assertThat(result).isEqualTo(ratedMoviesDto)
+        coVerify(exactly = 1) { apiService.getRatedMovies(123, "en") }
+    }
+
+    @Test
+    fun `getRatedTvShows should return data from api`() = runTest {
+        val ratedTvShowsDto = mockk<RatedTvShowDtoo>()
+        coEvery { apiService.getRatedTvShows(any(), any()) } returns ratedTvShowsDto
+
+        val result = mediaDataSource.getRatedTvShows(123, "en")
+
+        assertThat(result).isEqualTo(ratedTvShowsDto)
+        coVerify(exactly = 1) { apiService.getRatedTvShows(123, "en") }
+    }
+
 
     private companion object {
         val movieListDto = MovieListDto(

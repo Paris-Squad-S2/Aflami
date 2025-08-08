@@ -65,17 +65,37 @@ dependencies {
 
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
+    //Modules
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(project(Modules.DOMAIN_USER))
+
+    //WebView
+    implementation(libs.androidx.webkit)
+
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
+    //Navigation
+    implementation(libs.navigation.compose)
+
     //Hilt
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
 
-    //WebView
-    implementation(libs.androidx.webkit)
+    //test
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
+
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
-
-    //Navigation
-    implementation(libs.navigation.compose)
 }
