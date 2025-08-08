@@ -34,7 +34,6 @@ object ListsModule {
         return ListsRemoteDataSourceImp(listApiService)
     }
 
-
     @Provides
     @Singleton
     fun provideListsTvShowRepository(
