@@ -38,6 +38,8 @@ import com.datasource.local.media.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.media.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
+import com.datasource.remote.lists.ListsRemoteDataSourceImp
+import com.datasource.remote.lists.service.RetrofitListApiService
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
 import com.paris_2.dataSource.local.user.LanguageLocalDataSourceRepositoryImp
 import com.paris_2.datasource.remote.user.UserApi
@@ -51,6 +53,7 @@ import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.local.TvShowReviewLocalDataSource
 import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
+import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
@@ -197,5 +200,13 @@ object DataSourceModule {
     fun provideLanguageLocalDataSource(
        @ApplicationContext context: Context,
     ): LanguageLocalDataSourceRepository = LanguageLocalDataSourceRepositoryImp(context)
+
+    @Provides
+    @Singleton
+    fun provideListRemoteDataSource(
+        listApiService: RetrofitListApiService
+    ): ListsRemoteDataSource {
+        return ListsRemoteDataSourceImp(listApiService)
+    }
 
 }
