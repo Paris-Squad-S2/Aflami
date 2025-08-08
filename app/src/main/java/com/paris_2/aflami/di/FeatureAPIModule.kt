@@ -34,11 +34,8 @@ import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.navigation.SearchNavigatorImpl
-import com.paris_2.aflami.bottomNavBar.AppDestinations
-import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
-import com.paris_2.aflami.bottomNavBar.AppNavigationAPIImpl
-import com.paris_2.aflami.bottomNavBar.AppNavigator
-import com.paris_2.aflami.bottomNavBar.AppNavigatorImpl
+import com.paris_2.aflami.bottomNavBar.BottomNavBarAPI
+import com.paris_2.aflami.bottomNavBar.BottomNavBarAPIImpl
 import com.feature.profile.profileUi.navigation.ProfileDestinations
 import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.navigation.ProfileNavigatorImpl
@@ -54,7 +51,7 @@ import javax.inject.Singleton
 object FeatureAPIModule {
     @Provides
     @Singleton
-    fun provideAppNavigator(): AppNavigator = AppNavigatorImpl(AppDestinations.AppGraph1)
+    fun provideAppNavigator(): com.paris_2.aflami.bottomNavBar.navigation.Navigator = com.paris_2.aflami.bottomNavBar.navigation.NavigatorImpl(com.paris_2.aflami.bottomNavBar.navigation.Destinations.MainGraph)
 
     @Provides
     @Singleton
@@ -121,6 +118,6 @@ object FeatureAPIModule {
 
     @Provides
     @Singleton
-    fun provideAppNavigationAPI(@ApplicationContext context: Context): AppNavigationAPI =
-        AppNavigationAPIImpl(context)
+    fun provideAppNavigationAPI(@ApplicationContext context: Context): BottomNavBarAPI =
+        BottomNavBarAPIImpl(context)
 }

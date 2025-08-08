@@ -1,4 +1,4 @@
-package com.paris_2.aflami.bottomNavBar
+package com.paris_2.aflami.bottomNavBar.ui
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.animateColorAsState
@@ -28,6 +28,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.paris_2.aflami.bottomNavBar.navigation.Destination
+import com.paris_2.aflami.bottomNavBar.navigation.Destinations
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.AppNavigationBar
@@ -37,11 +39,11 @@ import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import com.paris_2.aflami.designsystem.R
 
 @Composable
-fun AppNavBar(
+fun BottomNavBar(
     modifier: Modifier = Modifier,
     selectedItem: AflamiNavBarItem,
     destinations: List<AflamiNavBarItem> = AflamiNavBarItem.destinations,
-    onItemClick: (AppDestination) -> Unit = {},
+    onItemClick: (Destination) -> Unit = {},
 ) {
     val strokeColor = Theme.colors.stroke
 
@@ -143,36 +145,36 @@ private fun AflamiNavBarIcon(
 sealed class AflamiNavBarItem(
     @param:DrawableRes val icon: Int,
     val label: Int,
-    val destination: AppDestination
+    val destination: Destination
 ) {
     data object Home : AflamiNavBarItem(
         icon = R.drawable.ic_home,
         label = R.string.home,
-        destination = AppDestinations.HomeFeature
+        destination = Destinations.HomeFeature
     )
 
     data object Lists : AflamiNavBarItem(
         icon = R.drawable.ic_lists,
         label = R.string.lists,
-        destination = AppDestinations.ListsFeature
+        destination = Destinations.ListsFeature
     )
 
     data object Categories : AflamiNavBarItem(
         icon = R.drawable.ic_categories,
         label = R.string.categories,
-        destination = AppDestinations.CategoriesFeature
+        destination = Destinations.CategoriesFeature
     )
 
     data object LetsPlay : AflamiNavBarItem(
         icon = R.drawable.ic_play,
         label = R.string.let_s_play,
-        destination = AppDestinations.LetsPlayFeature
+        destination = Destinations.LetsPlayFeature
     )
 
     data object Profile : AflamiNavBarItem(
         icon = R.drawable.ic_profile,
         label = R.string.profile,
-        destination = AppDestinations.ProfileFeature
+        destination = Destinations.ProfileFeature
     )
 
     companion object {
@@ -185,7 +187,7 @@ sealed class AflamiNavBarItem(
 private fun AflamiNavigationBarPreview() {
     val selectedItem by remember { mutableStateOf(AflamiNavBarItem.destinations[0]) }
     BasePreview {
-        AppNavBar(
+        BottomNavBar(
             selectedItem = selectedItem,
             onItemClick = { }
         )

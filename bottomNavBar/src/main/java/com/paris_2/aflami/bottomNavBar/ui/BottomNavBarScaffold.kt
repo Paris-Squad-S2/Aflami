@@ -1,4 +1,4 @@
-package com.paris_2.aflami.bottomNavBar
+package com.paris_2.aflami.bottomNavBar.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -16,15 +16,14 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
-import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
+import com.paris_2.aflami.bottomNavBar.navigation.Navigator
 import com.paris_2.aflami.designsystem.components.AppScaffold
 import kotlinx.coroutines.launch
 
 @Composable
-internal fun AppScaffold(
-    appNavigator: AppNavigator,
-    onBoardingFeature: OnBoardingFeatureAPI,
+internal fun BottomNavBarScaffold(
+    navigator: Navigator,
     homeFeature: HomeFeatureAPI,
     listsFeature: ListsFeatureAPI,
     categoriesFeature: CategoriesFeatureAPI,
@@ -54,8 +53,8 @@ internal fun AppScaffold(
 
     AppScaffold(
         content = {
-            AppNavGraph(
-                navigator = appNavigator,
+            BottomNavBarNavGraph(
+                navigator = navigator,
                 navController = navController,
                 homeFeature = homeFeature,
                 listsFeature = listsFeature,
@@ -70,15 +69,15 @@ internal fun AppScaffold(
                 enter = slideInVertically(initialOffsetY = { it }),
                 exit = slideOutVertically(targetOffsetY = { it }),
             ) {
-                AppNavBar(
+                BottomNavBar(
                     selectedItem = AflamiNavBarItem.destinations[selectedDestinationIndex],
                     onItemClick = { destination ->
                         scope.launch {
-                            appNavigator.navigate(
+                            navigator.navigate(
                                 destination,
                                 navOptions = NavOptions.Builder()
                                     .setPopUpTo(
-                                        appNavigator.startGraph,
+                                        navigator.startGraph,
                                         inclusive = false,
                                     )
                                     .build()

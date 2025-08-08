@@ -1,4 +1,4 @@
-package com.paris_2.aflami.bottomNavBar
+package com.paris_2.aflami.bottomNavBar.ui
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
@@ -10,10 +10,14 @@ import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
+import com.paris_2.aflami.bottomNavBar.navigation.Destinations
+import com.paris_2.aflami.bottomNavBar.navigation.Event
+import com.paris_2.aflami.bottomNavBar.navigation.Navigator
+import com.paris_2.aflami.bottomNavBar.navigation.ObserveAsEvents
 
 @Composable
-internal fun AppNavGraph(
-    navigator: AppNavigator,
+internal fun BottomNavBarNavGraph(
+    navigator: Navigator,
     navController: NavHostController,
     homeFeature: HomeFeatureAPI,
     listsFeature: ListsFeatureAPI,
@@ -23,12 +27,13 @@ internal fun AppNavGraph(
 ) {
     ObserveAsEvents(navigator.navigationEvent) { event ->
         when (event) {
-            is AppNavigationEvent.Navigate -> {
+            is Event.Navigate -> {
                 navController.navigate(
                     route = event.destination, navOptions = event.navOptions
                 )
             }
-            AppNavigationEvent.NavigateUp -> navController.navigateUp()
+
+            Event.NavigateUp -> navController.navigateUp()
         }
     }
 
@@ -36,22 +41,22 @@ internal fun AppNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        navigation<AppDestinations.AppGraph1>(startDestination = AppDestinations.HomeFeature) {
-            composable<AppDestinations.HomeFeature> {
+        navigation<Destinations.MainGraph>(startDestination = Destinations.HomeFeature) {
+            composable<Destinations.HomeFeature> {
                 homeFeature()()
             }
 
-            composable<AppDestinations.ListsFeature> {
+            composable<Destinations.ListsFeature> {
                 listsFeature()()
             }
-            composable<AppDestinations.CategoriesFeature> {
+            composable<Destinations.CategoriesFeature> {
                 categoriesFeature()()
             }
 
-            composable<AppDestinations.LetsPlayFeature> {
+            composable<Destinations.LetsPlayFeature> {
                 letsPlayFeature()()
             }
-            composable<AppDestinations.ProfileFeature> {
+            composable<Destinations.ProfileFeature> {
                 profileFeature()()
             }
         }

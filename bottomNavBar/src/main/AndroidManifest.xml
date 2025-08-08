@@ -3,7 +3,7 @@
 
     <application>
         <activity
-            android:name=".AppNavigation"
+            android:name=".ui.BottomNavBarActivity"
             android:exported="false"
             android:label="@string/title_activity_app_navigation"
             android:theme="@style/Theme.Aflami" />

@@ -1,5 +1,5 @@
 package com.paris_2.aflami.bottomNavBar
 
-interface AppNavigationAPI {
+interface BottomNavBarAPI {
     operator fun invoke()
 }

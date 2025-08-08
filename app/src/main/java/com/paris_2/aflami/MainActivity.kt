@@ -9,7 +9,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
-import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
+import com.paris_2.aflami.bottomNavBar.BottomNavBarAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
 import com.paris_2.domain.user.usecase.HasAnySessionUseCase
@@ -33,14 +33,14 @@ class MainActivity : ComponentActivity() {
     lateinit var hasAnySessionUseCase: HasAnySessionUseCase
 
     @Inject
-    lateinit var appNavigationAPI: AppNavigationAPI
+    lateinit var bottomNavBarAPI: BottomNavBarAPI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
                 when {
-                    hasAnySessionUseCase() -> appNavigationAPI()
+                    hasAnySessionUseCase() -> bottomNavBarAPI()
                     isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
                     else -> onBoardingApI()
                 }
@@ -69,7 +69,7 @@ class MainActivity : ComponentActivity() {
             context.resources.updateConfiguration(config, context.resources.displayMetrics)
             context
             when {
-                hasAnySessionUseCase() -> appNavigationAPI()
+                hasAnySessionUseCase() -> bottomNavBarAPI()
                 isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
                 else -> onBoardingApI()
             }

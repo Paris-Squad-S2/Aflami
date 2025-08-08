@@ -1,4 +1,4 @@
-package com.paris_2.aflami.bottomNavBar
+package com.paris_2.aflami.bottomNavBar.ui
 
 import android.content.Context
 import android.content.res.Configuration
@@ -11,21 +11,19 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.lists.listsApi.ListsFeatureAPI
-import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
+import com.paris_2.aflami.bottomNavBar.navigation.Navigator
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AppNavigation : ComponentActivity() {
+class BottomNavBarActivity : ComponentActivity() {
 
     @Inject
-    lateinit var appNavigator: AppNavigator
+    lateinit var bottomNavBarNavigator: Navigator
 
-    @Inject
-    lateinit var onBoardingFeature: OnBoardingFeatureAPI
     @Inject
     lateinit var homeFeature: HomeFeatureAPI
 
@@ -46,9 +44,8 @@ class AppNavigation : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
-                AppScaffold(
-                    appNavigator = appNavigator,
-                    onBoardingFeature = onBoardingFeature,
+                BottomNavBarScaffold(
+                    navigator = bottomNavBarNavigator,
                     homeFeature = homeFeature,
                     listsFeature = listsFeature,
                     categoriesFeature = categoriesFeature,
