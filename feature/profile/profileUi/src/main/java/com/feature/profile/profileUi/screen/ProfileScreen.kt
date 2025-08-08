@@ -23,12 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
-import com.feature.profile.profileUi.screen.component.AppLanguageDialog
-import com.feature.profile.profileUi.screen.component.AppSettingDialog
-import com.feature.profile.profileUi.screen.component.AppThemeDialog
-import com.feature.profile.profileUi.screen.component.ProfileDetails
-import com.feature.profile.profileUi.screen.component.ProfileHeader
-import com.feature.profile.profileUi.screen.component.ProfileSetUp
+import com.feature.profile.profileUi.screen.components.AppLanguageDialog
+import com.feature.profile.profileUi.screen.components.AppSettingDialog
+import com.feature.profile.profileUi.screen.components.AppThemeDialog
+import com.feature.profile.profileUi.screen.components.ProfileDetails
+import com.feature.profile.profileUi.screen.components.ProfileHeader
+import com.feature.profile.profileUi.screen.components.ProfileSetUp
 import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.ButtonType
@@ -116,14 +116,14 @@ fun ProfileContent(
                 CategoryCard(
                     stringResource(R.string.watch_history),
                     painterResource(R.drawable.ic_clock_3d),
-                    onCategoryClick = { },
+                    onCategoryClick = profileInteractionListener::onWatchHistoryClicked,
                     modifier = Modifier.weight(1F)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 CategoryCard(
                     categoryName = stringResource(R.string.my_rating),
                     categoryImage = painterResource(R.drawable.ic_star_3d),
-                    onCategoryClick = { },
+                    onCategoryClick = profileInteractionListener::onMyRatingClicked,
                     modifier = Modifier.weight(1F)
                 )
             }

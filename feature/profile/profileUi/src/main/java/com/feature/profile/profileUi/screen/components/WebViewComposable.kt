@@ -1,4 +1,4 @@
-package com.feature.profile.profileUi.screen.component
+package com.feature.profile.profileUi.screen.components
 
 import android.annotation.SuppressLint
 import android.webkit.JavascriptInterface

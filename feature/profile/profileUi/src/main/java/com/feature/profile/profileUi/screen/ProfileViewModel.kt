@@ -3,7 +3,9 @@ package com.feature.profile.profileUi.screen
 import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
-import com.feature.profile.profileUi.utils.BaseViewModel
+import com.feature.profile.profileUi.common.BaseViewModel
+import com.feature.profile.profileUi.navigation.ProfileDestinations
+import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,8 +18,9 @@ class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
+    navigator: ProfileNavigator,
 ) :
-    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
+    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState(), navigator), InterActionListener {
 
 
     init {
@@ -171,5 +174,13 @@ class ProfileViewModel @Inject constructor(
                 )
             )
         )
+    }
+
+    override fun onWatchHistoryClicked() {
+        navigate(ProfileDestinations.WatchHistoryScreen)
+    }
+
+    override fun onMyRatingClicked() {
+        navigate(ProfileDestinations.MyRatingScreen)
     }
 }

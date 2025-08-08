@@ -1,4 +1,4 @@
-package com.feature.profile.profileUi.screen.component
+package com.feature.profile.profileUi.screen.components
 
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement

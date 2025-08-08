@@ -127,6 +127,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getRatedMedia(accountId: Int): List<Media> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoRatedMediaFoundException()) {
             val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, language)
                 .results.mapNotNull { it.toDomain(MediaType.MOVIE) }

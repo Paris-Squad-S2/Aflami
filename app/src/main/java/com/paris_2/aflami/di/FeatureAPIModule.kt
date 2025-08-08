@@ -61,7 +61,7 @@ object FeatureAPIModule {
 
     @Provides
     @Singleton
-    fun provideProfileNavigator(): ProfileNavigator = ProfileNavigatorImpl(startGraph = ProfileDestinations.ProfileGraph1)
+    fun provideProfileNavigator(): ProfileNavigator = ProfileNavigatorImpl(startGraph = ProfileDestinations.ProfileMainGraph)
 
     @Provides
     @Singleton

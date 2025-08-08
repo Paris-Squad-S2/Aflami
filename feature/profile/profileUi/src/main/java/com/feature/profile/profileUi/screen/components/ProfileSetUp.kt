@@ -1,4 +1,4 @@
-package com.feature.profile.profileUi.screen.component
+package com.feature.profile.profileUi.screen.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
