@@ -164,13 +164,19 @@ firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "
 [bundles]
 compose = [
     "androidx-core-ktx",
-    "androidx-lifecycle-runtime-ktx",
-    "androidx-paging-runtime",
+    "androidx-appcompat",
+    "material",
     "androidx-activity-compose",
-    "androidx-compose-bom",
-    "androidx-lifecycle-viewmodel-compose",
-    "androidx-paging-compose",
-    "androidx-hilt-navigation-compose"
+    "androidx-ui",
+    "androidx-ui-graphics",
+    "androidx-ui-tooling",
+    "androidx-ui-tooling-preview",
+                                    #TODO
+#    "androidx-lifecycle-runtime-ktx",
+#    "androidx-paging-runtime",
+#    "androidx-lifecycle-viewmodel-compose",
+#    "androidx-paging-compose",
+#    "androidx-hilt-navigation-compose"
 ]
 
 test = [
