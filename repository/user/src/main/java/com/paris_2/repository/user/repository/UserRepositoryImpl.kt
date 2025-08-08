@@ -88,4 +88,8 @@ class UserRepositoryImpl(
         return localDataSource.deleteSessionId()
     }
 
+    override fun getUserName(): String {
+        return localDataSource.getUserName()
+    }
+
 }

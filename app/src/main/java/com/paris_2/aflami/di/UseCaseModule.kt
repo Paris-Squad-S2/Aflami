@@ -295,25 +295,33 @@ object UseCaseModule {
         FilterRatedMediaUseCase(mediaRepository)
 
     @Provides
-    fun provideLanguageUseCase(settingRepository: SettingRepository) =
-        SettingsUseCase(settingRepository)
+    fun provideLanguageUseCase(
+        settingRepository: SettingRepository,
+        userRepository: UserRepository,
+    ) =
+        SettingsUseCase(settingRepository, userRepository)
 
     @Provides
     fun provideGetListUseCase(listRepository: ListsRepository) = GetListUseCase(listRepository)
 
     @Provides
-    fun provideGetListDetailsUseCase(listRepository: ListsRepository) = GetListDetailsUseCase(listRepository)
+    fun provideGetListDetailsUseCase(listRepository: ListsRepository) =
+        GetListDetailsUseCase(listRepository)
 
     @Provides
-    fun provideDeleteItemFromListUseCase(listRepository: ListsRepository) = DeleteListUseCase(listRepository)
+    fun provideDeleteItemFromListUseCase(listRepository: ListsRepository) =
+        DeleteListUseCase(listRepository)
 
     @Provides
-    fun provideCreateListUseCase(listRepository: ListsRepository) = CreateListUseCase(listRepository)
+    fun provideCreateListUseCase(listRepository: ListsRepository) =
+        CreateListUseCase(listRepository)
 
     @Provides
-    fun provideAddMovieToListUseCase(listRepository: ListsRepository) = AddMovieToListUseCase(listRepository)
+    fun provideAddMovieToListUseCase(listRepository: ListsRepository) =
+        AddMovieToListUseCase(listRepository)
 
     @Provides
-    fun provideRemoveMovieFromListUseCase(listRepository: ListsRepository) = RemoveMovieFromListUseCase(listRepository)
+    fun provideRemoveMovieFromListUseCase(listRepository: ListsRepository) =
+        RemoveMovieFromListUseCase(listRepository)
 
 }

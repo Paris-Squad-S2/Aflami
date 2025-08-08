@@ -1,6 +1,5 @@
 package com.feature.profile.profileUi.screen
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
@@ -27,7 +26,7 @@ class ProfileViewModel @Inject constructor(
 
     init {
         checkUserLoggedIn()
-        Log.d("TAG", ": isLoggedIn ${isLoggedInUseCase()}")
+        getUserName()
         viewModelScope.launch {
             settingsUseCase.getLanguage().collect {
                 updateState(
@@ -38,9 +37,18 @@ class ProfileViewModel @Inject constructor(
                     )
                 )
             }
-
-
         }
+    }
+
+    private fun getUserName() {
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile
+                    .copy(
+                        name = settingsUseCase.getUserName()
+                    )
+            )
+        )
     }
 
     private fun checkUserLoggedIn() {

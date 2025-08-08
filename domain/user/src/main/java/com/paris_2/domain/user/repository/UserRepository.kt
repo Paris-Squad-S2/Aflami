@@ -11,4 +11,5 @@ interface UserRepository {
     fun hasAnySession(): Boolean
     suspend fun getAccountId(): Int?
     fun deleteSessionId(): Boolean
+    fun getUserName(): String
 }

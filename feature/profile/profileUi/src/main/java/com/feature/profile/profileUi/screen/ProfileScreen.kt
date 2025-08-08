@@ -60,8 +60,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, viewModel: ProfileViewModel = h
 fun LoggedOutContent(
     modifier: Modifier,
     profileInteractionListener: ProfileViewModel,
-
-    ) {
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -107,7 +106,7 @@ fun ProfileContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            ProfileDetails(modifier)
+            ProfileDetails(modifier, state.profile.name)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
