@@ -3,6 +3,8 @@ package com.repository.lists
 import com.paris.domain.lists.entity.Media
 import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.exception.ListsNetworkException
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
+import com.paris_2.repository.user.model.remote.AccountDto
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.model.dto.ListDetailsDto
@@ -25,18 +27,26 @@ class ListsRepositoryImpTest {
     @MockK
     private lateinit var listsRemoteDataSource: ListsRemoteDataSource
 
+    @MockK
+    private lateinit var userRemoteDataSource: UserRemoteDataSource
+
     private lateinit var listsRepositoryImp: ListsRepositoryImp
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        listsRepositoryImp = ListsRepositoryImp(listsRemoteDataSource)
+        listsRepositoryImp = ListsRepositoryImp(listsRemoteDataSource, userRemoteDataSource)
     }
 
     @Test
     fun `getLists when remote data source returns valid data then return mapped domain lists`() = runTest {
         val page = 1
-        val accountId = "account123"
+        val accountId = 123
+        val accountDto = AccountDto(
+            id = accountId,
+            name = "",
+            username = ""
+        )
         val listsDto = ListsDto(
             page = 1,
             listDto = listOf(
@@ -50,7 +60,7 @@ class ListsRepositoryImpTest {
             totalPages = 1,
             totalResults = 1
         )
-        coEvery { listsRemoteDataSource.getAccountId() } returns accountId
+        coEvery { userRemoteDataSource.getAccountDetails() } returns accountDto
         coEvery { listsRemoteDataSource.getLists(page, accountId) } returns listsDto
 
         val result = listsRepositoryImp.getLists(page)
@@ -65,8 +75,13 @@ class ListsRepositoryImpTest {
     @Test
     fun `getLists when remote data source throws server exception then throw ListsNetworkException`() = runTest {
         val page = 1
-        val accountId = "account123"
-        coEvery { listsRemoteDataSource.getAccountId() } returns accountId
+        val accountId = 123
+        val accountDto = AccountDto(
+            id = accountId,
+            name = "",
+            username = ""
+        )
+        coEvery { userRemoteDataSource.getAccountDetails() } returns accountDto
         coEvery { listsRemoteDataSource.getLists(page, accountId) } throws NetworkException.ServerException("Server error")
 
         val exception = assertThrows<ListsNetworkException> {
@@ -78,9 +93,9 @@ class ListsRepositoryImpTest {
     @Test
     fun `getListDetails when remote data source returns valid data then return mapped domain list details`() = runTest {
         val page = 1
-        val listId = 123
+        val listId = "123"
         val listDetailsDto = ListDetailsDto(
-            id = listId,
+            id = 123,
             name = "My List Details",
             items = listOf(
                 MediaDetailsDto(
@@ -93,11 +108,11 @@ class ListsRepositoryImpTest {
             ),
             itemCount = 1
         )
-        coEvery { listsRemoteDataSource.getListDetails(page, listId.toString()) } returns listDetailsDto
+        coEvery { listsRemoteDataSource.getListDetails(page, listId) } returns listDetailsDto
 
-        val result = listsRepositoryImp.getListDetails(page, listId.toString())
+        val result = listsRepositoryImp.getListDetails(page, listId)
 
-        assertThat(result.id).isEqualTo(listId)
+        assertThat(result.id).isEqualTo(123)
         assertThat(result.name).isEqualTo("My List Details")
         assertThat(result.items).hasSize(1)
         assertThat(result.items[0]).isEqualTo(
@@ -201,10 +216,15 @@ class ListsRepositoryImpTest {
     @Test
     fun `getLists when remote data source throws unknown exception then throw ListsNetworkException with unknown error message`() = runTest {
         val page = 1
-        val accountId = "account123"
+        val accountId = 123
+        val accountDto = AccountDto(
+            id = accountId,
+            name = "",
+            username = ""
+        )
         val errorMessage = "Unknown error occurred"
         
-        coEvery { listsRemoteDataSource.getAccountId() } returns accountId
+        coEvery { userRemoteDataSource.getAccountDetails() } returns accountDto
         coEvery { listsRemoteDataSource.getLists(page, accountId) } throws NetworkException.UnknownException(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
@@ -217,10 +237,15 @@ class ListsRepositoryImpTest {
     @Test
     fun `getLists when remote data source throws generic exception then throw ListsNetworkException with unknown error message`() = runTest {
         val page = 1
-        val accountId = "account123"
+        val accountId = 123
+        val accountDto = AccountDto(
+            id = accountId,
+            name = "",
+            username = ""
+        )
         val errorMessage = "Generic error occurred"
         
-        coEvery { listsRemoteDataSource.getAccountId() } returns accountId
+        coEvery { userRemoteDataSource.getAccountDetails() } returns accountDto
         coEvery { listsRemoteDataSource.getLists(page, accountId) } throws Exception(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
