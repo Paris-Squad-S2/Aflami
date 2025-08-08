@@ -32,10 +32,10 @@ import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SearchByQueryUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
-import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
@@ -54,12 +54,14 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUse
 import com.paris_2.domain.user.repository.LanguageRepository
 import com.paris_2.domain.user.repository.UserRepository
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
+import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
 import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.user.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import com.paris_2.domain.user.usecase.GuestLoginUseCase
 import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
+import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
 import com.paris_2.domain.user.usecase.LoginUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.Module
@@ -85,6 +87,18 @@ object UseCaseModule {
     @Provides
     fun provideAutoCompleteCountryUseCase(countryRepository: CountryRepository) =
         AutoCompleteCountryUseCase(countryRepository)
+
+    @Provides
+    fun provideCompleteOnboardingUseCase(authenticationRepository: UserRepository) =
+        CompleteOnboardingUseCase(authenticationRepository)
+
+    @Provides
+    fun provideIsOnboardingCompletedUseCase(
+        authenticationRepository: UserRepository,
+    ): IsOnboardingCompletedUseCase {
+        return IsOnboardingCompletedUseCase(authenticationRepository)
+    }
+
 
     @Provides
     fun provideGetCountryCodeByNameUseCase(countryRepository: CountryRepository) =
@@ -132,7 +146,11 @@ object UseCaseModule {
     fun provideGetMovieReviewsUseCase(movieRepository: MovieRepository) =
         GetMovieReviewsUseCase(movieRepository)
 
-@Provides fun provideDeleteMovieRatingUseCase(movieRepository: MovieRepository) = DeleteMovieRatingUseCase(movieRepository)    @Provides
+    @Provides
+    fun provideDeleteMovieRatingUseCase(movieRepository: MovieRepository) =
+        DeleteMovieRatingUseCase(movieRepository)
+
+    @Provides
     fun provideGetMoviesProductionCompaniesUseCase(movieRepository: MovieRepository) =
         GetMoviesProductionCompaniesUseCase(movieRepository)
 
@@ -143,7 +161,11 @@ object UseCaseModule {
     @Provides
     fun provideGetTvShowCastUseCase(tvShowRepository: TvShowRepository) =
         GetTvShowCastUseCase(tvShowRepository)
-@Provides fun provideDeleteTvShowRatingUseCase(tvShowRepository: TvShowRepository) = DeleteTvShowRatingUseCase(tvShowRepository)
+
+    @Provides
+    fun provideDeleteTvShowRatingUseCase(tvShowRepository: TvShowRepository) =
+        DeleteTvShowRatingUseCase(tvShowRepository)
+
     @Provides
     fun provideGetTvShowDetailsUseCase(tvShowRepository: TvShowRepository) =
         GetTvShowDetailsUseCase(tvShowRepository)
@@ -196,7 +218,9 @@ object UseCaseModule {
     fun provideAddMediaToLocalUseCase(mediaRepository: MediaRepository) =
         AddWatchHistoryUseCase(mediaRepository)
 
-    @Provides fun provideFilterWatchHistoryUseCase(mediaRepository: MediaRepository) = FilterWatchHistoryUseCase(mediaRepository)
+    @Provides
+    fun provideFilterWatchHistoryUseCase(mediaRepository: MediaRepository) =
+        FilterWatchHistoryUseCase(mediaRepository)
 
     @Provides
     fun provideGetMediaFromLocalUseCase(mediaRepository: MediaRepository) =
@@ -205,7 +229,9 @@ object UseCaseModule {
     @Provides
     fun provideLoginUseCase(userRepository: UserRepository) =
         LoginUseCase(userRepository)
-    @Provides fun provideGetAccountIdUseCase(userRepository: UserRepository) =
+
+    @Provides
+    fun provideGetAccountIdUseCase(userRepository: UserRepository) =
         GetAccountIdUseCase(userRepository)
 
     @Provides
@@ -251,7 +277,10 @@ object UseCaseModule {
     @Provides
     fun provideGetSessionIdUseCase(userRepository: UserRepository) =
         GetSessionIdUseCase(userRepository)
-    @Provides fun provideFilterRatedMediaUseCase(mediaRepository: MediaRepository): FilterRatedMediaUseCase = FilterRatedMediaUseCase(mediaRepository)
+
+    @Provides
+    fun provideFilterRatedMediaUseCase(mediaRepository: MediaRepository): FilterRatedMediaUseCase =
+        FilterRatedMediaUseCase(mediaRepository)
 
     @Provides
     fun provideLanguageUseCase(languageRepository: LanguageRepository) =

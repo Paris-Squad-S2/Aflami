@@ -1,9 +1,9 @@
 package com.paris_2.aflami.di
 
 import android.content.Context
+import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.authentication.authenticationUi.AuthenticationFeatureAPIImpl
-import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigatorImpl
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
@@ -25,6 +25,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.MediaDetailsFeatureAPIImpl
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigatorImpl
+import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
+import com.feature.onboarding.onboardingUi.OnBoardingFeatureAPIImpl
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileUi.ProfileFeatureAPIImpl
 import com.feature.search.searchApi.SearchFeatureAPI
@@ -53,6 +55,10 @@ object FeatureAPIModule {
     @Provides
     @Singleton
     fun provideAppNavigator(): AppNavigator = AppNavigatorImpl(AppDestinations.AppGraph1)
+
+    @Provides
+    @Singleton
+    fun provideOnBoardingFeatureAPI(@ApplicationContext context: Context): OnBoardingFeatureAPI = OnBoardingFeatureAPIImpl(context)
 
     @Provides
     @Singleton

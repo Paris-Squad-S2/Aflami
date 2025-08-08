@@ -8,8 +8,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
+import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
 import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
@@ -17,6 +19,13 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var isOnboardingCompletedUseCase: IsOnboardingCompletedUseCase
+
+    @Inject
+    lateinit var onBoardingApI: OnBoardingFeatureAPI
+
     @Inject
     lateinit var authenticationFeatureAPI: AuthenticationFeatureAPI
 
@@ -30,10 +39,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
-                if (hasAnySessionUseCase())
-                    appNavigationAPI()
-                else
-                    authenticationFeatureAPI()
+                when {
+                    hasAnySessionUseCase() -> appNavigationAPI()
+                    isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
+                    else -> onBoardingApI()
+                }
             }
         }
     }
@@ -52,12 +62,17 @@ class MainActivity : ComponentActivity() {
         val config = Configuration(context.resources.configuration)
         config.setLocale(locale)
 
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        return (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.createConfigurationContext(config)
         } else {
             @Suppress("DEPRECATION")
             context.resources.updateConfiguration(config, context.resources.displayMetrics)
             context
-        }
+            when {
+                hasAnySessionUseCase() -> appNavigationAPI()
+                isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
+                else -> onBoardingApI()
+            }
+        }) as Context
     }
 }

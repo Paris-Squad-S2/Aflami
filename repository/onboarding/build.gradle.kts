@@ -1,15 +1,14 @@
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
-    alias(libs.plugins.kotlin.serialization)
 }
+
 android {
-    namespace = "com.feature.onboarding.onboardingApi"
-    compileSdk = Configurations.COMPILE_SDK
+    namespace = "com.repository.onboarding"
+    compileSdk = 35
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_26
+        minSdk = 24
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -29,11 +28,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_11
     }
     kotlinOptions {
-        jvmTarget = Configurations.JVM_TARGET
-    }
-    buildFeatures {
-        compose = true
-        buildConfig = true
+        jvmTarget = "11"
     }
 }
 
@@ -45,11 +40,4 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-    implementation(libs.androidx.ui)
-    implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui.graphics)
-
-    //kotlinx serialization
-    implementation(libs.kotlinx.serialization.json)
 }

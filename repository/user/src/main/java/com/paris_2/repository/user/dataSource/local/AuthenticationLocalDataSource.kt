@@ -4,8 +4,9 @@ interface AuthenticationLocalDataSource {
     fun saveSessionId(sessionId: String)
     fun getSessionId(): String?
     fun isLoggedIn(): Boolean
-
     fun setIsGuest(isGuest: Boolean)
     fun isGuest(): Boolean
     fun hasAnySession(): Boolean
+    fun setOnboardingCompleted()
+    fun isOnboardingCompleted(): Boolean
 }

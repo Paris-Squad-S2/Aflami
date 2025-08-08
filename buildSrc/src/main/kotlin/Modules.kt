@@ -50,4 +50,5 @@ object Modules {
     const val FEATURE_PROFILE_UI = ":feature:profile:profileUi"
 
     const val SAFE_IMAGE_VIEWER = ":safeimageviewer"
+
 }

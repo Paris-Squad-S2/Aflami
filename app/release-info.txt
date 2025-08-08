@@ -1,2 +1,2 @@
-versionName=0.6.0
--Profile Screen feature
+versionName=0.7.0
+- Add onboarding feature
