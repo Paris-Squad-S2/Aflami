@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.google.gms.google.services) apply true
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -203,14 +203,9 @@ dependencies {
     implementation(project(Modules.DATASOURCE_REMOTE_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
 
-
+    //Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
-
-
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.logging)
 
     //retrofit
     implementation(libs.retrofit)

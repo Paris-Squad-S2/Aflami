@@ -55,8 +55,6 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
-
     //test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)

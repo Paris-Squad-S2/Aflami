@@ -39,14 +39,11 @@ tasks.withType<Test> {
 
 
 dependencies {
-
     //Room
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
-
-
 
     // kotlin date time
     implementation(libs.kotlinx.datetime)

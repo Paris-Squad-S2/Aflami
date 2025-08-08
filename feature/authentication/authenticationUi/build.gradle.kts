@@ -68,6 +68,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
+
     // Junit 5
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)

@@ -38,12 +38,6 @@ android {
     }
     buildFeatures {
         compose = true
-        // Disable unused build features
-        buildConfig = false
-        aidl = false
-        renderScript = false
-        resValues = false
-        shaders = false
     }
 
 }

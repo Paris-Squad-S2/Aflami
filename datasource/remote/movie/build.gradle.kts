@@ -46,7 +46,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
-    implementation(project((":repository:movie")))
+    implementation(project((Modules.REPOSITORY_MOVIE)))
 
     //retrofit
     implementation(libs.retrofit)

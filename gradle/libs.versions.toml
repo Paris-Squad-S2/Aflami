@@ -3,6 +3,8 @@ accompanistPagerVersion = "0.34.0"
 agp = "8.10.1"
 datastorePreferences = "1.1.7"
 firebaseBom = "33.16.0"
+firebasePerf = "1.4.2"
+firebaseCrashlytics = "3.0.4"
 coil = "2.7.0"
 hiltAndroid = "2.57"
 hiltAndroidCompiler = "2.57"
@@ -156,6 +158,8 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 
 [bundles]
 compose = [
@@ -171,5 +175,4 @@ compose = [
 test = [
     "junit",
     "androidx-junit",
-    "androidx-espresso-core"
 ]

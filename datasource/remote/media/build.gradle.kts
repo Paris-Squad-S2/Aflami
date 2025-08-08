@@ -42,6 +42,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
+
     //retrofit
     implementation(libs.retrofit)
 

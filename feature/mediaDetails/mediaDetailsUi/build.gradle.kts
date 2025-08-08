@@ -102,7 +102,6 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(kotlin("test"))
 
-
     implementation(project(Modules.DESIGN_SYSTEM))
 
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))

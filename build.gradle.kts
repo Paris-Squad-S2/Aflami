@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.google.gms.google.services) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.kover)
-    id("com.google.dagger.hilt.android") version "2.57" apply false
+    alias(libs.plugins.hilt) apply false
 }
 
 val koverExcludedPackages = listOf(
