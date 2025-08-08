@@ -5,15 +5,17 @@ import com.paris.domain.lists.entity.Lists
 import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.exception.ListsNetworkException
 import com.paris.domain.lists.repository.ListsRepository
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.mapper.toDomain
 
 class ListsRepositoryImp(
-    private val listRemoteDataSource: ListsRemoteDataSource
-) : ListsRepository {
+    private val listRemoteDataSource: ListsRemoteDataSource,
+    private val remoteDataSource: UserRemoteDataSource,
+    ) : ListsRepository {
     override suspend fun getLists(page: Int): List<Lists> = handleListsExceptions {
-        val accountId = listRemoteDataSource.getAccountId()
+        val accountId = remoteDataSource.getAccountDetails().id ?: 0
         return listRemoteDataSource.getLists(page = page, accountId = accountId).toDomain()
     }
 

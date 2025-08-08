@@ -1,5 +1,6 @@
 package com.paris_2.aflami.di
 
+import com.paris.domain.lists.repository.ListsRepository
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -23,6 +24,8 @@ import com.repository.dataSource.local.TvShowReviewLocalDataSource
 import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.lists.ListsRepositoryImp
+import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
@@ -198,4 +201,10 @@ object RepositoryModule {
         languageLocalDataSourceRepository
     )
 
+    @Provides
+    @Singleton
+    fun provideListsTvShowRepository(
+        listRemoteDataSource: ListsRemoteDataSource,
+        userRemoteDataSource: UserRemoteDataSource
+    ): ListsRepository = ListsRepositoryImp(listRemoteDataSource, userRemoteDataSource)
 }

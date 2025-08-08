@@ -60,6 +60,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField("String", "API_TOKEN", "\"${getApiToken()}\"")
+
     }
 
 
@@ -110,6 +113,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -132,10 +136,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(project(Modules.DOMAIN_USER))
-    implementation(project(Modules.LOGGER))
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
-    implementation(project(Modules.FEATURE_SEARCH_UI))
 
     //Navigation
     implementation(libs.navigation.compose)
@@ -154,10 +154,11 @@ dependencies {
 
     //work manager for kotlin
     implementation(libs.work.runtime.ktx)
-
     implementation(libs.androidx.startup.runtime)
 
     implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.LOGGER))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
     implementation(project(Modules.FEATURE_BOTTOM_NAV_BAR_API))
     implementation(project(Modules.FEATURE_BOTTOM_NAV_BAR_UI))
@@ -168,8 +169,8 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_ONBOARDING_API))
-    implementation(project(Modules.FEATURE_ONBOARDING_UI))
 
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_LISTS_UI))
@@ -177,8 +178,9 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_UI))
     implementation(project(Modules.FEATURE_GUESS_GAME_UI))
     implementation(project(Modules.FEATURE_AUTHENTICATION_UI))
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
+    implementation(project(Modules.FEATURE_SEARCH_UI))
+    implementation(project(Modules.FEATURE_ONBOARDING_UI))
 
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_LISTS))
