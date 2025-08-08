@@ -9,4 +9,5 @@ interface ListsInteractionListener {
     fun onRetryLists()
     fun onHideSnackBar()
     fun onShowSnackBar()
+    fun onLogoutApplyClicked()
 }
