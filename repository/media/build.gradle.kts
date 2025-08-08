@@ -64,9 +64,6 @@ dependencies {
     //test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
     // Junit 5
@@ -74,8 +71,6 @@ dependencies {
     testImplementation(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(kotlin("test"))
-
-    testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
     //work manager for kotlin
