@@ -1,8 +1,8 @@
-package com.paris_2.domain.user.repository
+package com.paris_2.repository.user.dataSource.local
 
 import kotlinx.coroutines.flow.Flow
 
-interface LanguageRepository {
+interface SettingLocalDataSource {
     fun getLanguage(): Flow<String>
     suspend fun setLanguage(language: String)
 }

@@ -39,11 +39,11 @@ import com.datasource.local.media.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
-import com.paris_2.dataSource.local.user.LanguageLocalDataSourceRepositoryImp
+import com.paris_2.dataSource.local.user.SettingLocalDataSourceImp
 import com.paris_2.datasource.remote.user.UserApi
 import com.paris_2.datasource.remote.user.UserRemoteDataSourceImpl
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
@@ -196,6 +196,6 @@ object DataSourceModule {
     @Singleton
     fun provideLanguageLocalDataSource(
        @ApplicationContext context: Context,
-    ): LanguageLocalDataSourceRepository = LanguageLocalDataSourceRepositoryImp(context)
+    ): SettingLocalDataSource = SettingLocalDataSourceImp(context)
 
 }

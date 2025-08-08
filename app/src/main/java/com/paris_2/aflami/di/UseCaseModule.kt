@@ -51,7 +51,7 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.paris_2.domain.user.repository.LanguageRepository
+import com.paris_2.domain.user.repository.SettingRepository
 import com.paris_2.domain.user.repository.UserRepository
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
@@ -283,8 +283,8 @@ object UseCaseModule {
         FilterRatedMediaUseCase(mediaRepository)
 
     @Provides
-    fun provideLanguageUseCase(languageRepository: LanguageRepository) =
-        SettingsUseCase(languageRepository)
+    fun provideLanguageUseCase(settingRepository: SettingRepository) =
+        SettingsUseCase(settingRepository)
 
 }
 

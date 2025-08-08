@@ -3,16 +3,16 @@ package com.paris_2.dataSource.local.user
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class LanguageLocalDataSourceRepositoryImp @Inject constructor(
+class SettingLocalDataSourceImp @Inject constructor(
     @ApplicationContext private val context: Context,
-) : LanguageLocalDataSourceRepository {
+) : SettingLocalDataSource {
 
     companion object {
         private const val PREF_NAME = "settings"
