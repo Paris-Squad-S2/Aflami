@@ -2,23 +2,31 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.model.Movie
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
-import com.paris_2.domain.authentication.usecase.GetSessionIdUseCase
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
+import com.paris.domain.lists.entity.Response
+import com.paris.domain.lists.useCase.AddMovieToListUseCase
+import com.paris.domain.lists.useCase.CreateListUseCase
+import com.paris.domain.lists.useCase.GetListUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -50,7 +58,10 @@ class MovieDetailsViewModelTest {
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase = mockk()
-    private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
+    private val addMovieToListUseCase: AddMovieToListUseCase = mockk()
+    private val getListsUseCase: GetListUseCase = mockk()
+    private val createListUseCase: CreateListUseCase = mockk()
+    private val getSessionIdUseCase: AddMovieToListUseCase = mockk()
     private lateinit var viewModel: MovieDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testMovieId = 42
@@ -120,6 +131,7 @@ class MovieDetailsViewModelTest {
         viewModel.onSimilarMovieClick(99)
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(99) }
     }
+
     @Test
     fun `init loads movie details and video info`() = runTest {
         coEvery { getMovieDetailsUseCase(any()) } returns mockk<Movie>(relaxed = true)
@@ -135,6 +147,7 @@ class MovieDetailsViewModelTest {
         val errorMsg = "videoFail"
         coEvery { getMovieDetailsUseCase(any()) } returns mockk<Movie>(relaxed = true)
         coEvery { getMovieVideoUseCase(any()) } throws RuntimeException(errorMsg)
+        coEvery { getListsUseCase(any()) } returns emptyList()
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
@@ -143,7 +156,12 @@ class MovieDetailsViewModelTest {
     @Test
     fun `onRatingButtonClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
-        coEvery { getSessionIdUseCase() } returns "session_id_123"
+        coEvery { getSessionIdUseCase(any(), any()) } returns Response(
+            statusCode = 200,
+            success = true,
+            statusMessage = ""
+        )
+
         coEvery {
             addRatingToMovieUseCase(
                 movieId = testMovieId,
@@ -205,6 +223,168 @@ class MovieDetailsViewModelTest {
         assertTrue(viewModel.screenState.value.isLoading)
     }
 
+    @Test
+    fun `loadMovieReviews updates state with review UI list on success`() = runTest {
+        // Arrange
+        val domainReviews = listOf(mockk<Review>())
+        val uiReviews = listOf(mockk<ReviewUi>())
+
+        val domainMovie = mockk<Movie>(relaxed = true)
+        val movieUi = mockk<MovieUi>()
+
+        coEvery { getMovieDetailsUseCase(testMovieId) } returns domainMovie
+        coEvery { getMovieVideoUseCase(testMovieId) } returns mockk<MovieVideo>(relaxed = true)
+        coEvery { getMovieReviewsUseCase(testMovieId, 1) } returns domainReviews
+
+        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
+        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
+        every { domainMovie.toUi() } returns movieUi
+        every { domainReviews.toListOfReviewUi() } returns uiReviews
+
+        viewModel = makeViewModelWithDefaultStateHandle()
+        runCurrent()
+
+
+        val actualReviews = viewModel.screenState.value.movieDetailsUiState.reviews
+        assertEquals(uiReviews, actualReviews)
+    }
+
+    @Test
+    fun `onListSelectionChanged sets selected index in state`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onListSelectionChanged(3)
+        assertEquals(3, viewModel.screenState.value.selectedListIndex)
+    }
+
+    @Test
+    fun `onAddToSelectedList with no selected list does nothing`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        // selectedListIndex is -1 by default, availableLists is empty
+        viewModel.onAddToSelectedList()
+        // Should remain unchanged, no dialog shown
+        assertEquals(-1, viewModel.screenState.value.selectedListIndex)
+        assertFalse(viewModel.screenState.value.showAddToListDialog)
+    }
+
+    @Test
+    fun `onAddToSelectedList with selected list updates snackbar on success`() = runTest {
+        val mockList = com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ListItemUi("123", "MyList", itemCount = 1)
+        coEvery { addMovieToListUseCase(any(), any()) } returns Response(
+            statusCode = 200,
+            success = true,
+            statusMessage = ""
+        )
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(
+            viewModel.screenState.value.copy(
+                availableLists = listOf(mockList),
+                selectedListIndex = 0, // select first list
+                showAddToListDialog = true
+            )
+        )
+        viewModel.onAddToSelectedList()
+        runCurrent()
+        assertFalse(viewModel.screenState.value.showAddToListDialog)
+        assertTrue(viewModel.screenState.value.showSnackBar)
+        assertTrue(viewModel.screenState.value.snackBarSuccess)
+    }
+
+    @Test
+    fun `onAddToSelectedList with selected list handles error`() = runTest {
+        val mockList = com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ListItemUi("321", "TestList", itemCount = 2)
+        coEvery { addMovieToListUseCase(any(), any()) } throws Exception("add-list-error")
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(
+            viewModel.screenState.value.copy(
+                availableLists = listOf(mockList),
+                selectedListIndex = 0,
+                showAddToListDialog = true
+            )
+        )
+        viewModel.onAddToSelectedList()
+        runCurrent()
+        assertTrue(viewModel.screenState.value.showSnackBar)
+        assertFalse(viewModel.screenState.value.snackBarSuccess)
+        assertEquals("add-list-error", viewModel.screenState.value.errorMessage)
+    }
+
+    @Test
+    fun `onCreateListNameChange disables button if blank, enables if not blank`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onCreateListNameChange("")
+        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Disabled, viewModel.screenState.value.createListButtonState)
+        viewModel.onCreateListNameChange("NotBlank")
+        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+    }
+
+    @Test
+    fun `onCreateListConfirm does not run if listName is blank`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(viewModel.screenState.value.copy(createListName = "   "))
+        viewModel.onCreateListConfirm()
+        // Should not trigger loading state or dialog close
+        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+    }
+
+    @Test
+    fun `onCreateListConfirm success updates snackBar and reloads lists`() = runTest {
+        coEvery { createListUseCase.invoke(any()) } returns Response(
+            statusCode = 200,
+            success = true,
+            statusMessage = ""
+        )
+        coEvery { getListsUseCase(any()) } returns emptyList()
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(viewModel.screenState.value.copy(createListName = "mylist"))
+        viewModel.onCreateListConfirm()
+        runCurrent()
+        assertFalse(viewModel.screenState.value.showCreateListDialog)
+        assertEquals("", viewModel.screenState.value.createListName)
+        assertTrue(viewModel.screenState.value.showSnackBar)
+        assertTrue(viewModel.screenState.value.snackBarSuccess)
+        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+    }
+
+    @Test
+    fun `onCreateListConfirm error updates error message and resets button`() = runTest {
+        coEvery { createListUseCase.invoke(any()) } throws Exception("create-list-failure")
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(viewModel.screenState.value.copy(createListName = "my-error-list"))
+        viewModel.onCreateListConfirm()
+        runCurrent()
+        assertEquals("create-list-failure", viewModel.screenState.value.errorMessage)
+        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+    }
+
+    @Test
+    fun `onCreateListShow shows create list dialog`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.onCreateListShow()
+        assertTrue(viewModel.screenState.value.showCreateListDialog)
+    }
+
+    @Test
+    fun `onCreateListDismiss resets dialog state`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(viewModel.screenState.value.copy(
+            showCreateListDialog = true,
+            createListName = "foo",
+            createListButtonState = com.paris_2.aflami.designsystem.components.ButtonState.Loading
+        ))
+        viewModel.onCreateListDismiss()
+        assertFalse(viewModel.screenState.value.showCreateListDialog)
+        assertEquals("", viewModel.screenState.value.createListName)
+        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+    }
+
+    @Test
+    fun `onHideSnackBar hides snackbar`() = runTest {
+        viewModel = makeViewModelWithDefaultStateHandle()
+        viewModel.updateState(viewModel.screenState.value.copy(showSnackBar = true))
+        viewModel.onHideSnackBar()
+        assertFalse(viewModel.screenState.value.showSnackBar)
+    }
+
     private fun makeViewModelWithDefaultStateHandle(): MovieDetailsViewModel {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>() } returns MediaDetailsDestinations.MovieDetailsScreen(
             movieId = testMovieId
@@ -221,7 +401,11 @@ class MovieDetailsViewModelTest {
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
             addRatingToMovieUseCase,
+            addMovieToListUseCase,
+            getListsUseCase,
+            createListUseCase,
             mediaDetailsNavigator
         )
     }
 }
+

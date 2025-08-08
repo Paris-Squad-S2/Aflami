@@ -72,7 +72,7 @@ fun CustomButton(
         else -> 0.dp
     }
     val shadowModifier =
-        if ((type == ButtonType.FloatingActionButton || type == ButtonType.Primary) && state != ButtonState.Disabled && !isNegative) {
+        if ((type == ButtonType.Primary) && state != ButtonState.Disabled && !isNegative) {
             Modifier.innerShadow(
                 shape = RoundedCornerShape(16.dp),
                 color = Color(0xFFFFFFFF).copy(alpha = 0.5f),
@@ -103,7 +103,7 @@ fun CustomButton(
             verticalAlignment = Alignment.CenterVertically
         ) {
             text?.let {
-                Text(
+                AppText(
                     stringResource(it),
                     style = Theme.textStyle.label.large,
                     color = buttonContentColor
@@ -170,7 +170,7 @@ fun PrimaryButton() {
                     type = ButtonType.Primary,
                     state = ButtonState.Normal,
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                 )
             }
@@ -213,7 +213,7 @@ fun SecondaryButton() {
                     type = ButtonType.Secondary,
                     state = ButtonState.Normal,
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                 )
             }
@@ -264,14 +264,14 @@ fun FABButton() {
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                     type = ButtonType.FloatingActionButton,
                 )
                 CustomButton(
                     modifier = Modifier.size(64.dp),
                     onClick = { },
-                    icon = { Icon(Icons.Default.Add, null) },
+                    icon = { AppIcon(Icons.Default.Add, null) },
                     type = ButtonType.FloatingActionButton,
                     state = ButtonState.Loading
                 )
@@ -279,7 +279,7 @@ fun FABButton() {
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                     type = ButtonType.FloatingActionButton,
                     state = ButtonState.Disabled
@@ -322,7 +322,7 @@ fun PrimaryNegativeButton() {
                     isNegative = true,
                     state = ButtonState.Normal,
                     icon = {
-                        Icon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null)
                     },
                 )
             }

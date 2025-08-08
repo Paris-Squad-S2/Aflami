@@ -36,7 +36,7 @@ fun LoadingIcon(
         )
     )
 
-    Icon(
+    AppIcon(
         imageVector = ImageVector.vectorResource(icon),
         contentDescription = stringResource(R.string.loading),
         modifier = modifier.rotate(rotation),

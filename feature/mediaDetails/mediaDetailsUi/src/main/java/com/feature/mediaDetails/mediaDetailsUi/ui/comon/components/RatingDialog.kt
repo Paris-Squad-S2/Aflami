@@ -14,9 +14,9 @@ import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.Dialog
+import com.paris_2.aflami.designsystem.components.AppDialog
 import com.paris_2.aflami.designsystem.components.RatingBar
-import com.paris_2.aflami.designsystem.components.Text
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 
@@ -28,7 +28,7 @@ fun RatingDialog(
     onDismiss: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Dialog(
+    AppDialog(
         onDismiss = onDismiss,
         title = com.feature.mediaDetails.mediaDetailsUi.R.string.rate,
         modifier = modifier
@@ -37,7 +37,7 @@ fun RatingDialog(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
+            AppText(
                 text = "Select how much you like it",
                 style = Theme.textStyle.body.small,
                 color = Theme.colors.text.title,

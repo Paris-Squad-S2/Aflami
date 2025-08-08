@@ -107,14 +107,14 @@ private fun StarIconFromResource(
     ) {
         val starModifier = Modifier.matchParentSize()
 
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_outlined),
             contentDescription = null,
             tint = selectedColor,
             modifier = starModifier
         )
 
-        Icon(
+        AppIcon(
             imageVector = ImageVector.vectorResource(id = R.drawable.ic_star_filled),
             contentDescription = null,
             tint = selectedColor,
@@ -141,7 +141,7 @@ fun PreviewInteractiveRatingBarAdvanced() {
     var currentRating by remember { mutableFloatStateOf(7.7f) } // Test with 7.7 for a 3/4 star
 
     Column(Modifier.padding(16.dp)) {
-        Text("IMDb rating", style = Theme.textStyle.title.small)
+        AppText("IMDb rating", style = Theme.textStyle.title.small)
         Spacer(Modifier.height(8.dp))
         RatingBar(
             rating = currentRating,
@@ -151,7 +151,7 @@ fun PreviewInteractiveRatingBarAdvanced() {
             }
         )
         Spacer(Modifier.height(8.dp))
-        Text("Current Rating: %.1f / 10".format(currentRating))
+        AppText("Current Rating: %.1f / 10".format(currentRating))
     }
 }
 

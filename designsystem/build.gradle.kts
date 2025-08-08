@@ -49,7 +49,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -66,5 +65,4 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
 
     implementation(libs.accompanist.pager)
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
 }

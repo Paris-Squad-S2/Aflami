@@ -5,20 +5,20 @@ import MediaTypeUi
 import MediaUiState
 import SearchTypeUi
 import androidx.paging.PagingData
-import com.domain.search.model.Category
-import com.domain.search.model.Media
-import com.domain.search.model.MediaType
-import com.domain.search.model.SearchHistoryModel
-import com.domain.search.model.SearchType
-import com.domain.search.useCase.ClearAllRecentSearchesUseCase
-import com.domain.search.useCase.ClearRecentSearchUseCase
-import com.domain.search.useCase.FilterMediaByRatingUseCase
-import com.domain.search.useCase.FilterMediaUseCase
-import com.domain.search.useCase.GetAllCategoriesUseCase
-import com.domain.search.useCase.GetAllRecentSearchesUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SearchByQueryUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.entity.SearchHistoryModel
+import com.paris_2.domain.media.entity.SearchType
+import com.paris_2.domain.media.useCase.ClearAllRecentSearchesUseCase
+import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
+import com.paris_2.domain.media.useCase.FilterMediaByRatingUseCase
+import com.paris_2.domain.media.useCase.FilterMediaUseCase
+import com.paris_2.domain.media.useCase.GetAllCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SearchByQueryUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
@@ -61,8 +61,6 @@ class SearchViewModelTest {
     private lateinit var viewModel: SearchViewModel
 
     private val testDispatcher = StandardTestDispatcher()
-
-    private val navigator: SearchNavigator = mockk(relaxed = true)
 
     private val mockMovie1 = Media(
         id = 1,
@@ -139,7 +137,6 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                navigator
             )
         )
     }
@@ -164,7 +161,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
 
         advanceUntilIdle()
@@ -190,7 +186,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
 
         advanceUntilIdle()
@@ -214,7 +209,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
 
         advanceUntilIdle()
@@ -490,7 +484,6 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                navigator
             )
             advanceUntilIdle()
 
@@ -522,7 +515,6 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
         advanceUntilIdle()
 
@@ -568,7 +560,6 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                navigator
             )
             advanceUntilIdle()
 

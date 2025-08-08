@@ -84,8 +84,8 @@ dependencies {
 
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.APP_NAVIGATION))
-    implementation(project(Modules.DOMAIN_AUTHENTICATION))
+    implementation(project(Modules.BOTTOM_NAV_BAR))
+    implementation(project(Modules.DOMAIN_USER))
 
     //WebView
     implementation(libs.androidx.webkit)

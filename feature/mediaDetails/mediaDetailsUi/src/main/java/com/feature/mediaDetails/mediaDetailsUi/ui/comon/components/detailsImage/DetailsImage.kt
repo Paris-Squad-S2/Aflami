@@ -25,10 +25,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaButtonType
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaPlayButton
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingCard
 import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.MediaButtonType
-import com.paris_2.aflami.designsystem.components.MediaPlayButton
-import com.paris_2.aflami.designsystem.components.RatingCard
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 import dropShadow
@@ -77,28 +77,26 @@ fun DetailsImage(
                         .align(Alignment.Center)
                 ) {
                     SafeImageViewer(
-                        model = displayImages[page],
+                        imageUrl = displayImages[page],
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.Center),
                         contentScale = ContentScale.Fit,
                         contentDescription = "poster",
-                        placeholder = {
+                        loadingContent = {
                             Image(
                                 painter = painterResource(id = R.drawable.ic_film_roll),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .align(Alignment.Center)
+                                modifier = Modifier.size(48.dp).align(Alignment.Center),
+                                contentScale = ContentScale.Crop
                             )
                         },
-                        errorPlaceholder = {
+                        errorContent ={
                             Image(
                                 painter = painterResource(id = R.drawable.img_disconnect),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(48.dp)
-                                    .align(Alignment.Center)
+                                modifier = Modifier.size(48.dp).align(Alignment.Center),
+                                contentScale = ContentScale.Crop
                             )
                         }
                     )

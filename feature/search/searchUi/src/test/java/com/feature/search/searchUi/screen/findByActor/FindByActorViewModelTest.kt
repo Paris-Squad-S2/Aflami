@@ -2,18 +2,15 @@ package com.feature.search.searchUi.screen.findByActor
 
 import MediaTypeUi
 import MediaUiState
-import androidx.paging.PagingSource
-import com.domain.search.model.Media
-import com.domain.search.model.MediaType
-import com.domain.search.useCase.GetMediaByActorNameUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
-import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.FindByActorPagingSource
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -39,7 +36,6 @@ class FindByActorViewModelTest {
     private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
 
     private val testDispatcher = StandardTestDispatcher()
-    private val navigator: SearchNavigator = mockk(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
@@ -54,7 +50,6 @@ class FindByActorViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            navigator
         )
     }
 
@@ -152,13 +147,18 @@ class FindByActorViewModelTest {
         val testQuery = "Tom Hanks"
         val errorMessage = "Network error occurred"
         coEvery { getMediaByActorNameUseCase(testQuery, any()) } throws Exception(errorMessage)
-        val pagingSource = FindByActorPagingSource(
-            testQuery,
-            getMediaByActorNameUseCase,
-            sortingMediaByCategoriesInteractionUseCase
+        val pagingSource = com.feature.search.searchUi.pagging.PagingSource(
+            searchUseCase = {
+                sortingMediaByCategoriesInteractionUseCase(
+                    getMediaByActorNameUseCase(
+                        testQuery,
+                        it
+                    )
+                ).toMediaUiList()
+            }
         )
         val result = pagingSource.load(
-            PagingSource.LoadParams.Refresh(
+            androidx.paging.PagingSource.LoadParams.Refresh(
                 key = null,
                 loadSize = 10,
                 placeholdersEnabled = false
@@ -170,7 +170,7 @@ class FindByActorViewModelTest {
 
         val currentState = viewModel.screenState.value
         assertThat(currentState.uiState.searchResult.collectAllItems()).isEmpty()
-        assertTrue(result is PagingSource.LoadResult.Error)
+        assertTrue(result is androidx.paging.PagingSource.LoadResult.Error)
         assertEquals(errorMessage, (result).throwable.message)
     }
 
@@ -184,7 +184,6 @@ class FindByActorViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator
         )
         val mediaUiState = MediaUiState(
             id = 42,

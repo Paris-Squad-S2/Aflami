@@ -29,7 +29,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreenState
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowScreenInteractionListener
 import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.TopAppBar
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -82,7 +82,7 @@ fun TopComponentDetails(
                 },
                 modifier = Modifier.padding(bottom = 12.dp)
             )
-            TopAppBar(
+            AppTopBar(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_back),
@@ -96,12 +96,6 @@ fun TopComponentDetails(
                             tvShowScreenInteractionListener.onRateClick()
                         }
                     ),
-                    iconItemWithDefaults(
-                        icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                        onClick = {
-                            tvShowScreenInteractionListener.onAddToListClick()
-                        }
-                    )
                 ),
                 modifier = Modifier
                     .statusBarsPadding()
@@ -122,7 +116,7 @@ fun TvTopComponent(
 ) {
     val activity = LocalActivity.current
     with(sharedTransitionScope) {
-        TopAppBar(
+        AppTopBar(
             modifier = modifier
                 .statusBarsPadding()
                 .background(Theme.colors.stroke)
@@ -149,12 +143,6 @@ fun TvTopComponent(
                         tvShowScreenInteractionListener.onRateClick()
                     }
                 ),
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = {
-                        tvShowScreenInteractionListener.onAddToListClick()
-                    }
-                )
             ),
         )
     }

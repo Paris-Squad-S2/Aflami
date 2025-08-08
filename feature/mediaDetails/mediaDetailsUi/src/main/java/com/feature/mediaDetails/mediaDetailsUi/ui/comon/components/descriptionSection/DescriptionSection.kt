@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.components.DescriptionSeparator
-import com.paris_2.aflami.designsystem.components.GenresChip
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.DescriptionSeparator
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GenresChip
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -73,7 +73,8 @@ private fun GenreChipRow(genres: List<String>) {
         items(genres.size) { index ->
             GenresChip(
                 title = genres[index],
-                isSelected = false
+                isSelected = false,
+                modifier = Modifier
             )
         }
     }

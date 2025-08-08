@@ -8,16 +8,16 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.search.useCase.AutoCompleteCountryUseCase
-import com.domain.search.useCase.GetCountryCodeByNameUseCase
-import com.domain.search.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
-import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.WorldTourPagingSource
+import com.feature.search.searchUi.pagging.PagingSource
+import com.paris_2.domain.media.useCase.AutoCompleteCountryUseCase
+import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
+import com.paris_2.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -34,7 +34,6 @@ class WorldTourViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: SearchNavigator
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
         WorldTourScreenState(
@@ -44,7 +43,7 @@ class WorldTourViewModel @Inject constructor(
                 hints = listOf()
             ),
             errorMessage = null
-        ), navigator
+        ),
     ) {
 
     init {
@@ -120,10 +119,10 @@ class WorldTourViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        WorldTourPagingSource(
-                            countryName = query,
-                            getMoviesByCountryUseCase = getMoviesByCountryUseCase,
-                            sortingMediaByCategoriesInteractionUseCase
+                        PagingSource(
+                            searchUseCase = { page ->
+                                sortingMediaByCategoriesInteractionUseCase(getMoviesByCountryUseCase(query,page)).toMediaUiList()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)

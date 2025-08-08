@@ -1,2 +1,2 @@
-versionName=0.3.26
-- fix Issues #161
+versionName=0.7.2
+- update list feature add button

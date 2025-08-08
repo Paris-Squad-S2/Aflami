@@ -1,12 +1,15 @@
 package com.repository.tvshow.repository
 
-import com.domain.mediaDetails.exception.FailedToAddRatingException
-import com.domain.mediaDetails.exception.NoCastFoundException
-import com.domain.mediaDetails.exception.NoGalleryFoundException
-import com.domain.mediaDetails.exception.NoInternetConnectionException
-import com.domain.mediaDetails.exception.NoSeasonFoundException
-import com.domain.mediaDetails.exception.NoTvShowFoundException
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.exception.FailedToAddRatingException
+import com.paris_2.domain.media.exception.NoCastFoundException
+import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoSeasonFoundException
+import com.paris_2.domain.media.exception.NoTvShowFoundException
+import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -24,7 +27,6 @@ import com.repository.tvshow.testUtils.mockTvShowDto
 import com.repository.tvshow.testUtils.mockTvShowLogoDto
 import com.repository.tvshow.testUtils.mockTvShowReviewsDto
 import com.repository.tvshow.testUtils.mockTvShowSimilarsDto
-import com.repository.tvshow.testUtils.mockTvShowVideosDto
 import com.repository.util.NetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -48,6 +50,8 @@ class TvShowRepositoryImplTest {
     private lateinit var tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource
     private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
     private lateinit var tvShowRepository: TvShowRepositoryImpl
+    private var languageLocalDataSourceRepository: LanguageLocalDataSourceRepository =
+        mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -68,7 +72,8 @@ class TvShowRepositoryImplTest {
             tvShowLocalDataSource,
             tvShowSeasonLocalDataSource,
             tvShowSimilarLocalDataSource,
-            networkConnectionChecker
+            networkConnectionChecker,
+            languageLocalDataSourceRepository
         )
     }
 
@@ -103,11 +108,13 @@ class TvShowRepositoryImplTest {
             tvShowRepository.addRatingToTvShow(movieId, rating)
         }
     }
+
     @Test
     fun `getTvShowDetails - should return tv show details when API delivers the goods`() = runTest {
         // Given
         val expectedTvShow = mockTvShowDto.toLocalDto(language, tvShowId)
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language)
         } returns mockTvShowDto
@@ -130,6 +137,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getTvShowDetails - should not call remote when local data is available`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowDetails(
                 tvShowId,
@@ -156,6 +164,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getTvShowDetails - should call getTvShowId from local data source once`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowDetails(
                 tvShowId,
@@ -182,6 +191,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getTvShowDetails - should not insert Tv show when local data is available`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowDetails(
                 tvShowId,
@@ -212,6 +222,7 @@ class TvShowRepositoryImplTest {
             val tvShowId = 550
             val language = "en"
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language)
             } returns mockTvShowDto
@@ -235,6 +246,7 @@ class TvShowRepositoryImplTest {
         // Given
         val expectedTvShowCast = mockTvShowCreditsDto.cast ?: emptyList()
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
         } returns mockTvShowCreditsDto
@@ -259,6 +271,7 @@ class TvShowRepositoryImplTest {
         // Given
         val expectedTvShowCast = mockTvShowCreditsDto.cast ?: emptyList()
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
         } returns mockTvShowCreditsDto
@@ -285,6 +298,7 @@ class TvShowRepositoryImplTest {
         // Given
         val expectedTvShowCast = mockTvShowCreditsDto.cast ?: emptyList()
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
         } returns mockTvShowCreditsDto
@@ -311,6 +325,7 @@ class TvShowRepositoryImplTest {
         // Given
         val expectedTvShowCast = mockTvShowCreditsDto.cast ?: emptyList()
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language)
         } returns mockTvShowCreditsDto
@@ -339,6 +354,7 @@ class TvShowRepositoryImplTest {
             // Given
             val remoteCast = mockTvShowCreditsDto.cast ?: emptyList()
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
             } returns emptyList() andThen
@@ -382,6 +398,7 @@ class TvShowRepositoryImplTest {
                     ?: emptyList()
 
             // When
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getSimilarTvShows(
                     tvShowId,
@@ -409,6 +426,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getTvShowRecommendations - should call remote data source once`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getSimilarTvShows(tvShowId, page, language)
         } returns mockTvShowSimilarsDto
@@ -432,6 +450,7 @@ class TvShowRepositoryImplTest {
     fun `getTvShowRecommendations - should save fetched remote data to local database exactly once`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getSimilarTvShows(tvShowId, page, language)
             } returns mockTvShowSimilarsDto
@@ -458,6 +477,7 @@ class TvShowRepositoryImplTest {
             // Given
             val remoteRecommendations = mockTvShowSimilarsDto.tvShowSimilarDto ?: emptyList()
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowSimilarLocalDataSource.getSimilarTvShows(tvShowId, page, language)
             } returns emptyList() andThen
@@ -503,7 +523,7 @@ class TvShowRepositoryImplTest {
         val result = tvShowRepository.getTvShowGallery(tvShowId)
 
         // Then
-        assertEquals(expectedImages.map{it.toEntity()}, result)
+        assertEquals(expectedImages.map { it.toEntity() }, result)
     }
 
     @Test
@@ -593,6 +613,7 @@ class TvShowRepositoryImplTest {
             val expectedCast = mockTvShowDto.productionCompanies ?: emptyList()
 
             // When
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getTvShowDetails(
                     tvShowId, language
@@ -617,6 +638,7 @@ class TvShowRepositoryImplTest {
     fun `getCompanyProducts - should not call remote data source when local movie is available`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getTvShowDetails(
                     tvShowId,
@@ -642,6 +664,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getCompanyProducts - should insert TV show into local data source`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language).productionCompanies
         } returns mockTvShowDto.productionCompanies
@@ -664,6 +687,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getCompanyProducts - should get production companies from local data source`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowDetails(tvShowId, language).productionCompanies
         } returns mockTvShowDto.productionCompanies
@@ -689,6 +713,7 @@ class TvShowRepositoryImplTest {
             // Given
             val remoteProductionCompanies = mockTvShowDto.productionCompanies ?: emptyList()
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowLocalDataSource.getTvShowId(tvShowId, language)?.productionCompanies
             } returns emptyList() andThen mockTvShowDto.toLocalDto(
@@ -715,6 +740,7 @@ class TvShowRepositoryImplTest {
     fun `getTvShowReview - should return tv show review when API delivers the goods`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getTvShowReviews(
                     tvShowId, page, language
@@ -744,6 +770,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getTvShowReview - should call remote data source`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowReviews(tvShowId, page, language)
         } returns mockTvShowReviewsDto
@@ -767,6 +794,7 @@ class TvShowRepositoryImplTest {
     @Test
     fun `getTvShowReview - should not add review when local reviews are available`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getTvShowReviews(tvShowId, page, language)
         } returns mockTvShowReviewsDto
@@ -795,6 +823,7 @@ class TvShowRepositoryImplTest {
             // Given
             val remoteReviews = mockTvShowReviewsDto.results ?: emptyList()
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             } returns emptyList() andThen remoteReviews.map { it.toLocalDto(tvShowId, language) }
@@ -824,6 +853,7 @@ class TvShowRepositoryImplTest {
 
             val expectedSeason = mockTvShowSeasonDto.toLocalDto(tvShowId).toEntity()
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getSeasonDetails(
                     tvShowId, seasonNumber, language
@@ -831,7 +861,10 @@ class TvShowRepositoryImplTest {
             } returns mockTvShowSeasonDto
 
             coEvery {
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                    tvShowId,
+                    seasonNumber
+                )
             } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
             coEvery {
@@ -851,11 +884,17 @@ class TvShowRepositoryImplTest {
             // Given
             val mockTvShowSeasonDto = TvShowSeasonDto(name = "stronger things")
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
             } returns mockTvShowSeasonDto
 
-            coEvery { tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber) } returns mockTvShowSeasonDto.toLocalDto(
+            coEvery {
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                    tvShowId,
+                    seasonNumber
+                )
+            } returns mockTvShowSeasonDto.toLocalDto(
                 tvShowId
             )
 
@@ -875,12 +914,16 @@ class TvShowRepositoryImplTest {
         // Given
         val mockTvShowSeasonDto = TvShowSeasonDto(name = "stronger things")
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
         } returns mockTvShowSeasonDto
 
         coEvery {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                tvShowId,
+                seasonNumber
+            )
         } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
         coEvery { tvShowSeasonLocalDataSource.addSeasonDetails(any()) } returns Unit
@@ -890,7 +933,10 @@ class TvShowRepositoryImplTest {
 
         // Then
         coVerify(exactly = 1) {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                tvShowId,
+                seasonNumber
+            )
         }
     }
 
@@ -902,12 +948,16 @@ class TvShowRepositoryImplTest {
                 name = "stronger things"
             )
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
             } returns mockTvShowSeasonDto
 
             coEvery {
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                    tvShowId,
+                    seasonNumber
+                )
             } returns null
 
             coEvery {
@@ -925,12 +975,16 @@ class TvShowRepositoryImplTest {
         // Given
         val mockTvShowSeasonDto = TvShowSeasonDto(name = "stronger things")
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             tvShowDetailsRemoteDataSource.getSeasonDetails(tvShowId, seasonNumber, language)
         } returns mockTvShowSeasonDto
 
         coEvery {
-            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+            tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                tvShowId,
+                seasonNumber
+            )
         } returns mockTvShowSeasonDto.toLocalDto(tvShowId)
 
         coEvery { tvShowSeasonLocalDataSource.addSeasonDetails(any()) } returns Unit
@@ -943,48 +997,80 @@ class TvShowRepositoryImplTest {
             tvShowSeasonLocalDataSource.addSeasonDetails(any())
         }
     }
-    
-    @Test
-    fun `getTvShowCast should throw NoCastFoundException when remote throws generic exception`() = runTest {
-        // Given
-        coEvery { tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language) } returns emptyList()
-        coEvery { tvShowDetailsRemoteDataSource.getTvShowCredits(tvShowId, language) } throws RuntimeException("Something went wrong")
 
-        // When & Then
-        assertThrows<NoCastFoundException> {
-            tvShowRepository.getTvShowCast(tvShowId)
+    @Test
+    fun `getTvShowCast should throw NoCastFoundException when remote throws generic exception`() =
+        runTest {
+            // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery {
+                tvShowCastLocalDataSource.getCastByTvShowId(
+                    tvShowId,
+                    language
+                )
+            } returns emptyList()
+            coEvery {
+                tvShowDetailsRemoteDataSource.getTvShowCredits(
+                    tvShowId,
+                    language
+                )
+            } throws RuntimeException("Something went wrong")
+
+            // When & Then
+            assertThrows<NoCastFoundException> {
+                tvShowRepository.getTvShowCast(tvShowId)
+            }
         }
-    }
-    @Test
-    fun `getTvShowRecommendations - should throw NoInternetConnectionException when offline`() = runTest {
-        // Given
-        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
-        // When & Then
-        assertThrows<NoInternetConnectionException> {
-            tvShowRepository.getTvShowRecommendations(tvShowId, page)
+    @Test
+    fun `getTvShowRecommendations - should throw NoInternetConnectionException when offline`() =
+        runTest {
+            // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+            // When & Then
+            assertThrows<NoInternetConnectionException> {
+                tvShowRepository.getTvShowRecommendations(tvShowId, page)
+            }
         }
-    }
+
     @Test
-    fun `getCompanyProducts - should return empty list when productionCompanies is null`() = runTest {
-        // Given
-        val local = mockTvShowDto.toLocalDto(language, tvShowId).copy(productionCompanies = emptyList())
+    fun `getCompanyProducts - should return empty list when productionCompanies is null`() =
+        runTest {
+            // Given
+            val local =
+                mockTvShowDto.toLocalDto(language, tvShowId).copy(productionCompanies = emptyList())
 
-        coEvery { tvShowLocalDataSource.getTvShowId(tvShowId, language) } returns local
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+            coEvery { tvShowLocalDataSource.getTvShowId(tvShowId, language) } returns local
 
-        // When
-        val result = tvShowRepository.getCompanyProducts(tvShowId)
+            // When
+            val result = tvShowRepository.getCompanyProducts(tvShowId)
 
-        // Then
-        assertThat(result).isEmpty()
-    }
+            // Then
+            assertThat(result).isEmpty()
+        }
+
     @Test
     fun `getTvShowReview - should return empty list when remote returns null reviews`() = runTest {
         // Given
         val emptyDto = mockTvShowReviewsDto.copy(results = null)
 
-        coEvery { tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language) } returns emptyList()
-        coEvery { tvShowDetailsRemoteDataSource.getTvShowReviews(tvShowId, page, language) } returns emptyDto
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+        coEvery {
+            tvShowReviewLocalDataSource.getReviewsByTvShowId(
+                tvShowId,
+                language
+            )
+        } returns emptyList()
+        coEvery {
+            tvShowDetailsRemoteDataSource.getTvShowReviews(
+                tvShowId,
+                page,
+                language
+            )
+        } returns emptyDto
 
         // When
         val result = tvShowRepository.getTvShowReview(tvShowId, page)
@@ -997,18 +1083,20 @@ class TvShowRepositoryImplTest {
     fun `getTvShowDetails - should throw NoInternetConnectionException when there is no internet`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When & Then
             assertThrows<NoInternetConnectionException> {
                 tvShowRepository.getTvShowDetails(tvShowId)
             }
-    }
+        }
 
     @Test
     fun `getTvShowCast - should throw NoInternetConnectionException when there is no internet`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When & Then
@@ -1021,6 +1109,7 @@ class TvShowRepositoryImplTest {
     fun `getTvShowRecommendations - should throw NoInternetConnectionException when there is no internet`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When & Then
@@ -1045,6 +1134,7 @@ class TvShowRepositoryImplTest {
     fun `getCompanyProducts - should throw NoInternetConnectionException when there is no internet`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When & Then
@@ -1057,6 +1147,7 @@ class TvShowRepositoryImplTest {
     fun `getTvShowReview - should throw NoInternetConnectionException when there is no internet`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When & Then
@@ -1069,6 +1160,7 @@ class TvShowRepositoryImplTest {
     fun `getSeasonDetails - should throw NoInternetConnectionException when there is no internet`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
             // When & Then
@@ -1077,7 +1169,49 @@ class TvShowRepositoryImplTest {
             }
         }
 
+    @Test
+    fun `deleteTvShowRating should return FailedToDeleteRatingException when remote throws exception`() = runTest {
+        // Given
+        val causeException = RuntimeException("Network error")
+        coEvery { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) } throws causeException
 
+        // When
+        val result = runCatching {
+            tvShowRepository.deleteTvShowRating(123)
+        }
+
+        // Then
+        assertThat(result.exceptionOrNull())
+            .isInstanceOf(FailedToDeleteRatingException::class.java)
+        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) }
+    }
+
+    @Test
+    fun `deleteTvShowRating should succeed when remote call succeeds`() = runTest {
+        // Given
+        coEvery { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) } coAnswers {true}
+
+        // When
+        val result = runCatching {
+            tvShowRepository.deleteTvShowRating(123)
+        }
+
+        // Then
+        assertThat(result.isSuccess).isTrue()
+        coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) }
+    }
+
+    @Test
+    fun `deleteTvShowRating should throw NoInternetConnectionException when offline`() = runTest {
+        // Given
+        coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+
+        // When & Then
+        assertThrows<NoInternetConnectionException> {
+            tvShowRepository.deleteTvShowRating(123)
+        }
+        coVerify(exactly = 0) { tvShowDetailsRemoteDataSource.deleteTvShowRating(any()) }
+    }
 
     private companion object {
         val tvShowId = 123

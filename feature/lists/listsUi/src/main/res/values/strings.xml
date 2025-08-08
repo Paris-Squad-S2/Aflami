@@ -1,3 +1,13 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="no_items_yet">No saved items here!</string>
+    <string name="create_new_list">Create new List</string>
+    <string name="list_title">List title</string>
+    <string name="add">Add</string>
+    <string name="confirm_delete">Are you sure to continue deleting?</string>
+    <string name="delete">Delete</string>
+    <string name="no_lists_yet">No lists yet!</string>
+    <string name="create_your_first_list">Our mind is still empty, click + and start saving the items and offers you love!</string>
+    <string name="lists">Lists</string>
+    <string name="please_login_to_access_your_account_details_and_other_features">Please login to access your account details and other features!</string>
 </resources>

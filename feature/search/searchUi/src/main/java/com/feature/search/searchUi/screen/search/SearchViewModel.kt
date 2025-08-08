@@ -15,16 +15,6 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.domain.search.model.Media
-import com.domain.search.useCase.ClearAllRecentSearchesUseCase
-import com.domain.search.useCase.ClearRecentSearchUseCase
-import com.domain.search.useCase.FilterMediaByRatingUseCase
-import com.domain.search.useCase.FilterMediaUseCase
-import com.domain.search.useCase.GetAllCategoriesUseCase
-import com.domain.search.useCase.GetAllRecentSearchesUseCase
-import com.domain.search.useCase.IncrementCategoryInteractionUseCase
-import com.domain.search.useCase.SearchByQueryUseCase
-import com.domain.search.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toCategoryUiList
@@ -33,8 +23,17 @@ import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
-import com.feature.search.searchUi.navigation.SearchNavigator
-import com.feature.search.searchUi.pagging.SearchByQueryPagingSource
+import com.feature.search.searchUi.pagging.PagingSource
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.useCase.ClearAllRecentSearchesUseCase
+import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
+import com.paris_2.domain.media.useCase.FilterMediaByRatingUseCase
+import com.paris_2.domain.media.useCase.FilterMediaUseCase
+import com.paris_2.domain.media.useCase.GetAllCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
+import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris_2.domain.media.useCase.SearchByQueryUseCase
+import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +59,6 @@ class SearchViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    navigator: SearchNavigator
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -81,7 +79,6 @@ class SearchViewModel @Inject constructor(
             isLoading = false,
             errorMessage = null
         ),
-        navigator
     ) {
 
     init {
@@ -186,10 +183,15 @@ class SearchViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SearchByQueryPagingSource(
-                            query = query,
-                            searchByQueryUseCase = searchByQueryUseCase,
-                            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase
+                        PagingSource(
+                            searchUseCase = {page ->
+                                sortingMediaByCategoriesInteractionUseCase(
+                                    searchByQueryUseCase(
+                                        query,
+                                        page
+                                    )
+                                ).toMediaUiList()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)

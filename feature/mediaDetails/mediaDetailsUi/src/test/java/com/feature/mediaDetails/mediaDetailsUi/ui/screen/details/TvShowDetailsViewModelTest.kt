@@ -2,25 +2,30 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.Season
-import com.domain.mediaDetails.model.TvShow
-import com.domain.mediaDetails.model.TvShowVideo
-import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.Review
+import com.paris_2.domain.media.entity.Season
+import com.paris_2.domain.media.entity.TvShow
+import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowCastUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowDetailsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowGalleryUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -133,33 +138,6 @@ class TvShowDetailsViewModelTest {
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
-    }
-
-    @Test
-    fun `onAddToListClick updates state to show AddToListDialog when user logged in`() = runTest {
-        coEvery { isLoggedInUseCase() } returns true
-        viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick()
-        runCurrent()
-        assertTrue(viewModel.screenState.value.showAddToListDialog)
-    }
-
-    @Test
-    fun `onAddToListClick doesn't show AddToListDialog when user not logged in`() = runTest {
-        coEvery { isLoggedInUseCase() } returns false
-        viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick()
-        runCurrent()
-        assertFalse(viewModel.screenState.value.showAddToListDialog)
-    }
-
-    @Test
-    fun `onAddToListClick updates state to show error when isLoggedInUseCase fails`() = runTest {
-        coEvery { isLoggedInUseCase() } throws Exception("error")
-        viewModel = makeViewModelWithDefaultStateHandle()
-        viewModel.onAddToListClick()
-        runCurrent()
-        assertEquals(viewModel.screenState.value.errorMessage, "error")
     }
 
     @Test
@@ -305,6 +283,32 @@ class TvShowDetailsViewModelTest {
         runCurrent()
 
         coVerify { getEpisodeVideoUseCase(testTvShowId, testSeasonNumber, testEpisodeNumber) }
+    }
+
+    @Test
+    fun `loadMovieReviews updates state with review UI list on success`() = runTest {
+        // Arrange
+        val domainReviews = listOf(mockk<Review>())
+        val uiReviews = listOf(mockk<ReviewUi>())
+
+        val domainTvShow = mockk<TvShow>(relaxed = true)
+        val tvShowUi = mockk<TvShowUi>()
+
+        coEvery { getTvShowDetailsUseCase(testTvShowId) } returns domainTvShow
+        coEvery { getTvShowVideoUseCase(testTvShowId) } returns mockk<TvShowVideo>(relaxed = true)
+        coEvery { getTvShowReviewsUseCase(testTvShowId, 1) } returns domainReviews
+
+        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
+        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
+        every { domainTvShow.toUi() } returns tvShowUi
+        every { domainReviews.toListOfReviewUi() } returns uiReviews
+
+        viewModel = makeViewModelWithDefaultStateHandle()
+        runCurrent()
+
+
+        val actualReviews = viewModel.screenState.value.tvShowDetailsUiState.reviews
+        assertEquals(uiReviews, actualReviews)
     }
     
     private fun makeViewModelWithDefaultStateHandle(): TvShowDetailsViewModel {

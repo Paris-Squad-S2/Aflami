@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -61,6 +62,7 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(libs.coil.compose)
 
     //Navigation
     implementation(libs.navigation.compose)
@@ -73,7 +75,7 @@ dependencies {
 
     //Modules
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_HOME))
+    implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
@@ -104,5 +106,8 @@ dependencies {
 
     //blur
     implementation(libs.sifr.shaded)
+
+    //shimmer
+    implementation(libs.shimmer)
 
 }

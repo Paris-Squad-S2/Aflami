@@ -6,10 +6,13 @@ import androidx.room.Room
 import com.datasource.MovieDetailDataBase
 import com.datasource.local.TvShowDetailDataBase
 import com.datasource.local.dao.*
-import com.datasource.local.home.HomeDatabase
-import com.datasource.local.home.dao.HomeMediaDao
-import com.datasource.local.search.SearchDatabase
-import com.datasource.local.search.dao.*
+import com.datasource.local.media.HomeDatabase
+import com.datasource.local.media.dao.CountryDao
+import com.datasource.local.media.dao.GenresUserInteractionDao
+import com.datasource.local.media.dao.ContinueWatchingDao
+import com.datasource.local.media.dao.SearchHistoryDao
+import com.datasource.local.media.SearchDatabase
+import com.datasource.local.media.dao.HomeMediaDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -62,9 +65,7 @@ object RoomDatabaseModule {
     ).build()
 
     @Provides fun provideSearchHistoryDao(db: SearchDatabase): SearchHistoryDao = db.searchHistoryDao()
-    @Provides fun provideMediaDao(db: SearchDatabase): MediaDao = db.mediaDao()
     @Provides fun provideCountryDao(db: SearchDatabase): CountryDao = db.countryDao()
-    @Provides fun provideGenresDao(db: SearchDatabase): GenresDao = db.genresDao()
     @Provides fun provideGenresUserInteractionDao(db: SearchDatabase): GenresUserInteractionDao = db.genreUserInteractionDao()
 
     @Provides fun provideMovieCastDao(db: MovieDetailDataBase): MovieCastDao = db.castDao()
@@ -80,7 +81,9 @@ object RoomDatabaseModule {
     @Provides fun provideSeasonDao(db: TvShowDetailDataBase): SeasonDao = db.seasonDao()
     @Provides fun provideTvShowSimilarDao(db: TvShowDetailDataBase): TvShowSimilarDao = db.tvShowSimilarDao()
 
-    @Provides fun provideHomeMediaDao(db: HomeDatabase): HomeMediaDao = db.mediaDao()
+    @Provides fun provideHomeMediaDao(db: HomeDatabase): ContinueWatchingDao = db.continueWatchingDao()
+
+    @Provides fun provideHomeDao(db: HomeDatabase): HomeMediaDao = db.homeMediaDao()
 }
 
 object DatabaseConstants {

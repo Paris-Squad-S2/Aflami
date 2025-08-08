@@ -7,29 +7,30 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.model.EpisodeVideo
-import com.domain.mediaDetails.model.TvShowVideo
-import com.domain.mediaDetails.useCase.tvShows.AddRatingToTvShowUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetEpisodeVideoUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetSeasonDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowCastUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowDetailsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowGalleryUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowRecommendationsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowReviewsUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowVideoUseCase
-import com.domain.mediaDetails.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowCastUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowDetailsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowGalleryUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
+import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarTvShowPageSource
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -192,9 +193,10 @@ class TvShowDetailsViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SimilarTvShowPageSource(
-                            movieId = mediaId,
-                            getTvShowRecommendationsUseCase = getTvShowRecommendationsUseCase
+                        PagingSource(
+                            mediaUseCase ={ page ->
+                                getTvShowRecommendationsUseCase(mediaId,page).toListOfMTvShowSimilarUI()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -294,37 +296,6 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    override fun onAddToListClick() {
-        tryToExecute(
-            execute = { isLoggedInUseCase() },
-            onSuccess = { isLoggedIn ->
-                if (isLoggedIn) {
-                    updateState(
-                        screenState.value.copy(
-                            showAddToListDialog = true
-                        )
-                    )
-                } else {
-                    navigate(
-                        MediaDetailsDestinations.LoginDialogDestination(
-                            R.string.add_to_list
-                        )
-                    )
-                }
-            },
-            onError = {
-                updateState(screenState.value.copy(errorMessage = it))
-            }
-        )
-    }
-
-    override fun onDismissAddToListDialog() {
-        updateState(
-            screenState.value.copy(
-                showAddToListDialog = false
-            )
-        )
-    }
 
     override fun onShowAllCastClick(tvShowId: Int) {
         navigate(MediaDetailsDestinations.TvShowCastScreen(tvShowId = tvShowId))

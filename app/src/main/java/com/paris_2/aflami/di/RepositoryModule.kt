@@ -1,18 +1,22 @@
 package com.paris_2.aflami.di
 
-import com.domain.home.repository.MediaRepository
-import com.domain.home.repository.MoviesCategoriesRepository
-import com.domain.mediaDetails.repository.MovieRepository
-import com.domain.mediaDetails.repository.TvShowRepository
-import com.domain.search.repository.CategoriesRepository
-import com.domain.search.repository.CountryRepository
-import com.domain.search.repository.GenresInteractionRepository
-import com.domain.search.repository.SearchHistoryRepository
-import com.domain.search.repository.SearchMediaRepository
-import com.paris_2.domain.authentication.repository.AuthenticationRepository
-import com.paris_2.repository.authentication.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.authentication.dataSource.remote.AuthenticationRemoteDataSource
-import com.paris_2.repository.authentication.repository.AuthenticationRepositoryImpl
+import com.paris.domain.lists.repository.ListsRepository
+import com.paris_2.domain.media.repository.CategoriesRepository
+import com.paris_2.domain.media.repository.CountryRepository
+import com.paris_2.domain.media.repository.GenresInteractionRepository
+import com.paris_2.domain.media.repository.MediaRepository
+import com.paris_2.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.MoviesCategoriesRepository
+import com.paris_2.domain.media.repository.SearchHistoryRepository
+import com.paris_2.domain.media.repository.SearchMediaRepository
+import com.paris_2.domain.media.repository.TvShowRepository
+import com.paris_2.domain.user.repository.LanguageRepository
+import com.paris_2.domain.user.repository.UserRepository
+import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
+import com.paris_2.repository.user.repository.LanguageRepositoryImp
+import com.paris_2.repository.user.repository.UserRepositoryImpl
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -20,10 +24,24 @@ import com.repository.dataSource.local.TvShowReviewLocalDataSource
 import com.repository.dataSource.local.TvShowSeasonLocalDataSource
 import com.repository.dataSource.local.TvShowSimilarLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
-import com.repository.home.datasource.local.HomeMediaLocalDataSource
-import com.repository.home.datasource.remote.MediaRemoteDataSource
-import com.repository.home.repository.MediaRepositoryImpl
-import com.repository.home.repository.MoviesCategoriesRepositoryImpl
+import com.repository.lists.ListsRepositoryImp
+import com.repository.lists.dataSource.remote.ListsRemoteDataSource
+import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
+import com.repository.media.datasource.local.CountriesLocalDataSource
+import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.datasource.local.HistoryLocalDataSource
+import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.remote.GenresRemoteDataSource
+import com.repository.media.datasource.remote.MediaRemoteDataSource
+import com.repository.media.datasource.remote.SearchRemoteDataSource
+import com.repository.media.repository.CategoriesRepositoryImpl
+import com.repository.media.repository.CountryRepositoryImpl
+import com.repository.media.repository.GenresInteractionRepositoryImpl
+import com.repository.media.repository.MediaRepositoryImpl
+import com.repository.media.repository.MoviesCategoriesRepositoryImpl
+import com.repository.media.repository.SearchHistoryRepositoryImpl
+import com.repository.media.repository.SearchMediaRepositoryImpl
+import com.repository.media.util.NetworkConnectionChecker
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -32,18 +50,6 @@ import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
 import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
-import com.repository.search.dataSource.local.CountriesLocalDataSource
-import com.repository.search.dataSource.local.GenresInteractionDataSource
-import com.repository.search.dataSource.local.GenresLocalDataSource
-import com.repository.search.dataSource.local.HistoryLocalDataSource
-import com.repository.search.dataSource.local.MediaLocalDataSource
-import com.repository.search.dataSource.remote.SearchRemoteDataSource
-import com.repository.search.repository.CategoriesRepositoryImpl
-import com.repository.search.repository.CountryRepositoryImpl
-import com.repository.search.repository.GenresInteractionRepositoryImpl
-import com.repository.search.repository.SearchHistoryRepositoryImpl
-import com.repository.search.repository.SearchMediaRepositoryImpl
-import com.repository.search.util.NetworkConnectionChecker
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -57,7 +63,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideSearchHistoryRepository(
-        historyLocalDataSource: HistoryLocalDataSource
+        historyLocalDataSource: HistoryLocalDataSource,
     ): SearchHistoryRepository {
         return SearchHistoryRepositoryImpl(historyLocalDataSource)
     }
@@ -66,22 +72,22 @@ object RepositoryModule {
     @Singleton
     fun provideSearchMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        mediaLocalDataSource: MediaLocalDataSource,
         searchRemoteDataSource: SearchRemoteDataSource,
-        searchHistoryLocalDataSource: HistoryLocalDataSource
+        searchHistoryLocalDataSource: HistoryLocalDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): SearchMediaRepository {
         return SearchMediaRepositoryImpl(
             networkConnectionChecker,
-            mediaLocalDataSource,
             searchRemoteDataSource,
-            searchHistoryLocalDataSource
+            searchHistoryLocalDataSource,
+            languageLocalDataSourceRepository
         )
     }
 
     @Provides
     @Singleton
     fun provideCountryRepository(
-        countriesLocalDataSource: CountriesLocalDataSource
+        countriesLocalDataSource: CountriesLocalDataSource,
     ): CountryRepository {
         return CountryRepositoryImpl(countriesLocalDataSource)
     }
@@ -90,21 +96,20 @@ object RepositoryModule {
     @Singleton
     fun provideCategoriesRepository(
         networkConnectionChecker: NetworkConnectionChecker,
-        genresLocalDataSource: GenresLocalDataSource,
-        genresRemoteDataSource: com.repository.search.dataSource.remote.GenresRemoteDataSource
-
+        genresRemoteDataSource: GenresRemoteDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): CategoriesRepository {
         return CategoriesRepositoryImpl(
             networkConnectionChecker,
-            genresLocalDataSource,
-            genresRemoteDataSource
+            genresRemoteDataSource,
+            languageLocalDataSourceRepository
         )
     }
 
     @Provides
     @Singleton
     fun provideGenresInteractionRepository(
-        dataSource: GenresInteractionDataSource
+        dataSource: GenresInteractionDataSource,
     ): GenresInteractionRepository {
         return GenresInteractionRepositoryImpl(dataSource)
     }
@@ -112,24 +117,43 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        remoteDataSource: AuthenticationRemoteDataSource,
-        localDataSource: AuthenticationLocalDataSource
-    ): AuthenticationRepository = AuthenticationRepositoryImpl(remoteDataSource, localDataSource)
+        remoteDataSource: UserRemoteDataSource,
+        localDataSource: AuthenticationLocalDataSource,
+    ): UserRepository = UserRepositoryImpl(remoteDataSource, localDataSource)
+
+    @Provides
+    @Singleton
+    fun provideLanguageRepository(
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    ): LanguageRepository = LanguageRepositoryImp(languageLocalDataSourceRepository)
 
     @Provides
     @Singleton
     fun provideDetailedMediaRepository(
-        networkConnectionChecker: com.repository.home.util.NetworkConnectionChecker,
+        networkConnectionChecker: NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
-        homeMediaLocalDataSource: HomeMediaLocalDataSource
-    ): MediaRepository = MediaRepositoryImpl(networkConnectionChecker, mediaRemoteDataSource, homeMediaLocalDataSource)
+        continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
+        homeMediaLocalDataSource: HomeMediaLocalDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    ): MediaRepository = MediaRepositoryImpl(
+        networkConnectionChecker,
+        mediaRemoteDataSource,
+        continueWatchingLocalDataSource, homeMediaLocalDataSource,
+        languageLocalDataSourceRepository
+    )
 
     @Provides
     @Singleton
     fun provideMoviesCategoriesRepository(
-        genresRemoteDataSource: com.repository.home.datasource.remote.GenresRemoteDataSource,
-        networkConnectionChecker: com.repository.home.util.NetworkConnectionChecker
-    ): MoviesCategoriesRepository = MoviesCategoriesRepositoryImpl(genresRemoteDataSource, networkConnectionChecker)
+        genresRemoteDataSource: GenresRemoteDataSource,
+        networkConnectionChecker: NetworkConnectionChecker,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    ): MoviesCategoriesRepository =
+        MoviesCategoriesRepositoryImpl(
+            genresRemoteDataSource,
+            networkConnectionChecker,
+            languageLocalDataSourceRepository
+        )
 
     @Provides
     @Singleton
@@ -140,7 +164,8 @@ object RepositoryModule {
         movieGalleryLocalDataSource: MovieGalleryLocalDataSource,
         movieReviewLocalDataSource: MovieReviewLocalDataSource,
         movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
-        movieSimilarLocalDataSource: MovieSimilarLocalDataSource
+        movieSimilarLocalDataSource: MovieSimilarLocalDataSource,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): MovieRepository = MovieRepositoryImpl(
         networkConnectionChecker,
         movieLocalDataSource,
@@ -148,7 +173,8 @@ object RepositoryModule {
         movieGalleryLocalDataSource,
         movieReviewLocalDataSource,
         movieDetailsRemoteDataSource,
-        movieSimilarLocalDataSource
+        movieSimilarLocalDataSource,
+        languageLocalDataSourceRepository
     )
 
     @Provides
@@ -161,7 +187,8 @@ object RepositoryModule {
         tvShowLocalDataSource: TvShowLocalDataSource,
         tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource,
         tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource,
-        networkConnectionChecker: com.repository.util.NetworkConnectionChecker
+        networkConnectionChecker: com.repository.util.NetworkConnectionChecker,
+        languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): TvShowRepository = TvShowRepositoryImpl(
         tvShowDetailsRemoteDataSource,
         tvShowCastLocalDataSource,
@@ -170,6 +197,14 @@ object RepositoryModule {
         tvShowLocalDataSource,
         tvShowSeasonLocalDataSource,
         tvShowSimilarLocalDataSource,
-        networkConnectionChecker
+        networkConnectionChecker,
+        languageLocalDataSourceRepository
     )
+
+    @Provides
+    @Singleton
+    fun provideListsTvShowRepository(
+        listRemoteDataSource: ListsRemoteDataSource,
+        userRemoteDataSource: UserRemoteDataSource
+    ): ListsRepository = ListsRepositoryImp(listRemoteDataSource, userRemoteDataSource)
 }

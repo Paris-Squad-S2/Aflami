@@ -3,9 +3,9 @@ package com.feature.home.homeUi.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.feature.home.homeApi.HomeDestination
+import com.feature.home.homeUi.navigation.HomeDestination
 import com.feature.home.homeUi.navigation.HomeNavigator
-import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -14,11 +14,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-open class BaseViewModel<S>(
-    initialState: S, private val navigator: HomeNavigator
+open class BaseViewModel<S> @Inject constructor(
+    initialState: S
 ) : ViewModel() {
+
+    @Inject
+    lateinit var navigator: HomeNavigator
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()

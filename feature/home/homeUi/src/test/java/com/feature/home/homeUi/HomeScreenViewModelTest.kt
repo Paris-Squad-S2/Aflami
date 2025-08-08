@@ -1,23 +1,22 @@
 package com.feature.home.homeUi
 
-import com.domain.home.model.Category
-import com.domain.home.usecase.AddMediaToLocalUseCase
-import com.domain.home.usecase.FilterUpComingMediaByCategoriesUseCase
-import com.domain.home.usecase.GetMediaFromLocalUseCase
-import com.domain.home.usecase.GetMoviesCategoriesUseCase
-import com.domain.home.usecase.GetPopularMediaUseCase
-import com.domain.home.usecase.GetTopRatingMediaUseCase
-import com.domain.home.usecase.GetUpComingMediaUseCase
-import com.feature.home.homeUi.navigation.HomeNavigator
 import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
 import com.feature.home.homeUi.screen.home.MediaTypeUi.TVSHOW
 import com.feature.home.homeUi.screen.home.MediaUiState
+import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.aflami.designsystem.components.SliderMedia
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
+import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
+import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
+import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
+import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -30,8 +29,8 @@ import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.domain.home.model.Media as DomainMedia
-import com.domain.home.model.MediaType as DomainMediaType
+import com.paris_2.domain.media.entity.Media as DomainMedia
+import com.paris_2.domain.media.entity.MediaType as DomainMediaType
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeScreenViewModelTest {
@@ -41,11 +40,10 @@ class HomeScreenViewModelTest {
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase =
         mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
-    private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase = mockk()
-    private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
+    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase = mockk()
+    private val getWatchHistoryUseCase: GetWatchHistoryUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
-    private val navigator: HomeNavigator = mockk(relaxed = true)
 
     private lateinit var viewModel: HomeScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -103,7 +101,7 @@ class HomeScreenViewModelTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
         coEvery { getMoviesCategoriesUseCase() } returns fakeCategories.map { it.toCategory() }
         coEvery { getUpcomingMediaUseCase() } returns fakeUpcomingList.map { it.toMedia() }
-        coEvery { getMediaFromLocalUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
         coEvery { addMediaToLocalDatabaseUseCase.invoke(any()) } returns Unit
         coEvery { filterUpComingMediaByCategoriesUseCase.invoke(any()) } returns fakeUpcomingList.map { it.toMedia() }
         viewModel = HomeScreenViewModel(
@@ -113,23 +111,22 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
         )
     }
 
     private fun MediaUiState.toMedia() = DomainMedia(
         id = id,
         title = title,
-        voteAverage = rating,
-        posterPath = imageUri,
+        rating = rating,
+        imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        genreIds = categories.mapNotNull { categoryMap[it] },
+        categoryIds = categories.mapNotNull { categoryMap[it] },
         type = when (type) {
             MOVIE -> DomainMediaType.MOVIE
-            TVSHOW -> DomainMediaType.TV_SHOW
+            TVSHOW -> DomainMediaType.TVSHOW
         }
     )
 
@@ -160,10 +157,9 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<CategoryUiState, Boolean>())
@@ -179,10 +175,10 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
+
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
@@ -198,10 +194,10 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            navigator
+
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
@@ -218,7 +214,7 @@ class HomeScreenViewModelTest {
                 )
             )
         )
-        coEvery { getMediaFromLocalUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
         viewModel.apply {
             this.javaClass.getDeclaredMethod("loadContinueWatchingMedia")
                 .apply { isAccessible = true }.invoke(this)
@@ -402,10 +398,9 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase = mockk(relaxed = true),
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            navigator
         )
 
         viewModel.onRetry()

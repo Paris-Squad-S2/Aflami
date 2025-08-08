@@ -65,7 +65,9 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(libs.junit)
 
-    implementation(project(Modules.DOMAIN_MEDIA_DETAILS))
+    implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(project(Modules.REPOSITORY_USER))
+
 }
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()

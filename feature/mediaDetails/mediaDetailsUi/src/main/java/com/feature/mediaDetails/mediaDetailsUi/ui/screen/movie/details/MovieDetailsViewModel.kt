@@ -7,30 +7,36 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.domain.mediaDetails.model.MovieVideo
-import com.domain.mediaDetails.useCase.movie.AddRatingToMovieUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieCastUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieDetailsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieGalleryUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieRecommendationsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMovieReviewsUseCase
-import com.domain.mediaDetails.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.domain.mediaDetails.useCases.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.SimilarMoviePageSource
-import com.paris_2.domain.authentication.usecase.IsLoggedInUseCase
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
+import com.paris.domain.lists.useCase.AddMovieToListUseCase
+import com.paris.domain.lists.useCase.CreateListUseCase
+import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris_2.aflami.designsystem.components.ButtonState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 import kotlin.math.roundToInt
+import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
@@ -45,9 +51,11 @@ class MovieDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
+    private val addMovieToListUseCase: AddMovieToListUseCase,
+    private val getListsUseCase: GetListUseCase,
+    private val createListUseCase: CreateListUseCase,
     navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
-
     MovieDetailsScreenState(
         movieDetailsUiState = MovieDetailsUiState(
             movie = MovieUi(
@@ -76,6 +84,11 @@ class MovieDetailsViewModel @Inject constructor(
         isLoading = true,
         errorMessage = null,
         showSnackBar = false,
+        availableLists = emptyList(),
+        selectedListIndex = -1,
+        showCreateListDialog = false,
+        createListName = "",
+        createListButtonState = ButtonState.Normal
     ), navigator
 ) {
 
@@ -87,6 +100,33 @@ class MovieDetailsViewModel @Inject constructor(
     init {
         loadedMovieDetails(mediaId = movieId)
         getInformationVideoMovie()
+        loadAvailableLists()
+    }
+
+    private fun loadAvailableLists() {
+        tryToExecute(
+            execute = { getListsUseCase(1) },
+            onSuccess = { lists ->
+                updateState(
+                    screenState.value.copy(
+                        availableLists = lists.map {
+                            ListItemUi(
+                                id = it.id.toString(),
+                                name = it.name,
+                                itemCount = it.itemCount
+                            )
+                        }
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     private fun getInformationVideoMovie() {
@@ -181,9 +221,10 @@ class MovieDetailsViewModel @Inject constructor(
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
-                        SimilarMoviePageSource(
-                            movieId = mediaId,
-                            getMovieRecommendationsUseCase = getMovieRecommendationsUseCase,
+                        PagingSource(
+                            mediaUseCase ={ page ->
+                                getMovieRecommendationsUseCase(mediaId,page).toListOfMovieSimilarUI()
+                            }
                         )
                     }
                 ).flow.cachedIn(viewModelScope)
@@ -284,6 +325,44 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+    override fun onListSelectionChanged(index: Int) {
+        updateState(
+            screenState.value.copy(
+                selectedListIndex = index
+            )
+        )
+    }
+
+    override fun onAddToSelectedList() {
+        val selectedList = screenState.value.availableLists.getOrNull(screenState.value.selectedListIndex)
+        if (selectedList != null) {
+            tryToExecute(
+                execute = {
+                    addMovieToListUseCase(selectedList.id, movieId)
+                },
+                onSuccess = {
+                    updateState(
+                        screenState.value.copy(
+                            showAddToListDialog = false,
+                            selectedListIndex = -1,
+                            showSnackBar = true,
+                            snackBarSuccess = true,
+                            snackBarMessage = R.string.movie_added_to_list_successfully
+                        )
+                    )
+                },
+                onError = { errorMessage ->
+                    updateState(
+                        screenState.value.copy(
+                            errorMessage = errorMessage,
+                            showSnackBar = true,
+                            snackBarSuccess = false,
+                        )
+                    )
+                }
+            )
+        }
+    }
 
     override fun onDismissAddToListDialog() {
         updateState(
@@ -293,12 +372,63 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
+    override fun onCreateListShow() {
+        updateState(screenState.value.copy(showCreateListDialog = true))
+    }
+
+    override fun onCreateListDismiss() {
+        updateState(
+            screenState.value.copy(
+                showCreateListDialog = false,
+                createListName = "",
+                createListButtonState = ButtonState.Normal
+            )
+        )
+    }
+
+    override fun onCreateListNameChange(name: String) {
+        updateState(
+            screenState.value.copy(
+                createListName = name,
+                createListButtonState = if (name.isBlank()) ButtonState.Disabled else ButtonState.Normal
+            )
+        )
+    }
+
+    override fun onCreateListConfirm() {
+        val listName = screenState.value.createListName.trim()
+        if (listName.isNotEmpty()) {
+            updateState(screenState.value.copy(createListButtonState = ButtonState.Loading))
+            tryToExecute(
+                execute = { createListUseCase.invoke(listName) },
+                onSuccess = { result ->
+                    updateState(
+                        screenState.value.copy(
+                            showCreateListDialog = false,
+                            createListName = "",
+                            createListButtonState = ButtonState.Normal,
+                            showSnackBar = true,
+                            snackBarSuccess = result.success,
+                            snackBarMessage = if (result.success) RDesignSystem.string.added_new_list_successfully else RDesignSystem.string.some_error_happened
+                        )
+                    )
+                    loadAvailableLists()
+                },
+                onError = { errorMessage ->
+                    updateState(
+                        screenState.value.copy(
+                            errorMessage = errorMessage,
+                            createListButtonState = ButtonState.Normal
+                        )
+                    )
+                }
+            )
+        }
+    }
 
     override fun onShowAllCastClick(movieId: Int) {
         navigate(MediaDetailsDestinations.MovieCastScreen(movieId = movieId))
     }
-
-
 
     override fun onRetryLoadMovieDetails() {
         updateState(
@@ -383,6 +513,5 @@ class MovieDetailsViewModel @Inject constructor(
             )
         )
     }
-
 
 }

@@ -6,22 +6,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.home.homeApi.HomeDestination
-import com.feature.home.homeApi.HomeDestinations
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingScreen
 import com.feature.home.homeUi.screen.home.HomeScreen
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesScreen
-import dagger.hilt.android.EntryPointAccessors
-import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 
 @Composable
 fun HomeNavGraph(
-    navigator: HomeNavigator = EntryPointAccessors.fromApplication(
-        LocalContext.current.applicationContext as android.app.Application,
-        HomeNavigatorEntryPoint::class.java
-    ).homeNavigator(),
-    startDestination: HomeDestination? = null
+    viewModel: HomeScreenViewModel = hiltViewModel()
 ) {
+    val navigator = viewModel.navigator
+
     val navController = rememberNavController()
 
     ObserveAsEvents(navigator.homeNavigationEvent) { event ->
@@ -38,13 +34,13 @@ fun HomeNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        buildSearchNavGraph(startDestination)
+        buildSearchNavGraph()
     }
 }
 
-fun NavGraphBuilder.buildSearchNavGraph(startDestination: HomeDestination? = null) {
+fun NavGraphBuilder.buildSearchNavGraph() {
     navigation<HomeDestinations.HomeGraph1>(
-        startDestination = startDestination ?: HomeDestinations.HomeScreen
+        startDestination = HomeDestinations.HomeScreen
     ) {
         composable<HomeDestinations.HomeScreen> { HomeScreen() }
         composable<HomeDestinations.ContinueWatchingScreen> { ContinueWatchingScreen() }

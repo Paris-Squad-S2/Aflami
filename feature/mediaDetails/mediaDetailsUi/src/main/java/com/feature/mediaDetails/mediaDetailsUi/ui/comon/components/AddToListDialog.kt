@@ -1,33 +1,33 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components
 
+import androidx.compose.foundation.layout.Arrangement.spacedBy
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ListItemUi
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.Dialog
-import com.paris_2.aflami.designsystem.components.SelectionCard
+import com.paris_2.aflami.designsystem.components.AppDialog
 
 @Composable
 fun AddToListDialog(
-    list: List<String>,
+    lists: List<ListItemUi>,
+    selectedIndex: Int,
     onDismiss: () -> Unit,
+    onListSelectionChanged: (Int) -> Unit,
+    onAddToSelectedList: () -> Unit,
+    onCreateNewList: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var selectedIndex by remember { mutableStateOf(-1) }
-    Dialog(
+    AppDialog(
         onDismiss = onDismiss,
         title = R.string.add_to_list,
         modifier = modifier
@@ -36,33 +36,34 @@ fun AddToListDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 24.dp),
-            verticalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(8.dp)
+            verticalArrangement = spacedBy(8.dp)
         ) {
-            items(list.indices.toList()) { index ->
+            items(lists.indices.toList()) { index ->
                 SelectionCard(
-                    optionTitle = list[index],
-                    optionDescription = stringResource(com.paris_2.aflami.designsystem.R.string._11_item),
+                    optionTitle = lists[index].name,
+                    optionDescription = stringResource(R.string.Item, lists[index].itemCount),
                     modifier = Modifier
                         .padding(horizontal = 12.dp),
                     isSelected = selectedIndex == index,
                     onClick = {
-                        selectedIndex = index
+                        val newIndex = if (selectedIndex == index) -1 else index
+                        onListSelectionChanged(newIndex)
                     }
                 )
             }
         }
         CustomButton(
             text = R.string.add,
-            onClick = {},
+            onClick = onAddToSelectedList,
             type = ButtonType.Primary,
-            state = ButtonState.Normal,
+            state = if (selectedIndex >= 0) ButtonState.Normal else ButtonState.Disabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
         )
         CustomButton(
             text = R.string.create_new_list,
-            onClick = {},
+            onClick = onCreateNewList,
             type = ButtonType.Secondary,
             state = ButtonState.Normal,
             modifier = Modifier
@@ -76,7 +77,14 @@ fun AddToListDialog(
 @Composable
 private fun Preview() {
     AddToListDialog(
-        list = listOf("My Favorite Movies", "Kittens"),
+        lists = listOf(
+            ListItemUi("1", "My Favorite Movies", 10),
+            ListItemUi("2", "Kittens", 5)
+        ),
+        selectedIndex = 0,
         onDismiss = {},
+        onListSelectionChanged = {},
+        onAddToSelectedList = {},
+        onCreateNewList = {}
     )
 }
