@@ -12,4 +12,5 @@ interface UserRepository {
     suspend fun setOnboardingCompleted()
      fun isOnboardingCompleted(): Boolean
     suspend fun getAccountId(): Int?
+    fun deleteSessionId(): Boolean
 }

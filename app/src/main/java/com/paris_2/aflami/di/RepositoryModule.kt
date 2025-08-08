@@ -116,7 +116,8 @@ object RepositoryModule {
     fun provideAuthenticationRepository(
         remoteDataSource: UserRemoteDataSource,
         localDataSource: AuthenticationLocalDataSource,
-    ): UserRepository = UserRepositoryImpl(remoteDataSource, localDataSource)
+    ): UserRepository =
+        UserRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton
