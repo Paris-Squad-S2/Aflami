@@ -145,10 +145,11 @@ class WatchHistoryViewModelTest {
         viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
         runCurrent()
 
-        viewModel.onMediaCardClick(fakeMediaList[0]) // Movie
+        viewModel.onMediaCardClick(fakeMediaList[0])
         runCurrent()
 
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(1) }
+
     }
 
     @Test
@@ -178,6 +179,7 @@ class WatchHistoryViewModelTest {
         runCurrent()
 
         coVerify(atLeast = 2) { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) }
+
     }
 
 }
