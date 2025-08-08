@@ -1,8 +1,9 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.exception.NoCategoriesFoundException
-import com.paris_2.domain.media.entity.Category
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
@@ -21,6 +22,7 @@ class MoviesCategoriesRepositoryImplTest {
 
     private val genresRemoteDataSource: GenresRemoteDataSource = mockk()
     private val networkChecker: NetworkConnectionChecker = mockk()
+    private val languageLocalDataSourceRepository :LanguageLocalDataSourceRepository = mockk()
     private lateinit var repo: MoviesCategoriesRepositoryImpl
 
     @BeforeEach
@@ -28,7 +30,8 @@ class MoviesCategoriesRepositoryImplTest {
         every { networkChecker.isConnected } returns MutableStateFlow(true)
         repo = MoviesCategoriesRepositoryImpl(
             networkConnectionChecker = networkChecker,
-            genresRemoteDataSource = genresRemoteDataSource
+            genresRemoteDataSource = genresRemoteDataSource,
+            languageLocalDataSourceRepository = languageLocalDataSourceRepository
         )
     }
 
@@ -42,6 +45,7 @@ class MoviesCategoriesRepositoryImplTest {
         )
         val categories = listOf(Category(28, "Action"), Category(18, "Drama"))
         coEvery { genresRemoteDataSource.getMoviesGenres("en-US") } returns genresDto
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
 
         assertThat(genresDto.toCategoryList()).isEqualTo(categories)
     }
@@ -50,6 +54,7 @@ class MoviesCategoriesRepositoryImplTest {
     fun `getMoviesCategories throws NoCategoriesFoundException when categories empty`() = runTest {
         val genresDto = mockk<GenresDto>(relaxed = true)
         coEvery { genresRemoteDataSource.getMoviesGenres(any()) } returns genresDto
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         every { genresDto.toCategoryList() } returns emptyList()
 
         assertThrows<NoCategoriesFoundException> {

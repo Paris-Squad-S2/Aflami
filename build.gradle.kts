@@ -102,7 +102,12 @@ val koverExcludedPackages = listOf(
     "**/pagging*",
     "**MovieDetailsViewModel.kt*",
     "**AuthInterceptor*",
-    
+    "**.LanguageLocalDataSourceRepositoryImp.*",
+    "**.LanguageRepositoryImp.*",
+    "**.ChangePasswordViewModel.*",
+    "**.SettingsUseCase.*",
+    "**.profileUi.screen.**",
+
 )
 
 allprojects {

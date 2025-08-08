@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.feature.profile.profileUi.screen.ProfileScreen
 import com.feature.profile.profileUi.screen.myRating.MyRatingScreen
 import com.feature.profile.profileUi.screen.watchHistory.WatchHistoryScreen
 import dagger.hilt.android.EntryPointAccessors
@@ -17,8 +18,8 @@ import dagger.hilt.android.EntryPointAccessors
 fun ProfileNavGraph(
     navigator: ProfileNavigator = EntryPointAccessors.fromApplication(
         LocalContext.current.applicationContext as Application,
-        ProfileNavigatorEntryPoint ::class.java
-    ).profileNavigator()
+        ProfileNavigatorEntryPoint::class.java
+    ).profileNavigator(),
 ) {
     val navController = rememberNavController()
 
@@ -41,9 +42,10 @@ fun ProfileNavGraph(
 }
 
 fun NavGraphBuilder.buildProfileNavGraph() {
-    navigation<ProfileDestinations.ProfileGraph1>(
-        startDestination = ProfileDestinations.MyRatingScreen
+    navigation<ProfileDestinations.ProfileMainGraph>(
+        startDestination = ProfileDestinations.ProfileScreen
     ) {
+        composable<ProfileDestinations.ProfileScreen> { ProfileScreen() }
         composable<ProfileDestinations.WatchHistoryScreen> { WatchHistoryScreen() }
         composable<ProfileDestinations.MyRatingScreen> { MyRatingScreen() }
     }

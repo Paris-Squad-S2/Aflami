@@ -8,6 +8,6 @@ interface GenresApiServices {
     @GET("genre/movie/list")
     suspend fun getMoviesGenres(
         @Query("language")
-        language: String
+        language: String,
     ): GenresDto
 }

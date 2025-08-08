@@ -42,7 +42,7 @@ fun TvDto.toDomain(type: MediaType): Media? {
     )
 }
 
-fun MediaEntity.toDomain(): Media{
+fun MediaEntity.toDomain(): Media {
     return Media(
         id = this.id,
         title = this.title,
@@ -75,7 +75,7 @@ fun HomeMediaEntity.toDomain(): Media? {
     )
 }
 
-fun Media.toMediaEntity(category: Category): HomeMediaEntity = HomeMediaEntity(
+fun Media.toMediaEntity(category: Category, language: String): HomeMediaEntity = HomeMediaEntity(
     id = id,
     title = title,
     voteAverage = rating,
@@ -83,8 +83,10 @@ fun Media.toMediaEntity(category: Category): HomeMediaEntity = HomeMediaEntity(
     releaseDate = yearOfRelease.toString(),
     genreIds = categoryIds,
     type = type.toEntity(),
-    category = category
+    category = category,
+    language = language
 )
+
 fun Media.toEntity(): MediaEntity = MediaEntity(
     id = id,
     title = title,
@@ -95,7 +97,7 @@ fun Media.toEntity(): MediaEntity = MediaEntity(
     type = type.toEntity()
 )
 
-fun MediaType.toEntity(): MediaTypeEntity= when (this) {
+fun MediaType.toEntity(): MediaTypeEntity = when (this) {
     MediaType.MOVIE -> MediaTypeEntity.MOVIE
     MediaType.TVSHOW -> MediaTypeEntity.TV_SHOW
 }

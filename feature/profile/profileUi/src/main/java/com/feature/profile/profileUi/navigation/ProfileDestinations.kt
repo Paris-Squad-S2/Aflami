@@ -5,7 +5,10 @@ import kotlinx.serialization.Serializable
 sealed interface ProfileDestinations : ProfileGraph {
 
     @Serializable
-    data object ProfileGraph1 : ProfileGraph
+    data object ProfileMainGraph : ProfileGraph
+
+    @Serializable
+    data object ProfileScreen : ProfileDestination
 
     @Serializable
     data object WatchHistoryScreen : ProfileDestination

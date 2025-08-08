@@ -1,15 +1,5 @@
 package com.repository.repository
 
-import com.paris_2.domain.media.exception.AflamiException
-import com.paris_2.domain.media.exception.FailedToAddRatingException
-import com.paris_2.domain.media.exception.NoCastFoundException
-import com.paris_2.domain.media.exception.NoGalleryFoundException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.NoReviewFoundException
-import com.paris_2.domain.media.exception.NoSeasonFoundException
-import com.paris_2.domain.media.exception.NoSimilarFoundException
-import com.paris_2.domain.media.exception.NoTvShowFoundException
-import com.paris_2.domain.media.exception.NoVideoFoundException
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
@@ -19,9 +9,20 @@ import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
 import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.exception.AflamiException
+import com.paris_2.domain.media.exception.FailedToAddRatingException
+import com.paris_2.domain.media.exception.NoCastFoundException
+import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
+import com.paris_2.domain.media.exception.NoReviewFoundException
+import com.paris_2.domain.media.exception.NoSeasonFoundException
+import com.paris_2.domain.media.exception.NoSimilarFoundException
+import com.paris_2.domain.media.exception.NoTvShowFoundException
+import com.paris_2.domain.media.exception.NoVideoFoundException
 import com.paris_2.domain.media.repository.TvShowRepository
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -32,7 +33,7 @@ import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
 import com.repository.mapper.toLocalDto
 import com.repository.util.NetworkConnectionChecker
-import com.repository.util.detectLanguage
+import kotlinx.coroutines.flow.first
 
 class TvShowRepositoryImpl(
     private val tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource,
@@ -43,11 +44,11 @@ class TvShowRepositoryImpl(
     private val tvShowSeasonLocalDataSource: TvShowSeasonLocalDataSource,
     private val tvShowSimilarLocalDataSource: TvShowSimilarLocalDataSource,
     private val networkConnectionChecker: NetworkConnectionChecker,
+    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
 ) : TvShowRepository {
 
-    private val language = detectLanguage()
-
     override suspend fun getTvShowDetails(tvShowId: Int): TvShow {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoTvShowFoundException()) {
             val localTVShow = tvShowLocalDataSource.getTvShowId(tvShowId, language)
             if (localTVShow != null) {
@@ -64,6 +65,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowCast(tvShowId: Int): List<Cast> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoCastFoundException()) {
             val localCast = tvShowCastLocalDataSource.getCastByTvShowId(tvShowId, language)
             if (localCast.isNotEmpty()) {
@@ -84,6 +86,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowRecommendations(tvShowId: Int, page: Int): List<TvShowSimilar> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoSimilarFoundException()) {
             val localSimilar =
                 tvShowSimilarLocalDataSource.getSimilarTvShows(tvShowId, page, language)
@@ -122,6 +125,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoProductionCompanyFoundException()) {
             val localCompany = tvShowLocalDataSource.getTvShowId(tvShowId, language)
                 ?.productionCompanies ?: emptyList()
@@ -142,8 +146,12 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoSeasonFoundException()) {
-            val localSeason = tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+            val localSeason = tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                tvShowId,
+                seasonNumber
+            )
             if (localSeason != null) {
                 localSeason.toEntity()
             } else {
@@ -153,7 +161,10 @@ class TvShowRepositoryImpl(
                     language
                 )
                 tvShowSeasonLocalDataSource.addSeasonDetails(remoteSeason.toLocalDto(tvShowId))
-                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)?.toEntity()
+                tvShowSeasonLocalDataSource.getSeasonDetailsByTvShowIdAndSeasonNumber(
+                    tvShowId,
+                    seasonNumber
+                )?.toEntity()
                     ?: throw NoSeasonFoundException()
             }
 
@@ -161,6 +172,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowReview(tvShowId: Int, page: Int): List<Review> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return safeCall(NoReviewFoundException()) {
             val localReview = tvShowReviewLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             if (localReview.isNotEmpty()) {
@@ -198,6 +210,7 @@ class TvShowRepositoryImpl(
         }
     }
 
+
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
         return safeCall(NoVideoFoundException()) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
@@ -210,8 +223,9 @@ class TvShowRepositoryImpl(
     override suspend fun getTrailerVideoForEpisode(
         tvShowId: Int,
         seasonNumber: Int,
-        episodeNumber: Int
+        episodeNumber: Int,
     ): List<EpisodeVideo> {
+        val language = languageLocalDataSourceRepository.getLanguage().first()
         return tvShowDetailsRemoteDataSource.getTrailerVideoForEpisode(
             tvShowId,
             seasonNumber,
