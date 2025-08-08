@@ -13,12 +13,7 @@ kotlin {
 }
 
 dependencies{
-    testImplementation(kotlin("test"))
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.truth)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.jupiter.junit.jupiter)
+    testImplementation(libs.bundles.test)
     implementation(libs.kotlinx.coroutines.core)
 }
 tasks.test {

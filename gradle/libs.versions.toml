@@ -108,6 +108,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistPager" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serializationJson" }
@@ -181,7 +182,14 @@ compose = [
 
 test = [
     "junit",
-    "androidx-junit",
+    "junit-jupiter-engine",
+    "junit-jupiter-api",
+    "mockk",
+    "kotlinx-coroutines-test",
+    "truth",
+    "kotlin-test"
+
+
 ]
 
 retrofit = [
