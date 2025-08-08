@@ -52,6 +52,4 @@ class SettingLocalDataSourceImp @Inject constructor(
     private fun getLanguageSync(): String {
         return prefs.getString(LANGUAGE_KEY, "en") ?: "en"
     }
-
-
 }
