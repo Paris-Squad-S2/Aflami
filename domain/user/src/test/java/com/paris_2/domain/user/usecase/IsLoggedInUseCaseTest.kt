@@ -1,6 +1,6 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 
 class IsLoggedInUseCaseTest {
 
-    private lateinit var repository: AuthenticationRepository
+    private lateinit var repository: UserRepository
     private lateinit var useCase: IsLoggedInUseCase
 
     @BeforeEach

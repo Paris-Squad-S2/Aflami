@@ -1,6 +1,6 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -10,20 +10,20 @@ import org.junit.jupiter.api.Test
 
 class GetSessionIdUseCaseTest {
 
-    private lateinit var authenticationRepository: AuthenticationRepository
+    private lateinit var userRepository: UserRepository
     private lateinit var getSessionIdUseCase: GetSessionIdUseCase
 
     @BeforeEach
     fun setUp() {
-        authenticationRepository = mockk()
-        getSessionIdUseCase = GetSessionIdUseCase(authenticationRepository)
+        userRepository = mockk()
+        getSessionIdUseCase = GetSessionIdUseCase(userRepository)
     }
 
     @Test
     fun `getSessionIdUseCase should return session ID when repository returns a valid session`() =
         runTest {
         val expectedSessionId = "abc123"
-            coEvery { authenticationRepository.getSessionId() } returns expectedSessionId
+            coEvery { userRepository.getSessionId() } returns expectedSessionId
 
         val actual = getSessionIdUseCase()
 
@@ -32,7 +32,7 @@ class GetSessionIdUseCaseTest {
 
     @Test
     fun `getSessionIdUseCase should return null when session ID is not available`() = runTest {
-        coEvery { authenticationRepository.getSessionId() } returns null
+        coEvery { userRepository.getSessionId() } returns null
 
         val actual = getSessionIdUseCase()
 

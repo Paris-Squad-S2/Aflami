@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -57,4 +60,35 @@ dependencies {
 
     implementation(project(Modules.FEATURE_PROFILE_API))
     androidTestImplementation(platform(libs.androidx.compose.bom))
+
+    //Modules
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(project(Modules.DOMAIN_USER))
+
+    //Kotlinx DateTime
+    implementation(libs.kotlinx.datetime)
+
+    //Navigation
+    implementation(libs.navigation.compose)
+
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+
+    //test
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
+
+
+    //kotlinx serialization
+    implementation(libs.kotlinx.serialization.json)
 }

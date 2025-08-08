@@ -17,4 +17,5 @@ interface MovieRepository {
     suspend fun getMovieReview(movieId: Int,page: Int): List<Review>
     suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo>
     suspend fun addRatingToMovie(movieId: Int, rating: Float)
+    suspend fun deleteMovieRating(movieId: Int)
 }

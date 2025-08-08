@@ -1,3 +1,11 @@
 <resources>
     <string name="title_activity_main">MainActivity</string>
+    <string name="watch_history">Watch history</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="my_rating">My Rating</string>
+    <string name="no_rated_movies_yet">No rated movies yet!</string>
+    <string name="no_rated_tv_yet">No rated tv shows yet!</string>
+    <string name="open_a_movie">Open a movie, rate it, your ratings will be displayed here.</string>
+    <string name="open_a_tv_show">Open a tv show, rate it, your ratings will be displayed here.</string>
 </resources>

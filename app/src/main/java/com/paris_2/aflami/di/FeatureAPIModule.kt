@@ -37,6 +37,9 @@ import com.paris_2.aflami.bottomNavBar.AppDestinations
 import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.bottomNavBar.AppNavigationAPIImpl
 import com.paris_2.aflami.bottomNavBar.AppNavigator
+import com.feature.profile.profileUi.navigation.ProfileDestinations
+import com.feature.profile.profileUi.navigation.ProfileNavigator
+import com.feature.profile.profileUi.navigation.ProfileNavigatorImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,6 +57,10 @@ object FeatureAPIModule {
     @Provides
     @Singleton
     fun provideSearchNavigator(): SearchNavigator = SearchNavigatorImpl(startGraph = SearchDestinations.SearchGraph1)
+
+    @Provides
+    @Singleton
+    fun provideProfileNavigator(): ProfileNavigator = ProfileNavigatorImpl(startGraph = ProfileDestinations.ProfileGraph1)
 
     @Provides
     @Singleton

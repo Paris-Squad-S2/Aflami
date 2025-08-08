@@ -19,6 +19,7 @@ import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
 import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
 import com.paris_2.domain.media.repository.TvShowRepository
 import com.repository.dataSource.local.TvShowCastLocalDataSource
@@ -188,6 +189,15 @@ class TvShowRepositoryImpl(
             )
         }
     }
+
+    override suspend fun deleteTvShowRating(tvShowId: Int) {
+        return safeCall(FailedToDeleteRatingException()) {
+            tvShowDetailsRemoteDataSource.deleteTvShowRating(
+                tvShowId = tvShowId
+            )
+        }
+    }
+
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
         return safeCall(NoVideoFoundException()) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)

@@ -9,10 +9,10 @@ import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
 import com.paris_2.domain.media.repository.SearchHistoryRepository
 import com.paris_2.domain.media.repository.SearchMediaRepository
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.user.dataSource.remote.AuthenticationRemoteDataSource
-import com.paris_2.repository.user.repository.AuthenticationRepositoryImpl
+import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
+import com.paris_2.repository.user.repository.UserRepositoryImpl
 import com.repository.dataSource.local.TvShowCastLocalDataSource
 import com.repository.dataSource.local.TvShowGalleryLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
@@ -108,9 +108,9 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        remoteDataSource: AuthenticationRemoteDataSource,
+        remoteDataSource: UserRemoteDataSource,
         localDataSource: AuthenticationLocalDataSource
-    ): AuthenticationRepository = AuthenticationRepositoryImpl(remoteDataSource, localDataSource)
+    ): UserRepository = UserRepositoryImpl(remoteDataSource, localDataSource)
 
     @Provides
     @Singleton

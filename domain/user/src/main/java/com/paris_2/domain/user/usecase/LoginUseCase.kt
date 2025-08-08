@@ -1,12 +1,12 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.AuthenticationRepository
+import com.paris_2.domain.user.repository.UserRepository
 
 class LoginUseCase(
-    private val authenticationRepository: AuthenticationRepository
+    private val userRepository: UserRepository
 ) {
     suspend operator fun invoke(username: String, password: String): Boolean {
-        return authenticationRepository.login(username, password)
+        return userRepository.login(username, password)
     }
 
 }

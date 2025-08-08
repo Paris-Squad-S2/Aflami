@@ -7,6 +7,7 @@ import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
 import com.paris_2.domain.media.exception.MediaPlayingException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.paris_2.domain.media.exception.PopularMediaException
 import com.paris_2.domain.media.exception.TopRatingMediaException
 import com.paris_2.domain.media.exception.UpComingMediaException
@@ -109,9 +110,22 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun getMediaFromLocal(): List<Media> {
+    override suspend fun getContinueWatchingMedia(): List<Media> {
         return safeCall(GetContinueWatchingMediaException()) {
             continueWatchingLocalDataSource.getAllMedia().map { it.toDomain() }
+        }
+    }
+
+    override suspend fun getRatedMedia(accountId: Int): List<Media> {
+        return safeCall(NoRatedMediaFoundException()) {
+            val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, language)
+                .results.mapNotNull { it.toDomain(MediaType.MOVIE) }
+
+            val ratedTvShows = mediaRemoteDataSource.getRatedTvShows(accountId, language)
+                .results.mapNotNull {
+                    it.toDomain(MediaType.TVSHOW)
+                }
+            ratedMovies + ratedTvShows
         }
     }
 

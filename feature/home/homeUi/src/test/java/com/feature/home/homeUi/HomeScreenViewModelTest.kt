@@ -10,9 +10,9 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.useCase.AddMediaToLocalUseCase
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetMediaFromLocalUseCase
+import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
@@ -40,8 +40,8 @@ class HomeScreenViewModelTest {
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase =
         mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
-    private val addMediaToLocalDatabaseUseCase: AddMediaToLocalUseCase = mockk()
-    private val getMediaFromLocalUseCase: GetMediaFromLocalUseCase = mockk()
+    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase = mockk()
+    private val getWatchHistoryUseCase: GetWatchHistoryUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
@@ -101,7 +101,7 @@ class HomeScreenViewModelTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
         coEvery { getMoviesCategoriesUseCase() } returns fakeCategories.map { it.toCategory() }
         coEvery { getUpcomingMediaUseCase() } returns fakeUpcomingList.map { it.toMedia() }
-        coEvery { getMediaFromLocalUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
         coEvery { addMediaToLocalDatabaseUseCase.invoke(any()) } returns Unit
         coEvery { filterUpComingMediaByCategoriesUseCase.invoke(any()) } returns fakeUpcomingList.map { it.toMedia() }
         viewModel = HomeScreenViewModel(
@@ -111,7 +111,7 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
         )
@@ -157,7 +157,7 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
         )
@@ -175,7 +175,7 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
 
@@ -194,7 +194,7 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase,
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
 
@@ -214,7 +214,7 @@ class HomeScreenViewModelTest {
                 )
             )
         )
-        coEvery { getMediaFromLocalUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
         viewModel.apply {
             this.javaClass.getDeclaredMethod("loadContinueWatchingMedia")
                 .apply { isAccessible = true }.invoke(this)
@@ -398,7 +398,7 @@ class HomeScreenViewModelTest {
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
             addMediaToLocalDatabaseUseCase = mockk(relaxed = true),
-            getMediaFromLocalUseCase,
+            getWatchHistoryUseCase,
             searchFeatureAPI = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),
         )

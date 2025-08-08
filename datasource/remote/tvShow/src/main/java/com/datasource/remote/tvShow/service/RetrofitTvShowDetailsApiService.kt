@@ -1,6 +1,7 @@
 package com.datasource.remote.tvShow.service
 
 import com.repository.model.remote.EpisodeVideoDto
+import com.repository.model.remote.RemoveTvRatingDto
 import com.repository.model.remote.TvShowCreditsDto
 import com.repository.model.remote.TvShowDto
 import com.repository.model.remote.TvShowImagesDto
@@ -11,6 +12,7 @@ import com.repository.model.remote.TvShowVideoDto
 import com.repository.movie.models.remote.RatingDto
 import com.repository.movie.models.remote.RatingResponseDto
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -71,4 +73,9 @@ interface RetrofitTvShowDetailsApiService {
         @Path("series_id") tvShowId: Int,
         @Body rating: RatingDto
     ): RatingResponseDto
+
+    @DELETE("tv/{series_id}/rating")
+    suspend fun deleteTvShowRating(
+        @Path("series_id") tvShowId: Int,
+    ): RemoveTvRatingDto
 }
