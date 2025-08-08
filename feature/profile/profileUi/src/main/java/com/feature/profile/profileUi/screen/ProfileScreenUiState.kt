@@ -12,8 +12,8 @@ data class ProfileScreenUiState(
 data class ProfileUIState(
     val name: String = "",
     val points: Int = 0,
-    val appearance: Appearance = Appearance.DARK,
-    val isAppearanceDialogOpen: Boolean = false,
+    val theme: Appearance = Appearance.DARK,
+    val isThemeDialogOpen: Boolean = false,
     val language: Language = Language.ENGLISH,
     val isLanguageDialogOpen: Boolean = false,
     val isSettingDialogOpen: Boolean = false,

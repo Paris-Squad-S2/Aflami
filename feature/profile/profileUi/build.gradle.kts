@@ -61,6 +61,7 @@ dependencies {
     implementation(project(Modules.FEATURE_PROFILE_API))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.DOMAIN_USER))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
 
     androidTestImplementation(platform(libs.androidx.compose.bom))
 

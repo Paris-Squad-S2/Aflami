@@ -2,6 +2,7 @@ package com.feature.profile.profileUi.screen
 
 import android.util.Log
 import androidx.lifecycle.viewModelScope
+import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.utils.BaseViewModel
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
@@ -14,6 +15,7 @@ import kotlinx.coroutines.launch
 class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val authenticationFeatureAPI: AuthenticationFeatureAPI,
 ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
@@ -58,7 +60,7 @@ class ProfileViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 profile = screenState.value.profile.copy(
-                    isAppearanceDialogOpen = true
+                    isThemeDialogOpen = true
                 )
             )
         )
@@ -88,9 +90,10 @@ class ProfileViewModel @Inject constructor(
         TODO("Not yet implemented")
     }
 
-    override fun onAppearanceApplyClicked() {
+    override fun onAppearanceApplyClicked(appearance: Appearance) {
         TODO("Not yet implemented")
     }
+
 
     override fun onLanguageApplyClicked(language: Language) {
         viewModelScope.launch {
@@ -99,7 +102,7 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLogoutApplyClicked() {
-        TODO("Not yet implemented")
+        authenticationFeatureAPI()
     }
 
     override fun onChangePasswordClicked() {
@@ -114,7 +117,7 @@ class ProfileViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 profile = screenState.value.profile.copy(
-                    isAppearanceDialogOpen = false
+                    isThemeDialogOpen = false
                 )
             )
         )

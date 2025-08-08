@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.component.AppLanguageDialog
 import com.feature.profile.profileUi.screen.component.AppSettingDialog
+import com.feature.profile.profileUi.screen.component.AppThemeDialog
 import com.feature.profile.profileUi.screen.component.ProfileDetails
 import com.feature.profile.profileUi.screen.component.ProfileHeader
 import com.feature.profile.profileUi.screen.component.ProfileSetUp
@@ -79,7 +80,7 @@ fun LoggedOutContent(
             textAlign = TextAlign.Center
         )
         CustomButton(
-            onClick = {},
+            onClick = profileInteractionListener::onLogoutApplyClicked,
             text = com.paris_2.aflami.designsystem.R.string.login,
             type = ButtonType.Secondary,
             modifier = Modifier.padding(top = 24.dp)
@@ -145,13 +146,6 @@ fun ProfileContent(
                     context.packageManager.getLaunchIntentForPackage(context.packageName)
                 intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 context.startActivities(arrayOf(intent))
-//                context.startActivity(
-//                    Intent(
-//                        context,
-//                        Class.forName("com.paris_2.aflami.MainActivity")
-//                    )
-//                )
-
             }
         )
         AppSettingDialog(
@@ -159,6 +153,12 @@ fun ProfileContent(
             onDismiss = profileInteractionListener::onDismissSettingDialog
         )
 
+        AppThemeDialog(
+            isVisible = state.profile.isThemeDialogOpen,
+            onDismiss = profileInteractionListener::onDismissAppearanceDialog,
+            onThemeSelected = profileInteractionListener::onAppearanceApplyClicked,
+            themeState = state.profile.theme
+        )
 
     }
 }

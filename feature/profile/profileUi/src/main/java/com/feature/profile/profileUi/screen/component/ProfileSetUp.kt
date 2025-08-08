@@ -42,7 +42,7 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
             }
         )
         SettingsItem(
-            onClick = {},
+            onClick = interactionListener::onChooseAppearanceClicked,
             title = stringResource(R.string.app_theme),
             icon = R.drawable.ic_moon,
             content = {

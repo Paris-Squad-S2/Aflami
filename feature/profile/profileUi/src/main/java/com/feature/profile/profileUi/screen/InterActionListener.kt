@@ -6,7 +6,7 @@ interface InterActionListener {
     fun onSettingClicked()
     fun onLogoutClicked()
     fun onContentRestrictionClicked()
-    fun onAppearanceApplyClicked()
+    fun onAppearanceApplyClicked(appearance: Appearance)
     fun onLanguageApplyClicked(language: Language)
     fun onLogoutApplyClicked()
     fun onChangePasswordClicked()
