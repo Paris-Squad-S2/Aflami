@@ -26,8 +26,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -45,7 +43,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.EpisodeCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
@@ -61,6 +58,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.AppSnackBar
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
@@ -77,8 +75,7 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {
     )
 }
 
-@SuppressLint("SuspiciousIndentation")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
@@ -215,7 +212,7 @@ fun TvShowDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_seasons),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -337,7 +334,7 @@ fun TvShowDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_recommendations),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -387,7 +384,7 @@ fun TvShowDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_reviews),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -410,7 +407,7 @@ fun TvShowDetailsScreenContent(
                                                 .navigationBarsPadding(),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            Text(
+                                            AppText(
                                                 text = stringResource(R.string.there_is_no_gallery),
                                                 style = Theme.textStyle.label.large,
                                                 color = Theme.colors.text.body.copy(alpha = 0.6f)

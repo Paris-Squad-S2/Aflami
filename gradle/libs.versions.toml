@@ -215,6 +215,10 @@ room = [
     "androidx-room-runtime",
 ]
 
+datetime = [
+    "kotlinx-datetime"
+]
+
 workManager = [
     "work-runtime-ktx",
     "androidx-startup-runtime"
@@ -222,6 +226,15 @@ workManager = [
 
 serialization = [
     "kotlinx-serialization-json"
+]
+
+paging = [
+    "androidx-paging-runtime",
+    "androidx-paging-compose"
+]
+
+coil = [
+    "coil-compose"
 ]
 
 datastore = [
