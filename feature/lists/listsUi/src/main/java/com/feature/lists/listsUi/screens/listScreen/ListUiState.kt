@@ -22,7 +22,8 @@ data class ListScreenUIState(
     val createListName: String = "",
     val createListButtonState: ButtonState = ButtonState.Disabled,
     val showSnackBar: Boolean = false,
-    val snackBarSuccess: Boolean = false
+    val snackBarSuccess: Boolean = false,
+    val isLoggedIn: Boolean = false
 )
 
 fun List<Lists>.toUiState(): List<ListUiState> =

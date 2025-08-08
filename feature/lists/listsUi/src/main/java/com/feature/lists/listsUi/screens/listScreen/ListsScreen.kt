@@ -66,10 +66,13 @@ private fun ListsScreenContent(
         modifier = Modifier.statusBarsPadding()
     ) {
         AppTopBar(
-            title = "Lists",
-            trailingIcons = listOf(
-                iconItemWithDefaults(icon = Icons.Default.Add, onClick = { action.onAddClicked() })
-            )
+            title = stringResource(R.string.lists),
+            trailingIcons = if (!state.isLoading) {
+                listOf(
+                    iconItemWithDefaults(icon = Icons.Default.Add, onClick = { action.onAddClicked() })
+                )
+            } else emptyList()
+
         )
 
         val lazyPagingItems = state.lists.collectAsLazyPagingItems()
