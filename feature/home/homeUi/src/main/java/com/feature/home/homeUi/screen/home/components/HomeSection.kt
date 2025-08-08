@@ -18,10 +18,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
 
 @Composable
 fun HomeSection(
@@ -47,7 +50,7 @@ fun HomeSection(
             title = title,
             hasViewAll = mediaList.size>=10,
             icon = {
-                leadingIconPainter?.let { it ->
+                leadingIconPainter?.let {
                     AppIcon(
                         imageVector = it,
                         contentDescription = "$title icon",
@@ -81,7 +84,6 @@ fun HomeSection(
                                 .height(222.dp)
                                 .padding(end = 8.dp)
                                 .shimmerable(enabled = true)
-                                .fillMaxWidth()
                         )
                     }
                 }
@@ -105,3 +107,58 @@ fun HomeSection(
         }
     }
 }
+
+@Preview
+@Composable
+fun PreviewHomeSectionLoaded() {
+    val sampleMediaList = List(5) { index ->
+        MediaUiState(
+            id = index,
+            imageUri = "https://via.placeholder.com/156x222.png?text=Movie+$index",
+            title = "Movie $index",
+            type = MediaTypeUi.MOVIE,
+            categories = listOf("Action", "Drama"),
+            yearOfRelease = kotlinx.datetime.LocalDate(2024, 5, 1),
+            rating = 8.5
+        )
+    }
+
+    AflamiTheme {
+        HomeSection(
+            title = "Popular Movies",
+            mediaList = sampleMediaList,
+            isScrolling = false,
+            isShimmerEnabled = false,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewHomeSectionShimmer() {
+    AflamiTheme {
+        HomeSection(
+            title = "Popular Movies",
+            mediaList = emptyList(),
+            isScrolling = false,
+            isShimmerEnabled = true,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@Preview
+@Composable
+fun PreviewHomeSectionEmpty() {
+    AflamiTheme {
+        HomeSection(
+            title = "Popular Movies",
+            mediaList = emptyList(),
+            isScrolling = false,
+            isShimmerEnabled = false,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
