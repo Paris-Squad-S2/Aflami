@@ -29,7 +29,8 @@ object Modules {
     const val DATASOURCE_LOCAL_USER = ":datasource:local:user"
     const val DATASOURCE_REMOTE_USER = ":datasource:remote:user"
 
-    const val BOTTOM_NAV_BAR = ":feature:bottomNavBar"
+    const val FEATURE_BOTTOM_NAV_BAR_UI = ":feature:bottomNavBar:bottomNavBarUI"
+    const val FEATURE_BOTTOM_NAV_BAR_API = ":feature:bottomNavBar:bottomNavBarApi"
     const val FEATURE_ONBOARDING_API = ":feature:onboarding:onboardingApi"
     const val FEATURE_ONBOARDING_UI = ":feature:onboarding:onboardingUi"
     const val FEATURE_AUTHENTICATION_API = ":feature:authentication:authenticationApi"

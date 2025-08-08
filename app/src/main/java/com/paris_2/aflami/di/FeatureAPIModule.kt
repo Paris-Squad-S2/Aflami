@@ -34,11 +34,11 @@ import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.navigation.SearchNavigatorImpl
-import com.paris_2.aflami.bottomNavBar.BottomNavBarAPI
-import com.paris_2.aflami.bottomNavBar.BottomNavBarAPIImpl
 import com.feature.profile.profileUi.navigation.ProfileDestinations
 import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.navigation.ProfileNavigatorImpl
+import com.paris_2.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
+import com.paris_2.aflami.bottomNavBar.bottomNavBarUI.BottomNavBarAPIImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -51,7 +51,7 @@ import javax.inject.Singleton
 object FeatureAPIModule {
     @Provides
     @Singleton
-    fun provideAppNavigator(): com.paris_2.aflami.bottomNavBar.navigation.Navigator = com.paris_2.aflami.bottomNavBar.navigation.NavigatorImpl(com.paris_2.aflami.bottomNavBar.navigation.Destinations.MainGraph)
+    fun provideAppNavigator(): com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator = com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.NavigatorImpl(com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Destinations.MainGraph)
 
     @Provides
     @Singleton

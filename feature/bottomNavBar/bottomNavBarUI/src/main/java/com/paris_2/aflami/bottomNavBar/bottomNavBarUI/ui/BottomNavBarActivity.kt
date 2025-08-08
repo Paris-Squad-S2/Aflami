@@ -1,4 +1,4 @@
-package com.paris_2.aflami
+package com.paris_2.aflami.bottomNavBar.bottomNavBarUI.ui
 
 import android.content.Context
 import android.content.res.Configuration
@@ -7,46 +7,56 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
-import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
-import com.paris_2.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
+import com.feature.categories.categoriesApi.CategoriesFeatureAPI
+import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
+import com.feature.home.homeApi.HomeFeatureAPI
+import com.feature.lists.listsApi.ListsFeatureAPI
+import com.feature.profile.profileApi.ProfileFeatureAPI
+import com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
-import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class BottomNavBarActivity : ComponentActivity() {
 
     @Inject
-    lateinit var isOnboardingCompletedUseCase: IsOnboardingCompletedUseCase
+    lateinit var bottomNavBarNavigator: Navigator
 
     @Inject
-    lateinit var onBoardingApI: OnBoardingFeatureAPI
+    lateinit var homeFeature: HomeFeatureAPI
 
     @Inject
-    lateinit var authenticationFeatureAPI: AuthenticationFeatureAPI
+    lateinit var listsFeature: ListsFeatureAPI
 
     @Inject
-    lateinit var hasAnySessionUseCase: HasAnySessionUseCase
+    lateinit var categoriesFeature: CategoriesFeatureAPI
 
     @Inject
-    lateinit var bottomNavBarAPI: BottomNavBarAPI
+    lateinit var letsPlayFeature: GuessGameFeatureAPI
+
+    @Inject
+    lateinit var profileFeature: ProfileFeatureAPI
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
-                when {
-                    hasAnySessionUseCase() -> bottomNavBarAPI()
-                    isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
-                    else -> onBoardingApI()
-                }
+                BottomNavBarScaffold(
+                    navigator = bottomNavBarNavigator,
+                    homeFeature = homeFeature,
+                    listsFeature = listsFeature,
+                    categoriesFeature = categoriesFeature,
+                    letsPlayFeature = letsPlayFeature,
+                    profileFeature = profileFeature,
+                )
             }
         }
+
     }
+
 
     override fun attachBaseContext(newBase: Context) {
         val prefs = newBase.getSharedPreferences("settings", MODE_PRIVATE)
@@ -62,17 +72,12 @@ class MainActivity : ComponentActivity() {
         val config = Configuration(context.resources.configuration)
         config.setLocale(locale)
 
-        return (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.createConfigurationContext(config)
         } else {
             @Suppress("DEPRECATION")
             context.resources.updateConfiguration(config, context.resources.displayMetrics)
             context
-            when {
-                hasAnySessionUseCase() -> bottomNavBarAPI()
-                isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
-                else -> onBoardingApI()
-            }
-        }) as Context
+        }
     }
 }
