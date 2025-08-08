@@ -2,6 +2,7 @@ package com.paris_2.aflami.di
 
 import android.content.Context
 import com.paris_2.aflami.AuthInterceptor
+import com.paris_2.aflami.BuildConfig
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.repository.media.services.GenresApiServices
 import com.repository.media.services.MediaApiService
@@ -57,7 +58,7 @@ object NetworkModule {
             .addInterceptor(authInterceptor)
             .addInterceptor { chain ->
                 val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer ${com.feature.search.searchUi.BuildConfig.API_TOKEN}")
+                    .addHeader("Authorization", "Bearer ${BuildConfig.API_TOKEN}")
                     .build()
                 chain.proceed(request)
             }
@@ -76,4 +77,3 @@ object NetworkModule {
             .build()
 
 }
-
