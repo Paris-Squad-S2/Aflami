@@ -1,11 +1,11 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
-import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
+import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
@@ -24,6 +24,7 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -75,7 +76,8 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getPopularMedia fetches remote data when local is empty`() = runTest {
-        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR) } returns emptyList()
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns flowOf("en")
+        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR, "en") } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Remote Movie", releaseDate = "2023-01-01",
@@ -98,7 +100,8 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getPopularMedia handles partial remote data`() = runTest {
-        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR) } returns emptyList()
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns flowOf("en")
+        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR, "en") } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Movie", releaseDate = "2023-01-01",
@@ -175,7 +178,8 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getTopRatingMedia fetches remote data when local is empty`() = runTest {
-        coEvery { homeLocal.getMediaListByCategory(Category.TOP_RATED) } returns emptyList()
+        coEvery { homeLocal.getMediaListByCategory(Category.TOP_RATED, "en") } returns emptyList()
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns flowOf("en")
 
         val movie = MovieDto(
             id = 3, title = "Top Movie", releaseDate = "2022-01-01",
@@ -195,6 +199,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getTopRatingMedia throws NoInternetConnectionException when offline`() = runTest {
         every { networkChecker.isConnected } returns MutableStateFlow(false)
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns flowOf("en")
 
         assertThrows<NoInternetConnectionException> {
             repo.getTopRatingMedia()
@@ -256,7 +261,8 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getUpComingMedia fetches remote data when local is empty`() = runTest {
-        coEvery { homeLocal.getMediaListByCategory(Category.UPCOMING) } returns emptyList()
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns flowOf("en")
+        coEvery { homeLocal.getMediaListByCategory(Category.UPCOMING, "en") } returns emptyList()
 
         val upcomingMovie = MovieDto(
             id = 4, title = "Upcoming Movie", releaseDate = "2025-06-01",
@@ -291,6 +297,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getUpComingMedia throws NoInternetConnectionException when offline`() = runTest {
         every { networkChecker.isConnected } returns MutableStateFlow(false)
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns flowOf("en")
 
         assertThrows<NoInternetConnectionException> {
             repo.getUpComingMedia()
@@ -408,6 +415,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getRatedMedia throws NoRatedMediaFoundException when remote call fails`() = runTest {
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns flowOf("en")
         coEvery { remote.getRatedMovies(any(), any()) } throws RuntimeException("Failed")
         coEvery { remote.getRatedTvShows(any(), any()) } returns mockk(relaxed = true)
 
