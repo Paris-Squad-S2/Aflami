@@ -33,28 +33,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
+    testImplementation(libs.bundles.test)
 
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.serialization.kotlinx.json)
-
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
-    implementation(project((Modules.REPOSITORY_MOVIE)))
-
-    //retrofit
     implementation(libs.bundles.retrofit)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
+
+    implementation(project(Modules.REPOSITORY_MOVIE))
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
