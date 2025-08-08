@@ -44,7 +44,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
 
     //retrofit
-    implementation(libs.retrofit)
+    implementation(libs.bundles.retrofit)
 
     //Hilt
     implementation(libs.hilt.android)

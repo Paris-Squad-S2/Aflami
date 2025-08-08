@@ -48,7 +48,7 @@ dependencies {
     implementation(project(Modules.REPOSITORY_USER))
 
     //retrofit
-    implementation(libs.retrofit)
+    implementation(libs.bundles.retrofit)
 
     //Hilt
     implementation(libs.hilt.android)

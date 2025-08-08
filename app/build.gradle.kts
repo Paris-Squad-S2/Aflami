@@ -210,10 +210,7 @@ dependencies {
     ksp(libs.room.compiler)
 
     //retrofit
-    implementation(libs.retrofit)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    implementation(libs.retrofit.converter)
+    implementation(libs.bundles.retrofit)
 
     // Kotlinx Serialization
     implementation(libs.kotlinx.serialization.json)
