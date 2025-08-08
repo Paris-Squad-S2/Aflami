@@ -37,7 +37,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
 
     // test
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
@@ -56,7 +57,9 @@ dependencies {
 
     implementation(project(Modules.REPOSITORY_LISTS))
 }
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
 kover {

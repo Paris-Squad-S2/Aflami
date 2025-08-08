@@ -1,17 +1,12 @@
 package com.feature.authentication.authenticationUi.screen.login
 
-import com.paris_2.domain.user.exception.InvalidCredentialsException
-import com.paris_2.domain.user.usecase.LoginUseCase
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris_2.aflami.bottomNavBar.AppNavigationAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
-import io.mockk.coEvery
+import com.paris_2.domain.user.usecase.LoginUseCase
 import io.mockk.mockk
 import io.mockk.spyk
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runCurrent
-import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Order

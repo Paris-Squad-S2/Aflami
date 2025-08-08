@@ -39,7 +39,7 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     //test
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
@@ -55,7 +55,9 @@ dependencies {
     implementation(libs.androidx.hilt.navigation.compose)
     ksp(libs.hilt.android.compiler)
 }
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
 kover {
