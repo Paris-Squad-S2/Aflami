@@ -42,12 +42,8 @@ import com.repository.media.repository.MoviesCategoriesRepositoryImpl
 import com.repository.media.repository.SearchHistoryRepositoryImpl
 import com.repository.media.repository.SearchMediaRepositoryImpl
 import com.repository.media.util.NetworkConnectionChecker
-import com.repository.movie.dataSource.local.MovieCastLocalDataSource
-import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.local.MovieReviewLocalDataSource
-import com.repository.movie.dataSource.local.MovieSimilarLocalDataSource
-import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
+import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import dagger.Module
@@ -160,12 +156,12 @@ object RepositoryModule {
     fun provideDetailedMovieRepository(
         networkConnectionChecker: com.repository.movie.util.NetworkConnectionChecker,
         movieLocalDataSource: MovieLocalDataSource,
-        movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
+        movieRemoteDataSource: MovieRemoteDataSource,
         languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
     ): MovieRepository = MovieRepositoryImpl(
         networkConnectionChecker,
         movieLocalDataSource,
-        movieDetailsRemoteDataSource,
+        movieRemoteDataSource,
         languageLocalDataSourceRepository
     )
 

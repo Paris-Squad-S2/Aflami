@@ -20,7 +20,7 @@ import com.paris_2.domain.media.exception.NoVideoFoundException
 import com.paris_2.domain.media.repository.MovieRepository
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
+import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
 import com.repository.movie.models.local.GalleryEntity
@@ -30,7 +30,7 @@ import kotlinx.coroutines.flow.first
 class MovieRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val movieLocalDataSource: MovieLocalDataSource,
-    private val movieDetailsRemoteDataSource: MovieDetailsRemoteDataSource,
+    private val movieRemoteDataSource: MovieRemoteDataSource,
     private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
 ) : MovieRepository {
 
@@ -42,7 +42,7 @@ class MovieRepositoryImpl(
             if (localMovie != null) {
                 localMovie.toEntity()
             } else {
-                val remoteMovie = movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
+                val remoteMovie = movieRemoteDataSource.getMovieDetails(movieId, language)
                 movieLocalDataSource.addMovie(remoteMovie.toLocalDto(language))
                 movieLocalDataSource.getMovieById(movieId, language)?.toEntity()
                     ?: throw NoMovieFoundException()
@@ -58,7 +58,7 @@ class MovieRepositoryImpl(
             if (localCast.isNotEmpty()) {
                 localCast.map { it.toEntity() }
             } else {
-                val remoteCast = movieDetailsRemoteDataSource.getMovieCredits(movieId, language)
+                val remoteCast = movieRemoteDataSource.getMovieCredits(movieId, language)
                     .cast?.map { it.toEntity() } ?: emptyList()
 
                 movieLocalDataSource.addMovieCast(remoteCast.map {
@@ -84,7 +84,7 @@ class MovieRepositoryImpl(
                 localMoviesSimilar.map { it.toEntity() }
             } else {
                 val remoteMoviesSimilarDto =
-                    movieDetailsRemoteDataSource.getSimilarMovies(movieId, page, language)
+                    movieRemoteDataSource.getSimilarMovies(movieId, page, language)
 
                 val moviesSimilarToCache =
                     remoteMoviesSimilarDto.movieSimilarDto?.map {
@@ -109,7 +109,7 @@ class MovieRepositoryImpl(
             if (localGallery != null) {
                 localGallery.toEntity()
             } else {
-                val remoteGallery = movieDetailsRemoteDataSource.getMovieImages(movieId).toEntity()
+                val remoteGallery = movieRemoteDataSource.getMovieImages(movieId).toEntity()
                 val remoteGalleryImages = remoteGallery
                 movieLocalDataSource.addMovieGallery(
                     GalleryEntity(
@@ -132,7 +132,7 @@ class MovieRepositoryImpl(
                 localProductionCompanies.map { it.toEntity() }
             } else {
                 val remoteMovieDetails =
-                    movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
+                    movieRemoteDataSource.getMovieDetails(movieId, language)
                 val remoteProductionCompanies = remoteMovieDetails.productionCompanies
 
                 if (remoteProductionCompanies != null) {
@@ -159,7 +159,7 @@ class MovieRepositoryImpl(
                 localReviews.map { it.toEntity() }
             } else {
                 val remoteReviewsResponse =
-                    movieDetailsRemoteDataSource.getMovieReviews(movieId, page, language)
+                    movieRemoteDataSource.getMovieReviews(movieId, page, language)
                 val remoteReviews =
                     remoteReviewsResponse.results?.map { it.toEntity() } ?: emptyList()
 
@@ -180,7 +180,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo> {
         return safeCall(NoVideoFoundException()) {
-            movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId)
+            movieRemoteDataSource.getTrailerVideoForMovie(movieId)
                 .movieVideoResultDto
                 ?.map { it.toEntity() }
                 ?: emptyList()
@@ -188,9 +188,9 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun addRatingToMovie(movieId: Int, rating: Float) {
-        movieDetailsRemoteDataSource
+        movieRemoteDataSource
         return safeCall(FailedToAddRatingException()) {
-            movieDetailsRemoteDataSource.addRatingToMovie(
+            movieRemoteDataSource.addRatingToMovie(
                 movieId = movieId,
                 rating = rating
             )
@@ -199,7 +199,7 @@ class MovieRepositoryImpl(
 
     override suspend fun deleteMovieRating(movieId: Int) {
         return safeCall(FailedToDeleteRatingException()) {
-            movieDetailsRemoteDataSource.deleteMovieRating(
+            movieRemoteDataSource.deleteMovieRating(
                 movieId = movieId
             )
         }

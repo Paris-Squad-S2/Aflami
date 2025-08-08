@@ -1,7 +1,7 @@
 package com.paris_2.aflami.di
 
 import com.datasource.remote.lists.service.RetrofitListApiService
-import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
+import com.datasource.remote.movie.service.MovieApiService
 import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.paris_2.datasource.remote.user.UserApi
 import com.repository.media.services.GenresApiServices
@@ -24,8 +24,8 @@ object ServiceModule {
 
     @Provides
     @Singleton
-    fun provideMovieDetailsApiService(retrofit: Retrofit): RetrofitMovieDetailsApiService =
-        retrofit.create(RetrofitMovieDetailsApiService::class.java)
+    fun provideMovieDetailsApiService(retrofit: Retrofit): MovieApiService =
+        retrofit.create(MovieApiService::class.java)
 
     @Provides
     @Singleton
