@@ -1,13 +1,14 @@
 package com.repository.movie.repository
 
+import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.MovieSimilar
+import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.exception.NoCastFoundException
 import com.paris_2.domain.media.exception.NoGalleryFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoMovieFoundException
-import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.MovieSimilar
-import com.paris_2.domain.media.entity.ProductionCompany
-import com.google.common.truth.Truth.assertThat
+import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.movie.dataSource.local.MovieCastLocalDataSource
 import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
@@ -49,6 +50,8 @@ class MovieRepositoryImplTest {
     private var movieReviewLocalDataSource: MovieReviewLocalDataSource = mockk(relaxed = true)
     private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
     private var movieSimilarLocalDataSource: MovieSimilarLocalDataSource = mockk()
+    private var languageLocalDataSourceRepository: LanguageLocalDataSourceRepository =
+        mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
@@ -61,13 +64,15 @@ class MovieRepositoryImplTest {
             movieGalleryLocalDataSource,
             movieReviewLocalDataSource,
             movieDetailsRemoteDataSource,
-            movieSimilarLocalDataSource
+            movieSimilarLocalDataSource,
+            languageLocalDataSourceRepository
         )
     }
 
     @Test
     fun `getMovieCast should throw NoInternetConnectionException when network is unavailable`() =
         runTest {
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
             val result = runCatching { movieRepository.getMovieCast(1) }
             assertThat(result.exceptionOrNull()).isInstanceOf(NoInternetConnectionException::class.java)
@@ -76,6 +81,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieCast should throw NoInternetConnectionException when network is unavailable - alternative`() =
         runTest {
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
             val result = runCatching { movieRepository.getMovieCast(1) }
             assertThat(result.exceptionOrNull()).isInstanceOf(NoInternetConnectionException::class.java)
@@ -83,6 +89,7 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getMovieCast should return empty list when local and remote return empty`() = runTest {
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieCastLocalDataSource.getCastByMovieId(
                 1,
@@ -97,6 +104,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getCompanyProducts should return empty list when both local and remote return empty`() =
         runTest {
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
             coEvery {
                 movieDetailsRemoteDataSource.getMovieDetails(
@@ -111,6 +119,8 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieReview should return empty list when local is null and remote returns empty`() =
         runTest {
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+
             coEvery {
                 movieReviewLocalDataSource.getReviewsForMovie(
                     movieId,
@@ -130,6 +140,8 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getTrailerVideoForMovie should return empty list when remote returns null`() = runTest {
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
+
         coEvery { movieDetailsRemoteDataSource.getTrailerVideoForMovie(movieId) } returns mockMovieVideosDto.copy(
             movieVideoResultDto = null
         )
@@ -139,6 +151,7 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getMovieDetails should throw NoMovieFoundException when remote fails`() = runTest {
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieDetailsRemoteDataSource.getMovieDetails(
                 movieId,
@@ -153,6 +166,7 @@ class MovieRepositoryImplTest {
 
     @Test
     fun `getMovieDetails throws NoMovieFoundException from remote`() = runTest {
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieDetailsRemoteDataSource.getMovieDetails(
                 movieId,
@@ -168,6 +182,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieDetails throws NoMovieFoundException from remote, safeCall should rethrow`() =
         runTest {
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieDetailsRemoteDataSource.getMovieDetails(
                     1,
@@ -186,6 +201,7 @@ class MovieRepositoryImplTest {
     fun `getMovieCast - should throw NoCastFoundException when remote throws it and local is empty`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieCastLocalDataSource.getCastByMovieId(
                     movieId,
@@ -211,6 +227,7 @@ class MovieRepositoryImplTest {
     fun `getMovieGallery - should throw NoGalleryFoundException when remote throws it and local is null`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieDetailsRemoteDataSource.getMovieImages(movieId) } throws NoGalleryFoundException(
                 "No gallery"
@@ -221,6 +238,7 @@ class MovieRepositoryImplTest {
                 movieRepository.getMovieGallery(movieId)
             }
         }
+
     @Test
     fun `getMovieDetails - should fetch from remote and save to local when local is null`() =
         runTest {
@@ -228,6 +246,7 @@ class MovieRepositoryImplTest {
             val expectedMovie = mockMovieDto
             val localMovieDto = expectedMovie.toLocalDto(language)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieLocalDataSource.getMovieById(movieId, language)
             } returns mockMovieDto.toLocalDto(language)
@@ -256,6 +275,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieDetails - should not call remote when local data is available`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieLocalDataSource.getMovieById(movieId, language)
         } returns mockMovieDto.toLocalDto(language)
@@ -270,6 +290,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieDetails - should not insert movie when local data is available`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieLocalDataSource.getMovieById(movieId, language)
         } returns mockMovieDto.toLocalDto(language)
@@ -286,6 +307,7 @@ class MovieRepositoryImplTest {
     fun `getMovieDetails - should throw NoMovieFoundException when local is empty and remote fetch fails`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
 
             // When & Then
@@ -301,6 +323,7 @@ class MovieRepositoryImplTest {
             // Given
             val expectedMovie = mockMovieDto
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
             coEvery {
                 movieDetailsRemoteDataSource.getMovieDetails(
@@ -328,6 +351,7 @@ class MovieRepositoryImplTest {
         val expectedMovieCast = mockMovieCreditsDto.cast?.map { it.toEntity() } ?: emptyList()
         val localCast = expectedMovieCast.map { it.toLocalDto(movieId, language) }
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieCastLocalDataSource.getCastByMovieId(
                 movieId,
@@ -349,6 +373,7 @@ class MovieRepositoryImplTest {
             it.toEntity().toLocalDto(movieId, language)
         } ?: emptyList()
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieCastLocalDataSource.getCastByMovieId(
                 movieId,
@@ -370,6 +395,7 @@ class MovieRepositoryImplTest {
             it.toEntity().toLocalDto(movieId, language)
         } ?: emptyList()
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieCastLocalDataSource.getCastByMovieId(
                 movieId,
@@ -388,6 +414,7 @@ class MovieRepositoryImplTest {
     fun `getMovieCast - should fetch from remote and save to local when local is empty`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieCastLocalDataSource.getCastByMovieId(movieId, language)
             } returns emptyList()
@@ -408,6 +435,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieCast - should call remote data source when local is empty`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieCastLocalDataSource.getCastByMovieId(
                 movieId,
@@ -437,6 +465,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieCast - should save cast to local when fetched from remote`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieCastLocalDataSource.getCastByMovieId(
                 movieId,
@@ -463,6 +492,7 @@ class MovieRepositoryImplTest {
         // Given
         val emptyCreditsDto = mockMovieCreditsDto.copy(cast = null)
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieCastLocalDataSource.getCastByMovieId(
                 movieId,
@@ -492,6 +522,7 @@ class MovieRepositoryImplTest {
             val localRecommendations =
                 expectedRecommendations.map { it.toLocalDto(movieId, page, language) }
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns localRecommendations
@@ -514,6 +545,7 @@ class MovieRepositoryImplTest {
                     it.toLocalDto(movieId, page, language)
                 }
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns localRecommendations
@@ -536,6 +568,7 @@ class MovieRepositoryImplTest {
                     it.toLocalDto(movieId, page, language)
                 }
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns localRecommendations
@@ -553,6 +586,7 @@ class MovieRepositoryImplTest {
     fun `getMovieRecommendations - should fetch from remote and save to local when local is empty`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns emptyList()
@@ -571,6 +605,7 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieRecommendations - should call remote when local data is empty`() = runTest {
         // Given
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
         } returns emptyList()
@@ -593,6 +628,7 @@ class MovieRepositoryImplTest {
         // Given
         val expectedRecommendations = mockMovieSimilarsDto.movieSimilarDto ?: emptyList()
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
         } returns emptyList()
@@ -618,6 +654,7 @@ class MovieRepositoryImplTest {
             // Given
             val emptySimilarDto = mockMovieSimilarsDto.copy(movieSimilarDto = null)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns emptyList()
@@ -639,6 +676,7 @@ class MovieRepositoryImplTest {
             // Given
             val emptySimilarsDto = mockMovieSimilarsDto.copy(movieSimilarDto = null)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieSimilarLocalDataSource.getSimilarMovies(movieId, page, language)
             } returns emptyList()
@@ -666,6 +704,7 @@ class MovieRepositoryImplTest {
             movieId = movieId
         )
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery { movieGalleryLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
 
         // When
@@ -763,6 +802,7 @@ class MovieRepositoryImplTest {
                 mockMovieDto.copy(productionCompanies = listOf(MovieProductionCompanyDto(name = "sonic")))
                     .toLocalDto(language)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieLocalDataSource.getMovieById(movieId, language)
             } returns localMovieDtoWithCompanies
@@ -782,6 +822,7 @@ class MovieRepositoryImplTest {
                 mockMovieDto.copy(productionCompanies = listOf(MovieProductionCompanyDto(name = "sonic")))
                     .toLocalDto(language)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieLocalDataSource.getMovieById(movieId, language)
             } returns localMovieDtoWithCompanies
@@ -801,6 +842,7 @@ class MovieRepositoryImplTest {
                 mockMovieDto.copy(productionCompanies = listOf(MovieProductionCompanyDto(name = "sonic")))
                     .toLocalDto(language)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieLocalDataSource.getMovieById(movieId, language)
             } returns localMovieDtoWithCompanies
@@ -820,6 +862,7 @@ class MovieRepositoryImplTest {
                 movieLocalDataSource.getMovieById(movieId, language)
             } returns mockMovieDto.toLocalDto(language).copy(productionCompanies = emptyList())
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
             } returns mockMovieDto.copy(
@@ -843,6 +886,7 @@ class MovieRepositoryImplTest {
     fun `getCompanyProducts - should save updated movie to local when fetched from remote`() =
         runTest {
             // Given
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieLocalDataSource.getMovieById(movieId, language)
             } returns mockMovieDto.toLocalDto(language).copy(productionCompanies = emptyList())
@@ -872,6 +916,7 @@ class MovieRepositoryImplTest {
             // Given
             val movieDtoWithoutCompanies = mockMovieDto.copy(productionCompanies = null)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
             coEvery {
                 movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
@@ -891,6 +936,7 @@ class MovieRepositoryImplTest {
             // Given
             val movieDtoWithoutCompanies = mockMovieDto.copy(productionCompanies = null)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
             coEvery {
                 movieDetailsRemoteDataSource.getMovieDetails(movieId, language)
@@ -912,6 +958,7 @@ class MovieRepositoryImplTest {
         val expectedReviews = listOf(review.toEntity())
         val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
         } returns localReviews
@@ -929,6 +976,7 @@ class MovieRepositoryImplTest {
         val expectedReviews = listOf(review.toEntity())
         val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
         } returns localReviews
@@ -948,6 +996,7 @@ class MovieRepositoryImplTest {
         val expectedReviews = listOf(review.toEntity())
         val localReviews = expectedReviews.map { it.toLocalDto(movieId, language) }
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
         } returns localReviews
@@ -966,6 +1015,7 @@ class MovieRepositoryImplTest {
         // Given
         val emptyReviewsDto = MovieReviewsDto(results = null)
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
         } returns emptyList()
@@ -986,6 +1036,7 @@ class MovieRepositoryImplTest {
         // Given
         val emptyReviewsDto = MovieReviewsDto(results = null)
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
         } returns emptyList()
@@ -1008,6 +1059,7 @@ class MovieRepositoryImplTest {
         // Given
         val emptyReviewsDto = MovieReviewsDto(results = null)
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
         } returns emptyList()
@@ -1029,6 +1081,7 @@ class MovieRepositoryImplTest {
             // Given
             val remoteReviews = listOf(reviewRemoteDto)
 
+            coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
             coEvery {
                 movieReviewLocalDataSource.getReviewsForMovie(movieId, language)
             } returns emptyList() andThen listOf(reviewRemoteDto).map {
