@@ -9,10 +9,10 @@ plugins {
 
 android {
     namespace = "com.feature.profile.profileUi"
-    compileSdk = 36
+    compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = 26
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")

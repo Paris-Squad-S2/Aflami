@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         applicationId = "com.paris_2.aflami"
-        minSdk = Configurations.MIN_SDK_26
+        minSdk = Configurations.MIN_SDK
         targetSdk = Configurations.TARGET_SDK
         versionCode = Configurations.VERSION_CODE
         versionName = Properties().apply {
