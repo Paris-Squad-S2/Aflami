@@ -1,0 +1,133 @@
+package com.repository.media.mapper
+
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
+import com.repository.media.dto.home.MovieDto
+import com.repository.media.dto.home.TvDto
+import com.repository.media.dto.profile.MovieResult
+import com.repository.media.entity.Category
+import com.repository.media.entity.HomeMediaEntity
+import com.repository.media.entity.MediaEntity
+import com.repository.media.entity.MediaTypeEntity
+import com.repository.media.dto.profile.TvShowResult
+import kotlinx.datetime.LocalDate
+
+fun MovieDto.toDomain(type: MediaType): Media? {
+    val parsedDate = releaseDate?.let {
+        runCatching { LocalDate.parse(it) }.getOrNull()
+    } ?: return null
+    return Media(
+        id = id ?: -1,
+        title = title ?: "[Unknown Title]",
+        rating = voteAverage ?: 0.0,
+        imageUri = imageUrl.orEmpty(),
+        yearOfRelease = parsedDate,
+        categoryIds = genreIds ?: emptyList(),
+        type = type
+    )
+}
+
+fun TvDto.toDomain(type: MediaType): Media? {
+    val parsedDate = firstAirDate?.let {
+        runCatching { LocalDate.parse(it) }.getOrNull()
+    } ?: return null
+    return Media(
+        id = id ?: -1,
+        title = name ?: "[Unknown Title]",
+        rating = voteAverage ?: 0.0,
+        imageUri = imageUrl.orEmpty(),
+        yearOfRelease = parsedDate,
+        categoryIds = genreIds ?: emptyList(),
+        type = type
+    )
+}
+
+fun MediaEntity.toDomain(): Media {
+    return Media(
+        id = this.id,
+        title = this.title,
+        rating = this.voteAverage,
+        imageUri = this.posterPath,
+        yearOfRelease = LocalDate.parse(this.releaseDate),
+        categoryIds = this.genreIds,
+        type = this.type.toDomain()
+    )
+}
+
+fun MediaTypeEntity.toDomain(): MediaType = when (this) {
+    MediaTypeEntity.MOVIE -> MediaType.MOVIE
+    MediaTypeEntity.TV_SHOW -> MediaType.TVSHOW
+}
+
+fun HomeMediaEntity.toDomain(): Media? {
+    val parsedDate = releaseDate.let {
+        runCatching { LocalDate.parse(it) }.getOrNull()
+    } ?: return null
+
+    return Media(
+        id = id,
+        imageUri = posterPath,
+        title = title,
+        rating = voteAverage ?: 0.0,
+        yearOfRelease = parsedDate,
+        categoryIds = genreIds,
+        type = type.toDomain()
+    )
+}
+
+fun Media.toMediaEntity(category: Category, language: String): HomeMediaEntity = HomeMediaEntity(
+    id = id,
+    title = title,
+    voteAverage = rating,
+    posterPath = imageUri,
+    releaseDate = yearOfRelease.toString(),
+    genreIds = categoryIds,
+    type = type.toEntity(),
+    category = category,
+    language = language
+)
+
+fun Media.toEntity(): MediaEntity = MediaEntity(
+    id = id,
+    title = title,
+    voteAverage = rating,
+    posterPath = imageUri,
+    releaseDate = yearOfRelease.toString(),
+    genreIds = categoryIds,
+    type = type.toEntity()
+)
+
+fun MediaType.toEntity(): MediaTypeEntity = when (this) {
+    MediaType.MOVIE -> MediaTypeEntity.MOVIE
+    MediaType.TVSHOW -> MediaTypeEntity.TV_SHOW
+}
+
+fun MovieResult.toDomain(type: MediaType): Media? {
+    val parsedDate = runCatching { LocalDate.parse(releaseDate ?: "") }.getOrNull() ?: return null
+    return Media(
+        id = id ?: -1,
+        imageUri = posterPath.toImageUrl().orEmpty(),
+        title = title.orEmpty(),
+        type = type,
+        categoryIds = genreIds,
+        yearOfRelease = parsedDate,
+        rating = rating ?: 0.0
+    )
+}
+
+fun TvShowResult.toDomain(type: MediaType): Media? {
+    val parsedDate = runCatching { LocalDate.parse(first_air_date) }.getOrNull() ?: return null
+    return Media(
+        id = id,
+        imageUri = poster_path.toImageUrl().orEmpty(),
+        title = name,
+        type = type,
+        categoryIds = genre_ids,
+        yearOfRelease = parsedDate,
+        rating = vote_average
+    )
+}
+
+fun String?.toImageUrl(): String? {
+    return this?.let { "https://image.tmdb.org/t/p/w500/$it" }
+}
