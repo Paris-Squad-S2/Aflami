@@ -101,7 +101,7 @@ val koverExcludedPackages = listOf(
     "**.MovieUiState.*",
     "**/pagging*",
     "**MovieDetailsViewModel.kt*",
-    "**AuthInterceptor.*",
+    "**AuthInterceptor*",
     
 )
 
