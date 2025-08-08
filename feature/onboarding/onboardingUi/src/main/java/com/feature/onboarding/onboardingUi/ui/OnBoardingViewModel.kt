@@ -67,11 +67,11 @@ class OnBoardingViewModel @Inject constructor(
 
     fun getBackground(): UiDrawable {
         return when (_currentScreen.intValue) {
-            0 -> UiDrawable.Resource(R.drawable.on_boarding)
-            1 -> UiDrawable.Resource(R.drawable.on_boarding_second)
-            2 -> UiDrawable.Resource(R.drawable.on_boarding__2_)
-            3 -> UiDrawable.Resource(R.drawable.on_boarding__3_)
-            else -> UiDrawable.Resource(R.drawable.on_boarding)
+            0 -> UiDrawable.Resource(R.drawable.on_boarding_one)
+            1 -> UiDrawable.Resource(R.drawable.on_boarding_two)
+            2 -> UiDrawable.Resource(R.drawable.on_boarding_three)
+            3 -> UiDrawable.Resource(R.drawable.on_boarding_four)
+            else -> UiDrawable.Resource(R.drawable.on_boarding_one)
 
         }
     }

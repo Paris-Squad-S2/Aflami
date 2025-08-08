@@ -78,7 +78,7 @@ private fun OnBoardingContentPreview() {
             page = OnboardingPage(
               title = UiText.StringResource(R.string.your_movie_journal),
                 description = UiText.StringResource(R.string.keep_track_of_what_you_ve_watched_how_you_felt_and_what_you_loved_your_film_journey_remembered),
-                backgroundRes = UiDrawable.Resource(R.drawable.on_boarding)
+                backgroundRes = UiDrawable.Resource(R.drawable.on_boarding_one)
             )
         )
     }
