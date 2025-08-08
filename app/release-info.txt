@@ -1,2 +1,2 @@
-versionName=0.4.1
-- fix interceptor
+versionName=0.4.2
+-Profile Screen feature
