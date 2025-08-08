@@ -22,9 +22,9 @@ import org.junit.jupiter.api.assertThrows
 class CategoriesRepositoryImplTest {
 
     private lateinit var repository: CategoriesRepositoryImpl
-    private val networkConnectionChecker = mockk<NetworkConnectionChecker>(relaxed = true)
-    private val genresRemoteDataSource = mockk<GenresRemoteDataSource>()
-    private val languageLocalDataSourceRepository = mockk<LanguageLocalDataSourceRepository>()
+    private val networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
+    private val genresRemoteDataSource: GenresRemoteDataSource = mockk()
+    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository = mockk()
     private val language = "en"
 
     @BeforeEach
@@ -40,6 +40,7 @@ class CategoriesRepositoryImplTest {
     fun `getAllCategories should fetch from remote`() = runTest {
         // Given
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow(language)
         coEvery { genresRemoteDataSource.getMoviesGenres(language) } returns GenresDto(
             genreDto = listOf(GenreDto(2, "Drama"))
         )
@@ -54,6 +55,7 @@ class CategoriesRepositoryImplTest {
     fun `getAllCategories should throw NoInternetConnectionException when no internet`() = runTest {
         // Given
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow(language)
 
         // When + Then
         val exception = assertThrows<NoInternetConnectionException> {
@@ -67,6 +69,7 @@ class CategoriesRepositoryImplTest {
 
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { genresRemoteDataSource.getMoviesGenres(language) } throws Exception()
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow(language)
         // When + Then
         val exception = assertThrows<NoCategoriesFoundException> {
             repository.getAllCategories()

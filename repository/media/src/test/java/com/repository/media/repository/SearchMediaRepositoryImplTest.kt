@@ -59,6 +59,7 @@ class SearchMediaRepositoryImplTest {
         val page = 1
 
         coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
+        every { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
 
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         val knownForDto = KnownForDto(
@@ -100,6 +101,7 @@ class SearchMediaRepositoryImplTest {
 
         coEvery { historyLocalDataSource.getSearchHistoryQuery(actorName, SearchType.Actor) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
+        every { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
 
         val exception = assertFailsWith<NoInternetConnectionException> {
             repository.getMediaByActor(actorName, page)
@@ -113,6 +115,7 @@ class SearchMediaRepositoryImplTest {
         val page = 1
 
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
 
         coEvery {
             searchRemoteDataSource.searchPerson(
@@ -135,6 +138,7 @@ class SearchMediaRepositoryImplTest {
         val page = 1
         val expiredDate = Clock.System.now().toLocalDateTime(TimeZone.currentSystemDefault())
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country) } returns SearchHistoryEntity(
             countryName,
             SearchType.Country, expiredDate
@@ -157,6 +161,7 @@ class SearchMediaRepositoryImplTest {
         val countryName = "France"
         val page = 1
 
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery { historyLocalDataSource.getSearchHistoryQuery(countryName, SearchType.Country) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
@@ -171,7 +176,7 @@ class SearchMediaRepositoryImplTest {
         val countryName = "Spain"
         val page = 1
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             searchRemoteDataSource.searchCountryCode(
                 countryCode = countryName,
@@ -191,7 +196,7 @@ class SearchMediaRepositoryImplTest {
     fun `getMediaByQuery should throw NoInternetConnectionException if no internet`() = runTest {
         val page = 1
         val query = "Titanic"
-
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery { historyLocalDataSource.getSearchHistoryQuery(query, SearchType.Query) } returns null
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
 
@@ -207,7 +212,7 @@ class SearchMediaRepositoryImplTest {
         val query = "Avatar"
 
         coEvery { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             searchRemoteDataSource.searchMulti(
                 query = query,

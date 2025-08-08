@@ -22,7 +22,7 @@ class MoviesCategoriesRepositoryImplTest {
 
     private val genresRemoteDataSource: GenresRemoteDataSource = mockk()
     private val networkChecker: NetworkConnectionChecker = mockk()
-    private val languageLocalDataSourceRepository = mockk<LanguageLocalDataSourceRepository>()
+    private val languageLocalDataSourceRepository :LanguageLocalDataSourceRepository = mockk()
     private lateinit var repo: MoviesCategoriesRepositoryImpl
 
     @BeforeEach
@@ -45,6 +45,7 @@ class MoviesCategoriesRepositoryImplTest {
         )
         val categories = listOf(Category(28, "Action"), Category(18, "Drama"))
         coEvery { genresRemoteDataSource.getMoviesGenres("en-US") } returns genresDto
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
 
         assertThat(genresDto.toCategoryList()).isEqualTo(categories)
     }
@@ -53,6 +54,7 @@ class MoviesCategoriesRepositoryImplTest {
     fun `getMoviesCategories throws NoCategoriesFoundException when categories empty`() = runTest {
         val genresDto = mockk<GenresDto>(relaxed = true)
         coEvery { genresRemoteDataSource.getMoviesGenres(any()) } returns genresDto
+        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow("en")
         every { genresDto.toCategoryList() } returns emptyList()
 
         assertThrows<NoCategoriesFoundException> {
