@@ -1,2 +1,2 @@
-versionName=0.4.0
-- Add List feature
+versionName=0.4.1
+- fix interceptor
