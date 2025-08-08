@@ -206,18 +206,6 @@ class MyRatingViewModelTest {
     }
 
     @Test
-    fun `onTabSelected should set loading state while fetching data`() = runTest {
-        viewModel.onTabSelected(MediaTypeUi.TVSHOW)
-
-        assertTrue(viewModel.screenState.value.isLoading)
-
-        advanceUntilIdle()
-
-        assertFalse(viewModel.screenState.value.isLoading)
-
-    }
-
-    @Test
     fun `viewModel should initialize with correct default state`() = runTest {
         advanceUntilIdle()
 

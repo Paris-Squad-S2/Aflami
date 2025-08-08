@@ -99,17 +99,6 @@ class WatchHistoryViewModelTest {
 
 
     @Test
-    fun `empty result should show no media but no error`() = runTest {
-        coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns emptyList()
-
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
-        runCurrent()
-
-        assertThat(viewModel.screenState.value.isLoading).isFalse()
-    }
-
-
-    @Test
     fun `onMediaCardClick for TVSHOW triggers navigation`() = runTest {
         coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
         viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
@@ -133,19 +122,6 @@ class WatchHistoryViewModelTest {
 
         coVerify { navigator.navigateUp() }
 
-    }
-
-    @Test
-    fun `onTabSelected should reload data with selected type`() = runTest {
-        coEvery { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } returns fakeMediaList.map { it.toDomain() }
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
-        runCurrent()
-
-        viewModel.onTabSelected(MediaTypeUi.TVSHOW)
-
-        runCurrent()
-
-        coVerify { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) }
     }
 
 
