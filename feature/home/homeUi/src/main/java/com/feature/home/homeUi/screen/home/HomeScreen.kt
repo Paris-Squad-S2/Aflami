@@ -94,6 +94,7 @@ fun HomeScreenContent(
     val lazyState = rememberLazyListState()
     val continueWatchingState = rememberLazyListState()
     val topRatedState = rememberLazyListState()
+    val upComingState = rememberLazyListState()
     val topRatedScrolling by remember { derivedStateOf { topRatedState.isScrollInProgress } }
     val continueWatchingScrolling by remember { derivedStateOf { continueWatchingState.isScrollInProgress } }
     var isAllCategories by remember { mutableStateOf(state.homeUIState.isAllCategories) }
@@ -190,6 +191,7 @@ fun HomeScreenContent(
                     shimmerModifier = Modifier.shimmerable(enabled = state.isCategoryLoading)
                 )
                 LazyRow(
+                    state = upComingState,
                     contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
                 ) {
                     item {
