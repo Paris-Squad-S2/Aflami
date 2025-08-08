@@ -59,11 +59,9 @@ dependencies {
 
     // test
     testImplementation(kotlin("test"))
-    testImplementation(libs.junit)
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
-    testImplementation(libs.junit)
 
     implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.REPOSITORY_USER))
