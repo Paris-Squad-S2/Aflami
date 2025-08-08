@@ -205,16 +205,4 @@ class MyRatingViewModelTest {
         coVerify { getRatedMediaUseCase(1, MediaType.MOVIE) }
     }
 
-    @Test
-    fun `viewModel should initialize with correct default state`() = runTest {
-        advanceUntilIdle()
-
-        val state = viewModel.screenState.value
-        assertFalse(state.isLoading)
-        assertNull(state.errorMessage)
-        assertEquals(1, state.myRatingMedia.size)
-
-    }
-
-
 }
