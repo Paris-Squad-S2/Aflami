@@ -1,2 +1,2 @@
-versionName=0.7.0
-- Add onboarding feature
+versionName=0.7.1
+- update list feature state

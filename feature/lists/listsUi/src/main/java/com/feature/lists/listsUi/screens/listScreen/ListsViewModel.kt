@@ -3,6 +3,7 @@ package com.feature.lists.listsUi.screens.listScreen
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.map
+import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
 import com.feature.lists.listsUi.pagging.PagingSource
@@ -18,8 +19,9 @@ import javax.inject.Inject
 class ListsViewModel @Inject constructor(
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
-    private val isLoggedInUseCase: IsLoggedInUseCase
-) : BaseViewModel<ListScreenUIState>(
+    private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val authenticationFeatureAPI: AuthenticationFeatureAPI,
+    ) : BaseViewModel<ListScreenUIState>(
     initialState = ListScreenUIState()
 ), ListsInteractionListener {
     init {
@@ -171,6 +173,10 @@ class ListsViewModel @Inject constructor(
         emitState(
             screenState.value.copy(showSnackBar = true)
         )
+    }
+
+    override fun onLogoutApplyClicked() {
+        authenticationFeatureAPI()
     }
 
 }

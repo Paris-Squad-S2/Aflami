@@ -73,6 +73,7 @@ dependencies {
     implementation(project(Modules.FEATURE_LISTS_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
 
     //Hilt
     implementation(libs.hilt.android)
