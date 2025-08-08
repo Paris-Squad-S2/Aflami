@@ -72,7 +72,7 @@ fun CustomButton(
         else -> 0.dp
     }
     val shadowModifier =
-        if ((type == ButtonType.FloatingActionButton || type == ButtonType.Primary) && state != ButtonState.Disabled && !isNegative) {
+        if ((type == ButtonType.Primary) && state != ButtonState.Disabled && !isNegative) {
             Modifier.innerShadow(
                 shape = RoundedCornerShape(16.dp),
                 color = Color(0xFFFFFFFF).copy(alpha = 0.5f),

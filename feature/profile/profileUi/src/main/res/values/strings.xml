@@ -1,4 +1,17 @@
 <resources>
+    <string name="profile">Profile</string>
+    <string name="app_theme">App Theme</string>
+    <string name="english">English</string>
+    <string name="arabic">Arabic</string>
+    <string name="language">Language</string>
+    <string name="apply">Apply</string>
+    <string name="change_password">Change Password</string>
+    <string name="content_restriction">Content Restriction</string>
+    <string name="tired_of_watching">Tired of watching?</string>
+    <string name="setting">Setting</string>
+    <string name="currunt_lang">ENG</string>
+    <string name="logout">Logout</string>
+    <string name="please_login_to_access_your_account_details_and_other_features">Please login to access your account details and other features!</string>
     <string name="title_activity_main">MainActivity</string>
     <string name="watch_history">Watch history</string>
     <string name="movies">Movies</string>

@@ -122,6 +122,8 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.datastore.core.android)
+    implementation(libs.androidx.datastore.preferences)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -165,6 +167,8 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    implementation(project(Modules.FEATURE_ONBOARDING_API))
+    implementation(project(Modules.FEATURE_ONBOARDING_UI))
 
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_LISTS_UI))
@@ -198,6 +202,7 @@ dependencies {
     implementation(project(Modules.REPOSITORY_MEDIA))
     implementation(project(Modules.DATASOURCE_REMOTE_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
+
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.room.compiler)

@@ -1,3 +1,12 @@
 <resources>
     <string name="title_activity_main">MainActivity</string>
+    <string name="movies_that_feel_you">Movies That Feel You</string>
+    <string name="this_isn_t_just_a_movie_app_it_s_a_mood_experience_tap_your_vibe_and_let_the_story_begin">This isn’t just a movie app — it’s a mood experience. Tap your vibe and let the story begin.</string>
+    <string name="build_your_watchlist_show_love">Build Your Watchlist, show love</string>
+    <string name="save_your_favorite_picks_track_your_moods_and_come_back_to_find_something_new_every_day">Save your favorite picks, track your moods, and come back to find something new every day.</string>
+    <string name="your_movie_journal">Your Movie Journal</string>
+    <string name="keep_track_of_what_you_ve_watched_how_you_felt_and_what_you_loved_your_film_journey_remembered">Keep track of what you’ve watched, how you felt, and what you loved. Your film journey, remembered.</string>
+    <string name="guess_play"><![CDATA[Guess & Play!]]></string>
+    <string name="put_your_film_knowledge_to_the_test_with_exciting_quizzes_every_right_guess_brings_you_closer_to_the_next_movie_adventure">Put your film knowledge to the test with exciting quizzes. Every right guess brings you closer to the next movie adventure.</string>
+    <string name="skip">skip</string>
 </resources>

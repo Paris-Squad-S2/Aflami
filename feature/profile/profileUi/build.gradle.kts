@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.feature.profile.profileUi"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 26
@@ -59,6 +59,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
     implementation(project(Modules.FEATURE_PROFILE_API))
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.DOMAIN_USER))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     //Modules
@@ -67,6 +71,9 @@ dependencies {
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
+
+    //WebView
+    implementation(libs.androidx.webkit)
 
     //Kotlinx DateTime
     implementation(libs.kotlinx.datetime)

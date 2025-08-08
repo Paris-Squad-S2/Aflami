@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -47,7 +50,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -55,4 +58,19 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.DOMAIN_USER))
+    implementation(project(Modules.FEATURE_ONBOARDING_API))
+    implementation(libs.accompanist.pager.v0340)
+    //Hilt
+    implementation(libs.hilt.android)
+    implementation(libs.androidx.hilt.navigation.compose)
+    ksp(libs.hilt.android.compiler)
+
+    implementation(project(Modules.FEATURE_HOME_API))
+    implementation(project(Modules.FEATURE_HOME_UI))
+    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+
+    // Kotlinx Serialization
+    implementation(libs.kotlinx.serialization.json)
 }

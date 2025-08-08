@@ -78,6 +78,14 @@ class UserRepositoryImpl(
         return localDataSource.hasAnySession()
     }
 
+    override suspend fun setOnboardingCompleted() {
+        localDataSource.setOnboardingCompleted()
+    }
+
+    override  fun isOnboardingCompleted(): Boolean {
+        return localDataSource.isOnboardingCompleted()
+    }
+
     override suspend fun getAccountId(): Int? {
         return remoteDataSource.getAccountDetails().id
     }

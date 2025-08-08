@@ -28,6 +28,12 @@ fun getBackgroundBrush(
                     Theme.colors.primaryVariant,
                 )
             )
+            ButtonType.FloatingActionButton -> Brush.verticalGradient(
+                colors = listOf(
+                    Theme.colors.primaryVariant,
+                    Theme.colors.primaryVariant,
+                )
+            )
 
             else -> Brush.verticalGradient(
                 colors = listOf(
@@ -61,6 +67,12 @@ fun getBackgroundBrush(
 
             ButtonType.TextButton -> Brush.verticalGradient(
                 colors = listOf(Color.Transparent, Color.Transparent)
+            )
+            ButtonType.FloatingActionButton -> Brush.verticalGradient(
+                colors = listOf(
+                    Theme.colors.primaryVariant,
+                    Theme.colors.primaryVariant,
+                )
             )
 
             else -> Brush.verticalGradient(

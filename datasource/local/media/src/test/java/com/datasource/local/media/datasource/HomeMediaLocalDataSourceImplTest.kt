@@ -53,14 +53,14 @@ class HomeMediaLocalDataSourceImplTest {
     @Test
     fun `getMediaListByCategory should return list from DAO`() = runTest {
         // Given
-        coEvery { homeMediaDao.getMediaListByCategory(Category.UPCOMING) } returns listOf(sampleEntity)
+        coEvery { homeMediaDao.getMediaListByCategory(Category.UPCOMING,"en") } returns listOf(sampleEntity)
 
         // When
-        val result = dataSource.getMediaListByCategory(Category.UPCOMING)
+        val result = dataSource.getMediaListByCategory(Category.UPCOMING,"en")
 
         // Then
         assertThat(result).hasSize(1)
-        coVerify { homeMediaDao.getMediaListByCategory(Category.UPCOMING) }
+        coVerify { homeMediaDao.getMediaListByCategory(Category.UPCOMING,"en") }
     }
 
     @Test
@@ -81,7 +81,8 @@ class HomeMediaLocalDataSourceImplTest {
             releaseDate = "2023-08-01",
             genreIds = listOf(1, 2),
             type = MediaTypeEntity.MOVIE,
-            category = Category.POPULAR
+            category = Category.POPULAR,
+            language = "en"
         )
     }
 }

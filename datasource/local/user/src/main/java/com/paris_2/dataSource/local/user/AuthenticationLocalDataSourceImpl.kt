@@ -35,10 +35,18 @@ class AuthenticationLocalDataSourceImpl(
     override fun hasAnySession(): Boolean {
         return !getSessionId().isNullOrBlank()
     }
+    override fun setOnboardingCompleted() {
+        prefs.edit { putBoolean(KEY_ONBOARDING_COMPLETED, true) }
+    }
+
+    override fun isOnboardingCompleted(): Boolean {
+        return prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
+    }
 
     companion object {
         private const val PREFS_NAME = "auth_prefs"
         private const val KEY_SESSION_ID = "session_id"
         private const val KEY_IS_GUEST = "is_guest"
+        private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
     }
 }
