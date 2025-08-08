@@ -19,14 +19,10 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    @Inject
-    lateinit var authenticationFeatureAPI: AuthenticationFeatureAPI
-    @Inject
-    lateinit var hasAnySessionUseCase: HasAnySessionUseCase
-    @Inject
-    lateinit var appNavigationAPI: AppNavigationAPI
+
     @Inject
     lateinit var isOnboardingCompletedUseCase: IsOnboardingCompletedUseCase
+
     @Inject
     lateinit var onBoardingApI: OnBoardingFeatureAPI
 
@@ -43,10 +39,11 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
-                if (hasAnySessionUseCase())
-                    appNavigationAPI()
-                else
-                    authenticationFeatureAPI()
+                when {
+                    hasAnySessionUseCase() -> appNavigationAPI()
+                    isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
+                    else -> onBoardingApI()
+                }
             }
         }
     }
@@ -65,18 +62,17 @@ class MainActivity : ComponentActivity() {
         val config = Configuration(context.resources.configuration)
         config.setLocale(locale)
 
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        return (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.createConfigurationContext(config)
         } else {
             @Suppress("DEPRECATION")
             context.resources.updateConfiguration(config, context.resources.displayMetrics)
             context
-                when {
-                    hasAnySessionUseCase() -> appNavigationAPI()
-                    isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
-                    else -> onBoardingApI()
-                }
+            when {
+                hasAnySessionUseCase() -> appNavigationAPI()
+                isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
+                else -> onBoardingApI()
             }
-        }
+        }) as Context
     }
 }

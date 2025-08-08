@@ -9,8 +9,6 @@ import com.paris_2.domain.media.repository.MoviesCategoriesRepository
 import com.paris_2.domain.media.repository.SearchHistoryRepository
 import com.paris_2.domain.media.repository.SearchMediaRepository
 import com.paris_2.domain.media.repository.TvShowRepository
-import com.paris_2.domain.user.repository.AuthenticationRepository
-import com.paris_2.domain.media.repository.TvShowRepository
 import com.paris_2.domain.user.repository.LanguageRepository
 import com.paris_2.domain.user.repository.UserRepository
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
