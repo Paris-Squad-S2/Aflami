@@ -22,19 +22,19 @@ class GenresInteractionDataSourceImplTest {
     @Test
     fun `upsertInteraction should call DAO with correct entity`() = runTest {
         // Given
-        coEvery { genresUserInteractionDao.upsertInteraction(any()) } returns Unit
+        coEvery { genresUserInteractionDao.upsertGenresInteraction(any()) } returns Unit
         // When
-        genresInteractionDataSource.upsertInteraction(sampleInteraction)
+        genresInteractionDataSource.upsertGenresInteraction(sampleInteraction)
         // Then
-        coVerify { genresUserInteractionDao.upsertInteraction(sampleInteraction) }
+        coVerify { genresUserInteractionDao.upsertGenresInteraction(sampleInteraction) }
     }
 
     @Test
     fun `getCategoryInteractions should return correct count when entry exists`() = runTest {
         // Given
-        coEvery { genresUserInteractionDao.getCategoryInteractions(sampleInteraction.genreId) } returns sampleInteraction.interactionCount
+        coEvery { genresUserInteractionDao.getCategoryByGenreId(sampleInteraction.genreId) } returns sampleInteraction.interactionCount
         // When
-        val result = genresInteractionDataSource.getCategoryInteractions(sampleInteraction.genreId)
+        val result = genresInteractionDataSource.getCategoryByGenreId(sampleInteraction.genreId)
         // Then
         assertThat(result).isEqualTo(9)
     }
@@ -42,9 +42,9 @@ class GenresInteractionDataSourceImplTest {
     @Test
     fun `getCategoryInteractions should return null when no entry exists`() = runTest {
         // Given
-        coEvery { genresUserInteractionDao.getCategoryInteractions(888) } returns null
+        coEvery { genresUserInteractionDao.getCategoryByGenreId(888) } returns null
         // When
-        val result = genresInteractionDataSource.getCategoryInteractions(888)
+        val result = genresInteractionDataSource.getCategoryByGenreId(888)
         // Then
         assertThat(result).isNull()
     }
@@ -56,9 +56,9 @@ class GenresInteractionDataSourceImplTest {
             GenreUserInteractionEntity(1, 2),
             GenreUserInteractionEntity(2, 4)
         )
-        coEvery { genresUserInteractionDao.getAllInteractions() } returns list
+        coEvery { genresUserInteractionDao.getGenresInteractions() } returns list
         // When
-        val result = genresInteractionDataSource.getAllInteractions()
+        val result = genresInteractionDataSource.getGenresInteractions()
         // Then
         assertThat(result).containsExactlyElementsIn(list)
     }
@@ -66,9 +66,9 @@ class GenresInteractionDataSourceImplTest {
     @Test
     fun `getAllInteractions should return empty list when DAO returns none`() = runTest {
         // Given
-        coEvery { genresUserInteractionDao.getAllInteractions() } returns emptyList()
+        coEvery { genresUserInteractionDao.getGenresInteractions() } returns emptyList()
         // When
-        val result = genresInteractionDataSource.getAllInteractions()
+        val result = genresInteractionDataSource.getGenresInteractions()
         // Then
         assertThat(result).isEmpty()
     }

@@ -15,15 +15,15 @@ interface SearchHistoryDao {
     suspend fun addSearchQuery(history: SearchHistoryEntity)
 
     @Query("SELECT * FROM search_history_table ORDER BY search_date DESC")
-    fun getAllSearchQueries(): Flow<List<SearchHistoryEntity>>
+    fun getSearchQueries(): Flow<List<SearchHistoryEntity>>
 
     @Query("SELECT * FROM search_history_table WHERE search_query = :searchQuery AND search_type = :searchType")
     suspend fun getSearchHistoryQuery(searchQuery: String, searchType: SearchType): SearchHistoryEntity?
 
     @Query("DELETE FROM search_history_table WHERE search_query = :searchQuery AND search_type = :searchType")
-    suspend fun clearSearchQueryByQuery(searchQuery: String, searchType: SearchType)
+    suspend fun clearSearchByQuery(searchQuery: String, searchType: SearchType)
 
     @Query("DELETE FROM search_history_table")
-    suspend fun clearAllSearchQueries()
+    suspend fun clearSearchQueries()
 
 }

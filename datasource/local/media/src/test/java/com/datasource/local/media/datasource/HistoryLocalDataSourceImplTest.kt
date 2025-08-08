@@ -26,13 +26,13 @@ class HistoryLocalDataSourceImplTest {
     fun `getAllSearchQueries should return genres when getAll in SearchHistoryDao called successfully`() =
         runTest {
             // Given
-            coEvery { searchHistoryDao.getAllSearchQueries() } returns flowOf(
+            coEvery { searchHistoryDao.getSearchQueries() } returns flowOf(
                 listOf(
                     sampleSearchHistory
                 )
             )
             // When
-            val result = historyLocalDataSource.getAllSearchQueries().first()
+            val result = historyLocalDataSource.getSearchQueries().first()
             // Then
             assertThat(result).containsExactly(sampleSearchHistory)
         }
@@ -55,26 +55,26 @@ class HistoryLocalDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                searchHistoryDao.clearSearchQueryByQuery(
+                searchHistoryDao.clearSearchByQuery(
                     "aaa",
                     SearchType.Query
                 )
             } returns Unit
             // When
-            historyLocalDataSource.clearSearchQueryByQuery("aaa", SearchType.Query)
+            historyLocalDataSource.clearSearchByQuery("aaa", SearchType.Query)
             // Then
-            coVerify { searchHistoryDao.clearSearchQueryByQuery("aaa", SearchType.Query) }
+            coVerify { searchHistoryDao.clearSearchByQuery("aaa", SearchType.Query) }
         }
 
     @Test
     fun `clearAllSearchQueries should clear All SearchQueries when clear in SearchHistoryDao called successfully`() =
         runTest {
             // Given
-            coEvery { searchHistoryDao.clearAllSearchQueries() } returns Unit
+            coEvery { searchHistoryDao.clearSearchQueries() } returns Unit
             // When
-            historyLocalDataSource.clearAll()
+            historyLocalDataSource.clearSearchQueries()
             // Then
-            coVerify { searchHistoryDao.clearAllSearchQueries() }
+            coVerify { searchHistoryDao.clearSearchQueries() }
         }
 
     @Test

@@ -10,8 +10,8 @@ import com.repository.media.entity.MediaEntity
 interface ContinueWatchingDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun addMedia(media: MediaEntity)
+    suspend fun addMediaContinueWatching(media: MediaEntity)
 
     @Query("SELECT * FROM media_table")
-    suspend fun getAllMedia(): List<MediaEntity>
+    suspend fun getMediaContinueWatching(): List<MediaEntity>
 }

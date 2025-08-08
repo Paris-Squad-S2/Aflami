@@ -26,7 +26,7 @@ class SearchHistoryRepositoryImplTest {
     fun `getAllSearchHistory should return mapped history from local data source`() = runTest {
         // Given
         val localHistory = listOf(SearchHistoryEntity("action", SearchType.Query))
-        coEvery { historyLocalDataSource.getAllSearchQueries() } returns flowOf(localHistory)
+        coEvery { historyLocalDataSource.getSearchQueries() } returns flowOf(localHistory)
 
         // When
         val result = repository.getAllSearchHistory().first()
@@ -52,24 +52,24 @@ class SearchHistoryRepositoryImplTest {
     fun `clearSearchHistory should call clearSearchQueryByQuery with correct query`() = runTest {
         // Given
         val query = "drama"
-        coEvery { historyLocalDataSource.clearSearchQueryByQuery(query, SearchType.Query) } just Runs
+        coEvery { historyLocalDataSource.clearSearchByQuery(query, SearchType.Query) } just Runs
 
         // When
         repository.clearSearchHistory(query, com.paris_2.domain.media.entity.SearchType.Query)
 
         // Then
-        coVerify(exactly = 1) { historyLocalDataSource.clearSearchQueryByQuery(query, SearchType.Query) }
+        coVerify(exactly = 1) { historyLocalDataSource.clearSearchByQuery(query, SearchType.Query) }
     }
 
     @Test
     fun `clearAllSearchHistory should call clearAll`() = runTest {
         // Given
-        coEvery { historyLocalDataSource.clearAll() } just Runs
+        coEvery { historyLocalDataSource.clearSearchQueries() } just Runs
 
         // When
         repository.clearAllSearchHistory()
 
         // Then
-        coVerify(exactly = 1) { historyLocalDataSource.clearAll() }
+        coVerify(exactly = 1) { historyLocalDataSource.clearSearchQueries() }
     }
 }

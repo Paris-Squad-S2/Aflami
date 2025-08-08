@@ -12,7 +12,7 @@ class SearchHistoryRepositoryImpl(
     private val historyLocalDataSource: HistoryLocalDataSource,
 ) : SearchHistoryRepository {
     override fun getAllSearchHistory(): Flow<List<SearchHistoryModel>> {
-        return historyLocalDataSource.getAllSearchQueries().toSearchHistories()
+        return historyLocalDataSource.getSearchQueries().toSearchHistories()
     }
 
     override suspend fun addSearchHistory(searchTitle: String, searchType: SearchType) {
@@ -20,10 +20,10 @@ class SearchHistoryRepositoryImpl(
     }
 
     override suspend fun clearSearchHistory(query: String, searchType: SearchType) {
-        return historyLocalDataSource.clearSearchQueryByQuery(query, searchType.toRepositorySearchType())
+        return historyLocalDataSource.clearSearchByQuery(query, searchType.toRepositorySearchType())
     }
 
     override suspend fun clearAllSearchHistory() {
-        return historyLocalDataSource.clearAll()
+        return historyLocalDataSource.clearSearchQueries()
     }
 }
