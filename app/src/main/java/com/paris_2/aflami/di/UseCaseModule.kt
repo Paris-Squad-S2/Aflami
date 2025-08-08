@@ -90,14 +90,14 @@ object UseCaseModule {
         AutoCompleteCountryUseCase(countryRepository)
 
     @Provides
-    fun provideCompleteOnboardingUseCase(authenticationRepository: UserRepository) =
-        CompleteOnboardingUseCase(authenticationRepository)
+    fun provideCompleteOnboardingUseCase(settingRepository: SettingRepository) =
+        CompleteOnboardingUseCase(settingRepository)
 
     @Provides
     fun provideIsOnboardingCompletedUseCase(
-        authenticationRepository: UserRepository,
+        settingRepository: SettingRepository,
     ): IsOnboardingCompletedUseCase {
-        return IsOnboardingCompletedUseCase(authenticationRepository)
+        return IsOnboardingCompletedUseCase(settingRepository)
     }
 
 

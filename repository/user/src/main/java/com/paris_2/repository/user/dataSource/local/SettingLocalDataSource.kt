@@ -5,4 +5,6 @@ import kotlinx.coroutines.flow.Flow
 interface SettingLocalDataSource {
     fun getLanguage(): Flow<String>
     suspend fun setLanguage(language: String)
+    fun setOnboardingCompleted()
+    fun isOnboardingCompleted(): Boolean
 }

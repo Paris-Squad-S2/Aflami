@@ -18,4 +18,12 @@ class SettingRepositoryImp(
         languageLocalDataSource.setLanguage(language = language)
     }
 
+    override suspend fun setOnboardingCompleted() {
+        languageLocalDataSource.setOnboardingCompleted()
+    }
+
+    override fun isOnboardingCompleted(): Boolean {
+        return languageLocalDataSource.isOnboardingCompleted()
+    }
+
 }

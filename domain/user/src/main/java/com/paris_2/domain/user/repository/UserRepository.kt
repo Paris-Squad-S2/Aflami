@@ -9,8 +9,6 @@ interface UserRepository {
     suspend fun getSessionId(): String?
     fun isLoggedIn(): Boolean
     fun hasAnySession(): Boolean
-    suspend fun setOnboardingCompleted()
-     fun isOnboardingCompleted(): Boolean
     suspend fun getAccountId(): Int?
     fun deleteSessionId(): Boolean
 }

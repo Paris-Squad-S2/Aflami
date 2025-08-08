@@ -17,6 +17,7 @@ class SettingLocalDataSourceImp @Inject constructor(
     companion object {
         private const val PREF_NAME = "settings"
         private const val LANGUAGE_KEY = "language_code"
+        private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
     }
 
     private val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -38,6 +39,14 @@ class SettingLocalDataSourceImp @Inject constructor(
 
     override suspend fun setLanguage(language: String) {
         prefs.edit { putString(LANGUAGE_KEY, language) }
+    }
+
+    override fun setOnboardingCompleted() {
+        prefs.edit { putBoolean(KEY_ONBOARDING_COMPLETED, true) }
+    }
+
+    override fun isOnboardingCompleted(): Boolean {
+        return prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
     }
 
     private fun getLanguageSync(): String {

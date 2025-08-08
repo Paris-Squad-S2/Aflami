@@ -8,8 +8,6 @@ interface AuthenticationLocalDataSource {
     fun setIsGuest(isGuest: Boolean)
     fun isGuest(): Boolean
     fun hasAnySession(): Boolean
-    fun setOnboardingCompleted()
-    fun isOnboardingCompleted(): Boolean
     fun saveUserName(username: String)
     fun getUserName(): String
 }
