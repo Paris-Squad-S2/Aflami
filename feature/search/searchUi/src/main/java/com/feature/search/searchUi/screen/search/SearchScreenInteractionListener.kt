@@ -1,8 +1,8 @@
 package com.feature.search.searchUi.screen.search
 
-import CategoryUiState
 import MediaUiState
 import SearchTypeUi
+import com.paris_2.domain.media.entity.Genre
 
 interface SearchScreenInteractionListener {
     fun onNavigateToWorldTourScreen()
@@ -19,7 +19,7 @@ interface SearchScreenInteractionListener {
     fun onApplyFilterButtonClick(
         selectedRating: Float,
         isAllCategories: Boolean,
-        selectedCategories: List<CategoryUiState>
+        selectedCategories: List<Genre>
     )
 
     fun onRecentSearchClick(searchTitle: String, searchTypeUi: SearchTypeUi)
