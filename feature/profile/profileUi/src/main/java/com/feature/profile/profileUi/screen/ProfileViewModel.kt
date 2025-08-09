@@ -71,7 +71,8 @@ class ProfileViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 profile = screenState.value.profile.copy(
-                    isThemeDialogOpen = true
+                    isThemeDialogOpen = true,
+                    theme = if (settingsUseCase.isDarkTheme()) Appearance.DARK else Appearance.LIGHT
                 )
             )
         )
@@ -103,29 +104,14 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onAppearanceApplyClicked(appearance: Appearance) {
-        when (appearance) {
-            Appearance.DARK -> {
-                settingsUseCase.setTheme(true)
-                updateState(
-                    screenState.value.copy(
-                        profile = screenState.value.profile.copy(
-                            theme = Appearance.DARK
-                        )
-                    )
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    theme = appearance
                 )
-            }
-
-            Appearance.LIGHT -> {
-                settingsUseCase.setTheme(false)
-                updateState(
-                    screenState.value.copy(
-                        profile = screenState.value.profile.copy(
-                            theme = Appearance.LIGHT
-                        )
-                    )
-                )
-            }
-        }
+            )
+        )
+        settingsUseCase.setTheme(appearance == Appearance.DARK)
     }
 
 
