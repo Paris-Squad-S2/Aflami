@@ -3,6 +3,8 @@ accompanistPagerVersion = "0.34.0"
 agp = "8.10.1"
 datastorePreferences = "1.1.7"
 firebaseBom = "33.16.0"
+firebasePerf = "1.4.2"
+firebaseCrashlytics = "3.0.4"
 coil = "2.7.0"
 hiltAndroid = "2.57"
 hiltAndroidCompiler = "2.57"
@@ -59,6 +61,7 @@ shaded = "0.2.1-alpha"
 hiltCommon = "1.2.0"
 datastore = "1.1.1"
 datastoreCoreAndroid = "1.1.7"
+foundation = "1.8.3"
 
 
 [libraries]
@@ -106,6 +109,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 truth = { module = "com.google.truth:truth", version.ref = "truth" }
+kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines-test" }
 accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanistPager" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serializationJson" }
@@ -142,6 +146,9 @@ shimmer = {group = "com.valentinilk.shimmer", name = "compose-shimmer", version 
 androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "hiltCommon" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+
+
 
 
 [plugins]
@@ -156,20 +163,119 @@ ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 
 [bundles]
+
+android = [
+    "androidx-core-ktx"
+]
+
 compose = [
     "androidx-core-ktx",
-    "androidx-lifecycle-runtime-ktx",
-    "androidx-paging-runtime",
+    "androidx-appcompat",
+    "material",
     "androidx-activity-compose",
-    "androidx-compose-bom",
-    "androidx-lifecycle-viewmodel-compose",
-    "androidx-paging-compose",
+    "androidx-ui",
+    "androidx-ui-graphics",
+    "androidx-ui-tooling",
+    "androidx-ui-tooling-preview",
+    "androidx-lifecycle-runtime-ktx",
+    "androidx-ui-test-manifest",
+    "androidx-foundation",
+                                    #TODO
+#    "androidx-paging-runtime",
+#    "androidx-lifecycle-viewmodel-compose",
+#    "androidx-paging-compose",
+#    "androidx-hilt-navigation-compose"
+]
+
+navigation = [
+    "navigation-compose",
     "androidx-hilt-navigation-compose"
 ]
+
 test = [
     "junit",
-    "androidx-junit",
-    "androidx-espresso-core"
+    "junit-jupiter-engine",
+    "junit-jupiter-api",
+    "mockk",
+    "kotlinx-coroutines-test",
+    "truth",
+    "kotlin-test",
+    "junit-jupiter-params",
+    "junit-platform-launcher",
+]
+
+hilt = [
+    "hilt-android",
+    "hilt-work",
+    "androidx-hilt-navigation-compose",
+]
+
+retrofit = [
+    "retrofit",
+    "retrofit_converter",
+    "logging-interceptor",
+    "okhttp"
+]
+
+room = [
+    "androidx-room-runtime",
+]
+
+datetime = [
+    "kotlinx-datetime"
+]
+
+workManager = [
+    "work-runtime-ktx",
+    "androidx-startup-runtime"
+]
+
+serialization = [
+    "kotlinx-serialization-json"
+]
+
+paging = [
+    "androidx-paging-runtime",
+    "androidx-paging-compose"
+]
+
+coil = [
+    "coil-compose"
+]
+
+datastore = [
+    "androidx-datastore-preferences",
+    "androidx-datastore-core-android"
+]
+
+blur = [
+    "sifr-shaded"
+]
+
+shimmer = [
+    "shimmer"
+]
+
+webview = [
+    "androidx-webkit"
+]
+
+pager = [
+    "accompanist-pager-v0340",
+]
+
+firebase = [
+    "firebase-analytics",
+    "firebase-crashlytics",
+    "firebase-perf"
+]
+
+tensorflow = [
+    "tensorflow-lite",
+    "tensorflow-lite-support",
+    "tensorflow-lite-metadata"
 ]

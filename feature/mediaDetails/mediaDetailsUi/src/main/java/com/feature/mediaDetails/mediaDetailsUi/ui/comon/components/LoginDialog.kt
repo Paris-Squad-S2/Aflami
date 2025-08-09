@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,6 +26,8 @@ import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.AppDialog
+import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
@@ -75,7 +75,7 @@ fun LoginDialog(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Icon(
+                AppIcon(
                     painter = image,
                     contentDescription = "Profile Icon",
                     modifier = Modifier.size(80.dp),
@@ -83,7 +83,7 @@ fun LoginDialog(
                 )
             }
 
-            Text(
+            AppText(
                 text = stringResource(content),
                 style = Theme.textStyle.body.small,
                 color = Theme.colors.text.body,

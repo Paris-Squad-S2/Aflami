@@ -1,2 +1,3 @@
-versionName=0.7.5
-- delete the slider image place holder in home screen
+versionName=0.7.6
+- refactor gradle using bundle
+- remove material 3 and depend on design system

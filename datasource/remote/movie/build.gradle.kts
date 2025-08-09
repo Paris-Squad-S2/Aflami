@@ -11,7 +11,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_24
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -33,31 +33,14 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
+    testImplementation(libs.bundles.test)
 
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.client.logging)
-    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.bundles.retrofit)
 
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
-    implementation(project((":repository:movie")))
-
-    //retrofit
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter)
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
+
+    implementation(project(Modules.REPOSITORY_MOVIE))
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()

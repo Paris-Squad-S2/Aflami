@@ -11,7 +11,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_24
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,26 +34,17 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.android)
+    implementation(libs.bundles.serialization)
 
-    //test
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    testImplementation(kotlin("test"))
+    testImplementation(libs.bundles.test)
+
+    implementation(libs.bundles.retrofit)
+
+    implementation(libs.bundles.hilt)
+    ksp(libs.hilt.android.compiler)
 
     implementation(project(Modules.REPOSITORY_USER))
-
-    //retrofit
-    implementation(libs.retrofit)
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
-    ksp(libs.hilt.android.compiler)
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
