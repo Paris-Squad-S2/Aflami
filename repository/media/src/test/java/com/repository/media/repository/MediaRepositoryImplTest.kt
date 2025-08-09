@@ -354,7 +354,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal delegates to data source`() = runTest {
-        val media = Media(200, "", "Local", MediaType.MOVIE,  listOf(1), mockk(), 8.0)
+        val media = Media(200, "", "Local", MediaType.MOVIE,  listOf(com.paris_2.domain.media.entity.Category.ACTION), mockk(), 8.0)
         coEvery { local.addMedia(media.toEntity()) } returns Unit
         repo.addMediaToContinueWatching(media)
         coVerify { local.addMedia(media.toEntity()) }
@@ -378,7 +378,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `addMediaToContinueWatching throws NoInternetConnectionException when offline`() = runTest {
         every { networkChecker.isConnected } returns MutableStateFlow(false)
-        val media = Media(1, "", "Test", MediaType.MOVIE, listOf(1), mockk(), 8.0)
+        val media = Media(1, "", "Test", MediaType.MOVIE, listOf(com.paris_2.domain.media.entity.Category.ACTION), mockk(), 8.0)
 
         assertThrows<NoInternetConnectionException> {
             repo.addMediaToContinueWatching(media)
@@ -396,7 +396,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal throws addMediaToLocalException on failure`() = runTest {
-        val media = Media(123, "", "Fail", MediaType.TVSHOW, listOf(1), mockk(), 4.0)
+        val media = Media(123, "", "Fail", MediaType.TVSHOW, listOf(com.paris_2.domain.media.entity.Category.ACTION), mockk(), 4.0)
 
         coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
 

@@ -4,6 +4,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
@@ -113,6 +114,7 @@ class MyRatingViewModelTest {
 
         coEvery { deleteMovieRatingUseCase(1) } returns Unit
 
+        advanceUntilIdle()
         viewModel.onFavouriteIconClick(media)
 
         coVerify { getRatedMediaUseCase(any(), MediaType.MOVIE) }
@@ -132,6 +134,7 @@ class MyRatingViewModelTest {
         coEvery { deleteTvShowRatingUseCase(2) } returns Unit
         coEvery { getRatedMediaUseCase(any(), MediaType.TVSHOW) } returns fakeMediaList
 
+        advanceUntilIdle()
         viewModel.onFavouriteIconClick(media)
 
         coVerify(exactly = 1) { deleteTvShowRatingUseCase(2) }
@@ -159,6 +162,7 @@ class MyRatingViewModelTest {
     fun `onTabSelected should not reload when selecting same tab`() = runTest {
         coEvery { getRatedMediaUseCase(any(), any()) } returns fakeMediaList
 
+        advanceUntilIdle()
         viewModel.onTabSelected(MediaTypeUi.MOVIE)
 
         coVerify(exactly = 1) { getRatedMediaUseCase(any(), any()) }
@@ -179,9 +183,9 @@ class MyRatingViewModelTest {
         coEvery { deleteTvShowRatingUseCase(5) } throws RuntimeException("Delete failed")
 
         // When
+        advanceUntilIdle()
         viewModel.onFavouriteIconClick(media)
 
-        advanceUntilIdle()
 
         println("Final state: ${viewModel.screenState.value}")
 
@@ -203,7 +207,7 @@ class MyRatingViewModelTest {
             title = "Movie 1",
             type = MediaType.MOVIE,
             imageUri = "/abc.jpg",
-            categoryIds = listOf(28),
+            categories = listOf(Category.ACTION),
             yearOfRelease = LocalDate(2022, 1, 1),
             rating = 8.5
         )

@@ -10,9 +10,9 @@ import kotlin.test.assertEquals
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Episode
 import com.paris_2.domain.media.entity.EpisodeVideo
-import com.paris_2.domain.media.entity.Genre
 import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
@@ -30,14 +30,14 @@ fun createMedia(
     title: String,
     type: MediaType,
     rating: Double? = 0.0,
-    categories: List<Int> = listOf(),
+    categories: List<Category> = listOf(),
 ): Media {
     return Media(
         id = id,
         imageUri = "image.com",
         title = title,
         type = type,
-        categoryIds = categories,
+        categories = categories,
         yearOfRelease = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
         rating = rating,
     )
@@ -59,12 +59,12 @@ val sampleCountries = listOf(
 val sampleDate = LocalDate(2020, 1, 1)
 val defaultImage = "example.jpg"
 
-fun media(id: Int, title: String, categories: List<Int>) = Media(
+fun media(id: Int, title: String, categories: List<Category>) = Media(
     id = id,
     imageUri = defaultImage,
     title = title,
     type = MediaType.MOVIE,
-    categoryIds = categories,
+    categories = categories,
     yearOfRelease = sampleDate,
     rating = 7.0
 )
@@ -73,17 +73,17 @@ fun assertIds(actual: List<Media>, vararg expectedIds: Int) {
     assertEquals(expectedIds.toList(), actual.map { it.id })
 }
 
-val fakeGenres = listOf(
-    Genre(1, "Drama"),
-    Genre(2, "Comedy"),
-    Genre(3, "Action"),
-    Genre(4, "Crime"),
-    Genre(5, "Fantasy"),
-    Genre(6, "Horror"),
-    Genre(7, "Sci-Fi"),
-    Genre(8, "Romance"),
-    Genre(9, "Thriller"),
-    Genre(10, "Mystery")
+val fakeCategories = listOf(
+    Category.DRAMA,
+    Category.COMEDY,
+    Category.ACTION,
+    Category.CRIME,
+    Category.FANTASY,
+    Category.HORROR,
+    Category.SCIFI_FANTASY,
+    Category.ROMANCE,
+    Category.THRILLER,
+    Category.MYSTERY
 )
 
 
@@ -314,7 +314,7 @@ val fakeTvShow = TvShow(
     voteAverage = 9.5,
     description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
     posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
-    genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
+    categories = listOf(fakeCategories[0], fakeCategories[3], fakeCategories[8]),
     releaseDate = LocalDate(year = 1994, month = 10, day = 14),
     runtime = 47,
     country = "US",
@@ -330,7 +330,7 @@ val fakeTvShows = listOf(
         voteAverage = 9.5,
         description = "A high school chemistry teacher diagnosed with inoperable lung cancer turns to manufacturing and selling methamphetamine.",
         posterPath = "https://image.tmdb.org/t/p/w500/3xnWaLQjelJDDF7LT1WBo6f4BRe.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[3], fakeGenres[8]),
+        categories = listOf(fakeCategories[0], fakeCategories[3], fakeCategories[8]),
         releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 47,
         country = "US",
@@ -343,7 +343,7 @@ val fakeTvShows = listOf(
         voteAverage = 9.2,
         description = "Nine noble families fight for control over the lands of Westeros, while an ancient enemy returns after being dormant for millennia.",
         posterPath = "https://image.tmdb.org/t/p/w500/u3bZgnGQ9T01sWNhyveQz0wH0Hl.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[2]),
+        categories = listOf(fakeCategories[0], fakeCategories[4], fakeCategories[2]),
         releaseDate =LocalDate(year = 1994, month = 10, day = 14),
         runtime = 57,
         country = "US",
@@ -356,7 +356,7 @@ val fakeTvShows = listOf(
         voteAverage = 8.7,
         description = "When a young boy disappears, his mother, a police chief and his friends must confront terrifying supernatural forces.",
         posterPath = "https://image.tmdb.org/t/p/w500/49WJfeN0moxb9IPfGn8AIqMGskD.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[5], fakeGenres[6]),
+        categories = listOf(fakeCategories[0], fakeCategories[5], fakeCategories[6]),
         releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 51,
         country = "US",
@@ -369,7 +369,7 @@ val fakeTvShows = listOf(
         voteAverage = 8.9,
         description = "A mockumentary on a group of typical office workers, where the workday consists of ego clashes, inappropriate behavior, and tedium.",
         posterPath = "https://image.tmdb.org/t/p/w500/7DJKHzAi83PmGuHjrEfQ1S9y4LF.jpg",
-        genres = listOf(fakeGenres[1]),
+        categories = listOf(fakeCategories[1]),
         releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 22,
         country = "US",
@@ -382,7 +382,7 @@ val fakeTvShows = listOf(
         voteAverage = 9.1,
         description = "A modern update finds the famous sleuth and his doctor partner solving crime in 21st century London.",
         posterPath = "https://image.tmdb.org/t/p/w500/7WTsnHkbA0FaG6R9twfFde0I9hl.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[9], fakeGenres[3]),
+        categories = listOf(fakeCategories[0], fakeCategories[9], fakeCategories[3]),
         releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 90,
         country = "GB",
@@ -440,7 +440,7 @@ val fakeMovie = Movie(
     voteAverage = 8.9,
     description = "The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.",
     posterPath = "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
-    genres = listOf(fakeGenres[1], fakeGenres[6]),
+    categories = listOf(fakeCategories[1], fakeCategories[6]),
     releaseDate = LocalDate(year = 1994, month = 10, day = 14),
     runtime = 154,
     country = "US",
@@ -453,7 +453,7 @@ val fakeMovies = listOf(
         voteAverage = 9.0,
         description = "Batman raises the stakes in his war on crime with the help of Lt. Jim Gordon and District Attorney Harvey Dent.",
         posterPath = "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[1], fakeGenres[6]),
+        categories = listOf(fakeCategories[0], fakeCategories[1], fakeCategories[6]),
         releaseDate = LocalDate(year = 2008, month = 10, day = 14),
         runtime = 152,
         country = "US",
@@ -465,7 +465,7 @@ val fakeMovies = listOf(
         voteAverage = 8.8,
         description = "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea.",
         posterPath = "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
-        genres = listOf(fakeGenres[0], fakeGenres[4], fakeGenres[6]),
+        categories = listOf(fakeCategories[0], fakeCategories[4], fakeCategories[6]),
         releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 148,
         country = "GB",
@@ -477,7 +477,7 @@ val fakeMovies = listOf(
         voteAverage = 8.9,
         description = "The lives of two mob hitmen, a boxer, a gangster and his wife intertwine in four tales of violence and redemption.",
         posterPath = "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
-        genres = listOf(fakeGenres[1], fakeGenres[6]),
+        categories = listOf(fakeCategories[1], fakeCategories[6]),
         releaseDate = LocalDate(year = 1994, month = 10, day = 14),
         runtime = 154,
         country = "US",

@@ -4,6 +4,7 @@ import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.repository.media.dto.search.KnownForDto
 import com.repository.media.dto.search.ResultDto
+import com.repository.media.mapper.intListToCategoryList
 import kotlinx.datetime.LocalDate
 
 fun KnownForDto.toMedia(): Media? {
@@ -19,7 +20,7 @@ fun KnownForDto.toMedia(): Media? {
                 "tv" -> MediaType.TVSHOW
                 else -> return null
             },
-            categoryIds = this.genreIds ?: emptyList(),
+            categories = this.genreIds.intListToCategoryList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage
         )
@@ -42,7 +43,7 @@ fun ResultDto.toMedia(): Media? {
                 "tv" -> MediaType.TVSHOW
                 else -> MediaType.MOVIE
             },
-            categoryIds = this.genreIds ?: emptyList(),
+            categories = this.genreIds.intListToCategoryList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage
         )

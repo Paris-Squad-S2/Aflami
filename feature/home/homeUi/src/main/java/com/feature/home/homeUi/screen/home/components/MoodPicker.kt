@@ -35,6 +35,7 @@ import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.domain.media.entity.Category
 
 @Composable
 fun MoodPicker(
@@ -177,13 +178,13 @@ private fun MoodPickerDarkThemePreview() {
 }
 
 
-enum class MoodType(val tags: List<String>){
-    SAD(listOf("Comedy")),
-    NEUTRAL(listOf("Documentary","Mystery")),
-    ROMANTIC(listOf("Romance","Musical")),
-    ANGRY(listOf("Comedy","Animation","Family")),
-    DEPRESSED(listOf("Drama","Animation")),
-    SAD_DIZZY(listOf("Adventure","Fantasy","Sci-Fi"))
+enum class MoodType(val tags: List<Category>){
+    SAD(listOf(Category.COMEDY)),
+    NEUTRAL(listOf(Category.DOCUMENTARY, Category.MYSTERY)),
+    ROMANTIC(listOf(Category.ROMANCE, Category.MUSIC)),
+    ANGRY(listOf(Category.COMEDY, Category.ANIMATION, Category.FAMILY)),
+    DEPRESSED(listOf(Category.DRAMA, Category.ANIMATION)),
+    SAD_DIZZY(listOf(Category.ADVENTURE, Category.FANTASY, Category.SCIFI_FANTASY))
 }
 
 private val MoodPickerList = listOf(

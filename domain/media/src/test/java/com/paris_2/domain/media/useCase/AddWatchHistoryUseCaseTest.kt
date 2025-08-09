@@ -1,5 +1,6 @@
 package com.paris_2.domain.media.useCase
 
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.repository.MediaRepository
@@ -21,7 +22,7 @@ class AddWatchHistoryUseCaseTest {
             rating = 8.5,
             imageUri = "img.jpg",
             yearOfRelease = LocalDate(2023, 1, 1),
-            categoryIds = listOf(28, 18),
+            categories = listOf(Category.ACTION, Category.ADVENTURE),
             type = MediaType.MOVIE
         )
         addWatchHistoryUseCase(media)

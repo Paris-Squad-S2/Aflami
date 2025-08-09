@@ -264,14 +264,14 @@ fun FABButton() {
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
-                        AppIcon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null, tint = Theme.colors.text.title)
                     },
                     type = ButtonType.FloatingActionButton,
                 )
                 CustomButton(
                     modifier = Modifier.size(64.dp),
                     onClick = { },
-                    icon = { AppIcon(Icons.Default.Add, null) },
+                    icon = { AppIcon(Icons.Default.Add, null, tint = Theme.colors.text.title) },
                     type = ButtonType.FloatingActionButton,
                     state = ButtonState.Loading
                 )
@@ -279,7 +279,7 @@ fun FABButton() {
                     modifier = Modifier.size(64.dp),
                     onClick = { },
                     icon = {
-                        AppIcon(Icons.Default.Add, null)
+                        AppIcon(Icons.Default.Add, null, tint = Theme.colors.text.title)
                     },
                     type = ButtonType.FloatingActionButton,
                     state = ButtonState.Disabled

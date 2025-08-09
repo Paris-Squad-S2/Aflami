@@ -83,9 +83,9 @@ class GetAllCategoriesUseCaseTest {
 
     companion object {
         private val sampleCategories = listOf(
-            Category(id = 1, name = "Romance"),
-            Category(id = 2, name = "Science Fiction"),
-            Category(id = 3, name = "Family")
+            Category.ACTION,
+            Category.DRAMA,
+            Category.COMEDY
         )
     }
 }

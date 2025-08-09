@@ -243,7 +243,7 @@ fun HomeScreenContent(
                         val category = state.homeUIState.categories.keys.elementAt(index)
                         Chips(
                             title = category.name,
-                            icon = ImageVector.vectorResource(getResourceId(category.id)),
+                            icon = ImageVector.vectorResource(getResourceId(category)),
                             isSelected = state.homeUIState.categories[category] ?: false,
                             onClick = {
                                 isAllCategories = false

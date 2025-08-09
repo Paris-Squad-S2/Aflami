@@ -6,6 +6,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
@@ -114,7 +115,7 @@ class FindByActorViewModelTest {
                 imageUri = "",
                 title = "Cast Away",
                 type = MediaType.MOVIE,
-                categoryIds = listOf(12, 11),
+                categories = listOf(Category.ACTION, Category.ADVENTURE),
                 yearOfRelease = LocalDate(2023, 1, 1),
                 rating = 2.3,
             ),
@@ -123,7 +124,7 @@ class FindByActorViewModelTest {
                 imageUri = "",
                 title = "Forrest Gump",
                 type = MediaType.MOVIE,
-                categoryIds = listOf(12, 11),
+                categories = listOf(Category.ACTION, Category.ADVENTURE),
                 yearOfRelease = LocalDate(2023, 1, 1),
                 rating = 2.7,
             ),
@@ -190,7 +191,7 @@ class FindByActorViewModelTest {
             imageUri = "",
             title = "Test Movie",
             type = MediaTypeUi.MOVIE,
-            categories = listOf(1, 2),
+            categories = listOf(Category.ACTION, Category.ADVENTURE),
             yearOfRelease = LocalDate(2023, 1, 1),
             rating = 4.5,
         )

@@ -13,9 +13,10 @@ class GetMoviesCategoriesUseCaseTest {
     private val useCase = GetMoviesCategoriesUseCase(repository)
 
     private val fakeCategories = listOf(
-        Category(id = 28, name = "Action"),
-        Category(id = 18, name = "Drama"),
-        Category(id = 35, name = "Comedy")
+        Category.ACTION,
+        Category.ADVENTURE,
+        Category.ANIMATION,
+        Category.COMEDY
     )
 
     @Test

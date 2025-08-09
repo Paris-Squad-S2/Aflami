@@ -20,10 +20,8 @@ import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SearchByQueryUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
-import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -67,7 +65,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/movie1.jpg",
         title = "The Great Adventure",
         type = MediaType.MOVIE,
-        categoryIds = listOf(1, 3), // Action, Adventure
+        categories = listOf(Category.ACTION, Category.ANIMATION), // Action, Adventure
         yearOfRelease = LocalDate(2022, 10, 26),
         rating = 8.5
     )
@@ -77,7 +75,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/movie2.jpg",
         title = "Comedy Night",
         type = MediaType.MOVIE,
-        categoryIds = listOf(2),
+        categories = listOf(Category.ADVENTURE),
         yearOfRelease = LocalDate(2023, 3, 15),
         rating = 6.8
     )
@@ -87,7 +85,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/tvshow1.jpg",
         title = "Space Explorers",
         type = MediaType.TVSHOW,
-        categoryIds = listOf(4),
+        categories = listOf(Category.COMEDY),
         yearOfRelease = LocalDate(2021, 1, 10),
         rating = 9.1
     )
@@ -97,7 +95,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/tvshow2.jpg",
         title = "Mystery Lane",
         type = MediaType.TVSHOW,
-        categoryIds = listOf(5),
+        categories = listOf(Category.KIDS),
         yearOfRelease = LocalDate(2024, 6, 1),
         rating = 7.9
     )
@@ -110,11 +108,12 @@ class SearchViewModelTest {
         searchTitle = "Inception", searchDate = "2023-11-15", SearchType.Query
     )
 
-    private val mockCategory1 = Category(id = 1, name = "Action")
-    private val mockCategory2 = Category(id = 2, name = "Comedy")
-    private val mockCategory3 = Category(id = 3, name = "Adventure")
-    private val mockCategory4 = Category(id = 4, name = "Sci-Fi")
-    private val mockCategory5 = Category(id = 5, name = "Thriller")
+    private val mockCategory1 = Category.ACTION
+    private val mockCategory2 = Category.COMEDY
+    private val mockCategory3 = Category.ADVENTURE
+    private val mockCategory4 = Category.SCIFI_FANTASY
+    private val mockCategory5 = Category.THRILLER
+
 
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -317,9 +316,11 @@ class SearchViewModelTest {
                     filteredTvShowsResult = flowOf(PagingData.from(initialTvShows.toMediaUiList())),
                     showFilterDialog = true,
                     categories = mapOf(
-                        mockCategory1.toUi() to true, mockCategory2.toUi() to true,
-                        mockCategory3.toUi() to true, mockCategory4.toUi() to true,
-                        mockCategory5.toUi() to true
+                        mockCategory1 to true,
+                        mockCategory2 to true,
+                        mockCategory3 to true,
+                        mockCategory4 to true,
+                        mockCategory5 to true
                     ),
                     isAllCategories = false
                 )
@@ -350,20 +351,20 @@ class SearchViewModelTest {
         } returns filteredByRatingTvShows
         every {
             filterMedByListOfCategoriesUseCase(
-                selectedCategories.map { it.id },
+                selectedCategories,
                 filteredByRatingMovies
             )
         } returns finalFilteredMovies
         every {
             filterMedByListOfCategoriesUseCase(
-                selectedCategories.map { it.id },
+                selectedCategories,
                 filteredByRatingTvShows
             )
         } returns finalFilteredTvShows
 
         viewModel.onApplyFilterButtonClick(
             selectedRating = selectedRating,
-            selectedCategories = selectedCategories.toCategoryUiList(),
+            selectedCategories = selectedCategories,
             isAllCategories = false
         )
         advanceUntilIdle()
@@ -405,7 +406,7 @@ class SearchViewModelTest {
 
         viewModel.onApplyFilterButtonClick(
             selectedRating,
-            selectedCategories = selectedCategories.toCategoryUiList(),
+            selectedCategories = selectedCategories,
             isAllCategories = false
         )
         advanceUntilIdle()
@@ -427,8 +428,8 @@ class SearchViewModelTest {
                     showFilterDialog = true,
                     selectedRating = 8.0f,
                     categories = mapOf(
-                        mockCategory1.toUi() to true,
-                        mockCategory2.toUi() to false
+                        mockCategory1 to true,
+                        mockCategory2 to false
                     ),
                     moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
                     tvShowsResult = flowOf(PagingData.from(initialTvShows.toMediaUiList())),
@@ -595,7 +596,7 @@ class SearchViewModelTest {
             )
             every { filterMediaByRatingUseCase(any(), any()) } returns initialMovies
             every { filterMedByListOfCategoriesUseCase(emptyList(), any()) } returns emptyList()
-            viewModel.onApplyFilterButtonClick(7.0f, false, listOf(mockCategory1.toUi()))
+            viewModel.onApplyFilterButtonClick(7.0f, false, listOf(mockCategory1))
             advanceUntilIdle()
             val items =
                 viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
@@ -610,14 +611,14 @@ class SearchViewModelTest {
                 searchUiState = viewModel.screenState.value.searchUiState.copy(
                     moviesResult = flowOf(PagingData.from(initialMovies.toMediaUiList())),
                     showFilterDialog = true,
-                    categories = mapOf(mockCategory1.toUi() to true),
+                    categories = mapOf(mockCategory1 to true),
                     isAllCategories = false
                 )
             )
         )
         every { filterMediaByRatingUseCase(99.9f, any()) } returns emptyList()
         every { filterMedByListOfCategoriesUseCase(any(), emptyList()) } returns emptyList()
-        viewModel.onApplyFilterButtonClick(99.9f, false, listOf(mockCategory1.toUi()))
+        viewModel.onApplyFilterButtonClick(99.9f, false, listOf(mockCategory1))
         advanceUntilIdle()
         val items = viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
         assertThat(items).isEmpty()
@@ -652,7 +653,7 @@ class SearchViewModelTest {
                 imageUri = mockMovie1.imageUri,
                 title = mockMovie1.title,
                 type = MediaTypeUi.MOVIE,
-                categories = mockMovie1.categoryIds,
+                categories = mockMovie1.categories,
                 yearOfRelease = mockMovie1.yearOfRelease,
                 rating = mockMovie1.rating
             )
@@ -675,7 +676,7 @@ class SearchViewModelTest {
                 imageUri = mockTvShow1.imageUri,
                 title = mockTvShow1.title,
                 type = MediaTypeUi.TVSHOW,
-                categories = mockTvShow1.categoryIds,
+                categories = mockTvShow1.categories,
                 yearOfRelease = mockTvShow1.yearOfRelease,
                 rating = mockTvShow1.rating
             )

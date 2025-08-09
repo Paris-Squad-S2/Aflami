@@ -42,13 +42,13 @@ class CategoriesRepositoryImplTest {
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         coEvery { genresRemoteDataSource.getMoviesGenres(language) } returns GenresDto(
-            genreDto = listOf(GenreDto(2, "Drama"))
+            genreDto = listOf(GenreDto(18, "Drama"))
         )
 
         // When
         val result = repository.getAllCategories()
 
-        assertEquals(listOf(Category(2, "Drama")), result)
+        assertEquals(listOf(Category.DRAMA), result)
     }
 
     @Test

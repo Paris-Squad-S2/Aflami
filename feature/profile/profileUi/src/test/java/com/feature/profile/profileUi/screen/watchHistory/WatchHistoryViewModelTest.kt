@@ -4,6 +4,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.useCase.FilterWatchHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -184,7 +185,7 @@ class WatchHistoryViewModelTest {
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
         rating = rating,
-        categoryIds = listOf(1),
+        categories = listOf(Category.ACTION),
         type = when (type) {
             MediaTypeUi.MOVIE -> DomainMediaType.MOVIE
             MediaTypeUi.TVSHOW -> DomainMediaType.TVSHOW

@@ -7,7 +7,7 @@ import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.repository.MoviesCategoriesRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
-import com.repository.media.mapper.toCategoryList
+import com.repository.media.mapper.genreListToCategoryList
 import com.repository.media.util.NetworkConnectionChecker
 import kotlinx.coroutines.flow.first
 
@@ -20,7 +20,7 @@ class MoviesCategoriesRepositoryImpl(
         val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoCategoriesFoundException()) {
             val genresDto = genresRemoteDataSource.getMoviesGenres(language)
-            val categories = genresDto.toCategoryList()
+            val categories = genresDto.genreListToCategoryList()
             if (categories.isEmpty()) {
                 throw NoCategoriesFoundException()
             }

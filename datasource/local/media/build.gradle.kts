@@ -45,30 +45,16 @@ dependencies {
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    // kotlin date time
-    implementation(libs.kotlinx.datetime)
+    implementation(libs.bundles.datetime)
 
-    //kotlinx serialization
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.serialization)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
-    //work manager for kotlin
-    implementation(libs.work.runtime.ktx)
+    implementation(libs.bundles.workManager)
 
-    // test
-    testImplementation(libs.androidx.room.testing)
-    testImplementation(libs.mockk)
-    implementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.kotlin.test.junit5)
-
+    testImplementation(libs.bundles.test)
     implementation(project(Modules.REPOSITORY_MEDIA))
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()

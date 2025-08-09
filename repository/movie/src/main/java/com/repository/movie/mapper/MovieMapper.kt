@@ -1,7 +1,7 @@
 package com.repository.movie.mapper
 
 import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.Genre
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
@@ -28,11 +28,8 @@ import com.repository.movie.models.remote.MovieVideoResultDto
 import com.repository.movie.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
-fun MovieGenreDto.toEntity(): Genre {
-    return Genre(
-        id = this.id ?: 0,
-        name = this.name.orEmpty()
-    )
+fun MovieGenreDto.toEntity(): Category {
+    return id?.toGenre() ?: Category.UNKNOWN
 }
 
 private fun MovieGenreDto.toLocalDto(): GenreEntity {
@@ -128,7 +125,7 @@ fun MovieEntity.toEntity(): Movie {
         voteAverage = this.voteAverage,
         description = this.description,
         posterPath = this.posterPath,
-        genres = this.genres.map { it.toEntity() },
+        categories = this.genres.map { it.toEntity() },
         releaseDate = LocalDate.parse(this.releaseDate),
         runtime = this.runtime,
         country = this.country,
@@ -225,11 +222,8 @@ fun MovieSimilar.toLocalDto(movieId: Int, pager: Int, language: String): MovieSi
     )
 }
 
-fun GenreEntity.toEntity(): Genre {
-    return Genre(
-        id = this.id,
-        name = this.name
-    )
+fun GenreEntity.toEntity(): Category {
+    return id.toGenre()
 }
 
 fun MovieProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
@@ -248,4 +242,40 @@ fun ProductionCompanyEntity.toEntity(): ProductionCompany {
         name = this.name,
         originCountry = this.originCountry
     )
+}
+
+private val idToCategoryMap = mapOf(
+    28 to Category.ACTION,
+    12 to Category.ADVENTURE,
+    16 to Category.ANIMATION,
+    35 to Category.COMEDY,
+    80 to Category.CRIME,
+    99 to Category.DOCUMENTARY,
+    18 to Category.DRAMA,
+    10751 to Category.FAMILY,
+    14 to Category.FANTASY,
+    36 to Category.HISTORY,
+    27 to Category.HORROR,
+    10402 to Category.MUSIC,
+    9648 to Category.MYSTERY,
+    10749 to Category.ROMANCE,
+    878 to Category.SCIENCE_FICTION,
+    10770 to Category.TV_MOVIE,
+    53 to Category.THRILLER,
+    10752 to Category.WAR,
+    37 to Category.WESTERN,
+    10759 to Category.ACTION_ADVENTURE,
+    10762 to Category.KIDS,
+    10763 to Category.NEWS,
+    10764 to Category.REALITY,
+    10765 to Category.SCIFI_FANTASY,
+    10766 to Category.SOAP,
+    10767 to Category.TALK,
+    10768 to Category.WAR_POLITICS
+)
+
+fun Int.toGenre(): Category = idToCategoryMap[this] ?: Category.UNKNOWN
+
+fun Category.toId(): Int {
+    return idToCategoryMap.entries.firstOrNull { it.value == this }?.key ?: -1
 }
