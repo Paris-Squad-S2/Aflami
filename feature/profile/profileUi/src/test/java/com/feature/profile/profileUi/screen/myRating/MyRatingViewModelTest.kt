@@ -14,13 +14,15 @@ import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
-import org.junit.Before
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
-import kotlin.test.Test
 
+@ExperimentalCoroutinesApi
 class MyRatingViewModelTest {
 
     private val getRatedMediaUseCase: FilterRatedMediaUseCase = mockk()
@@ -32,7 +34,7 @@ class MyRatingViewModelTest {
     private val profileNavigator: ProfileNavigator = mockk(relaxed = true)
     private lateinit var viewModel: MyRatingViewModel
 
-    @Before
+    @BeforeEach
     fun setUp() {
         coEvery { getSessionIdUseCase() } returns "session123"
         coEvery { getAccountIdUseCase() } returns 1

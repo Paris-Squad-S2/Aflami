@@ -99,3 +99,7 @@ dependencies {
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
 }
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
