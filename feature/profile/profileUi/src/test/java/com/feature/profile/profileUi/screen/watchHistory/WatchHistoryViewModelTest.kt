@@ -184,7 +184,7 @@ class WatchHistoryViewModelTest {
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
         rating = rating,
-        categoryIds = listOf(1),
+        categories = listOf(1),
         type = when (type) {
             MediaTypeUi.MOVIE -> DomainMediaType.MOVIE
             MediaTypeUi.TVSHOW -> DomainMediaType.TVSHOW

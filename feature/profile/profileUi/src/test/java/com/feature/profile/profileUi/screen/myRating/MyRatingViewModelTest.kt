@@ -201,7 +201,7 @@ class MyRatingViewModelTest {
             title = "Movie 1",
             type = MediaType.MOVIE,
             imageUri = "/abc.jpg",
-            categoryIds = listOf(28),
+            categories = listOf(28),
             yearOfRelease = LocalDate(2022, 1, 1),
             rating = 8.5
         )

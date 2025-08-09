@@ -30,7 +30,7 @@ class GenresInteractionRepositoryImplTest {
 
     @Test
     fun `upsertInteraction should call dataSource with mapped entity`() = runTest {
-        val model = GenreUserInteraction(genreId = 3, interactionCount = 7)
+        val model = GenreUserInteraction(category = 3, interactionCount = 7)
         val entity = GenreUserInteractionEntity(genreId = 3, interactionCount = 7)
         coJustRun { dataSource.upsertGenresInteraction(entity) }
         every { model.toCategoryUserInteractionEntity() } returns entity

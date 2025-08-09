@@ -28,7 +28,7 @@ class GetPopularMediaUseCaseTest {
             rating = 8.4,
             imageUri = "pop1.jpg",
             yearOfRelease = LocalDate(2023, 6, 6),
-            categoryIds = listOf(35),
+            categories = listOf(35),
             type = MediaType.MOVIE
         ),
         Media(
@@ -37,7 +37,7 @@ class GetPopularMediaUseCaseTest {
             rating = 7.9,
             imageUri = "pop2.jpg",
             yearOfRelease = LocalDate(2022, 11, 11),
-            categoryIds = listOf(18),
+            categories = listOf(18),
             type = MediaType.TVSHOW
         )
     )

@@ -22,7 +22,7 @@ fun MovieDto.toDomain(type: MediaType): Media? {
         rating = voteAverage ?: 0.0,
         imageUri = imageUrl.orEmpty(),
         yearOfRelease = parsedDate,
-        categoryIds = genreIds ?: emptyList(),
+        categories = genreIds.intListToCategoryList(),
         type = type
     )
 }
@@ -37,7 +37,7 @@ fun TvDto.toDomain(type: MediaType): Media? {
         rating = voteAverage ?: 0.0,
         imageUri = imageUrl.orEmpty(),
         yearOfRelease = parsedDate,
-        categoryIds = genreIds ?: emptyList(),
+        categories = genreIds.intListToCategoryList(),
         type = type
     )
 }
@@ -49,7 +49,7 @@ fun MediaEntity.toDomain(): Media {
         rating = this.voteAverage,
         imageUri = this.posterPath,
         yearOfRelease = LocalDate.parse(this.releaseDate),
-        categoryIds = this.genreIds,
+        categories = this.genreIds.intListToCategoryList(),
         type = this.type.toDomain()
     )
 }
@@ -70,7 +70,7 @@ fun HomeMediaEntity.toDomain(): Media? {
         title = title,
         rating = voteAverage ?: 0.0,
         yearOfRelease = parsedDate,
-        categoryIds = genreIds,
+        categories = genreIds.intListToCategoryList(),
         type = type.toDomain()
     )
 }
@@ -81,7 +81,7 @@ fun Media.toMediaEntity(category: Category, language: String): HomeMediaEntity =
     voteAverage = rating,
     posterPath = imageUri,
     releaseDate = yearOfRelease.toString(),
-    genreIds = categoryIds,
+    genreIds = categories.toIdList(),
     type = type.toEntity(),
     category = category,
     language = language
@@ -93,7 +93,7 @@ fun Media.toEntity(): MediaEntity = MediaEntity(
     voteAverage = rating,
     posterPath = imageUri,
     releaseDate = yearOfRelease.toString(),
-    genreIds = categoryIds,
+    genreIds = categories.toIdList(),
     type = type.toEntity()
 )
 
@@ -109,7 +109,7 @@ fun MovieResult.toDomain(type: MediaType): Media? {
         imageUri = posterPath.toImageUrl().orEmpty(),
         title = title.orEmpty(),
         type = type,
-        categoryIds = genreIds,
+        categories = genreIds.intListToCategoryList(),
         yearOfRelease = parsedDate,
         rating = rating ?: 0.0
     )
@@ -122,7 +122,7 @@ fun TvShowResult.toDomain(type: MediaType): Media? {
         imageUri = poster_path.toImageUrl().orEmpty(),
         title = name,
         type = type,
-        categoryIds = genre_ids,
+        categories = genre_ids.intListToCategoryList(),
         yearOfRelease = parsedDate,
         rating = vote_average
     )

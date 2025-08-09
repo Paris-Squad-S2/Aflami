@@ -43,7 +43,7 @@ class TopRatingMoviesViewModelTest {
         rating = rating,
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        categoryIds = listOf(1),
+        categories = listOf(1),
         type = when (type) {
             MediaTypeUi.MOVIE -> DomainMediaType.MOVIE
             MediaTypeUi.TVSHOW -> DomainMediaType.TVSHOW

@@ -31,7 +31,7 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
         rating = 7.5,
         imageUri = "path1.jpg",
         yearOfRelease = LocalDate(2023, 5, 1),
-        categoryIds = listOf(28),
+        categories = listOf(28),
         type = MediaType.MOVIE
     )
 
@@ -41,7 +41,7 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
         rating = 7.2,
         imageUri = "path2.jpg",
         yearOfRelease = LocalDate(2022, 10, 10),
-        categoryIds = listOf(35),
+        categories = listOf(35),
         type = MediaType.MOVIE
     )
 }

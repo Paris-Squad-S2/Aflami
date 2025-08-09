@@ -37,7 +37,7 @@ fun createMedia(
         imageUri = "image.com",
         title = title,
         type = type,
-        categoryIds = categories,
+        categories = categories,
         yearOfRelease = Clock.System.now().toLocalDateTime(TimeZone.UTC).date,
         rating = rating,
     )
@@ -64,7 +64,7 @@ fun media(id: Int, title: String, categories: List<Int>) = Media(
     imageUri = defaultImage,
     title = title,
     type = MediaType.MOVIE,
-    categoryIds = categories,
+    categories = categories,
     yearOfRelease = sampleDate,
     rating = 7.0
 )

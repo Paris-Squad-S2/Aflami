@@ -7,7 +7,7 @@ import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
-import com.repository.media.mapper.toCategoryList
+import com.repository.media.mapper.genreListToCategoryList
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.every
@@ -47,7 +47,7 @@ class MoviesCategoriesRepositoryImplTest {
         coEvery { genresRemoteDataSource.getMoviesGenres("en-US") } returns genresDto
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
 
-        assertThat(genresDto.toCategoryList()).isEqualTo(categories)
+        assertThat(genresDto.genreListToCategoryList()).isEqualTo(categories)
     }
 
     @Test
@@ -55,7 +55,7 @@ class MoviesCategoriesRepositoryImplTest {
         val genresDto = mockk<GenresDto>(relaxed = true)
         coEvery { genresRemoteDataSource.getMoviesGenres(any()) } returns genresDto
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        every { genresDto.toCategoryList() } returns emptyList()
+        every { genresDto.genreListToCategoryList() } returns emptyList()
 
         assertThrows<NoCategoriesFoundException> {
             repo.getMoviesCategories()

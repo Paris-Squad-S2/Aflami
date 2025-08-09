@@ -23,7 +23,6 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
-import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
@@ -67,7 +66,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/movie1.jpg",
         title = "The Great Adventure",
         type = MediaType.MOVIE,
-        categoryIds = listOf(1, 3), // Action, Adventure
+        categories = listOf(1, 3), // Action, Adventure
         yearOfRelease = LocalDate(2022, 10, 26),
         rating = 8.5
     )
@@ -77,7 +76,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/movie2.jpg",
         title = "Comedy Night",
         type = MediaType.MOVIE,
-        categoryIds = listOf(2),
+        categories = listOf(2),
         yearOfRelease = LocalDate(2023, 3, 15),
         rating = 6.8
     )
@@ -87,7 +86,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/tvshow1.jpg",
         title = "Space Explorers",
         type = MediaType.TVSHOW,
-        categoryIds = listOf(4),
+        categories = listOf(4),
         yearOfRelease = LocalDate(2021, 1, 10),
         rating = 9.1
     )
@@ -97,7 +96,7 @@ class SearchViewModelTest {
         imageUri = "http://image.url/tvshow2.jpg",
         title = "Mystery Lane",
         type = MediaType.TVSHOW,
-        categoryIds = listOf(5),
+        categories = listOf(5),
         yearOfRelease = LocalDate(2024, 6, 1),
         rating = 7.9
     )
@@ -652,7 +651,7 @@ class SearchViewModelTest {
                 imageUri = mockMovie1.imageUri,
                 title = mockMovie1.title,
                 type = MediaTypeUi.MOVIE,
-                categories = mockMovie1.categoryIds,
+                categories = mockMovie1.categories,
                 yearOfRelease = mockMovie1.yearOfRelease,
                 rating = mockMovie1.rating
             )
@@ -675,7 +674,7 @@ class SearchViewModelTest {
                 imageUri = mockTvShow1.imageUri,
                 title = mockTvShow1.title,
                 type = MediaTypeUi.TVSHOW,
-                categories = mockTvShow1.categoryIds,
+                categories = mockTvShow1.categories,
                 yearOfRelease = mockTvShow1.yearOfRelease,
                 rating = mockTvShow1.rating
             )

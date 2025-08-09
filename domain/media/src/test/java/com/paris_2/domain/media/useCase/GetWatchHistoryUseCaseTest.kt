@@ -28,7 +28,7 @@ class GetWatchHistoryUseCaseTest {
             rating = 8.1,
             imageUri = "a.jpg",
             yearOfRelease = LocalDate(2022, 2, 2),
-            categoryIds = listOf(28),
+            categories = listOf(28),
             type = MediaType.MOVIE
         ),
         Media(
@@ -37,7 +37,7 @@ class GetWatchHistoryUseCaseTest {
             rating = 7.7,
             imageUri = "b.jpg",
             yearOfRelease = LocalDate(2021, 5, 7),
-            categoryIds = listOf(18),
+            categories = listOf(18),
             type = MediaType.TVSHOW
         )
     )

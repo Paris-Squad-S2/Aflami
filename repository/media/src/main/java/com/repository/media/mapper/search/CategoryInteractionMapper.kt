@@ -5,14 +5,14 @@ import com.repository.media.entity.GenreUserInteractionEntity
 
 fun GenreUserInteractionEntity.toCategoryUserInteractionModel(): GenreUserInteraction {
     return GenreUserInteraction(
-        genreId = this.genreId,
+        category = this.genreId.toGenre(),
         interactionCount = this.interactionCount
     )
 }
 
 fun GenreUserInteraction.toCategoryUserInteractionEntity(): GenreUserInteractionEntity {
     return GenreUserInteractionEntity(
-        genreId = this.genreId,
+        genreId = this.category.toId(),
         interactionCount = this.interactionCount
     )
 }

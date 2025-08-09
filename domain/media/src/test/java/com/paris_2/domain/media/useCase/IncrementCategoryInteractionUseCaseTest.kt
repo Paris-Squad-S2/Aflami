@@ -45,7 +45,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(genreId = genreId, interactionCount = 1)
+                GenreUserInteraction(category = genreId, interactionCount = 1)
             )
         }
     }
@@ -76,7 +76,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(genreId = genreId, interactionCount = 6)
+                GenreUserInteraction(category = genreId, interactionCount = 6)
             )
         }
     }
@@ -111,7 +111,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(genreId = 1, interactionCount = 3)
+                GenreUserInteraction(category = 1, interactionCount = 3)
             )
         }
     }
@@ -127,7 +127,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(genreId = 2, interactionCount = 1)
+                GenreUserInteraction(category = 2, interactionCount = 1)
             )
         }
     }
@@ -143,7 +143,7 @@ class IncrementCategoryInteractionUseCaseTest {
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(genreId = 3, interactionCount = 8)
+                GenreUserInteraction(category = 3, interactionCount = 8)
             )
         }
     }

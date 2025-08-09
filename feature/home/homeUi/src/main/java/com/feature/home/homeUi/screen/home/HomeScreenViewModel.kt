@@ -2,7 +2,7 @@ package com.feature.home.homeUi.screen.home
 
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.nameToGenreId
-import com.feature.home.homeUi.mapper.toCategoryUiList
+import com.feature.home.homeUi.mapper.toDisplayName
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
@@ -11,6 +11,7 @@ import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
@@ -91,7 +92,7 @@ class HomeScreenViewModel @Inject constructor(
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            categories = categories.toCategoryUiList().associateWith { false }
+                            categories = categories.associateWith { false }
                                 .toMutableMap()
                         ),
                         isCategoryLoading = false,
@@ -350,19 +351,16 @@ class HomeScreenViewModel @Inject constructor(
         )
     }
 
-    override fun moodPickerSelected(mood: List<String>) {
+    override fun moodPickerSelected(mood: List<Category>) {
         tryToExecute(
             execute = {
                 emitState(
                     screenState.value.copy(
                     )
                 )
-                val moodCategories = mood.map { mood ->
-                    mood.nameToGenreId()
-                }
-                val moodPickerMovies = getTopRatingMediaUseCase.invoke()
+                val moodPickerMovies = getTopRatingMediaUseCase()
                 moodPickerMovies.filter { movie ->
-                    movie.categoryIds.any { moodCategories.contains(it) }
+                    movie.categories.any { mood.contains(it) }
                 }
             },
             onSuccess = { filteredMovies ->
@@ -386,7 +384,7 @@ class HomeScreenViewModel @Inject constructor(
 
     }
 
-    override fun onCategorySelect(category: CategoryUiState) {
+    override fun onCategorySelect(category: Category) {
         tryToExecute(
             execute = {
                 emitState(
@@ -403,7 +401,8 @@ class HomeScreenViewModel @Inject constructor(
                     screenState.value.homeUIState.categories
                         .filter { it.value }
                         .keys
-                        .map { it.id })
+                        .toList()
+                )
             },
             onSuccess = { filteredMovies ->
                 emitState(

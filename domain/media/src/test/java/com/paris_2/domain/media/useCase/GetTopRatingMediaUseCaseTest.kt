@@ -28,7 +28,7 @@ class GetTopRatingMediaUseCaseTest {
             rating = 9.1,
             imageUri = "top1.jpg",
             yearOfRelease = LocalDate(2021, 4, 4),
-            categoryIds = listOf(18),
+            categories = listOf(18),
             type = MediaType.MOVIE
         ),
         Media(
@@ -37,7 +37,7 @@ class GetTopRatingMediaUseCaseTest {
             rating = 8.9,
             imageUri = "top2.jpg",
             yearOfRelease = LocalDate(2020, 7, 7),
-            categoryIds = listOf(35),
+            categories = listOf(35),
             type = MediaType.TVSHOW
         )
     )

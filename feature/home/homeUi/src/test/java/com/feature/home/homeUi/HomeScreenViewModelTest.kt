@@ -123,7 +123,7 @@ class HomeScreenViewModelTest {
         rating = rating,
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        categoryIds = categories.mapNotNull { categoryMap[it] },
+        categories = categories.mapNotNull { categoryMap[it] },
         type = when (type) {
             MOVIE -> DomainMediaType.MOVIE
             TVSHOW -> DomainMediaType.TVSHOW

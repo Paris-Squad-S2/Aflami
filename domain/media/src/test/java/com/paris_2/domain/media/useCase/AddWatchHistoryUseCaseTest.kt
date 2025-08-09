@@ -21,7 +21,7 @@ class AddWatchHistoryUseCaseTest {
             rating = 8.5,
             imageUri = "img.jpg",
             yearOfRelease = LocalDate(2023, 1, 1),
-            categoryIds = listOf(28, 18),
+            categories = listOf(28, 18),
             type = MediaType.MOVIE
         )
         addWatchHistoryUseCase(media)
