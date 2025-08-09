@@ -75,8 +75,7 @@ class MyRatingViewModelTest {
             rating = 5.2,
             yearOfRelease = LocalDate(2022, 1, 1)
         )
-
-
+        advanceUntilIdle()
         viewModel.onMediaCardClick(media)
 
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(123) }
@@ -92,7 +91,7 @@ class MyRatingViewModelTest {
             rating = 7.3,
             yearOfRelease = LocalDate(2023, 5, 1)
         )
-
+        advanceUntilIdle()
         viewModel.onMediaCardClick(media)
 
         coVerify { mediaDetailsFeatureAPI.startTvShowDetails(456) }
