@@ -4,8 +4,8 @@ import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.testUtils.createMedia
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
 
 class FilterMediaByRatingUseCaseTest {
 
@@ -19,38 +19,38 @@ class FilterMediaByRatingUseCaseTest {
     @Test
     fun `should return media with rating greater than or equal to 4_0`() = runTest {
         val result = filterMediaByRatingUseCase(4.0f, mediaListAllAbove4)
-        assertEquals(2, result.size)
+        assertThat(result).hasSize(2)
     }
 
     @Test
     fun `should return correct media with rating greater than or equal to 4_0`() = runTest {
         val result = filterMediaByRatingUseCase(4.0f, mediaListAllAbove4)
-        assertEquals(mediaListAllAbove4, result)
+        assertThat(result).isEqualTo(mediaListAllAbove4)
     }
 
     @Test
     fun `should return media with rating greater than or equal to 4_0 when ratings are mixed`() =
         runTest {
             val result = filterMediaByRatingUseCase(4.0f, mixedRatingsMediaList)
-            assertEquals(3, result.size)
+            assertThat(result.size).isEqualTo(3)
         }
 
     @Test
     fun `should return correct media when ratings are mixed`() = runTest {
         val result = filterMediaByRatingUseCase(4.0f, mixedRatingsMediaList)
-        assertEquals(expectedFromMixed, result)
+        assertThat(result).isEqualTo(expectedFromMixed)
     }
 
     @Test
     fun `should return empty list when all media are below given rating`() = runTest {
         val result = filterMediaByRatingUseCase(5.5f, mixedRatingsMediaList)
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test
     fun `should return empty list when media list is empty`() = runTest {
         val result = filterMediaByRatingUseCase(5.0f, emptyList())
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -64,7 +64,7 @@ class FilterMediaByRatingUseCaseTest {
 
         val result = filterMediaByRatingUseCase(3.0f, mediaWithNullRating)
 
-        assertEquals(mediaWithNullRating[1], result[0])
+        assertThat(result[0]).isEqualTo(mediaWithNullRating[1])
     }
 
     companion object {

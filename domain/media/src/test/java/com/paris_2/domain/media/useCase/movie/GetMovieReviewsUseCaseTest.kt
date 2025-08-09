@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import com.paris_2.domain.media.testUtils.fakeReviews
-import kotlin.test.assertEquals
+import com.google.common.truth.Truth.assertThat
 
 class GetMovieReviewsUseCaseTest {
 
@@ -29,7 +29,7 @@ class GetMovieReviewsUseCaseTest {
         val result = getMovieReviewsUseCase(movieId, page)
 
         // Then
-        assertEquals(fakeReviews, result)
+        assertThat(result).isEqualTo(fakeReviews)
     }
 
     @Test
@@ -53,7 +53,7 @@ class GetMovieReviewsUseCaseTest {
         val result = getMovieReviewsUseCase(movieId, page)
 
         // Then
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test

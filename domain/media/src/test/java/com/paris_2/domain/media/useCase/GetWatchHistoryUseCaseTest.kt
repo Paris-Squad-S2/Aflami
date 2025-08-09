@@ -14,6 +14,13 @@ class GetWatchHistoryUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
     private val useCase = GetWatchHistoryUseCase(mediaRepository)
 
+    @Test
+    fun `invoke returns local media list from repository`() = runTest {
+        coEvery { mediaRepository.getContinueWatchingMedia() } returns fakeMediaList
+        val result = useCase()
+        assertThat(result).isEqualTo(fakeMediaList)
+    }
+
     private val fakeMediaList = listOf(
         Media(
             id = 1,
@@ -34,11 +41,4 @@ class GetWatchHistoryUseCaseTest {
             type = MediaType.TVSHOW
         )
     )
-
-    @Test
-    fun `invoke returns local media list from repository`() = runTest {
-        coEvery { mediaRepository.getContinueWatchingMedia() } returns fakeMediaList
-        val result = useCase()
-        assertThat(result).isEqualTo(fakeMediaList)
-    }
 }

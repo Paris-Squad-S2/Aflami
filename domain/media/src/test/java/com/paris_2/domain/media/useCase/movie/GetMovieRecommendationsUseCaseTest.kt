@@ -1,14 +1,14 @@
 package com.paris_2.domain.media.useCase.movie
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.testUtils.fakeMovieSimilar
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.paris_2.domain.media.testUtils.fakeMovieSimilar
-import kotlin.test.assertEquals
 
 class GetMovieRecommendationsUseCaseTest {
 
@@ -29,7 +29,7 @@ class GetMovieRecommendationsUseCaseTest {
         val result = getMovieRecommendationsUseCase(movieId, page)
 
         // Then
-        assertEquals(fakeMovieSimilar, result)
+        assertThat(result).isEqualTo(fakeMovieSimilar)
     }
 
     @Test
@@ -41,7 +41,7 @@ class GetMovieRecommendationsUseCaseTest {
         val result = getMovieRecommendationsUseCase(movieId, page)
 
         // Then
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test

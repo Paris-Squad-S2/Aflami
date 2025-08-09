@@ -7,7 +7,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
 
 class ClearRecentSearchUseCaseTest {
     private lateinit var searchHistoryRepository: SearchHistoryRepository

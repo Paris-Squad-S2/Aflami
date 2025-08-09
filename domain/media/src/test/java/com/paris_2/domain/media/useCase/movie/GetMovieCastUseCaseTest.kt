@@ -1,5 +1,6 @@
 package com.paris_2.domain.media.useCase.movie
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -7,8 +8,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import com.paris_2.domain.media.testUtils.fakeCast
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
 
 
 class GetMovieCastUseCaseTest {
@@ -29,7 +29,7 @@ class GetMovieCastUseCaseTest {
         val result = getMovieCastUseCase(movieId)
 
         // Then
-        assertEquals(result, fakeCast)
+        assertThat(result).isEqualTo(fakeCast)
 
     }
 
@@ -46,7 +46,7 @@ class GetMovieCastUseCaseTest {
     }
 
     @Test
-    fun `should return empty list when no cast found`() = runTest{
+    fun `should return empty list when no cast found`() = runTest {
         // Given
         coEvery { movieRepository.getMovieCast(movieId) } returns emptyList()
 
@@ -54,7 +54,7 @@ class GetMovieCastUseCaseTest {
         val result = getMovieCastUseCase(movieId)
 
         // Then
-        assertEquals(result, emptyList())
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -68,22 +68,23 @@ class GetMovieCastUseCaseTest {
         // Then
         coVerify(exactly = 1) { movieRepository.getMovieCast(movieId) }
     }
+
     @Test
     fun `should throw exception when repository throws`() = runTest {
-            // Given
-            val exception = RuntimeException("Something went wrong")
-            coEvery { movieRepository.getMovieCast(movieId) } throws exception
+        // Given
+        val exception = RuntimeException("Something went wrong")
+        coEvery { movieRepository.getMovieCast(movieId) } throws exception
 
-            // Then
-            val thrown = kotlin.runCatching {
-                getMovieCastUseCase(movieId)
-            }.exceptionOrNull()
+        // Then
+        val thrown = runCatching {
+            getMovieCastUseCase(movieId)
+        }.exceptionOrNull()
 
-            assertEquals(exception, thrown)
-        }
+        assertThat(thrown).isEqualTo(exception)
+    }
 
 
-    private companion object{
+    private companion object {
         val movieId = 1
     }
 }
