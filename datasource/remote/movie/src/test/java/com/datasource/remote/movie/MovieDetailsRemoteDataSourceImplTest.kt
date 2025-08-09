@@ -1,6 +1,6 @@
 package com.datasource.remote.movie
 
-import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
+import com.datasource.remote.movie.service.MovieApiService
 import com.google.common.truth.Truth.assertThat
 import com.repository.movie.models.remote.RatingDto
 import com.repository.movie.models.remote.RatingResponseDto
@@ -12,14 +12,14 @@ import org.junit.Before
 import org.junit.Test
 
 class MovieDetailsRemoteDataSourceImplTest {
-    private lateinit var movieDetailsRemoteDataSourceImpl: MovieDetailsRemoteDataSourceImpl
-    private lateinit var retrofitMovieDetailsApiService: RetrofitMovieDetailsApiService
+    private lateinit var movieRemoteDataSourceImpl: MovieRemoteDataSourceImpl
+    private lateinit var movieApiService: MovieApiService
 
     @Before
     fun setup() {
-        retrofitMovieDetailsApiService = mockk(relaxed = true)
-        movieDetailsRemoteDataSourceImpl =
-            MovieDetailsRemoteDataSourceImpl(retrofitMovieDetailsApiService)
+        movieApiService = mockk(relaxed = true)
+        movieRemoteDataSourceImpl =
+            MovieRemoteDataSourceImpl(movieApiService)
     }
 
     @Test
@@ -30,14 +30,14 @@ class MovieDetailsRemoteDataSourceImplTest {
         val responseDto = RatingResponseDto(statusCode = 10, statusMessage = "Failed")
 
         coEvery {
-            retrofitMovieDetailsApiService.addRatingToMovie(
+            movieApiService.addRatingToMovie(
                 movieId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When
-        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+        val result = movieRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
 
         // Then
         assertThat(result).isFalse()
@@ -52,14 +52,14 @@ class MovieDetailsRemoteDataSourceImplTest {
         val responseDto = RatingResponseDto(1, "Success")
 
         coEvery {
-            retrofitMovieDetailsApiService.addRatingToMovie(
+            movieApiService.addRatingToMovie(
                 movieId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When / Then (should not throw)
-        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+        movieRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
     }
 
     @Test
@@ -70,14 +70,14 @@ class MovieDetailsRemoteDataSourceImplTest {
         val responseDto = RatingResponseDto(12, "Success")
 
         coEvery {
-            retrofitMovieDetailsApiService.addRatingToMovie(
+            movieApiService.addRatingToMovie(
                 movieId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When / Then (should not throw)
-        movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+        movieRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
     }
 
     @Test
@@ -88,14 +88,14 @@ class MovieDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitMovieDetailsApiService.getMovieDetails(
+            movieApiService.getMovieDetails(
                 movieId,
                 language
             )
         } returns movieDetails
 
         // Then
-        val result = movieDetailsRemoteDataSourceImpl.getMovieDetails(movieId, language)
+        val result = movieRemoteDataSourceImpl.getMovieDetails(movieId, language)
         assertThat(result).isEqualTo(movieDetails)
     }
 
@@ -106,11 +106,11 @@ class MovieDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitMovieDetailsApiService.getMovieImages(movieId)
+            movieApiService.getMovieImages(movieId)
         } returns movieImages
 
         // Then
-        val result = movieDetailsRemoteDataSourceImpl.getMovieImages(movieId)
+        val result = movieRemoteDataSourceImpl.getMovieImages(movieId)
         assertThat(result).isEqualTo(movieImages)
     }
 
@@ -123,11 +123,11 @@ class MovieDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitMovieDetailsApiService.getMovieReviews(movieId, page, language)
+            movieApiService.getMovieReviews(movieId, page, language)
         } returns movieReview
 
         // Then
-        val result = movieDetailsRemoteDataSourceImpl.getMovieReviews(movieId, page, language)
+        val result = movieRemoteDataSourceImpl.getMovieReviews(movieId, page, language)
         assertThat(result).isEqualTo(movieReview)
     }
 
@@ -140,11 +140,11 @@ class MovieDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitMovieDetailsApiService.getSimilarMovies(movieId, page, language)
+            movieApiService.getSimilarMovies(movieId, page, language)
         } returns movieSimilarDto
 
         // Then
-        val result = movieDetailsRemoteDataSourceImpl.getSimilarMovies(movieId, page, language)
+        val result = movieRemoteDataSourceImpl.getSimilarMovies(movieId, page, language)
         assertThat(result).isEqualTo(movieSimilarDto)
     }
 
@@ -156,11 +156,11 @@ class MovieDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitMovieDetailsApiService.getMovieCredits(movieId, language)
+            movieApiService.getMovieCredits(movieId, language)
         } returns movieCreditsDto
 
         // Then
-        val result = movieDetailsRemoteDataSourceImpl.getMovieCredits(movieId, language)
+        val result = movieRemoteDataSourceImpl.getMovieCredits(movieId, language)
         assertThat(result).isEqualTo(movieCreditsDto)
     }
 
@@ -172,12 +172,12 @@ class MovieDetailsRemoteDataSourceImplTest {
 
             // When
             coEvery {
-                retrofitMovieDetailsApiService.getTrailerVideoForMovie(movieId)
+                movieApiService.getTrailerVideoForMovie(movieId)
             } returns movieVideoDto
 
             // Then
             val result =
-                movieDetailsRemoteDataSourceImpl.getTrailerVideoForMovie(movieId)
+                movieRemoteDataSourceImpl.getTrailerVideoForMovie(movieId)
             assertThat(result).isEqualTo(movieVideoDto)
         }
 
@@ -188,10 +188,10 @@ class MovieDetailsRemoteDataSourceImplTest {
         val responseDto = mockk<RemoveRatingDto> {
             coEvery { success } returns true
         }
-        coEvery { retrofitMovieDetailsApiService.deleteMovieRating(movieId) } returns responseDto
+        coEvery { movieApiService.deleteMovieRating(movieId) } returns responseDto
 
         // When
-        val result = movieDetailsRemoteDataSourceImpl.deleteMovieRating(movieId)
+        val result = movieRemoteDataSourceImpl.deleteMovieRating(movieId)
 
         // Then
         assertThat(result).isTrue()
@@ -204,10 +204,10 @@ class MovieDetailsRemoteDataSourceImplTest {
         val responseDto = mockk<RemoveRatingDto> {
             coEvery { success } returns false
         }
-        coEvery { retrofitMovieDetailsApiService.deleteMovieRating(movieId) } returns responseDto
+        coEvery { movieApiService.deleteMovieRating(movieId) } returns responseDto
 
         // When
-        val result = movieDetailsRemoteDataSourceImpl.deleteMovieRating(movieId)
+        val result = movieRemoteDataSourceImpl.deleteMovieRating(movieId)
 
         // Then
         assertThat(result).isFalse()
@@ -220,14 +220,14 @@ class MovieDetailsRemoteDataSourceImplTest {
         val rating = 2.5f
         val responseDto = RatingResponseDto(statusCode = 33, statusMessage = "Error")
         coEvery {
-            retrofitMovieDetailsApiService.addRatingToMovie(
+            movieApiService.addRatingToMovie(
                 movieId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When
-        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+        val result = movieRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
 
         // Then
         assertThat(result).isFalse()
@@ -240,14 +240,14 @@ class MovieDetailsRemoteDataSourceImplTest {
         val rating = 4.0f
         val responseDto = RatingResponseDto(statusCode = 1, statusMessage = "Success")
         coEvery {
-            retrofitMovieDetailsApiService.addRatingToMovie(
+            movieApiService.addRatingToMovie(
                 movieId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When
-        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+        val result = movieRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
 
         // Then
         assertThat(result).isTrue()
@@ -260,14 +260,14 @@ class MovieDetailsRemoteDataSourceImplTest {
         val rating = 4.0f
         val responseDto = RatingResponseDto(statusCode = 12, statusMessage = "Updated")
         coEvery {
-            retrofitMovieDetailsApiService.addRatingToMovie(
+            movieApiService.addRatingToMovie(
                 movieId,
                 RatingDto(rating)
             )
         } returns responseDto
 
         // When
-        val result = movieDetailsRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
+        val result = movieRemoteDataSourceImpl.addRatingToMovie(movieId, rating)
 
         // Then
         assertThat(result).isTrue()

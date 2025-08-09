@@ -1,7 +1,7 @@
 package com.datasource.remote.movie
 
-import com.datasource.remote.movie.service.RetrofitMovieDetailsApiService
-import com.repository.movie.dataSource.remote.MovieDetailsRemoteDataSource
+import com.datasource.remote.movie.service.MovieApiService
+import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieImagesDto
@@ -11,36 +11,36 @@ import com.repository.movie.models.remote.MovieVideoDto
 import com.repository.movie.models.remote.RatingDto
 import javax.inject.Inject
 
-class MovieDetailsRemoteDataSourceImpl @Inject constructor(
-    private val retrofitMovieDetailsApiService: RetrofitMovieDetailsApiService
-) : MovieDetailsRemoteDataSource {
+class MovieRemoteDataSourceImpl @Inject constructor(
+    private val movieApiService: MovieApiService
+) : MovieRemoteDataSource {
     override suspend fun getMovieDetails(movieId: Int, language: String): MovieDto {
-        return retrofitMovieDetailsApiService.getMovieDetails(movieId, language)
+        return movieApiService.getMovieDetails(movieId, language)
     }
 
     override suspend fun getMovieImages(movieId: Int): MovieImagesDto {
-        return retrofitMovieDetailsApiService.getMovieImages(movieId)
+        return movieApiService.getMovieImages(movieId)
     }
 
     override suspend fun getMovieReviews(movieId: Int, page: Int, language: String): MovieReviewsDto {
-        return retrofitMovieDetailsApiService.getMovieReviews(movieId, page, language)
+        return movieApiService.getMovieReviews(movieId, page, language)
     }
 
     override suspend fun getSimilarMovies(movieId: Int, page: Int, language: String): MovieSimilarsDto {
-        return retrofitMovieDetailsApiService.getSimilarMovies(movieId, page, language)
+        return movieApiService.getSimilarMovies(movieId, page, language)
     }
 
     override suspend fun getMovieCredits(movieId: Int, language: String): MovieCreditsDto {
-        return retrofitMovieDetailsApiService.getMovieCredits(movieId, language)
+        return movieApiService.getMovieCredits(movieId, language)
     }
 
     override suspend fun getTrailerVideoForMovie(movieId: Int): MovieVideoDto {
-        return retrofitMovieDetailsApiService.getTrailerVideoForMovie(movieId)
+        return movieApiService.getTrailerVideoForMovie(movieId)
     }
 
     override suspend fun addRatingToMovie(movieId: Int, rating: Float): Boolean {
         val dto = RatingDto(value = rating)
-        val response = retrofitMovieDetailsApiService.addRatingToMovie(
+        val response = movieApiService.addRatingToMovie(
             movieId = movieId,
             rating = dto
         )
@@ -48,7 +48,7 @@ class MovieDetailsRemoteDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteMovieRating(movieId: Int): Boolean {
-        return retrofitMovieDetailsApiService.deleteMovieRating(movieId).success
+        return movieApiService.deleteMovieRating(movieId).success
     }
 
     companion object {

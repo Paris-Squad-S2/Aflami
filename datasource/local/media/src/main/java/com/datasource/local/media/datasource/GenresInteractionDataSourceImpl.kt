@@ -7,15 +7,15 @@ import com.repository.media.entity.GenreUserInteractionEntity
 class GenresInteractionDataSourceImpl(
     private val genresInteractionDao: GenresUserInteractionDao
 ) : GenresInteractionDataSource {
-    override suspend fun upsertInteraction(interaction: GenreUserInteractionEntity) {
-        genresInteractionDao.upsertInteraction(interaction)
+    override suspend fun upsertGenresInteraction(interaction: GenreUserInteractionEntity) {
+        genresInteractionDao.upsertGenresInteraction(interaction)
     }
 
-    override suspend fun getCategoryInteractions(genreId: Int): Int? {
-        return genresInteractionDao.getCategoryInteractions(genreId)
+    override suspend fun getCategoryByGenreId(genreId: Int): Int? {
+        return genresInteractionDao.getCategoryByGenreId(genreId)
     }
 
-    override suspend fun getAllInteractions(): List<GenreUserInteractionEntity> {
-        return genresInteractionDao.getAllInteractions()
+    override suspend fun getGenresInteractions(): List<GenreUserInteractionEntity> {
+        return genresInteractionDao.getGenresInteractions()
     }
 }

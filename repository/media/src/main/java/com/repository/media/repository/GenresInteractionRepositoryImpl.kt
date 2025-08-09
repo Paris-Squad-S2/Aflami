@@ -10,11 +10,11 @@ class GenresInteractionRepositoryImpl(
     private val dataSource: GenresInteractionDataSource
 ) : GenresInteractionRepository {
     override suspend fun upsertInteraction(interaction: GenreUserInteraction) =
-        dataSource.upsertInteraction(interaction.toCategoryUserInteractionEntity())
+        dataSource.upsertGenresInteraction(interaction.toCategoryUserInteractionEntity())
 
     override suspend fun getCategoryInteractions(genreId: Int): Int? =
-        dataSource.getCategoryInteractions(genreId)
+        dataSource.getCategoryByGenreId(genreId)
 
     override suspend fun getAllInteractions(): List<GenreUserInteraction> =
-        dataSource.getAllInteractions().map { it.toCategoryUserInteractionModel() }
+        dataSource.getGenresInteractions().map { it.toCategoryUserInteractionModel() }
 }

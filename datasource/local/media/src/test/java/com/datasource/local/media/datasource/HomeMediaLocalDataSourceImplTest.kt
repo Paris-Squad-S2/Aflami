@@ -29,10 +29,10 @@ class HomeMediaLocalDataSourceImplTest {
     @Test
     fun `addMediaList should insert media list into DAO`() = runTest {
         // When
-        dataSource.addMediaList(listOf(sampleEntity))
+        dataSource.addHomeMedia(listOf(sampleEntity))
 
         // Then
-        coVerify(exactly = 1) { homeMediaDao.addMediaList(listOf(sampleEntity)) }
+        coVerify(exactly = 1) { homeMediaDao.addHomeMedia(listOf(sampleEntity)) }
     }
 
     @Test
@@ -44,7 +44,7 @@ class HomeMediaLocalDataSourceImplTest {
         )
 
         // When
-        dataSource.addMediaList(mediaList)
+        dataSource.addHomeMedia(mediaList)
 
         // Then
         verify(exactly = 2) { workManager.enqueue(any<OneTimeWorkRequest>()) }
@@ -53,23 +53,23 @@ class HomeMediaLocalDataSourceImplTest {
     @Test
     fun `getMediaListByCategory should return list from DAO`() = runTest {
         // Given
-        coEvery { homeMediaDao.getMediaListByCategory(Category.UPCOMING,"en") } returns listOf(sampleEntity)
+        coEvery { homeMediaDao.getHomeMediaByCategory(Category.UPCOMING,"en") } returns listOf(sampleEntity)
 
         // When
-        val result = dataSource.getMediaListByCategory(Category.UPCOMING,"en")
+        val result = dataSource.getHomeMediaByCategory(Category.UPCOMING,"en")
 
         // Then
         assertThat(result).hasSize(1)
-        coVerify { homeMediaDao.getMediaListByCategory(Category.UPCOMING,"en") }
+        coVerify { homeMediaDao.getHomeMediaByCategory(Category.UPCOMING,"en") }
     }
 
     @Test
     fun `clearMediaByCategory should call DAO method`() = runTest {
         // When
-        dataSource.clearMediaByCategory(Category.TOP_RATED)
+        dataSource.clearHomeMediaByCategory(Category.TOP_RATED)
 
         // Then
-        coVerify(exactly = 1) { homeMediaDao.clearMediaByCategory(Category.TOP_RATED) }
+        coVerify(exactly = 1) { homeMediaDao.clearHomeMediaByCategory(Category.TOP_RATED) }
     }
 
     companion object{
