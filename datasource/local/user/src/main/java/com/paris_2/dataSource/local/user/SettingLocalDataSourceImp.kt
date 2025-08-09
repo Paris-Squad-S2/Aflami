@@ -55,7 +55,7 @@ class SettingLocalDataSourceImp @Inject constructor(
     }
 
     override fun getTheme(): Boolean {
-       return prefs.getBoolean(KEY_IS_DARK_THEME, false)
+       return prefs.getBoolean(KEY_IS_DARK_THEME, true)
     }
 
     private fun getLanguageSync(): String {
