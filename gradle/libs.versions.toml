@@ -268,3 +268,9 @@ firebase = [
     "firebase-crashlytics",
     "firebase-perf"
 ]
+
+tensorflow = [
+    "tensorflow-lite",
+    "tensorflow-lite-support",
+    "tensorflow-lite-metadata"
+]

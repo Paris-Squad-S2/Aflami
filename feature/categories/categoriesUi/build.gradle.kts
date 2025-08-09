@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(libs.bundles.compose)
+    implementation(libs.bundles.test)
     implementation(platform(libs.androidx.compose.bom))
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.DESIGN_SYSTEM))
