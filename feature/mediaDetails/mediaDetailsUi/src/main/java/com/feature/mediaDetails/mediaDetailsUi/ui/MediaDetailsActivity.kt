@@ -13,6 +13,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavGrap
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigatorEntryPoint
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.fromJsonToMediaDetailsDestination
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.EntryPointAccessors
 import java.util.Locale
@@ -22,6 +23,9 @@ import javax.inject.Inject
 class MediaDetailsActivity : ComponentActivity() {
     @Inject
     lateinit var authenticationFeatureAPI: AuthenticationFeatureAPI
+
+    @Inject
+    lateinit var settingsUseCase: SettingsUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +41,7 @@ class MediaDetailsActivity : ComponentActivity() {
         ).mediaDetailsNavigator()
 
         setContent {
-            AflamiTheme {
+            AflamiTheme(settingsUseCase.isDarkTheme()) {
                 MediaDetailsNavGraph(
                     navigator = navigator,
                     authenticationFeatureAPI = authenticationFeatureAPI,

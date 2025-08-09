@@ -7,9 +7,8 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.assertNull
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
 
 class GetCountryCodeByNameUseCaseTest {
 
@@ -24,7 +23,6 @@ class GetCountryCodeByNameUseCaseTest {
 
     @Test
     fun `should return correct country code when name matches`() = runTest {
-
         // Given
         coEvery { countryRepository.getAllCountries() } returns countries
 
@@ -32,12 +30,11 @@ class GetCountryCodeByNameUseCaseTest {
         val result = getCountryCodeByNameUseCase("France")
 
         // Then
-        assertEquals("FR", result)
+        assertThat(result).isEqualTo("FR")
     }
 
     @Test
     fun `should verify repository is exactly once when name matches`() = runTest {
-
         // Given
         coEvery { countryRepository.getAllCountries() } returns countries
 
@@ -50,7 +47,6 @@ class GetCountryCodeByNameUseCaseTest {
 
     @Test
     fun `should return country code even if name case is different`() = runTest {
-
         // Given
         coEvery { countryRepository.getAllCountries() } returns countries
 
@@ -58,25 +54,23 @@ class GetCountryCodeByNameUseCaseTest {
         val result = getCountryCodeByNameUseCase("france")
 
         // Then
-        assertEquals("FR", result)
+        assertThat(result).isEqualTo("FR")
     }
 
     @Test
     fun `should return null when country name is not found`() = runTest {
-
-        //Given
+        // Given
         coEvery { countryRepository.getAllCountries() } returns countries
 
-        //When
+        // When
         val result = getCountryCodeByNameUseCase("Canada")
 
-        //Then
-        assertNull(result)
+        // Then
+        assertThat(result).isNull()
     }
 
     @Test
     fun `should verify repository is called when name not found`() = runTest {
-
         // Given
         coEvery { countryRepository.getAllCountries() } returns countries
 
@@ -89,15 +83,14 @@ class GetCountryCodeByNameUseCaseTest {
 
     @Test
     fun `should return null when country list is empty`() = runTest {
-
-        //Given
+        // Given
         coEvery { countryRepository.getAllCountries() } returns emptyList()
 
-        //When
+        // When
         val result = getCountryCodeByNameUseCase("France")
 
-        //Then
-        assertNull(result)
+        // Then
+        assertThat(result).isNull()
     }
 
     @Test
@@ -114,7 +107,6 @@ class GetCountryCodeByNameUseCaseTest {
 
     @Test
     fun `should return uppercased input when input matches country code`() = runTest {
-
         // Given
         coEvery { countryRepository.getAllCountries() } returns countries
 
@@ -122,7 +114,7 @@ class GetCountryCodeByNameUseCaseTest {
         val result = getCountryCodeByNameUseCase("eg")
 
         // Then
-        assertEquals("EG", result)
+        assertThat(result).isEqualTo("EG")
     }
 
     @Test
@@ -134,13 +126,13 @@ class GetCountryCodeByNameUseCaseTest {
         val result = getCountryCodeByNameUseCase("fra")
 
         // Then
-        assertEquals("FR", result)
+        assertThat(result).isEqualTo("FR")
     }
 
     @Test
     fun `should verify repository is called once when input is country code`() = runTest {
         // Given
-        val countries = listOf(Country("EG", "Egypt" , "مصر" ))
+        val countries = listOf(Country("EG", "Egypt", "مصر"))
         coEvery { countryRepository.getAllCountries() } returns countries
 
         // When
@@ -150,11 +142,10 @@ class GetCountryCodeByNameUseCaseTest {
         coVerify(exactly = 1) { countryRepository.getAllCountries() }
     }
 
-    companion object{
+    companion object {
         val countries = listOf(
-            Country("EG", "Egypt" , "مصر"),
+            Country("EG", "Egypt", "مصر"),
             Country("FR", "France", "فرنسا")
         )
     }
-
 }

@@ -7,9 +7,9 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import com.paris_2.domain.media.testUtils.fakeCast
+import com.google.common.truth.Truth.assertThat
+
 
 class GetTvShowCastUseCaseTest {
 
@@ -30,7 +30,7 @@ class GetTvShowCastUseCaseTest {
         val result = getTvShowCastUseCase(tvShowId)
 
         // Then
-        assertEquals(fakeCast, result)
+        assertThat(result).isEqualTo(fakeCast)
     }
 
     @Test
@@ -54,7 +54,7 @@ class GetTvShowCastUseCaseTest {
         val result = getTvShowCastUseCase(tvShowId)
 
         // Then
-        assertTrue(result.isEmpty())
+        assertThat(result).isEmpty()
     }
 
     @Test

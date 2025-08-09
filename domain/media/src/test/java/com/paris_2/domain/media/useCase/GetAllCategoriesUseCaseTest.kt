@@ -7,9 +7,8 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
 
 class GetAllCategoriesUseCaseTest {
 
@@ -17,23 +16,21 @@ class GetAllCategoriesUseCaseTest {
     private lateinit var getAllCategoriesUseCase: GetAllCategoriesUseCase
 
     @BeforeEach
-
     fun setUp() {
         categoriesRepository = mockk()
         getAllCategoriesUseCase = GetAllCategoriesUseCase(categoriesRepository)
     }
 
-
     @Test
     fun `should return correct number of categories from repository`() = runTest {
-        //Given
+        // Given
         coEvery { categoriesRepository.getAllCategories() } returns sampleCategories
 
-        //When
+        // When
         val result = getAllCategoriesUseCase()
 
-        //Then
-        assertEquals(3, result.size)
+        // Then
+        assertThat(result).hasSize(3)
     }
 
     @Test
@@ -50,26 +47,26 @@ class GetAllCategoriesUseCaseTest {
 
     @Test
     fun `should return expected categories from repository`() = runTest {
-        //Given
+        // Given
         coEvery { categoriesRepository.getAllCategories() } returns sampleCategories
 
-        //When
+        // When
         val result = getAllCategoriesUseCase()
 
-        //Then
-        assertEquals(sampleCategories, result)
+        // Then
+        assertThat(result).isEqualTo(sampleCategories)
     }
 
     @Test
     fun `should return empty list when repository returns no categories`() = runTest {
-        //Given
+        // Given
         coEvery { categoriesRepository.getAllCategories() } returns emptyList()
 
-        //When
+        // When
         val result = getAllCategoriesUseCase()
 
-        //Then
-        assertTrue { result.isEmpty() }
+        // Then
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -91,5 +88,4 @@ class GetAllCategoriesUseCaseTest {
             Category(id = 3, name = "Family")
         )
     }
-
 }

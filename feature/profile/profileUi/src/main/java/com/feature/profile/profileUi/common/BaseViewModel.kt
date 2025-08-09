@@ -13,10 +13,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 open class BaseViewModel<S>(
-    initialState: S, protected val navigator: ProfileNavigator
+    initialState: S,
 ) : ViewModel() {
+
+    @Inject
+    lateinit var navigator: ProfileNavigator
 
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()

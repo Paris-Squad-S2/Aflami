@@ -35,7 +35,7 @@ fun AppThemeDialog(
     if (isVisible) {
         var dialogSelectedTheme by remember(themeState) { mutableStateOf(themeState) }
 
-        AppDialog(onDismiss = {}, title = R.string.app_theme, modifier = modifier) {
+        AppDialog(onDismiss = onDismiss, title = R.string.app_theme, modifier = modifier) {
             Column(
                 modifier = Modifier.padding(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)

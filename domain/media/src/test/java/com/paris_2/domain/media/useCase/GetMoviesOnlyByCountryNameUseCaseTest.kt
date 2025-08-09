@@ -8,8 +8,6 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -38,8 +36,7 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
         // When
         val result = getMoviesOnlyByCountryNameUseCase(countryName, page)
 
-        // Then
-        assertEquals(3, result.size)
+        assertThat(result.size).isEqualTo(3)
     }
 
     @Test
@@ -56,8 +53,7 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
         // When
         val result = getMoviesOnlyByCountryNameUseCase(countryName, page)
 
-        // Then
-        assertEquals(listOf("Movie 1", "Movie 2", "Movie 3"), result.map { it.title })
+        assertThat(result.map { it.title }).isEqualTo(listOf("Movie 1", "Movie 2", "Movie 3"))
     }
 
     @Test
@@ -74,8 +70,7 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
         // When
         val result = getMoviesOnlyByCountryNameUseCase(countryName, page)
 
-        // Then
-        assertTrue(result.all { it.type == MediaType.MOVIE })
+        assertThat(result.all { it.type == MediaType.MOVIE }).isTrue()
     }
 
     @Test
@@ -238,7 +233,6 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
             )
         }
     }
-
 
     @Test
     fun `should return movie when country name is case-sensitive `() = runTest {

@@ -9,16 +9,22 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.feature.search.searchUi.navigation.SearchNavGraph
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
+import jakarta.inject.Inject
 import java.util.Locale
 
 @AndroidEntryPoint
 class SearchActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var settingsUseCase: SettingsUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AflamiTheme {
+            AflamiTheme(settingsUseCase.isDarkTheme()) {
                 SearchNavGraph()
             }
         }

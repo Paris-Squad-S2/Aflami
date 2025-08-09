@@ -1,5 +1,6 @@
 package com.paris_2.domain.media.useCase.movie
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -7,7 +8,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import com.paris_2.domain.media.testUtils.fakeMovieVideo
-import kotlin.test.assertEquals
 
 class GetMovieVideoUseCaseTest {
     private lateinit var getMovieVideoUseCase: GetMovieVideoUseCase
@@ -28,7 +28,7 @@ class GetMovieVideoUseCaseTest {
 
         // Then
         val result = getMovieVideoUseCase(movieId)
-        assertEquals(result, fakeMovieVideo.first())
+        assertThat(result).isEqualTo(fakeMovieVideo.first())
 
     }
 

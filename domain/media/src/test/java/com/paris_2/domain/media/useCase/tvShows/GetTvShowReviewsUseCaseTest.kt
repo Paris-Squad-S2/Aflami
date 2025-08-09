@@ -5,10 +5,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.testUtils.fakeReviews
 
 class GetTvShowReviewsUseCaseTest {
@@ -30,7 +29,7 @@ class GetTvShowReviewsUseCaseTest {
         val result = getTvShowReviewsUseCase(tvShowId, page)
 
         // Then
-        assertEquals(fakeReviews, result)
+        assertThat(result).isEqualTo(fakeReviews)
     }
 
     @Test
@@ -54,7 +53,7 @@ class GetTvShowReviewsUseCaseTest {
         val result = getTvShowReviewsUseCase(tvShowId, page)
 
         // Then
-        assertTrue(result.isEmpty())
+        assertThat(result).isEmpty()
     }
 
     @Test

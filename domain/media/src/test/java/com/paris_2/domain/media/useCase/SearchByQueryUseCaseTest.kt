@@ -1,5 +1,6 @@
 package com.paris_2.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.repository.SearchMediaRepository
 import com.paris_2.domain.media.testUtils.createMedia
@@ -8,9 +9,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Test
 
 class SearchByQueryUseCaseTest {
 
@@ -33,7 +32,7 @@ class SearchByQueryUseCaseTest {
         val result = searchByQueryUseCase(query, page)
 
         //Then
-        assertEquals(2, result.size)
+        assertThat(result.size).isEqualTo(2)
     }
 
     @Test
@@ -46,7 +45,7 @@ class SearchByQueryUseCaseTest {
         val result = searchByQueryUseCase(query, page)
 
         // Then
-        assertEquals(mediaList, result)
+        assertThat(result).isEqualTo(mediaList)
     }
 
     @Test
@@ -77,7 +76,8 @@ class SearchByQueryUseCaseTest {
         val result = searchByQueryUseCase(unknownTitleQuery, page)
 
         //Then
-        assertTrue { result.isEmpty() }
+        assertThat(result).isEmpty()
+
 
     }
 

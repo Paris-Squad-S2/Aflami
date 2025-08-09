@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -30,8 +30,8 @@ import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.profile.profileUi.R
+import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TabRow
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchHistoryScreen(
     viewModel: WatchHistoryViewModel = hiltViewModel(),
@@ -67,14 +67,21 @@ fun WatchHistoryScreen(
                 }
             }
         )
-        if (state.value.watchHistoryMedia.isNotEmpty()) {
+        if (state.value.isLoading) {
+            PageLoadingPlaceHolder(
+                modifier = Modifier.fillMaxSize()
+            )
+        } else if (state.value.watchHistoryMedia.isNotEmpty()) {
             WatchHistoryScreenContent(
                 watchHistoryList = state.value.watchHistoryMedia,
                 onMediaCardClick = viewModel::onMediaCardClick
             )
-        } else if (state.value.isLoading) {
-            PageLoadingPlaceHolder(
-                modifier = Modifier.fillMaxSize()
+        } else if (state.value.watchHistoryMedia.isEmpty() && state.value.errorMessage == null) {
+            PlaceholderView(
+                modifier = Modifier.fillMaxSize(),
+                image = painterResource(R.drawable.img_empty_brain),
+                title = stringResource(R.string.no_watch_history_yet),
+                spacer = 24.dp,
             )
         } else if (state.value.errorMessage != null) {
             NetworkError(
