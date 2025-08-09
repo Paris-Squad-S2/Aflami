@@ -1,7 +1,7 @@
 package com.repository.movie.mapper
 
 import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.Genre
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
@@ -28,8 +28,8 @@ import com.repository.movie.models.remote.MovieVideoResultDto
 import com.repository.movie.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
-fun MovieGenreDto.toEntity(): Genre {
-    return Genre(
+fun MovieGenreDto.toEntity(): Category {
+    return Category(
         id = this.id ?: 0,
         name = this.name.orEmpty()
     )
@@ -128,7 +128,7 @@ fun MovieEntity.toEntity(): Movie {
         voteAverage = this.voteAverage,
         description = this.description,
         posterPath = this.posterPath,
-        genres = this.genres.map { it.toEntity() },
+        categories = this.genres.map { it.toEntity() },
         releaseDate = LocalDate.parse(this.releaseDate),
         runtime = this.runtime,
         country = this.country,
@@ -225,8 +225,8 @@ fun MovieSimilar.toLocalDto(movieId: Int, pager: Int, language: String): MovieSi
     )
 }
 
-fun GenreEntity.toEntity(): Genre {
-    return Genre(
+fun GenreEntity.toEntity(): Category {
+    return Category(
         id = this.id,
         name = this.name
     )

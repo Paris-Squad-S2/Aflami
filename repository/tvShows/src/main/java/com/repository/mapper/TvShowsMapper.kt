@@ -1,9 +1,9 @@
 package com.repository.mapper
 
 import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Episode
 import com.paris_2.domain.media.entity.EpisodeVideo
-import com.paris_2.domain.media.entity.Genre
 import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
@@ -92,7 +92,7 @@ fun TvShowEntity.toEntity(): TvShow {
         voteAverage = this.voteAverage,
         description = this.description,
         posterPath = this.posterPath.toImageUrl().orEmpty(),
-        genres = this.genres.map { it.toEntity() },
+        categories = this.genres.map { it.toEntity() },
         releaseDate = LocalDate.parse(this.releaseDate),
         runtime = this.runtime,
         country = this.country,
@@ -134,8 +134,8 @@ private fun TvShowGenreDto.toLocalDto(): GenreEntity {
     )
 }
 
-private fun GenreEntity.toEntity(): Genre {
-    return Genre(
+private fun GenreEntity.toEntity(): Category {
+    return Category(
         id = this.id,
         name = this.name
     )

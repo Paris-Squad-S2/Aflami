@@ -8,7 +8,7 @@ data class Movie(
     val voteAverage: Double?,
     val description: String,
     val posterPath: String,
-    val genres: List<Genre>,
+    val categories: List<Category>,
     val releaseDate: LocalDate,
     val runtime: Int,
     val country: String,
