@@ -184,11 +184,6 @@ compose = [
     "androidx-lifecycle-runtime-ktx",
     "androidx-ui-test-manifest",
     "androidx-foundation",
-                                    #TODO
-#    "androidx-paging-runtime",
-#    "androidx-lifecycle-viewmodel-compose",
-#    "androidx-paging-compose",
-#    "androidx-hilt-navigation-compose"
 ]
 
 navigation = [
@@ -206,6 +201,7 @@ test = [
     "kotlin-test",
     "junit-jupiter-params",
     "junit-platform-launcher",
+    "kotlin-test-junit5"
 ]
 
 hilt = [
@@ -223,6 +219,7 @@ retrofit = [
 
 room = [
     "androidx-room-runtime",
+    "androidx-room-testing"
 ]
 
 datetime = [
