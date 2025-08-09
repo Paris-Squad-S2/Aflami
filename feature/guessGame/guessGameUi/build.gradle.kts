@@ -39,6 +39,6 @@ android {
 dependencies {
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
-
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
+    implementation(libs.androidx.material3) // TODO: Remove it
 }
