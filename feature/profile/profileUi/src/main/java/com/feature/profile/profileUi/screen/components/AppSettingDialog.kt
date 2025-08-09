@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.changepassword.ChangePasswordActivity
@@ -22,6 +21,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun AppSettingDialog(
     isVisible: Boolean,
+    isLogoutDialogVisible: () -> Unit,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
@@ -64,7 +64,7 @@ fun AppSettingDialog(
                     })
 
                 SettingsItem(
-                    onClick = {},
+                    onClick = isLogoutDialogVisible,
                     title = stringResource(R.string.tired_of_watching),
                     icon = R.drawable.ic_dead,
                     content = {
@@ -82,8 +82,3 @@ fun AppSettingDialog(
     }
 }
 
-@PreviewLightDark
-@Composable
-private fun AppSettingDialogPrev() {
-    AppSettingDialog(isVisible = true, onDismiss = {})
-}

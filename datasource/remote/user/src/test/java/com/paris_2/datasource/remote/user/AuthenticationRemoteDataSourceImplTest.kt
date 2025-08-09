@@ -9,8 +9,8 @@ import com.paris_2.repository.user.model.remote.SessionDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import retrofit2.HttpException
 import kotlin.test.assertFailsWith
 
@@ -18,7 +18,7 @@ class AuthenticationRemoteDataSourceImplTest {
     private lateinit var api: UserApi
     private lateinit var dataSource: UserRemoteDataSourceImpl
 
-    @Before
+    @BeforeEach
     fun setUp() {
         api = mockk()
         dataSource = UserRemoteDataSourceImpl(api)

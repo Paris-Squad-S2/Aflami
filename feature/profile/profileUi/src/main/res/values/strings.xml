@@ -21,5 +21,6 @@
     <string name="no_rated_tv_yet">No rated tv shows yet!</string>
     <string name="open_a_movie">Open a movie, rate it, your ratings will be displayed here.</string>
     <string name="open_a_tv_show">Open a tv show, rate it, your ratings will be displayed here.</string>
+    <string name="are_you_sure_to_continue_if_you_re_tired_of_us_just_know_we_re_not_we_will_be_here">Are you sure to continue?If you\'re tired of us, just know we\'re not, we will be here.</string>
     <string name="no_watch_history_yet">No watch history yet!</string>
 </resources>

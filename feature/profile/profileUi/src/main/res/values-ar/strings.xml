@@ -23,4 +23,6 @@
     <string name="open_a_movie">افتح الفيلم، وقم بتقييمه، وسيتم عرض تقييماتك هنا.</string>
     <string name="open_a_tv_show">افتح المسلسل، وقم بتقييمه، وسيتم عرض تقييماتك هنا.</string>
     <string name="no_watch_history_yet">لا يوجد سجل للمشاهدة حتى الآن!</string>
+    <string name="are_you_sure_to_continue_if_you_re_tired_of_us_just_know_we_re_not_we_will_be_here">هل أنت متأكد من الاستمرار؟ إذا كنت قد سئمت منا، فقط اعلم أننا لسنا كذلك، سنكون هنا.</string>
+
 </resources>

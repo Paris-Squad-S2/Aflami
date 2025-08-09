@@ -36,13 +36,22 @@ dependencies {
     testImplementation(libs.bundles.test)
 
     implementation(libs.bundles.retrofit)
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.junit)
+    implementation(project((":repository:movie")))
 
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
     implementation(project(Modules.REPOSITORY_MOVIE))
 }
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
 kover {

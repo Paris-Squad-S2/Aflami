@@ -1,11 +1,10 @@
 package com.feature.profile.profileUi.screen
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.ProfileDestinations
-import com.feature.profile.profileUi.navigation.ProfileNavigator
+import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,14 +17,14 @@ class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
-    navigator: ProfileNavigator,
+    private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
 ) :
-    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState(), navigator), InterActionListener {
+    BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
 
     init {
         checkUserLoggedIn()
-        Log.d("TAG", ": isLoggedIn ${isLoggedInUseCase()}")
+        getUserName()
         viewModelScope.launch {
             settingsUseCase.getLanguage().collect {
                 updateState(
@@ -36,9 +35,18 @@ class ProfileViewModel @Inject constructor(
                     )
                 )
             }
-
-
         }
+    }
+
+    private fun getUserName() {
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile
+                    .copy(
+                        name = settingsUseCase.getUserName()
+                    )
+            )
+        )
     }
 
     private fun checkUserLoggedIn() {
@@ -63,7 +71,8 @@ class ProfileViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 profile = screenState.value.profile.copy(
-                    isThemeDialogOpen = true
+                    isThemeDialogOpen = true,
+                    theme = if (settingsUseCase.isDarkTheme()) Appearance.DARK else Appearance.LIGHT
                 )
             )
         )
@@ -83,7 +92,8 @@ class ProfileViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 profile = screenState.value.profile.copy(
-                    isLogoutDialogOpen = true
+                    isLogoutDialogOpen = true,
+                    isSettingDialogOpen = false
                 )
             )
         )
@@ -94,7 +104,14 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onAppearanceApplyClicked(appearance: Appearance) {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    theme = appearance
+                )
+            )
+        )
+        settingsUseCase.setTheme(appearance == Appearance.DARK)
     }
 
 
@@ -105,7 +122,15 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLogoutApplyClicked() {
-        authenticationFeatureAPI()
+        tryToExecute(
+            onSuccess = {
+                authenticationFeatureAPI()
+            },
+            onError = {},
+            execute = {
+                deleteSessionIdUseCase()
+            }
+        )
     }
 
     override fun onChangePasswordClicked() {

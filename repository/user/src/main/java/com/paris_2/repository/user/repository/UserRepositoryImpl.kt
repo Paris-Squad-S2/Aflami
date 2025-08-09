@@ -11,8 +11,9 @@ import com.paris_2.repository.user.model.remote.LoginRequest
 
 class UserRepositoryImpl(
     private val remoteDataSource: UserRemoteDataSource,
-    private val localDataSource: AuthenticationLocalDataSource
-) : UserRepository {
+    private val localDataSource: AuthenticationLocalDataSource,
+
+    ) : UserRepository {
 
 
     override suspend fun login(username: String, password: String): Boolean = handleAuthExceptions {
@@ -25,6 +26,7 @@ class UserRepositoryImpl(
         }
         val sessionDto = remoteDataSource.createSession(requestToken)
         sessionDto.sessionId?.let {
+            localDataSource.saveUserName(username)
             localDataSource.saveSessionId(it)
             localDataSource.setIsGuest(false)
             return@handleAuthExceptions true
@@ -78,16 +80,16 @@ class UserRepositoryImpl(
         return localDataSource.hasAnySession()
     }
 
-    override suspend fun setOnboardingCompleted() {
-        localDataSource.setOnboardingCompleted()
-    }
-
-    override  fun isOnboardingCompleted(): Boolean {
-        return localDataSource.isOnboardingCompleted()
-    }
-
     override suspend fun getAccountId(): Int? {
         return remoteDataSource.getAccountDetails().id
+    }
+
+    override fun deleteSessionId(): Boolean {
+        return localDataSource.deleteSessionId()
+    }
+
+    override fun getUserName(): String {
+        return localDataSource.getUserName()
     }
 
 }

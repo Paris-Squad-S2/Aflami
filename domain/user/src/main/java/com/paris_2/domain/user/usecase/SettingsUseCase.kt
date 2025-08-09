@@ -1,9 +1,16 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.LanguageRepository
+import com.paris_2.domain.user.repository.SettingRepository
+import com.paris_2.domain.user.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 
-class SettingsUseCase(private val languageRepository: LanguageRepository) {
-    fun getLanguage(): Flow<String> = languageRepository.getLanguage()
-    suspend fun setLanguage(language: String) = languageRepository.setLanguage(language)
+class SettingsUseCase(
+    private val settingRepository: SettingRepository,
+    private val userRepository: UserRepository,
+) {
+    fun getLanguage(): Flow<String> = settingRepository.getLanguage()
+    suspend fun setLanguage(language: String) = settingRepository.setLanguage(language)
+    fun getUserName(): String = userRepository.getUserName()
+    fun isDarkTheme(): Boolean = settingRepository.getTheme()
+    fun setTheme(isDarkTheme: Boolean) = settingRepository.setTheme(isDarkTheme)
 }

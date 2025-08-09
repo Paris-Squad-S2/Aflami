@@ -1,27 +1,32 @@
 package com.feature.profile.profileUi.screen.watchHistory
 
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.useCase.FilterWatchHistoryUseCase
-import com.paris_2.domain.media.entity.Media as DomainMedia
-import com.paris_2.domain.media.entity.MediaType as DomainMediaType
-import io.mockk.*
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.*
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.AfterEach
-
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import com.paris_2.domain.media.entity.Media as DomainMedia
+import com.paris_2.domain.media.entity.MediaType as DomainMediaType
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class WatchHistoryViewModelTest {
 
     private val filterWatchHistoryUseCase: FilterWatchHistoryUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
-    private val navigator: ProfileNavigator = mockk(relaxed = true)
     private lateinit var viewModel: WatchHistoryViewModel
     private val testDispatcher = StandardTestDispatcher()
 
@@ -41,7 +46,7 @@ class WatchHistoryViewModelTest {
             assertThat(viewModel.screenState.value.isLoading).isTrue()
             fakeMediaList.map { it.toDomain() }
         }
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
     }
 
@@ -49,7 +54,7 @@ class WatchHistoryViewModelTest {
     fun `onTabSelected should update selectedMediaType and reload data`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.TVSHOW) } returns fakeMediaList.map { it.toDomain() }
 
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
 
         viewModel.onTabSelected(MediaTypeUi.TVSHOW)
@@ -63,7 +68,7 @@ class WatchHistoryViewModelTest {
     fun `initial load should fetch data for MOVIE by default`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns fakeMediaList.map { it.toDomain() }
 
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
 
         coVerify { filterWatchHistoryUseCase(DomainMediaType.MOVIE) }
@@ -73,7 +78,7 @@ class WatchHistoryViewModelTest {
     @Test
     fun `onMediaCardClick for TVSHOW triggers navigation`() = runTest {
         coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
 
         viewModel.onMediaCardClick(fakeMediaList[1])
@@ -84,20 +89,27 @@ class WatchHistoryViewModelTest {
 
     @Test
     fun `onBackClick should trigger navigateUp`() = runTest {
+        // Arrange
         coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
-        advanceUntilIdle()
+        val mockNavigator: ProfileNavigator = mockk(relaxed = true)
+
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
+
+        val field = BaseViewModel::class.java.getDeclaredField("navigator")
+        field.isAccessible = true
+        field.set(viewModel, mockNavigator)
 
         viewModel.onBackClick()
         advanceUntilIdle()
 
-        coVerify { navigator.navigateUp() }
+        // Assert
+        coVerify { mockNavigator.navigateUp() }
     }
 
     @Test
     fun `onRetry should reload data with last selected type`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns fakeMediaList.map { it.toDomain() }
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
 
         viewModel.onRetry()
@@ -109,7 +121,7 @@ class WatchHistoryViewModelTest {
     @Test
     fun `onMediaCardClick for MOVIE triggers navigation`() = runTest {
         coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
 
         viewModel.onMediaCardClick(fakeMediaList[0])
@@ -122,7 +134,7 @@ class WatchHistoryViewModelTest {
     fun `onTabSelected should not reload when selecting same tab`() = runTest {
         coEvery { filterWatchHistoryUseCase(DomainMediaType.MOVIE) } returns fakeMediaList.map { it.toDomain() }
 
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
 
         viewModel.onTabSelected(MediaTypeUi.MOVIE)
@@ -135,7 +147,7 @@ class WatchHistoryViewModelTest {
     fun `onRetry should reload with TV shows when TV show tab is selected`() = runTest {
         coEvery { filterWatchHistoryUseCase(any()) } returns fakeMediaList.map { it.toDomain() }
 
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, navigator)
+        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI)
         advanceUntilIdle()
 
         viewModel.onTabSelected(MediaTypeUi.TVSHOW)

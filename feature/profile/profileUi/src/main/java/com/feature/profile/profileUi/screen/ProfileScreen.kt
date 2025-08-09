@@ -24,6 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.components.AppLanguageDialog
+import com.feature.profile.profileUi.screen.components.AppLogOutDialog
 import com.feature.profile.profileUi.screen.components.AppSettingDialog
 import com.feature.profile.profileUi.screen.components.AppThemeDialog
 import com.feature.profile.profileUi.screen.components.ProfileDetails
@@ -59,8 +60,7 @@ fun ProfileScreen(modifier: Modifier = Modifier, viewModel: ProfileViewModel = h
 fun LoggedOutContent(
     modifier: Modifier,
     profileInteractionListener: ProfileViewModel,
-
-    ) {
+) {
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -106,7 +106,7 @@ fun ProfileContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            ProfileDetails(modifier)
+            ProfileDetails(modifier, state.profile.name)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -148,17 +148,29 @@ fun ProfileContent(
                 context.startActivities(arrayOf(intent))
             }
         )
-        AppSettingDialog(
-            isVisible = state.profile.isSettingDialogOpen,
-            onDismiss = profileInteractionListener::onDismissSettingDialog
-        )
+
 
         AppThemeDialog(
             isVisible = state.profile.isThemeDialogOpen,
             onDismiss = profileInteractionListener::onDismissAppearanceDialog,
-            onThemeSelected = profileInteractionListener::onAppearanceApplyClicked,
+            onThemeSelected = {appearance->
+                profileInteractionListener.onAppearanceApplyClicked(appearance)
+                val intent =
+                    context.packageManager.getLaunchIntentForPackage(context.packageName)
+                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                context.startActivities(arrayOf(intent))
+            },
             themeState = state.profile.theme
         )
-
+        AppSettingDialog(
+            isVisible = state.profile.isSettingDialogOpen,
+            onDismiss = profileInteractionListener::onDismissSettingDialog,
+            isLogoutDialogVisible = profileInteractionListener::onLogoutClicked
+        )
+        AppLogOutDialog(
+            isVisible = state.profile.isLogoutDialogOpen,
+            onDismiss = profileInteractionListener::onDismissLogoutDialog,
+            onLogout = profileInteractionListener::onLogoutApplyClicked
+        )
     }
 }

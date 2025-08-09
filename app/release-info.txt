@@ -1,3 +1,2 @@
-versionName=0.7.6
-- refactor gradle using bundle
-- remove material 3 and depend on design system
+versionName=0.7.7
+- add app theme for profile feature

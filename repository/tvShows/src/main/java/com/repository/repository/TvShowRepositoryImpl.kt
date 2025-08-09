@@ -11,10 +11,10 @@ import com.paris_2.domain.media.entity.TvShowSimilar
 import com.paris_2.domain.media.entity.TvShowVideo
 import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.FailedToAddRatingException
+import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoCastFoundException
 import com.paris_2.domain.media.exception.NoGalleryFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
 import com.paris_2.domain.media.exception.NoReviewFoundException
 import com.paris_2.domain.media.exception.NoSeasonFoundException
@@ -22,7 +22,7 @@ import com.paris_2.domain.media.exception.NoSimilarFoundException
 import com.paris_2.domain.media.exception.NoTvShowFoundException
 import com.paris_2.domain.media.exception.NoVideoFoundException
 import com.paris_2.domain.media.repository.TvShowRepository
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
@@ -34,11 +34,11 @@ class TvShowRepositoryImpl(
     private val tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource,
     private val tvShowLocalDataSource: TvShowLocalDataSource,
     private val networkConnectionChecker: NetworkConnectionChecker,
-    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    private val settingLocalDataSource: SettingLocalDataSource,
 ) : TvShowRepository {
 
     override suspend fun getTvShowDetails(tvShowId: Int): TvShow {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoTvShowFoundException()) {
             val localTVShow = tvShowLocalDataSource.getTvShowId(tvShowId, language)
             if (localTVShow != null) {
@@ -55,7 +55,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowCast(tvShowId: Int): List<Cast> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoCastFoundException()) {
             val localCast = tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
             if (localCast.isNotEmpty()) {
@@ -76,7 +76,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowRecommendations(tvShowId: Int, page: Int): List<TvShowSimilar> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoSimilarFoundException()) {
             val localSimilar =
                 tvShowLocalDataSource.getSimilarTvShows(tvShowId, page, language)
@@ -115,7 +115,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoProductionCompanyFoundException()) {
             val localCompany = tvShowLocalDataSource.getTvShowId(tvShowId, language)
                 ?.productionCompanies ?: emptyList()
@@ -136,7 +136,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoSeasonFoundException()) {
             val localSeason = tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                 tvShowId,
@@ -162,7 +162,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowReview(tvShowId: Int, page: Int): List<Review> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoReviewFoundException()) {
             val localReview = tvShowLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             if (localReview.isNotEmpty()) {
@@ -215,7 +215,7 @@ class TvShowRepositoryImpl(
         seasonNumber: Int,
         episodeNumber: Int,
     ): List<EpisodeVideo> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return tvShowDetailsRemoteDataSource.getTrailerVideoForEpisode(
             tvShowId,
             seasonNumber,
