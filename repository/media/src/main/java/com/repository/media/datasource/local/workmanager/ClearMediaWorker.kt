@@ -21,7 +21,7 @@ class ClearMediaWorker @AssistedInject constructor(
         return try {
             val categoryName = inputData.getString(CATEGORY_KEY) ?: return Result.failure()
             val category = Category.valueOf(categoryName)
-            homeMediaLocalDataSource.clearMediaByCategory(category)
+            homeMediaLocalDataSource.clearHomeMediaByCategory(category)
             Result.success()
         } catch (_: Exception) {
             Result.failure()

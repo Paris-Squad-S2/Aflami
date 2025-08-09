@@ -4,7 +4,7 @@ import com.repository.media.entity.GenreUserInteractionEntity
 
 
 interface GenresInteractionDataSource {
-    suspend fun upsertInteraction(interaction: GenreUserInteractionEntity)
-    suspend fun getCategoryInteractions(genreId: Int): Int?
-    suspend fun getAllInteractions(): List<GenreUserInteractionEntity>
+    suspend fun upsertGenresInteraction(interaction: GenreUserInteractionEntity)
+    suspend fun getCategoryByGenreId(genreId: Int): Int?
+    suspend fun getGenresInteractions(): List<GenreUserInteractionEntity>
 }

@@ -14,25 +14,25 @@ class HomeMediaLocalDataSourceImpl(
     private val homeMediaDao: HomeMediaDao,
     private val workManager: WorkManager,
 ) : HomeMediaLocalDataSource {
-    override suspend fun addMediaList(mediaList: List<HomeMediaEntity>) {
-        homeMediaDao.addMediaList(mediaList)
+    override suspend fun addHomeMedia(mediaList: List<HomeMediaEntity>) {
+        homeMediaDao.addHomeMedia(mediaList)
         mediaList.map { it.category }.distinct().forEach { category ->
-            scheduleClearMediaByCategory(category)
+            scheduleClearHomeMediaByCategory(category)
         }
     }
 
-    override suspend fun getMediaListByCategory(
+    override suspend fun getHomeMediaByCategory(
         category: Category,
         language: String,
     ): List<HomeMediaEntity> {
-        return homeMediaDao.getMediaListByCategory(category = category, language = language)
+        return homeMediaDao.getHomeMediaByCategory(category = category, language = language)
     }
 
-    override suspend fun clearMediaByCategory(category: Category) {
-        homeMediaDao.clearMediaByCategory(category = category)
+    override suspend fun clearHomeMediaByCategory(category: Category) {
+        homeMediaDao.clearHomeMediaByCategory(category = category)
     }
 
-    private fun scheduleClearMediaByCategory(category: Category) {
+    private fun scheduleClearHomeMediaByCategory(category: Category) {
         val inputData = workDataOf(
             ClearMediaWorker.CATEGORY_KEY to category.name
         )
