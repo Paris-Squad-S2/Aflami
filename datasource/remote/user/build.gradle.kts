@@ -34,26 +34,17 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.android)
+    implementation(libs.bundles.serialization)
 
-    //test
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    testImplementation(kotlin("test"))
+    testImplementation(libs.bundles.test)
 
-    implementation(project(Modules.REPOSITORY_USER))
-
-    //retrofit
     implementation(libs.bundles.retrofit)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
+
+    implementation(project(Modules.REPOSITORY_USER))
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()

@@ -34,28 +34,15 @@ android {
 
 dependencies {
 
+    implementation(libs.bundles.android)
+    implementation(libs.bundles.retrofit)
+
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
 
-    implementation(libs.androidx.core.ktx)
+    testImplementation(libs.bundles.test)
 
-    // Junit 5
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-
-    // test
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    testImplementation(kotlin("test"))
-
-
-    //retrofit
-    implementation(libs.bundles.retrofit)
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 }
 

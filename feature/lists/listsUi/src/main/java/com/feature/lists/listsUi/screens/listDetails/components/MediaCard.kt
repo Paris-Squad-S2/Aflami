@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +31,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppIcon
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
@@ -91,7 +91,7 @@ fun MediaCard(
                     .background( Theme.colors.iconBackground,shape = RoundedCornerShape(12.dp))
                     .clickable{onRemoveClick()}
             ){
-                Icon(
+                AppIcon(
                     imageVector = ImageVector.vectorResource(com.feature.lists.listsUi.R.drawable.ic_heart_remove),
                     contentDescription = null,
                     tint = Color.Unspecified,

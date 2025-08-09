@@ -258,3 +258,7 @@ shimmer = [
 webview = [
     "androidx-webkit"
 ]
+
+pager = [
+    "accompanist-pager-v0340",
+]

@@ -35,19 +35,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.bundles.android)
     implementation(project(Modules.REPOSITORY_MEDIA))
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
-
-    //retrofit
     implementation(libs.bundles.retrofit)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    testImplementation(libs.bundles.test)
+
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 }
