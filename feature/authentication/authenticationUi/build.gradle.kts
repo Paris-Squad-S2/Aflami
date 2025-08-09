@@ -48,7 +48,7 @@ dependencies {
 
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
-//    implementation(libs.androidx.material3) //TODO
+    implementation(libs.androidx.material3) //TODO : Remove it
     implementation(libs.bundles.navigation)
     testImplementation(libs.bundles.test)
     implementation(libs.bundles.webview)
