@@ -26,7 +26,7 @@ class CountriesLocalDataSourceImplTest {
     fun `getCountries should return countries when getAll in CountryDao called successfully`() =
         runTest {
             // Given
-            coEvery { countryDao.getAllCountries() } returns listOf(sampleCountry)
+            coEvery { countryDao.getCountries() } returns listOf(sampleCountry)
             // When
             val result = countriesLocalDataSource.getCountries()
             // Then
@@ -37,7 +37,7 @@ class CountriesLocalDataSourceImplTest {
     fun `getCountries should return empty list when CountryDao returns nothing`() =
         runTest {
             // Given
-            coEvery { countryDao.getAllCountries() } returns emptyList()
+            coEvery { countryDao.getCountries() } returns emptyList()
             // When
             val result = countriesLocalDataSource.getCountries()
             // Then

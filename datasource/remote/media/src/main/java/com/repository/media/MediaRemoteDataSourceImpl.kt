@@ -8,7 +8,7 @@ import com.repository.media.dto.profile.RatedTvShowDtoo
 import com.repository.media.services.MediaApiService
 import javax.inject.Inject
 
-class MediaDataSourceImpl @Inject constructor(
+class MediaRemoteDataSourceImpl @Inject constructor(
     private val apiService: MediaApiService
 ) : MediaRemoteDataSource {
 

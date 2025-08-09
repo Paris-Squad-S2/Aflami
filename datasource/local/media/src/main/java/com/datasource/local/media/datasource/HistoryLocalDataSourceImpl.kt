@@ -17,20 +17,20 @@ class HistoryLocalDataSourceImpl (
         dao.addSearchQuery(entity)
     }
 
-    override fun getAllSearchQueries(): Flow<List<SearchHistoryEntity>> {
-        return dao.getAllSearchQueries()
+    override fun getSearchQueries(): Flow<List<SearchHistoryEntity>> {
+        return dao.getSearchQueries()
     }
 
     override suspend fun getSearchHistoryQuery(query: String, searchType: SearchType): SearchHistoryEntity? {
         return dao.getSearchHistoryQuery(query, searchType)
     }
 
-    override suspend fun clearSearchQueryByQuery(query: String, searchType: SearchType) {
-        dao.clearSearchQueryByQuery(query, searchType)
+    override suspend fun clearSearchByQuery(query: String, searchType: SearchType) {
+        dao.clearSearchByQuery(query, searchType)
     }
 
-    override suspend fun clearAll() {
-        dao.clearAllSearchQueries()
+    override suspend fun clearSearchQueries() {
+        dao.clearSearchQueries()
     }
 
 }

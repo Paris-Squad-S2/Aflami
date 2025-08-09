@@ -32,24 +32,24 @@ class GenresInteractionRepositoryImplTest {
     fun `upsertInteraction should call dataSource with mapped entity`() = runTest {
         val model = GenreUserInteraction(genreId = 3, interactionCount = 7)
         val entity = GenreUserInteractionEntity(genreId = 3, interactionCount = 7)
-        coJustRun { dataSource.upsertInteraction(entity) }
+        coJustRun { dataSource.upsertGenresInteraction(entity) }
         every { model.toCategoryUserInteractionEntity() } returns entity
 
         repository.upsertInteraction(model)
 
-        coVerify { dataSource.upsertInteraction(entity) }
+        coVerify { dataSource.upsertGenresInteraction(entity) }
     }
 
     @Test
     fun `getCategoryInteractions should return dataSource value if found`() = runTest {
-        coEvery { dataSource.getCategoryInteractions(12) } returns 2
+        coEvery { dataSource.getCategoryByGenreId(12) } returns 2
         val result = repository.getCategoryInteractions(12)
         assertEquals(2, result)
     }
 
     @Test
     fun `getCategoryInteractions should return null if not found`() = runTest {
-        coEvery { dataSource.getCategoryInteractions(44) } returns null
+        coEvery { dataSource.getCategoryByGenreId(44) } returns null
         val result = repository.getCategoryInteractions(44)
         assertNull(result)
     }
@@ -64,7 +64,7 @@ class GenresInteractionRepositoryImplTest {
             GenreUserInteraction(1, 8),
             GenreUserInteraction(2, 3)
         )
-        coEvery { dataSource.getAllInteractions() } returns entities
+        coEvery { dataSource.getGenresInteractions() } returns entities
         every { entities[0].toCategoryUserInteractionModel() } returns models[0]
         every { entities[1].toCategoryUserInteractionModel() } returns models[1]
         val result = repository.getAllInteractions()
@@ -73,7 +73,7 @@ class GenresInteractionRepositoryImplTest {
 
     @Test
     fun `getAllInteractions should return empty list if dataSource returns empty`() = runTest {
-        coEvery { dataSource.getAllInteractions() } returns emptyList()
+        coEvery { dataSource.getGenresInteractions() } returns emptyList()
         val result = repository.getAllInteractions()
         assertEquals(emptyList(), result)
     }

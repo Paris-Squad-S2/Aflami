@@ -3,7 +3,7 @@ package com
 import com.google.common.truth.Truth
 import com.repository.media.SearchRemoteDataSourceImpl
 import com.repository.media.dto.search.SearchDto
-import com.repository.media.services.RetrofitSearchApiService
+import com.repository.media.services.MediaApiService
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -13,14 +13,14 @@ import org.junit.Test
 
 class SearchRemoteDataSourceImplTest {
 
-    private val mockSearchApiService = mockk<RetrofitSearchApiService>()
+    private val mockMediaApiService = mockk<MediaApiService>()
 
     private val mockSearchDto = mockk<SearchDto>()
     private lateinit var searchRemoteDataSource: SearchRemoteDataSourceImpl
 
     @Before
     fun setUp() {
-        searchRemoteDataSource = SearchRemoteDataSourceImpl(mockSearchApiService)
+        searchRemoteDataSource = SearchRemoteDataSourceImpl(mockMediaApiService)
     }
 
     @Test
@@ -28,7 +28,7 @@ class SearchRemoteDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                mockSearchApiService.searchMulti(query, page, language)
+                mockMediaApiService.searchMulti(query, page, language)
             } returns mockSearchDto
 
             // When
@@ -41,20 +41,20 @@ class SearchRemoteDataSourceImplTest {
     @Test
     fun `searchMulti should call searchMulti API once`() = runTest {
         // Given
-        coEvery { mockSearchApiService.searchMulti(query, page, language) } returns mockSearchDto
+        coEvery { mockMediaApiService.searchMulti(query, page, language) } returns mockSearchDto
 
         // When
         searchRemoteDataSource.searchMulti(query, page, language)
 
         // Then
-        coVerify(exactly = 1) { mockSearchApiService.searchMulti(query, page, language) }
+        coVerify(exactly = 1) { mockMediaApiService.searchMulti(query, page, language) }
     }
 
 
     @Test
     fun `searchMulti should throw exception when API fails`() = runTest {
         //Given
-        coEvery { mockSearchApiService.searchMulti(query, page, language) } throws apiException
+        coEvery { mockMediaApiService.searchMulti(query, page, language) } throws apiException
 
         //When and Then
         try {
@@ -68,7 +68,7 @@ class SearchRemoteDataSourceImplTest {
     @Test
     fun `searchMulti should call searchMulti API once when exception occurs`() = runTest {
         //Given
-        coEvery { mockSearchApiService.searchMulti(query, page, language) } throws apiException
+        coEvery { mockMediaApiService.searchMulti(query, page, language) } throws apiException
 
         //When and Then
         try {
@@ -76,7 +76,7 @@ class SearchRemoteDataSourceImplTest {
         } catch (_: Exception) {
         }
 
-        coVerify(exactly = 1) { mockSearchApiService.searchMulti(query, page, language) }
+        coVerify(exactly = 1) { mockMediaApiService.searchMulti(query, page, language) }
     }
 
 
@@ -85,7 +85,7 @@ class SearchRemoteDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                mockSearchApiService.searchPerson(actorQuery, page, language)
+                mockMediaApiService.searchPerson(actorQuery, page, language)
             } returns mockSearchDto
 
             // When
@@ -99,7 +99,7 @@ class SearchRemoteDataSourceImplTest {
     fun `searchPerson should call API service exactly once`() = runTest {
         // Given
         coEvery {
-            mockSearchApiService.searchPerson(
+            mockMediaApiService.searchPerson(
                 actorQuery,
                 page,
                 language
@@ -110,7 +110,7 @@ class SearchRemoteDataSourceImplTest {
         searchRemoteDataSource.searchPerson(actorQuery, page, language)
 
         // Then
-        coVerify(exactly = 1) { mockSearchApiService.searchPerson(actorQuery, page, language) }
+        coVerify(exactly = 1) { mockMediaApiService.searchPerson(actorQuery, page, language) }
     }
 
     @Test
@@ -118,7 +118,7 @@ class SearchRemoteDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                mockSearchApiService.searchPerson(actorQuery, page, language)
+                mockMediaApiService.searchPerson(actorQuery, page, language)
             } throws apiException
 
             // When and Then
@@ -134,7 +134,7 @@ class SearchRemoteDataSourceImplTest {
     fun `searchPerson should call API when exception is thrown`() = runTest {
         // Given
         coEvery {
-            mockSearchApiService.searchPerson(actorQuery, page, language)
+            mockMediaApiService.searchPerson(actorQuery, page, language)
         } throws apiException
 
         // When
@@ -145,7 +145,7 @@ class SearchRemoteDataSourceImplTest {
 
         // Then
         coVerify(exactly = 1) {
-            mockSearchApiService.searchPerson(actorQuery, page, language)
+            mockMediaApiService.searchPerson(actorQuery, page, language)
         }
     }
 
@@ -154,7 +154,7 @@ class SearchRemoteDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                mockSearchApiService.searchCountryCode(page, language, countryCode)
+                mockMediaApiService.searchCountryCode(page, language, countryCode)
             } returns mockSearchDto
 
             //When
@@ -170,7 +170,7 @@ class SearchRemoteDataSourceImplTest {
     fun `searchCountryCode should call API when API call is successful`() = runTest {
         // Given
         coEvery {
-            mockSearchApiService.searchCountryCode(page, language, countryCode)
+            mockMediaApiService.searchCountryCode(page, language, countryCode)
         } returns mockSearchDto
 
         // When
@@ -178,7 +178,7 @@ class SearchRemoteDataSourceImplTest {
 
         // Then
         coVerify(exactly = 1) {
-            mockSearchApiService.searchCountryCode(page, language, countryCode)
+            mockMediaApiService.searchCountryCode(page, language, countryCode)
         }
     }
 
@@ -187,7 +187,7 @@ class SearchRemoteDataSourceImplTest {
         runTest {
             // Given
             coEvery {
-                mockSearchApiService.searchCountryCode(page, language, countryCode)
+                mockMediaApiService.searchCountryCode(page, language, countryCode)
             } throws apiException
 
             // When and Then
@@ -204,7 +204,7 @@ class SearchRemoteDataSourceImplTest {
     fun `searchCountryCode should call API when exception is thrown`() = runTest {
         // Given
         coEvery {
-            mockSearchApiService.searchCountryCode(page, language, countryCode)
+            mockMediaApiService.searchCountryCode(page, language, countryCode)
         } throws apiException
 
         // When
@@ -215,7 +215,7 @@ class SearchRemoteDataSourceImplTest {
 
         // Then
         coVerify(exactly = 1) {
-            mockSearchApiService.searchCountryCode(page, language, countryCode)
+            mockMediaApiService.searchCountryCode(page, language, countryCode)
         }
     }
 
