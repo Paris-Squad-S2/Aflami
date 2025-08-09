@@ -28,6 +28,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import com.paris_2.domain.media.entity.Genre
 
 class MediaRepositoryImplTest {
     private val remote: MediaRemoteDataSource = mockk()
@@ -60,7 +61,7 @@ class MediaRepositoryImplTest {
                 voteAverage = 7.2,
                 posterPath = "poster.jpg",
                 releaseDate = "2023-01-01",
-                genreIds = listOf(1, 2),
+                genreIds = listOf(28,18),
                 type = MediaTypeEntity.MOVIE,
                 category = Category.POPULAR,
                 language = "en"
@@ -162,9 +163,9 @@ class MediaRepositoryImplTest {
                 voteAverage = 9.0,
                 posterPath = "top.jpg",
                 releaseDate = "2022-01-01",
-                genreIds = listOf(3),
+                genreIds = listOf(28),
                 type = MediaTypeEntity.TV_SHOW,
-                category = Category.POPULAR,
+                category = Category.TOP_RATED,
                 language = "en"
             )
         )
@@ -245,9 +246,9 @@ class MediaRepositoryImplTest {
                 voteAverage = 8.1,
                 posterPath = "upcoming.jpg",
                 releaseDate = "2025-01-01",
-                genreIds = listOf(5),
+                genreIds = listOf(18),
                 type = MediaTypeEntity.MOVIE,
-                category = Category.POPULAR,
+                category = Category.UPCOMING,
                 language = "en"
             )
         )
@@ -353,7 +354,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal delegates to data source`() = runTest {
-        val media = Media(200, "", "Local", MediaType.MOVIE,  listOf(1), mockk(), 8.0)
+        val media = Media(200, "", "Local", MediaType.MOVIE, listOf(Genre.Action), mockk(), 8.0)
         coEvery { local.addMedia(media.toEntity()) } returns Unit
         repo.addMediaToContinueWatching(media)
         coVerify { local.addMedia(media.toEntity()) }
@@ -366,7 +367,7 @@ class MediaRepositoryImplTest {
             title = "Saved",
             posterPath = "saved.jpg",
             type = MediaTypeEntity.TV_SHOW,
-            genreIds = listOf(2),
+            genreIds = listOf(28),
             voteAverage = 6.6,
             releaseDate = "2023-09-09"
         )
@@ -377,7 +378,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `addMediaToContinueWatching throws NoInternetConnectionException when offline`() = runTest {
         every { networkChecker.isConnected } returns MutableStateFlow(false)
-        val media = Media(1, "", "Test", MediaType.MOVIE, listOf(1), mockk(), 8.0)
+        val media = Media(1, "", "Test", MediaType.MOVIE, listOf(Genre.Action), mockk(), 8.0)
 
         assertThrows<NoInternetConnectionException> {
             repo.addMediaToContinueWatching(media)
@@ -395,7 +396,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal throws addMediaToLocalException on failure`() = runTest {
-        val media = Media(123, "", "Fail", MediaType.TVSHOW, listOf(1), mockk(), 4.0)
+        val media = Media(123, "", "Fail", MediaType.TVSHOW, listOf(Genre.Action), mockk(), 4.0)
 
         coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
 
