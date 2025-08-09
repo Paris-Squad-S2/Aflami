@@ -8,9 +8,7 @@ import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoSeasonFoundException
 import com.paris_2.domain.media.exception.NoTvShowFoundException
 import com.paris_2.domain.media.exception.FailedToDeleteRatingException
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
-import com.repository.dataSource.local.TvShowCastLocalDataSource
-import com.repository.dataSource.local.TvShowGalleryLocalDataSource
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
@@ -40,10 +38,8 @@ class TvShowRepositoryImplTest {
     private lateinit var tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource
     private lateinit var tvShowLocalDataSource: TvShowLocalDataSource
     private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
-    private var languageLocalDataSourceRepository: LanguageLocalDataSourceRepository = mockk(relaxed = true)
     private lateinit var tvShowRepository: TvShowRepositoryImpl
-    private var settingLocalDataSource: SettingLocalDataSource =
-        mockk(relaxed = true)
+    private var settingLocalDataSource: SettingLocalDataSource = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {

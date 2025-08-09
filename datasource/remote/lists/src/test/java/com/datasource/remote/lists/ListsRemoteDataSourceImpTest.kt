@@ -12,7 +12,7 @@ import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
+import org.junit.jupiter.api.BeforeEach
 import retrofit2.HttpException
 import java.io.IOException
 import kotlin.test.Test
@@ -25,7 +25,7 @@ class ListsRemoteDataSourceImpTest {
 
     private lateinit var listsRemoteDataSource: ListsRemoteDataSourceImp
 
-    @Before
+    @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
         listsRemoteDataSource = ListsRemoteDataSourceImp(listApiService)

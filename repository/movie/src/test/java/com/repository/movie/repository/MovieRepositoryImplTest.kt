@@ -9,9 +9,7 @@ import com.paris_2.domain.media.exception.NoGalleryFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoMovieFoundException
 import com.paris_2.domain.media.exception.FailedToDeleteRatingException
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
-import com.repository.movie.dataSource.local.MovieCastLocalDataSource
-import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.mapper.toEntity
@@ -46,8 +44,7 @@ class MovieRepositoryImplTest {
     private var movieRemoteDataSource: MovieRemoteDataSource = mockk(relaxed = true)
     private var movieLocalDataSource: MovieLocalDataSource = mockk(relaxed = true)
     private var networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
-    private var settingLocalDataSource: SettingLocalDataSource =
-        mockk(relaxed = true)
+    private var settingLocalDataSource: SettingLocalDataSource = mockk(relaxed = true)
 
     @BeforeEach
     fun setUp() {
