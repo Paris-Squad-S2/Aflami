@@ -24,13 +24,12 @@ import androidx.compose.ui.draw.BlurredEdgeTreatment
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import com.designSystem.safeimageviewer.SafeImageViewer
+import coil.compose.AsyncImage
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.utils.shimmerable
 import com.paris_2.aflami.designsystem.components.AppIcon
@@ -38,7 +37,6 @@ import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 import io.sifr.shaded.blurProcessor.BlurEdgeTreatment
 import io.sifr.shaded.modifiers.blur
-import coil.compose.AsyncImage
 
 
 @Composable
@@ -86,8 +84,6 @@ fun HomeSlider(
                             .blur(radius = 12f, edgeTreatment = BlurEdgeTreatment.UNBOUNDED)
                     }),
                 contentScale = ContentScale.FillWidth,
-                placeholder = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.ic_film_roll),
-                error = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.img_disconnect)
             )
 
             Column(
