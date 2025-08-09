@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import CategoryUiState
 import MediaTypeUi
 import MediaUiState
 import SearchScreenState
@@ -17,13 +16,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
-import com.feature.search.searchUi.mapper.toCategoryUiList
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.PagingSource
+import com.paris_2.domain.media.entity.Genre
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.useCase.ClearAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
@@ -118,7 +117,7 @@ class SearchViewModel @Inject constructor(
                 updateState(
                     screenState.value.copy(
                         searchUiState = screenState.value.searchUiState.copy(
-                            categories = categories.toCategoryUiList().associateWith { false }
+                            categories = categories.associateWith { false }
                                 .toMutableMap()
                         )
                     )
@@ -207,7 +206,7 @@ class SearchViewModel @Inject constructor(
                 )))
                 val filteredMediaByCategories =
                     if (!screenState.value.searchUiState.isAllCategories) flowOf (PagingData.from(filterMedByListOfCategoriesUseCase(
-                        screenState.value.searchUiState.categories.filter { it.value }.keys.toList().map { it.id },
+                        screenState.value.searchUiState.categories.filter { it.value }.keys.toList(),
                         filteredMediaByRating.collectItems()
                     ).toMediaUiList())) else searchResult
 
@@ -264,7 +263,7 @@ class SearchViewModel @Inject constructor(
     override fun onApplyFilterButtonClick(
         selectedRating: Float,
         isAllCategories: Boolean,
-        selectedCategories: List<CategoryUiState>,
+        selectedCategories: List<Genre>,
     ) {
         tryToExecute(
             execute = {
@@ -294,7 +293,7 @@ class SearchViewModel @Inject constructor(
                     filteredMovies
                 } else {
                     filterMedByListOfCategoriesUseCase(
-                        selectedCategories.map { it.id },
+                        selectedCategories,
                         filteredMovies
                     )
                 }
@@ -302,7 +301,7 @@ class SearchViewModel @Inject constructor(
                     filteredTvShows
                 } else {
                     filterMedByListOfCategoriesUseCase(
-                        selectedCategories.map { it.id },
+                        selectedCategories,
                         filteredTvShows
                     )
                 }
