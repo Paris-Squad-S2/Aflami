@@ -9,16 +9,21 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavGraph
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthActivity : ComponentActivity() {
+    @Inject
+    lateinit var settingsUseCase: SettingsUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AflamiTheme {
+            AflamiTheme(settingsUseCase.isDarkTheme()) {
                 AuthenticationNavGraph()
             }
         }
