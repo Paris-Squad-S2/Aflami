@@ -1,12 +1,13 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.media.entity.Genre
 import com.paris_2.domain.media.exception.NoCategoriesFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
+import com.repository.media.entity.Category
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.every
@@ -48,7 +49,7 @@ class CategoriesRepositoryImplTest {
         // When
         val result = repository.getAllCategories()
 
-        assertEquals(listOf(Category(2, "Drama")), result)
+        assertEquals(listOf(Genre.Drama), result)
     }
 
     @Test
