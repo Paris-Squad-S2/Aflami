@@ -55,7 +55,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.coil)
 
-    implementation(libs.androidx.material3) //TODO: Remove it
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // TensorFlow Lite - core only (minimal dependencies)
