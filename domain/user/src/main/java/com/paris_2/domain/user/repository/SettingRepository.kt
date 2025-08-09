@@ -7,4 +7,6 @@ interface SettingRepository {
     suspend fun setLanguage(language: String)
     suspend fun setOnboardingCompleted()
     fun isOnboardingCompleted(): Boolean
+    fun setTheme(isDarkTheme: Boolean)
+    fun getTheme(): Boolean
 }

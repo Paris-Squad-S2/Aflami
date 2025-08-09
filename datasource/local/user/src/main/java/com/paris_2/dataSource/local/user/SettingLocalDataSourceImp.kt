@@ -18,6 +18,7 @@ class SettingLocalDataSourceImp @Inject constructor(
         private const val PREF_NAME = "settings"
         private const val LANGUAGE_KEY = "language_code"
         private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+        private const val KEY_IS_DARK_THEME = "is_dark_theme"
     }
 
     private val prefs = context.getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE)
@@ -49,7 +50,16 @@ class SettingLocalDataSourceImp @Inject constructor(
         return prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
     }
 
+    override fun setTheme(isDarkTheme: Boolean) {
+        prefs.edit { putBoolean(KEY_IS_DARK_THEME, isDarkTheme) }
+    }
+
+    override fun getTheme(): Boolean {
+       return prefs.getBoolean(KEY_IS_DARK_THEME, false)
+    }
+
     private fun getLanguageSync(): String {
         return prefs.getString(LANGUAGE_KEY, "en") ?: "en"
     }
+
 }

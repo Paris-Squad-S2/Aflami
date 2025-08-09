@@ -26,4 +26,12 @@ class SettingRepositoryImp(
         return languageLocalDataSource.isOnboardingCompleted()
     }
 
+    override fun setTheme(isDarkTheme: Boolean) {
+        languageLocalDataSource.setTheme(isDarkTheme)
+    }
+
+    override fun getTheme(): Boolean {
+        return languageLocalDataSource.getTheme()
+    }
+
 }

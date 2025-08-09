@@ -7,4 +7,6 @@ interface SettingLocalDataSource {
     suspend fun setLanguage(language: String)
     fun setOnboardingCompleted()
     fun isOnboardingCompleted(): Boolean
+    fun setTheme(isDarkTheme: Boolean)
+    fun getTheme(): Boolean
 }
