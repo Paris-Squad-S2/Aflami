@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.search.searchUi.R
-import com.feature.search.searchUi.comon.GenreResourceMapper.getResourceId
+import com.feature.search.searchUi.mapper.GenreResourceMapper.getResourceId
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
@@ -92,7 +92,7 @@ fun FilterDialog(
                     val category = currentCategories.keys.elementAt(index)
                     Chips(
                         title = category.name,
-                        icon = ImageVector.vectorResource(getResourceId(category.id)),
+                        icon = ImageVector.vectorResource(getResourceId(category)),
                         isSelected = currentCategories[category] ?: false,
                         onClick = {
                             isAllCategories = false
