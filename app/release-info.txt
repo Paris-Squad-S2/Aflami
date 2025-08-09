@@ -1,2 +1,3 @@
-versionName=0.7.3
-- rename bottom navigation bar components
+versionName=0.7.4
+- Replace AuthInterceptor with UserAuthInterceptor and clean up imports
+- migrate viewmodel from junit 4 to junit 5
