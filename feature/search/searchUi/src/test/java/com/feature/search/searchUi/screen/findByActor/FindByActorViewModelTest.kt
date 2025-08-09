@@ -191,7 +191,7 @@ class FindByActorViewModelTest {
             imageUri = "",
             title = "Test Movie",
             type = MediaTypeUi.MOVIE,
-            categories = listOf(1, 2),
+            categories = listOf(Category.ACTION, Category.ADVENTURE),
             yearOfRelease = LocalDate(2023, 1, 1),
             rating = 4.5,
         )
