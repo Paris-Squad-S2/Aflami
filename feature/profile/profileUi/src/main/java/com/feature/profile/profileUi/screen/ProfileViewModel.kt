@@ -1,6 +1,5 @@
 package com.feature.profile.profileUi.screen
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel

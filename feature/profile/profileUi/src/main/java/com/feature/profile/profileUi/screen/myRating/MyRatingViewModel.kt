@@ -4,7 +4,6 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.mapper.toMediaType
 import com.feature.profile.profileUi.mapper.toMediaUiStateList
-import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
@@ -21,7 +20,6 @@ class MyRatingViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
     private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase,
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase,
-    navigator: ProfileNavigator,
 ) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(
     initialState = MyRatingUiState(
         isLoading = false,
