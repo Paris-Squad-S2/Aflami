@@ -18,9 +18,7 @@ import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
 import com.paris_2.domain.media.exception.NoReviewFoundException
 import com.paris_2.domain.media.exception.NoVideoFoundException
 import com.paris_2.domain.media.repository.MovieRepository
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
-import com.repository.movie.dataSource.local.MovieCastLocalDataSource
-import com.repository.movie.dataSource.local.MovieGalleryLocalDataSource
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.mapper.toEntity

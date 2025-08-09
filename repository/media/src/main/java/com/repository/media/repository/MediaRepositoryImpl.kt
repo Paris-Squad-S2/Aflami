@@ -33,7 +33,7 @@ class MediaRepositoryImpl(
 
     override suspend fun getPopularMedia(): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
-        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.POPULAR, language)
+        val localMedia = homeMediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(PopularMediaException()) {
