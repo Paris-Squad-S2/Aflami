@@ -1,2 +1,2 @@
-versionName=0.7.3
-- rename bottom navigation bar components
+versionName=0.7.8
+- add placeholder in Watch History Screen

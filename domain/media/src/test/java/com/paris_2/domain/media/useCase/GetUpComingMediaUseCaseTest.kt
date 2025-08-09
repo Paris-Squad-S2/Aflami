@@ -14,6 +14,13 @@ class GetUpComingMediaUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
     private val useCase = GetUpComingMediaUseCase(mediaRepository)
 
+    @Test
+    fun `invoke returns upcoming media from repository`() = runTest {
+        coEvery { mediaRepository.getUpComingMedia() } returns fakeMediaList
+        val result = useCase()
+        assertThat(result).isEqualTo(fakeMediaList)
+    }
+
     private val fakeMediaList = listOf(
         Media(
             id = 1,
@@ -34,11 +41,4 @@ class GetUpComingMediaUseCaseTest {
             type = MediaType.TVSHOW
         )
     )
-
-    @Test
-    fun `invoke returns upcoming media from repository`() = runTest {
-        coEvery { mediaRepository.getUpComingMedia() } returns fakeMediaList
-        val result = useCase()
-        assertThat(result).isEqualTo(fakeMediaList)
-    }
 }

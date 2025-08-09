@@ -1,11 +1,11 @@
 package com.paris_2.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import org.junit.jupiter.api.BeforeEach
 import com.paris_2.domain.media.testUtils.createMedia
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
 
 class FilterByListOfCategoriesUseCaseTest {
 
@@ -25,7 +25,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
-        assertEquals(1, result.size)
+        assertThat(result.size).isEqualTo(1)
     }
 
     @Test
@@ -40,7 +40,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
-        assertEquals(expectedMediaList, result)
+        assertThat(result).isEqualTo(expectedMediaList)
     }
 
     @Test
@@ -53,7 +53,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
-        assertEquals(expectedMediaList, result)
+        assertThat(result).isEqualTo(expectedMediaList)
     }
 
     @Test
@@ -66,7 +66,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -78,7 +78,7 @@ class FilterByListOfCategoriesUseCaseTest {
         val result = filterMediaUseCase(selectedCategoriesList, mediaList)
 
         //Then
-        assertEquals(2, result.size)
+        assertThat(result.size).isEqualTo(2)
     }
 
     @Test
@@ -91,12 +91,17 @@ class FilterByListOfCategoriesUseCaseTest {
         val result = filterMediaUseCase(selectedCategories, mediaList)
 
         //Then
-        assertEquals(expected, result)
+        assertThat(result).isEqualTo(expected)
     }
 
     companion object {
         private val mediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE, categories = listOf(1, 2)),
+            createMedia(
+                id = 1,
+                title = "Movie 1",
+                type = MediaType.MOVIE,
+                categories = listOf(1, 2)
+            ),
             createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW, categories = listOf(3))
         )
     }

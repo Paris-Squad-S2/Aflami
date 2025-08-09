@@ -1,7 +1,8 @@
 package com.paris_2.repository.user.repository
 
-import com.paris_2.domain.user.exception.UnknownAuthException
+import com.google.common.base.Verify.verify
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.user.exception.UnknownAuthException
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris_2.repository.user.model.remote.GuestSessionDto
@@ -14,16 +15,17 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
-import org.junit.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import kotlin.test.assertFailsWith
+
 
 class AuthenticationRepositoryImplTest {
     private lateinit var remoteDataSource: UserRemoteDataSource
     private lateinit var localDataSource: AuthenticationLocalDataSource
     private lateinit var repository: UserRepositoryImpl
 
-    @Before
+    @BeforeEach
     fun setUp() {
         remoteDataSource = mockk()
         localDataSource = mockk(relaxed = true)
@@ -36,7 +38,10 @@ class AuthenticationRepositoryImplTest {
         val password = "pass"
         val requestToken = "token123"
         val sessionId = "session456"
-        coEvery { remoteDataSource.getRequestToken() } returns RequestTokenDto(requestToken = requestToken, success = true)
+        coEvery { remoteDataSource.getRequestToken() } returns RequestTokenDto(
+            requestToken = requestToken,
+            success = true
+        )
         coEvery { remoteDataSource.validateWithLogin(LoginRequest(username, password, requestToken)) } returns RequestTokenDto(requestToken = requestToken, success = true)
         coEvery { remoteDataSource.createSession(requestToken) } returns SessionDto(sessionId)
         coEvery { localDataSource.saveSessionId(sessionId) } returns Unit
@@ -103,7 +108,11 @@ class AuthenticationRepositoryImplTest {
     @Test
     fun `guestLogin should return true and save sessionId when guestSessionId is present`() = runTest {
         val guestSessionId = "guest_123"
-        coEvery { remoteDataSource.createGuestSession() } returns GuestSessionDto(success = true, guestSessionId = guestSessionId, expiresAt = "2025-07-23 10:11:19 UTC")
+        coEvery { remoteDataSource.createGuestSession() } returns GuestSessionDto(
+            success = true,
+            guestSessionId = guestSessionId,
+            expiresAt = "2025-07-23 10:11:19 UTC"
+        )
         coEvery { localDataSource.saveSessionId(guestSessionId) } returns Unit
 
         val result = repository.guestLogin()

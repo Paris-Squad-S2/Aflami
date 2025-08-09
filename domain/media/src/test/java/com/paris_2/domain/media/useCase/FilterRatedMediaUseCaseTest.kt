@@ -7,8 +7,8 @@ import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.testUtils.createMedia
 import io.mockk.coEvery
 import kotlinx.coroutines.test.runTest
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
 
 class FilterRatedMediaUseCaseTest {
 
@@ -33,7 +33,7 @@ class FilterRatedMediaUseCaseTest {
 
         // Then
         val expected = listOf(mediaList[0])
-        assertEquals(expected, result)
+        assertThat(result).isEqualTo(expected)
     }
 
     @Test
@@ -46,7 +46,7 @@ class FilterRatedMediaUseCaseTest {
 
         // Then
         val expected = listOf(mediaList[1], mediaList[2])
-        assertEquals(expected, result)
+        assertThat(result).isEqualTo(expected)
     }
 
 
@@ -62,7 +62,7 @@ class FilterRatedMediaUseCaseTest {
         val result = filterRatedMediaUseCase(accountId,MediaType.TVSHOW)
 
         // Then
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test
@@ -74,7 +74,7 @@ class FilterRatedMediaUseCaseTest {
         val result = filterRatedMediaUseCase(accountId,MediaType.MOVIE)
 
         // Then
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     companion object {

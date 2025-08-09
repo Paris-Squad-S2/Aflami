@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
-    id("com.google.dagger.hilt.android")
+    alias(libs.plugins.hilt)
 
 }
 
@@ -12,7 +12,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_24
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -43,9 +43,6 @@ tasks.withType<Test>().configureEach {
 dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.hilt.common)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter)
-    testImplementation(libs.junit.jupiter)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -62,11 +59,7 @@ dependencies {
     implementation(libs.work.runtime.ktx)
 
     //test
-    testImplementation(libs.junit)
     testImplementation(libs.mockk)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
     androidTestImplementation(libs.androidx.junit)
     // Junit 5
@@ -74,8 +67,6 @@ dependencies {
     testImplementation(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(kotlin("test"))
-
-    testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)
 
     //work manager for kotlin

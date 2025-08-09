@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,6 +15,7 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.DescriptionSeparator
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GenresChip
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -35,7 +35,7 @@ fun DescriptionSection(
         modifier = modifier
             .background(Theme.colors.surface)
     ) {
-        Text(
+        AppText(
             text = title,
             style = Theme.textStyle.title.large,
             color = Theme.colors.text.title.copy(alpha = .87f),

@@ -7,15 +7,19 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class TopRatingActivity : ComponentActivity() {
+    @Inject
+    lateinit var settingsUseCase: SettingsUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AflamiTheme {
+            AflamiTheme(settingsUseCase.isDarkTheme()) {
                 TopRatingMoviesScreen()
             }
         }

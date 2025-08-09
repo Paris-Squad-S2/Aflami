@@ -7,7 +7,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -21,6 +20,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun DescriptionCard(content: @Composable () -> Unit) {
@@ -66,7 +66,7 @@ fun ExpandableText(description: String) {
         }
     }
 
-    Text(
+    AppText(
         text = displayText,
         maxLines = maxLines,
         overflow = TextOverflow.Visible,

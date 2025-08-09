@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -18,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -30,11 +30,11 @@ import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TabRow
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyRatingScreen(
     viewModel: MyRatingViewModel = hiltViewModel(),
@@ -81,8 +81,12 @@ fun MyRatingScreen(
                 onFavouriteIconClick = viewModel::onFavouriteIconClick
             )
         } else if (state.value.myRatingMedia.isEmpty() && state.value.errorMessage == null) {
-            EmptyRatingContent(
-                isMovie = selectedIndex == 0
+            PlaceholderView(
+                modifier = Modifier.fillMaxSize(),
+                image = painterResource(R.drawable.empty_rating),
+                title = if (selectedIndex == 0) stringResource(R.string.no_rated_movies_yet) else stringResource(R.string.no_rated_tv_yet),
+                subTitle = if (selectedIndex == 0) stringResource(R.string.open_a_movie) else stringResource(R.string.open_a_tv_show),
+                spacer = 24.dp,
             )
         } else if (state.value.errorMessage != null) {
             NetworkError(

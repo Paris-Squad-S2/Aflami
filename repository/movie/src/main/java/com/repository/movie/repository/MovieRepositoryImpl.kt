@@ -18,7 +18,7 @@ import com.paris_2.domain.media.exception.NoProductionCompanyFoundException
 import com.paris_2.domain.media.exception.NoReviewFoundException
 import com.paris_2.domain.media.exception.NoVideoFoundException
 import com.paris_2.domain.media.repository.MovieRepository
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.mapper.toEntity
@@ -31,11 +31,11 @@ class MovieRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val movieLocalDataSource: MovieLocalDataSource,
     private val movieRemoteDataSource: MovieRemoteDataSource,
-    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    private val settingLocalDataSource: SettingLocalDataSource,
 ) : MovieRepository {
 
     override suspend fun getMovieDetails(movieId: Int): Movie {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoMovieFoundException()) {
             val localMovie = movieLocalDataSource.getMovieById(movieId, language)
 
@@ -51,7 +51,7 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getMovieCast(movieId: Int): List<Cast> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoCastFoundException()) {
             val localCast = movieLocalDataSource.getCastByMovieId(movieId, language)
 
@@ -74,7 +74,7 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getMovieRecommendations(movieId: Int, page: Int): List<MovieSimilar> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoMovieFoundException()) {
 
             val localMoviesSimilar =
@@ -124,7 +124,7 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getCompanyProducts(movieId: Int): List<ProductionCompany> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoProductionCompanyFoundException()) {
             val localMovie = movieLocalDataSource.getMovieById(movieId, language)
             val localProductionCompanies = localMovie?.productionCompanies
@@ -150,7 +150,7 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getMovieReview(movieId: Int, page: Int): List<Review> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoReviewFoundException()) {
 
             val localReviews = movieLocalDataSource.getReviewsByMovieId(movieId, language)
