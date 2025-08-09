@@ -5,11 +5,13 @@ import com.paris_2.domain.media.entity.MediaType
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.TvDto
 import com.repository.media.dto.profile.MovieResult
+import com.repository.media.dto.profile.TvShowResult
 import com.repository.media.entity.Category
 import com.repository.media.entity.HomeMediaEntity
 import com.repository.media.entity.MediaEntity
 import com.repository.media.entity.MediaTypeEntity
-import com.repository.media.dto.profile.TvShowResult
+import com.repository.media.mapper.search.genreFromId
+import com.repository.media.mapper.search.genreToId
 import kotlinx.datetime.LocalDate
 
 fun MovieDto.toDomain(type: MediaType): Media? {
@@ -22,7 +24,7 @@ fun MovieDto.toDomain(type: MediaType): Media? {
         rating = voteAverage ?: 0.0,
         imageUri = imageUrl.orEmpty(),
         yearOfRelease = parsedDate,
-        categoryIds = genreIds ?: emptyList(),
+        genres = genreIds?.map { genreFromId(it) } ?: emptyList(),
         type = type
     )
 }
@@ -37,7 +39,7 @@ fun TvDto.toDomain(type: MediaType): Media? {
         rating = voteAverage ?: 0.0,
         imageUri = imageUrl.orEmpty(),
         yearOfRelease = parsedDate,
-        categoryIds = genreIds ?: emptyList(),
+        genres = genreIds?.map { genreFromId(it) } ?: emptyList(),
         type = type
     )
 }
@@ -49,7 +51,7 @@ fun MediaEntity.toDomain(): Media {
         rating = this.voteAverage,
         imageUri = this.posterPath,
         yearOfRelease = LocalDate.parse(this.releaseDate),
-        categoryIds = this.genreIds,
+        genres = this.genreIds.map { genreFromId(it) },
         type = this.type.toDomain()
     )
 }
@@ -70,7 +72,7 @@ fun HomeMediaEntity.toDomain(): Media? {
         title = title,
         rating = voteAverage ?: 0.0,
         yearOfRelease = parsedDate,
-        categoryIds = genreIds,
+        genres = genreIds.map { genreFromId(it) },
         type = type.toDomain()
     )
 }
@@ -81,7 +83,7 @@ fun Media.toMediaEntity(category: Category, language: String): HomeMediaEntity =
     voteAverage = rating,
     posterPath = imageUri,
     releaseDate = yearOfRelease.toString(),
-    genreIds = categoryIds,
+    genreIds = genres.map { genreToId(it) },
     type = type.toEntity(),
     category = category,
     language = language
@@ -93,7 +95,7 @@ fun Media.toEntity(): MediaEntity = MediaEntity(
     voteAverage = rating,
     posterPath = imageUri,
     releaseDate = yearOfRelease.toString(),
-    genreIds = categoryIds,
+    genreIds = genres.map { genreToId(it) },
     type = type.toEntity()
 )
 
@@ -109,7 +111,7 @@ fun MovieResult.toDomain(type: MediaType): Media? {
         imageUri = posterPath.toImageUrl().orEmpty(),
         title = title.orEmpty(),
         type = type,
-        categoryIds = genreIds,
+        genres = genreIds.map { genreFromId(it) },
         yearOfRelease = parsedDate,
         rating = rating ?: 0.0
     )
@@ -122,7 +124,7 @@ fun TvShowResult.toDomain(type: MediaType): Media? {
         imageUri = poster_path.toImageUrl().orEmpty(),
         title = name,
         type = type,
-        categoryIds = genre_ids,
+        genres = genre_ids.map { genreFromId(it) },
         yearOfRelease = parsedDate,
         rating = vote_average
     )
