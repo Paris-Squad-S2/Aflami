@@ -1,9 +1,9 @@
 package com.repository.mapper
 
+import com.paris_2.domain.media.entity.Genre
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Episode
 import com.paris_2.domain.media.entity.EpisodeVideo
-import com.paris_2.domain.media.entity.Genre
 import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
@@ -135,11 +135,9 @@ private fun TvShowGenreDto.toLocalDto(): GenreEntity {
 }
 
 private fun GenreEntity.toEntity(): Genre {
-    return Genre(
-        id = this.id,
-        name = this.name
-    )
+    return Genre.entries.find { it.displayName == this.name } ?: Genre.Unknown
 }
+
 
 private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     return ProductionCompanyEntity(
