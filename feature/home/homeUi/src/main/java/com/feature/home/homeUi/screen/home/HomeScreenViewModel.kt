@@ -1,8 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
 import com.feature.home.homeUi.common.BaseViewModel
-import com.feature.home.homeUi.mapper.nameToGenreId
-import com.feature.home.homeUi.mapper.toDisplayName
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList

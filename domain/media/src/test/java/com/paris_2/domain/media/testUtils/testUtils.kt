@@ -30,7 +30,7 @@ fun createMedia(
     title: String,
     type: MediaType,
     rating: Double? = 0.0,
-    categories: List<Int> = listOf(),
+    categories: List<Category> = listOf(),
 ): Media {
     return Media(
         id = id,
@@ -59,7 +59,7 @@ val sampleCountries = listOf(
 val sampleDate = LocalDate(2020, 1, 1)
 val defaultImage = "example.jpg"
 
-fun media(id: Int, title: String, categories: List<Int>) = Media(
+fun media(id: Int, title: String, categories: List<Category>) = Media(
     id = id,
     imageUri = defaultImage,
     title = title,
@@ -74,16 +74,16 @@ fun assertIds(actual: List<Media>, vararg expectedIds: Int) {
 }
 
 val fakeCategories = listOf(
-    Category(1, "Drama"),
-    Category(2, "Comedy"),
-    Category(3, "Action"),
-    Category(4, "Crime"),
-    Category(5, "Fantasy"),
-    Category(6, "Horror"),
-    Category(7, "Sci-Fi"),
-    Category(8, "Romance"),
-    Category(9, "Thriller"),
-    Category(10, "Mystery")
+    Category.DRAMA,
+    Category.COMEDY,
+    Category.ACTION,
+    Category.CRIME,
+    Category.FANTASY,
+    Category.HORROR,
+    Category.SCIFI_FANTASY,
+    Category.ROMANCE,
+    Category.THRILLER,
+    Category.MYSTERY
 )
 
 
