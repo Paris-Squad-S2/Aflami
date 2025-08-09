@@ -61,6 +61,7 @@ shaded = "0.2.1-alpha"
 hiltCommon = "1.2.0"
 datastore = "1.1.1"
 datastoreCoreAndroid = "1.1.7"
+foundation = "1.8.3"
 
 
 [libraries]
@@ -145,6 +146,9 @@ shimmer = {group = "com.valentinilk.shimmer", name = "compose-shimmer", version 
 androidx-hilt-common = { group = "androidx.hilt", name = "hilt-common", version.ref = "hiltCommon" }
 androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "datastore" }
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+
+
 
 
 [plugins]
@@ -179,6 +183,7 @@ compose = [
     "androidx-ui-tooling-preview",
     "androidx-lifecycle-runtime-ktx",
     "androidx-ui-test-manifest",
+    "androidx-foundation",
                                     #TODO
 #    "androidx-paging-runtime",
 #    "androidx-lifecycle-viewmodel-compose",

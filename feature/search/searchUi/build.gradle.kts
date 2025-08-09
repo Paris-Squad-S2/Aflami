@@ -50,7 +50,6 @@ dependencies {
 
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.compose)
-    implementation(libs.androidx.material3) // TODO: Remove it
 
     //Navigation
     implementation(libs.bundles.navigation)

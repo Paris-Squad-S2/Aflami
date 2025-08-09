@@ -41,6 +41,5 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(libs.androidx.material3) // TODO: Remove it
 
 }
