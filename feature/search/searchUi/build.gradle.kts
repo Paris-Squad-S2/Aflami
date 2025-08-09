@@ -111,6 +111,7 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
 
     implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(project(Modules.DOMAIN_USER))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
