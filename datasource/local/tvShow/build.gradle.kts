@@ -45,33 +45,22 @@ dependencies {
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.common.jvm)
-    implementation(project(Modules.REPOSITORY_TV_SHOW))
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
 
-    //Hilt
-    implementation(libs.hilt.android)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
-    // kotlin date time
-    implementation(libs.kotlinx.datetime)
+    implementation(libs.bundles.datetime)
 
-    //kotlinx serialization
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.serialization)
 
-    //work manager for kotlin
-    implementation(libs.work.runtime.ktx)
+    implementation(libs.bundles.workManager)
 
-    // test
-    testImplementation(libs.androidx.room.testing)
-    testImplementation(libs.mockk)
-    implementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.kotlin.test.junit5)
+    testImplementation(libs.bundles.test)
+
+    implementation(project(Modules.REPOSITORY_TV_SHOW))
 }
 kotlin {
     compilerOptions {

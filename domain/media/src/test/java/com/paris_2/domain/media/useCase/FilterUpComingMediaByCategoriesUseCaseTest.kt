@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
 
 class FilterUpComingMediaByCategoriesUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
@@ -17,11 +18,11 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
     @Test
     fun `invoke filters media by categories correctly`() = runTest {
         coEvery { mediaRepository.getUpComingMedia() } returns listOf(actionMedia, comedyMedia)
-        val result = useCase(listOf(28))
+        val result = useCase(listOf(Category.ACTION))
         assertThat(result).containsExactly(actionMedia)
-        val resultAll = useCase(listOf(28, 35))
+        val resultAll = useCase(listOf(Category.ACTION, Category.ADVENTURE))
         assertThat(resultAll).containsExactly(actionMedia, comedyMedia)
-        val resultNone = useCase(listOf(18))
+        val resultNone = useCase(listOf(Category.DRAMA))
         assertThat(resultNone).isEmpty()
     }
 
@@ -31,7 +32,7 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
         rating = 7.5,
         imageUri = "path1.jpg",
         yearOfRelease = LocalDate(2023, 5, 1),
-        categories = listOf(28),
+        categories = listOf(Category.ACTION),
         type = MediaType.MOVIE
     )
 
@@ -41,7 +42,7 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
         rating = 7.2,
         imageUri = "path2.jpg",
         yearOfRelease = LocalDate(2022, 10, 10),
-        categories = listOf(35),
+        categories = listOf(Category.ADVENTURE),
         type = MediaType.MOVIE
     )
 }

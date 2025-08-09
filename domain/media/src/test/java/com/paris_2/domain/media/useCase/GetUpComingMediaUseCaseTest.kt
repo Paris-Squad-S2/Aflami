@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
 
 class GetUpComingMediaUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
@@ -28,7 +29,7 @@ class GetUpComingMediaUseCaseTest {
             rating = 8.6,
             imageUri = "up1.jpg",
             yearOfRelease = LocalDate(2023, 12, 12),
-            categories = listOf(28),
+            categories = listOf(Category.ACTION),
             type = MediaType.MOVIE
         ),
         Media(
@@ -37,7 +38,7 @@ class GetUpComingMediaUseCaseTest {
             rating = 7.8,
             imageUri = "up2.jpg",
             yearOfRelease = LocalDate(2024, 2, 2),
-            categories = listOf(18),
+            categories = listOf(Category.ADVENTURE),
             type = MediaType.TVSHOW
         )
     )

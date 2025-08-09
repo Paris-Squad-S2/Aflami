@@ -201,7 +201,7 @@ test = [
     "kotlin-test",
     "junit-jupiter-params",
     "junit-platform-launcher",
-    "kotlin-test-junit5"
+    "androidx-room-testing"
 ]
 
 hilt = [
