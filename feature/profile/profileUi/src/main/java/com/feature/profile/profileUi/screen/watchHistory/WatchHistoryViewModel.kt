@@ -16,7 +16,6 @@ class WatchHistoryViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     navigator: ProfileNavigator,
 ) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(
-    navigator = navigator,
     initialState = WatchHistoryUiState(
         isLoading = false,
         errorMessage = null,

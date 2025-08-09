@@ -23,7 +23,6 @@ class MyRatingViewModel @Inject constructor(
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase,
     navigator: ProfileNavigator,
 ) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(
-    navigator = navigator,
     initialState = MyRatingUiState(
         isLoading = false,
         errorMessage = null,

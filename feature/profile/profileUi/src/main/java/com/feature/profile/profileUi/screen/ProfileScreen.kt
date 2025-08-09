@@ -153,7 +153,13 @@ fun ProfileContent(
         AppThemeDialog(
             isVisible = state.profile.isThemeDialogOpen,
             onDismiss = profileInteractionListener::onDismissAppearanceDialog,
-            onThemeSelected = profileInteractionListener::onAppearanceApplyClicked,
+            onThemeSelected = {appearance->
+                profileInteractionListener.onAppearanceApplyClicked(appearance)
+                val intent =
+                    context.packageManager.getLaunchIntentForPackage(context.packageName)
+                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                context.startActivities(arrayOf(intent))
+            },
             themeState = state.profile.theme
         )
         AppSettingDialog(

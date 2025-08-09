@@ -1,27 +1,26 @@
 package com.feature.profile.profileUi.navigation
 
-import android.app.Application
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.feature.profile.profileUi.screen.ProfileScreen
+import com.feature.profile.profileUi.screen.ProfileViewModel
 import com.feature.profile.profileUi.screen.myRating.MyRatingScreen
 import com.feature.profile.profileUi.screen.watchHistory.WatchHistoryScreen
-import dagger.hilt.android.EntryPointAccessors
+import com.paris_2.aflami.designsystem.theme.AflamiTheme
 
 
 @Composable
 fun ProfileNavGraph(
-    navigator: ProfileNavigator = EntryPointAccessors.fromApplication(
-        LocalContext.current.applicationContext as Application,
-        ProfileNavigatorEntryPoint::class.java
-    ).profileNavigator(),
+    profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val navController = rememberNavController()
+
+    val navigator = profileViewModel.navigator
 
     ObserveAsEvents(navigator.profileNavigationEvent) { event ->
         when (event) {
@@ -33,11 +32,13 @@ fun ProfileNavGraph(
         }
     }
 
-    NavHost(
-        navController = navController,
-        startDestination = navigator.startGraph
-    ) {
-        buildProfileNavGraph()
+    AflamiTheme(profileViewModel.isDarkTheme()) {
+        NavHost(
+            navController = navController,
+            startDestination = navigator.startGraph
+        ) {
+            buildProfileNavGraph()
+        }
     }
 }
 
