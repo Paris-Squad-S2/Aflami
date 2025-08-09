@@ -1,6 +1,6 @@
 package com.datasource.remote.lists
 
-import com.datasource.remote.lists.service.RetrofitListApiService
+import com.datasource.remote.lists.service.ListApiService
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.model.dto.ListDetailsDto
@@ -10,7 +10,7 @@ import jakarta.inject.Inject
 import retrofit2.HttpException
 
 class ListsRemoteDataSourceImp @Inject constructor(
-    private val listApiService: RetrofitListApiService
+    private val listApiService: ListApiService
 ) : ListsRemoteDataSource {
     override suspend fun getLists(page: Int, accountId: Int): ListsDto = safeApiCall {
         listApiService.getLists(accountId = accountId, page = page)

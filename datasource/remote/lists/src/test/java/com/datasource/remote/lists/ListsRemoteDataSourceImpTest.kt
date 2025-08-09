@@ -1,34 +1,34 @@
 package com.datasource.remote.lists
 
-import com.datasource.remote.lists.service.RetrofitListApiService
-import com.google.common.truth.Truth.assertThat
+import com.datasource.remote.lists.service.ListApiService
 import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.model.dto.ListDetailsDto
 import com.repository.lists.model.dto.ListsDto
 import com.repository.lists.model.dto.ResponseDto
+import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.BeforeEach
+import org.junit.Before
 import retrofit2.HttpException
 import java.io.IOException
-import org.junit.jupiter.api.Test
+import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class ListsRemoteDataSourceImpTest {
 
     @MockK
-    private lateinit var retrofitListApiService: RetrofitListApiService
+    private lateinit var listApiService: ListApiService
 
     private lateinit var listsRemoteDataSource: ListsRemoteDataSourceImp
 
-    @BeforeEach
+    @Before
     fun setUp() {
         MockKAnnotations.init(this)
-        listsRemoteDataSource = ListsRemoteDataSourceImp(retrofitListApiService)
+        listsRemoteDataSource = ListsRemoteDataSourceImp(listApiService)
     }
 
     @Test
@@ -37,14 +37,14 @@ class ListsRemoteDataSourceImpTest {
         val page = 1
         val accountId = 123
         val expectedListsDto = mockk<ListsDto>()
-        coEvery { retrofitListApiService.getLists(accountId, page) } returns expectedListsDto
+        coEvery { listApiService.getLists(accountId, page) } returns expectedListsDto
 
         // When
         val result = listsRemoteDataSource.getLists(page, accountId)
 
         // Then
         assertThat(result).isEqualTo(expectedListsDto)
-        coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
+        coVerify(exactly = 1) { listApiService.getLists(accountId, page) }
     }
 
 
@@ -56,7 +56,7 @@ class ListsRemoteDataSourceImpTest {
         val httpException = mockk<HttpException>()
         coEvery { httpException.code() } returns 400
         coEvery { httpException.message() } returns "Bad Request"
-        coEvery { retrofitListApiService.getLists(accountId, page) } throws httpException
+        coEvery { listApiService.getLists(accountId, page) } throws httpException
 
         // When & Then
         val exception = assertFailsWith<NetworkException.UnknownException> {
@@ -64,7 +64,7 @@ class ListsRemoteDataSourceImpTest {
         }
 
         assertThat(exception.message).isEqualTo("HTTP error: Bad Request")
-        coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
+        coVerify(exactly = 1) { listApiService.getLists(accountId, page) }
     }
 
     @Test
@@ -72,7 +72,7 @@ class ListsRemoteDataSourceImpTest {
         // Given
         val page = 1
         val accountId = 123
-        coEvery { retrofitListApiService.getLists(accountId, page) } throws IOException("Network error")
+        coEvery { listApiService.getLists(accountId, page) } throws IOException("Network error")
 
         // When & Then
         val exception = assertFailsWith<NetworkException.UnknownException> {
@@ -80,7 +80,7 @@ class ListsRemoteDataSourceImpTest {
         }
 
         assertThat(exception.message).isEqualTo("Unexpected error: Network error")
-        coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
+        coVerify(exactly = 1) { listApiService.getLists(accountId, page) }
     }
 
     @Test
@@ -89,14 +89,14 @@ class ListsRemoteDataSourceImpTest {
         val page = 1
         val listId = "list123"
         val expectedListDetailsDto = mockk<ListDetailsDto>()
-        coEvery { retrofitListApiService.getListDetails(listId, page) } returns expectedListDetailsDto
+        coEvery { listApiService.getListDetails(listId, page) } returns expectedListDetailsDto
 
         // When
         val result = listsRemoteDataSource.getListDetails(page, listId)
 
         // Then
         assertThat(result).isSameInstanceAs(expectedListDetailsDto)
-        coVerify(exactly = 1) { retrofitListApiService.getListDetails(listId, page) }
+        coVerify(exactly = 1) { listApiService.getListDetails(listId, page) }
     }
 
     @Test
@@ -104,14 +104,14 @@ class ListsRemoteDataSourceImpTest {
         // Given
         val listId = "list123"
         val expectedResponseDto = ResponseDto(statusCode = 200, statusMessage = "Success")
-        coEvery { retrofitListApiService.deleteList(listId) } returns expectedResponseDto
+        coEvery { listApiService.deleteList(listId) } returns expectedResponseDto
 
         // When
         val result = listsRemoteDataSource.deleteList(listId)
 
         // Then
         assertThat(result).isEqualTo(expectedResponseDto)
-        coVerify(exactly = 1) { retrofitListApiService.deleteList(listId) }
+        coVerify(exactly = 1) { listApiService.deleteList(listId) }
     }
 
     @Test
@@ -124,14 +124,14 @@ class ListsRemoteDataSourceImpTest {
             "description" to "Created from Aflami app",
             "language" to "en"
         )
-        coEvery { retrofitListApiService.createList(expectedRequestBody) } returns expectedResponseDto
+        coEvery { listApiService.createList(expectedRequestBody) } returns expectedResponseDto
 
         // When
         val result = listsRemoteDataSource.createList(listName)
 
         // Then
         assertThat(result).isEqualTo(expectedResponseDto)
-        coVerify(exactly = 1) { retrofitListApiService.createList(expectedRequestBody) }
+        coVerify(exactly = 1) { listApiService.createList(expectedRequestBody) }
     }
 
     @Test
@@ -141,14 +141,14 @@ class ListsRemoteDataSourceImpTest {
         val movieId = 456
         val expectedResponseDto = ResponseDto(statusCode = 200, statusMessage = "Added")
         val expectedRequestBody = mapOf("media_id" to movieId)
-        coEvery { retrofitListApiService.addMovieToList(listId, expectedRequestBody) } returns expectedResponseDto
+        coEvery { listApiService.addMovieToList(listId, expectedRequestBody) } returns expectedResponseDto
 
         // When
         val result = listsRemoteDataSource.addMovieToList(listId, movieId)
 
         // Then
         assertThat(result).isEqualTo(expectedResponseDto)
-        coVerify(exactly = 1) { retrofitListApiService.addMovieToList(listId, expectedRequestBody) }
+        coVerify(exactly = 1) { listApiService.addMovieToList(listId, expectedRequestBody) }
     }
 
     @Test
@@ -158,14 +158,14 @@ class ListsRemoteDataSourceImpTest {
         val movieId = 456
         val expectedResponseDto = ResponseDto(statusCode = 200, statusMessage = "Removed")
         val expectedRequestBody = mapOf("media_id" to movieId)
-        coEvery { retrofitListApiService.removeMovieFromList(listId, expectedRequestBody) } returns expectedResponseDto
+        coEvery { listApiService.removeMovieFromList(listId, expectedRequestBody) } returns expectedResponseDto
 
         // When
         val result = listsRemoteDataSource.removeMovieFromList(listId, movieId)
 
         // Then
         assertThat(result).isEqualTo(expectedResponseDto)
-        coVerify(exactly = 1) { retrofitListApiService.removeMovieFromList(listId, expectedRequestBody) }
+        coVerify(exactly = 1) { listApiService.removeMovieFromList(listId, expectedRequestBody) }
     }
 
     @Test
@@ -176,7 +176,7 @@ class ListsRemoteDataSourceImpTest {
         val httpException = mockk<HttpException>()
         coEvery { httpException.code() } returns 500
         coEvery { httpException.message() } returns "Internal Server Error"
-        coEvery { retrofitListApiService.getLists(accountId, page) } throws httpException
+        coEvery { listApiService.getLists(accountId, page) } throws httpException
 
         // When & Then
         val exception = assertFailsWith<NetworkException.ServerException> {
@@ -184,6 +184,6 @@ class ListsRemoteDataSourceImpTest {
         }
 
         assertThat(exception.message).isEqualTo("Server error: Internal Server Error")
-        coVerify(exactly = 1) { retrofitListApiService.getLists(accountId, page) }
+        coVerify(exactly = 1) { listApiService.getLists(accountId, page) }
     }
 }

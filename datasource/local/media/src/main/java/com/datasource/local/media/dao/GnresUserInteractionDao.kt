@@ -9,12 +9,12 @@ import com.repository.media.entity.GenreUserInteractionEntity
 interface GenresUserInteractionDao {
 
     @Upsert
-    suspend fun upsertInteraction(interaction: GenreUserInteractionEntity)
+    suspend fun upsertGenresInteraction(interaction: GenreUserInteractionEntity)
 
     @Query("SELECT interactionCount FROM genres_user_interaction WHERE genreId = :genreId")
-    suspend fun getCategoryInteractions(genreId: Int): Int?
+    suspend fun getCategoryByGenreId(genreId: Int): Int?
 
     @Query("SELECT * FROM genres_user_interaction")
-    suspend fun getAllInteractions(): List<GenreUserInteractionEntity>
+    suspend fun getGenresInteractions(): List<GenreUserInteractionEntity>
 }
 

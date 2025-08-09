@@ -53,7 +53,7 @@ class MediaRepositoryImpl(
                 it.toMediaEntity(category = Category.POPULAR, language)
             }
 
-            homeMediaLocalDataSource.addMediaList(entities)
+            homeMediaLocalDataSource.addHomeMedia(entities)
             combined
         }
     }
@@ -61,7 +61,7 @@ class MediaRepositoryImpl(
     override suspend fun getTopRatingMedia(): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
         val localMedia =
-            homeMediaLocalDataSource.getMediaListByCategory(Category.TOP_RATED, language)
+            homeMediaLocalDataSource.getHomeMediaByCategory(Category.TOP_RATED, language)
 
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
@@ -81,7 +81,7 @@ class MediaRepositoryImpl(
             val entities = combined.map {
                 it.toMediaEntity(category = Category.TOP_RATED, language)
             }
-            homeMediaLocalDataSource.addMediaList(entities)
+            homeMediaLocalDataSource.addHomeMedia(entities)
             combined
         }
     }
@@ -89,7 +89,7 @@ class MediaRepositoryImpl(
     override suspend fun getUpComingMedia(): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
         val localMedia =
-            homeMediaLocalDataSource.getMediaListByCategory(Category.UPCOMING, language)
+            homeMediaLocalDataSource.getHomeMediaByCategory(Category.UPCOMING, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(UpComingMediaException()) {
@@ -100,7 +100,7 @@ class MediaRepositoryImpl(
             val entities = upcomingMovies.map {
                 it.toMediaEntity(category = Category.UPCOMING, language)
             }
-            homeMediaLocalDataSource.addMediaList(entities)
+            homeMediaLocalDataSource.addHomeMedia(entities)
             upcomingMovies
         }
     }

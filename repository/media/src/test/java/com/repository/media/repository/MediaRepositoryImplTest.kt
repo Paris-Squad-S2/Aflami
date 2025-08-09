@@ -38,6 +38,8 @@ class MediaRepositoryImplTest {
     private val settingLocalDataSource: SettingLocalDataSource = mockk()
     private lateinit var repo: MediaRepositoryImpl
 
+    val language = "en"
+
     @BeforeEach
     fun setUp() {
         every { networkChecker.isConnected } returns MutableStateFlow(true)
@@ -64,8 +66,8 @@ class MediaRepositoryImplTest {
                 language = "en"
             )
         )
-        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR,"en") } returns localMedia
-        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
+        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR,language) } returns localMedia
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         val result = repo.getPopularMedia()
 
         assertThat(result).hasSize(1)
@@ -95,7 +97,7 @@ class MediaRepositoryImplTest {
 
         assertThat(result).hasSize(2)
         assertThat(result.first().rating).isEqualTo(8.0)
-        coVerify { homeLocal.addMediaList(any()) }
+        coVerify { homeLocal.addHomeMedia(any()) }
     }
 
     @Test
@@ -147,7 +149,7 @@ class MediaRepositoryImplTest {
         )
         coEvery { remote.getPopularMovies(any()).results } returns listOf(movie1, movie2)
         coEvery { remote.getPopularTvShows(any()).results } returns listOf(tv1)
-        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         val result = repo.getPopularMedia()
         assertThat(result.map { it.rating }).isEqualTo(listOf(9.0, 8.0, 7.0))
     }
@@ -167,8 +169,8 @@ class MediaRepositoryImplTest {
                 language = "en"
             )
         )
-        coEvery { homeLocal.getMediaListByCategory(Category.TOP_RATED,"en") } returns localMedia
-        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
+        coEvery { homeLocal.getHomeMediaByCategory(Category.TOP_RATED,language) } returns localMedia
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
 
         val result = repo.getTopRatingMedia()
 
@@ -193,7 +195,7 @@ class MediaRepositoryImplTest {
 
         assertThat(result).hasSize(1)
         assertThat(result.first().rating).isEqualTo(9.2)
-        coVerify { homeLocal.addMediaList(any()) }
+        coVerify { homeLocal.addHomeMedia(any()) }
     }
 
     @Test
@@ -230,7 +232,7 @@ class MediaRepositoryImplTest {
         )
         coEvery { remote.getTopRatedMovies(any()).results } returns listOf(movie)
         coEvery { remote.getTopRatedTvShows(any()).results } returns listOf(tv)
-        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         val result = repo.getTopRatingMedia()
         assertThat(result.first().rating).isEqualTo(9.5)
     }
@@ -250,8 +252,8 @@ class MediaRepositoryImplTest {
                 language = "en"
             )
         )
-        coEvery { homeLocal.getMediaListByCategory(Category.UPCOMING,"en") } returns localMedia
-        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
+        coEvery { homeLocal.getHomeMediaByCategory(Category.UPCOMING,language) } returns localMedia
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
 
         val result = repo.getUpComingMedia()
 
@@ -274,7 +276,7 @@ class MediaRepositoryImplTest {
         val result = repo.getUpComingMedia()
 
         assertThat(result).hasSize(1)
-        coVerify { homeLocal.addMediaList(any()) }
+        coVerify { homeLocal.addHomeMedia(any()) }
     }
 
     @Test
@@ -289,7 +291,7 @@ class MediaRepositoryImplTest {
             posterPath = ""
         )
         coEvery { remote.getUpcomingMovies(any()).results } returns listOf(movie)
-        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         val result = repo.getUpComingMedia()
         assertThat(result.single().id).isEqualTo(100)
     }
@@ -386,7 +388,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getPopularMedia throws NoInternetConnectionException when offline`() = runTest {
         every { networkChecker.isConnected } returns MutableStateFlow(false)
-        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         assertThrows<NoInternetConnectionException> {
             repo.getPopularMedia()
         }

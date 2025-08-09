@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface HistoryLocalDataSource {
     suspend fun addSearchQuery(title: String, searchType: SearchType)
-    fun getAllSearchQueries(): Flow<List<SearchHistoryEntity>>
+    fun getSearchQueries(): Flow<List<SearchHistoryEntity>>
     suspend fun getSearchHistoryQuery(query: String, searchType: SearchType): SearchHistoryEntity?
-    suspend fun clearSearchQueryByQuery(query: String, searchType: SearchType)
-    suspend fun clearAll()
+    suspend fun clearSearchByQuery(query: String, searchType: SearchType)
+    suspend fun clearSearchQueries()
 }

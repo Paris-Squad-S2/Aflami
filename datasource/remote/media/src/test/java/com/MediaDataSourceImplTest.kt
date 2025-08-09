@@ -2,7 +2,7 @@ package com
 
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.services.MediaApiService
-import com.repository.media.MediaDataSourceImpl
+import com.repository.media.MediaRemoteDataSourceImpl
 import com.repository.media.dto.home.DatesDto
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.MovieListDto
@@ -19,12 +19,12 @@ import org.junit.Test
 
 class MediaDataSourceImplTest {
     private lateinit var apiService: MediaApiService
-    private lateinit var mediaDataSource: MediaDataSourceImpl
+    private lateinit var mediaDataSource: MediaRemoteDataSourceImpl
 
     @Before
     fun setUp() {
         apiService = mockk(relaxed = true)
-        mediaDataSource = MediaDataSourceImpl(apiService)
+        mediaDataSource = MediaRemoteDataSourceImpl(apiService)
     }
 
     @Test
