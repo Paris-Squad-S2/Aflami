@@ -1,13 +1,12 @@
 package com.feature.home.homeUi.mapper
 
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
-import com.feature.home.homeUi.screen.home.CategoryUiState
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
+import com.paris_2.domain.media.entity.Genre
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
 import kotlinx.datetime.LocalDate
 
 fun List<Media>.toSliderMediaList() = this.map { it.toSliderMedia() }
@@ -19,7 +18,7 @@ fun Media.toSliderMedia(): SliderMedia{
         title = this.title,
         id = this.id,
         type = this.type.toSliderMediaTypeUi(),
-        categories = this.categoryIds.map { it.genreToName() },
+        categories = this.genres.map { it.displayName },
         yearOfRelease = this.yearOfRelease.toString()
     )
 }
@@ -37,7 +36,9 @@ fun SliderMedia.toMedia(): Media {
         imageUri = this.imageUri,
         rating = this.rating?.toDouble(),
         type = this.type.toMediaType(),
-        categoryIds = this.categories.map { it.nameToGenreId() },
+        genres = this.categories.mapNotNull { name ->
+            Genre.entries.find { it.displayName == name }
+        },
         yearOfRelease = LocalDate.parse(this.yearOfRelease)
     )
 }
@@ -57,7 +58,7 @@ fun Media.toUiState(): MediaUiState {
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toUiState(),
-        categories = this.categoryIds.map { it.genreToName() },
+        categories = this.genres.map { it.displayName },
         yearOfRelease = this.yearOfRelease,
         rating = this.rating,
     )
@@ -69,7 +70,9 @@ fun MediaUiState.toMedia():Media{
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toMediaType(),
-        categoryIds = this.categories.map { it.nameToGenreId() },
+        genres = this.categories.mapNotNull { name ->
+            Genre.entries.find { it.displayName == name }
+        },
         yearOfRelease = this.yearOfRelease,
         rating = this.rating,
     )
@@ -88,13 +91,3 @@ fun MediaTypeUi.toMediaType(): MediaType{
         MediaTypeUi.MOVIE -> MediaType.MOVIE
     }
 }
-
-fun Category.toCategoryUIState():CategoryUiState{
-    return CategoryUiState(
-        id = this.id,
-        name = this.name
-    )
-}
-
-fun List<Category>.toCategoryUiList() = this.map { it.toCategoryUIState() }
-
