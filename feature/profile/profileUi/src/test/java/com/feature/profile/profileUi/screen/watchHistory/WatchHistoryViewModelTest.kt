@@ -27,7 +27,6 @@ class WatchHistoryViewModelTest {
 
     private val filterWatchHistoryUseCase: FilterWatchHistoryUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
-    private val navigator: ProfileNavigator = mockk(relaxed = true)
     private lateinit var viewModel: WatchHistoryViewModel
     private val testDispatcher = StandardTestDispatcher()
 
