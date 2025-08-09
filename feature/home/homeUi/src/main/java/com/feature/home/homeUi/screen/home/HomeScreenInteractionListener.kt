@@ -1,6 +1,7 @@
 package com.feature.home.homeUi.screen.home
 
 import com.feature.home.homeUi.screen.home.components.SliderMedia
+import com.paris_2.domain.media.entity.Genre
 
 
 interface HomeScreenInteractionListener {
@@ -10,7 +11,7 @@ interface HomeScreenInteractionListener {
     fun navigateToContinueWatchingScreen()
     fun navigateToTopRatingScreen()
     fun moodPickerSelected(mood: List<String>)
-    fun onCategorySelect(category: CategoryUiState)
+    fun onCategorySelect(category: Genre)
     fun onAllCategoriesSelect()
     fun onDismissMoodPicker()
     fun getRandomMoodPickerMovie()
