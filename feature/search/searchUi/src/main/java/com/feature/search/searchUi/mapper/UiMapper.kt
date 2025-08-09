@@ -1,11 +1,9 @@
 package com.feature.search.searchUi.mapper
 
-import CategoryUiState
 import MediaTypeUi
 import MediaUiState
 import SearchHistoryUiState
 import SearchTypeUi
-import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.entity.SearchHistoryModel
@@ -20,7 +18,7 @@ fun MediaUiState.toDomainModel(): Media {
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toDomainModel(),
-        categoryIds = this.categories,
+        genres = this.categories,
         yearOfRelease = this.yearOfRelease,
         rating = this.rating
     )
@@ -41,7 +39,7 @@ fun Media.toUi(): MediaUiState {
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toUi(),
-        categories = this.categoryIds,
+        categories = this.genres,
         yearOfRelease = this.yearOfRelease,
         rating = this.rating,
     )
@@ -52,15 +50,6 @@ fun MediaType.toUi(): MediaTypeUi {
         MediaType.TVSHOW -> MediaTypeUi.TVSHOW
         MediaType.MOVIE -> MediaTypeUi.MOVIE
     }
-}
-
-fun List<Category>.toCategoryUiList() = this.map { it.toUi() }
-
-fun Category.toUi(): CategoryUiState {
-    return CategoryUiState(
-        id = this.id,
-        name = this.name
-    )
 }
 
 
