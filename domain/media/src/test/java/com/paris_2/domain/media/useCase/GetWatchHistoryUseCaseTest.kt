@@ -9,6 +9,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
 
 class GetWatchHistoryUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
@@ -28,7 +29,7 @@ class GetWatchHistoryUseCaseTest {
             rating = 8.1,
             imageUri = "a.jpg",
             yearOfRelease = LocalDate(2022, 2, 2),
-            categories = listOf(28),
+            categories = listOf(Category.ACTION),
             type = MediaType.MOVIE
         ),
         Media(
@@ -37,7 +38,7 @@ class GetWatchHistoryUseCaseTest {
             rating = 7.7,
             imageUri = "b.jpg",
             yearOfRelease = LocalDate(2021, 5, 7),
-            categories = listOf(18),
+            categories = listOf(Category.DRAMA),
             type = MediaType.TVSHOW
         )
     )
