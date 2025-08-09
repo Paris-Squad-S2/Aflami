@@ -4,6 +4,7 @@ import MediaTypeUi
 import MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Country
 import com.paris_2.domain.media.useCase.AutoCompleteCountryUseCase
 import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
@@ -145,7 +146,7 @@ class WorldTourViewModelTest {
             imageUri = "",
             title = "Test Movie",
             type = MediaTypeUi.MOVIE,
-            categories = listOf(1, 2),
+            categories = listOf(Category.ACTION, Category.ADVENTURE),
             yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
             rating = 4.5
         )
