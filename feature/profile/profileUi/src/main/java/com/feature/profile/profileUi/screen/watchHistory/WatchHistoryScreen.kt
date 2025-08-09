@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -29,6 +30,7 @@ import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.profile.profileUi.R
+import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TabRow
 @Composable
 fun WatchHistoryScreen(
@@ -65,14 +67,21 @@ fun WatchHistoryScreen(
                 }
             }
         )
-        if (state.value.watchHistoryMedia.isNotEmpty()) {
+        if (state.value.isLoading) {
+            PageLoadingPlaceHolder(
+                modifier = Modifier.fillMaxSize()
+            )
+        } else if (state.value.watchHistoryMedia.isNotEmpty()) {
             WatchHistoryScreenContent(
                 watchHistoryList = state.value.watchHistoryMedia,
                 onMediaCardClick = viewModel::onMediaCardClick
             )
-        } else if (state.value.isLoading) {
-            PageLoadingPlaceHolder(
-                modifier = Modifier.fillMaxSize()
+        } else if (state.value.watchHistoryMedia.isEmpty() && state.value.errorMessage == null) {
+            PlaceholderView(
+                modifier = Modifier.fillMaxSize(),
+                image = painterResource(R.drawable.img_empty_brain),
+                title = stringResource(R.string.no_watch_history_yet),
+                spacer = 24.dp,
             )
         } else if (state.value.errorMessage != null) {
             NetworkError(
