@@ -1,8 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
 import com.feature.home.homeUi.common.BaseViewModel
-import com.feature.home.homeUi.mapper.nameToGenreId
-import com.feature.home.homeUi.mapper.toCategoryUiList
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
@@ -18,8 +16,10 @@ import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
+import com.paris_2.domain.media.entity.Genre
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlin.collections.associateWith
 
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
@@ -40,7 +40,7 @@ class HomeScreenViewModel @Inject constructor(
                 continueWatchingMediaList = emptyList(),
                 topRatedMediaList = emptyList(),
                 moviesBirthdayMediaList = emptyList(),
-                categories = mapOf(),
+                categories = mutableMapOf<Genre, Boolean>(),
                 upComingMediaList = emptyList(),
                 showMoodPickerDialog = false,
                 isAllCategories = true,
@@ -87,11 +87,11 @@ class HomeScreenViewModel @Inject constructor(
                 )
                 getMoviesCategoriesUseCase.invoke()
             },
-            onSuccess = { categories ->
+            onSuccess = { genres ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            categories = categories.toCategoryUiList().associateWith { false }
+                            categories = genres.associateWith { false }
                                 .toMutableMap()
                         ),
                         isCategoryLoading = false,
@@ -354,22 +354,21 @@ class HomeScreenViewModel @Inject constructor(
         tryToExecute(
             execute = {
                 emitState(
-                    screenState.value.copy(
-                    )
+                    screenState.value.copy()
                 )
-                val moodCategories = mood.map { mood ->
-                    mood.nameToGenreId()
+                val moodGenres = mood.mapNotNull { m ->
+                    Genre.entries.find { it.displayName == m }
                 }
                 val moodPickerMovies = getTopRatingMediaUseCase.invoke()
                 moodPickerMovies.filter { movie ->
-                    movie.categoryIds.any { moodCategories.contains(it) }
+                    movie.genres.any { moodGenres.contains(it) }
                 }
             },
             onSuccess = { filteredMovies ->
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
-                            moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
+                            moodPickerMovie = filteredMovies.toMediaUiStateList().randomOrNull(),
                             showMoodPickerDialog = true
                         ),
                     )
@@ -383,10 +382,9 @@ class HomeScreenViewModel @Inject constructor(
                 )
             }
         )
-
     }
 
-    override fun onCategorySelect(category: CategoryUiState) {
+    override fun onCategorySelect(category: Genre) {
         tryToExecute(
             execute = {
                 emitState(
@@ -403,7 +401,8 @@ class HomeScreenViewModel @Inject constructor(
                     screenState.value.homeUIState.categories
                         .filter { it.value }
                         .keys
-                        .map { it.id })
+                        .toList() // pass selected Genres directly
+                )
             },
             onSuccess = { filteredMovies ->
                 emitState(
