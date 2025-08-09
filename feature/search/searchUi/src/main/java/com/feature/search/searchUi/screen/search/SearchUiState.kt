@@ -1,5 +1,6 @@
 import androidx.paging.PagingData
 import com.feature.search.searchUi.R
+import com.paris_2.domain.media.entity.Genre
 import kotlinx.coroutines.flow.Flow
 import kotlinx.datetime.LocalDate
 
@@ -19,7 +20,7 @@ data class SearchUiState(
     val tvShowsResult: Flow<PagingData<MediaUiState>>,
     val filteredMoviesResult: Flow<PagingData<MediaUiState>>,
     val filteredTvShowsResult: Flow<PagingData<MediaUiState>>,
-    val categories: Map<CategoryUiState, Boolean>,
+    val categories: Map<Genre, Boolean>,
     val selectedRating: Float,
     val isAllCategories: Boolean,
     val isApplyFilter:Boolean,
@@ -31,7 +32,7 @@ data class MediaUiState(
     val imageUri: String,
     val title: String,
     val type: MediaTypeUi,
-    val categories: List<Int>,
+    val categories: List<Genre>,
     val yearOfRelease: LocalDate,
     val rating: Double?,
 )
@@ -41,10 +42,6 @@ enum class MediaTypeUi(val mediaName: String) {
     MOVIE("Movie")
 }
 
-data class CategoryUiState(
-    val id: Int,
-    val name: String,
-)
 
 data class SearchHistoryUiState(
     val searchTitle: String,
