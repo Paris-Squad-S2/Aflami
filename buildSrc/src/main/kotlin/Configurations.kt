@@ -2,8 +2,7 @@ import org.gradle.api.JavaVersion
 
 object Configurations {
     const val COMPILE_SDK = 35
-    const val MIN_SDK_24 = 24
-    const val MIN_SDK_26 = 26
+    const val MIN_SDK = 26
     const val TARGET_SDK = 35
     const val VERSION_CODE = 1
     const val JVM_TARGET = "11"

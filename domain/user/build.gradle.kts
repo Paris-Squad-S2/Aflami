@@ -13,6 +13,7 @@ kotlin {
 }
 
 dependencies{
+    testImplementation(libs.bundles.test)
     testImplementation(kotlin("test"))
     testImplementation(libs.mockk)
     testImplementation(libs.truth)

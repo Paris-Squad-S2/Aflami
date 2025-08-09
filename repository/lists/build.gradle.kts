@@ -4,7 +4,6 @@ plugins {
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.hilt)
-
 }
 
 android {
@@ -12,7 +11,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_24
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -64,10 +63,15 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
 
     // Junit 5
+    // test
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(kotlin("test"))
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
 
 
     implementation(project(Modules.DOMAIN_LISTS))

@@ -1,5 +1,6 @@
 package com.paris_2.domain.media.useCase.movie
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.MovieRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -8,7 +9,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import com.paris_2.domain.media.testUtils.fakeProductionCompanies
-import kotlin.test.assertEquals
 
 class GetMoviesProductionCompaniesUseCaseTest {
 
@@ -29,7 +29,7 @@ class GetMoviesProductionCompaniesUseCaseTest {
         val result = getMoviesProductionCompaniesUseCase(movieId)
 
         // Then
-        assertEquals(fakeProductionCompanies, result)
+        assertThat(result).isEqualTo(fakeProductionCompanies)
     }
 
     @Test
@@ -41,7 +41,7 @@ class GetMoviesProductionCompaniesUseCaseTest {
         val result = getMoviesProductionCompaniesUseCase(movieId)
 
         // Then
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test

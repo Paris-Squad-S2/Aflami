@@ -10,7 +10,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_24
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -35,18 +35,12 @@ android {
 }
 
 dependencies {
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.bundles.android)
     implementation(project(Modules.REPOSITORY_MEDIA))
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
-    //retrofit
-    implementation(libs.retrofit)
+    implementation(libs.bundles.retrofit)
 
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    testImplementation(libs.bundles.test)
+
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 }

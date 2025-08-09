@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -31,7 +30,6 @@ import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.profile.profileUi.R
 import com.paris_2.aflami.designsystem.components.TabRow
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WatchHistoryScreen(
     viewModel: WatchHistoryViewModel = hiltViewModel(),

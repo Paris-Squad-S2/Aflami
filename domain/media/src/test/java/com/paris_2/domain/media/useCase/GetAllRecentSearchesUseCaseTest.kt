@@ -10,9 +10,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
+import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
 
 class GetAllRecentSearchesUseCaseTest {
 
@@ -27,7 +26,6 @@ class GetAllRecentSearchesUseCaseTest {
 
     @Test
     fun `should return all recent searches from repository`() = runTest {
-
         // Given
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
             emit(recentSearches)
@@ -37,13 +35,11 @@ class GetAllRecentSearchesUseCaseTest {
         val result = getAllRecentSearchesUseCase().first()
 
         // Then
-        assertEquals(recentSearches, result)
+        assertThat(result).isEqualTo(recentSearches)
     }
-
 
     @Test
     fun `should verify repository is called once when returning all recent searches`() = runTest {
-
         // Given
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
             emit(recentSearches)
@@ -57,56 +53,49 @@ class GetAllRecentSearchesUseCaseTest {
     }
 
     @Test
-    fun `should return list of correct size when repository has recent searches`() =
-        runTest {
-            // Given
-            coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
-                emit(recentSearches)
-            }
-
-            // When
-            val result = getAllRecentSearchesUseCase().first()
-
-            // Then
-            assertEquals(2, result.size)
+    fun `should return list of correct size when repository has recent searches`() = runTest {
+        // Given
+        coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
+            emit(recentSearches)
         }
+
+        // When
+        val result = getAllRecentSearchesUseCase().first()
+
+        // Then
+        assertThat(result).hasSize(2)
+    }
 
     @Test
-    fun `should verify repository is called once when retrieving recent searches`() =
-        runTest {
-
-            // Given
-            coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
-                emit(emptyList())
-            }
-
-            // When
-            getAllRecentSearchesUseCase().first()
-
-            // Then
-            coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
+    fun `should verify repository is called once when retrieving recent searches`() = runTest {
+        // Given
+        coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
+            emit(emptyList())
         }
+
+        // When
+        getAllRecentSearchesUseCase().first()
+
+        // Then
+        coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
+    }
 
     @Test
     fun `should return empty list when repository returns no recent searches`() = runTest {
-
-        //Given
+        // Given
         coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
-            emit(
-                emptyList()
-            )
+            emit(emptyList())
         }
 
-        //When
+        // When
         val result = getAllRecentSearchesUseCase().first()
 
-        //Then
-        assertTrue(result.isEmpty())
+        // Then
+        assertThat(result).isEmpty()
     }
 
     @Test
     fun `should verify repository is called once when repository returns no recent searches`() = runTest {
-
             // Given
             coEvery { searchHistoryRepository.getAllSearchHistory() } returns flow {
                 emit(emptyList())
@@ -119,7 +108,7 @@ class GetAllRecentSearchesUseCaseTest {
             coVerify(exactly = 1) { searchHistoryRepository.getAllSearchHistory() }
         }
 
-    companion object{
+    companion object {
         val recentSearches = listOf(
             SearchHistoryModel(
                 searchTitle = "Movie1",

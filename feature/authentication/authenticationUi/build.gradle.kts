@@ -12,7 +12,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_26
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -46,50 +46,18 @@ tasks.withType<Test>().configureEach {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.material3)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    implementation(libs.bundles.navigation)
+    testImplementation(libs.bundles.test)
+    implementation(libs.bundles.webview)
 
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
-    //test
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
-    // Junit 5
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(kotlin("test"))
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
-    //Navigation
-    implementation(libs.navigation.compose)
 
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
     implementation(project(Modules.DESIGN_SYSTEM))
     implementation(project(Modules.FEATURE_BOTTOM_NAV_BAR_API))
     implementation(project(Modules.DOMAIN_USER))
-
-    //WebView
-    implementation(libs.androidx.webkit)
-
-    //kotlinx serialization
-    implementation(libs.kotlinx.serialization.json)
 }

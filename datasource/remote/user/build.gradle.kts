@@ -11,7 +11,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_24
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,10 +34,10 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.bundles.android)
+    implementation(libs.bundles.serialization)
 
+    testImplementation(libs.bundles.test)
     //test
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.mockk)
@@ -45,15 +45,12 @@ dependencies {
     testImplementation(libs.truth)
     testImplementation(kotlin("test"))
 
-    implementation(project(Modules.REPOSITORY_USER))
+    implementation(libs.bundles.retrofit)
 
-    //retrofit
-    implementation(libs.retrofit)
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
+
+    implementation(project(Modules.REPOSITORY_USER))
 }
 tasks.withType<Test> {
     useJUnitPlatform()

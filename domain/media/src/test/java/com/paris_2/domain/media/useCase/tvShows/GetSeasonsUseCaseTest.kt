@@ -1,5 +1,6 @@
 package com.paris_2.domain.media.useCase.tvShows
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.TvShowRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -8,7 +9,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import com.paris_2.domain.media.testUtils.fakeSeasons
-import kotlin.test.assertEquals
 
 class GetSeasonsUseCaseTest {
 
@@ -34,7 +34,7 @@ class GetSeasonsUseCaseTest {
         val result = getSeasonDetailsUseCase(tvShowId, seasonNumber)
 
         // Then
-        assertEquals(fakeSeasons.first(), result)
+        assertThat(result).isEqualTo(fakeSeasons.first())
     }
 
     @Test

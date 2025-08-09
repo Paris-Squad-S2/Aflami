@@ -1,6 +1,7 @@
 package com.paris_2.domain.media.useCase
 
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.GenreUserInteraction
 import com.paris_2.domain.media.repository.GenresInteractionRepository
 import com.paris_2.domain.media.testUtils.assertIds
@@ -10,8 +11,8 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+
 
 class SortingMediaByCategoriesInteractionUseCaseTest {
     private lateinit var genresInteractionRepository: GenresInteractionRepository
@@ -95,7 +96,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
         val result = sortingUseCase(emptyList())
 
         // Then
-        assertEquals(emptyList(), result)
+        assertThat(result).isEmpty()
     }
 
     @Test

@@ -4,6 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
+import androidx.core.view.WindowInsetsControllerCompat
 import com.feature.onboarding.onboardingUi.ui.OnboardingScreen
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.domain.user.usecase.SettingsUseCase
@@ -22,6 +26,19 @@ class OnboardingActivity : ComponentActivity() {
 
         setContent {
             AflamiTheme(settingsUseCase.isDarkTheme()) {
+
+                val context = LocalContext.current
+                val view = LocalView.current
+                val activity = context as? ComponentActivity
+
+                LaunchedEffect(Unit) {
+                    activity?.window?.also { window ->
+                        WindowInsetsControllerCompat(window, view).apply {
+                            isAppearanceLightStatusBars = false
+                            isAppearanceLightNavigationBars = false
+                        }
+                    }
+                }
                 OnboardingScreen()
             }
         }
