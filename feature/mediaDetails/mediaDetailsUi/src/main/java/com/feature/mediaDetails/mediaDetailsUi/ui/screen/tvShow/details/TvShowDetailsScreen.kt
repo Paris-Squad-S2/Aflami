@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility

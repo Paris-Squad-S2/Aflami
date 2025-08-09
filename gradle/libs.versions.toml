@@ -254,3 +254,7 @@ blur = [
 shimmer = [
     "shimmer"
 ]
+
+webview = [
+    "androidx-webkit"
+]

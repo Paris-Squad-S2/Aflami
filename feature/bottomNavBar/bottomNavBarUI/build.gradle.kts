@@ -44,7 +44,7 @@ android {
 dependencies {
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3) //TODO
 
     implementation(libs.bundles.navigation)
 
