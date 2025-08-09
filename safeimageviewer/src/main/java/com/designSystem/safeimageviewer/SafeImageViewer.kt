@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,17 +42,23 @@ fun SafeImageViewer(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
+    val safeImageProcessor = remember { SafeImageProcessor(context) }
+    val analysisCache = remember { mutableMapOf<String, ImageAnalysisResult>() }
     var imageState by remember { mutableStateOf<SafeImageState>(SafeImageState.Loading) }
     var originalBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var shouldBlur by remember { mutableStateOf(false) }
-    var blurRadius by remember { mutableStateOf(15) }
-
-    val safeImageProcessor = remember { SafeImageProcessor(context) }
+    var blurRadius by remember { mutableStateOf(0) }
 
     DisposableEffect(safeImageProcessor) {
-        onDispose {
-            safeImageProcessor.release()
+        onDispose { safeImageProcessor.release() }
+    }
+
+    LaunchedEffect(imageUrl) {
+        analysisCache[imageUrl]?.let { cached ->
+            originalBitmap = cached.originalBitmap
+            shouldBlur = cached.shouldBlur
+            blurRadius = if (cached.shouldBlur) 100 else 0
+            imageState = SafeImageState.Ready(cached.processedBitmap)
         }
     }
 
@@ -60,16 +67,15 @@ fun SafeImageViewer(
             AsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(imageUrl)
+                    .allowHardware(false)
                     .build(),
                 contentDescription = contentDescription,
                 modifier = modifier,
                 contentScale = contentScale,
                 onState = { asyncImageState ->
                     when (asyncImageState) {
-
-
                         is AsyncImagePainter.State.Success -> {
-                            val bitmap = asyncImageState.result.drawable.toBitmap()
+                            val bitmap = asyncImageState.result.drawable.toBitmapArgb8888()
                             originalBitmap = bitmap
                             imageState = SafeImageState.Analyzing
 
@@ -83,22 +89,18 @@ fun SafeImageViewer(
                                         genderThreshold = genderThreshold
                                     )
 
-                                    shouldBlur = result.shouldBlur
-                                    blurRadius = when {
-                                        result.isNSFW && blurNSFW -> 100
-                                        result.isFemale && blurFemales -> 100
-                                        else -> 0
-                                    }
+                                    analysisCache[imageUrl] = result
 
-                                    imageState = SafeImageState.Ready(bitmap)
+                                    shouldBlur = result.shouldBlur
+                                    blurRadius = if (result.shouldBlur) 100 else 0
+                                    imageState = SafeImageState.Ready(result.processedBitmap)
 
                                     withContext(Dispatchers.Main) {
                                         onAnalysisComplete?.invoke(result)
                                     }
-
                                 } catch (e: Exception) {
-                                    Log.e("SafeImageViewer", "Analysis failed: ${e.message}")
-                                    imageState = SafeImageState.Error("Analysis failed: ${e.message}")
+                                    Log.e("SafeImageViewer", "Analysis failed: ${e.message}", e)
+                                    imageState = SafeImageState.Error("Analysis failed")
                                 }
                             }
                         }
@@ -107,36 +109,40 @@ fun SafeImageViewer(
                             imageState = SafeImageState.Error("Failed to load image")
                         }
 
-                        else -> Unit
+                        else -> {}
                     }
                 }
             )
-            Box(modifier = modifier, contentAlignment = Alignment.Center) {
-                loadingContent()
-            }
+
+            Box(modifier = modifier, contentAlignment = Alignment.Center) { loadingContent() }
         }
 
         is SafeImageState.Analyzing -> {
             AsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(imageUrl)
+                    .allowHardware(false)
                     .build(),
                 contentDescription = contentDescription,
                 modifier = modifier,
                 contentScale = contentScale
             )
-
         }
 
         is SafeImageState.Ready -> {
             AsyncImage(
                 model = ImageRequest.Builder(context)
                     .data(imageUrl)
+                    .allowHardware(false)
                     .build(),
                 contentDescription = contentDescription,
                 modifier = modifier
                     .blur(
-                        sourceBitmap = if (isScrolling) originalBitmap else if (shouldBlur) originalBitmap else null,
+                        sourceBitmap = when {
+                            isScrolling -> originalBitmap
+                            shouldBlur -> originalBitmap
+                            else -> null
+                        },
                         radius = if (isScrolling) 50 else blurRadius,
                         enabled = isScrolling || shouldBlur
                     ),
@@ -152,19 +158,23 @@ fun SafeImageViewer(
     }
 }
 
-
-private fun Drawable.toBitmap(): Bitmap {
-    if (this is android.graphics.drawable.BitmapDrawable) {
-        return bitmap
+private fun Drawable.toBitmapArgb8888(): Bitmap {
+    val rawBitmap = if (this is android.graphics.drawable.BitmapDrawable) {
+        bitmap
+    } else {
+        val w = intrinsicWidth.takeIf { it > 0 } ?: 1
+        val h = intrinsicHeight.takeIf { it > 0 } ?: 1
+        val bmp = createBitmap(w, h)
+        val canvas = android.graphics.Canvas(bmp)
+        setBounds(0, 0, canvas.width, canvas.height)
+        draw(canvas)
+        bmp
     }
-
-    val bitmap = createBitmap(intrinsicWidth.takeIf { it > 0 } ?: 1, intrinsicHeight.takeIf { it > 0 } ?: 1)
-
-    val canvas = android.graphics.Canvas(bitmap)
-    setBounds(0, 0, canvas.width, canvas.height)
-    draw(canvas)
-    return bitmap
+    return if (rawBitmap.config != Bitmap.Config.ARGB_8888) {
+        rawBitmap.copy(Bitmap.Config.ARGB_8888, false)
+    } else rawBitmap
 }
+
 
 sealed class SafeImageState {
     object Loading : SafeImageState()
