@@ -1,40 +1,40 @@
 package com.feature.home.homeUi.mapper
 
 import com.feature.home.homeUi.R
-
+import com.paris_2.domain.media.entity.Genre
 
 object CategoryResourceMapper {
     private val categoryToResourceMap = mapOf(
-        28 to R.drawable.ic_category_action,
-        12 to R.drawable.ic_category_adventure,
-        16 to R.drawable.ic_category_animation,
-        35 to R.drawable.ic_category_comedy,
-        80 to R.drawable.ic_category_crime,
-        99 to R.drawable.ic_category_documentary,
-        18 to R.drawable.ic_category_drama,
-        10751 to R.drawable.ic_category_family,
-        14 to R.drawable.ic_category_fantasy,
-        36 to R.drawable.ic_category_history,
-        27 to R.drawable.ic_category_horror,
-        10402 to R.drawable.ic_category_music,
-        9648 to R.drawable.ic_category_mystery,
-        10749 to R.drawable.ic_category_romance,
-        878 to R.drawable.ic_category_science_fiction,
-        10770 to R.drawable.ic_category_tv_movie,
-        53 to R.drawable.ic_category_thriller,
-        10752 to R.drawable.ic_category_war,
-        37 to R.drawable.ic_category_western,
-        10759 to R.drawable.ic_category_action_and_adventure,
-        10762 to R.drawable.ic_category_kids,
-        10763 to R.drawable.ic_category_news,
-        10764 to R.drawable.ic_category_reality,
-        10765 to R.drawable.ic_category_fantasy,
-        10766 to R.drawable.ic_category_soap,
-        10767 to R.drawable.ic_category_talk,
-        10768 to R.drawable.ic_category_war
+        Genre.Action to R.drawable.ic_category_action,
+        Genre.Adventure to R.drawable.ic_category_adventure,
+        Genre.Animation to R.drawable.ic_category_animation,
+        Genre.Comedy to R.drawable.ic_category_comedy,
+        Genre.Crime to R.drawable.ic_category_crime,
+        Genre.Documentary to R.drawable.ic_category_documentary,
+        Genre.Drama to R.drawable.ic_category_drama,
+        Genre.Family to R.drawable.ic_category_family,
+        Genre.Fantasy to R.drawable.ic_category_fantasy,
+        Genre.History to R.drawable.ic_category_history,
+        Genre.Horror to R.drawable.ic_category_horror,
+        Genre.Music to R.drawable.ic_category_music,
+        Genre.Mystery to R.drawable.ic_category_mystery,
+        Genre.Romance to R.drawable.ic_category_romance,
+        Genre.ScienceFiction to R.drawable.ic_category_science_fiction,
+        Genre.TVMovie to R.drawable.ic_category_tv_movie,
+        Genre.Thriller to R.drawable.ic_category_thriller,
+        Genre.War to R.drawable.ic_category_war,
+        Genre.Western to R.drawable.ic_category_western,
+        Genre.ActionAdventure to R.drawable.ic_category_action_and_adventure,
+        Genre.Kids to R.drawable.ic_category_kids,
+        Genre.News to R.drawable.ic_category_news,
+        Genre.Reality to R.drawable.ic_category_reality,
+        Genre.SciFiFantasy to R.drawable.ic_category_fantasy,
+        Genre.Soap to R.drawable.ic_category_soap,
+        Genre.Talk to R.drawable.ic_category_talk,
+        Genre.WarPolitics to R.drawable.ic_category_war
     )
 
-    fun getResourceId(genreId: Int): Int {
-        return categoryToResourceMap[genreId] ?: R.drawable.ic_category_all
+    fun getResourceId(genre: Genre): Int {
+        return categoryToResourceMap[genre] ?: R.drawable.ic_category_all
     }
 }
