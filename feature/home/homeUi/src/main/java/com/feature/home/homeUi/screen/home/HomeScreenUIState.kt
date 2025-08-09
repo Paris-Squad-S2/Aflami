@@ -1,6 +1,7 @@
 package com.feature.home.homeUi.screen.home
 
 import com.feature.home.homeUi.screen.home.components.SliderMedia
+import com.paris_2.domain.media.entity.Genre
 import kotlinx.datetime.LocalDate
 
 data class HomeScreenUIState(
@@ -17,12 +18,12 @@ data class HomeUIState(
     val continueWatchingMediaList: List<MediaUiState>,
     val topRatedMediaList: List<MediaUiState>,
     val moviesBirthdayMediaList: List<MediaUiState>,
-    val categories: Map<CategoryUiState, Boolean>,
+    val categories: Map<Genre, Boolean>,
     val upComingMediaList: List<MediaUiState>,
     val showMoodPickerDialog: Boolean,
     val isAllCategories: Boolean,
     val moodPickerMovie: MediaUiState?
-    )
+)
 
 data class MediaUiState(
     val id: Int,
@@ -33,12 +34,6 @@ data class MediaUiState(
     val yearOfRelease: LocalDate,
     val rating: Double?,
 )
-
-data class CategoryUiState(
-    val id: Int,
-    val name: String,
-)
-
 
 enum class MediaTypeUi(val mediaName: String) {
     TVSHOW("TV Show"),
