@@ -12,7 +12,7 @@ import com.paris_2.domain.media.exception.PopularMediaException
 import com.paris_2.domain.media.exception.TopRatingMediaException
 import com.paris_2.domain.media.exception.UpComingMediaException
 import com.paris_2.domain.media.repository.MediaRepository
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
@@ -28,12 +28,12 @@ class MediaRepositoryImpl(
     private val mediaRemoteDataSource: MediaRemoteDataSource,
     private val continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
     private val homeMediaLocalDataSource: HomeMediaLocalDataSource,
-    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    private val settingLocalDataSource: SettingLocalDataSource,
 ) : MediaRepository {
 
     override suspend fun getPopularMedia(): List<Media> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
-        val localMedia = homeMediaLocalDataSource.getMediaListByCategory(Category.POPULAR, language)
+        val language = settingLocalDataSource.getLanguage().first()
+        val localMedia = homeMediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(PopularMediaException()) {
@@ -53,15 +53,15 @@ class MediaRepositoryImpl(
                 it.toMediaEntity(category = Category.POPULAR, language)
             }
 
-            homeMediaLocalDataSource.addMediaList(entities)
+            homeMediaLocalDataSource.addHomeMedia(entities)
             combined
         }
     }
 
     override suspend fun getTopRatingMedia(): List<Media> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         val localMedia =
-            homeMediaLocalDataSource.getMediaListByCategory(Category.TOP_RATED, language)
+            homeMediaLocalDataSource.getHomeMediaByCategory(Category.TOP_RATED, language)
 
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
@@ -81,15 +81,15 @@ class MediaRepositoryImpl(
             val entities = combined.map {
                 it.toMediaEntity(category = Category.TOP_RATED, language)
             }
-            homeMediaLocalDataSource.addMediaList(entities)
+            homeMediaLocalDataSource.addHomeMedia(entities)
             combined
         }
     }
 
     override suspend fun getUpComingMedia(): List<Media> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         val localMedia =
-            homeMediaLocalDataSource.getMediaListByCategory(Category.UPCOMING, language)
+            homeMediaLocalDataSource.getHomeMediaByCategory(Category.UPCOMING, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(UpComingMediaException()) {
@@ -100,7 +100,7 @@ class MediaRepositoryImpl(
             val entities = upcomingMovies.map {
                 it.toMediaEntity(category = Category.UPCOMING, language)
             }
-            homeMediaLocalDataSource.addMediaList(entities)
+            homeMediaLocalDataSource.addHomeMedia(entities)
             upcomingMovies
         }
     }
@@ -127,7 +127,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getRatedMedia(accountId: Int): List<Media> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoRatedMediaFoundException()) {
             val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, language)
                 .results.mapNotNull { it.toDomain(MediaType.MOVIE) }

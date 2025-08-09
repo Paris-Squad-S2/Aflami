@@ -1,5 +1,12 @@
 package com.paris_2.aflami.di
 
+import com.paris.domain.lists.repository.ListsRepository
+import com.paris.domain.lists.useCase.AddMovieToListUseCase
+import com.paris.domain.lists.useCase.CreateListUseCase
+import com.paris.domain.lists.useCase.DeleteListUseCase
+import com.paris.domain.lists.useCase.GetListDetailsUseCase
+import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -32,10 +39,10 @@ import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SearchByQueryUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
-import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
@@ -51,10 +58,11 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.paris_2.domain.user.repository.LanguageRepository
+import com.paris_2.domain.user.repository.SettingRepository
 import com.paris_2.domain.user.repository.UserRepository
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
+import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
 import com.paris_2.domain.user.usecase.GetRegisterUrlUseCase
 import com.paris_2.domain.user.usecase.GetSessionIdUseCase
@@ -89,14 +97,14 @@ object UseCaseModule {
         AutoCompleteCountryUseCase(countryRepository)
 
     @Provides
-    fun provideCompleteOnboardingUseCase(authenticationRepository: UserRepository) =
-        CompleteOnboardingUseCase(authenticationRepository)
+    fun provideCompleteOnboardingUseCase(settingRepository: SettingRepository) =
+        CompleteOnboardingUseCase(settingRepository)
 
     @Provides
     fun provideIsOnboardingCompletedUseCase(
-        authenticationRepository: UserRepository,
+        settingRepository: SettingRepository,
     ): IsOnboardingCompletedUseCase {
-        return IsOnboardingCompletedUseCase(authenticationRepository)
+        return IsOnboardingCompletedUseCase(settingRepository)
     }
 
 
@@ -235,6 +243,10 @@ object UseCaseModule {
         GetAccountIdUseCase(userRepository)
 
     @Provides
+    fun provideDeleteSessionIdUseCase(userRepository: UserRepository) =
+        DeleteSessionIdUseCase(userRepository)
+
+    @Provides
     fun provideGuestLoginUseCase(userRepository: UserRepository) =
         GuestLoginUseCase(userRepository)
 
@@ -283,8 +295,33 @@ object UseCaseModule {
         FilterRatedMediaUseCase(mediaRepository)
 
     @Provides
-    fun provideLanguageUseCase(languageRepository: LanguageRepository) =
-        SettingsUseCase(languageRepository)
+    fun provideLanguageUseCase(
+        settingRepository: SettingRepository,
+        userRepository: UserRepository,
+    ) =
+        SettingsUseCase(settingRepository, userRepository)
+
+    @Provides
+    fun provideGetListUseCase(listRepository: ListsRepository) = GetListUseCase(listRepository)
+
+    @Provides
+    fun provideGetListDetailsUseCase(listRepository: ListsRepository) =
+        GetListDetailsUseCase(listRepository)
+
+    @Provides
+    fun provideDeleteItemFromListUseCase(listRepository: ListsRepository) =
+        DeleteListUseCase(listRepository)
+
+    @Provides
+    fun provideCreateListUseCase(listRepository: ListsRepository) =
+        CreateListUseCase(listRepository)
+
+    @Provides
+    fun provideAddMovieToListUseCase(listRepository: ListsRepository) =
+        AddMovieToListUseCase(listRepository)
+
+    @Provides
+    fun provideRemoveMovieFromListUseCase(listRepository: ListsRepository) =
+        RemoveMovieFromListUseCase(listRepository)
 
 }
-

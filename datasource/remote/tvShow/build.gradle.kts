@@ -11,7 +11,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_24
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -34,36 +34,15 @@ android {
 
 dependencies {
 
+    implementation(libs.bundles.android)
+    implementation(libs.bundles.retrofit)
+
     implementation(project(Modules.REPOSITORY_MOVIE))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
 
-    implementation(libs.androidx.core.ktx)
+    testImplementation(libs.bundles.test)
 
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.content.negotiation)
-    implementation(libs.ktor.serialization.kotlinx.json)
-
-    // Junit 5
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-
-    // test
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    testImplementation(kotlin("test"))
-
-
-    //retrofit
-    implementation(libs.retrofit)
-    implementation(libs.retrofit.converter)
-    implementation(libs.logging.interceptor)
-    implementation(libs.okhttp)
-
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 }
 

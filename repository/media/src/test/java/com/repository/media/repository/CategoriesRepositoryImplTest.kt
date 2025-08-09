@@ -3,7 +3,7 @@ package com.repository.media.repository
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.exception.NoCategoriesFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.dto.GenreDto
 import com.repository.media.dto.GenresDto
@@ -24,7 +24,7 @@ class CategoriesRepositoryImplTest {
     private lateinit var repository: CategoriesRepositoryImpl
     private val networkConnectionChecker: NetworkConnectionChecker = mockk(relaxed = true)
     private val genresRemoteDataSource: GenresRemoteDataSource = mockk()
-    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository = mockk()
+    private val settingLocalDataSource: SettingLocalDataSource = mockk()
     private val language = "en"
 
     @BeforeEach
@@ -32,7 +32,7 @@ class CategoriesRepositoryImplTest {
         repository = CategoriesRepositoryImpl(
             networkConnectionChecker,
             genresRemoteDataSource,
-            languageLocalDataSourceRepository
+            settingLocalDataSource
         )
     }
 
@@ -40,7 +40,7 @@ class CategoriesRepositoryImplTest {
     fun `getAllCategories should fetch from remote`() = runTest {
         // Given
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow(language)
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         coEvery { genresRemoteDataSource.getMoviesGenres(language) } returns GenresDto(
             genreDto = listOf(GenreDto(2, "Drama"))
         )
@@ -55,7 +55,7 @@ class CategoriesRepositoryImplTest {
     fun `getAllCategories should throw NoInternetConnectionException when no internet`() = runTest {
         // Given
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(false)
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow(language)
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
 
         // When + Then
         val exception = assertThrows<NoInternetConnectionException> {
@@ -69,7 +69,7 @@ class CategoriesRepositoryImplTest {
 
         every { networkConnectionChecker.isConnected } returns MutableStateFlow(true)
         coEvery { genresRemoteDataSource.getMoviesGenres(language) } throws Exception()
-        coEvery { languageLocalDataSourceRepository.getLanguage() } returns MutableStateFlow(language)
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         // When + Then
         val exception = assertThrows<NoCategoriesFoundException> {
             repository.getAllCategories()

@@ -14,6 +14,17 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
     private val useCase = FilterUpComingMediaByCategoriesUseCase(mediaRepository)
 
+    @Test
+    fun `invoke filters media by categories correctly`() = runTest {
+        coEvery { mediaRepository.getUpComingMedia() } returns listOf(actionMedia, comedyMedia)
+        val result = useCase(listOf(28))
+        assertThat(result).containsExactly(actionMedia)
+        val resultAll = useCase(listOf(28, 35))
+        assertThat(resultAll).containsExactly(actionMedia, comedyMedia)
+        val resultNone = useCase(listOf(18))
+        assertThat(resultNone).isEmpty()
+    }
+
     private val actionMedia = Media(
         id = 1,
         title = "Action Movie",
@@ -33,15 +44,4 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
         categoryIds = listOf(35),
         type = MediaType.MOVIE
     )
-
-    @Test
-    fun `invoke filters media by categories correctly`() = runTest {
-        coEvery { mediaRepository.getUpComingMedia() } returns listOf(actionMedia, comedyMedia)
-        val result = useCase(listOf(28))
-        assertThat(result).containsExactly(actionMedia)
-        val resultAll = useCase(listOf(28, 35))
-        assertThat(resultAll).containsExactly(actionMedia, comedyMedia)
-        val resultNone = useCase(listOf(18))
-        assertThat(resultNone).isEmpty()
-    }
 }

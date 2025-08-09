@@ -7,7 +7,7 @@ import com.paris_2.domain.media.exception.NoMediaForActorException
 import com.paris_2.domain.media.exception.NoMediaForCountryException
 import com.paris_2.domain.media.exception.NoMediaForSearchException
 import com.paris_2.domain.media.repository.SearchMediaRepository
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.media.entity.SearchType
@@ -19,11 +19,11 @@ class SearchMediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val searchRemoteDataSource: SearchRemoteDataSource,
     private val searchHistoryLocalDataSource: HistoryLocalDataSource,
-    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository,
+    private val settingLocalDataSource: SettingLocalDataSource,
 ) : SearchMediaRepository {
 
     override suspend fun getMediaByActor(actorName: String, page: Int): List<Media> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoMediaForActorException()) {
             val remoteDto = searchRemoteDataSource.searchPerson(
                 query = actorName,
@@ -42,7 +42,7 @@ class SearchMediaRepositoryImpl(
     }
 
     override suspend fun getMoviesByCountry(countryName: String, page: Int): List<Media> {
-        val language =  languageLocalDataSourceRepository.getLanguage().first()
+        val language =  settingLocalDataSource.getLanguage().first()
         return safeCall(NoMediaForCountryException()) {
             val remoteDto = searchRemoteDataSource.searchCountryCode(
                 countryCode = countryName,
@@ -60,7 +60,7 @@ class SearchMediaRepositoryImpl(
     }
 
     override suspend fun getMediaByQuery(query: String, page: Int): List<Media> {
-        val language =  languageLocalDataSourceRepository.getLanguage().first()
+        val language =  settingLocalDataSource.getLanguage().first()
         return safeCall(NoMediaForSearchException()) {
             val remoteDto = searchRemoteDataSource.searchMulti(
                 query = query,

@@ -14,40 +14,27 @@ import com.paris_2.domain.user.usecase.GetSessionIdUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
-import org.junit.Before
-import org.junit.jupiter.api.Assertions.*
-import kotlin.test.Test
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
+@ExperimentalCoroutinesApi
 class MyRatingViewModelTest {
 
     private val getRatedMediaUseCase: FilterRatedMediaUseCase = mockk()
     private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
-
     private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase = mockk()
-
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase = mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val profileNavigator: ProfileNavigator = mockk(relaxed = true)
     private lateinit var viewModel: MyRatingViewModel
 
-
-    private val fakeMediaList = listOf(
-        Media(
-            id = 1,
-            title = "Movie 1",
-            type = MediaType.MOVIE,
-            imageUri = "/abc.jpg",
-            categoryIds = listOf(28),
-            yearOfRelease = LocalDate(2022, 1, 1),
-            rating = 8.5
-        )
-    )
-
-    @Before
+    @BeforeEach
     fun setUp() {
         coEvery { getSessionIdUseCase() } returns "session123"
         coEvery { getAccountIdUseCase() } returns 1
@@ -63,8 +50,7 @@ class MyRatingViewModelTest {
             getAccountIdUseCase = getAccountIdUseCase,
             deleteMovieRatingUseCase = deleteMovieRatingUseCase,
             deleteTvShowRatingUseCase = deleteTvShowRatingUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator = profileNavigator
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
     }
 
@@ -90,7 +76,7 @@ class MyRatingViewModelTest {
             rating = 5.2,
             yearOfRelease = LocalDate(2022, 1, 1)
         )
-
+        advanceUntilIdle()
 
         viewModel.onMediaCardClick(media)
 
@@ -107,6 +93,7 @@ class MyRatingViewModelTest {
             rating = 7.3,
             yearOfRelease = LocalDate(2023, 5, 1)
         )
+        advanceUntilIdle()
 
         viewModel.onMediaCardClick(media)
 
@@ -152,6 +139,10 @@ class MyRatingViewModelTest {
 
     @Test
     fun `onBackClick should call navigateUp`() = runTest {
+        val field = viewModel::class.java.superclass!!.getDeclaredField("navigator")
+        field.isAccessible = true
+        field.set(viewModel, profileNavigator)
+
         viewModel.onBackClick()
 
         coVerify { profileNavigator.navigateUp() }
@@ -205,4 +196,16 @@ class MyRatingViewModelTest {
         coVerify { getRatedMediaUseCase(1, MediaType.MOVIE) }
     }
 
+
+    private val fakeMediaList = listOf(
+        Media(
+            id = 1,
+            title = "Movie 1",
+            type = MediaType.MOVIE,
+            imageUri = "/abc.jpg",
+            categoryIds = listOf(28),
+            yearOfRelease = LocalDate(2022, 1, 1),
+            rating = 8.5
+        )
+    )
 }

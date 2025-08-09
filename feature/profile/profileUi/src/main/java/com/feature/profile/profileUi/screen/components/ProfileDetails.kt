@@ -23,7 +23,7 @@ import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun ProfileDetails(modifier: Modifier = Modifier) {
+fun ProfileDetails(modifier: Modifier = Modifier, username: String) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -34,7 +34,7 @@ fun ProfileDetails(modifier: Modifier = Modifier) {
             contentDescription = null,
         )
         AppText(
-            text = "@Ahmed_Salah",
+            text = username,
             style = Theme.textStyle.label.medium,
             color = Theme.colors.text.body,
             modifier = Modifier.padding(vertical = 8.dp)

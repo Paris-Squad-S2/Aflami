@@ -5,14 +5,16 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import kotlin.test.BeforeTest
-import kotlin.test.Test
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
+
 
 class DeleteMovieRatingUseCaseTest {
     private lateinit var deleteMovieRatingUseCase: DeleteMovieRatingUseCase
     private val movieRepository: MovieRepository = mockk(relaxed = true)
 
-    @BeforeTest
+    @BeforeEach
     fun setup() {
         deleteMovieRatingUseCase = DeleteMovieRatingUseCase(movieRepository)
     }
@@ -36,11 +38,11 @@ class DeleteMovieRatingUseCaseTest {
         coEvery { movieRepository.deleteMovieRating(movieId) } throws exception
 
         // Then
-        val thrown = kotlin.runCatching {
+        val thrown = runCatching {
             deleteMovieRatingUseCase(movieId)
         }.exceptionOrNull()
 
-        kotlin.test.assertEquals(exception, thrown)
+        assertThat(thrown).isEqualTo(exception)
     }
 
     private companion object {

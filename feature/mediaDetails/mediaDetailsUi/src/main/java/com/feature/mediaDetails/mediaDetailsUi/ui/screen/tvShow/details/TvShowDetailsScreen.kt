@@ -1,6 +1,5 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
-import android.annotation.SuppressLint
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -26,8 +25,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -60,6 +57,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.AppSnackBar
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
@@ -76,8 +74,7 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {
     )
 }
 
-@SuppressLint("SuspiciousIndentation")
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TvShowDetailsScreenContent(
     state: TvShowDetailsScreenState,
@@ -214,7 +211,7 @@ fun TvShowDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_seasons),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -336,7 +333,7 @@ fun TvShowDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_recommendations),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -386,7 +383,7 @@ fun TvShowDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_reviews),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -409,7 +406,7 @@ fun TvShowDetailsScreenContent(
                                                 .navigationBarsPadding(),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            Text(
+                                            AppText(
                                                 text = stringResource(R.string.there_is_no_gallery),
                                                 style = Theme.textStyle.label.large,
                                                 color = Theme.colors.text.body.copy(alpha = 0.6f)

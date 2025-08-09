@@ -7,7 +7,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.google.firebase.appdistribution)
     alias(libs.plugins.google.gms.google.services) apply true
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.firebase.crashlytics)
     alias(libs.plugins.ksp)
     alias(libs.plugins.hilt)
 }
@@ -50,7 +50,7 @@ android {
 
     defaultConfig {
         applicationId = "com.paris_2.aflami"
-        minSdk = Configurations.MIN_SDK_26
+        minSdk = Configurations.MIN_SDK
         targetSdk = Configurations.TARGET_SDK
         versionCode = Configurations.VERSION_CODE
         versionName = Properties().apply {
@@ -60,6 +60,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables.useSupportLibrary = true
+
+        buildConfigField("String", "API_TOKEN", "\"${getApiToken()}\"")
+
     }
 
 
@@ -110,56 +113,32 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.datastore.core.android)
-    implementation(libs.androidx.datastore.preferences)
 
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(project(Modules.DOMAIN_USER))
-    implementation(project(Modules.LOGGER))
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
-    implementation(project(Modules.FEATURE_SEARCH_UI))
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.datastore)
+    implementation(libs.bundles.navigation)
+    implementation(libs.bundles.hilt)
+    implementation(libs.bundles.workManager)
+    implementation(libs.bundles.room)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.bundles.serialization)
 
-    //Navigation
-    implementation(libs.navigation.compose)
-
-    // JUnit 5
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.mockk)
-    testImplementation(libs.junit.platform.launcher)
-
-    //Hilt
-    implementation(libs.hilt.android)
     ksp(libs.hilt.android.compiler)
-    implementation(libs.hilt.work)
-
-    //work manager for kotlin
-    implementation(libs.work.runtime.ktx)
-
-    implementation(libs.androidx.startup.runtime)
+    ksp(libs.room.compiler)
 
     implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.BOTTOM_NAV_BAR))
+    implementation(project(Modules.LOGGER))
+    implementation(project(Modules.SAFE_IMAGE_VIEWER))
 
+    implementation(project(Modules.FEATURE_BOTTOM_NAV_BAR_API))
+    implementation(project(Modules.FEATURE_BOTTOM_NAV_BAR_UI))
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.FEATURE_LISTS_API))
@@ -167,8 +146,8 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_API))
     implementation(project(Modules.FEATURE_GUESS_GAME_API))
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_ONBOARDING_API))
-    implementation(project(Modules.FEATURE_ONBOARDING_UI))
 
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_LISTS_UI))
@@ -176,8 +155,9 @@ dependencies {
     implementation(project(Modules.FEATURE_CATEGORIES_UI))
     implementation(project(Modules.FEATURE_GUESS_GAME_UI))
     implementation(project(Modules.FEATURE_AUTHENTICATION_UI))
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_UI))
+    implementation(project(Modules.FEATURE_SEARCH_UI))
+    implementation(project(Modules.FEATURE_ONBOARDING_UI))
 
     implementation(project(Modules.REPOSITORY_TV_SHOW))
     implementation(project(Modules.REPOSITORY_LISTS))
@@ -202,24 +182,6 @@ dependencies {
     implementation(project(Modules.REPOSITORY_MEDIA))
     implementation(project(Modules.DATASOURCE_REMOTE_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
-
-
-    implementation(libs.androidx.room.runtime)
-    ksp(libs.room.compiler)
-
-
-    implementation(libs.ktor.client.android)
-    implementation(libs.ktor.client.core)
-    implementation(libs.ktor.client.logging)
-
-    //retrofit
-    implementation(libs.retrofit)
-    implementation(libs.okhttp)
-    implementation(libs.logging.interceptor)
-    implementation(libs.retrofit.converter)
-
-    // Kotlinx Serialization
-    implementation(libs.kotlinx.serialization.json)
 
 }
 

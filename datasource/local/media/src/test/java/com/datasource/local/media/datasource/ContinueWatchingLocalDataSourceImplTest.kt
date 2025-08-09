@@ -25,7 +25,7 @@ class ContinueWatchingLocalDataSourceImplTest {
     fun `getAllMedia should return media list when getAllMedia in HomeMediaDao called successfully`() =
         runTest {
             // Given
-            coEvery { mediaDao.getAllMedia() } returns listOf(sampleMedia)
+            coEvery { mediaDao.getMediaContinueWatching() } returns listOf(sampleMedia)
             // When
             val result = continueWatchingLocalDataSource.getAllMedia()
             // Then
@@ -36,7 +36,7 @@ class ContinueWatchingLocalDataSourceImplTest {
     fun `getAllMedia should return empty list when HomeMediaDao returns nothing`() =
         runTest {
             // Given
-            coEvery { mediaDao.getAllMedia() } returns emptyList()
+            coEvery { mediaDao.getMediaContinueWatching() } returns emptyList()
             // When
             val result = continueWatchingLocalDataSource.getAllMedia()
             // Then
@@ -47,11 +47,11 @@ class ContinueWatchingLocalDataSourceImplTest {
     fun `addMedia should add media when addMedia in HomeMediaDao called successfully`() =
         runTest {
             // Given
-            coEvery { mediaDao.addMedia(any()) } returns Unit
+            coEvery { mediaDao.addMediaContinueWatching(any()) } returns Unit
             // When
             continueWatchingLocalDataSource.addMedia(sampleMedia)
             // Then
-            coVerify { mediaDao.addMedia(sampleMedia) }
+            coVerify { mediaDao.addMediaContinueWatching(sampleMedia) }
         }
 
     private companion object {

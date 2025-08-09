@@ -12,7 +12,7 @@ android {
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
-        minSdk = Configurations.MIN_SDK_26
+        minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -41,36 +41,18 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.androidx.activity.compose)
+    implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.ui)
-    implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
-    implementation(libs.androidx.ui.tooling.preview)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_USER))
+
     implementation(project(Modules.FEATURE_ONBOARDING_API))
-    implementation(libs.accompanist.pager.v0340)
-    //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.pager)
+
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
     implementation(project(Modules.FEATURE_HOME_API))
     implementation(project(Modules.FEATURE_HOME_UI))
     implementation(project(Modules.FEATURE_AUTHENTICATION_API))
-
-    // Kotlinx Serialization
-    implementation(libs.kotlinx.serialization.json)
+    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(project(Modules.DOMAIN_USER))
 }

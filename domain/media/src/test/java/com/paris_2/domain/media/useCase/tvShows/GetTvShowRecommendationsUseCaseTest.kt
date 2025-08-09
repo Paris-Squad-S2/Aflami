@@ -1,15 +1,15 @@
 package com.paris_2.domain.media.useCase.tvShows
 
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.TvShowRepository
+import com.paris_2.domain.media.testUtils.fakeTvShowsSimilar
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
-import com.paris_2.domain.media.testUtils.fakeTvShowsSimilar
 
 class GetTvShowRecommendationsUseCaseTest {
 
@@ -58,7 +58,7 @@ class GetTvShowRecommendationsUseCaseTest {
         val result = getTvShowRecommendationsUseCase(tvShowId, page)
 
         // Then
-        assertTrue(result.isEmpty())
+        assertThat(result).isEmpty()
     }
 
     @Test

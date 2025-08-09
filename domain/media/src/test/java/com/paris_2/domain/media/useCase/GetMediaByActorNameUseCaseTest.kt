@@ -7,10 +7,9 @@ import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import com.google.common.truth.Truth.assertThat
 
 class GetMediaByActorNameUseCaseTest {
     private lateinit var searchMediaRepository: SearchMediaRepository
@@ -24,7 +23,6 @@ class GetMediaByActorNameUseCaseTest {
 
     @Test
     fun `should return only movies for given actor`() = runTest {
-
         // Given
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
@@ -32,12 +30,11 @@ class GetMediaByActorNameUseCaseTest {
         val result = getMediaByActorNameUseCase(actorName, page)
 
         // Then
-        assertEquals(3, result.size)
+        assertThat(result).hasSize(3)
     }
 
     @Test
     fun `should return correct movie titles for given actor`() = runTest {
-
         // Given
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
@@ -45,12 +42,12 @@ class GetMediaByActorNameUseCaseTest {
         val result = getMediaByActorNameUseCase(actorName, page)
 
         // Then
-        assertEquals(listOf("Movie 1", "Movie 2", "Movie 3"), result.map { it.title })
+        assertThat(result.map { it.title })
+            .containsExactly("Movie 1", "Movie 2", "Movie 3")
     }
 
     @Test
     fun `should verify repository is called exactly once for given actor`() = runTest {
-
         // Given
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns mediaList
 
@@ -63,21 +60,18 @@ class GetMediaByActorNameUseCaseTest {
 
     @Test
     fun `should return empty list when repository returns no media for given actor`() = runTest {
-
         // Given
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns emptyList()
 
         // When
-        val result = getMediaByActorNameUseCase.invoke(actorName, page)
+        val result = getMediaByActorNameUseCase(actorName, page)
 
         // Then
-        assertTrue(result.isEmpty())
-
+        assertThat(result).isEmpty()
     }
 
     @Test
     fun `should verify repository is called when no media returned`() = runTest {
-
         // Given
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns emptyList()
 
@@ -90,7 +84,6 @@ class GetMediaByActorNameUseCaseTest {
 
     @Test
     fun `should return empty list when only TV shows are returned`() = runTest {
-
         // Given
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns tvOnlyMedia
 
@@ -98,12 +91,11 @@ class GetMediaByActorNameUseCaseTest {
         val result = getMediaByActorNameUseCase(actorName, page)
 
         // Then
-        assertTrue(result.isEmpty())
+        assertThat(result).isEmpty()
     }
 
     @Test
     fun `should verify repository is called when only TV shows are returned`() = runTest {
-
         // Given
         coEvery { searchMediaRepository.getMediaByActor(actorName, page) } returns tvOnlyMedia
 

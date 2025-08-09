@@ -20,8 +20,6 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -57,6 +55,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.components.CreateListDialog
 import com.paris_2.aflami.designsystem.components.AppSnackBar
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.PlaceholderView
@@ -76,7 +75,7 @@ fun MovieDetailsScreen(
     )
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalSharedTransitionApi::class)
+@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
@@ -284,7 +283,7 @@ fun MovieDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_recommendations),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -338,7 +337,7 @@ fun MovieDetailsScreenContent(
                                                     .navigationBarsPadding(),
                                                 contentAlignment = Alignment.Center
                                             ) {
-                                                Text(
+                                                AppText(
                                                     text = stringResource(R.string.there_is_no_reviews),
                                                     style = Theme.textStyle.label.large,
                                                     color = Theme.colors.text.body.copy(alpha = 0.6f)
@@ -365,7 +364,7 @@ fun MovieDetailsScreenContent(
                                                 .navigationBarsPadding(),
                                             contentAlignment = Alignment.Center
                                         ) {
-                                            Text(
+                                            AppText(
                                                 text = stringResource(R.string.there_is_no_gallery),
                                                 style = Theme.textStyle.label.large,
                                                 color = Theme.colors.text.body.copy(alpha = 0.6f)

@@ -13,6 +13,6 @@ class CountriesLocalDataSourceImpl(
     }
 
     override suspend fun getCountries(): List<CountryEntity> {
-        return dao.getAllCountries()
+        return dao.getCountries()
     }
 }
