@@ -80,6 +80,7 @@ dependencies {
     implementation(project(Modules.FEATURE_SEARCH_API))
     implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
     implementation(project(Modules.SAFE_IMAGE_VIEWER))
+    implementation(project(Modules.DOMAIN_USER))
 
     //test
     testImplementation(libs.junit)

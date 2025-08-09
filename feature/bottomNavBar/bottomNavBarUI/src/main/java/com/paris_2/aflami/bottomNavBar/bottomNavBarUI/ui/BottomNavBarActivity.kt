@@ -14,6 +14,7 @@ import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 import javax.inject.Inject
@@ -39,11 +40,14 @@ class BottomNavBarActivity : ComponentActivity() {
     @Inject
     lateinit var profileFeature: ProfileFeatureAPI
 
+    @Inject
+    lateinit var settingsUseCase: SettingsUseCase
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            AflamiTheme {
+            AflamiTheme(settingsUseCase.isDarkTheme()) {
                 BottomNavBarScaffold(
                     navigator = bottomNavBarNavigator,
                     homeFeature = homeFeature,

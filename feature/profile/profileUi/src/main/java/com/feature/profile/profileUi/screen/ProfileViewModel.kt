@@ -128,10 +128,6 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
-    fun isDarkTheme(): Boolean {
-        return settingsUseCase.isDarkTheme()
-    }
-
 
     override fun onLanguageApplyClicked(language: Language) {
         viewModelScope.launch {

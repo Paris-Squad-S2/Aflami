@@ -11,12 +11,11 @@ import com.feature.profile.profileUi.screen.ProfileScreen
 import com.feature.profile.profileUi.screen.ProfileViewModel
 import com.feature.profile.profileUi.screen.myRating.MyRatingScreen
 import com.feature.profile.profileUi.screen.watchHistory.WatchHistoryScreen
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
 
 
 @Composable
 fun ProfileNavGraph(
-    profileViewModel: ProfileViewModel = hiltViewModel()
+    profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val navController = rememberNavController()
 
@@ -32,14 +31,13 @@ fun ProfileNavGraph(
         }
     }
 
-    AflamiTheme(profileViewModel.isDarkTheme()) {
-        NavHost(
-            navController = navController,
-            startDestination = navigator.startGraph
-        ) {
-            buildProfileNavGraph()
-        }
+    NavHost(
+        navController = navController,
+        startDestination = navigator.startGraph
+    ) {
+        buildProfileNavGraph()
     }
+
 }
 
 fun NavGraphBuilder.buildProfileNavGraph() {
