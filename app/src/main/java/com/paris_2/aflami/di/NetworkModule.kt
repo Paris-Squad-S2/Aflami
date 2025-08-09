@@ -2,7 +2,6 @@ package com.paris_2.aflami.di
 
 import android.content.Context
 import com.paris_2.datasource.remote.user.UserAuthInterceptor
-import com.paris_2.aflami.AuthInterceptor
 import com.paris_2.aflami.BuildConfig
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import dagger.Module
