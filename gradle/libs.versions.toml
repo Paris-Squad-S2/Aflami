@@ -163,6 +163,11 @@ firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "fireb
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
 
 [bundles]
+
+android = [
+    "androidx-core-ktx"
+]
+
 compose = [
     "androidx-core-ktx",
     "androidx-appcompat",
@@ -240,4 +245,12 @@ coil = [
 datastore = [
     "androidx-datastore-preferences",
     "androidx-datastore-core-android"
+]
+
+blur = [
+    "sifr-shaded"
+]
+
+shimmer = [
+    "shimmer"
 ]
