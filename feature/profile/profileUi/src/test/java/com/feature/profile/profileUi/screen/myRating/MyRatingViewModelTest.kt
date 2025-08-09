@@ -18,9 +18,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.*
 
 @ExperimentalCoroutinesApi
 class MyRatingViewModelTest {
@@ -50,8 +50,7 @@ class MyRatingViewModelTest {
             getAccountIdUseCase = getAccountIdUseCase,
             deleteMovieRatingUseCase = deleteMovieRatingUseCase,
             deleteTvShowRatingUseCase = deleteTvShowRatingUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            navigator = profileNavigator
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
         )
     }
 
@@ -138,6 +137,10 @@ class MyRatingViewModelTest {
 
     @Test
     fun `onBackClick should call navigateUp`() = runTest {
+        val field = viewModel::class.java.superclass!!.getDeclaredField("navigator")
+        field.isAccessible = true
+        field.set(viewModel, profileNavigator)
+
         viewModel.onBackClick()
 
         coVerify { profileNavigator.navigateUp() }

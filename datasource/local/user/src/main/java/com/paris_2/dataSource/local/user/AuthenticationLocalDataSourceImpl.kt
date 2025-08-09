@@ -7,9 +7,10 @@ import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSourc
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class AuthenticationLocalDataSourceImpl(
-    @ApplicationContext context: Context
+    @ApplicationContext context: Context,
 ) : AuthenticationLocalDataSource {
-    private val prefs: SharedPreferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+    private val prefs: SharedPreferences =
+        context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
 
     override fun saveSessionId(sessionId: String) {
         prefs.edit { putString(KEY_SESSION_ID, sessionId) }
@@ -18,6 +19,12 @@ class AuthenticationLocalDataSourceImpl(
     override fun getSessionId(): String? {
         return prefs.getString(KEY_SESSION_ID, null)
     }
+
+    override fun deleteSessionId(): Boolean {
+        prefs.edit { putString(KEY_SESSION_ID, null) }
+        return getSessionId().isNullOrBlank()
+    }
+
     override fun isLoggedIn(): Boolean {
         val session = getSessionId()
         val isGuest = prefs.getBoolean(KEY_IS_GUEST, false)
@@ -35,18 +42,19 @@ class AuthenticationLocalDataSourceImpl(
     override fun hasAnySession(): Boolean {
         return !getSessionId().isNullOrBlank()
     }
-    override fun setOnboardingCompleted() {
-        prefs.edit { putBoolean(KEY_ONBOARDING_COMPLETED, true) }
+
+    override fun saveUserName(username: String) {
+        prefs.edit { putString(KEY_USERNAME, username) }
     }
 
-    override fun isOnboardingCompleted(): Boolean {
-        return prefs.getBoolean(KEY_ONBOARDING_COMPLETED, false)
+    override fun getUserName(): String {
+        return prefs.getString(KEY_USERNAME, "") ?: ""
     }
 
     companion object {
         private const val PREFS_NAME = "auth_prefs"
         private const val KEY_SESSION_ID = "session_id"
         private const val KEY_IS_GUEST = "is_guest"
-        private const val KEY_ONBOARDING_COMPLETED = "onboarding_completed"
+        private const val KEY_USERNAME = "user_name"
     }
 }

@@ -5,20 +5,19 @@ import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.NoCategoriesFoundException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.repository.CategoriesRepository
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.mapper.search.toCategories
 import com.repository.media.util.NetworkConnectionChecker
 import kotlinx.coroutines.flow.first
-import java.util.Locale
 
 class CategoriesRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val genresRemoteDataSource: GenresRemoteDataSource,
-    private val languageLocalDataSourceRepository: LanguageLocalDataSourceRepository
+    private val settingLocalDataSource: SettingLocalDataSource
 ) : CategoriesRepository {
     override suspend fun getAllCategories(): List<Category> {
-        val language = languageLocalDataSourceRepository.getLanguage().first()
+        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoCategoriesFoundException()) {
             val remoteGenres = genresRemoteDataSource.getMoviesGenres(language).genreDto
             remoteGenres?.toCategories() ?: emptyList()

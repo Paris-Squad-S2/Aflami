@@ -14,6 +14,11 @@ kotlin {
 
 dependencies{
     testImplementation(libs.bundles.test)
+    testImplementation(kotlin("test"))
+    testImplementation(libs.mockk)
+    testImplementation(libs.truth)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.jupiter.junit.jupiter)
     implementation(libs.kotlinx.coroutines.core)
 }
 tasks.test {

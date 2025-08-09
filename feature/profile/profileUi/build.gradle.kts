@@ -64,3 +64,6 @@ dependencies {
     implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.DOMAIN_USER))
 }
+tasks.withType<Test> {
+    useJUnitPlatform()
+}

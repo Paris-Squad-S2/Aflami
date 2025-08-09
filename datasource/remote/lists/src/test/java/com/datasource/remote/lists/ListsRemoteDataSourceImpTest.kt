@@ -1,21 +1,21 @@
 package com.datasource.remote.lists
 
 import com.datasource.remote.lists.service.ListApiService
+import com.google.common.truth.Truth.assertThat
 import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.model.dto.ListDetailsDto
 import com.repository.lists.model.dto.ListsDto
 import com.repository.lists.model.dto.ResponseDto
-import com.google.common.truth.Truth.assertThat
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.MockK
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Before
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 import retrofit2.HttpException
 import java.io.IOException
-import kotlin.test.Test
 import kotlin.test.assertFailsWith
 
 class ListsRemoteDataSourceImpTest {
@@ -25,7 +25,7 @@ class ListsRemoteDataSourceImpTest {
 
     private lateinit var listsRemoteDataSource: ListsRemoteDataSourceImp
 
-    @Before
+    @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
         listsRemoteDataSource = ListsRemoteDataSourceImp(listApiService)

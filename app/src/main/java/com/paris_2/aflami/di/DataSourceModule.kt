@@ -23,11 +23,11 @@ import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
 import com.datasource.remote.lists.ListsRemoteDataSourceImp
 import com.datasource.remote.lists.service.ListApiService
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
-import com.paris_2.dataSource.local.user.LanguageLocalDataSourceRepositoryImp
+import com.paris_2.dataSource.local.user.SettingLocalDataSourceImp
 import com.paris_2.datasource.remote.user.UserApi
 import com.paris_2.datasource.remote.user.UserRemoteDataSourceImpl
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
-import com.paris_2.repository.user.dataSource.local.LanguageLocalDataSourceRepository
+import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
@@ -118,7 +118,7 @@ object DataSourceModule {
     @Singleton
     fun provideLanguageLocalDataSource(
        @ApplicationContext context: Context,
-    ): LanguageLocalDataSourceRepository = LanguageLocalDataSourceRepositoryImp(context)
+    ): SettingLocalDataSource = SettingLocalDataSourceImp(context)
 
     @Provides
     @Singleton

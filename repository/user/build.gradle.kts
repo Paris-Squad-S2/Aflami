@@ -40,7 +40,19 @@ dependencies {
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
+    // Junit 5
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
+    // test
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
     testImplementation(libs.bundles.test)
 
     implementation(project(Modules.DOMAIN_USER))
+}
+tasks.withType<Test> {
+    useJUnitPlatform()
 }

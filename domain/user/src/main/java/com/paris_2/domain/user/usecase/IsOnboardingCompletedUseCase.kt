@@ -1,10 +1,10 @@
 package com.paris_2.domain.user.usecase
 
-import com.paris_2.domain.user.repository.UserRepository
+import com.paris_2.domain.user.repository.SettingRepository
 
 class IsOnboardingCompletedUseCase(
-    private val authenticationRepository: UserRepository,
+    private val settingRepository: SettingRepository,
 ) {
     operator fun invoke(): Boolean =
-        authenticationRepository.isOnboardingCompleted()
+        settingRepository.isOnboardingCompleted()
 }

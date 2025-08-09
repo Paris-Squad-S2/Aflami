@@ -38,6 +38,12 @@ dependencies {
     implementation(libs.bundles.serialization)
 
     testImplementation(libs.bundles.test)
+    //test
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.truth)
+    testImplementation(kotlin("test"))
 
     implementation(libs.bundles.retrofit)
 
@@ -46,7 +52,9 @@ dependencies {
 
     implementation(project(Modules.REPOSITORY_USER))
 }
-
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
 kover {
