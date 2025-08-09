@@ -262,3 +262,9 @@ webview = [
 pager = [
     "accompanist-pager-v0340",
 ]
+
+firebase = [
+    "firebase-analytics",
+    "firebase-crashlytics",
+    "firebase-perf"
+]
