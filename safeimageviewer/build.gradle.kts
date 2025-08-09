@@ -50,17 +50,12 @@ android {
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-
     // Compose dependencies
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.bundles.coil)
 
-    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3) //TODO: Remove it
     implementation(libs.androidx.lifecycle.viewmodel.compose)
 
     // TensorFlow Lite - core only (minimal dependencies)
