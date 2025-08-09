@@ -19,7 +19,7 @@ fun KnownForDto.toMedia(): Media? {
                 "tv" -> MediaType.TVSHOW
                 else -> return null
             },
-            categoryIds = this.genreIds ?: emptyList(),
+            genres = this.genreIds?.map { genreFromId(it) } ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage
         )
@@ -42,7 +42,7 @@ fun ResultDto.toMedia(): Media? {
                 "tv" -> MediaType.TVSHOW
                 else -> MediaType.MOVIE
             },
-            categoryIds = this.genreIds ?: emptyList(),
+            genres = this.genreIds?.map { genreFromId(it) } ?: emptyList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),
             rating = this.voteAverage
         )
