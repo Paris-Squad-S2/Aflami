@@ -15,9 +15,6 @@ android {
     defaultConfig {
         minSdk = Configurations.MIN_SDK_26
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
-        buildConfigField("String", "API_TOKEN", "\"${getApiToken()}\"")
-
     }
 
     buildTypes {

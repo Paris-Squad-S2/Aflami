@@ -16,7 +16,6 @@ data class MovieEntity(
     val posterPath: String,
     val genres: List<GenreEntity>,
     val releaseDate: String,
-    val movieCacheDate: LocalDateTime = getCurrentDate(),
     val runtime: Int,
     val country: String,
     val productionCompanies: List<ProductionCompanyEntity>,

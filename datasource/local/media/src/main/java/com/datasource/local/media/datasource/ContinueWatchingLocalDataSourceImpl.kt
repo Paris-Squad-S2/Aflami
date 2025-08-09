@@ -9,10 +9,10 @@ class ContinueWatchingLocalDataSourceImpl (
 ) : ContinueWatchingLocalDataSource {
 
     override suspend fun addMedia(media: MediaEntity) {
-        continueWatchingDao.addMedia(media)
+        continueWatchingDao.addMediaContinueWatching(media)
     }
 
     override suspend fun getAllMedia(): List<MediaEntity> {
-        return continueWatchingDao.getAllMedia()
+        return continueWatchingDao.getMediaContinueWatching()
     }
 }
