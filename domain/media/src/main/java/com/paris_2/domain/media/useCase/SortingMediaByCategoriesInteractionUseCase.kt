@@ -8,9 +8,9 @@ class SortingMediaByCategoriesInteractionUseCase(
 ) {
     suspend operator fun invoke(list: List<Media>): List<Media> {
         val interactions = genresInteractionRepository.getAllInteractions()
-        val interactionMap = interactions.associate { it.genreId to it.interactionCount }
+        val interactionMap = interactions.associate { it.genre to it.interactionCount }
         return list.sortedByDescending { media ->
-            media.categoryIds.sumOf { categoryId ->
+            media.genres.sumOf { categoryId ->
                 interactionMap[categoryId] ?: 0
             }
         }
