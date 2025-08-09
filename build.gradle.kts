@@ -107,7 +107,6 @@ val koverExcludedPackages = listOf(
     "**.ChangePasswordViewModel.*",
     "**.SettingsUseCase.*",
     "**.profileUi.screen.**",
-    "**.MovieDetailsRemoteDataSourceImplTest.*"
 
 )
 
