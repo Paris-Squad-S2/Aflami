@@ -83,6 +83,21 @@ fun TvShowDetailsScreenContent(
     val tvChips = TvShowChips.entries
     val activity = LocalActivity.current
     var currentRating by remember { mutableFloatStateOf(state.tvShowDetailsUiState.selectedRating) }
+    val scrollState = rememberLazyListState()
+    val isCollapsed by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+        }
+    }
+    val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
+
+    val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
+    val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
+
+    val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
+        mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
+    }
+    val reviewsList = state.tvShowDetailsUiState.reviews
 
     if (state.showRatingDialog) {
         RatingDialog(
@@ -99,14 +114,6 @@ fun TvShowDetailsScreenContent(
             }
         )
     }
-
-    val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
-    val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
-
-    val expandedStates = rememberSaveable(state.tvShowDetailsUiState.tvShowUi.seasons.size) {
-        mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
-    }
-    val reviewsList = state.tvShowDetailsUiState.reviews
 
     Box(
         modifier = Modifier
@@ -127,14 +134,6 @@ fun TvShowDetailsScreenContent(
                 }
 
                 else -> {
-                    val scrollState = rememberLazyListState()
-                    val isCollapsed by remember {
-                        derivedStateOf {
-                            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
-                        }
-                    }
-                    val mediaList =
-                        state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
 
                     SharedTransitionLayout {
                         AnimatedContent(
@@ -201,6 +200,7 @@ fun TvShowDetailsScreenContent(
                         selectedIndex.intValue.let { index ->
                             when (tvChips[index]) {
                                 TvShowChips.SEASONS -> {
+
                                     if (state.tvShowDetailsUiState.tvShowUi.seasons.isEmpty()) {
                                         item {
                                             Box(

@@ -55,9 +55,9 @@ import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.feature.home.homeUi.screen.home.components.SectionTitle
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
 import com.feature.home.homeUi.utils.shimmerable
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.IconItem
 import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -90,7 +90,11 @@ fun HomeScreenContent(
 
     val context = LocalContext.current
     val lazyState = rememberLazyListState()
-    val isScrolling by remember { derivedStateOf { lazyState.isScrollInProgress } }
+    val continueWatchingState = rememberLazyListState()
+    val topRatedState = rememberLazyListState()
+    val upComingState = rememberLazyListState()
+    val topRatedScrolling by remember { derivedStateOf { topRatedState.isScrollInProgress } }
+    val continueWatchingScrolling by remember { derivedStateOf { continueWatchingState.isScrollInProgress } }
     var isAllCategories by remember { mutableStateOf(state.homeUIState.isAllCategories) }
     val density = LocalDensity.current
     val maxScrollPx = with(density) { 56.dp.toPx() }
@@ -107,7 +111,8 @@ fun HomeScreenContent(
     Box(
         Modifier
             .fillMaxSize()
-    ) {
+    )
+    {
         LazyColumn(
             state = lazyState,
             modifier = Modifier.fillMaxSize(),
@@ -134,7 +139,7 @@ fun HomeScreenContent(
                         val intent = Intent(context, ContinueWatchingActivity::class.java)
                         context.startActivity(intent)
                     },
-                    isScrolling = isScrolling,
+                    isScrolling = continueWatchingScrolling,
                     modifier = Modifier.padding(top = 6.dp),
                     isShimmerEnabled = state.isContinueWatchingLoading
                 )
@@ -152,7 +157,7 @@ fun HomeScreenContent(
                         val intent = Intent(context, TopRatingActivity::class.java)
                         context.startActivity(intent)
                     },
-                    isScrolling = isScrolling,
+                    isScrolling = topRatedScrolling,
                     modifier = Modifier.padding(top = 24.dp),
                     isShimmerEnabled = state.isTopRatingLoading
                 )
@@ -184,6 +189,7 @@ fun HomeScreenContent(
                     shimmerModifier = Modifier.shimmerable(enabled = state.isCategoryLoading)
                 )
                 LazyRow(
+                    state = upComingState,
                     contentPadding = PaddingValues(start = 12.dp, end = 12.dp, bottom = 12.dp),
                 ) {
                     item {
