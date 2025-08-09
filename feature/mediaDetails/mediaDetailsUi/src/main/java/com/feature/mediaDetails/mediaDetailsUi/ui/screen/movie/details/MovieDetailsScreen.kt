@@ -54,11 +54,11 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.components.CreateListDialog
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.AppSnackBar
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.AppTopBar
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
@@ -84,6 +84,9 @@ fun MovieDetailsScreenContent(
     val movieChips = MovieChips.entries
     val activity = LocalActivity.current
     var currentRating by remember { mutableFloatStateOf(state.movieDetailsUiState.selectedRating) }
+    val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
+    val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
+    val mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
 
     LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
         if (state.showSnackBar && state.snackBarSuccess) {
@@ -123,10 +126,6 @@ fun MovieDetailsScreenContent(
             }
         )
     }
-
-    val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
-    val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
-
 
     Box(
         modifier = Modifier
@@ -188,8 +187,6 @@ fun MovieDetailsScreenContent(
                             scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
                         }
                     }
-                    val mediaList =
-                        state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
                     SharedTransitionLayout {
                         AnimatedContent(
                             targetState = isCollapsed,
