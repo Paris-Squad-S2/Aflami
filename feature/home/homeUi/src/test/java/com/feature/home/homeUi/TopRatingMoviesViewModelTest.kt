@@ -5,6 +5,7 @@ import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesViewModel
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -43,7 +44,7 @@ class TopRatingMoviesViewModelTest {
         rating = rating,
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        categories = listOf(1),
+        categories = listOf(Category.ACTION),
         type = when (type) {
             MediaTypeUi.MOVIE -> DomainMediaType.MOVIE
             MediaTypeUi.TVSHOW -> DomainMediaType.TVSHOW

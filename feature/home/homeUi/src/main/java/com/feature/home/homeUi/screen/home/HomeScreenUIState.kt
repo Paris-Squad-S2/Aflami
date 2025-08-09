@@ -35,10 +35,6 @@ data class MediaUiState(
     val rating: Double?,
 )
 
-data class CategoryUiState(
-    val id: Int,
-    val name: String,
-)
 
 
 enum class MediaTypeUi(val mediaName: String) {

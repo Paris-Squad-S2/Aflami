@@ -4,6 +4,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
+import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
@@ -203,7 +204,7 @@ class MyRatingViewModelTest {
             title = "Movie 1",
             type = MediaType.MOVIE,
             imageUri = "/abc.jpg",
-            categories = listOf(28),
+            categories = listOf(Category.ACTION),
             yearOfRelease = LocalDate(2022, 1, 1),
             rating = 8.5
         )

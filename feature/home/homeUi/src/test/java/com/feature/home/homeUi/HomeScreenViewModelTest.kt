@@ -1,6 +1,6 @@
 package com.feature.home.homeUi
 
-import com.feature.home.homeUi.screen.home.CategoryUiState
+import com.feature.home.homeUi.mapper.toGenerEnum
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
 import com.feature.home.homeUi.screen.home.MediaTypeUi.TVSHOW
@@ -51,9 +51,9 @@ class HomeScreenViewModelTest {
 
     private val categoryMap = mapOf("Action" to 28, "Comedy" to 35, "Drama" to 18)
     private val fakeCategories = listOf(
-        CategoryUiState(28, "Action"),
-        CategoryUiState(35, "Comedy"),
-        CategoryUiState(18, "Drama")
+        Category.ACTION,
+        Category.COMEDY,
+        Category.DRAMA
     )
     private val fakePopularList = listOf(
         MediaUiState(1, "img/1", "Popular 1", MOVIE, listOf("Action"), LocalDate(2022, 1, 1), 7.5),
@@ -99,7 +99,7 @@ class HomeScreenViewModelTest {
         Dispatchers.setMain(testDispatcher)
         coEvery { getPopularMediaUseCase() } returns fakePopularList.map { it.toMedia() }
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
-        coEvery { getMoviesCategoriesUseCase() } returns fakeCategories.map { it.toCategory() }
+        coEvery { getMoviesCategoriesUseCase() } returns fakeCategories
         coEvery { getUpcomingMediaUseCase() } returns fakeUpcomingList.map { it.toMedia() }
         coEvery { getWatchHistoryUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
         coEvery { addMediaToLocalDatabaseUseCase.invoke(any()) } returns Unit
@@ -123,14 +123,13 @@ class HomeScreenViewModelTest {
         rating = rating,
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        categories = categories.mapNotNull { categoryMap[it] },
+        categories = categories.map { it.toGenerEnum() },
         type = when (type) {
             MOVIE -> DomainMediaType.MOVIE
             TVSHOW -> DomainMediaType.TVSHOW
         }
     )
 
-    private fun CategoryUiState.toCategory() = Category(id, name)
 
     @Test
     fun `init loads popular, topRated, continueWatching, categories, and all categories`() =
@@ -162,7 +161,7 @@ class HomeScreenViewModelTest {
             mediaDetailsFeatureAPI,
         )
         runCurrent()
-        assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<CategoryUiState, Boolean>())
+        assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<Category, Boolean>())
     }
 
     @Test
@@ -300,7 +299,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected updates upcoming list, moodPickerMovie, and dialog flag`() = runTest {
-        val mood = listOf("Drama")
+        val mood = listOf(Category.DRAMA)
         val filteredMovies = fakeTopRatedList.filter { it.categories.contains("Drama") }
         coEvery { getTopRatingMediaUseCase.invoke() } returns filteredMovies.map { it.toMedia() }
         viewModel.emitState(
@@ -322,7 +321,7 @@ class HomeScreenViewModelTest {
         coEvery { getTopRatingMediaUseCase.invoke() } throws RuntimeException(
             "Mood error"
         )
-        viewModel.moodPickerSelected(listOf("Action"))
+        viewModel.moodPickerSelected(listOf(Category.ACTION))
         runCurrent()
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Mood error")
     }
@@ -331,7 +330,7 @@ class HomeScreenViewModelTest {
     fun `onCategorySelect toggles selection and filters upcoming list`() = runTest {
         val cat = fakeCategories.first()
         val filteredMovies = fakeUpcomingList.filter { it.categories.contains(cat.name) }
-        coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(cat.id)) } returns filteredMovies.map { it.toMedia() }
+        coEvery { filterUpComingMediaByCategoriesUseCase(listOf(cat)) } returns filteredMovies.map { it.toMedia() }
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
@@ -350,7 +349,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `onCategorySelect handles error`() = runTest {
         val cat = fakeCategories.first()
-        coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(cat.id)) } throws RuntimeException(
+        coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(cat)) } throws RuntimeException(
             "Category error"
         )
         viewModel.emitState(
