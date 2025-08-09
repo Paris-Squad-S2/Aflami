@@ -25,27 +25,12 @@ class MyRatingViewModelTest {
 
     private val getRatedMediaUseCase: FilterRatedMediaUseCase = mockk()
     private val getSessionIdUseCase: GetSessionIdUseCase = mockk()
-
     private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase = mockk()
-
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase = mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val profileNavigator: ProfileNavigator = mockk(relaxed = true)
     private lateinit var viewModel: MyRatingViewModel
-
-
-    private val fakeMediaList = listOf(
-        Media(
-            id = 1,
-            title = "Movie 1",
-            type = MediaType.MOVIE,
-            imageUri = "/abc.jpg",
-            categoryIds = listOf(28),
-            yearOfRelease = LocalDate(2022, 1, 1),
-            rating = 8.5
-        )
-    )
 
     @Before
     fun setUp() {
@@ -205,4 +190,16 @@ class MyRatingViewModelTest {
         coVerify { getRatedMediaUseCase(1, MediaType.MOVIE) }
     }
 
+
+    private val fakeMediaList = listOf(
+        Media(
+            id = 1,
+            title = "Movie 1",
+            type = MediaType.MOVIE,
+            imageUri = "/abc.jpg",
+            categoryIds = listOf(28),
+            yearOfRelease = LocalDate(2022, 1, 1),
+            rating = 8.5
+        )
+    )
 }
