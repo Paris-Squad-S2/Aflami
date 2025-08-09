@@ -1,8 +1,10 @@
 package com.repository.media.repository
 
+import com.paris_2.domain.media.entity.Genre
 import com.paris_2.domain.media.entity.GenreUserInteraction
 import com.paris_2.domain.media.repository.GenresInteractionRepository
 import com.repository.media.datasource.local.GenresInteractionDataSource
+import com.repository.media.mapper.search.genreToId
 import com.repository.media.mapper.search.toCategoryUserInteractionEntity
 import com.repository.media.mapper.search.toCategoryUserInteractionModel
 
@@ -12,8 +14,8 @@ class GenresInteractionRepositoryImpl(
     override suspend fun upsertInteraction(interaction: GenreUserInteraction) =
         dataSource.upsertGenresInteraction(interaction.toCategoryUserInteractionEntity())
 
-    override suspend fun getCategoryInteractions(genreId: Int): Int? =
-        dataSource.getCategoryByGenreId(genreId)
+    override suspend fun getCategoryInteractions(genreId: Genre): Int? =
+        dataSource.getCategoryByGenreId(genreToId(genreId))
 
     override suspend fun getAllInteractions(): List<GenreUserInteraction> =
         dataSource.getGenresInteractions().map { it.toCategoryUserInteractionModel() }
