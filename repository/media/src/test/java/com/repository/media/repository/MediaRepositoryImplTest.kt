@@ -1,11 +1,11 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
-import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
+import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
@@ -79,7 +79,7 @@ class MediaRepositoryImplTest {
     fun `getPopularMedia fetches remote data when local is empty`() = runTest {
 
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR,"en") } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR,"en") } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Remote Movie", releaseDate = "2023-01-01",
@@ -103,7 +103,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getPopularMedia handles partial remote data`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getMediaListByCategory(Category.POPULAR,"en") } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR,"en") } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Movie", releaseDate = "2023-01-01",
@@ -181,7 +181,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getTopRatingMedia fetches remote data when local is empty`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getMediaListByCategory(Category.TOP_RATED,"en") } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.TOP_RATED,"en") } returns emptyList()
 
         val movie = MovieDto(
             id = 3, title = "Top Movie", releaseDate = "2022-01-01",
@@ -264,7 +264,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getUpComingMedia fetches remote data when local is empty`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getMediaListByCategory(Category.UPCOMING,"en") } returns emptyList()
+        coEvery { homeLocal.getHomeMediaByCategory(Category.UPCOMING,"en") } returns emptyList()
 
         val upcomingMovie = MovieDto(
             id = 4, title = "Upcoming Movie", releaseDate = "2025-06-01",
