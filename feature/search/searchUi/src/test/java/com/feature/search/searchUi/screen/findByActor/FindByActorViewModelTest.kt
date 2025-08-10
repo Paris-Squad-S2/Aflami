@@ -1,7 +1,7 @@
 package com.feature.search.searchUi.screen.findByActor
 
-import MediaTypeUi
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.screen.utils.collectAllItems
@@ -114,8 +114,8 @@ class FindByActorViewModelTest {
                 id = 1,
                 imageUri = "",
                 title = "Cast Away",
-                type = MediaType.MOVIE,
-                categories = listOf(Category.ACTION, Category.ADVENTURE),
+                type = MediaType.Movie,
+                categories = listOf(Category.Action, Category.Adventure),
                 yearOfRelease = LocalDate(2023, 1, 1),
                 rating = 2.3,
             ),
@@ -123,8 +123,8 @@ class FindByActorViewModelTest {
                 id = 2,
                 imageUri = "",
                 title = "Forrest Gump",
-                type = MediaType.MOVIE,
-                categories = listOf(Category.ACTION, Category.ADVENTURE),
+                type = MediaType.Movie,
+                categories = listOf(Category.Action, Category.Adventure),
                 yearOfRelease = LocalDate(2023, 1, 1),
                 rating = 2.7,
             ),
@@ -190,8 +190,8 @@ class FindByActorViewModelTest {
             id = 42,
             imageUri = "",
             title = "Test Movie",
-            type = MediaTypeUi.MOVIE,
-            categories = listOf(Category.ACTION, Category.ADVENTURE),
+            type = MediaTypeUi.Movie,
+            categories = listOf(Category.Action, Category.Adventure),
             yearOfRelease = LocalDate(2023, 1, 1),
             rating = 4.5,
         )

@@ -1,7 +1,7 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import MediaTypeUi
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
@@ -22,6 +22,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
@@ -145,9 +146,9 @@ class WorldTourViewModelTest {
             id = 12,
             imageUri = "",
             title = "Test Movie",
-            type = MediaTypeUi.MOVIE,
-            categories = listOf(Category.ACTION, Category.ADVENTURE),
-            yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
+            type = MediaTypeUi.Movie,
+            categories = listOf(Category.Action, Category.Adventure),
+            yearOfRelease = LocalDate(2023, 1, 1),
             rating = 4.5
         )
         viewModel.onMediaCardClick(mediaUiState)

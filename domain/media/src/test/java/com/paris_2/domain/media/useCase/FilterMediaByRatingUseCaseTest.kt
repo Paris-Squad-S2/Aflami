@@ -56,10 +56,10 @@ class FilterMediaByRatingUseCaseTest {
     @Test
     fun `should filter out media with null rating`() = runTest {
         val mediaWithNullRating = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE, rating = null),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW, rating = 4.2),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE, rating = null),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW, rating = 3.5)
+            createMedia(id = 1, title = "Movie 1", type = MediaType.Movie, rating = null),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TvShow, rating = 4.2),
+            createMedia(id = 3, title = "Movie 2", type = MediaType.Movie, rating = null),
+            createMedia(id = 4, title = "Series 2", type = MediaType.TvShow, rating = 3.5)
         )
 
         val result = filterMediaByRatingUseCase(3.0f, mediaWithNullRating)
@@ -69,16 +69,16 @@ class FilterMediaByRatingUseCaseTest {
 
     companion object {
         private val mediaListAllAbove4 = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE, rating = 4.0),
-            createMedia(id = 2, title = "Movie 2", type = MediaType.MOVIE, rating = 4.8)
+            createMedia(id = 1, title = "Movie 1", type = MediaType.Movie, rating = 4.0),
+            createMedia(id = 2, title = "Movie 2", type = MediaType.Movie, rating = 4.8)
         )
 
         private val mixedRatingsMediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE, rating = 3.5),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW, rating = 4.2),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE, rating = 4.8),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW, rating = 2.5),
-            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE, rating = 5.0)
+            createMedia(id = 1, title = "Movie 1", type = MediaType.Movie, rating = 3.5),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TvShow, rating = 4.2),
+            createMedia(id = 3, title = "Movie 2", type = MediaType.Movie, rating = 4.8),
+            createMedia(id = 4, title = "Series 2", type = MediaType.TvShow, rating = 2.5),
+            createMedia(id = 5, title = "Movie 3", type = MediaType.Movie, rating = 5.0)
         )
 
         private val expectedFromMixed = listOf(

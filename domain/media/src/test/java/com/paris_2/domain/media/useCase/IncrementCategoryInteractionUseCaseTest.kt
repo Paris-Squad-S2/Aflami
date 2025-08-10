@@ -24,7 +24,7 @@ class IncrementCategoryInteractionUseCaseTest {
     fun `should call getCategoryInteractions when existing interaction is null`() =
         runTest {
             //Given
-            val genre = Category.HISTORY
+            val genre = Category.History
             coEvery { genresInteractionRepository.getCategoryInteractions(genre) } returns null
 
             //When
@@ -37,7 +37,7 @@ class IncrementCategoryInteractionUseCaseTest {
     @Test
     fun `should upsert new interaction when existing interaction is null`() = runTest {
         //Given
-        val genre = Category.HISTORY
+        val genre = Category.History
         coEvery { genresInteractionRepository.getCategoryInteractions(genre) } returns null
 
         //When
@@ -54,7 +54,7 @@ class IncrementCategoryInteractionUseCaseTest {
     @Test
     fun `should call getCategoryInteractions when interaction exists`() = runTest {
         //Given
-        val genre = Category.KIDS
+        val genre = Category.Kids
         coEvery { genresInteractionRepository.getCategoryInteractions(genre) } returns 5
 
         //When
@@ -68,7 +68,7 @@ class IncrementCategoryInteractionUseCaseTest {
     @Test
     fun `should upsert incremented interaction when existing count is present`() = runTest {
         //Given
-        val genre = Category.KIDS
+        val genre = Category.Kids
         coEvery { genresInteractionRepository.getCategoryInteractions(genre) } returns 5
 
         //When
@@ -85,18 +85,18 @@ class IncrementCategoryInteractionUseCaseTest {
     @Test
     fun `should increment interactions for multiple genres independently`() = runTest {
         //Given
-        val genres = listOf(Category.ACTION, Category.ADVENTURE, Category.ANIMATION)
-        coEvery { genresInteractionRepository.getCategoryInteractions(Category.ACTION) } returns 2
-        coEvery { genresInteractionRepository.getCategoryInteractions(Category.ADVENTURE) } returns null
-        coEvery { genresInteractionRepository.getCategoryInteractions(Category.ANIMATION) } returns 7
+        val genres = listOf(Category.Action, Category.Adventure, Category.Animation)
+        coEvery { genresInteractionRepository.getCategoryInteractions(Category.Action) } returns 2
+        coEvery { genresInteractionRepository.getCategoryInteractions(Category.Adventure) } returns null
+        coEvery { genresInteractionRepository.getCategoryInteractions(Category.Animation) } returns 7
 
         //When
         incrementUseCase(genres)
 
         //Then
-        coVerify { genresInteractionRepository.getCategoryInteractions(Category.ACTION) }
-        coVerify { genresInteractionRepository.getCategoryInteractions(Category.ADVENTURE) }
-        coVerify { genresInteractionRepository.getCategoryInteractions(Category.ANIMATION) }
+        coVerify { genresInteractionRepository.getCategoryInteractions(Category.Action) }
+        coVerify { genresInteractionRepository.getCategoryInteractions(Category.Adventure) }
+        coVerify { genresInteractionRepository.getCategoryInteractions(Category.Animation) }
 
 
     }
@@ -104,15 +104,15 @@ class IncrementCategoryInteractionUseCaseTest {
     @Test
     fun `should upsert incremented interaction for genre 1`() = runTest {
         //Given
-        coEvery { genresInteractionRepository.getCategoryInteractions(Category.ACTION) } returns 2
+        coEvery { genresInteractionRepository.getCategoryInteractions(Category.Action) } returns 2
 
         //When
-        incrementUseCase(listOf(Category.ACTION))
+        incrementUseCase(listOf(Category.Action))
 
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(category = Category.ACTION, interactionCount = 3)
+                GenreUserInteraction(category = Category.Action, interactionCount = 3)
             )
         }
     }
@@ -120,15 +120,15 @@ class IncrementCategoryInteractionUseCaseTest {
     @Test
     fun `should upsert interaction for genre 2 when no existing interaction`() = runTest {
         //Given
-        coEvery { genresInteractionRepository.getCategoryInteractions(Category.ADVENTURE) } returns null
+        coEvery { genresInteractionRepository.getCategoryInteractions(Category.Adventure) } returns null
 
         //When
-        incrementUseCase(listOf(Category.ADVENTURE))
+        incrementUseCase(listOf(Category.Adventure))
 
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(category = Category.ADVENTURE, interactionCount = 1)
+                GenreUserInteraction(category = Category.Adventure, interactionCount = 1)
             )
         }
     }
@@ -136,15 +136,15 @@ class IncrementCategoryInteractionUseCaseTest {
     @Test
     fun `should upsert incremented interaction for genre 3`() = runTest {
         //Given
-        coEvery { genresInteractionRepository.getCategoryInteractions(Category.ANIMATION) } returns 7
+        coEvery { genresInteractionRepository.getCategoryInteractions(Category.Animation) } returns 7
 
         //When
-        incrementUseCase(listOf(Category.ANIMATION))
+        incrementUseCase(listOf(Category.Animation))
 
         //Then
         coVerify {
             genresInteractionRepository.upsertInteraction(
-                GenreUserInteraction(category = Category.ANIMATION, interactionCount = 8)
+                GenreUserInteraction(category = Category.Animation, interactionCount = 8)
             )
         }
     }
