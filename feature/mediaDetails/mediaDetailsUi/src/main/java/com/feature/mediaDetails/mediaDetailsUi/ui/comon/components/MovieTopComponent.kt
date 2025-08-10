@@ -80,8 +80,8 @@ fun MovieTopComponentDetails(
                     imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                     rating = state.movieDetailsUiState.movie.rating,
                     onPlayClick = {
-                        if (!(site.isEmpty() || key.isEmpty())) {
-                            activity?.openYoutubeOrBrowser(key)
+                        if (site.isNotEmpty() && key.isNotEmpty()) {
+                            movieDetailsScreenInteractionListener.playYoutubeVideo(key)
                         }
                     },
                     hasVideo = !(site.isEmpty() || key.isEmpty()),
