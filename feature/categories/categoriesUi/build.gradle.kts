@@ -39,7 +39,7 @@ android {
 dependencies {
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(project(Modules.FEATURE_CATEGORIES_API))
-    implementation(project(Modules.DESIGN_SYSTEM))
+    implementation(projects.feature.categories.categoriesApi)
+    implementation(projects.designsystem)
 
 }

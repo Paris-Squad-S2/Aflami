@@ -51,7 +51,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(libs.bundles.test)
 
-    implementation(project(Modules.DOMAIN_USER))
+    implementation(projects.domain.user)
 }
 tasks.withType<Test> {
     useJUnitPlatform()

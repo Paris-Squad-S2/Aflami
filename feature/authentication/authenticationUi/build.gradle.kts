@@ -56,8 +56,8 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
 
-    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.FEATURE_BOTTOM_NAV_BAR_API))
-    implementation(project(Modules.DOMAIN_USER))
+    implementation(projects.feature.authentication.authenticationApi)
+    implementation(projects.designsystem)
+    implementation(projects.feature.bottomNavBar.bottomNavBarApi)
+    implementation(projects.domain.user)
 }
