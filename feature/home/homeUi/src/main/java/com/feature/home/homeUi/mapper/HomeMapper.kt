@@ -23,8 +23,8 @@ fun Media.toSliderMedia(): SliderMedia{
 }
 fun MediaType.toSliderMediaTypeUi(): SliderMediaTypeUi{
     return when(this){
-        MediaType.TVSHOW  -> SliderMediaTypeUi.TvShow
-        MediaType.MOVIE -> SliderMediaTypeUi.Movie
+        MediaType.TvShow  -> SliderMediaTypeUi.TvShow
+        MediaType.Movie -> SliderMediaTypeUi.Movie
     }
 }
 
@@ -42,8 +42,8 @@ fun SliderMedia.toMedia(): Media {
 
 fun SliderMediaTypeUi.toMediaType(): MediaType {
     return when (this) {
-        SliderMediaTypeUi.Movie -> MediaType.MOVIE
-        SliderMediaTypeUi.TvShow -> MediaType.TVSHOW
+        SliderMediaTypeUi.Movie -> MediaType.Movie
+        SliderMediaTypeUi.TvShow -> MediaType.TvShow
     }
 }
 
@@ -76,14 +76,14 @@ fun MediaUiState.toMedia():Media{
 
 fun MediaType.toUiState(): MediaTypeUi{
     return when(this){
-        MediaType.TVSHOW -> MediaTypeUi.TVSHOW
-        MediaType.MOVIE -> MediaTypeUi.MOVIE
+        MediaType.TvShow -> MediaTypeUi.TVSHOW
+        MediaType.Movie -> MediaTypeUi.MOVIE
     }
 }
 fun MediaTypeUi.toMediaType(): MediaType{
     return when(this){
-        MediaTypeUi.TVSHOW -> MediaType.TVSHOW
-        MediaTypeUi.MOVIE -> MediaType.MOVIE
+        MediaTypeUi.TVSHOW -> MediaType.TvShow
+        MediaTypeUi.MOVIE -> MediaType.Movie
     }
 }
 
