@@ -1,9 +1,9 @@
 package com.feature.search.searchUi.mapper
 
-import MediaTypeUi
-import MediaUiState
-import SearchHistoryUiState
-import SearchTypeUi
+import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.feature.search.searchUi.screen.search.MediaUiState
+import com.feature.search.searchUi.screen.search.SearchHistoryUiState
+import com.feature.search.searchUi.screen.search.SearchTypeUi
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.entity.SearchHistoryModel
@@ -26,8 +26,8 @@ fun MediaUiState.toDomainModel(): Media {
 
 fun MediaTypeUi.toDomainModel(): MediaType {
     return when (this) {
-        MediaTypeUi.TVSHOW -> MediaType.TVSHOW
-        MediaTypeUi.MOVIE -> MediaType.MOVIE
+        MediaTypeUi.TvShow -> MediaType.TvShow
+        MediaTypeUi.Movie -> MediaType.Movie
     }
 }
 
@@ -47,8 +47,8 @@ fun Media.toUi(): MediaUiState {
 
 fun MediaType.toUi(): MediaTypeUi {
     return when (this) {
-        MediaType.TVSHOW -> MediaTypeUi.TVSHOW
-        MediaType.MOVIE -> MediaTypeUi.MOVIE
+        MediaType.TvShow -> MediaTypeUi.TvShow
+        MediaType.Movie -> MediaTypeUi.Movie
     }
 }
 

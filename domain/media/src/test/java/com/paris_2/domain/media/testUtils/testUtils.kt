@@ -63,7 +63,7 @@ fun media(id: Int, title: String, categories: List<Category>) = Media(
     id = id,
     imageUri = defaultImage,
     title = title,
-    type = MediaType.MOVIE,
+    type = MediaType.Movie,
     categories = categories,
     yearOfRelease = sampleDate,
     rating = 7.0
@@ -74,16 +74,16 @@ fun assertIds(actual: List<Media>, vararg expectedIds: Int) {
 }
 
 val fakeCategories = listOf(
-    Category.DRAMA,
-    Category.COMEDY,
-    Category.ACTION,
-    Category.CRIME,
-    Category.FANTASY,
-    Category.HORROR,
-    Category.SCIFI_FANTASY,
-    Category.ROMANCE,
-    Category.THRILLER,
-    Category.MYSTERY
+    Category.Drama,
+    Category.Comedy,
+    Category.Action,
+    Category.Crime,
+    Category.Fantasy,
+    Category.Horror,
+    Category.ScifiFantasy,
+    Category.Romance,
+    Category.Thriller,
+    Category.Mystery
 )
 
 

@@ -51,7 +51,7 @@ data class TvShowUi(
     override val posterUrl: String,
     override val rating: Float?,
     override val title: String,
-    val genres: List<String>,
+    val genres: List<Int>,
     override val releaseDate: String,
     val runtime: String,
     val country: String,

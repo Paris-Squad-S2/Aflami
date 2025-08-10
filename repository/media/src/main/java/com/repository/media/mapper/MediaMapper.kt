@@ -55,8 +55,8 @@ fun MediaEntity.toDomain(): Media {
 }
 
 fun MediaTypeEntity.toDomain(): MediaType = when (this) {
-    MediaTypeEntity.MOVIE -> MediaType.MOVIE
-    MediaTypeEntity.TV_SHOW -> MediaType.TVSHOW
+    MediaTypeEntity.Movie -> MediaType.Movie
+    MediaTypeEntity.TvShow -> MediaType.TvShow
 }
 
 fun HomeMediaEntity.toDomain(): Media? {
@@ -98,8 +98,8 @@ fun Media.toEntity(): MediaEntity = MediaEntity(
 )
 
 fun MediaType.toEntity(): MediaTypeEntity = when (this) {
-    MediaType.MOVIE -> MediaTypeEntity.MOVIE
-    MediaType.TVSHOW -> MediaTypeEntity.TV_SHOW
+    MediaType.Movie -> MediaTypeEntity.Movie
+    MediaType.TvShow -> MediaTypeEntity.TvShow
 }
 
 fun MovieResult.toDomain(type: MediaType): Media? {

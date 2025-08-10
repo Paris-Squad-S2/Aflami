@@ -70,7 +70,7 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
         // When
         val result = getMoviesOnlyByCountryNameUseCase(countryName, page)
 
-        assertThat(result.all { it.type == MediaType.MOVIE }).isTrue()
+        assertThat(result.all { it.type == MediaType.Movie }).isTrue()
     }
 
     @Test
@@ -268,18 +268,18 @@ class GetMoviesOnlyByCountryNameUseCaseTest {
 
         val page = 1
         val mixedMediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
-            createMedia(id = 3, title = "Movie 2", type = MediaType.MOVIE),
-            createMedia(id = 4, title = "Series 2", type = MediaType.TVSHOW),
-            createMedia(id = 5, title = "Movie 3", type = MediaType.MOVIE)
+            createMedia(id = 1, title = "Movie 1", type = MediaType.Movie),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TvShow),
+            createMedia(id = 3, title = "Movie 2", type = MediaType.Movie),
+            createMedia(id = 4, title = "Series 2", type = MediaType.TvShow),
+            createMedia(id = 5, title = "Movie 3", type = MediaType.Movie)
         )
         val nonMovieMedia = listOf(
-            createMedia(id = 1, title = "TV Show 1", type = MediaType.TVSHOW),
-            createMedia(id = 2, title = "TV Show 2", type = MediaType.TVSHOW)
+            createMedia(id = 1, title = "TV Show 1", type = MediaType.TvShow),
+            createMedia(id = 2, title = "TV Show 2", type = MediaType.TvShow)
         )
         val movies = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE)
+            createMedia(id = 1, title = "Movie 1", type = MediaType.Movie)
         )
     }
 }

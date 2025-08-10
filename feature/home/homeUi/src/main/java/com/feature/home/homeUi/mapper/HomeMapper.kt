@@ -1,6 +1,5 @@
 package com.feature.home.homeUi.mapper
 
-import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.feature.home.homeUi.screen.home.MediaTypeUi
@@ -24,8 +23,8 @@ fun Media.toSliderMedia(): SliderMedia{
 }
 fun MediaType.toSliderMediaTypeUi(): SliderMediaTypeUi{
     return when(this){
-        MediaType.TVSHOW  -> SliderMediaTypeUi.TvShow
-        MediaType.MOVIE -> SliderMediaTypeUi.Movie
+        MediaType.TvShow  -> SliderMediaTypeUi.TvShow
+        MediaType.Movie -> SliderMediaTypeUi.Movie
     }
 }
 
@@ -36,15 +35,15 @@ fun SliderMedia.toMedia(): Media {
         imageUri = this.imageUri,
         rating = this.rating?.toDouble(),
         type = this.type.toMediaType(),
-        categories = this.categories.map { it.toGenerEnum() },
+        categories = this.categories.map { it.toCategory() },
         yearOfRelease = LocalDate.parse(this.yearOfRelease)
     )
 }
 
 fun SliderMediaTypeUi.toMediaType(): MediaType {
     return when (this) {
-        SliderMediaTypeUi.Movie -> MediaType.MOVIE
-        SliderMediaTypeUi.TvShow -> MediaType.TVSHOW
+        SliderMediaTypeUi.Movie -> MediaType.Movie
+        SliderMediaTypeUi.TvShow -> MediaType.TvShow
     }
 }
 
@@ -68,7 +67,7 @@ fun MediaUiState.toMedia():Media{
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toMediaType(),
-        categories = this.categories.map { it.toGenerEnum() },
+        categories = this.categories.map { it.toCategory() },
         yearOfRelease = this.yearOfRelease,
         rating = this.rating,
     )
@@ -77,14 +76,14 @@ fun MediaUiState.toMedia():Media{
 
 fun MediaType.toUiState(): MediaTypeUi{
     return when(this){
-        MediaType.TVSHOW -> MediaTypeUi.TVSHOW
-        MediaType.MOVIE -> MediaTypeUi.MOVIE
+        MediaType.TvShow -> MediaTypeUi.TVSHOW
+        MediaType.Movie -> MediaTypeUi.MOVIE
     }
 }
 fun MediaTypeUi.toMediaType(): MediaType{
     return when(this){
-        MediaTypeUi.TVSHOW -> MediaType.TVSHOW
-        MediaTypeUi.MOVIE -> MediaType.MOVIE
+        MediaTypeUi.TVSHOW -> MediaType.TvShow
+        MediaTypeUi.MOVIE -> MediaType.Movie
     }
 }
 

@@ -28,7 +28,7 @@ class FilterWatchHistoryUseCaseTest {
         coEvery { mediaRepository.getContinueWatchingMedia() } returns mediaList
 
         // When
-        val result = filterWatchHistoryUseCase(MediaType.MOVIE)
+        val result = filterWatchHistoryUseCase(MediaType.Movie)
 
         // Then
         val expected = listOf(mediaList[0])
@@ -41,7 +41,7 @@ class FilterWatchHistoryUseCaseTest {
         coEvery { mediaRepository.getContinueWatchingMedia() } returns mediaList
 
         // When
-        val result = filterWatchHistoryUseCase(MediaType.TVSHOW)
+        val result = filterWatchHistoryUseCase(MediaType.TvShow)
 
         // Then
         val expected = listOf(mediaList[1], mediaList[2])
@@ -52,12 +52,12 @@ class FilterWatchHistoryUseCaseTest {
     fun `should return empty list when no media matches the type`() = runTest {
         // Given
         val mediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE)
+            createMedia(id = 1, title = "Movie 1", type = MediaType.Movie)
         )
         coEvery { mediaRepository.getContinueWatchingMedia() } returns mediaList
 
         // When
-        val result = filterWatchHistoryUseCase(MediaType.TVSHOW)
+        val result = filterWatchHistoryUseCase(MediaType.TvShow)
 
         // Then
         assertEquals(emptyList<Media>(), result)
@@ -69,7 +69,7 @@ class FilterWatchHistoryUseCaseTest {
         coEvery { mediaRepository.getContinueWatchingMedia() } returns emptyList()
 
         // When
-        val result = filterWatchHistoryUseCase(MediaType.MOVIE)
+        val result = filterWatchHistoryUseCase(MediaType.Movie)
 
         // Then
         assertEquals(emptyList<Media>(), result)
@@ -78,9 +78,9 @@ class FilterWatchHistoryUseCaseTest {
 
     companion object{
         private val mediaList = listOf(
-            createMedia(id = 1, title = "Movie 1", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW),
-            createMedia(id = 3, title = "Series 2", type = MediaType.TVSHOW)
+            createMedia(id = 1, title = "Movie 1", type = MediaType.Movie),
+            createMedia(id = 2, title = "Series 1", type = MediaType.TvShow),
+            createMedia(id = 3, title = "Series 2", type = MediaType.TvShow)
         )
     }
 }

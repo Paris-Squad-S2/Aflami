@@ -29,8 +29,8 @@ class GetUpComingMediaUseCaseTest {
             rating = 8.6,
             imageUri = "up1.jpg",
             yearOfRelease = LocalDate(2023, 12, 12),
-            categories = listOf(Category.ACTION),
-            type = MediaType.MOVIE
+            categories = listOf(Category.Action),
+            type = MediaType.Movie
         ),
         Media(
             id = 2,
@@ -38,8 +38,8 @@ class GetUpComingMediaUseCaseTest {
             rating = 7.8,
             imageUri = "up2.jpg",
             yearOfRelease = LocalDate(2024, 2, 2),
-            categories = listOf(Category.ADVENTURE),
-            type = MediaType.TVSHOW
+            categories = listOf(Category.Adventure),
+            type = MediaType.TvShow
         )
     )
 }

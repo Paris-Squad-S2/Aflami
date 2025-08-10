@@ -44,6 +44,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.mapper.CategoryResourceMapper.getResourceId
+import com.feature.home.homeUi.mapper.toDisplayName
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingActivity
 import com.feature.home.homeUi.screen.home.components.Chips
 import com.feature.home.homeUi.screen.home.components.HomeSection
@@ -242,7 +243,7 @@ fun HomeScreenContent(
                     items(state.homeUIState.categories.size) { index ->
                         val category = state.homeUIState.categories.keys.elementAt(index)
                         Chips(
-                            title = category.name,
+                            title = stringResource(category.toDisplayName()),
                             icon = ImageVector.vectorResource(getResourceId(category)),
                             isSelected = state.homeUIState.categories[category] ?: false,
                             onClick = {

@@ -31,7 +31,7 @@ class GenresInteractionRepositoryImplTest {
 
     @Test
     fun `upsertInteraction should call dataSource with mapped entity`() = runTest {
-        val model = GenreUserInteraction(category = Category.ANIMATION, interactionCount = 7)
+        val model = GenreUserInteraction(category = Category.Animation, interactionCount = 7)
         val entity = GenreUserInteractionEntity(genreId = 3, interactionCount = 7)
         coJustRun { dataSource.upsertGenresInteraction(entity) }
         every { model.toCategoryUserInteractionEntity() } returns entity
@@ -44,14 +44,14 @@ class GenresInteractionRepositoryImplTest {
     @Test
     fun `getCategoryInteractions should return dataSource value if found`() = runTest {
         coEvery { dataSource.getCategoryByGenreId(28) } returns 2
-        val result = repository.getCategoryInteractions(Category.ACTION)
+        val result = repository.getCategoryInteractions(Category.Action)
         assertEquals(2, result)
     }
 
     @Test
     fun `getCategoryInteractions should return null if not found`() = runTest {
         coEvery { dataSource.getCategoryByGenreId(28) } returns null
-        val result = repository.getCategoryInteractions(Category.ACTION)
+        val result = repository.getCategoryInteractions(Category.Action)
         assertNull(result)
     }
 
@@ -62,8 +62,8 @@ class GenresInteractionRepositoryImplTest {
             GenreUserInteractionEntity(12, 3)
         )
         val models = listOf(
-            GenreUserInteraction(Category.ACTION, 8),
-            GenreUserInteraction(Category.ADVENTURE, 3)
+            GenreUserInteraction(Category.Action, 8),
+            GenreUserInteraction(Category.Adventure, 3)
         )
         coEvery { dataSource.getGenresInteractions() } returns entities
         every { entities[0].toCategoryUserInteractionModel() } returns models[0]

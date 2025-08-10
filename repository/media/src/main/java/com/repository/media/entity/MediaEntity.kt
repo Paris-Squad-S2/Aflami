@@ -17,6 +17,6 @@ data class MediaEntity(
 )
 
 enum class MediaTypeEntity {
-    TV_SHOW,
-    MOVIE
+    TvShow,
+    Movie
 }

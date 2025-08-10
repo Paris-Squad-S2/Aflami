@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.screen.utils
 
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaUiState
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil

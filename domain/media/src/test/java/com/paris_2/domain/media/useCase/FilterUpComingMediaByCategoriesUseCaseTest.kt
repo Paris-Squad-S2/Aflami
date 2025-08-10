@@ -18,11 +18,11 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
     @Test
     fun `invoke filters media by categories correctly`() = runTest {
         coEvery { mediaRepository.getUpComingMedia() } returns listOf(actionMedia, comedyMedia)
-        val result = useCase(listOf(Category.ACTION))
+        val result = useCase(listOf(Category.Action))
         assertThat(result).containsExactly(actionMedia)
-        val resultAll = useCase(listOf(Category.ACTION, Category.ADVENTURE))
+        val resultAll = useCase(listOf(Category.Action, Category.Adventure))
         assertThat(resultAll).containsExactly(actionMedia, comedyMedia)
-        val resultNone = useCase(listOf(Category.DRAMA))
+        val resultNone = useCase(listOf(Category.Drama))
         assertThat(resultNone).isEmpty()
     }
 
@@ -32,8 +32,8 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
         rating = 7.5,
         imageUri = "path1.jpg",
         yearOfRelease = LocalDate(2023, 5, 1),
-        categories = listOf(Category.ACTION),
-        type = MediaType.MOVIE
+        categories = listOf(Category.Action),
+        type = MediaType.Movie
     )
 
     private val comedyMedia = Media(
@@ -42,7 +42,7 @@ class FilterUpComingMediaByCategoriesUseCaseTest {
         rating = 7.2,
         imageUri = "path2.jpg",
         yearOfRelease = LocalDate(2022, 10, 10),
-        categories = listOf(Category.ADVENTURE),
-        type = MediaType.MOVIE
+        categories = listOf(Category.Adventure),
+        type = MediaType.Movie
     )
 }

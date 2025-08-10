@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaUiState
 import androidx.paging.PagingData
 import com.paris_2.domain.media.entity.Country
 import kotlinx.coroutines.flow.Flow

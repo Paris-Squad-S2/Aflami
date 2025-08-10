@@ -62,7 +62,7 @@ class ContinueWatchingLocalDataSourceImplTest {
             posterPath = "/some/path.jpg",
             releaseDate = "2023-01-01",
             genreIds = listOf(12, 18),
-            type = MediaTypeEntity.MOVIE
+            type = MediaTypeEntity.Movie
         )
     }
 

@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaUiState
 
 
 interface WorldTourScreenInteractionListener {

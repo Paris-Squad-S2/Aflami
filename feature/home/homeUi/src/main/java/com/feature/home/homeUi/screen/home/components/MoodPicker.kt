@@ -179,12 +179,12 @@ private fun MoodPickerDarkThemePreview() {
 
 
 enum class MoodType(val tags: List<Category>){
-    SAD(listOf(Category.COMEDY)),
-    NEUTRAL(listOf(Category.DOCUMENTARY, Category.MYSTERY)),
-    ROMANTIC(listOf(Category.ROMANCE, Category.MUSIC)),
-    ANGRY(listOf(Category.COMEDY, Category.ANIMATION, Category.FAMILY)),
-    DEPRESSED(listOf(Category.DRAMA, Category.ANIMATION)),
-    SAD_DIZZY(listOf(Category.ADVENTURE, Category.FANTASY, Category.SCIFI_FANTASY))
+    SAD(listOf(Category.Comedy)),
+    NEUTRAL(listOf(Category.Documentary, Category.Mystery)),
+    ROMANTIC(listOf(Category.Romance, Category.Music)),
+    ANGRY(listOf(Category.Comedy, Category.Animation, Category.Family)),
+    DEPRESSED(listOf(Category.Drama, Category.Animation)),
+    SAD_DIZZY(listOf(Category.Adventure, Category.Fantasy, Category.ScifiFantasy))
 }
 
 private val MoodPickerList = listOf(
