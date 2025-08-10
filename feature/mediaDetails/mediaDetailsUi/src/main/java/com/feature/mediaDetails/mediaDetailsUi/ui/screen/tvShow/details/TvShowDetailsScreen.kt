@@ -42,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.VideoPlayer
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.EpisodeCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.GallerySection
@@ -55,7 +56,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProduc
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.AppSnackBar
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
@@ -274,7 +274,7 @@ fun TvShowDetailsScreenContent(
                                                         ) {
 
                                                             AnimatedContent(
-                                                                targetState = if (episode.stillUrl.isNotEmpty()) episode.stillUrl else state.tvShowDetailsUiState.tvShowUi.posterUrl,
+                                                                targetState = episode.stillUrl.ifEmpty { state.tvShowDetailsUiState.tvShowUi.posterUrl },
                                                                 transitionSpec = {
                                                                     fadeIn(animationSpec = tween(300)) togetherWith
                                                                             fadeOut(
@@ -303,10 +303,10 @@ fun TvShowDetailsScreenContent(
                                                                             seasonIndex + 1,
                                                                             episode.episodeNumber
                                                                         )
-                                                                        if (!(state.tvShowDetailsUiState.episodeVideoUi.site.isEmpty() ||
-                                                                                    state.tvShowDetailsUiState.episodeVideoUi.key.isEmpty())
+                                                                        if (state.tvShowDetailsUiState.episodeVideoUi.site.isNotEmpty() &&
+                                                                            state.tvShowDetailsUiState.episodeVideoUi.key.isNotEmpty()
                                                                         ) {
-                                                                            activity?.openYoutubeOrBrowser(
+                                                                            tvShowScreenInteractionListener.playYoutubeVideo(
                                                                                 state.tvShowDetailsUiState.episodeVideoUi.key
                                                                             )
                                                                         }
@@ -391,7 +391,7 @@ fun TvShowDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(reviewsList) {review ->
+                                        items(reviewsList) { review ->
                                             ReviewsSection(review)
                                         }
                                     }
@@ -454,4 +454,13 @@ fun TvShowDetailsScreenContent(
             )
         }
     }
+    if (state.tvShowDetailsUiState.isYoutubePlayerVisible &&
+        !state.tvShowDetailsUiState.youtubeVideoKey.isNullOrEmpty()
+    ) {
+        VideoPlayer(
+            videoKey = state.tvShowDetailsUiState.youtubeVideoKey,
+            onCloseClick = { tvShowScreenInteractionListener.closeYoutubePlayer() }
+        )
+    }
+
 }
