@@ -30,6 +30,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
+import com.feature.home.homeUi.R
 import com.paris_2.aflami.designsystem.utils.BasePreview
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import kotlinx.coroutines.launch
@@ -155,7 +156,7 @@ fun SliderPreview() {
                 imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image1.jpg",
                 title = "Sample Movie 1",
                 type = SliderMediaTypeUi.Movie,
-                categories = listOf(1, 2),
+                categories = listOf(R.string.category_action, R.string.category_adventure),
                 rating = 8.5f,
                 yearOfRelease = "2023"
             ),
@@ -164,7 +165,7 @@ fun SliderPreview() {
                 imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image2.jpg",
                 title = "Sample TV Show",
                 type = SliderMediaTypeUi.TvShow,
-                categories = listOf(3),
+                categories = listOf(R.string.category_animation),
                 rating = 9.0f,
                 yearOfRelease = "2022"
             ),
@@ -173,7 +174,7 @@ fun SliderPreview() {
                 imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
                 title = "Sample Movie 2",
                 type = SliderMediaTypeUi.Movie,
-                categories = listOf(4),
+                categories = listOf(R.string.category_action),
                 rating = 7.8f,
                 yearOfRelease = "2024"
             )
