@@ -101,6 +101,7 @@ fun TopComponentDetails(
         }
     }
 }
+
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TvTopComponent(
