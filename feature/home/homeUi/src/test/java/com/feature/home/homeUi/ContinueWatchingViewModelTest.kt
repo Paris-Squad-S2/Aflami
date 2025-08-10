@@ -35,7 +35,7 @@ class ContinueWatchingViewModelTest {
             "img/5",
             "Continue Test 1",
             MediaTypeUi.TVSHOW,
-            listOf("Drama"),
+            listOf(R.string.category_drama),
             LocalDate(2023, 9, 9),
             5.8
         ),
@@ -44,7 +44,7 @@ class ContinueWatchingViewModelTest {
             "img/6",
             "Continue Test 2",
             MediaTypeUi.MOVIE,
-            listOf("Action"),
+            listOf(R.string.category_action),
             LocalDate(2022, 2, 2),
             7.1
         )
