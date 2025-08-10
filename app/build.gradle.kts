@@ -58,9 +58,7 @@ android {
         }.getProperty("versionName")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-
         vectorDrawables.useSupportLibrary = true
-
         buildConfigField("String", "API_TOKEN", "\"${getApiToken()}\"")
 
     }
