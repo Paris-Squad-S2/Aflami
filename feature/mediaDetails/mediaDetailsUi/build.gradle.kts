@@ -58,6 +58,10 @@ dependencies {
 
     testImplementation(libs.bundles.test)
 
+    //Youtube Video Plater
+    implementation(libs.core)
+
+
     implementation(project(Modules.DOMAIN_USER))
     implementation(project(Modules.DOMAIN_MEDIA))
     implementation(project(Modules.REPOSITORY_TV_SHOW))
