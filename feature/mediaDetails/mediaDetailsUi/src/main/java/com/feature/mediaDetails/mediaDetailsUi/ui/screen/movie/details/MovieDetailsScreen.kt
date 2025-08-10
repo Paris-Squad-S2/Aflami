@@ -188,27 +188,34 @@ fun MovieDetailsScreenContent(
                             scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
                         }
                     }
-                    SharedTransitionLayout {
-                        AnimatedContent(
-                            targetState = isCollapsed,
-                            label = "basic_transition"
-                        ) { target ->
-                            if (!target) {
-                                MovieTopComponentDetails(
-                                    state = state,
-                                    movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                )
-                            } else {
-                                MovieTopComponent(
-                                    movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    title = state.movieDetailsUiState.movie.title,
-                                )
-                            }
+                    if (state.movieDetailsUiState.isYoutubePlayerVisible && !state.movieDetailsUiState.youtubeVideoKey.isNullOrEmpty()) {
+                        VideoPlayer(
+                            videoKey = state.movieDetailsUiState.youtubeVideoKey,
+                            onCloseClick = { movieDetailsScreenInteractionListener.closeYoutubePlayer() }
+                        )
+                    }else {
+                        SharedTransitionLayout {
+                            AnimatedContent(
+                                targetState = isCollapsed,
+                                label = "basic_transition"
+                            ) { target ->
+                                if (!target) {
+                                    MovieTopComponentDetails(
+                                        state = state,
+                                        movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                    )
+                                } else {
+                                    MovieTopComponent(
+                                        movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        title = state.movieDetailsUiState.movie.title,
+                                    )
+                                }
 
+                            }
                         }
                     }
                     LazyColumn(
@@ -423,11 +430,5 @@ fun MovieDetailsScreenContent(
                 }
             )
         }
-    }
-    if (state.movieDetailsUiState.isYoutubePlayerVisible && !state.movieDetailsUiState.youtubeVideoKey.isNullOrEmpty()) {
-        VideoPlayer(
-            videoKey = state.movieDetailsUiState.youtubeVideoKey,
-            onCloseClick = { movieDetailsScreenInteractionListener.closeYoutubePlayer() }
-        )
     }
 }
