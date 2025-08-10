@@ -26,6 +26,7 @@ import com.pierfrancescosoffritti.androidyoutubeplayer.core.player.views.YouTube
 @Composable
 fun VideoPlayer(
     videoKey: String,
+    onCloseClick: () -> Unit
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
@@ -49,6 +50,20 @@ fun VideoPlayer(
                 }
             }
         )
+
+        IconButton(
+            onClick = onCloseClick,
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .padding(12.dp)
+        ) {
+            AppIcon(
+                imageVector = ImageVector.vectorResource(R.drawable.ic_cancel),
+                contentDescription = "Close",
+                modifier = Modifier.size(20.dp),
+                tint = Theme.colors.text.title
+            )
+        }
     }
 }
 
