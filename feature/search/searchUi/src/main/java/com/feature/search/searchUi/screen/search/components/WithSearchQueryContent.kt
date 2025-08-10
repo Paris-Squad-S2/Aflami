@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.screen.search.components
 
-import SearchScreenState
+import com.feature.search.searchUi.screen.search.SearchScreenState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth

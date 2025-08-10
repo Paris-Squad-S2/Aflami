@@ -1,6 +1,6 @@
 package com.feature.home.homeUi
 
-import com.feature.home.homeUi.mapper.toGenerEnum
+import com.feature.home.homeUi.mapper.toCategory
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
 import com.feature.home.homeUi.screen.home.MediaTypeUi.TVSHOW
@@ -12,11 +12,11 @@ import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
+import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -48,19 +48,41 @@ class HomeScreenViewModelTest {
     private lateinit var viewModel: HomeScreenViewModel
     private val testDispatcher = StandardTestDispatcher()
 
-
-    private val categoryMap = mapOf("Action" to 28, "Comedy" to 35, "Drama" to 18)
     private val fakeCategories = listOf(
-        Category.ACTION,
-        Category.COMEDY,
-        Category.DRAMA
+        Category.Action,
+        Category.Comedy,
+        Category.Drama
     )
     private val fakePopularList = listOf(
-        MediaUiState(1, "img/1", "Popular 1", MOVIE, listOf("Action"), LocalDate(2022, 1, 1), 7.5),
-        MediaUiState(2, "img/2", "Popular 2", TVSHOW, listOf("Comedy"), LocalDate(2023, 1, 1), 8.5)
+        MediaUiState(
+            1,
+            "img/1",
+            "Popular 1",
+            MOVIE,
+            listOf(R.string.category_action),
+            LocalDate(2022, 1, 1),
+            7.5
+        ),
+        MediaUiState(
+            2,
+            "img/2",
+            "Popular 2",
+            TVSHOW,
+            listOf(R.string.category_comedy),
+            LocalDate(2023, 1, 1),
+            8.5
+        )
     )
     private val fakeTopRatedList = listOf(
-        MediaUiState(10, "img/a", "Top 1", MOVIE, listOf("Drama"), LocalDate(2022, 2, 2), 9.0)
+        MediaUiState(
+            10,
+            "img/a",
+            "Top 1",
+            MOVIE,
+            listOf(R.string.category_drama),
+            LocalDate(2022, 2, 2),
+            9.0
+        )
     )
     private val fakeUpcomingList = listOf(
         MediaUiState(
@@ -68,7 +90,7 @@ class HomeScreenViewModelTest {
             "img/u1",
             "Upcoming 1",
             MOVIE,
-            listOf("Action"),
+            listOf(R.string.category_action),
             LocalDate(2024, 4, 1),
             6.5
         ),
@@ -77,7 +99,7 @@ class HomeScreenViewModelTest {
             "img/u2",
             "Upcoming 2",
             TVSHOW,
-            listOf("Comedy"),
+            listOf(R.string.category_comedy),
             LocalDate(2024, 5, 1),
             7.9
         )
@@ -88,7 +110,7 @@ class HomeScreenViewModelTest {
             "img/c1",
             "Continue 1",
             TVSHOW,
-            listOf("Drama"),
+            listOf(R.string.category_drama),
             LocalDate(2023, 9, 9),
             5.0
         )
@@ -123,10 +145,10 @@ class HomeScreenViewModelTest {
         rating = rating,
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        categories = categories.map { it.toGenerEnum() },
+        categories = categories.map { it.toCategory() },
         type = when (type) {
-            MOVIE -> DomainMediaType.MOVIE
-            TVSHOW -> DomainMediaType.TVSHOW
+            MOVIE -> DomainMediaType.Movie
+            TVSHOW -> DomainMediaType.TvShow
         }
     )
 
@@ -178,7 +200,7 @@ class HomeScreenViewModelTest {
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
 
-        )
+            )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
     }
@@ -197,7 +219,7 @@ class HomeScreenViewModelTest {
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
 
-        )
+            )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
     }
@@ -209,7 +231,7 @@ class HomeScreenViewModelTest {
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
-                    continueWatchingMediaList = emptyList()
+                    continueWatchingMediaList = emptyList<MediaUiState>()
                 )
             )
         )
@@ -299,8 +321,9 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected updates upcoming list, moodPickerMovie, and dialog flag`() = runTest {
-        val mood = listOf(Category.DRAMA)
-        val filteredMovies = fakeTopRatedList.filter { it.categories.contains("Drama") }
+        val mood = listOf(Category.Drama)
+        val filteredMovies =
+            fakeTopRatedList.filter { it.categories.contains(R.string.category_drama) }
         coEvery { getTopRatingMediaUseCase.invoke() } returns filteredMovies.map { it.toMedia() }
         viewModel.emitState(
             viewModel.screenState.value.copy(
@@ -321,7 +344,7 @@ class HomeScreenViewModelTest {
         coEvery { getTopRatingMediaUseCase.invoke() } throws RuntimeException(
             "Mood error"
         )
-        viewModel.moodPickerSelected(listOf(Category.ACTION))
+        viewModel.moodPickerSelected(listOf(Category.Action))
         runCurrent()
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Mood error")
     }
@@ -329,7 +352,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `onCategorySelect toggles selection and filters upcoming list`() = runTest {
         val cat = fakeCategories.first()
-        val filteredMovies = fakeUpcomingList.filter { it.categories.contains(cat.name) }
+        val filteredMovies = fakeUpcomingList.filter { it.toMedia().categories.contains(cat) }
         coEvery { filterUpComingMediaByCategoriesUseCase(listOf(cat)) } returns filteredMovies.map { it.toMedia() }
         viewModel.emitState(
             viewModel.screenState.value.copy(

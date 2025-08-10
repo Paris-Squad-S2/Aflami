@@ -22,8 +22,8 @@ class AddWatchHistoryUseCaseTest {
             rating = 8.5,
             imageUri = "img.jpg",
             yearOfRelease = LocalDate(2023, 1, 1),
-            categories = listOf(Category.ACTION, Category.ADVENTURE),
-            type = MediaType.MOVIE
+            categories = listOf(Category.Action, Category.Adventure),
+            type = MediaType.Movie
         )
         addWatchHistoryUseCase(media)
         coVerify { mediaRepository.addMediaToContinueWatching(media) }

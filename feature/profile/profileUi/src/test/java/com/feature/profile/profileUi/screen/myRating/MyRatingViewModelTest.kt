@@ -58,7 +58,7 @@ class MyRatingViewModelTest {
     @Test
     fun `onTabSelected should trigger media load for selected type`() = runTest {
         coEvery {
-            getRatedMediaUseCase(any(),MediaType.TVSHOW)
+            getRatedMediaUseCase(any(),MediaType.TvShow)
         } returns fakeMediaList
 
         viewModel.onTabSelected(MediaTypeUi.TVSHOW)
@@ -117,7 +117,7 @@ class MyRatingViewModelTest {
         advanceUntilIdle()
         viewModel.onFavouriteIconClick(media)
 
-        coVerify { getRatedMediaUseCase(any(), MediaType.MOVIE) }
+        coVerify { getRatedMediaUseCase(any(), MediaType.Movie) }
     }
 
     @Test
@@ -132,7 +132,7 @@ class MyRatingViewModelTest {
         )
 
         coEvery { deleteTvShowRatingUseCase(2) } returns Unit
-        coEvery { getRatedMediaUseCase(any(), MediaType.TVSHOW) } returns fakeMediaList
+        coEvery { getRatedMediaUseCase(any(), MediaType.TvShow) } returns fakeMediaList
 
         advanceUntilIdle()
         viewModel.onFavouriteIconClick(media)
@@ -155,7 +155,7 @@ class MyRatingViewModelTest {
     fun `onRetry should reload data for selected media type`() = runTest {
         viewModel.onRetry()
 
-        coVerify { getRatedMediaUseCase(any(), MediaType.MOVIE) }
+        coVerify { getRatedMediaUseCase(any(), MediaType.Movie) }
     }
 
     @Test
@@ -197,7 +197,7 @@ class MyRatingViewModelTest {
     fun `viewModel should load movies by default on initialization`() = runTest {
         advanceUntilIdle()
 
-        coVerify { getRatedMediaUseCase(1, MediaType.MOVIE) }
+        coVerify { getRatedMediaUseCase(1, MediaType.Movie) }
     }
 
 
@@ -205,9 +205,9 @@ class MyRatingViewModelTest {
         Media(
             id = 1,
             title = "Movie 1",
-            type = MediaType.MOVIE,
+            type = MediaType.Movie,
             imageUri = "/abc.jpg",
-            categories = listOf(Category.ACTION),
+            categories = listOf(Category.Action),
             yearOfRelease = LocalDate(2022, 1, 1),
             rating = 8.5
         )

@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.screen.findByActor
 
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaUiState
 
 
 interface FindByActorScreenInteractionListener {

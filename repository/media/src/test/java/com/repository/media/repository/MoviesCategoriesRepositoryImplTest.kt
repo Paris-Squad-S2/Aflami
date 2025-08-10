@@ -43,7 +43,7 @@ class MoviesCategoriesRepositoryImplTest {
                 GenreDto(id = 18, name = "Drama")
             )
         )
-        val categories = listOf(Category.ACTION, Category.DRAMA)
+        val categories = listOf(Category.Action, Category.Drama)
         coEvery { genresRemoteDataSource.getMoviesGenres("en-US") } returns genresDto
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
 

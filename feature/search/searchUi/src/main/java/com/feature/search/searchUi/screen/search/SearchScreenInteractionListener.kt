@@ -1,8 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import CategoryUiState
-import MediaUiState
-import SearchTypeUi
 import com.paris_2.domain.media.entity.Category
 
 interface SearchScreenInteractionListener {

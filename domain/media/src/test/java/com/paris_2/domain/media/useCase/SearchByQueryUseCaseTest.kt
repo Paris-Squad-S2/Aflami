@@ -103,8 +103,8 @@ class SearchByQueryUseCaseTest {
         val unknownTitleQuery = "unknown title"
         val page = 1
         val mediaList = listOf(
-            createMedia(id = 1, title = "chance Movie", type = MediaType.MOVIE),
-            createMedia(id = 2, title = "chance Drama", type = MediaType.TVSHOW),
+            createMedia(id = 1, title = "chance Movie", type = MediaType.Movie),
+            createMedia(id = 2, title = "chance Drama", type = MediaType.TvShow),
         )
     }
 }

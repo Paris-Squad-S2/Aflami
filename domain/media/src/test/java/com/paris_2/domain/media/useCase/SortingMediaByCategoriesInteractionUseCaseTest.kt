@@ -30,16 +30,16 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
 
         // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
-            GenreUserInteraction(Category.ACTION, 10),
-            GenreUserInteraction(Category.ADVENTURE, 5),
-            GenreUserInteraction(Category.ANIMATION, 1)
+            GenreUserInteraction(Category.Action, 10),
+            GenreUserInteraction(Category.Adventure, 5),
+            GenreUserInteraction(Category.Animation, 1)
         )
 
         val mediaList = listOf(
-            media(101, "A", listOf(Category.ACTION, Category.ANIMATION)),
-            media(102, "B", listOf(Category.ADVENTURE)),
-            media(103, "C", listOf(Category.ANIMATION)),
-            media(104, "D", listOf(Category.ADVENTURE, Category.ANIMATION))
+            media(101, "A", listOf(Category.Action, Category.Animation)),
+            media(102, "B", listOf(Category.Adventure)),
+            media(103, "C", listOf(Category.Animation)),
+            media(104, "D", listOf(Category.Adventure, Category.Animation))
         )
 
         // When
@@ -53,13 +53,13 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
     fun `should preserve input order when media have equal category interaction sums`() = runTest {
         // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
-            GenreUserInteraction(Category.ACTION, 10),
-            GenreUserInteraction(Category.ADVENTURE, 0)
+            GenreUserInteraction(Category.Action, 10),
+            GenreUserInteraction(Category.Adventure, 0)
         )
 
         val mediaList = listOf(
-            media(200, "A", listOf(Category.ACTION)),
-            media(201, "B", listOf(Category.ADVENTURE))
+            media(200, "A", listOf(Category.Action)),
+            media(201, "B", listOf(Category.Adventure))
         )
 
         // When
@@ -73,12 +73,12 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
     fun `should order medias with no matching genres as zero interaction`() = runTest {
         // Given
         coEvery { genresInteractionRepository.getAllInteractions() } returns listOf(
-            GenreUserInteraction(Category.ACTION, 7)
+            GenreUserInteraction(Category.Action, 7)
         )
 
         val mediaList = listOf(
-            media(300, "A", listOf(Category.ADVENTURE)), // No matching genre
-            media(301, "B", listOf(Category.ACTION))  // Matching genre
+            media(300, "A", listOf(Category.Adventure)), // No matching genre
+            media(301, "B", listOf(Category.Action))  // Matching genre
         )
 
         // When
@@ -106,8 +106,8 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
         coEvery { genresInteractionRepository.getAllInteractions() } returns emptyList()
 
         val mediaList = listOf(
-            media(401, "A", listOf(Category.ADVENTURE)),
-            media(402, "B", listOf(Category.CRIME))
+            media(401, "A", listOf(Category.Adventure)),
+            media(402, "B", listOf(Category.Crime))
         )
 
         // When
@@ -120,7 +120,7 @@ class SortingMediaByCategoriesInteractionUseCaseTest {
     @Test
     fun `should call genresInteractionRepository to retrieve interactions`() = runTest {
         // Given
-        val mediaList = listOf(media(500, "A", listOf(Category.ACTION)))
+        val mediaList = listOf(media(500, "A", listOf(Category.Action)))
         coEvery { genresInteractionRepository.getAllInteractions() } returns emptyList()
 
         // When

@@ -35,7 +35,7 @@ class ContinueWatchingViewModelTest {
             "img/5",
             "Continue Test 1",
             MediaTypeUi.TVSHOW,
-            listOf("Drama"),
+            listOf(R.string.category_drama),
             LocalDate(2023, 9, 9),
             5.8
         ),
@@ -44,7 +44,7 @@ class ContinueWatchingViewModelTest {
             "img/6",
             "Continue Test 2",
             MediaTypeUi.MOVIE,
-            listOf("Action"),
+            listOf(R.string.category_action),
             LocalDate(2022, 2, 2),
             7.1
         )
@@ -56,10 +56,10 @@ class ContinueWatchingViewModelTest {
         rating = rating,
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        categories = listOf(Category.ACTION),
+        categories = listOf(Category.Action),
         type = when (type) {
-            MediaTypeUi.MOVIE -> DomainMediaType.MOVIE
-            MediaTypeUi.TVSHOW -> DomainMediaType.TVSHOW
+            MediaTypeUi.MOVIE -> DomainMediaType.Movie
+            MediaTypeUi.TVSHOW -> DomainMediaType.TvShow
         }
     )
 

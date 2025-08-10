@@ -1,9 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
 
-import MediaTypeUi
-import MediaUiState
-import SearchTypeUi
 import androidx.paging.PagingData
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
@@ -64,8 +61,8 @@ class SearchViewModelTest {
         id = 1,
         imageUri = "http://image.url/movie1.jpg",
         title = "The Great Adventure",
-        type = MediaType.MOVIE,
-        categories = listOf(Category.ACTION, Category.ANIMATION), // Action, Adventure
+        type = MediaType.Movie,
+        categories = listOf(Category.Action, Category.Animation), // Action, Adventure
         yearOfRelease = LocalDate(2022, 10, 26),
         rating = 8.5
     )
@@ -74,8 +71,8 @@ class SearchViewModelTest {
         id = 2,
         imageUri = "http://image.url/movie2.jpg",
         title = "Comedy Night",
-        type = MediaType.MOVIE,
-        categories = listOf(Category.ADVENTURE),
+        type = MediaType.Movie,
+        categories = listOf(Category.Adventure),
         yearOfRelease = LocalDate(2023, 3, 15),
         rating = 6.8
     )
@@ -84,8 +81,8 @@ class SearchViewModelTest {
         id = 3,
         imageUri = "http://image.url/tvshow1.jpg",
         title = "Space Explorers",
-        type = MediaType.TVSHOW,
-        categories = listOf(Category.COMEDY),
+        type = MediaType.TvShow,
+        categories = listOf(Category.Comedy),
         yearOfRelease = LocalDate(2021, 1, 10),
         rating = 9.1
     )
@@ -94,8 +91,8 @@ class SearchViewModelTest {
         id = 4,
         imageUri = "http://image.url/tvshow2.jpg",
         title = "Mystery Lane",
-        type = MediaType.TVSHOW,
-        categories = listOf(Category.KIDS),
+        type = MediaType.TvShow,
+        categories = listOf(Category.Kids),
         yearOfRelease = LocalDate(2024, 6, 1),
         rating = 7.9
     )
@@ -108,11 +105,11 @@ class SearchViewModelTest {
         searchTitle = "Inception", searchDate = "2023-11-15", SearchType.Query
     )
 
-    private val mockCategory1 = Category.ACTION
-    private val mockCategory2 = Category.COMEDY
-    private val mockCategory3 = Category.ADVENTURE
-    private val mockCategory4 = Category.SCIFI_FANTASY
-    private val mockCategory5 = Category.THRILLER
+    private val mockCategory1 = Category.Action
+    private val mockCategory2 = Category.Comedy
+    private val mockCategory3 = Category.Adventure
+    private val mockCategory4 = Category.ScifiFantasy
+    private val mockCategory5 = Category.Thriller
 
 
 
@@ -652,7 +649,7 @@ class SearchViewModelTest {
                 id = mockMovie1.id,
                 imageUri = mockMovie1.imageUri,
                 title = mockMovie1.title,
-                type = MediaTypeUi.MOVIE,
+                type = MediaTypeUi.Movie,
                 categories = mockMovie1.categories,
                 yearOfRelease = mockMovie1.yearOfRelease,
                 rating = mockMovie1.rating
@@ -675,7 +672,7 @@ class SearchViewModelTest {
                 id = mockTvShow1.id,
                 imageUri = mockTvShow1.imageUri,
                 title = mockTvShow1.title,
-                type = MediaTypeUi.TVSHOW,
+                type = MediaTypeUi.TvShow,
                 categories = mockTvShow1.categories,
                 yearOfRelease = mockTvShow1.yearOfRelease,
                 rating = mockTvShow1.rating
