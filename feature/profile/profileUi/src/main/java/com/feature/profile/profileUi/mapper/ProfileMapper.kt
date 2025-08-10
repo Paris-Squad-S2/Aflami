@@ -21,14 +21,14 @@ fun Media.toUiState(): MediaUiState {
 
 fun MediaType.toUiState(): MediaTypeUi {
     return when(this){
-        MediaType.TVSHOW -> MediaTypeUi.TVSHOW
-        MediaType.MOVIE -> MediaTypeUi.MOVIE
+        MediaType.TvShow -> MediaTypeUi.TVSHOW
+        MediaType.Movie -> MediaTypeUi.MOVIE
     }
 }
 
 fun MediaTypeUi.toMediaType(): MediaType {
     return when (this) {
-        MediaTypeUi.MOVIE -> MediaType.MOVIE
-        MediaTypeUi.TVSHOW -> MediaType.TVSHOW
+        MediaTypeUi.MOVIE -> MediaType.Movie
+        MediaTypeUi.TVSHOW -> MediaType.TvShow
     }
 }

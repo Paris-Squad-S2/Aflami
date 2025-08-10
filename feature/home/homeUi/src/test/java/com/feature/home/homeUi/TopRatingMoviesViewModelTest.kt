@@ -59,10 +59,10 @@ class TopRatingMoviesViewModelTest {
         rating = rating,
         imageUri = imageUri,
         yearOfRelease = yearOfRelease,
-        categories = listOf(Category.ACTION),
+        categories = listOf(Category.Action),
         type = when (type) {
-            MediaTypeUi.MOVIE -> DomainMediaType.MOVIE
-            MediaTypeUi.TVSHOW -> DomainMediaType.TVSHOW
+            MediaTypeUi.MOVIE -> DomainMediaType.Movie
+            MediaTypeUi.TVSHOW -> DomainMediaType.TvShow
         }
     )
 

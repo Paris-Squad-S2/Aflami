@@ -49,9 +49,9 @@ class HomeScreenViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
 
     private val fakeCategories = listOf(
-        Category.ACTION,
-        Category.COMEDY,
-        Category.DRAMA
+        Category.Action,
+        Category.Comedy,
+        Category.Drama
     )
     private val fakePopularList = listOf(
         MediaUiState(
@@ -147,8 +147,8 @@ class HomeScreenViewModelTest {
         yearOfRelease = yearOfRelease,
         categories = categories.map { it.toCategory() },
         type = when (type) {
-            MOVIE -> DomainMediaType.MOVIE
-            TVSHOW -> DomainMediaType.TVSHOW
+            MOVIE -> DomainMediaType.Movie
+            TVSHOW -> DomainMediaType.TvShow
         }
     )
 
@@ -321,7 +321,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected updates upcoming list, moodPickerMovie, and dialog flag`() = runTest {
-        val mood = listOf(Category.DRAMA)
+        val mood = listOf(Category.Drama)
         val filteredMovies =
             fakeTopRatedList.filter { it.categories.contains(R.string.category_drama) }
         coEvery { getTopRatingMediaUseCase.invoke() } returns filteredMovies.map { it.toMedia() }
@@ -344,7 +344,7 @@ class HomeScreenViewModelTest {
         coEvery { getTopRatingMediaUseCase.invoke() } throws RuntimeException(
             "Mood error"
         )
-        viewModel.moodPickerSelected(listOf(Category.ACTION))
+        viewModel.moodPickerSelected(listOf(Category.Action))
         runCurrent()
         assertThat(viewModel.screenState.value.errorMessage).isEqualTo("Mood error")
     }

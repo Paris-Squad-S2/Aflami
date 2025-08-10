@@ -143,7 +143,8 @@ data class SliderMedia(
 )
 
 enum class SliderMediaTypeUi {
-    TvShow, Movie
+    TvShow,
+    Movie
 }
 
 @Composable

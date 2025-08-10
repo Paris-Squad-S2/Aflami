@@ -1,7 +1,7 @@
 package com.feature.search.searchUi.screen.search.components
 
-import SearchScreenState
-import SearchTypeUi
+import com.feature.search.searchUi.screen.search.SearchScreenState
+import com.feature.search.searchUi.screen.search.SearchTypeUi
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

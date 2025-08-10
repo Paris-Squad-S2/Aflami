@@ -39,12 +39,12 @@ class MediaRepositoryImpl(
         return safeCall(PopularMediaException()) {
             val remoteMovies =
                 mediaRemoteDataSource.getPopularMovies(language).results?.mapNotNull {
-                    it.toDomain(MediaType.MOVIE)
+                    it.toDomain(MediaType.Movie)
                 } ?: emptyList()
 
             val remoteTvShows =
                 mediaRemoteDataSource.getPopularTvShows(language).results?.mapNotNull {
-                    it.toDomain(MediaType.TVSHOW)
+                    it.toDomain(MediaType.TvShow)
                 } ?: emptyList()
 
             val combined = (remoteMovies + remoteTvShows).sortedByDescending { it.rating }
@@ -69,11 +69,11 @@ class MediaRepositoryImpl(
 
             val remoteMovies =
                 mediaRemoteDataSource.getTopRatedMovies(language).results?.mapNotNull {
-                    it.toDomain(MediaType.MOVIE)
+                    it.toDomain(MediaType.Movie)
                 } ?: emptyList()
 
             val remoteTv = mediaRemoteDataSource.getTopRatedTvShows(language).results?.mapNotNull {
-                it.toDomain(MediaType.TVSHOW)
+                it.toDomain(MediaType.TvShow)
             } ?: emptyList()
 
             val combined = (remoteMovies + remoteTv).sortedByDescending { it.rating }
@@ -95,7 +95,7 @@ class MediaRepositoryImpl(
         return safeCall(UpComingMediaException()) {
             val upcomingMovies =
                 mediaRemoteDataSource.getUpcomingMovies(language = language).results?.mapNotNull {
-                    it.toDomain(MediaType.MOVIE)
+                    it.toDomain(MediaType.Movie)
                 } ?: emptyList()
             val entities = upcomingMovies.map {
                 it.toMediaEntity(category = Category.UPCOMING, language)
@@ -108,7 +108,7 @@ class MediaRepositoryImpl(
     override suspend fun getNowPlayingMedia(): List<Media> {
         return safeCall(MediaPlayingException()) {
             val nowPlaying = mediaRemoteDataSource.getNowPlayingMovies().results?.mapNotNull {
-                it.toDomain(MediaType.MOVIE)
+                it.toDomain(MediaType.Movie)
             } ?: emptyList()
             nowPlaying
         }
@@ -130,11 +130,11 @@ class MediaRepositoryImpl(
         val language = settingLocalDataSource.getLanguage().first()
         return safeCall(NoRatedMediaFoundException()) {
             val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, language)
-                .results.mapNotNull { it.toDomain(MediaType.MOVIE) }
+                .results.mapNotNull { it.toDomain(MediaType.Movie) }
 
             val ratedTvShows = mediaRemoteDataSource.getRatedTvShows(accountId, language)
                 .results.mapNotNull {
-                    it.toDomain(MediaType.TVSHOW)
+                    it.toDomain(MediaType.TvShow)
                 }
             ratedMovies + ratedTvShows
         }

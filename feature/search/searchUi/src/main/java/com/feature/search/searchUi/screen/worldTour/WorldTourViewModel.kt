@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaUiState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute

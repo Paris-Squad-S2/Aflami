@@ -39,13 +39,13 @@ fun MediaPlayButton(
     val layoutDirection = LocalLayoutDirection.current
 
     val (finalButtonSize, finalIconSize) = when (buttonType) {
-        MediaButtonType.BIG -> (buttonSize?.dp ?: 64.dp) to (iconSize?.dp ?: 32.dp)
-        MediaButtonType.MEDIUM -> (buttonSize?.dp ?: 40.dp) to (iconSize?.dp ?: 19.dp)
+        MediaButtonType.Big -> (buttonSize?.dp ?: 64.dp) to (iconSize?.dp ?: 32.dp)
+        MediaButtonType.Medium -> (buttonSize?.dp ?: 40.dp) to (iconSize?.dp ?: 19.dp)
     }
 
     val finalBackGroundColor = backGroundColor ?: when (buttonType) {
-        MediaButtonType.BIG -> Theme.colors.onPrimaryColors.onPrimary
-        MediaButtonType.MEDIUM -> Theme.colors.surfaceHigh
+        MediaButtonType.Big -> Theme.colors.onPrimaryColors.onPrimary
+        MediaButtonType.Medium -> Theme.colors.surfaceHigh
     }
 
 
@@ -86,15 +86,15 @@ fun MediaPlayButton(
 }
 
 enum class MediaButtonType {
-    BIG,
-    MEDIUM,
+    Big,
+    Medium,
 }
 
 @PreviewLightDark
 @Composable
 fun PreviewPlayButton() {
     AflamiTheme {
-        MediaPlayButton(buttonType = MediaButtonType.BIG)
+        MediaPlayButton(buttonType = MediaButtonType.Big)
     }
 }
 
@@ -102,6 +102,6 @@ fun PreviewPlayButton() {
 @Composable
 fun PreviewSmallPlayButton() {
     AflamiTheme {
-        MediaPlayButton(buttonType = MediaButtonType.MEDIUM, showBoarder = true)
+        MediaPlayButton(buttonType = MediaButtonType.Medium, showBoarder = true)
     }
 }

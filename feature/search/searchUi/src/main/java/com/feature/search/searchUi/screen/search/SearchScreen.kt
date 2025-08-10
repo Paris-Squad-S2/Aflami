@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import SearchScreenState
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

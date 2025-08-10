@@ -134,7 +134,7 @@ fun HomeSlider(
                         MediaPlayButton(
                             modifier = Modifier.align(Alignment.Center),
                             onButtonClick = {},
-                            buttonType = MediaButtonType.BIG
+                            buttonType = MediaButtonType.Big
                         )
                     }
                 }

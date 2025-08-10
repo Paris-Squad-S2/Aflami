@@ -9,6 +9,6 @@ class GetMoviesOnlyByCountryNameUseCase(
 ) {
     suspend operator fun invoke(countryName: String, page: Int): List<Media> {
         return searchMediaRepository.getMoviesByCountry(countryName, page)
-            .filter { it.type == MediaType.MOVIE }
+            .filter { it.type == MediaType.Movie }
     }
 }

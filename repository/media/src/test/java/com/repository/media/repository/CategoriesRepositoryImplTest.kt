@@ -48,7 +48,7 @@ class CategoriesRepositoryImplTest {
         // When
         val result = repository.getAllCategories()
 
-        assertEquals(listOf(Category.DRAMA), result)
+        assertEquals(listOf(Category.Drama), result)
     }
 
     @Test

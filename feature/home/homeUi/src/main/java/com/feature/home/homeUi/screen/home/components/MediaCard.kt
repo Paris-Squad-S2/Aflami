@@ -154,7 +154,7 @@ fun MediaCard(
             MediaPlayButton(
                 modifier = Modifier.align(Alignment.Center),
                 onButtonClick = onPlayButtonClick,
-                buttonType = MediaButtonType.BIG
+                buttonType = MediaButtonType.Big
             )
         }
 

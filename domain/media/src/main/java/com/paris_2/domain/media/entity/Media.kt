@@ -14,6 +14,6 @@ data class Media(
 
 
 enum class MediaType {
-    TVSHOW,
-    MOVIE
+    TvShow,
+    Movie
 }

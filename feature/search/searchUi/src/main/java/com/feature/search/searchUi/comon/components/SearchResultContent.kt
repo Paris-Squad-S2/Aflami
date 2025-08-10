@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.comon.components
 
-import MediaUiState
+import com.feature.search.searchUi.screen.search.MediaUiState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding

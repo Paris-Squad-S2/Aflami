@@ -1,10 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import MediaTypeUi
-import MediaUiState
-import SearchScreenState
-import SearchTypeUi
-import SearchUiState
 import androidx.lifecycle.viewModelScope
 import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
@@ -197,9 +192,9 @@ class SearchViewModel @Inject constructor(
             },
             onSuccess = { searchResult ->
                 val moviesResult =
-                    searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.MOVIE } }
+                    searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.Movie } }
                 val tvShowsResult =
-                    searchResult.map { pagingData -> pagingData .filter { it.type == MediaTypeUi.TVSHOW } }
+                    searchResult.map { pagingData -> pagingData .filter { it.type == MediaTypeUi.TvShow } }
                 val filteredMediaByRating = flowOf(PagingData.from(filterMediaByRatingUseCase(
                     screenState.value.searchUiState.selectedRating,
                     searchResult.collectAllItems().map { it.toDomainModel() }
@@ -212,10 +207,10 @@ class SearchViewModel @Inject constructor(
 
                 val filteredMoviesResult =
                     filteredMediaByCategories.map { pagingData  -> pagingData
-                        .filter { it.type == MediaTypeUi.MOVIE }}
+                        .filter { it.type == MediaTypeUi.Movie }}
                 val filteredTvShowsResult =
                     filteredMediaByCategories.map { pagingData  -> pagingData
-                        .filter { it.type == MediaTypeUi.TVSHOW }}
+                        .filter { it.type == MediaTypeUi.TvShow }}
                 updateState(
                     screenState.value.copy(
                         isLoading = false,
@@ -447,11 +442,11 @@ class SearchViewModel @Inject constructor(
                 incrementCategoryInteractionUseCase(mediaUiState.categories)
 
                 when (mediaUiState.type) {
-                    MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
+                    MediaTypeUi.Movie -> mediaDetailsFeatureAPI.startMovieDetails(
                         movieId = mediaUiState.id
                     )
 
-                    MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
+                    MediaTypeUi.TvShow -> mediaDetailsFeatureAPI.startTvShowDetails(
                         tvShowId = mediaUiState.id
                     )
                 }

@@ -61,7 +61,7 @@ class MediaRepositoryImplTest {
                 posterPath = "poster.jpg",
                 releaseDate = "2023-01-01",
                 genreIds = listOf(1, 2),
-                type = MediaTypeEntity.MOVIE,
+                type = MediaTypeEntity.Movie,
                 category = Category.POPULAR,
                 language = "en"
             )
@@ -164,7 +164,7 @@ class MediaRepositoryImplTest {
                 posterPath = "top.jpg",
                 releaseDate = "2022-01-01",
                 genreIds = listOf(3),
-                type = MediaTypeEntity.TV_SHOW,
+                type = MediaTypeEntity.TvShow,
                 category = Category.POPULAR,
                 language = "en"
             )
@@ -247,7 +247,7 @@ class MediaRepositoryImplTest {
                 posterPath = "upcoming.jpg",
                 releaseDate = "2025-01-01",
                 genreIds = listOf(5),
-                type = MediaTypeEntity.MOVIE,
+                type = MediaTypeEntity.Movie,
                 category = Category.POPULAR,
                 language = "en"
             )
@@ -354,7 +354,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal delegates to data source`() = runTest {
-        val media = Media(200, "", "Local", MediaType.MOVIE,  listOf(com.paris_2.domain.media.entity.Category.ACTION), mockk(), 8.0)
+        val media = Media(200, "", "Local", MediaType.Movie,  listOf(com.paris_2.domain.media.entity.Category.Action), mockk(), 8.0)
         coEvery { local.addMedia(media.toEntity()) } returns Unit
         repo.addMediaToContinueWatching(media)
         coVerify { local.addMedia(media.toEntity()) }
@@ -366,7 +366,7 @@ class MediaRepositoryImplTest {
             id = 300,
             title = "Saved",
             posterPath = "saved.jpg",
-            type = MediaTypeEntity.TV_SHOW,
+            type = MediaTypeEntity.TvShow,
             genreIds = listOf(2),
             voteAverage = 6.6,
             releaseDate = "2023-09-09"
@@ -378,7 +378,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `addMediaToContinueWatching throws NoInternetConnectionException when offline`() = runTest {
         every { networkChecker.isConnected } returns MutableStateFlow(false)
-        val media = Media(1, "", "Test", MediaType.MOVIE, listOf(com.paris_2.domain.media.entity.Category.ACTION), mockk(), 8.0)
+        val media = Media(1, "", "Test", MediaType.Movie, listOf(com.paris_2.domain.media.entity.Category.Action), mockk(), 8.0)
 
         assertThrows<NoInternetConnectionException> {
             repo.addMediaToContinueWatching(media)
@@ -396,7 +396,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal throws addMediaToLocalException on failure`() = runTest {
-        val media = Media(123, "", "Fail", MediaType.TVSHOW, listOf(com.paris_2.domain.media.entity.Category.ACTION), mockk(), 4.0)
+        val media = Media(123, "", "Fail", MediaType.TvShow, listOf(com.paris_2.domain.media.entity.Category.Action), mockk(), 4.0)
 
         coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
 

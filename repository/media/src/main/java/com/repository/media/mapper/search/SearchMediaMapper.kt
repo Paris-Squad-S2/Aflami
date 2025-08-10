@@ -16,8 +16,8 @@ fun KnownForDto.toMedia(): Media? {
             imageUri = this.imageUrl ?: "",
             title = title,
             type = when (this.mediaType) {
-                "movie" -> MediaType.MOVIE
-                "tv" -> MediaType.TVSHOW
+                "movie" -> MediaType.Movie
+                "tv" -> MediaType.TvShow
                 else -> return null
             },
             categories = this.genreIds.intListToCategoryList(),
@@ -39,9 +39,9 @@ fun ResultDto.toMedia(): Media? {
             imageUri = imageUrl ?: "",
             title = title,
             type = when (this.mediaType) {
-                "movie" -> MediaType.MOVIE
-                "tv" -> MediaType.TVSHOW
-                else -> MediaType.MOVIE
+                "movie" -> MediaType.Movie
+                "tv" -> MediaType.TvShow
+                else -> MediaType.Movie
             },
             categories = this.genreIds.intListToCategoryList(),
             yearOfRelease = LocalDate.parse(releaseDateStr),

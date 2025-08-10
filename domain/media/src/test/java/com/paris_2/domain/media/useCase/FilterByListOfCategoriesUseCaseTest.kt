@@ -20,7 +20,7 @@ class FilterByListOfCategoriesUseCaseTest {
     @Test
     fun `should return 1 item when one category matches`() {
         //Given
-        val selectedCategories = listOf(Category.ACTION)
+        val selectedCategories = listOf(Category.Action)
 
         //When
         val result = filterMediaUseCase(selectedCategories, mediaList)
@@ -32,7 +32,7 @@ class FilterByListOfCategoriesUseCaseTest {
     @Test
     fun `should return correct media when one category matches`() {
         //Given
-        val selectedCategories = listOf(Category.ADVENTURE)
+        val selectedCategories = listOf(Category.Adventure)
         val expectedMediaList = listOf(
             mediaList[0]
         )
@@ -47,7 +47,7 @@ class FilterByListOfCategoriesUseCaseTest {
     @Test
     fun `should return empty list when no category matches`() {
         //Given
-        val selectedCategories = listOf(Category.COMEDY)
+        val selectedCategories = listOf(Category.Comedy)
         val expectedMediaList = emptyList<Media>()
 
         //When
@@ -61,7 +61,7 @@ class FilterByListOfCategoriesUseCaseTest {
     fun `should return empty list when media list is empty`() {
         //Given
         val mediaList = emptyList<Media>()
-        val selectedCategories = listOf(Category.ANIMATION)
+        val selectedCategories = listOf(Category.Animation)
 
         //When
         val result = filterMediaUseCase(selectedCategories, mediaList)
@@ -73,7 +73,7 @@ class FilterByListOfCategoriesUseCaseTest {
     @Test
     fun `should return items matching any of the selected categories`() {
         //Given
-        val selectedCategoriesList = listOf(Category.ACTION, Category.ANIMATION)
+        val selectedCategoriesList = listOf(Category.Action, Category.Animation)
 
         //When
         val result = filterMediaUseCase(selectedCategoriesList, mediaList)
@@ -85,7 +85,7 @@ class FilterByListOfCategoriesUseCaseTest {
     @Test
     fun `should return correct media when multiple categories match`() {
         //Given
-        val selectedCategories = listOf(Category.ACTION, Category.ANIMATION)
+        val selectedCategories = listOf(Category.Action, Category.Animation)
         val expected = mediaList
 
         //When
@@ -100,10 +100,10 @@ class FilterByListOfCategoriesUseCaseTest {
             createMedia(
                 id = 1,
                 title = "Movie 1",
-                type = MediaType.MOVIE,
-                categories = listOf(Category.ACTION, Category.ADVENTURE)
+                type = MediaType.Movie,
+                categories = listOf(Category.Action, Category.Adventure)
             ),
-            createMedia(id = 2, title = "Series 1", type = MediaType.TVSHOW, categories = listOf(Category.ANIMATION))
+            createMedia(id = 2, title = "Series 1", type = MediaType.TvShow, categories = listOf(Category.Animation))
         )
     }
 }

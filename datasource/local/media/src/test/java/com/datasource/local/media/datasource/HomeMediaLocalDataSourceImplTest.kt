@@ -80,7 +80,7 @@ class HomeMediaLocalDataSourceImplTest {
             posterPath = "poster.jpg",
             releaseDate = "2023-08-01",
             genreIds = listOf(1, 2),
-            type = MediaTypeEntity.MOVIE,
+            type = MediaTypeEntity.Movie,
             category = Category.POPULAR,
             language = "en"
         )

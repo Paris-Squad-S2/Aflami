@@ -1,3 +1,5 @@
+package com.feature.search.searchUi.screen.search
+
 import androidx.paging.PagingData
 import com.feature.search.searchUi.R
 import com.paris_2.domain.media.entity.Category
@@ -38,8 +40,8 @@ data class MediaUiState(
 )
 
 enum class MediaTypeUi(val mediaName: String) {
-    TVSHOW("TV Show"),
-    MOVIE("Movie")
+    TvShow("TV Show"),
+    Movie("Movie")
 }
 data class SearchHistoryUiState(
     val searchTitle: String,
