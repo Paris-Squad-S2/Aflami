@@ -48,6 +48,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.VideoPlayer
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
@@ -63,7 +64,6 @@ import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
 import com.paris_2.aflami.designsystem.R as RDesignSystem
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.VideoPlayer
 
 @Composable
 fun MovieDetailsScreen(
@@ -96,7 +96,7 @@ fun MovieDetailsScreenContent(
         }
     }
 
-        if (state.showRatingDialog) {
+    if (state.showRatingDialog) {
         RatingDialog(
             currentRating = currentRating,
             onRatingChange = { newRating ->
@@ -193,7 +193,7 @@ fun MovieDetailsScreenContent(
                             videoKey = state.movieDetailsUiState.youtubeVideoKey,
                             onCloseClick = { movieDetailsScreenInteractionListener.closeYoutubePlayer() }
                         )
-                    }else {
+                    } else {
                         SharedTransitionLayout {
                             AnimatedContent(
                                 targetState = isCollapsed,
