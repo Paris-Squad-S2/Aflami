@@ -62,7 +62,7 @@ import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.R as designsystemR
-
+import androidx.compose.runtime.LaunchedEffect
 
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {
@@ -98,6 +98,20 @@ fun TvShowDetailsScreenContent(
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
     val reviewsList = state.tvShowDetailsUiState.reviews
+
+    var isVideoLoading by remember { mutableStateOf(false) }
+    val shouldShowVideoLoader =
+        state.tvShowDetailsUiState.isYoutubePlayerVisible &&
+                !state.tvShowDetailsUiState.youtubeVideoKey.isNullOrEmpty() && isVideoLoading
+
+    LaunchedEffect(
+        state.tvShowDetailsUiState.youtubeVideoKey,
+        state.tvShowDetailsUiState.isYoutubePlayerVisible
+    ) {
+        if (state.tvShowDetailsUiState.isYoutubePlayerVisible && !state.tvShowDetailsUiState.youtubeVideoKey.isNullOrEmpty()) {
+            isVideoLoading = true
+        }
+    }
 
     if (state.showRatingDialog) {
         RatingDialog(
@@ -137,11 +151,29 @@ fun TvShowDetailsScreenContent(
                     if (state.tvShowDetailsUiState.isYoutubePlayerVisible &&
                         !state.tvShowDetailsUiState.youtubeVideoKey.isNullOrEmpty()
                     ) {
-                        VideoPlayer(
-                            videoKey = state.tvShowDetailsUiState.youtubeVideoKey,
-                            onCloseClick = { tvShowScreenInteractionListener.closeYoutubePlayer() }
-                        )
-                    }else {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            VideoPlayer(
+                                videoKey = state.tvShowDetailsUiState.youtubeVideoKey,
+                                onCloseClick = {
+                                    tvShowScreenInteractionListener.closeYoutubePlayer()
+                                    isVideoLoading = false
+                                },
+                                onVideoLoaded = {
+                                    isVideoLoading = false
+                                }
+                            )
+                            if (shouldShowVideoLoader) {
+                                PageLoadingPlaceHolder(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .matchParentSize()
+                                )
+                            }
+                        }
+                    } else {
                         SharedTransitionLayout {
                             AnimatedContent(
                                 targetState = isCollapsed,
