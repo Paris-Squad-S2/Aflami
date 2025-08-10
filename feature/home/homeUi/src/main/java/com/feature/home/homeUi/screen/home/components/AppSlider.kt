@@ -136,7 +136,7 @@ data class SliderMedia(
     val imageUri: String,
     val title: String,
     val type: SliderMediaTypeUi,
-    val categories: List<String>,
+    val categories: List<Int>,
     val rating: Float?,
     val yearOfRelease: String,
 )
@@ -155,7 +155,7 @@ fun SliderPreview() {
                 imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image1.jpg",
                 title = "Sample Movie 1",
                 type = SliderMediaTypeUi.Movie,
-                categories = listOf("Action", "Adventure"),
+                categories = listOf(1, 2),
                 rating = 8.5f,
                 yearOfRelease = "2023"
             ),
@@ -164,7 +164,7 @@ fun SliderPreview() {
                 imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image2.jpg",
                 title = "Sample TV Show",
                 type = SliderMediaTypeUi.TvShow,
-                categories = listOf("Drama"),
+                categories = listOf(3),
                 rating = 9.0f,
                 yearOfRelease = "2022"
             ),
@@ -173,7 +173,7 @@ fun SliderPreview() {
                 imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
                 title = "Sample Movie 2",
                 type = SliderMediaTypeUi.Movie,
-                categories = listOf("Sci-Fi"),
+                categories = listOf(4),
                 rating = 7.8f,
                 yearOfRelease = "2024"
             )

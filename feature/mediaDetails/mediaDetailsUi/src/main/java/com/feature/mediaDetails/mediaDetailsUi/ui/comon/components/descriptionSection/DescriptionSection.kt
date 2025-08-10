@@ -11,6 +11,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.DescriptionSeparator
@@ -23,7 +24,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 @Composable
 fun DescriptionSection(
     title: String,
-    genres: List<String>,
+    genres: List<Int>,
     releaseDate: String,
     runtime: String,
     country: String,
@@ -65,14 +66,14 @@ fun DescriptionSection(
 }
 
 @Composable
-private fun GenreChipRow(genres: List<String>) {
+private fun GenreChipRow(genres: List<Int>) {
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(4.dp),
         modifier = Modifier.padding(start = 16.dp)
     ) {
         items(genres.size) { index ->
             GenresChip(
-                title = genres[index],
+                title = stringResource( genres[index]),
                 isSelected = false,
                 modifier = Modifier
             )
@@ -86,7 +87,7 @@ fun DescriptionSectionPreview() {
     AflamiTheme {
         DescriptionSection(
             title = "The Green Mile",
-            genres = listOf("Drama", "Fantasy", "Crime"),
+            genres = emptyList(),
             releaseDate = "10-09-1999",
             runtime = "3h 9m",
             country = "USA",
