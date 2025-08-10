@@ -22,6 +22,9 @@ import org.junit.jupiter.api.Test
 import com.paris_2.domain.media.entity.Media as DomainMedia
 import com.paris_2.domain.media.entity.MediaType as DomainMediaType
 
+private const val CATEGORY_DRAMA = 1
+private const val CATEGORY_COMEDY = 2
+
 @OptIn(ExperimentalCoroutinesApi::class)
 class TopRatingMoviesViewModelTest {
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase = mockk()
@@ -31,10 +34,22 @@ class TopRatingMoviesViewModelTest {
 
     private val fakeTopRatedList = listOf(
         MediaUiState(
-            10, "img/a", "Top 1", MediaTypeUi.MOVIE, listOf("Drama"), LocalDate(2022, 2, 2), 9.0
+            10,
+            "img/a",
+            "Top 1",
+            MediaTypeUi.MOVIE,
+            listOf(CATEGORY_DRAMA),
+            LocalDate(2022, 2, 2),
+            9.0
         ),
         MediaUiState(
-            11, "img/b", "Top 2", MediaTypeUi.TVSHOW, listOf("Comedy"), LocalDate(2021, 7, 8), 8.4
+            11,
+            "img/b",
+            "Top 2",
+            MediaTypeUi.TVSHOW,
+            listOf(CATEGORY_COMEDY),
+            LocalDate(2021, 7, 8),
+            8.4
         )
     )
 
@@ -92,7 +107,7 @@ class TopRatingMoviesViewModelTest {
     @Test
     fun `onMediaCardClick for tvshow triggers correct navigation`() = runTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,)
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI)
         runCurrent()
         val tv = fakeTopRatedList[1]
         viewModel.onMediaCardClick(tv)
