@@ -2,8 +2,9 @@ package com.paris_2.domain.media.useCase
 
 import com.paris_2.domain.media.entity.Country
 import com.paris_2.domain.media.repository.CountryRepository
+import javax.inject.Inject
 
-class AutoCompleteCountryUseCase(
+class AutoCompleteCountryUseCase @Inject constructor(
     private val countryRepository: CountryRepository,
 ) {
     suspend operator fun invoke(query: String): List<Country> {

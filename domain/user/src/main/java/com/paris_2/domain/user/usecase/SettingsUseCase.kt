@@ -3,8 +3,9 @@ package com.paris_2.domain.user.usecase
 import com.paris_2.domain.user.repository.SettingRepository
 import com.paris_2.domain.user.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class SettingsUseCase(
+class SettingsUseCase @Inject constructor(
     private val settingRepository: SettingRepository,
     private val userRepository: UserRepository,
 ) {

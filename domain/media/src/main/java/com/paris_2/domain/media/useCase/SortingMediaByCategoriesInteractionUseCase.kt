@@ -2,8 +2,9 @@ package com.paris_2.domain.media.useCase
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.repository.GenresInteractionRepository
+import javax.inject.Inject
 
-class SortingMediaByCategoriesInteractionUseCase(
+class SortingMediaByCategoriesInteractionUseCase@Inject constructor (
     private val genresInteractionRepository: GenresInteractionRepository
 ) {
     suspend operator fun invoke(list: List<Media>): List<Media> {

@@ -20,6 +20,7 @@ dependencies{
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.jupiter.junit.jupiter)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.javax.inject)
 }
 tasks.test {
     useJUnitPlatform()

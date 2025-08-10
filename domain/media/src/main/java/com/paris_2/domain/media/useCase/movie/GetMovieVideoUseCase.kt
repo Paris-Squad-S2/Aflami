@@ -2,8 +2,9 @@ package com.paris_2.domain.media.useCase.movie
 
 import com.paris_2.domain.media.entity.MovieVideo
 import com.paris_2.domain.media.repository.MovieRepository
+import javax.inject.Inject
 
-class GetMovieVideoUseCase(
+class GetMovieVideoUseCase @Inject constructor(
     private val movieRepository: MovieRepository
 ) {
     suspend operator fun invoke(movieId: Int): MovieVideo {

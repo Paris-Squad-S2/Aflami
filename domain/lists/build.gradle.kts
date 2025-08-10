@@ -15,6 +15,7 @@ dependencies{
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.bundles.test)
+    implementation(libs.javax.inject)
 }
 
 tasks.test {
