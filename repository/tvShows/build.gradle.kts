@@ -63,8 +63,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.truth)
 
-    implementation(project(Modules.DOMAIN_MEDIA))
-    implementation(project(Modules.REPOSITORY_USER))
+    implementation(projects.domain.media)
+    implementation(projects.repository.user)
 
 }
 tasks.withType<Test>().configureEach {

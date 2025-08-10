@@ -56,13 +56,13 @@ dependencies {
 
     testImplementation(libs.bundles.test)
 
-    implementation(project(Modules.FEATURE_PROFILE_API))
-    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
-    implementation(project(Modules.DOMAIN_MEDIA))
-    implementation(project(Modules.DOMAIN_USER))
+    implementation(projects.feature.profile.profileApi)
+    implementation(projects.feature.authentication.authenticationApi)
+    implementation(projects.designsystem)
+    implementation(projects.safeimageviewer)
+    implementation(projects.feature.mediaDetails.mediaDetailsApi)
+    implementation(projects.domain.media)
+    implementation(projects.domain.user)
 }
 tasks.withType<Test> {
     useJUnitPlatform()

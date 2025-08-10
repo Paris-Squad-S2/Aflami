@@ -56,12 +56,12 @@ dependencies {
     testImplementation(libs.bundles.test)
 
 
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_LISTS))
-    implementation(project(Modules.DOMAIN_USER))
-    implementation(project(Modules.FEATURE_LISTS_API))
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
-    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
+    implementation(projects.designsystem)
+    implementation(projects.domain.lists)
+    implementation(projects.domain.user)
+    implementation(projects.feature.lists.listsApi)
+    implementation(projects.safeimageviewer)
+    implementation(projects.feature.authentication.authenticationApi)
+    implementation(projects.feature.mediaDetails.mediaDetailsApi)
 
 }
