@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.search
 
-import CategoryUiState
 import MediaTypeUi
 import MediaUiState
 import SearchScreenState

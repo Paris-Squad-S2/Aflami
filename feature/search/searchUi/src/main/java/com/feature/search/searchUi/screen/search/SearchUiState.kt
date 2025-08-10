@@ -41,12 +41,6 @@ enum class MediaTypeUi(val mediaName: String) {
     TVSHOW("TV Show"),
     MOVIE("Movie")
 }
-
-data class CategoryUiState(
-    val id: Int,
-    val name: String,
-)
-
 data class SearchHistoryUiState(
     val searchTitle: String,
     val searchDate: String,
