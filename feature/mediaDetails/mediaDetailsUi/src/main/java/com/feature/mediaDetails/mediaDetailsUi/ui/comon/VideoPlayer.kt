@@ -37,8 +37,7 @@ fun VideoPlayer(
         key(videoKey) {
             AndroidView(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 40.dp, bottom = 24.dp),
+                    .fillMaxWidth(),
                 factory = { ctx ->
                     YouTubePlayerView(ctx).apply {
                         lifecycleOwner.lifecycle.addObserver(this)
