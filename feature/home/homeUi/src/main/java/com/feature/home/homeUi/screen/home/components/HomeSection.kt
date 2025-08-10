@@ -117,7 +117,7 @@ fun PreviewHomeSectionLoaded() {
             imageUri = "https://via.placeholder.com/156x222.png?text=Movie+$index",
             title = "Movie $index",
             type = MediaTypeUi.MOVIE,
-            categories = listOf("Action", "Drama"),
+            categories = emptyList(),
             yearOfRelease = kotlinx.datetime.LocalDate(2024, 5, 1),
             rating = 8.5
         )

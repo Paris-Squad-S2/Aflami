@@ -1,6 +1,5 @@
 package com.feature.home.homeUi.mapper
 
-import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.feature.home.homeUi.screen.home.MediaTypeUi
@@ -36,7 +35,7 @@ fun SliderMedia.toMedia(): Media {
         imageUri = this.imageUri,
         rating = this.rating?.toDouble(),
         type = this.type.toMediaType(),
-        categories = this.categories.map { it.toGenerEnum() },
+        categories = this.categories.map { it.toCategory() },
         yearOfRelease = LocalDate.parse(this.yearOfRelease)
     )
 }
@@ -68,7 +67,7 @@ fun MediaUiState.toMedia():Media{
         imageUri = this.imageUri,
         title = this.title,
         type = this.type.toMediaType(),
-        categories = this.categories.map { it.toGenerEnum() },
+        categories = this.categories.map { it.toCategory() },
         yearOfRelease = this.yearOfRelease,
         rating = this.rating,
     )

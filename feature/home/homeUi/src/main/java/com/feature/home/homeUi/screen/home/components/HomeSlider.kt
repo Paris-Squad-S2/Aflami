@@ -201,7 +201,7 @@ fun HomeSlider(
                     items(mediaState.value.categories.take(3)) {
                         GenresChip(
                             modifier = Modifier.shimmerable(enabled = isShimmerEnabled),
-                            title = it,
+                            title = stringResource(it),
                             isSelected = false
                         )
                         Spacer(modifier = Modifier.width(4.dp))
