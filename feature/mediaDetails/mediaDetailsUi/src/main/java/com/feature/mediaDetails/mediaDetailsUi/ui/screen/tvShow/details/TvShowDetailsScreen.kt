@@ -134,28 +134,36 @@ fun TvShowDetailsScreenContent(
                 }
 
                 else -> {
+                    if (state.tvShowDetailsUiState.isYoutubePlayerVisible &&
+                        !state.tvShowDetailsUiState.youtubeVideoKey.isNullOrEmpty()
+                    ) {
+                        VideoPlayer(
+                            videoKey = state.tvShowDetailsUiState.youtubeVideoKey,
+                            onCloseClick = { tvShowScreenInteractionListener.closeYoutubePlayer() }
+                        )
+                    }else {
+                        SharedTransitionLayout {
+                            AnimatedContent(
+                                targetState = isCollapsed,
+                                label = "basic_transition"
+                            ) { target ->
+                                if (!target) {
+                                    TopComponentDetails(
+                                        state = state,
+                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                    )
+                                } else {
+                                    TvTopComponent(
+                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        title = state.tvShowDetailsUiState.tvShowUi.title,
+                                    )
+                                }
 
-                    SharedTransitionLayout {
-                        AnimatedContent(
-                            targetState = isCollapsed,
-                            label = "basic_transition"
-                        ) { target ->
-                            if (!target) {
-                                TopComponentDetails(
-                                    state = state,
-                                    tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                )
-                            } else {
-                                TvTopComponent(
-                                    tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    title = state.tvShowDetailsUiState.tvShowUi.title,
-                                )
                             }
-
                         }
                     }
                     LazyColumn(
@@ -454,13 +462,4 @@ fun TvShowDetailsScreenContent(
             )
         }
     }
-    if (state.tvShowDetailsUiState.isYoutubePlayerVisible &&
-        !state.tvShowDetailsUiState.youtubeVideoKey.isNullOrEmpty()
-    ) {
-        VideoPlayer(
-            videoKey = state.tvShowDetailsUiState.youtubeVideoKey,
-            onCloseClick = { tvShowScreenInteractionListener.closeYoutubePlayer() }
-        )
-    }
-
-}
+   }
