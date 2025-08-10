@@ -2,9 +2,8 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.comon
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.runtime.key
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -35,21 +34,23 @@ fun VideoPlayer(
             .fillMaxWidth()
             .background(Theme.colors.surface)
     ) {
-        AndroidView(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 40.dp, bottom = 24.dp),
-            factory = { ctx ->
-                YouTubePlayerView(ctx).apply {
-                    lifecycleOwner.lifecycle.addObserver(this)
-                    addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
-                        override fun onReady(youTubePlayer: YouTubePlayer) {
-                            youTubePlayer.loadVideo(videoKey, 0f)
-                        }
-                    })
+        key(videoKey) {
+            AndroidView(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 40.dp, bottom = 24.dp),
+                factory = { ctx ->
+                    YouTubePlayerView(ctx).apply {
+                        lifecycleOwner.lifecycle.addObserver(this)
+                        addYouTubePlayerListener(object : AbstractYouTubePlayerListener() {
+                            override fun onReady(youTubePlayer: YouTubePlayer) {
+                                youTubePlayer.loadVideo(videoKey, 0f)
+                            }
+                        })
+                    }
                 }
-            }
-        )
+            )
+        }
 
         IconButton(
             onClick = onCloseClick,
