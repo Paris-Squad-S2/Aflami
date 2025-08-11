@@ -7,8 +7,7 @@
         <activity
             android:name=".ui.MediaDetailsActivity"
             android:exported="false"
-            android:label="@string/title_activity_media_details"
-            android:theme="@style/Theme.Aflami" />
+            android:label="@string/title_activity_media_details" />
     </application>
 
 </manifest>
