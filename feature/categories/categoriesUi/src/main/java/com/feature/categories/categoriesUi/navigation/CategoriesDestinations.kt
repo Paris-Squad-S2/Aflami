@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 sealed interface CategoriesDestination
 
 @Serializable
-interface CategoriesGraph : CategoriesDestination
+sealed interface CategoriesGraph : CategoriesDestination
 
 sealed interface CategoriesDestinations : CategoriesGraph {
     @Serializable

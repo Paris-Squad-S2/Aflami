@@ -2,6 +2,8 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -41,6 +43,9 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(projects.feature.categories.categoriesApi)
     implementation(projects.designsystem)
+
+    implementation(libs.bundles.hilt)
+    ksp(libs.hilt.android.compiler)
 
     implementation(libs.bundles.navigation)
     implementation(projects.domain.media)
