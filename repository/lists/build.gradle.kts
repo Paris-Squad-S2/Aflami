@@ -14,21 +14,17 @@ android {
         minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Configurations.JAVA_VERSION
+        targetCompatibility = Configurations.JAVA_VERSION
     }
     kotlinOptions {
         jvmTarget = Configurations.JVM_TARGET

@@ -12,22 +12,17 @@ android {
 
     defaultConfig {
         minSdk = Configurations.MIN_SDK
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
-            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Configurations.JAVA_VERSION
+        targetCompatibility = Configurations.JAVA_VERSION
     }
     kotlinOptions {
         jvmTarget = Configurations.JVM_TARGET
@@ -43,7 +38,7 @@ dependencies {
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.common.jvm)
-    testImplementation(libs.jupiter.junit.jupiter)
+    testImplementation(libs.junit.jupiter)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)

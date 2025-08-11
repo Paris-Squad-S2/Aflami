@@ -1,2 +1,2 @@
-versionName=0.8.2
+versionName=0.8.6
 - add categories domain and data

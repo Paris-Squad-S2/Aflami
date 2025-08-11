@@ -134,7 +134,6 @@ dependencies {
     kover(projects.datasource.remote.categories)
     kover(projects.datasource.local.movie)
     kover(projects.datasource.local.tvShow)
-    kover(projects.datasource.local.lists)
     kover(projects.datasource.local.guessGame)
     kover(projects.datasource.local.categories)
     kover(projects.feature.onboarding.onboardingApi)
