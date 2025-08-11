@@ -1,4 +1,4 @@
-package com.repository.movie.models.remote
+package com.repository.media.dto.category
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
