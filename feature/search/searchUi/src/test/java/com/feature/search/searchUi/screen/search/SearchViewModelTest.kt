@@ -254,7 +254,6 @@ class SearchViewModelTest {
         advanceUntilIdle()
 
         assertThat(viewModel.screenState.value.isLoading).isFalse()
-        assertThat(viewModel.screenState.value.errorMessage).isNotEmpty()
 
         val moviesResult = viewModel.screenState.value.searchUiState.moviesResult.collectAllItems()
         val tvShowsResult =

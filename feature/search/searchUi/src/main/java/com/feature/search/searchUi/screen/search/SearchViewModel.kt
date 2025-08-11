@@ -35,6 +35,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -143,7 +144,8 @@ class SearchViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false,
                     )
                 )
             }
@@ -166,7 +168,8 @@ class SearchViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false,
                     )
                 )
             }
@@ -202,7 +205,7 @@ class SearchViewModel @Inject constructor(
                 delay(1000)
                 searchQuery(query)
             }
-        }else{
+        } else {
             updateState(
                 screenState.value.copy(
                     isLoading = false
@@ -212,18 +215,18 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchQuery(query: String): Job {
+        updateState(
+            screenState.value.copy(
+                errorMessage = null,
+            )
+        )
         return tryToExecute(
             execute = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = null,
-                    )
-                )
                 Pager(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
                         PagingSource(
-                            searchUseCase = {page ->
+                            searchUseCase = { page ->
                                 sortingMediaByCategoriesInteractionUseCase(
                                     searchByQueryUseCase(
                                         query,
@@ -233,29 +236,41 @@ class SearchViewModel @Inject constructor(
                             }
                         )
                     }
-                ).flow.cachedIn(viewModelScope)
+                ).flow
+                    .catch { e -> throw e }
+                    .cachedIn(viewModelScope)
             },
             onSuccess = { searchResult ->
                 val moviesResult =
-                    searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.Movie } }
+                    searchResult.map { pagingData -> pagingData.filter { it.type == MediaTypeUi.Movie } }
                 val tvShowsResult =
-                    searchResult.map { pagingData -> pagingData .filter { it.type == MediaTypeUi.TvShow } }
-                val filteredMediaByRating = flowOf(PagingData.from(filterMediaByRatingUseCase(
+                    searchResult.map { pagingData -> pagingData.filter { it.type == MediaTypeUi.TvShow } }
+                val filteredMediaByRating = flowOf(
+                    PagingData.from(
+                        filterMediaByRatingUseCase(
                     screenState.value.searchUiState.selectedRating,
                     searchResult.collectAllItems().map { it.toDomainModel() }
                 )))
                 val filteredMediaByCategories =
-                    if (!screenState.value.searchUiState.isAllCategories) flowOf (PagingData.from(filterMedByListOfCategoriesUseCase(
-                        screenState.value.searchUiState.categories.filter { it.value }.keys.toList(),
-                        filteredMediaByRating.collectItems()
-                    ).toMediaUiList())) else searchResult
+                    if (!screenState.value.searchUiState.isAllCategories) flowOf(
+                        PagingData.from(
+                            filterMedByListOfCategoriesUseCase(
+                                screenState.value.searchUiState.categories.filter { it.value }.keys.toList(),
+                                filteredMediaByRating.collectItems()
+                            ).toMediaUiList()
+                        )
+                    ) else searchResult
 
                 val filteredMoviesResult =
-                    filteredMediaByCategories.map { pagingData  -> pagingData
-                        .filter { it.type == MediaTypeUi.Movie }}
+                    filteredMediaByCategories.map { pagingData ->
+                        pagingData
+                            .filter { it.type == MediaTypeUi.Movie }
+                    }
                 val filteredTvShowsResult =
-                    filteredMediaByCategories.map { pagingData  -> pagingData
-                        .filter { it.type == MediaTypeUi.TvShow }}
+                    filteredMediaByCategories.map { pagingData ->
+                        pagingData
+                            .filter { it.type == MediaTypeUi.TvShow }
+                    }
                 updateState(
                     screenState.value.copy(
                         isLoading = false,
@@ -272,7 +287,7 @@ class SearchViewModel @Inject constructor(
                 updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
-                        isLoading = false
+                        isLoading = false,
                     )
                 )
             }
@@ -417,7 +432,8 @@ class SearchViewModel @Inject constructor(
                     onError = { errorMessage ->
                         updateState(
                             screenState.value.copy(
-                                errorMessage = errorMessage
+                                errorMessage = errorMessage,
+                                isLoading = false
                             )
                         )
                     }
@@ -436,7 +452,8 @@ class SearchViewModel @Inject constructor(
                     onError = { errorMessage ->
                         updateState(
                             screenState.value.copy(
-                                errorMessage = errorMessage
+                                errorMessage = errorMessage,
+                                isLoading = false
                             )
                         )
                     }
@@ -451,7 +468,8 @@ class SearchViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }
@@ -466,7 +484,8 @@ class SearchViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false,
                     )
                 )
             }
@@ -500,7 +519,8 @@ class SearchViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage
+                        errorMessage = errorMessage,
+                        isLoading = false,
                     )
                 )
             }
