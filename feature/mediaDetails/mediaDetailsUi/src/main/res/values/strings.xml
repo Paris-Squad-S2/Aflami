@@ -71,4 +71,5 @@
     <string name="category_talk">Talk</string>
     <string name="category_war_politics">War &amp; Politics</string>
     <string name="category_unknown" />
+    <string name="failed_to_load_restriction_settings">Failed to load restriction settings</string>
 </resources>

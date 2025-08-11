@@ -35,7 +35,6 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import com.paris_2.aflami.designsystem.R as RDesignSystem
@@ -108,36 +107,53 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     private fun getRestriction() {
-        viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
-            updateState(
+        tryToExecute(
+            execute = { settingsUseCase.getRestriction() },
+            onSuccess = ::onGetRestrictionSuccess,
+            onError = ::onGetRestrictionError
+        )
+    }
+
+    private fun onGetRestrictionSuccess(restriction: String) {
+        updateState(
+            screenState.value.copy(
+                contentRestriction = ContentRestriction.valueOf(restriction),
+                showSnackBar = false,
+                snackBarMessage = null
+            )
+        )
+        when (screenState.value.contentRestriction) {
+            ContentRestriction.STRICT -> updateState(
                 screenState.value.copy(
-                    contentRestriction = ContentRestriction.valueOf(restriction)
+                    nsfwThreshold = 0.8f,
+                    genderThreshold = 0.6f
                 )
             )
-            when (screenState.value.contentRestriction) {
-                ContentRestriction.STRICT -> updateState(
-                    screenState.value.copy(
-                        nsfwThreshold = 0.8f,
-                        genderThreshold = 0.6f
-                    )
-                )
 
-                ContentRestriction.MODERATE -> updateState(
-                    screenState.value.copy(
-                        nsfwThreshold = 0.4f,
-                        genderThreshold = 0.6f
-                    )
+            ContentRestriction.MODERATE -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.4f,
+                    genderThreshold = 0.6f
                 )
+            )
 
-                ContentRestriction.OFF -> updateState(
-                    screenState.value.copy(
-                        nsfwThreshold = 0f,
-                        genderThreshold = 0f
-                    )
+            ContentRestriction.OFF -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0f,
+                    genderThreshold = 0f
                 )
-            }
+            )
         }
+        
+    }
+    
+    private fun onGetRestrictionError(error: String) {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = true,
+                snackBarMessage = R.string.failed_to_load_restriction_settings,
+            )
+        )
     }
 
     private fun loadAvailableLists() {
@@ -231,9 +247,9 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                getMovieReviewsUseCase(mediaId,1).toListOfReviewUi()
+                getMovieReviewsUseCase(mediaId, 1).toListOfReviewUi()
             },
-            onSuccess = { reviews->
+            onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
@@ -259,8 +275,11 @@ class MovieDetailsViewModel @Inject constructor(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
                         PagingSource(
-                            mediaUseCase ={ page ->
-                                getMovieRecommendationsUseCase(mediaId,page).toListOfMovieSimilarUI()
+                            mediaUseCase = { page ->
+                                getMovieRecommendationsUseCase(
+                                    mediaId,
+                                    page
+                                ).toListOfMovieSimilarUI()
                             }
                         )
                     }
@@ -335,8 +354,7 @@ class MovieDetailsViewModel @Inject constructor(
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
                     updateState(screenState.value.copy(showRatingDialog = true))
-                }
-                else {
+                } else {
                     navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.rate))
                 }
             },
@@ -371,7 +389,8 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun onAddToSelectedList() {
-        val selectedList = screenState.value.availableLists.getOrNull(screenState.value.selectedListIndex)
+        val selectedList =
+            screenState.value.availableLists.getOrNull(screenState.value.selectedListIndex)
         if (selectedList != null) {
             tryToExecute(
                 execute = {
@@ -480,7 +499,6 @@ class MovieDetailsViewModel @Inject constructor(
     override fun onSimilarMovieClick(mediaId: Int) {
         mediaDetailsFeatureAPI.startMovieDetails(mediaId)
     }
-
 
 
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {

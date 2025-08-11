@@ -70,4 +70,5 @@
     <string name="category_talk">حواري</string>
     <string name="category_war_politics">حرب وسياسة</string>
     <string name="category_unknown" />
+    <string name="failed_to_load_restriction_settings">فشل في تحميل إعدادات القيود</string>
 </resources>

@@ -34,7 +34,6 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -107,36 +106,50 @@ class TvShowDetailsViewModel @Inject constructor(
     }
 
     private fun getRestriction() {
-        viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
-            updateState(
+        tryToExecute(
+            execute = { settingsUseCase.getRestriction() },
+            onSuccess = ::onGetRestrictionSuccess,
+            onError = ::onGetRestrictionError
+        )
+    }
+
+    private fun onGetRestrictionSuccess(restriction: String) {
+        updateState(
+            screenState.value.copy(
+                contentRestriction = ContentRestriction.valueOf(restriction),
+            )
+        )
+        when (screenState.value.contentRestriction) {
+            ContentRestriction.STRICT -> updateState(
                 screenState.value.copy(
-                    contentRestriction = ContentRestriction.valueOf(restriction)
+                    nsfwThreshold = 0.8f,
+                    genderThreshold = 0.6f
                 )
             )
-            when (screenState.value.contentRestriction) {
-                ContentRestriction.STRICT -> updateState(
-                    screenState.value.copy(
-                        nsfwThreshold = 0.8f,
-                        genderThreshold = 0.6f
-                    )
-                )
 
-                ContentRestriction.MODERATE -> updateState(
-                    screenState.value.copy(
-                        nsfwThreshold = 0.4f,
-                        genderThreshold = 0.6f
-                    )
+            ContentRestriction.MODERATE -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.4f,
+                    genderThreshold = 0.6f
                 )
+            )
 
-                ContentRestriction.OFF -> updateState(
-                    screenState.value.copy(
-                        nsfwThreshold = 0f,
-                        genderThreshold = 0f
-                    )
+            ContentRestriction.OFF -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0f,
+                    genderThreshold = 0f
                 )
-            }
+            )
         }
+
+    }
+
+    private fun onGetRestrictionError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error,
+            )
+        )
     }
 
     private fun getInformationVideoTvShow() {
