@@ -1,7 +1,6 @@
 package com.feature.lists.listsUi.screens.listDetails
 
 import androidx.paging.PagingData
-import com.paris.domain.lists.entity.ListDetails
 import com.paris.domain.lists.entity.Media
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
@@ -27,8 +26,17 @@ data class ListDetailsScreenState(
     val listDetails: ListDetailsUiState? = null,
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
-    val showDeleteDialog: Boolean = false
+    val showDeleteDialog: Boolean = false,
+    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
+
+enum class ContentRestriction() {
+    STRICT,
+    MODERATE,
+    OFF
+}
 
 fun Media.toUiState(): MediaUiState = MediaUiState(
     id = this.id,

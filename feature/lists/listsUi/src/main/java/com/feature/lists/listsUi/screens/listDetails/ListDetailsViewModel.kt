@@ -1,7 +1,7 @@
 package com.feature.lists.listsUi.screens.listDetails
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -12,7 +12,9 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,6 +23,7 @@ class ListDetailsViewModel @Inject constructor(
     private val getListDetailsUseCase: GetListDetailsUseCase,
     private val removeMovieFromListUseCase: RemoveMovieFromListUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    private val settingsUseCase: SettingsUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ListDetailsScreenState>(
     initialState = ListDetailsScreenState(),
@@ -28,7 +31,41 @@ class ListDetailsViewModel @Inject constructor(
     private val listId = savedStateHandle.toRoute<ListDestinations.ListDetails>().listId
 
     init {
+        getRestriction()
         getListDetails(listId)
+    }
+
+    private fun getRestriction() {
+        viewModelScope.launch {
+            val restriction = settingsUseCase.getRestriction()
+            emitState(
+                screenState.value.copy(
+                    contentRestriction = ContentRestriction.valueOf(restriction)
+                )
+            )
+            when (screenState.value.contentRestriction) {
+                ContentRestriction.STRICT -> emitState(
+                    screenState.value.copy(
+                        nsfwThreshold = 0.8f,
+                        genderThreshold = 0.6f
+                    )
+                )
+
+                ContentRestriction.MODERATE -> emitState(
+                    screenState.value.copy(
+                        nsfwThreshold = 0.4f,
+                        genderThreshold = 0.6f
+                    )
+                )
+
+                ContentRestriction.OFF -> emitState(
+                    screenState.value.copy(
+                        nsfwThreshold = 0f,
+                        genderThreshold = 0f
+                    )
+                )
+            }
+        }
     }
 
     override fun onMediaCardClick(mediaUiState: MediaUiState) {
