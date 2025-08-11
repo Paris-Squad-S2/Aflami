@@ -16,10 +16,10 @@ import kotlinx.coroutines.withContext
 fun InstallSavedAppLanguage(
     context: Context,
     mainViewModel: MainViewModel = hiltViewModel()
-){
+) {
 
-    LaunchedEffect(key1 = Unit){
-        mainViewModel.getLastSelectedAppLanguage().collectLatest {language ->
+    LaunchedEffect(key1 = Unit) {
+        mainViewModel.getLastSelectedAppLanguage().collectLatest { language ->
             withContext(Dispatchers.Main) {
                 changeAppLanguage(
                     context = context,
