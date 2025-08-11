@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
+import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.paris_2.domain.media.entity.Category
 import kotlinx.datetime.LocalDate
@@ -22,7 +23,10 @@ data class HomeUIState(
     val upComingMediaList: List<MediaUiState>,
     val showMoodPickerDialog: Boolean,
     val isAllCategories: Boolean,
-    val moodPickerMovie: MediaUiState?
+    val moodPickerMovie: MediaUiState?,
+    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
     )
 
 data class MediaUiState(
