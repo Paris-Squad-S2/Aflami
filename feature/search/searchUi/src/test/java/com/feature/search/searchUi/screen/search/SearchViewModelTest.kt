@@ -2,6 +2,7 @@ package com.feature.search.searchUi.screen.search
 
 
 import androidx.paging.PagingData
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
@@ -56,6 +57,8 @@ class SearchViewModelTest {
     private lateinit var viewModel: SearchViewModel
 
     private val testDispatcher = StandardTestDispatcher()
+
+    private val settingsUseCase: SettingsUseCase = mockk()
 
     private val mockMovie1 = Media(
         id = 1,
@@ -133,6 +136,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                settingsUseCase
             )
         )
     }
@@ -157,6 +161,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
 
         advanceUntilIdle()
@@ -182,6 +187,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
 
         advanceUntilIdle()
@@ -205,6 +211,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
 
         advanceUntilIdle()
@@ -482,6 +489,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                settingsUseCase
             )
             advanceUntilIdle()
 
@@ -513,6 +521,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
         advanceUntilIdle()
 
@@ -558,6 +567,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                settingsUseCase
             )
             advanceUntilIdle()
 
