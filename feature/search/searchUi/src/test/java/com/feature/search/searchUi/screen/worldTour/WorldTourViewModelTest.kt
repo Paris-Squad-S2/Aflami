@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
@@ -39,6 +40,8 @@ class WorldTourViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val settingsUseCase: SettingsUseCase = mockk()
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun setup() {
@@ -58,6 +61,7 @@ class WorldTourViewModelTest {
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),
+            settingsUseCase
         )
     }
 
@@ -141,6 +145,7 @@ class WorldTourViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
         val mediaUiState = MediaUiState(
             id = 12,
