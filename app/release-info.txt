@@ -1,2 +1,2 @@
-versionName=0.7.10
+versionName=0.8.1
 - remove unused ProGuard files

@@ -127,6 +127,7 @@ dependencies {
     implementation(libs.bundles.room)
     implementation(libs.bundles.retrofit)
     implementation(libs.bundles.serialization)
+    implementation(libs.androidx.core.splashscreen)
 
     ksp(libs.hilt.android.compiler)
     ksp(libs.room.compiler)
