@@ -9,6 +9,7 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
@@ -85,8 +86,13 @@ class ProfileViewModel @Inject constructor(
 
     override fun onChooseAppearanceClicked() {
 
+        tryToExecute(
+            execute = { settingsUseCase.isDarkTheme() },
+            onSuccess = ::onChooseAppearanceClickedSuccess,
+            onError = ::onChooseAppearanceClickedError
+        )
         viewModelScope.launch {
-            settingsUseCase.isDarkTheme().collectLatest {isDark ->
+            settingsUseCase.isDarkTheme().collectLatest { isDark ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
@@ -98,6 +104,30 @@ class ProfileViewModel @Inject constructor(
             }
 
         }
+    }
+
+    private fun onChooseAppearanceClickedSuccess(isDark: Flow<Boolean>) {
+        viewModelScope.launch {
+            isDark.collectLatest { isDark ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            isThemeDialogOpen = true,
+                            theme = if (isDark) Appearance.DARK else Appearance.LIGHT
+                        )
+                    )
+                )
+            }
+        }
+
+    }
+
+    private fun onChooseAppearanceClickedError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
     }
 
     override fun onSettingClicked() {
@@ -139,12 +169,19 @@ class ProfileViewModel @Inject constructor(
                 )
             )
         )
-        viewModelScope.launch {
-            settingsUseCase.setTheme(appearance == Appearance.DARK)
-        }
-
+        tryToExecute(
+            execute = { settingsUseCase.setTheme(appearance == Appearance.DARK) },
+            onError = ::onAppearanceApplyClickedError
+        )
     }
 
+    private fun onAppearanceApplyClickedError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
+    }
 
     override fun onLanguageApplyClicked(language: Language) {
         viewModelScope.launch {
@@ -164,13 +201,6 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    override fun onChangePasswordClicked() {
-        TODO("Not yet implemented")
-    }
-
-    override fun onSaveContentRestrictionClicked() {
-        TODO("Not yet implemented")
-    }
 
     override fun onDismissAppearanceDialog() {
         updateState(
@@ -233,9 +263,18 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onRestrictionSelected(contentRestriction: ContentRestriction) {
-            viewModelScope.launch {
-                settingsUseCase.setRestriction(contentRestriction.name)
-            }
+        tryToExecute(
+            execute = { settingsUseCase.setRestriction(contentRestriction.name) },
+            onError = ::onRestrictionSelectedError
+        )
+    }
+
+    private fun onRestrictionSelectedError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error
+            )
+        )
     }
 
     override fun onWatchHistoryClicked() {
