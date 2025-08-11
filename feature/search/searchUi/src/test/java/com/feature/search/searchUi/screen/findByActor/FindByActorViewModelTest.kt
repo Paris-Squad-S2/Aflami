@@ -15,6 +15,7 @@ import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,7 +37,7 @@ class FindByActorViewModelTest {
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
     private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
     private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private lateinit var settingsUseCase: SettingsUseCase
     private val testDispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -46,13 +47,15 @@ class FindByActorViewModelTest {
         getMediaByActorNameUseCase = mockk(relaxed = true)
         incrementCategoryInteractionUseCase = mockk(relaxed = true)
         sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
+        settingsUseCase = mockk(relaxed = true)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
         viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            settingsUseCase
+            settingsUseCase = settingsUseCase
         )
     }
 
@@ -181,13 +184,15 @@ class FindByActorViewModelTest {
     @Test
     fun `onMediaCardClick navigates to detailsScreen`() = runTest {
         val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
+        val settingsUseCase = mockk<SettingsUseCase>(relaxed = true)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
         val viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase
+            settingsUseCase = settingsUseCase
         )
         val mediaUiState = MediaUiState(
             id = 42,

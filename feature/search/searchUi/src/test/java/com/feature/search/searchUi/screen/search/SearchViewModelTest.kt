@@ -42,23 +42,22 @@ import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
-    private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase = mockk()
-    private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase = mockk()
-    private val clearRecentSearchUseCase: ClearRecentSearchUseCase = mockk()
-    private val searchByQueryUseCase: SearchByQueryUseCase = mockk()
-    private val getAllCategoriesUseCase: GetAllCategoriesUseCase = mockk()
-    private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase = mockk()
-    private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase = mockk()
-    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase = mockk()
-    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase =
-        mockk()
+    private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase = mockk(relaxed = true)
+    private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase = mockk(relaxed = true)
+    private val clearRecentSearchUseCase: ClearRecentSearchUseCase = mockk(relaxed = true)
+    private val searchByQueryUseCase: SearchByQueryUseCase = mockk(relaxed = true)
+    private val getAllCategoriesUseCase: GetAllCategoriesUseCase = mockk(relaxed = true)
+    private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase = mockk(relaxed = true)
+    private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase = mockk(relaxed = true)
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase = mockk(relaxed = true)
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
     private lateinit var viewModel: SearchViewModel
 
     private val testDispatcher = StandardTestDispatcher()
 
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val settingsUseCase: SettingsUseCase = mockk(relaxed = true)
 
     private val mockMovie1 = Media(
         id = 1,
@@ -603,7 +602,7 @@ class SearchViewModelTest {
             )
             every { filterMediaByRatingUseCase(any(), any()) } returns initialMovies
             every { filterMedByListOfCategoriesUseCase(emptyList(), any()) } returns emptyList()
-            viewModel.onApplyFilterButtonClick(7.0f, false, listOf(mockCategory1))
+            viewModel.onApplyFilterButtonClick(7.0f, false, emptyList())
             advanceUntilIdle()
             val items =
                 viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()
