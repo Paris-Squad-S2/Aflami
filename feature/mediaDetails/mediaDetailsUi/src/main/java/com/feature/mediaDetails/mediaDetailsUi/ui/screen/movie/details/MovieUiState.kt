@@ -37,7 +37,9 @@ data class MovieDetailsUiState(
     val reviews: List<ReviewUi>,
     val gallery: List<String>,
     val movieVideoUi: MovieVideoUi,
-    val selectedRating: Float
+    val selectedRating: Float,
+    val isYoutubePlayerVisible: Boolean = false,
+    val youtubeVideoKey: String? = null
 )
 
 data class MovieVideoUi(

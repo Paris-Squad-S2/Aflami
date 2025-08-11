@@ -50,19 +50,18 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.TvTopComponent
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.VideoPlayer
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.paris_2.aflami.designsystem.components.AppSnackBar
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
 import com.paris_2.aflami.designsystem.R as designsystemR
-
 
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {
@@ -134,28 +133,39 @@ fun TvShowDetailsScreenContent(
                 }
 
                 else -> {
+                    if (state.tvShowDetailsUiState.isYoutubePlayerVisible &&
+                        !state.tvShowDetailsUiState.youtubeVideoKey.isNullOrEmpty()
+                    ) {
+                        VideoPlayer(
+                            videoKey = state.tvShowDetailsUiState.youtubeVideoKey,
+                            onCloseClick = {
+                                tvShowScreenInteractionListener.closeYoutubePlayer()
+                            },
+                        )
 
-                    SharedTransitionLayout {
-                        AnimatedContent(
-                            targetState = isCollapsed,
-                            label = "basic_transition"
-                        ) { target ->
-                            if (!target) {
-                                TopComponentDetails(
-                                    state = state,
-                                    tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                )
-                            } else {
-                                TvTopComponent(
-                                    tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    title = state.tvShowDetailsUiState.tvShowUi.title,
-                                )
+                    } else {
+                        SharedTransitionLayout {
+                            AnimatedContent(
+                                targetState = isCollapsed,
+                                label = "basic_transition"
+                            ) { target ->
+                                if (!target) {
+                                    TopComponentDetails(
+                                        state = state,
+                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                    )
+                                } else {
+                                    TvTopComponent(
+                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        title = state.tvShowDetailsUiState.tvShowUi.title,
+                                    )
+                                }
+
                             }
-
                         }
                     }
                     LazyColumn(
@@ -274,7 +284,7 @@ fun TvShowDetailsScreenContent(
                                                         ) {
 
                                                             AnimatedContent(
-                                                                targetState = if (episode.stillUrl.isNotEmpty()) episode.stillUrl else state.tvShowDetailsUiState.tvShowUi.posterUrl,
+                                                                targetState = episode.stillUrl.ifEmpty { state.tvShowDetailsUiState.tvShowUi.posterUrl },
                                                                 transitionSpec = {
                                                                     fadeIn(animationSpec = tween(300)) togetherWith
                                                                             fadeOut(
@@ -303,10 +313,10 @@ fun TvShowDetailsScreenContent(
                                                                             seasonIndex + 1,
                                                                             episode.episodeNumber
                                                                         )
-                                                                        if (!(state.tvShowDetailsUiState.episodeVideoUi.site.isEmpty() ||
-                                                                                    state.tvShowDetailsUiState.episodeVideoUi.key.isEmpty())
+                                                                        if (state.tvShowDetailsUiState.episodeVideoUi.site.isNotEmpty() &&
+                                                                            state.tvShowDetailsUiState.episodeVideoUi.key.isNotEmpty()
                                                                         ) {
-                                                                            activity?.openYoutubeOrBrowser(
+                                                                            tvShowScreenInteractionListener.playYoutubeVideo(
                                                                                 state.tvShowDetailsUiState.episodeVideoUi.key
                                                                             )
                                                                         }
@@ -391,7 +401,7 @@ fun TvShowDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(reviewsList) {review ->
+                                        items(reviewsList) { review ->
                                             ReviewsSection(review)
                                         }
                                     }
