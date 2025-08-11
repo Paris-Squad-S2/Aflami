@@ -15,7 +15,6 @@ fun CategoriesNavGraph(
     viewModel: CategoriesScreenViewModel = hiltViewModel()
 ) {
     val navigator = viewModel.navigator
-
     val navController = rememberNavController()
 
     ObserveAsEvents(navigator.categoriesNavigationEvent) { event ->
@@ -37,7 +36,7 @@ fun CategoriesNavGraph(
 }
 
 fun NavGraphBuilder.buildCategoriesNavGraph() {
-    navigation<CategoriesDestinations.CategoriesGraph1>(
+    navigation<CategoriesDestinations.MainGraph>(
         startDestination = CategoriesDestinations.CategoriesScreen
     ) {
         composable<CategoriesDestinations.CategoriesScreen> { CategoriesScreen() }

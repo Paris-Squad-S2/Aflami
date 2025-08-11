@@ -23,8 +23,8 @@ open class BaseViewModel<S> @Inject constructor(
     @Inject
     lateinit var navigator: CategoriesNavigator
 
-    private val privateScreenState = MutableStateFlow(initialState)
-    val screenState: StateFlow<S> = privateScreenState.asStateFlow()
+    private val _screenState = MutableStateFlow(initialState)
+    val screenState: StateFlow<S> = _screenState.asStateFlow()
 
     protected fun navigate(destination: CategoriesDestination, navOptions: NavOptions? = null) =
         viewModelScope.launch {
@@ -33,8 +33,8 @@ open class BaseViewModel<S> @Inject constructor(
 
     protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
 
-    fun emitState(newState: S) {
-        privateScreenState.update { newState }
+    fun updateState(newState: S) {
+        _screenState.update { newState }
     }
 
     protected fun <T> tryToExecute(

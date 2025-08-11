@@ -88,7 +88,7 @@ object FeatureAPIModule {
     @Provides
     @Singleton
     fun provideCategoriesNavigator(): CategoriesNavigator =
-        CategoriesNavigatorImpl(startGraph = CategoriesDestinations.CategoriesGraph1)
+        CategoriesNavigatorImpl(startGraph = CategoriesDestinations.MainGraph)
 
     @Provides
     @Singleton

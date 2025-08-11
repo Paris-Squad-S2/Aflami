@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 sealed interface CategoriesDestinations : CategoriesGraph {
     @Serializable
-    data object CategoriesGraph1 : CategoriesGraph
+    data object MainGraph : CategoriesGraph
 
     @Serializable
     data object CategoriesScreen : CategoriesDestination
