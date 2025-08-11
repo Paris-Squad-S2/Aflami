@@ -25,6 +25,9 @@ class FailedToAddRatingException(message: String = "Failed to add rating") :
 class NoMoviesByCategoryException(message: String = "No Movies By Category") :
     AflamiException(message)
 
+class NoTvShowsByCategoryException(message: String = "No Tv Shows By Category") :
+    AflamiException(message)
+
 class FailedToDeleteRatingException(message: String = "Failed to delete rating") :
     AflamiException(message)
 
