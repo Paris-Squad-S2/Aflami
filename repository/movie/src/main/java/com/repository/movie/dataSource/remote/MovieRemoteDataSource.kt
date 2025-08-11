@@ -1,6 +1,5 @@
 package com.repository.movie.dataSource.remote
 
-import com.repository.movie.models.remote.MovieByCategoryDto
 import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieImagesDto
@@ -17,5 +16,4 @@ interface MovieRemoteDataSource {
     suspend fun getTrailerVideoForMovie(movieId: Int): MovieVideoDto
     suspend fun addRatingToMovie(movieId: Int, rating: Float): Boolean
     suspend fun deleteMovieRating(movieId: Int): Boolean
-    suspend fun getMoviesByGenre(genreId: Int, page: Int , language: String): MovieByCategoryDto
 }
