@@ -1,6 +1,7 @@
 package com.repository.media.services
 
 import com.repository.media.dto.category.MovieByCategoryDto
+import com.repository.media.dto.category.TvShowByCategoryDto
 import com.repository.media.dto.home.MovieListDto
 import com.repository.media.dto.home.TvListDto
 import com.repository.media.dto.profile.RatedMoviesDto
@@ -65,8 +66,15 @@ interface MediaApiService {
     suspend fun getMoviesByCategory(
         @Query("with_genres") genreId: Int,
         @Query("language") language: String,
-        @Query("page") page: Int = 1
+        @Query("page") page: Int
     ): MovieByCategoryDto
+
+    @GET("discover/tv")
+    suspend fun getTvShowsByCategory(
+        @Query("with_genres") genreId: Int,
+        @Query("language") language: String,
+        @Query("page") page: Int
+    ): TvShowByCategoryDto
 
     @GET("search/multi")
     suspend fun searchMulti(
