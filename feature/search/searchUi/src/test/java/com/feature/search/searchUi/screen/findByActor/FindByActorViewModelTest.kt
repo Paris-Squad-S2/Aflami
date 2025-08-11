@@ -5,6 +5,7 @@ import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.screen.utils.collectAllItems
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
@@ -35,7 +36,7 @@ class FindByActorViewModelTest {
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
     private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
     private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
-
+    private val settingsUseCase: SettingsUseCase = mockk()
     private val testDispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -51,6 +52,7 @@ class FindByActorViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mockk(relaxed = true),
+            settingsUseCase
         )
     }
 
@@ -185,6 +187,7 @@ class FindByActorViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
         val mediaUiState = MediaUiState(
             id = 42,
