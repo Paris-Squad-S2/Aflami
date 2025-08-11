@@ -49,26 +49,26 @@ fun AppRestrictionDialog(
                 SelectionCard(
                     optionTitle = stringResource(R.string.strict),
                     optionDescription = stringResource(R.string.blurs_all_sensitive_content),
-                    isSelected = dialogRestriction == ContentRestriction.STRICT,
+                    isSelected = dialogRestriction == ContentRestriction.Strict,
                     hasRadioButton = true,
-                    onClick =  {dialogRestriction = ContentRestriction.STRICT},
+                    onClick =  {dialogRestriction = ContentRestriction.Strict},
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
                 SelectionCard(
                     optionTitle = stringResource(R.string.moderate),
                     optionDescription = stringResource(R.string.blurs_explicit_scenes_only),
-                    isSelected =  dialogRestriction == ContentRestriction.MODERATE,
+                    isSelected =  dialogRestriction == ContentRestriction.Moderate,
                     hasRadioButton = true,
-                    onClick =  {dialogRestriction = ContentRestriction.MODERATE},
+                    onClick =  {dialogRestriction = ContentRestriction.Moderate},
                     modifier = Modifier.padding(bottom = 12.dp)
                 )
 
                 SelectionCard(
                     optionTitle = stringResource(R.string.off),
                     optionDescription = stringResource(R.string.no_content_is_blurred),
-                    isSelected =  dialogRestriction == ContentRestriction.OFF,
+                    isSelected =  dialogRestriction == ContentRestriction.Off,
                     hasRadioButton = true,
-                    onClick = {dialogRestriction = ContentRestriction.OFF},
+                    onClick = {dialogRestriction = ContentRestriction.Off},
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
 

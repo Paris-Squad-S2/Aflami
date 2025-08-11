@@ -17,7 +17,7 @@ data class ProfileUIState(
     val language: Language = Language.ENGLISH,
     val isLanguageDialogOpen: Boolean = false,
     val isSettingDialogOpen: Boolean = false,
-    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val isContentRestrictionDialogOpen: Boolean = false,
     val isLogoutDialogOpen: Boolean = false,
 )
@@ -33,9 +33,9 @@ enum class Language(val local: String) {
 }
 
 enum class ContentRestriction() {
-    STRICT,
-    MODERATE,
-    OFF
+    Strict,
+    Moderate,
+    Off
 }
 
 fun String.toLanguage(): Language {

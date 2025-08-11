@@ -13,7 +13,7 @@ data class FindByActorScreenState(
 data class FindByActorUiState(
     val searchQuery: String,
     val searchResult: Flow<PagingData<MediaUiState>>,
-    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
     val genderThreshold: Float = 0.6f
 )

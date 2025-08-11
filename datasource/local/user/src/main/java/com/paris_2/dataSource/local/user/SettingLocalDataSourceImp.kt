@@ -72,7 +72,7 @@ class SettingLocalDataSourceImp @Inject constructor(
         val RESTRICTION = stringPreferencesKey("restriction")
         val KEY_IS_DARK_THEME = booleanPreferencesKey("is_dark_theme")
         const val ENGLISH = "en"
-        const val STRICT = "STRICT"
+        const val STRICT = "Strict"
     }
 
 }

@@ -27,15 +27,15 @@ data class ListDetailsScreenState(
     val isLoading: Boolean = false,
     val errorMessage: String? = null,
     val showDeleteDialog: Boolean = false,
-    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
     val genderThreshold: Float = 0.6f
 )
 
 enum class ContentRestriction() {
-    STRICT,
-    MODERATE,
-    OFF
+    Strict,
+    Moderate,
+    Off
 }
 
 fun Media.toUiState(): MediaUiState = MediaUiState(

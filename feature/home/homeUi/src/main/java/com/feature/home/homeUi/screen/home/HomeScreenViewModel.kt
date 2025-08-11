@@ -93,7 +93,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             )
             when (screenState.value.homeUIState.contentRestriction) {
-                ContentRestriction.STRICT -> emitState(
+                ContentRestriction.Strict -> emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             nsfwThreshold = 0.8f,
@@ -102,7 +102,7 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.MODERATE -> emitState(
+                ContentRestriction.Moderate -> emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             nsfwThreshold = 0.4f,
@@ -111,7 +111,7 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.OFF -> emitState(
+                ContentRestriction.Off -> emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             nsfwThreshold = 0f,

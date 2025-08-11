@@ -50,21 +50,21 @@ class MyRatingViewModel @Inject constructor(
             )
         )
         when (screenState.value.contentRestriction) {
-            ContentRestriction.STRICT -> updateState(
+            ContentRestriction.Strict -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.8f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.MODERATE -> updateState(
+            ContentRestriction.Moderate -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.4f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.OFF -> updateState(
+            ContentRestriction.Off -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0f,
                     genderThreshold = 0f

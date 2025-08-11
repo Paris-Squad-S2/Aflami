@@ -94,7 +94,7 @@ class SearchViewModel @Inject constructor(
                 )
             )
             when (screenState.value.searchUiState.contentRestriction) {
-                ContentRestriction.STRICT -> updateState(
+                ContentRestriction.Strict -> updateState(
                     screenState.value.copy(
                         screenState.value.searchUiState.copy(
                             nsfwThreshold = 0.8f,
@@ -103,7 +103,7 @@ class SearchViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.MODERATE -> updateState(
+                ContentRestriction.Moderate -> updateState(
                     screenState.value.copy(
                         screenState.value.searchUiState.copy(
                             nsfwThreshold = 0.4f,
@@ -112,7 +112,7 @@ class SearchViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.OFF -> updateState(
+                ContentRestriction.Off -> updateState(
                     screenState.value.copy(
                         screenState.value.searchUiState.copy(
                             nsfwThreshold = 0f,

@@ -15,7 +15,7 @@ data class WorldTourUiState(
     val searchQuery: String,
     val searchResult: Flow<PagingData<MediaUiState>>,
     val hints: List<Country>,
-    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
     val genderThreshold: Float = 0.6f
 )

@@ -69,7 +69,7 @@ class WorldTourViewModel @Inject constructor(
                 )
             )
             when (screenState.value.uiState.contentRestriction) {
-                ContentRestriction.STRICT -> updateState(
+                ContentRestriction.Strict -> updateState(
                     screenState.value.copy(
                         screenState.value.uiState.copy(
                             nsfwThreshold = 0.8f,
@@ -78,7 +78,7 @@ class WorldTourViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.MODERATE -> updateState(
+                ContentRestriction.Moderate -> updateState(
                     screenState.value.copy(
                         screenState.value.uiState.copy(
                             nsfwThreshold = 0.4f,
@@ -87,7 +87,7 @@ class WorldTourViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.OFF -> updateState(
+                ContentRestriction.Off -> updateState(
                     screenState.value.copy(
                         screenState.value.uiState.copy(
                             nsfwThreshold = 0f,

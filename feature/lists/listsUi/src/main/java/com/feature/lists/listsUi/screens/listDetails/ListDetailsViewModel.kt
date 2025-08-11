@@ -48,21 +48,21 @@ class ListDetailsViewModel @Inject constructor(
             )
         )
         when (screenState.value.contentRestriction) {
-            ContentRestriction.STRICT -> emitState(
+            ContentRestriction.Strict -> emitState(
                 screenState.value.copy(
                     nsfwThreshold = 0.8f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.MODERATE -> emitState(
+            ContentRestriction.Moderate -> emitState(
                 screenState.value.copy(
                     nsfwThreshold = 0.4f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.OFF -> emitState(
+            ContentRestriction.Off -> emitState(
                 screenState.value.copy(
                     nsfwThreshold = 0f,
                     genderThreshold = 0f

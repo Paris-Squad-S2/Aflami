@@ -28,15 +28,15 @@ data class MovieDetailsScreenState(
     val showCreateListDialog: Boolean = false,
     val createListName: String = "",
     val createListButtonState: ButtonState = ButtonState.Normal,
-    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
     val genderThreshold: Float = 0.6f
 )
 
 enum class ContentRestriction() {
-    STRICT,
-    MODERATE,
-    OFF
+    Strict,
+    Moderate,
+    Off
 }
 
 data class MovieDetailsUiState(
