@@ -11,15 +11,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 
-class SettingRepositoryImpTest {
+class SettingRepositoryImplTest {
 
     private lateinit var localDataSource: SettingLocalDataSource
-    private lateinit var repository: SettingRepositoryImp
+    private lateinit var repository: SettingRepositoryImpl
 
     @BeforeEach
     fun setUp() {
         localDataSource = mockk(relaxed = true)
-        repository = SettingRepositoryImp(localDataSource)
+        repository = SettingRepositoryImpl(localDataSource)
     }
 
     @Test

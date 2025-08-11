@@ -13,11 +13,11 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class SettingLocalDataSourceImpTest {
+class SettingLocalDataSourceImplTest {
     private lateinit var context: Context
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var editor: SharedPreferences.Editor
-    private lateinit var dataSource: SettingLocalDataSourceImp
+    private lateinit var dataSource: SettingLocalDataSourceImpl
 
     @BeforeEach
     fun setUp() {
@@ -38,7 +38,7 @@ class SettingLocalDataSourceImpTest {
         every { sharedPreferences.getString("language_code", any()) } returns "en"
         every { sharedPreferences.getBoolean("onboarding_completed", any()) } returns false
 
-        dataSource = SettingLocalDataSourceImp(context)
+        dataSource = SettingLocalDataSourceImpl(context)
     }
 
     @Test
@@ -55,7 +55,7 @@ class SettingLocalDataSourceImpTest {
     fun `getLanguage should emit initial value from SharedPreferences`() = runTest {
         every { sharedPreferences.getString("language_code", any()) } returns "ar"
 
-        val newDataSource = SettingLocalDataSourceImp(context)
+        val newDataSource = SettingLocalDataSourceImpl(context)
 
         assertEquals("ar", newDataSource.getLanguage().first())
     }
