@@ -15,14 +15,20 @@ class CategoriesScreenViewModel @Inject constructor(
 ) {
 
     override fun onCategoryClick(category: CategoryUiState) {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun onRetry() {
-        TODO("Not yet implemented")
+//        TODO("Not yet implemented")
     }
 
     override fun onSelectTab(index: Int) {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                categoriesUIState = screenState.value.categoriesUIState.copy(
+                    selectedTabIndex = index
+                )
+            )
+        )
     }
 }

@@ -1,16 +1,25 @@
 package com.feature.categories.categoriesUi.screen.categories
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppTopBar
+import com.paris_2.aflami.designsystem.components.CategoryCard
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.TabRow
@@ -84,5 +93,20 @@ fun CategoriesScreenContent(
 
 @Composable
 fun CategoriesList(categories: List<CategoryUiState>, onCategoryClick: (CategoryUiState) -> Unit) {
+    LazyVerticalGrid(
+        columns = GridCells.Adaptive(minSize = 160.dp),
+        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp, top = 8.dp),
+    ) {
 
+        items(categories) { category ->
+            CategoryCard(
+                categoryName = stringResource(category.name),
+                categoryImage = painterResource(category.icon),
+                onCategoryClick = { onCategoryClick(category) },
+                modifier = Modifier
+                    .padding(8.dp)
+                    .clickable { onCategoryClick(category) }
+            )
+        }
+    }
 }
