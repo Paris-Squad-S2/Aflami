@@ -61,7 +61,7 @@ class MyRatingViewModelTest {
     @Test
     fun `onTabSelected should trigger media load for selected type`() = runTest {
         coEvery {
-            getRatedMediaUseCase(any(),MediaType.TvShow)
+            getRatedMediaUseCase(any(), MediaType.TvShow)
         } returns fakeMediaList
 
         viewModel.onTabSelected(MediaTypeUi.TVSHOW)
@@ -83,6 +83,7 @@ class MyRatingViewModelTest {
         advanceUntilIdle()
 
         viewModel.onMediaCardClick(media)
+        advanceUntilIdle()
 
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(123) }
     }
