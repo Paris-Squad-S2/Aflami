@@ -2,6 +2,7 @@ package com.datasource.remote.movie
 
 import com.datasource.remote.movie.service.MovieApiService
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
+import com.repository.movie.models.remote.MovieByCategoryDto
 import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieImagesDto
@@ -49,6 +50,10 @@ class MovieRemoteDataSourceImpl @Inject constructor(
 
     override suspend fun deleteMovieRating(movieId: Int): Boolean {
         return movieApiService.deleteMovieRating(movieId).success
+    }
+
+    override suspend fun getMoviesByGenre(genreId: Int, page: Int, language: String): MovieByCategoryDto {
+        return movieApiService.getMoviesByGenre(genreId, language, page)
     }
 
     companion object {
