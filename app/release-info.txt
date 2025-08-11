@@ -1,2 +1,2 @@
-versionName=0.8.1
-- replace web view with media player
+versionName=0.8.2
+- add app icon in dark and light theme
