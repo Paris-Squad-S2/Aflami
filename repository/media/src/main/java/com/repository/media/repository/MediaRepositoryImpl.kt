@@ -21,6 +21,7 @@ import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.entity.Category
 import com.repository.media.mapper.toDomain
 import com.repository.media.mapper.toEntity
+import com.repository.media.mapper.toId
 import com.repository.media.mapper.toMediaEntity
 import com.repository.media.util.NetworkConnectionChecker
 import kotlinx.coroutines.flow.first
@@ -142,19 +143,19 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun getMoviesByCategory(genreId: Int, page: Int): List<Media> {
+    override suspend fun getMoviesByCategory(category: com.paris_2.domain.media.entity.Category, page: Int): List<Media> {
         return safeCall(NoMoviesByCategoryException()) {
             val language = settingLocalDataSource.getLanguage().first()
-            mediaRemoteDataSource.getMoviesByCategory(genreId, page, language).resultDto.mapNotNull {
+            mediaRemoteDataSource.getMoviesByCategory(category.toId(), page, language).resultDto.mapNotNull {
                 it.toDomain()
             }
         }
     }
 
-    override suspend fun getTvShowsByCategory(genreId: Int, page: Int): List<Media> {
+    override suspend fun getTvShowsByCategory(category: com.paris_2.domain.media.entity.Category, page: Int): List<Media> {
         return safeCall(NoTvShowsByCategoryException()) {
             val language = settingLocalDataSource.getLanguage().first()
-            mediaRemoteDataSource.getTvShowsByCategory(genreId, page, language).tvResultDto.mapNotNull {
+            mediaRemoteDataSource.getTvShowsByCategory(category.toId(), page, language).tvResultDto.mapNotNull {
                 it.toDomain()
             }
         }
