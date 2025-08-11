@@ -1,15 +1,20 @@
 package com.paris_2.repository.user.repository
 
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import io.mockk.Runs
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
+import io.mockk.just
+import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 import kotlin.test.assertTrue
-import io.mockk.*
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.test.runTest
 
 class SettingRepositoryImpTest {
 
@@ -50,8 +55,8 @@ class SettingRepositoryImpTest {
     }
 
     @Test
-    fun `isOnboardingCompleted should return true`() {
-        every { localDataSource.isOnboardingCompleted() } returns true
+    fun `isOnboardingCompleted should return true`() = runTest{
+        coEvery { localDataSource.isOnboardingCompleted() } returns true
 
         val result = repository.isOnboardingCompleted()
 
@@ -59,8 +64,8 @@ class SettingRepositoryImpTest {
     }
 
     @Test
-    fun `isOnboardingCompleted should return false`() {
-        every { localDataSource.isOnboardingCompleted() } returns false
+    fun `isOnboardingCompleted should return false`() = runTest {
+        coEvery { localDataSource.isOnboardingCompleted() } returns false
 
         val result = repository.isOnboardingCompleted()
 
