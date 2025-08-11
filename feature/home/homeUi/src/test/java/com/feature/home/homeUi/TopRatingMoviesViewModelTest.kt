@@ -1,5 +1,6 @@
 package com.feature.home.homeUi
 
+import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.paris_2.domain.user.usecase.SettingsUseCase
@@ -76,7 +77,8 @@ class TopRatingMoviesViewModelTest {
     @Test
     fun `init loads top rating movies and updates state`() = runTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,settingsUseCase)
+        coEvery { settingsUseCase.getRestriction() } returns ContentRestriction.Off.name
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI, settingsUseCase)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.topRatingMovies.map { it.title }).isEqualTo(fakeTopRatedList.map { it.title })
