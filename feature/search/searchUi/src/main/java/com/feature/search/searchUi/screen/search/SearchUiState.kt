@@ -26,6 +26,9 @@ data class SearchUiState(
     val selectedRating: Float,
     val isAllCategories: Boolean,
     val isApplyFilter:Boolean,
+    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
 
 
@@ -53,4 +56,10 @@ enum class SearchTypeUi(val displayNameResId: Int) {
     Query(R.string.query),
     Country(R.string.country),
     Actor(R.string.actor);
+}
+
+enum class ContentRestriction() {
+    STRICT,
+    MODERATE,
+    OFF
 }

@@ -1,5 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
+import android.util.Log
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -115,5 +116,8 @@ private fun SearchScreenContent(
                 searchScreenInteractionListener = searchScreenInteractionListener,
             )
         }
+
+
+        Log.d("SearchScreen", "Search query: ${state.searchUiState.nsfwThreshold}")
     }
 }

@@ -1,7 +1,8 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import com.feature.search.searchUi.screen.search.MediaUiState
 import androidx.paging.PagingData
+import com.feature.search.searchUi.screen.search.ContentRestriction
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris_2.domain.media.entity.Country
 import kotlinx.coroutines.flow.Flow
 
@@ -13,5 +14,8 @@ data class WorldTourScreenState(
 data class WorldTourUiState(
     val searchQuery: String,
     val searchResult: Flow<PagingData<MediaUiState>>,
-    val hints: List<Country>
+    val hints: List<Country>,
+    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
