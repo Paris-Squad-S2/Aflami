@@ -1,5 +1,6 @@
 package com.feature.home.homeUi
 
+import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.screen.continueWatching.ContinueWatchingViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
@@ -72,8 +73,9 @@ class ContinueWatchingViewModelTest {
 
     @Test
     fun `init loads media and updates state`() = runTest {
-        coEvery { getWatchHistoryUseCase() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI,settingsUseCase)
+        coEvery { getWatchHistoryUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
+        coEvery { settingsUseCase.getRestriction() } returns ContentRestriction.Off.name
+        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI, settingsUseCase)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.continueWatchingMediaList.map { it.title }).isEqualTo(fakeMediaList.map { it.title })
