@@ -61,7 +61,7 @@ class WorldTourViewModelTest {
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            settingsUseCase
+            settingsUseCase = settingsUseCase,
         )
     }
 
