@@ -4,10 +4,11 @@ import android.content.Context
 import android.content.res.Configuration
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavGraph
+import com.feature.authentication.authenticationUi.screen.main.InstallSavedAppLanguage
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
@@ -15,7 +16,7 @@ import java.util.Locale
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class AuthActivity : ComponentActivity() {
+class AuthActivity : AppCompatActivity() {
     @Inject
     lateinit var settingsUseCase: SettingsUseCase
 
@@ -23,6 +24,7 @@ class AuthActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            InstallSavedAppLanguage(this)
             AflamiTheme(settingsUseCase.isDarkTheme()) {
                 AuthenticationNavGraph()
             }

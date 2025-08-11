@@ -1,29 +1,26 @@
 package com.paris_2.aflami
 
 import android.annotation.SuppressLint
-import android.content.Context
-import android.content.res.Configuration
-import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.paris_2.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris_2.aflami.main.InstallSavedAppLanguage
 import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.Locale
 import javax.inject.Inject
 
 @SuppressLint("CoroutineCreationDuringComposition")
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var isOnboardingCompletedUseCase: IsOnboardingCompletedUseCase
@@ -43,6 +40,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            InstallSavedAppLanguage(this)
             val scope = CoroutineScope(Dispatchers.IO)
             AflamiTheme {
                 scope.launch {
@@ -57,34 +55,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    override fun attachBaseContext(newBase: Context) {
-        val prefs = newBase.getSharedPreferences("settings", MODE_PRIVATE)
-        val lang = prefs.getString("language_code", "en") ?: "en"
-        val localizedContext = updateLocale(newBase, lang)
-        super.attachBaseContext(localizedContext)
-    }
 
-    private fun updateLocale(context: Context, language: String): Context {
-        val locale = Locale(language)
-        Locale.setDefault(locale)
-        val scope = CoroutineScope(Dispatchers.IO)
-        val config = Configuration(context.resources.configuration)
-        config.setLocale(locale)
 
-        return (if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            context.createConfigurationContext(config)
-        } else {
-            @Suppress("DEPRECATION")
-            context.resources.updateConfiguration(config, context.resources.displayMetrics)
-            context
-            scope.launch {
-                when {
-                    hasAnySessionUseCase() -> bottomNavBarAPI()
-                    isOnboardingCompletedUseCase() -> authenticationFeatureAPI()
-                    else -> onBoardingApI()
-                }
-            }
-
-        }) as Context
-    }
 }

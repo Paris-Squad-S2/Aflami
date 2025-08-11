@@ -141,13 +141,8 @@ fun ProfileContent(
             isVisible = state.profile.isLanguageDialogOpen,
             onDismiss = profileInteractionListener::onDismissLanguageDialog,
             languageState = state.profile.language,
-            onLanguageSelected = {
-                profileInteractionListener.onLanguageApplyClicked(it)
-                val intent =
-                    context.packageManager.getLaunchIntentForPackage(context.packageName)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                context.startActivities(arrayOf(intent))
-            }
+            onLanguageSelected = profileInteractionListener::onLanguageApplyClicked
+
         )
 
 
