@@ -1,2 +1,2 @@
-versionName=0.8.4
-- refactor gradle
+versionName=0.8.5
+- remove navigation components from Home feature
