@@ -31,10 +31,10 @@ fun SafeImageViewer(
     modifier: Modifier = Modifier,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Crop,
-    blurFemales: Boolean = true,
-    blurNSFW: Boolean = true,
     nsfwThreshold: Float = 0.8f,
     genderThreshold: Float = 0.6f,
+    blurNSFW: Boolean = nsfwThreshold != 0f,
+    blurFemales: Boolean = nsfwThreshold != 0f,
     onAnalysisComplete: ((ImageAnalysisResult) -> Unit)? = null,
     loadingContent: @Composable () -> Unit = { },
     errorContent: @Composable (String) -> Unit = { },
@@ -88,6 +88,7 @@ fun SafeImageViewer(
                                         nsfwThreshold = nsfwThreshold,
                                         genderThreshold = genderThreshold
                                     )
+                                    Log.d("SafeImageViewer", "Analysis complete: $genderThreshold")
 
                                     analysisCache[imageUrl] = result
 
