@@ -22,6 +22,9 @@ class NoProductionCompanyFoundException(message: String = "No found production c
 class FailedToAddRatingException(message: String = "Failed to add rating") :
     AflamiException(message)
 
+class NoMoviesByCategoryException(message: String = "No Movies By Category") :
+    AflamiException(message)
+
 class FailedToDeleteRatingException(message: String = "Failed to delete rating") :
     AflamiException(message)
 
