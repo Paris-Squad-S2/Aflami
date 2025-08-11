@@ -69,7 +69,7 @@ dependencies {
     implementation(projects.safeimageviewer)
 
     //Youtube Video Player
-    implementation(libs.core)
+    implementation(libs.android.youtube.player)
 
 
 }
