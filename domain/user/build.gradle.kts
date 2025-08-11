@@ -18,7 +18,6 @@ dependencies{
     testImplementation(libs.mockk)
     testImplementation(libs.truth)
     testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.jupiter.junit.jupiter)
     implementation(libs.kotlinx.coroutines.core)
 }
 tasks.test {

@@ -1,2 +1,2 @@
-versionName=0.8.3
-- remove unused ProGuard files
+versionName=0.8.4
+- refactor gradle
