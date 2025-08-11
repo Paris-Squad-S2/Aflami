@@ -1,2 +1,4 @@
+versionName=0.8.2
+- add app icon in dark and light theme
 versionName=0.8.1
 - remove unused ProGuard files
