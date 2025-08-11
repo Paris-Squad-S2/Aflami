@@ -6,6 +6,7 @@ import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
