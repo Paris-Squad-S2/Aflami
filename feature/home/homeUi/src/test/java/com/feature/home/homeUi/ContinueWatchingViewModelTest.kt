@@ -25,6 +25,7 @@ import com.paris_2.domain.media.entity.MediaType as DomainMediaType
 @OptIn(ExperimentalCoroutinesApi::class)
 class ContinueWatchingViewModelTest {
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase = mockk()
+    private val settingsUseCase: SettingsUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private lateinit var viewModel: ContinueWatchingViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -71,7 +72,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `init loads media and updates state`() = runTest {
         coEvery { getWatchHistoryUseCase() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI)
+        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.continueWatchingMediaList.map { it.title }).isEqualTo(fakeMediaList.map { it.title })
@@ -82,7 +83,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `error from useCase updates errorMessage and sets isLoading false`() = runTest {
         coEvery { getWatchHistoryUseCase() } throws RuntimeException("Failed to load")
-        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI)
+        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.errorMessage).isEqualTo("Failed to load")
@@ -96,14 +97,14 @@ class ContinueWatchingViewModelTest {
             assertThat(viewModel.screenState.value.isLoading).isTrue()
             fakeMediaList.map { it.toMedia() }
         }
-        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI)
+        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
     }
 
     @Test
     fun `onMediaCardClick for tv show triggers correct navigation`() = runTest {
         coEvery { getWatchHistoryUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI)
+        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
 
         val tvShow = fakeMediaList[0]
@@ -116,7 +117,7 @@ class ContinueWatchingViewModelTest {
     @Test
     fun `onMediaCardClick for movie triggers correct navigation`() = runTest {
         coEvery { getWatchHistoryUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
-        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI)
+        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
 
         val movie = fakeMediaList[1]
