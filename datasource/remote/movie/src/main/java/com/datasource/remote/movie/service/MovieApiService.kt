@@ -1,5 +1,6 @@
 package com.datasource.remote.movie.service
 
+import com.repository.movie.models.remote.MovieByCategoryDto
 import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieImagesDto
@@ -61,4 +62,12 @@ interface MovieApiService {
     suspend fun deleteMovieRating(
         @Path("movie_id") movieId: Int
     ): RemoveRatingDto
+
+    @GET("discover/movie")
+    suspend fun getMoviesByGenre(
+        @Query("with_genres") genreId: Int,
+        @Query("language") language: String,
+        @Query("page") page: Int = 1
+    ): MovieByCategoryDto
+
 }
