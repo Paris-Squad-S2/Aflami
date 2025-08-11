@@ -1,6 +1,7 @@
 package com.repository.media.datasource.remote
 
 import com.repository.media.dto.category.MovieByCategoryDto
+import com.repository.media.dto.category.TvShowByCategoryDto
 import com.repository.media.dto.home.MovieListDto
 import com.repository.media.dto.home.TvListDto
 import com.repository.media.dto.profile.RatedMoviesDto
@@ -16,4 +17,6 @@ interface MediaRemoteDataSource {
     suspend fun getRatedMovies(accountId: Int,language: String): RatedMoviesDto
     suspend fun getRatedTvShows(accountId: Int,language: String): RatedTvShowDtoo
     suspend fun getMoviesByCategory(genreId: Int, page: Int , language: String): MovieByCategoryDto
+
+    suspend fun getTvShowsByCategory(genreId: Int, page: Int , language: String): TvShowByCategoryDto
 }
