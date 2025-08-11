@@ -3,7 +3,6 @@ package com.feature.categories.categoriesUi.screen.categories
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -20,8 +19,6 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.CategoryCard
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.TabRow
 
 @Composable
@@ -52,41 +49,20 @@ fun CategoriesScreenContent(
             stringResource(R.string.tv_shows)
         )
 
-        when (state.status) {
-            Status.Loading -> {
-                PageLoadingPlaceHolder(
-                    modifier = Modifier.fillMaxSize()
-                )
-            }
-
-            Status.NetworkError -> {
-                NetworkError(
-                    modifier = Modifier.fillMaxSize(),
-                    onRetry = interactionListener::onRetry
-                )
-            }
-
-            Status.UnknownError -> { //TODO
-                NetworkError(
-                    modifier = Modifier.fillMaxSize(),
-                    onRetry = interactionListener::onRetry
-                )
-            }
-
-            Status.Normal -> {
-                Column {
-                    TabRow(
-                        modifier = Modifier.fillMaxWidth(),
-                        onTabSelected = interactionListener::onSelectTab,
-                        selectedIndex = state.categoriesUIState.selectedTabIndex,
-                        tabItems = tabs
-                    )
-                    CategoriesList(
-                        categories = state.categoriesUIState.categories,
-                        onCategoryClick = interactionListener::onCategoryClick
-                    )
-                }
-            }
+        Column {
+            TabRow(
+                modifier = Modifier.fillMaxWidth(),
+                onTabSelected = interactionListener::onSelectTab,
+                selectedIndex = state.categoriesUIState.selectedTabIndex,
+                tabItems = tabs
+            )
+            CategoriesList(
+                categories = when (state.categoriesUIState.selectedTabIndex) {
+                    0 -> state.categoriesUIState.moviesCategories
+                    else -> state.categoriesUIState.tvShowsCategories
+                },
+                onCategoryClick = interactionListener::onCategoryClick
+            )
         }
     }
 }

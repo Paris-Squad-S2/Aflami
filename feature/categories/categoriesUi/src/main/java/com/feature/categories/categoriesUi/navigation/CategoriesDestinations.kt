@@ -3,18 +3,19 @@ package com.feature.categories.categoriesUi.navigation
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface CategoriesDestination
+sealed interface Destination
 
 @Serializable
-sealed interface CategoriesGraph : CategoriesDestination
+sealed interface Graph : Destination
 
-sealed interface CategoriesDestinations : CategoriesGraph {
-    @Serializable
-    data object MainGraph : CategoriesGraph
+sealed interface CategoriesDestinations : Graph {
 
     @Serializable
-    data object CategoriesScreen : CategoriesDestination
+    data object MainGraph : Graph
 
     @Serializable
-    data object CategoryDetailsScreen : CategoriesDestination
+    data object CategoriesScreen : Destination
+
+    @Serializable
+    data class CategoryDetailsScreen(val category: String) : Destination
 }

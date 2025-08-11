@@ -4,7 +4,7 @@ import androidx.navigation.NavOptions
 
 sealed class CategoriesNavigationEvent {
 
-    data class Navigate(val destination: CategoriesDestination, val navOptions: NavOptions? = null) :
+    data class Navigate(val destination: Destination, val navOptions: NavOptions? = null) :
         CategoriesNavigationEvent()
 
     data object NavigateUp : CategoriesNavigationEvent()

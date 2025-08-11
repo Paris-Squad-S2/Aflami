@@ -12,6 +12,5 @@ interface MediaRepository {
     suspend fun getContinueWatchingMedia(): List<Media>
     suspend fun getRatedMedia(accountId: Int): List<Media>
     suspend fun getMoviesByCategory(category: Category, page: Int): List<Media>
-
     suspend fun getTvShowsByCategory(category: Category, page: Int): List<Media>
 }

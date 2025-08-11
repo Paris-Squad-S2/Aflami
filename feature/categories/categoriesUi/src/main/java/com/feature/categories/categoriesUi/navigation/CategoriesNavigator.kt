@@ -4,8 +4,8 @@ import androidx.navigation.NavOptions
 import kotlinx.coroutines.flow.Flow
 
 interface CategoriesNavigator {
-    val startGraph: CategoriesGraph
+    val startGraph: Graph
     val categoriesNavigationEvent: Flow<CategoriesNavigationEvent>
-    suspend fun navigate(destination: CategoriesDestination, navOptions: NavOptions? = null)
+    suspend fun navigate(destination: Destination, navOptions: NavOptions? = null)
     suspend fun navigateUp()
 }

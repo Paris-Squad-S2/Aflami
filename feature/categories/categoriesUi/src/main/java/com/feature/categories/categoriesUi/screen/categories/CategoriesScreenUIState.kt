@@ -18,10 +18,18 @@ enum class Status {
 
 data class CategoriesUIState(
     val selectedTabIndex: Int = 0,
-    val categories: List<CategoryUiState> = emptyList()
+    val moviesCategories: List<CategoryUiState> = listOf(
+//        CategoryUiState(
+//            category = Category.Action,
+//            name = R.string.action,
+//            icon = R.drawable.
+//        ),
+    ),
+    val tvShowsCategories: List<CategoryUiState> = emptyList(),
 )
 
 data class CategoryUiState(
+    val category: Category,
     @StringRes val name: Int,
     @DrawableRes val icon: Int,
 )

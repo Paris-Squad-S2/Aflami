@@ -1,25 +1,22 @@
 package com.feature.categories.categoriesUi.screen.categories
 
 import com.feature.categories.categoriesUi.common.BaseViewModel
-import com.paris_2.domain.media.useCase.GetMoviesByCategoryUseCase
-import com.paris_2.domain.media.useCase.GetTvShowsByCategoryUseCase
+import com.feature.categories.categoriesUi.navigation.CategoriesDestinations
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
+import jakarta.inject.Inject
 
 @HiltViewModel
-class CategoriesScreenViewModel @Inject constructor(
-    private val getMoviesByCategoryUseCase: GetMoviesByCategoryUseCase,
-    private val getTvShowsByCategoryUseCase: GetTvShowsByCategoryUseCase
-) : CategoriesScreenInteractionListener, BaseViewModel<CategoriesScreenUIState>(
-    CategoriesScreenUIState()
-) {
+class CategoriesScreenViewModel @Inject constructor() : CategoriesScreenInteractionListener,
+    BaseViewModel<CategoriesScreenUIState>(
+        CategoriesScreenUIState()
+    ) {
 
     override fun onCategoryClick(category: CategoryUiState) {
-//        TODO("Not yet implemented")
-    }
-
-    override fun onRetry() {
-//        TODO("Not yet implemented")
+        navigate(
+            CategoriesDestinations.CategoryDetailsScreen(
+                category = category.category.name
+            )
+        )
     }
 
     override fun onSelectTab(index: Int) {
