@@ -58,15 +58,15 @@ dependencies {
 
     testImplementation(libs.bundles.test)
 
-    implementation(project(Modules.DOMAIN_USER))
-    implementation(project(Modules.DOMAIN_MEDIA))
-    implementation(project(Modules.REPOSITORY_TV_SHOW))
-    implementation(project(Modules.REPOSITORY_MOVIE))
-    implementation(project(Modules.DOMAIN_LISTS))
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
-    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+    implementation(projects.domain.user)
+    implementation(projects.domain.media)
+    implementation(projects.repository.tvShows)
+    implementation(projects.repository.movie)
+    implementation(projects.domain.lists)
+    implementation(projects.designsystem)
+    implementation(projects.feature.authentication.authenticationApi)
+    implementation(projects.feature.mediaDetails.mediaDetailsApi)
+    implementation(projects.safeimageviewer)
 
 }
 

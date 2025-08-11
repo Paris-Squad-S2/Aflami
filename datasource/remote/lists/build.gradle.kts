@@ -51,7 +51,7 @@ dependencies {
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
-    implementation(project(Modules.REPOSITORY_LISTS))
+    implementation(projects.repository.lists)
 }
 tasks.withType<Test> {
     useJUnitPlatform()

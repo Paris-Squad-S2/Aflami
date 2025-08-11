@@ -47,7 +47,7 @@ dependencies {
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
-    implementation(project(Modules.REPOSITORY_MOVIE))
+    implementation(projects.repository.movie)
 }
 tasks.withType<Test> {
     useJUnitPlatform()

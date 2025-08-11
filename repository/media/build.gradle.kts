@@ -72,9 +72,9 @@ dependencies {
     //work manager for kotlin
     implementation(libs.work.runtime.ktx)
 
-    implementation(project(Modules.DOMAIN_MEDIA))
+    implementation(projects.domain.media)
 
-    implementation(project(Modules.REPOSITORY_USER))
+    implementation(projects.repository.user)
 
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()

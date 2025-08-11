@@ -74,8 +74,8 @@ dependencies {
     testImplementation(libs.kotlinx.coroutines.test)
 
 
-    implementation(project(Modules.DOMAIN_LISTS))
-    implementation(project(Modules.REPOSITORY_USER))
+    implementation(projects.domain.lists)
+    implementation(projects.repository.user)
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 

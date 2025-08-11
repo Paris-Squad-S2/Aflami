@@ -55,7 +55,7 @@ dependencies {
     implementation(libs.bundles.workManager)
 
     testImplementation(libs.bundles.test)
-    implementation(project(Modules.REPOSITORY_MEDIA))
+    implementation(projects.repository.media)
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 
