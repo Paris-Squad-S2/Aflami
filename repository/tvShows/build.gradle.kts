@@ -14,21 +14,17 @@ android {
         minSdk = Configurations.MIN_SDK
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
+        
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Configurations.JAVA_VERSION
+        targetCompatibility = Configurations.JAVA_VERSION
     }
     kotlinOptions {
         jvmTarget = Configurations.JVM_TARGET
@@ -40,24 +36,17 @@ tasks.withType<Test>().configureEach {
 }
 
 dependencies {
-    implementation(libs.androidx.room.runtime)
-    testImplementation(libs.junit.jupiter)
+    implementation(libs.bundles.room)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
-    implementation(libs.androidx.room.ktx)
-    implementation(libs.kotlinx.datetime)
-
-    //kotlinx serialization
-    implementation(libs.kotlinx.serialization.json)
-
-    //Hilt
-    implementation(libs.hilt.android)
+    implementation(libs.bundles.datetime)
+    implementation(libs.bundles.serialization)
+    implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
-
-    //work manager for kotlin
-    implementation(libs.work.runtime.ktx)
+    implementation(libs.bundles.workManager)
 
     // test
+    testImplementation(libs.junit.jupiter)
     testImplementation(kotlin("test"))
     testImplementation(libs.mockk)
     testImplementation(libs.kotlinx.coroutines.test)

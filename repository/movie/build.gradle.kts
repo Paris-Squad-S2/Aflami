@@ -12,28 +12,25 @@ android {
 
     defaultConfig {
         minSdk = Configurations.MIN_SDK
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = false
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
         }
     }
+
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = Configurations.JAVA_VERSION
+        targetCompatibility = Configurations.JAVA_VERSION
     }
+
     kotlinOptions {
         jvmTarget = Configurations.JVM_TARGET
     }
 }
+
 tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
@@ -43,8 +40,7 @@ dependencies {
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
-    implementation(libs.kotlinx.datetime)
-
+    implementation(libs.bundles.datetime)
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)
@@ -75,6 +71,7 @@ kover {
             verify {
                 rule {
                     bound {
+                        //todo:return coverageMinValue
                         minValue = 0
                     }
                 }
