@@ -2,6 +2,7 @@ package com.repository.media.mapper
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
+import com.repository.media.dto.category.ResultDto
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.TvDto
 import com.repository.media.dto.profile.MovieResult
@@ -121,6 +122,20 @@ fun TvShowResult.toDomain(type: MediaType): Media? {
         id = id,
         imageUri = poster_path.toImageUrl().orEmpty(),
         title = name,
+        type = type,
+        categories = genre_ids.intListToCategoryList(),
+        yearOfRelease = parsedDate,
+        rating = vote_average
+    )
+}
+
+
+fun ResultDto.toDomain(type: MediaType): Media? {
+    val parsedDate = runCatching { LocalDate.parse(release_date) }.getOrNull() ?: return null
+    return Media(
+        id = id,
+        imageUri = poster_path.toImageUrl().orEmpty(),
+        title = title,
         type = type,
         categories = genre_ids.intListToCategoryList(),
         yearOfRelease = parsedDate,
