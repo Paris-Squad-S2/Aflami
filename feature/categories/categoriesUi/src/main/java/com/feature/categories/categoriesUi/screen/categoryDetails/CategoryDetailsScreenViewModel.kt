@@ -1,4 +1,4 @@
-package com.feature.categories.categoriesUi.screen
+package com.feature.categories.categoriesUi.screen.categoryDetails
 
 import com.feature.categories.categoriesUi.common.BaseViewModel
 import com.paris_2.domain.media.entity.Category
@@ -8,11 +8,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoriesScreenViewModel @Inject constructor (
+class CategoryDetailsScreenViewModel @Inject constructor (
     private val getMoviesByCategoryUseCase: GetMoviesByCategoryUseCase,
     private val getTvShowsByCategoryUseCase: GetTvShowsByCategoryUseCase
-) : CategoriesScreenInteractionListener, BaseViewModel<CategoriesScreenUIState>(
-        CategoriesScreenUIState()
+) : CategoryDetailsScreenInteractionListener, BaseViewModel<CategoryDetailsScreenUIState>(
+    CategoryDetailsScreenUIState()
     )
 {
 

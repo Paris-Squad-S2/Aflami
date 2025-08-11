@@ -7,8 +7,9 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.composable
-import com.feature.categories.categoriesUi.screen.CategoriesScreen
-import com.feature.categories.categoriesUi.screen.CategoriesScreenViewModel
+import com.feature.categories.categoriesUi.screen.categories.CategoriesScreen
+import com.feature.categories.categoriesUi.screen.categories.CategoriesScreenViewModel
+import com.feature.categories.categoriesUi.screen.categoryDetails.CategoryDetailsScreen
 
 @Composable
 fun CategoriesNavGraph(
@@ -40,5 +41,6 @@ fun NavGraphBuilder.buildCategoriesNavGraph() {
         startDestination = CategoriesDestinations.CategoriesScreen
     ) {
         composable<CategoriesDestinations.CategoriesScreen> { CategoriesScreen() }
+        composable<CategoriesDestinations.CategoryDetailsScreen> { CategoryDetailsScreen() }
     }
 }

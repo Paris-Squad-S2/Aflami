@@ -1,3 +1,0 @@
-package com.feature.categories.categoriesUi.navigation
-
-interface CategoriesGraph
