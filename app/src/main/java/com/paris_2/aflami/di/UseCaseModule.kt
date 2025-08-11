@@ -29,10 +29,12 @@ import com.paris_2.domain.media.useCase.GetAllCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
 import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris_2.domain.media.useCase.GetMoviesByCategoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris_2.domain.media.useCase.GetTvShowsByCategoryUseCase
 import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
 import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
@@ -234,6 +236,13 @@ object UseCaseModule {
     fun provideGetMediaFromLocalUseCase(mediaRepository: MediaRepository) =
         GetWatchHistoryUseCase(mediaRepository)
 
+    @Provides
+    fun provideGetMoviesByCategoryUseCase(mediaRepository: MediaRepository) =
+        GetMoviesByCategoryUseCase(mediaRepository)
+
+    @Provides
+    fun provideGetTvShowsByCategoryUseCase(mediaRepository: MediaRepository) =
+        GetTvShowsByCategoryUseCase(mediaRepository)
     @Provides
     fun provideLoginUseCase(userRepository: UserRepository) =
         LoginUseCase(userRepository)
