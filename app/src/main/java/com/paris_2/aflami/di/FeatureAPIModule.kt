@@ -8,6 +8,9 @@ import com.feature.authentication.authenticationUi.navigation.AuthenticationNavi
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigatorImpl
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
+import com.feature.categories.categoriesUi.navigation.CategoriesDestinations
+import com.feature.categories.categoriesUi.navigation.CategoriesNavigator
+import com.feature.categories.categoriesUi.navigation.CategoriesNavigatorImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
 import com.feature.home.homeApi.HomeFeatureAPI
@@ -81,6 +84,11 @@ object FeatureAPIModule {
     @Singleton
     fun provideHomeNavigator(): HomeNavigator =
         HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1)
+
+    @Provides
+    @Singleton
+    fun provideCategoriesNavigator(): CategoriesNavigator =
+        CategoriesNavigatorImpl(startGraph = CategoriesDestinations.CategoriesGraph1)
 
     @Provides
     @Singleton

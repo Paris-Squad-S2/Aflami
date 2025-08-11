@@ -42,4 +42,7 @@ dependencies {
     implementation(projects.feature.categories.categoriesApi)
     implementation(projects.designsystem)
 
+    implementation(libs.bundles.navigation)
+    implementation(projects.domain.media)
+
 }
