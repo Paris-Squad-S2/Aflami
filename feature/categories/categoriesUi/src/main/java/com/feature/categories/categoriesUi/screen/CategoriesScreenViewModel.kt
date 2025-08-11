@@ -8,19 +8,13 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class CategoriesScreenViewModel @Inject constructor(
+class CategoriesScreenViewModel @Inject constructor (
     private val getMoviesByCategoryUseCase: GetMoviesByCategoryUseCase,
     private val getTvShowsByCategoryUseCase: GetTvShowsByCategoryUseCase
-) : CategoriesScreenInteractionListener,
-    BaseViewModel<CategoriesScreenUIState>(
-        CategoriesScreenUIState(
-            categoriesUIState = CategoriesUIState(
-                categories = emptyList()
-            ),
-            isLoading = false,
-            errorMessage = null
-        )
-    ) {
+) : CategoriesScreenInteractionListener, BaseViewModel<CategoriesScreenUIState>(
+        CategoriesScreenUIState()
+    )
+{
 
     override fun onCategoryClick(category: Category) {
         TODO("Not yet implemented")

@@ -12,7 +12,7 @@ import com.paris_2.aflami.designsystem.components.AppText
 @Composable
 fun CategoriesScreen(
     viewModel: CategoriesScreenViewModel = hiltViewModel(),
-){
+) {
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     CategoriesScreenContent(
         state = state.value,

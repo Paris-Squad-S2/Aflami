@@ -39,19 +39,19 @@ open class BaseViewModel<S> @Inject constructor(
 
     protected fun <T> tryToExecute(
         onSuccess: (suspend (T) -> Unit)? = null,
-        onError: (String) -> Unit,
+        onError: (Throwable) -> Unit,
         scope: CoroutineScope = viewModelScope,
         execute: suspend () -> T,
     ): Job {
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
-            onError(throwable.message ?: "Unexpected error")
+            onError(throwable)
         }
         return scope.launch(exceptionHandler) {
             try {
                 val result = execute()
                 onSuccess?.invoke(result)
             } catch (e: Exception) {
-                onError(e.message ?: "Unexpected error")
+                onError(e)
             }
         }
     }
