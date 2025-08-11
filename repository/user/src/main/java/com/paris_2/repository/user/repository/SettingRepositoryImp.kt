@@ -6,32 +6,32 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class SettingRepositoryImp(
-    private val languageLocalDataSource: SettingLocalDataSource,
+    private val settingLocalDataSource: SettingLocalDataSource,
 ) : SettingRepository {
     override fun getLanguage(): Flow<String> {
-        return languageLocalDataSource.getLanguage().map { language ->
+        return settingLocalDataSource.getLanguage().map { language ->
             language
         }
     }
 
-    override suspend fun setLanguage(language: String) {
-        languageLocalDataSource.setLanguage(language = language)
-    }
+    override suspend fun setLanguage(language: String) =
+        settingLocalDataSource.setLanguage(language = language)
 
-    override suspend fun setOnboardingCompleted() {
-        languageLocalDataSource.setOnboardingCompleted()
-    }
 
-    override fun isOnboardingCompleted(): Boolean {
-        return languageLocalDataSource.isOnboardingCompleted()
-    }
+    override suspend fun setOnboardingCompleted() = settingLocalDataSource.setOnboardingCompleted()
 
-    override fun setTheme(isDarkTheme: Boolean) {
-        languageLocalDataSource.setTheme(isDarkTheme)
-    }
 
-    override fun getTheme(): Boolean {
-        return languageLocalDataSource.getTheme()
-    }
+    override suspend fun isOnboardingCompleted() = settingLocalDataSource.isOnboardingCompleted()
+
+
+    override suspend fun setTheme(isDarkTheme: Boolean) =
+        settingLocalDataSource.setTheme(isDarkTheme)
+
+    override fun getTheme() = settingLocalDataSource.getTheme()
+
+    override suspend fun setRestriction(restriction: String) =
+        settingLocalDataSource.setRestriction(restriction)
+
+    override suspend fun getRestriction() = settingLocalDataSource.getRestriction()
 
 }
