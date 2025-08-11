@@ -20,6 +20,7 @@ import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
 import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.clearAllMocks
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -120,7 +121,9 @@ class HomeScreenViewModelTest {
 
     @BeforeEach
     fun setUp() {
+        clearAllMocks()
         Dispatchers.setMain(testDispatcher)
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         coEvery { getPopularMediaUseCase() } returns fakePopularList.map { it.toMedia() }
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
         coEvery { getMoviesCategoriesUseCase() } returns fakeCategories
@@ -173,6 +176,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `loadCategories handles error`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         coEvery { getMoviesCategoriesUseCase() } throws RuntimeException("Failed categories")
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -192,6 +196,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `loadPopularMedia handles error`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         coEvery { getPopularMediaUseCase() } throws RuntimeException("Popular error")
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -211,6 +216,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `loadTopRatingMedia handles error`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         coEvery { getTopRatingMediaUseCase() } throws RuntimeException("TopRating error")
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -231,6 +237,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `loadContinueWatchingMedia does not affect errorMessage`() = runTest {
         val oldError = "Something else before"
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         viewModel.emitState(viewModel.screenState.value.copy(errorMessage = oldError))
         viewModel.emitState(
             viewModel.screenState.value.copy(
@@ -252,6 +259,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `onAllCategoriesSelect fetches upcoming media and resets all categories selection`() =
         runTest {
+            coEvery { settingsUseCase.getRestriction() } returns "Off"
             val catMap = fakeCategories.associateWith { true }.toMutableMap()
             viewModel.emitState(
                 viewModel.screenState.value.copy(
@@ -269,6 +277,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onAllCategoriesSelect handles error`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         coEvery { getUpcomingMediaUseCase() } throws RuntimeException("Upcoming error")
         viewModel.onAllCategoriesSelect()
         runCurrent()
@@ -277,6 +286,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onSearchIconClick triggers navigation`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         viewModel.onSearchIconClick()
         runCurrent()
         coVerify { searchFeatureAPI() }
@@ -285,6 +295,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `onMediaCardClick adds to local, updates continue watching, and navigates to movie or tv details`() =
         runTest {
+            coEvery { settingsUseCase.getRestriction() } returns "Off"
             val movie = fakePopularList.first().copy(type = MOVIE)
             val tv = fakePopularList.last().copy(type = TVSHOW)
             coEvery { addMediaToLocalDatabaseUseCase.invoke(movie.toMedia()) } returns Unit
@@ -301,6 +312,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onMediaCardClick handles error`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         val movie = fakePopularList.first()
         coEvery { addMediaToLocalDatabaseUseCase.invoke(movie.toMedia()) } throws RuntimeException("add error")
         viewModel.onMediaCardClick(movie)
@@ -310,6 +322,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `getRandomMoodPickerMovie picks a random movie from upComingMediaList`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
@@ -325,6 +338,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected updates upcoming list, moodPickerMovie, and dialog flag`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         val mood = listOf(Category.Drama)
         val filteredMovies =
             fakeTopRatedList.filter { it.categories.contains(R.string.category_drama) }
@@ -345,6 +359,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected handles error`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         coEvery { getTopRatingMediaUseCase.invoke() } throws RuntimeException(
             "Mood error"
         )
@@ -355,6 +370,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onCategorySelect toggles selection and filters upcoming list`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         val cat = fakeCategories.first()
         val filteredMovies = fakeUpcomingList.filter { it.toMedia().categories.contains(cat) }
         coEvery { filterUpComingMediaByCategoriesUseCase(listOf(cat)) } returns filteredMovies.map { it.toMedia() }
@@ -375,6 +391,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onCategorySelect handles error`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         val cat = fakeCategories.first()
         coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(cat)) } throws RuntimeException(
             "Category error"
@@ -393,6 +410,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onDismissMoodPicker hides dialog and resets moodPickerMovie`() = runTest {
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
@@ -412,11 +430,8 @@ class HomeScreenViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onRetry loads all media and categories again`() = runTest {
-
-
+        coEvery { settingsUseCase.getRestriction() } returns "Off"
         coEvery { getPopularMediaUseCase() } returns listOf()
-
-
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
             getTopRatingMediaUseCase,
@@ -429,10 +444,8 @@ class HomeScreenViewModelTest {
             mediaDetailsFeatureAPI = mockk(relaxed = true),
             settingsUseCase
         )
-
         viewModel.onRetry()
         runCurrent()
-
         coVerify { getPopularMediaUseCase() }
     }
 
