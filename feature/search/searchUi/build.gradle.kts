@@ -75,13 +75,13 @@ dependencies {
 
     testImplementation(libs.bundles.test)
 
-    implementation(project(Modules.DOMAIN_MEDIA))
-    implementation(project(Modules.DOMAIN_USER))
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
+    implementation(projects.domain.media)
+    implementation(projects.domain.user)
+    implementation(projects.designsystem)
+    implementation(projects.safeimageviewer)
 
-    implementation(project(Modules.FEATURE_SEARCH_API))
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
+    implementation(projects.feature.search.searchApi)
+    implementation(projects.feature.mediaDetails.mediaDetailsApi)
 
     //kotlinx serialization
     implementation(libs.kotlinx.serialization.json)

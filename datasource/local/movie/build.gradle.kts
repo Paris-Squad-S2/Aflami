@@ -38,10 +38,11 @@ tasks.withType<Test> {
 }
 
 dependencies {
+    implementation(projects.repository.movie)
+
     //Room
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.room.common.jvm)
-    implementation(project(Modules.REPOSITORY_MOVIE))
     testImplementation(libs.jupiter.junit.jupiter)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)

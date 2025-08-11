@@ -36,7 +36,7 @@ android {
 
 dependencies {
     implementation(libs.bundles.android)
-    implementation(project(Modules.REPOSITORY_MEDIA))
+    implementation(projects.repository.media)
     implementation(libs.bundles.retrofit)
 
     testImplementation(libs.bundles.test)
