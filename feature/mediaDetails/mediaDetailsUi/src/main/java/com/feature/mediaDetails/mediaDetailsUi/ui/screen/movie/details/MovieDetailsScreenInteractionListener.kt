@@ -18,4 +18,7 @@ interface MovieDetailsScreenInteractionListener {
     fun onCreateListDismiss()
     fun onCreateListNameChange(name: String)
     fun onCreateListConfirm()
+
+    fun playYoutubeVideo(videoKey: String)
+    fun closeYoutubePlayer()
 }

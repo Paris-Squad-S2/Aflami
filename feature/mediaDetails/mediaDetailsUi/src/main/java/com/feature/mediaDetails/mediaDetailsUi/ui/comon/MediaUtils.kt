@@ -28,14 +28,3 @@ fun hasDescriptionContent(movie: TvShowUi): Boolean {
         else -> false
     }
 }
-
-fun Context.openYoutubeOrBrowser(videoKey: String) {
-    val youtubeIntent = Intent(Intent.ACTION_VIEW, ("vnd.youtube:$videoKey").toUri())
-    youtubeIntent.setPackage("com.google.android.youtube")
-    val browserIntent = Intent(Intent.ACTION_VIEW, ("https://www.youtube.com/watch?v=$videoKey").toUri())
-    try {
-        startActivity(youtubeIntent)
-    } catch (_: Exception) {
-        startActivity(browserIntent)
-    }
-}

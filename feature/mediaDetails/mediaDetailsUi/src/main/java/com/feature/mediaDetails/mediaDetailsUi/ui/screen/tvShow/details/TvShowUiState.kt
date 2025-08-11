@@ -37,7 +37,9 @@ data class TvShowDetailsUiState(
     val gallery: List<String>,
     val tvShowVideoUi: TvShowVideoUi,
     val selectedRating: Float,
-    val episodeVideoUi: EpisodeVideoUi
+    val episodeVideoUi: EpisodeVideoUi,
+    val isYoutubePlayerVisible: Boolean = false,
+    val youtubeVideoKey: String? = null
 )
 
 data class TvShowVideoUi(

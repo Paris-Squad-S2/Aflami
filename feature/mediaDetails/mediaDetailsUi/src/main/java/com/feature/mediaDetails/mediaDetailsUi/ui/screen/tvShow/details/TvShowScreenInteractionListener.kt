@@ -10,4 +10,7 @@ interface TvShowScreenInteractionListener {
     fun onRatingSubmitted(movieId: Int, rating: Float)
     fun onClickPlayEpisodeTrailer(tvShowId: Int, seasonNumber: Int, episodeNumber: Int)
     fun onHideSnackBar()
+
+    fun playYoutubeVideo(videoKey: String)
+    fun closeYoutubePlayer()
 }
