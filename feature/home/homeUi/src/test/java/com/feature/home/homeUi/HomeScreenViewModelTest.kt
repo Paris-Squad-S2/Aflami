@@ -42,6 +42,7 @@ class HomeScreenViewModelTest {
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
     private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase = mockk()
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase = mockk()
+    private val settingsUseCase: SettingsUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
@@ -136,6 +137,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
+            settingsUseCase
         )
     }
 
@@ -181,6 +183,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
+            settingsUseCase
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<Category, Boolean>())
@@ -199,7 +202,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-
+            settingsUseCase
             )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
@@ -218,7 +221,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-
+            settingsUseCase
             )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
@@ -423,6 +426,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),
+            settingsUseCase
         )
 
         viewModel.onRetry()
