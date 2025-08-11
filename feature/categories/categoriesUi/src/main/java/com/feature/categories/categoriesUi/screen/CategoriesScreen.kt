@@ -1,7 +1,9 @@
 package com.feature.categories.categoriesUi.screen
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -12,19 +14,23 @@ fun CategoriesScreen(
     viewModel: CategoriesScreenViewModel = hiltViewModel(),
 ){
     val state = viewModel.screenState.collectAsStateWithLifecycle()
-    CategoriesScreen(
+    CategoriesScreenContent(
         state = state.value,
         action = viewModel
     )
 }
 
 @Composable
-fun CategoriesScreen(
+fun CategoriesScreenContent(
     state: CategoriesScreenUIState,
     action: CategoriesScreenInteractionListener,
 ) {
-    AppText(
-        text = "Categories",
-        modifier = Modifier.fillMaxSize(),
-    )
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        AppText(
+            text = "Categories",
+            modifier = Modifier.align(Alignment.Center)
+        )
+    }
 }
