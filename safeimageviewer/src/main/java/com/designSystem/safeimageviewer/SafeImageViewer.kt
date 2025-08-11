@@ -88,7 +88,6 @@ fun SafeImageViewer(
                                         nsfwThreshold = nsfwThreshold,
                                         genderThreshold = genderThreshold
                                     )
-                                    Log.d("SafeImageViewer", "Analysis complete: $genderThreshold")
 
                                     analysisCache[imageUrl] = result
 

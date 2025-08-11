@@ -1,7 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
 import android.content.Intent
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -343,7 +342,5 @@ fun HomeScreenContent(
             genderThreshold = state.homeUIState.genderThreshold
         )
     }
-
-    Log.d("home Screen123","contentRestriction = ${state.homeUIState.contentRestriction}")
 
 }
