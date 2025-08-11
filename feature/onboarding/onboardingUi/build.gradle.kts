@@ -44,15 +44,15 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
 
-    implementation(project(Modules.FEATURE_ONBOARDING_API))
+    implementation(projects.feature.onboarding.onboardingApi)
     implementation(libs.bundles.pager)
 
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
-    implementation(project(Modules.FEATURE_HOME_API))
-    implementation(project(Modules.FEATURE_HOME_UI))
-    implementation(project(Modules.FEATURE_AUTHENTICATION_API))
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_USER))
+    implementation(projects.feature.home.homeApi)
+    implementation(projects.feature.home.homeUi)
+    implementation(projects.feature.authentication.authenticationApi)
+    implementation(projects.designsystem)
+    implementation(projects.domain.user)
 }

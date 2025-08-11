@@ -1,2 +1,2 @@
-versionName=0.7.9
-- remove ids of the genrs from the UI
+versionName=0.8.0
+- add splash screen 

@@ -37,8 +37,8 @@ dependencies {
     implementation(libs.bundles.android)
     implementation(libs.bundles.retrofit)
 
-    implementation(project(Modules.REPOSITORY_MOVIE))
-    implementation(project(Modules.REPOSITORY_TV_SHOW))
+    implementation(projects.repository.movie)
+    implementation(projects.repository.tvShows)
 
     testImplementation(libs.bundles.test)
 

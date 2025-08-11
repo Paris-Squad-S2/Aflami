@@ -60,7 +60,7 @@ dependencies {
 
     testImplementation(libs.bundles.test)
 
-    implementation(project(Modules.REPOSITORY_TV_SHOW))
+    implementation(projects.repository.tvShows)
 }
 kotlin {
     compilerOptions {

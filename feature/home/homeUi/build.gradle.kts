@@ -60,13 +60,13 @@ dependencies {
     testImplementation(libs.bundles.test)
 
     //Modules
-    implementation(project(Modules.DESIGN_SYSTEM))
-    implementation(project(Modules.DOMAIN_MEDIA))
-    implementation(project(Modules.FEATURE_HOME_API))
-    implementation(project(Modules.FEATURE_SEARCH_API))
-    implementation(project(Modules.FEATURE_MEDIA_DETAILS_API))
-    implementation(project(Modules.SAFE_IMAGE_VIEWER))
-    implementation(project(Modules.DOMAIN_USER))
+    implementation(projects.designsystem)
+    implementation(projects.domain.media)
+    implementation(projects.feature.search.searchApi)
+    implementation(projects.feature.home.homeApi)
+    implementation(projects.feature.mediaDetails.mediaDetailsApi)
+    implementation(projects.safeimageviewer)
+    implementation(projects.domain.user)
 
     //test
     testImplementation(libs.junit)

@@ -50,6 +50,7 @@ ktor = "2.3.5"
 truth = "1.4.4"
 junitJupiter = "5.13.2"
 coroutines-test = "1.7.3"
+splashscreen = "1.0.1"
 kover = "0.9.1"
 roomCommonJvm = "2.7.2"
 webkit = "1.11.0"
@@ -150,6 +151,8 @@ androidx-datastore = { module = "androidx.datastore:datastore", version.ref = "d
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
 androidx-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
 
+#Splash
+androidx-core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
 
 
 
