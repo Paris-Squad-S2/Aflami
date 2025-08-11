@@ -6,7 +6,17 @@ data class WatchHistoryUiState(
     val watchHistoryMedia: List<MediaUiState>,
     val isLoading: Boolean,
     val errorMessage: String?,
+    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
+
+enum class ContentRestriction() {
+    STRICT,
+    MODERATE,
+    OFF
+}
+
 
 data class MediaUiState(
     val id: Int,
