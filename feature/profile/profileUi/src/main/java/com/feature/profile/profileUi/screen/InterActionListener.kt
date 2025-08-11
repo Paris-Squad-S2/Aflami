@@ -17,6 +17,7 @@ interface InterActionListener {
     fun onDismissLogoutDialog()
     fun onDismissContentRestrictionDialog()
     fun onLanguageSelected(language: Language)
+    fun onRestrictionSelected(contentRestriction: ContentRestriction)
     fun onWatchHistoryClicked()
     fun onMyRatingClicked()
 }

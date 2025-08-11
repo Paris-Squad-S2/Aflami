@@ -9,6 +9,7 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 @Suppress("DEPRECATION")
@@ -25,6 +26,7 @@ class ProfileViewModel @Inject constructor(
     init {
         checkUserLoggedIn()
         getUserName()
+        getRestriction()
         viewModelScope.launch {
             settingsUseCase.getLanguage().collect {
                 updateState(
@@ -36,6 +38,20 @@ class ProfileViewModel @Inject constructor(
                 )
             }
         }
+    }
+
+    private fun getRestriction() {
+        viewModelScope.launch {
+            val restriction = settingsUseCase.getRestriction()
+            updateState(
+                screenState.value.copy(
+                    profile = screenState.value.profile.copy(
+                        contentRestriction = ContentRestriction.valueOf(restriction)
+                    )
+                )
+            )
+        }
+
     }
 
     private fun getUserName() {
@@ -68,14 +84,20 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onChooseAppearanceClicked() {
-        updateState(
-            screenState.value.copy(
-                profile = screenState.value.profile.copy(
-                    isThemeDialogOpen = true,
-                    theme = if (settingsUseCase.isDarkTheme()) Appearance.DARK else Appearance.LIGHT
+
+        viewModelScope.launch {
+            settingsUseCase.isDarkTheme().collectLatest {isDark ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            isThemeDialogOpen = true,
+                            theme = if (isDark) Appearance.DARK else Appearance.LIGHT
+                        )
+                    )
                 )
-            )
-        )
+            }
+
+        }
     }
 
     override fun onSettingClicked() {
@@ -100,7 +122,13 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onContentRestrictionClicked() {
-        TODO("Not yet implemented")
+        updateState(
+            screenState.value.copy(
+                profile = screenState.value.profile.copy(
+                    isContentRestrictionDialogOpen = !screenState.value.profile.isContentRestrictionDialogOpen
+                )
+            )
+        )
     }
 
     override fun onAppearanceApplyClicked(appearance: Appearance) {
@@ -111,7 +139,10 @@ class ProfileViewModel @Inject constructor(
                 )
             )
         )
-        settingsUseCase.setTheme(appearance == Appearance.DARK)
+        viewModelScope.launch {
+            settingsUseCase.setTheme(appearance == Appearance.DARK)
+        }
+
     }
 
 
@@ -199,6 +230,12 @@ class ProfileViewModel @Inject constructor(
                 )
             )
         )
+    }
+
+    override fun onRestrictionSelected(contentRestriction: ContentRestriction) {
+            viewModelScope.launch {
+                settingsUseCase.setRestriction(contentRestriction.name)
+            }
     }
 
     override fun onWatchHistoryClicked() {

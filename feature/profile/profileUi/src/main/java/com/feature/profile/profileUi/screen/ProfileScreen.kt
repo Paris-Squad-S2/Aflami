@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.components.AppLanguageDialog
 import com.feature.profile.profileUi.screen.components.AppLogOutDialog
+import com.feature.profile.profileUi.screen.components.AppRestrictionDialog
 import com.feature.profile.profileUi.screen.components.AppSettingDialog
 import com.feature.profile.profileUi.screen.components.AppThemeDialog
 import com.feature.profile.profileUi.screen.components.ProfileDetails
@@ -165,12 +166,19 @@ fun ProfileContent(
         AppSettingDialog(
             isVisible = state.profile.isSettingDialogOpen,
             onDismiss = profileInteractionListener::onDismissSettingDialog,
-            isLogoutDialogVisible = profileInteractionListener::onLogoutClicked
+            isLogoutDialogVisible = profileInteractionListener::onLogoutClicked,
+            isRestrictionDialogVisible = profileInteractionListener::onContentRestrictionClicked
         )
         AppLogOutDialog(
             isVisible = state.profile.isLogoutDialogOpen,
             onDismiss = profileInteractionListener::onDismissLogoutDialog,
             onLogout = profileInteractionListener::onLogoutApplyClicked
+        )
+        AppRestrictionDialog(
+            isVisible = state.profile.isContentRestrictionDialogOpen,
+            onDismiss = profileInteractionListener::onDismissContentRestrictionDialog,
+            onSave = profileInteractionListener::onRestrictionSelected,
+            restriction = state.profile.contentRestriction
         )
     }
 }
