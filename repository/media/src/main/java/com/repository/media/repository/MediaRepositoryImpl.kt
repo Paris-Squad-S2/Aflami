@@ -7,6 +7,7 @@ import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
 import com.paris_2.domain.media.exception.MediaPlayingException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.exception.NoMoviesByCategoryException
 import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.paris_2.domain.media.exception.PopularMediaException
 import com.paris_2.domain.media.exception.TopRatingMediaException
@@ -137,6 +138,15 @@ class MediaRepositoryImpl(
                     it.toDomain(MediaType.TvShow)
                 }
             ratedMovies + ratedTvShows
+        }
+    }
+
+    override suspend fun getMoviesByCategory(genreId: Int, page: Int): List<Media> {
+        return safeCall(NoMoviesByCategoryException()) {
+            val language = settingLocalDataSource.getLanguage().first()
+            mediaRemoteDataSource.getMoviesByCategory(genreId, page, language).resultDto.mapNotNull {
+                it.toDomain(MediaType.Movie)
+            }
         }
     }
 
