@@ -1,7 +1,7 @@
 package com.feature.categories.categoriesUi.screen.categories
 
-import com.paris_2.domain.media.entity.Category
-
 interface CategoriesScreenInteractionListener {
-    fun onCategoryClick(category: Category)
+    fun onCategoryClick(category: CategoryUiState)
+    fun onRetry()
+    fun onSelectTab(index: Int)
 }

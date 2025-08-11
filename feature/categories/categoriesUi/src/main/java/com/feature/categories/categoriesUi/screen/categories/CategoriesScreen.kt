@@ -1,15 +1,19 @@
 package com.feature.categories.categoriesUi.screen.categories
 
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.domain.media.entity.Category
+import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppTopBar
+import com.paris_2.aflami.designsystem.components.NetworkError
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris_2.aflami.designsystem.components.TabRow
 
 @Composable
 fun CategoriesScreen(
@@ -18,34 +22,67 @@ fun CategoriesScreen(
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     CategoriesScreenContent(
         state = state.value,
-        action = viewModel
+        interactionListener = viewModel
     )
 }
 
 @Composable
 fun CategoriesScreenContent(
     state: CategoriesScreenUIState,
-    action: CategoriesScreenInteractionListener,
+    interactionListener: CategoriesScreenInteractionListener,
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
+    Column(
+        modifier = Modifier.statusBarsPadding()
     ) {
-        AppText(
-            text = "Categories",
-            modifier = Modifier.align(Alignment.Center)
+        AppTopBar(
+            title = stringResource(R.string.categories),
         )
+
+        val tabs = listOf(
+            stringResource(R.string.movies),
+            stringResource(R.string.tv_shows)
+        )
+
+        when (state.status) {
+            Status.Loading -> {
+                PageLoadingPlaceHolder(
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
+
+            Status.NetworkError -> {
+                NetworkError(
+                    modifier = Modifier.fillMaxSize(),
+                    onRetry = interactionListener::onRetry
+                )
+            }
+
+            Status.UnknownError -> { //TODO
+                NetworkError(
+                    modifier = Modifier.fillMaxSize(),
+                    onRetry = interactionListener::onRetry
+                )
+            }
+
+            Status.Normal -> {
+                Column {
+                    TabRow(
+                        modifier = Modifier.fillMaxWidth(),
+                        onTabSelected = interactionListener::onSelectTab,
+                        selectedIndex = state.categoriesUIState.selectedTabIndex,
+                        tabItems = tabs
+                    )
+                    CategoriesList(
+                        categories = state.categoriesUIState.categories,
+                        onCategoryClick = interactionListener::onCategoryClick
+                    )
+                }
+            }
+        }
     }
 }
 
 @Composable
-@PreviewLightDark
-fun CategoriesScreenPreview() {
-    CategoriesScreenContent(
-        state = CategoriesScreenUIState(),
-        action = object : CategoriesScreenInteractionListener {
-            override fun onCategoryClick(category: Category) {
-                TODO("Not yet implemented")
-            }
-        }
-    )
+fun CategoriesList(categories: List<CategoryUiState>, onCategoryClick: (CategoryUiState) -> Unit) {
+
 }
