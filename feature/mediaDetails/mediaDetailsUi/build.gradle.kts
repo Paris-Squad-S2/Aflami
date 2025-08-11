@@ -68,6 +68,10 @@ dependencies {
     implementation(projects.feature.mediaDetails.mediaDetailsApi)
     implementation(projects.safeimageviewer)
 
+    //Youtube Video Player
+    implementation(libs.android.youtube.player)
+
+
 }
 
 kover {

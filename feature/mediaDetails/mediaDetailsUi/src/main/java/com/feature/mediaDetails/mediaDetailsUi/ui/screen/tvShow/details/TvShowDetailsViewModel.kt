@@ -85,7 +85,9 @@ class TvShowDetailsViewModel @Inject constructor(
                 key = "",
                 name = "",
                 site = ""
-            )
+            ),
+            isYoutubePlayerVisible = false,
+            youtubeVideoKey = null,
         ),
         isLoading = true,
         errorMessage = null,
@@ -476,6 +478,28 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
+    override fun playYoutubeVideo(videoKey: String) {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    isYoutubePlayerVisible = true,
+                    youtubeVideoKey = videoKey
+                )
+            )
+        )
+    }
+
+    override fun closeYoutubePlayer() {
+        updateState(
+            screenState.value.copy(
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    isYoutubePlayerVisible = false,
+                    youtubeVideoKey = null
+                )
+            )
+        )
+    }
+
     private fun onGetVideoTvShowSuccess(tvShowVideo: TvShowVideo) {
         updateState(
             screenState.value.copy(
@@ -493,8 +517,9 @@ class TvShowDetailsViewModel @Inject constructor(
                     showSnackBar = true,
                 )
             )
+        } else {
+            playYoutubeVideo(episodeVideo.key)
         }
-
         updateState(
             screenState.value.copy(
                 showSnackBar = false,

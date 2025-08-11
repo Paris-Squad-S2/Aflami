@@ -24,7 +24,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreenState
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowScreenInteractionListener
 import com.paris_2.aflami.designsystem.R
@@ -43,7 +42,6 @@ fun TopComponentDetails(
 ) {
     with(sharedTransitionScope) {
         Box(
-
             modifier
                 .background(Theme.colors.surface)
                 .navigationBarsPadding()
@@ -74,9 +72,8 @@ fun TopComponentDetails(
                 rating = state.tvShowDetailsUiState.tvShowUi.rating,
                 hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
                 onPlayClick = {
-                    if (!(tvShowSite.isEmpty() || tvShowKey.isEmpty())
-                    ) {
-                        activity?.openYoutubeOrBrowser(tvShowKey)
+                    if (tvShowSite.isNotEmpty() && tvShowKey.isNotEmpty()) {
+                        tvShowScreenInteractionListener.playYoutubeVideo(tvShowKey)
                     }
                 },
                 modifier = Modifier.padding(bottom = 12.dp),
@@ -106,6 +103,7 @@ fun TopComponentDetails(
         }
     }
 }
+
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TvTopComponent(
@@ -124,12 +122,12 @@ fun TvTopComponent(
                 .padding(bottom = 1.dp)
                 .background(Theme.colors.surface)
                 .sharedBounds(
-                rememberSharedContentState(key = "Top Component"),
-                animatedVisibilityScope = animatedVisibilityScope,
-                enter = fadeIn() + scaleIn(),
-                exit = fadeOut() + scaleOut(),
-                resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
-            ),
+                    rememberSharedContentState(key = "Top Component"),
+                    animatedVisibilityScope = animatedVisibilityScope,
+                    enter = fadeIn() + scaleIn(),
+                    exit = fadeOut() + scaleOut(),
+                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                ),
             title = title,
             leadingIcons = listOf(
                 iconItemWithDefaults(

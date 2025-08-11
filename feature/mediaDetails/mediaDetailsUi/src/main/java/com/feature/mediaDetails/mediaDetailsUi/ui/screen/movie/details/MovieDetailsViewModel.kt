@@ -81,7 +81,9 @@ class MovieDetailsViewModel @Inject constructor(
                 name = "",
                 site = "",
             ),
-            selectedRating = 0f
+            selectedRating = 0f,
+            isYoutubePlayerVisible = false,
+            youtubeVideoKey = null
         ),
         isLoading = true,
         errorMessage = null,
@@ -144,9 +146,9 @@ class MovieDetailsViewModel @Inject constructor(
                 )
             )
         }
-        
+
     }
-    
+
     private fun onGetRestrictionError(error: String) {
         updateState(
             screenState.value.copy(
@@ -500,6 +502,27 @@ class MovieDetailsViewModel @Inject constructor(
         mediaDetailsFeatureAPI.startMovieDetails(mediaId)
     }
 
+    override fun playYoutubeVideo(videoKey: String) {
+        updateState(
+            screenState.value.copy(
+                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                    isYoutubePlayerVisible = true,
+                    youtubeVideoKey = videoKey
+                )
+            )
+        )
+    }
+
+    override fun closeYoutubePlayer() {
+        updateState(
+            screenState.value.copy(
+                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                    isYoutubePlayerVisible = false,
+                    youtubeVideoKey = null
+                )
+            )
+        )
+    }
 
     private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
         updateState(
@@ -510,7 +533,6 @@ class MovieDetailsViewModel @Inject constructor(
             )
         )
     }
-
 
     private fun onGetVideoMovieError(error: String) {
         updateState(

@@ -25,12 +25,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.openYoutubeOrBrowser
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreenInteractionListener
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsScreenState
 import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.AppTopBar
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -80,8 +79,8 @@ fun MovieTopComponentDetails(
                     imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
                     rating = state.movieDetailsUiState.movie.rating,
                     onPlayClick = {
-                        if (!(site.isEmpty() || key.isEmpty())) {
-                            activity?.openYoutubeOrBrowser(key)
+                        if (site.isNotEmpty() && key.isNotEmpty()) {
+                            movieDetailsScreenInteractionListener.playYoutubeVideo(key)
                         }
                     },
                     hasVideo = !(site.isEmpty() || key.isEmpty()),
@@ -119,6 +118,7 @@ fun MovieTopComponentDetails(
         }
     }
 }
+
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieTopComponent(

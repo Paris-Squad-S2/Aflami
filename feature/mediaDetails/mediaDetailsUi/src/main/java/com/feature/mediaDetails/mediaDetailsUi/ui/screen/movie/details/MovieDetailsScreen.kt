@@ -48,6 +48,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponentDetails
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingDialog
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.VideoPlayer
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.ProductionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
@@ -187,27 +188,34 @@ fun MovieDetailsScreenContent(
                             scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
                         }
                     }
-                    SharedTransitionLayout {
-                        AnimatedContent(
-                            targetState = isCollapsed,
-                            label = "basic_transition"
-                        ) { target ->
-                            if (!target) {
-                                MovieTopComponentDetails(
-                                    state = state,
-                                    movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                )
-                            } else {
-                                MovieTopComponent(
-                                    movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
-                                    animatedVisibilityScope = this@AnimatedContent,
-                                    sharedTransitionScope = this@SharedTransitionLayout,
-                                    title = state.movieDetailsUiState.movie.title,
-                                )
-                            }
+                    if (state.movieDetailsUiState.isYoutubePlayerVisible && !state.movieDetailsUiState.youtubeVideoKey.isNullOrEmpty()) {
+                        VideoPlayer(
+                            videoKey = state.movieDetailsUiState.youtubeVideoKey,
+                            onCloseClick = { movieDetailsScreenInteractionListener.closeYoutubePlayer() }
+                        )
+                    } else {
+                        SharedTransitionLayout {
+                            AnimatedContent(
+                                targetState = isCollapsed,
+                                label = "basic_transition"
+                            ) { target ->
+                                if (!target) {
+                                    MovieTopComponentDetails(
+                                        state = state,
+                                        movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                    )
+                                } else {
+                                    MovieTopComponent(
+                                        movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        title = state.movieDetailsUiState.movie.title,
+                                    )
+                                }
 
+                            }
                         }
                     }
                     LazyColumn(
