@@ -5,6 +5,7 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -16,10 +17,13 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppRadioButton
 import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 
 @Composable
 fun SelectionCard(
@@ -28,7 +32,8 @@ fun SelectionCard(
     optionDescription: String? = null,
     isSelected: Boolean,
     isCorrect: Boolean? = null,
-    icon: Int,
+    icon: Int? = null,
+    hasRadioButton: Boolean? = null,
     onClick: () -> Unit,
 ) {
     val backgroundColor = when {
@@ -69,14 +74,17 @@ fun SelectionCard(
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        AppIcon(
-            imageVector = ImageVector.vectorResource(icon),
-            contentDescription = null,
-            tint = iconTint,
-            modifier = Modifier
-                .size(24.dp)
-                .padding(end = 8.dp)
-        )
+        icon?.let {
+            AppIcon(
+                imageVector = ImageVector.vectorResource(icon),
+                contentDescription = null,
+                tint = iconTint,
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(end = 8.dp)
+            )
+        }
+
         Column(modifier = Modifier.weight(1f)) {
             AppText(
                 text = optionTitle,
@@ -92,5 +100,29 @@ fun SelectionCard(
             }
         }
 
+        hasRadioButton?.let {
+            Spacer(Modifier.weight(1f))
+            AppRadioButton(
+                selected = isSelected,
+                isDisable = false,
+                onClick =  onClick,
+            )
+        }
+
+
     }
+}
+
+@Preview
+@PreviewMultiDevices
+@Composable
+private fun SelectionCardPreview() {
+    SelectionCard(
+        optionTitle = "Option 1",
+        optionDescription = "This is a description for option 1.",
+        isSelected = true,
+        isCorrect = true,
+        icon = com.paris_2.aflami.designsystem.R.drawable.ic_all,
+        onClick = {}
+    )
 }
