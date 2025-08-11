@@ -10,8 +10,6 @@ class MainViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
 ) : ViewModel(){
 
-
     fun getLastSelectedAppLanguage() =
         settingsUseCase.getLanguage()
-
 }
