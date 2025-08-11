@@ -7,6 +7,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.paris_2.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
@@ -36,6 +37,8 @@ class MainActivity : ComponentActivity() {
     lateinit var bottomNavBarAPI: BottomNavBarAPI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
+        splashScreen.setKeepOnScreenCondition { false}
         enableEdgeToEdge()
         setContent {
             AflamiTheme {
