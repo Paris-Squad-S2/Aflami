@@ -122,6 +122,7 @@ class SearchViewModelTest {
 
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(emptyList())
         coEvery { getAllCategoriesUseCase() } returns emptyList()
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = spyk(
             SearchViewModel(
@@ -148,6 +149,7 @@ class SearchViewModelTest {
 
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(recentSearches)
         coEvery { getAllCategoriesUseCase() } returns categories
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -174,6 +176,7 @@ class SearchViewModelTest {
     fun `init should handle error when loading recent searches`() = runTest {
         val errorMessage = "Failed to load recent searches"
         coEvery { getAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -198,6 +201,7 @@ class SearchViewModelTest {
     fun `init should handle error when loading categories`() = runTest {
         val errorMessage = "Failed to load categories"
         coEvery { getAllCategoriesUseCase() } throws RuntimeException(errorMessage)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -472,10 +476,10 @@ class SearchViewModelTest {
             // Always emit the current state of recent searches, which will be updated after clear
             val recentSearchesFlow = MutableStateFlow(initialRecentSearches)
             coEvery { getAllRecentSearchesUseCase() } returns recentSearchesFlow
-
             coEvery { clearAllRecentSearchesUseCase() } answers {
                 recentSearchesFlow.value = emptyList()
             }
+            coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
             viewModel = SearchViewModel(
                 getAllRecentSearchesUseCase,
@@ -508,6 +512,7 @@ class SearchViewModelTest {
         val errorMessage = "Failed to clear all recent searches"
         coEvery { clearAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(listOf(mockSearchHistory1))
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -553,7 +558,7 @@ class SearchViewModelTest {
             coEvery { clearRecentSearchUseCase(idToClear, SearchType.Query) } answers {
                 recentSearchesFlow.value = afterClearRecentSearches
             }
-
+            coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
             viewModel = SearchViewModel(
                 getAllRecentSearchesUseCase,
