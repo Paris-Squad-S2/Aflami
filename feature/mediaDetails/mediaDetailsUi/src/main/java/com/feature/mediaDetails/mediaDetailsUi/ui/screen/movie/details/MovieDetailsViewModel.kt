@@ -7,16 +7,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.paris_2.domain.media.entity.MovieVideo
-import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
-import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
@@ -32,8 +22,20 @@ import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import com.paris_2.aflami.designsystem.R as RDesignSystem
@@ -54,6 +56,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val addMovieToListUseCase: AddMovieToListUseCase,
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
+    private val settingsUseCase: SettingsUseCase,
     navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
@@ -98,9 +101,43 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     init {
+        getRestriction()
         loadedMovieDetails(mediaId = movieId)
         getInformationVideoMovie()
         loadAvailableLists()
+    }
+
+    private fun getRestriction() {
+        viewModelScope.launch {
+            val restriction = settingsUseCase.getRestriction()
+            updateState(
+                screenState.value.copy(
+                    contentRestriction = ContentRestriction.valueOf(restriction)
+                )
+            )
+            when (screenState.value.contentRestriction) {
+                ContentRestriction.STRICT -> updateState(
+                    screenState.value.copy(
+                        nsfwThreshold = 0.8f,
+                        genderThreshold = 0.6f
+                    )
+                )
+
+                ContentRestriction.MODERATE -> updateState(
+                    screenState.value.copy(
+                        nsfwThreshold = 0.4f,
+                        genderThreshold = 0.6f
+                    )
+                )
+
+                ContentRestriction.OFF -> updateState(
+                    screenState.value.copy(
+                        nsfwThreshold = 0f,
+                        genderThreshold = 0f
+                    )
+                )
+            }
+        }
     }
 
     private fun loadAvailableLists() {

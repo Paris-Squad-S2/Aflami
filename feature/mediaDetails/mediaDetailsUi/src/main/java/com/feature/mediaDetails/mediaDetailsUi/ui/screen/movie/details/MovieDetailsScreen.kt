@@ -309,6 +309,8 @@ fun MovieDetailsScreenContent(
                                                     mediaCardType = MediaCardType.UP_COMING,
                                                     showGradientFilter = true,
                                                     clickable = true,
+                                                    nsfwThreshold = state.nsfwThreshold,
+                                                    genderThreshold = state.genderThreshold,
                                                     onClick = {
                                                         movieDetailsScreenInteractionListener.onSimilarMovieClick(
                                                             mediaId = media.id

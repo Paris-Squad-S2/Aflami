@@ -27,7 +27,16 @@ data class TvShowDetailsScreenState(
     @StringRes val snackBarMessage: Int? = null,
     val showSnackBar: Boolean = false,
     val snackBarSuccess: Boolean = false,
+    val contentRestriction: ContentRestriction = ContentRestriction.STRICT,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
+
+enum class ContentRestriction() {
+    STRICT,
+    MODERATE,
+    OFF
+}
 
 data class TvShowDetailsUiState(
     val tvShowUi: TvShowUi,

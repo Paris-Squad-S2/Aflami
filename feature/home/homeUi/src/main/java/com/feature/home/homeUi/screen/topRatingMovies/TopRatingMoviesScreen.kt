@@ -136,7 +136,7 @@ fun TopRatingMoviesScreen(
             )
             if (state.value.topRatingMovies.isNotEmpty()) {
                 TopRatingMoviesContent(
-                    continueWatchingList = state.value.topRatingMovies,
+                    topRatingMoviesUiState = state.value,
                     onMediaCardClick = viewModel::onMediaCardClick
                 )
             } else if (state.value.isLoading) {
@@ -154,7 +154,7 @@ fun TopRatingMoviesScreen(
 
 @Composable
 fun TopRatingMoviesContent(
-    continueWatchingList: List<MediaUiState>,
+    topRatingMoviesUiState: TopRatingMoviesUiState,
     onMediaCardClick: (MediaUiState) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
@@ -167,7 +167,7 @@ fun TopRatingMoviesContent(
     ) {
 
 
-        items(continueWatchingList) { media ->
+        items(topRatingMoviesUiState.topRatingMovies) { media ->
             MediaCard(
                 modifier = Modifier
                     .padding(6.dp)
@@ -182,6 +182,9 @@ fun TopRatingMoviesContent(
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,
                 enabled = !isScrolling,
+                nsfwThreshold = topRatingMoviesUiState.nsfwThreshold,
+                genderThreshold = topRatingMoviesUiState.genderThreshold
+
             )
         }
     }

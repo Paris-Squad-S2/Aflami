@@ -79,7 +79,9 @@ fun TopComponentDetails(
                         activity?.openYoutubeOrBrowser(tvShowKey)
                     }
                 },
-                modifier = Modifier.padding(bottom = 12.dp)
+                modifier = Modifier.padding(bottom = 12.dp),
+                nsfwThreshold = state.nsfwThreshold,
+                genderThreshold = state.genderThreshold
             )
             AppTopBar(
                 leadingIcons = listOf(
