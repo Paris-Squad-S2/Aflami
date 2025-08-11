@@ -54,6 +54,7 @@ class WorldTourViewModelTest {
         getCountryCodeByNameUseCase = mockk(relaxed = true)
         incrementCategoryInteractionUseCase = mockk(relaxed = true)
         sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = WorldTourViewModel(
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
