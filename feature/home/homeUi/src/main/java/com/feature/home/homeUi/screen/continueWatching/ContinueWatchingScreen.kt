@@ -57,7 +57,7 @@ fun ContinueWatchingScreen(
         )
         if (state.value.continueWatchingMediaList.isNotEmpty()) {
             ContinueWatchingContent(
-                continueWatchingList = state.value.continueWatchingMediaList,
+                continueWatchingUiState = state.value,
                 onMediaCardClick = viewModel::onMediaCardClick
             )
         } else if (state.value.isLoading) {
@@ -75,7 +75,7 @@ fun ContinueWatchingScreen(
 
 @Composable
 fun ContinueWatchingContent(
-    continueWatchingList: List<MediaUiState>,
+    continueWatchingUiState: ContinueWatchingUiState,
     onMediaCardClick: (MediaUiState) -> Unit,
 ) {
     val lazyGridState = rememberLazyGridState()
@@ -88,7 +88,7 @@ fun ContinueWatchingContent(
     ) {
 
 
-        items(continueWatchingList) { media ->
+        items(continueWatchingUiState.continueWatchingMediaList) { media ->
             MediaCard(
                 modifier = Modifier
                     .padding(6.dp)
@@ -103,6 +103,8 @@ fun ContinueWatchingContent(
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,
                 enabled = !isScrolling,
+                nsfwThreshold = continueWatchingUiState.nsfwThreshold,
+                genderThreshold = continueWatchingUiState.genderThreshold
             )
         }
     }
