@@ -39,4 +39,6 @@
     <string name="empty"> </string>
     <string name="some_error_happened">Some error happened.</string>
     <string name="added_new_list_successfully">Added new list successfully.</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
 </resources>

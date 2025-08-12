@@ -2,7 +2,7 @@ package com.repository.media.repository
 
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.dto.GenreDto
@@ -57,7 +57,7 @@ class MoviesCategoriesRepositoryImplTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
         every { genresDto.genreListToCategoryList() } returns emptyList()
 
-        assertThrows<NoCategoriesFoundException> {
+        assertThrows<FailedException> {
             repo.getMoviesCategories()
         }
     }
