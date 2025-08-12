@@ -5,7 +5,7 @@ import com.feature.categories.categoriesUi.shared.Status
 
 data class CategoriesScreenUIState(
     val categoriesUIState: CategoriesUIState = CategoriesUIState(),
-    val status: Status = Status.Normal
+    val status: Status = Status.Success
 )
 
 data class CategoriesUIState(

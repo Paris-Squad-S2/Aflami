@@ -1,9 +1,8 @@
 package com.feature.categories.categoriesUi.shared
 
 enum class Status {
-    Normal,
+    Success,
     Loading,
     NetworkError,
     UnknownError,
-    Empty,
 }

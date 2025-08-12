@@ -37,6 +37,7 @@ dependencies {
     implementation(libs.bundles.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(projects.feature.categories.categoriesApi)
+    implementation(projects.feature.mediaDetails.mediaDetailsApi)
     implementation(projects.designsystem)
 
     implementation(libs.bundles.hilt)

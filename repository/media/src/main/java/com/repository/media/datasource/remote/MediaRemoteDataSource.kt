@@ -17,6 +17,5 @@ interface MediaRemoteDataSource {
     suspend fun getRatedMovies(accountId: Int,language: String): RatedMoviesDto
     suspend fun getRatedTvShows(accountId: Int,language: String): RatedTvShowDtoo
     suspend fun getMoviesByCategory(genreId: Int, page: Int , language: String): MovieByCategoryDto
-
     suspend fun getTvShowsByCategory(genreId: Int, page: Int , language: String): TvShowByCategoryDto
 }

@@ -1,5 +1,6 @@
 package com.feature.categories.categoriesUi.shared
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
@@ -32,6 +33,7 @@ open class BaseViewModel<S> @Inject constructor(
         execute: suspend () -> T,
     ): Job {
         val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            Log.e("BaseViewModel", "Error in coroutine", throwable)
             onError(throwable)
         }
         return scope.launch(exceptionHandler) {
@@ -39,6 +41,7 @@ open class BaseViewModel<S> @Inject constructor(
                 val result = execute()
                 onSuccess?.invoke(result)
             } catch (e: Exception) {
+                Log.e("BaseViewModel", "Error executing operation", e)
                 onError(e)
             }
         }
