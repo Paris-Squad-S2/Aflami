@@ -22,7 +22,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
-class ListsRepositoryImpTest {
+class ListsRepositoryImplTest {
 
     @MockK
     private lateinit var listsRemoteDataSource: ListsRemoteDataSource
@@ -30,12 +30,12 @@ class ListsRepositoryImpTest {
     @MockK
     private lateinit var userRemoteDataSource: UserRemoteDataSource
 
-    private lateinit var listsRepositoryImp: ListsRepositoryImp
+    private lateinit var listsRepositoryImpl: ListsRepositoryImpl
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        listsRepositoryImp = ListsRepositoryImp(listsRemoteDataSource, userRemoteDataSource)
+        listsRepositoryImpl = ListsRepositoryImpl(listsRemoteDataSource, userRemoteDataSource)
     }
 
     @Test
@@ -63,7 +63,7 @@ class ListsRepositoryImpTest {
         coEvery { userRemoteDataSource.getAccountDetails() } returns accountDto
         coEvery { listsRemoteDataSource.getLists(page, accountId) } returns listsDto
 
-        val result = listsRepositoryImp.getLists(page)
+        val result = listsRepositoryImpl.getLists(page)
 
         assertThat(result).hasSize(1)
         assertThat(result[0].id).isEqualTo(1)
@@ -85,7 +85,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.getLists(page, accountId) } throws NetworkException.ServerException("Server error")
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.getLists(page)
+            listsRepositoryImpl.getLists(page)
         }
         assertThat(exception.message).isEqualTo("Server error")
     }
@@ -110,7 +110,7 @@ class ListsRepositoryImpTest {
         )
         coEvery { listsRemoteDataSource.getListDetails(page, listId) } returns listDetailsDto
 
-        val result = listsRepositoryImp.getListDetails(page, listId)
+        val result = listsRepositoryImpl.getListDetails(page, listId)
 
         assertThat(result.id).isEqualTo(123)
         assertThat(result.name).isEqualTo("My List Details")
@@ -136,7 +136,7 @@ class ListsRepositoryImpTest {
         )
         coEvery { listsRemoteDataSource.deleteList(listId) } returns responseDto
 
-        val result = listsRepositoryImp.deleteList(listId)
+        val result = listsRepositoryImpl.deleteList(listId)
 
         assertThat(result).isEqualTo(
             Response(
@@ -157,7 +157,7 @@ class ListsRepositoryImpTest {
         )
         coEvery { listsRemoteDataSource.createList(listName) } returns responseDto
 
-        val result = listsRepositoryImp.createList(listName)
+        val result = listsRepositoryImpl.createList(listName)
 
         assertThat(result).isEqualTo(
             Response(
@@ -179,7 +179,7 @@ class ListsRepositoryImpTest {
         )
         coEvery { listsRemoteDataSource.addMovieToList(listId, movieId) } returns responseDto
 
-        val result = listsRepositoryImp.addMovieToList(listId, movieId)
+        val result = listsRepositoryImpl.addMovieToList(listId, movieId)
 
         assertThat(result).isEqualTo(
             Response(
@@ -201,7 +201,7 @@ class ListsRepositoryImpTest {
         )
         coEvery { listsRemoteDataSource.removeMovieFromList(listId, movieId) } returns responseDto
 
-        val result = listsRepositoryImp.removeMovieFromList(listId, movieId)
+        val result = listsRepositoryImpl.removeMovieFromList(listId, movieId)
 
 
         assertThat(result).isEqualTo(
@@ -228,7 +228,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.getLists(page, accountId) } throws NetworkException.UnknownException(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.getLists(page)
+            listsRepositoryImpl.getLists(page)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -249,7 +249,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.getLists(page, accountId) } throws Exception(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.getLists(page)
+            listsRepositoryImpl.getLists(page)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -264,7 +264,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.getListDetails(page, listId) } throws NetworkException.UnknownException(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.getListDetails(page, listId)
+            listsRepositoryImpl.getListDetails(page, listId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -279,7 +279,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.getListDetails(page, listId) } throws Exception(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.getListDetails(page, listId)
+            listsRepositoryImpl.getListDetails(page, listId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -293,7 +293,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.deleteList(listId) } throws NetworkException.UnknownException(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.deleteList(listId)
+            listsRepositoryImpl.deleteList(listId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -307,7 +307,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.deleteList(listId) } throws Exception(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.deleteList(listId)
+            listsRepositoryImpl.deleteList(listId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -321,7 +321,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.createList(listName) } throws NetworkException.UnknownException(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.createList(listName)
+            listsRepositoryImpl.createList(listName)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -335,7 +335,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.createList(listName) } throws Exception(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.createList(listName)
+            listsRepositoryImpl.createList(listName)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -350,7 +350,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.addMovieToList(listId, movieId) } throws NetworkException.UnknownException(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.addMovieToList(listId, movieId)
+            listsRepositoryImpl.addMovieToList(listId, movieId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -365,7 +365,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.addMovieToList(listId, movieId) } throws Exception(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.addMovieToList(listId, movieId)
+            listsRepositoryImpl.addMovieToList(listId, movieId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -380,7 +380,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.removeMovieFromList(listId, movieId) } throws NetworkException.UnknownException(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.removeMovieFromList(listId, movieId)
+            listsRepositoryImpl.removeMovieFromList(listId, movieId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)
@@ -395,7 +395,7 @@ class ListsRepositoryImpTest {
         coEvery { listsRemoteDataSource.removeMovieFromList(listId, movieId) } throws Exception(errorMessage)
 
         val exception = assertThrows<ListsNetworkException> {
-            listsRepositoryImp.removeMovieFromList(listId, movieId)
+            listsRepositoryImpl.removeMovieFromList(listId, movieId)
         }
         
         assertThat(exception.message).isEqualTo(errorMessage)

@@ -18,17 +18,17 @@ import retrofit2.HttpException
 import java.io.IOException
 import kotlin.test.assertFailsWith
 
-class ListsRemoteDataSourceImpTest {
+class ListsRemoteDataSourceImplTest {
 
     @MockK
     private lateinit var listApiService: ListApiService
 
-    private lateinit var listsRemoteDataSource: ListsRemoteDataSourceImp
+    private lateinit var listsRemoteDataSource: ListsRemoteDataSourceImpl
 
     @BeforeEach
     fun setUp() {
         MockKAnnotations.init(this)
-        listsRemoteDataSource = ListsRemoteDataSourceImp(listApiService)
+        listsRemoteDataSource = ListsRemoteDataSourceImpl(listApiService)
     }
 
     @Test

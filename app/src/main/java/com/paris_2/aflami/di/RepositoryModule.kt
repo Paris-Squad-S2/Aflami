@@ -15,11 +15,11 @@ import com.paris_2.domain.user.repository.UserRepository
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
-import com.paris_2.repository.user.repository.SettingRepositoryImp
+import com.paris_2.repository.user.repository.SettingRepositoryImpl
 import com.paris_2.repository.user.repository.UserRepositoryImpl
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
-import com.repository.lists.ListsRepositoryImp
+import com.repository.lists.ListsRepositoryImpl
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
@@ -117,7 +117,7 @@ object RepositoryModule {
     @Singleton
     fun provideLanguageRepository(
         settingLocalDataSource: SettingLocalDataSource,
-    ): SettingRepository = SettingRepositoryImp(settingLocalDataSource)
+    ): SettingRepository = SettingRepositoryImpl(settingLocalDataSource)
 
     @Provides
     @Singleton
@@ -180,5 +180,5 @@ object RepositoryModule {
     fun provideListsTvShowRepository(
         listRemoteDataSource: ListsRemoteDataSource,
         userRemoteDataSource: UserRemoteDataSource
-    ): ListsRepository = ListsRepositoryImp(listRemoteDataSource, userRemoteDataSource)
+    ): ListsRepository = ListsRepositoryImpl(listRemoteDataSource, userRemoteDataSource)
 }
