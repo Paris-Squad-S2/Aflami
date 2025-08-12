@@ -3,10 +3,8 @@ package com.repository.media.repository
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.exception.AddMediaToContinueWatchingException
-import com.paris_2.domain.media.exception.GetContinueWatchingMediaException
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.NoRatedMediaFoundException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.HomeMediaLocalDataSource
@@ -400,7 +398,7 @@ class MediaRepositoryImplTest {
 
         coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
 
-        assertThrows<AddMediaToContinueWatchingException> {
+        assertThrows<FailedException> {
             repo.addMediaToContinueWatching(media)
         }
     }
@@ -409,7 +407,7 @@ class MediaRepositoryImplTest {
     fun `getMediaFromLocal throws catchMediaFromLocalException on failure`() = runTest {
         coEvery { local.getAllMedia() } throws RuntimeException("DB read failed")
 
-        assertThrows<GetContinueWatchingMediaException> {
+        assertThrows<FailedException> {
             repo.getContinueWatchingMedia()
         }
     }
@@ -421,7 +419,7 @@ class MediaRepositoryImplTest {
         coEvery { remote.getRatedMovies(any(), any()) } throws RuntimeException("Failed")
         coEvery { remote.getRatedTvShows(any(), any()) } returns mockk(relaxed = true)
 
-        assertThrows<NoRatedMediaFoundException> {
+        assertThrows<FailedException> {
             repo.getRatedMedia(accountId = 1)
         }
     }
