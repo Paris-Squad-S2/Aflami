@@ -34,7 +34,7 @@ fun SafeImageViewer(
     nsfwThreshold: Float = 0.8f,
     genderThreshold: Float = 0.6f,
     blurNSFW: Boolean = nsfwThreshold != 0f,
-    blurFemales: Boolean = nsfwThreshold != 0f,
+    blurFemales: Boolean = genderThreshold != 0f,
     onAnalysisComplete: ((ImageAnalysisResult) -> Unit)? = null,
     loadingContent: @Composable () -> Unit = { },
     errorContent: @Composable (String) -> Unit = { },
