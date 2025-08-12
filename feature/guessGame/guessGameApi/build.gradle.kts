@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 android {
-    namespace = "com.feature.guessGame.guessGameApi"
+    namespace = Configurations.NAME_SPACE_FEATURE_GUESS_GAME_API
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

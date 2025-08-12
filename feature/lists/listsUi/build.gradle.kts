@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.lists.listsUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_LIST_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

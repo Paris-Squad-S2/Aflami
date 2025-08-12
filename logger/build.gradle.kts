@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.parise_2.logger"
+    namespace = Configurations.NAME_SPACE_LOGGER
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

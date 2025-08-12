@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.hilt)
 }
 android {
-    namespace = "com.datasource.local.tvshow"
+    namespace = Configurations.NAME_SPACE_LOCAL_TVSHOW
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

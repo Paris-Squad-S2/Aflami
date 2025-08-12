@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.repository.movie"
+    namespace = Configurations.NAME_SPACE_REPOSITORY_MOVIE
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris.datasource.remote.lists"
+    namespace = Configurations.NAME_SPACE_REMOTE_LISTS
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

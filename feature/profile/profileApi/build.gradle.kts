@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 android {
-    namespace = "com.feature.profile.profileApi"
+    namespace = Configurations.NAME_SPACE_FEATURE_PROFILE_API
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.datasource.remote.movie"
+    namespace = Configurations.NAME_SPACE_REMOTE_MOVIE
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris.repository.list"
+    namespace = Configurations.NAME_SPACE_REPOSITORY_LIST
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

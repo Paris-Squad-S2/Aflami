@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.designSystem.safeimageviewer"
+    namespace = Configurations.NAME_SPACE_SAVE_IMAGE_VIEWER
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

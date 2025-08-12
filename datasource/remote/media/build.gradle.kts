@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.media"
+    namespace = Configurations.NAME_SPACE_REMOTE_MEDIA
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

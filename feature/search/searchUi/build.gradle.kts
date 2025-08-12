@@ -9,7 +9,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.search.searchUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_SEARCH_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

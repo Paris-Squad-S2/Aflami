@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.datasource.remote.tvShow"
+    namespace = Configurations.NAME_SPACE_REMOTE_TVSHOW
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

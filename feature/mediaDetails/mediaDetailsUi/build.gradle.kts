@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.mediaDetails.mediaDetailsUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_MEDIA_DETAILS_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

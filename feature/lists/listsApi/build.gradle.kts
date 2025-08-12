@@ -5,7 +5,7 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 android {
-    namespace = "com.feature.lists.listsApi"
+    namespace = Configurations.NAME_SPACE_FEATURE_LIST_API
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

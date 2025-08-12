@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.datasource.local.media"
+    namespace = Configurations.NAME_SPACE_LOCAL_MEDIA
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.repository.media"
+    namespace = Configurations.NAME_SPACE_REPOSITORY_MEDIA
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

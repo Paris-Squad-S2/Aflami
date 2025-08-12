@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 android {
-    namespace = "com.feature.home.homeApi"
+    namespace = Configurations.NAME_SPACE_FEATURE_HOME_API
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

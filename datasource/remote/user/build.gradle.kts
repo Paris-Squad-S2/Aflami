@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.datasource.remote.user"
+    namespace = Configurations.NAME_SPACE_REMOTE_USER
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

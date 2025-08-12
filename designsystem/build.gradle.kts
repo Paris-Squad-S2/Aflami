@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.aflami.designsystem"
+    namespace = Configurations.NAME_SPACE_DESIGN_SYSTEM
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

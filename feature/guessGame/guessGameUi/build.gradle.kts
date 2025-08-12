@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.guessGame.guessGameUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_GUESS_GAME_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

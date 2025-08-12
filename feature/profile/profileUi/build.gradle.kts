@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.profile.profileUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_PROFILE_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

@@ -13,7 +13,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.aflami"
+    namespace = Configurations.NAME_SPACE_AFLAMI
     compileSdk = Configurations.COMPILE_SDK
 
     signingConfigs {

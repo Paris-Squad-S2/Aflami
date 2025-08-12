@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.datasource.local.movie"
+    namespace = Configurations.NAME_SPACE_LOCAL_MOVIE
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

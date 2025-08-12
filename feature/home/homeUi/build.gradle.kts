@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.home.homeUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_HOME_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

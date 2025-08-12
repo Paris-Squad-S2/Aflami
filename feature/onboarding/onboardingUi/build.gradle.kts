@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.onboarding.onboardingUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_ONBOARDING_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.authentication.authenticationUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_AUTH_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

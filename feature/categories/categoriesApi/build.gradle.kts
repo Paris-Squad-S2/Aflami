@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 android {
-    namespace = "com.feature.categories.categoriesApi"
+    namespace = Configurations.NAME_SPACE_FEATURE_CATEGORIES_API
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

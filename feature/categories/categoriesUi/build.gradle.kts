@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.feature.categories.categoriesUi"
+    namespace = Configurations.NAME_SPACE_FEATURE_CATEGORIES_UI
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {
