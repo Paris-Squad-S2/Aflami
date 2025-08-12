@@ -109,3 +109,14 @@ private fun Preview() {
         )
     }
 }
+
+@Preview
+@Composable
+private fun PreviewSec() {
+    AflamiTheme(isDarkTheme = true) {
+        GameResultCard(
+            value = 100,
+            isPoint = false,
+        )
+    }
+}
