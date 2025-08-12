@@ -1,2 +1,2 @@
-versionName=0.8.5
-- rename classes from imp to impl
+versionName=0.8.6
+- refactor/rename-imp-to-impl
