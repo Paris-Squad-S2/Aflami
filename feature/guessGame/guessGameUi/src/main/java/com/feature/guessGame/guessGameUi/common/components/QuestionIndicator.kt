@@ -115,7 +115,7 @@ private fun IndicatorBox(
 // another version of IndictorBox with animation
 // This version uses a gradient effect for the background
 @Composable
-private fun IndictorBox2(
+private fun IndicatorBox2(
     modifier: Modifier = Modifier,
     isSelect: Boolean = false
 ) {
@@ -156,7 +156,7 @@ private fun IndictorBox2(
 
 @Preview
 @Composable
-private fun PreviewIndictorBox() {
+private fun PreviewIndicatorBox() {
     var isSelect by remember { mutableStateOf(false) }
     AflamiTheme {
         Box(Modifier.clickable { isSelect = !isSelect }) {

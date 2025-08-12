@@ -63,8 +63,8 @@ fun GameResultCard(
                 ) {
                     Image(
                         painter = painterResource(R.drawable.ic_light_glow),
-                        contentDescription = if (isPoint) R.string.points_achieved.toString()
-                        else R.string.total_time.toString(),
+                        contentDescription = if (isPoint) stringResource(R.string.points_achieved)
+                        else stringResource(R.string.total_time),
                     )
                 }
                 AppText(
@@ -89,8 +89,8 @@ fun GameResultCard(
                 painterResource(R.drawable.ic_star_point)
             else
                 painterResource(R.drawable.ic_timer),
-            contentDescription = if (isPoint) R.string.points_achieved.toString()
-            else R.string.total_time.toString(),
+            contentDescription = if (isPoint) stringResource(R.string.points_achieved)
+            else stringResource(R.string.total_time),
             modifier = Modifier
                 .size(70.dp)
                 .align(Alignment.TopCenter)
