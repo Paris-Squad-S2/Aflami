@@ -76,13 +76,13 @@ fun MediaUiState.toMedia():Media{
 
 fun MediaType.toUiState(): MediaTypeUi{
     return when(this){
-        MediaType.TvShow -> MediaTypeUi.TVSHOW
+        MediaType.TvShow -> MediaTypeUi.TV_SHOW
         MediaType.Movie -> MediaTypeUi.MOVIE
     }
 }
 fun MediaTypeUi.toMediaType(): MediaType{
     return when(this){
-        MediaTypeUi.TVSHOW -> MediaType.TvShow
+        MediaTypeUi.TV_SHOW -> MediaType.TvShow
         MediaTypeUi.MOVIE -> MediaType.Movie
     }
 }

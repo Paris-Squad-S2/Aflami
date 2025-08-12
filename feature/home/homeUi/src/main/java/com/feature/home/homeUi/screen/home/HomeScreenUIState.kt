@@ -24,7 +24,10 @@ data class HomeUIState(
     val upComingMediaList: List<MediaUiState> = emptyList(),
     val showMoodPickerDialog: Boolean = false,
     val isAllCategories: Boolean = false,
-    val moodPickerMovie: MediaUiState? = null
+    val moodPickerMovie: MediaUiState? = null,
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
 
 data class MediaUiState(
@@ -38,6 +41,6 @@ data class MediaUiState(
 )
 
 enum class MediaTypeUi(val mediaID: Int) {
-    TVSHOW(R.string.tv_show),
+    TV_SHOW(R.string.tv_show),
     MOVIE(R.string.movie)
 }

@@ -37,7 +37,7 @@ class ContinueWatchingViewModelTest {
             5,
             "img/5",
             "Continue Test 1",
-            MediaTypeUi.TVSHOW,
+            MediaTypeUi.TV_SHOW,
             listOf(R.string.category_drama),
             LocalDate(2023, 9, 9),
             5.8
@@ -62,7 +62,7 @@ class ContinueWatchingViewModelTest {
         categories = listOf(Category.Action),
         type = when (type) {
             MediaTypeUi.MOVIE -> DomainMediaType.Movie
-            MediaTypeUi.TVSHOW -> DomainMediaType.TvShow
+            MediaTypeUi.TV_SHOW -> DomainMediaType.TvShow
         }
     )
 
