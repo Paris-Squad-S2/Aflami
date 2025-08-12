@@ -281,7 +281,7 @@ fun HomeScreenContent(
                     imageUri = upcomingMedia.imageUri,
                     rating = upcomingMedia.rating?.toFloat(),
                     movieName = upcomingMedia.title,
-                    mediaType = upcomingMedia.type.toString(),
+                    mediaType = stringResource(upcomingMedia.type.mediaID),
                     year = upcomingMedia.yearOfRelease.year.toString(),
                     mediaCardType = MediaCardType.UP_COMING,
                     showGradientFilter = false,

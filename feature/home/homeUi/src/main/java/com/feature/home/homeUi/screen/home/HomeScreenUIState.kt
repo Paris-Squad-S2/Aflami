@@ -1,5 +1,6 @@
 package com.feature.home.homeUi.screen.home
 
+import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.paris_2.domain.media.entity.Category
 import kotlinx.datetime.LocalDate
@@ -37,7 +38,7 @@ data class MediaUiState(
 
 
 
-enum class MediaTypeUi(val mediaName: String) {
-    TVSHOW("TV Show"),
-    MOVIE("Movie")
+enum class MediaTypeUi(val mediaID: Int) {
+    TVSHOW(R.string.tv_show),
+    MOVIE(R.string.movie)
 }
