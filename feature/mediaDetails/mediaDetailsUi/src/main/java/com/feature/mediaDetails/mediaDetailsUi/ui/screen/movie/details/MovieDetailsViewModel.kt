@@ -7,16 +7,6 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.paris_2.domain.media.entity.MovieVideo
-import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
-import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
@@ -32,6 +22,17 @@ import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.IsLoggedInUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -54,6 +55,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val addMovieToListUseCase: AddMovieToListUseCase,
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
+    private val settingsUseCase: SettingsUseCase,
     navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
     MovieDetailsScreenState(
@@ -100,9 +102,60 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     init {
+        getRestriction()
         loadedMovieDetails(mediaId = movieId)
         getInformationVideoMovie()
         loadAvailableLists()
+    }
+
+    private fun getRestriction() {
+        tryToExecute(
+            execute = { settingsUseCase.getRestriction() },
+            onSuccess = ::onGetRestrictionSuccess,
+            onError = ::onGetRestrictionError
+        )
+    }
+
+    private fun onGetRestrictionSuccess(restriction: String) {
+        updateState(
+            screenState.value.copy(
+                contentRestriction = ContentRestriction.valueOf(restriction),
+                showSnackBar = false,
+                snackBarMessage = null
+            )
+        )
+        when (screenState.value.contentRestriction) {
+            ContentRestriction.Strict -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.8f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Moderate -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.4f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Off -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0f,
+                    genderThreshold = 0f
+                )
+            )
+        }
+
+    }
+
+    private fun onGetRestrictionError(error: String) {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = true,
+                snackBarMessage = R.string.failed_to_load_restriction_settings,
+            )
+        )
     }
 
     private fun loadAvailableLists() {
@@ -196,9 +249,9 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
             execute = {
-                getMovieReviewsUseCase(mediaId,1).toListOfReviewUi()
+                getMovieReviewsUseCase(mediaId, 1).toListOfReviewUi()
             },
-            onSuccess = { reviews->
+            onSuccess = { reviews ->
                 updateState(
                     screenState.value.copy(
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
@@ -224,8 +277,11 @@ class MovieDetailsViewModel @Inject constructor(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
                         PagingSource(
-                            mediaUseCase ={ page ->
-                                getMovieRecommendationsUseCase(mediaId,page).toListOfMovieSimilarUI()
+                            mediaUseCase = { page ->
+                                getMovieRecommendationsUseCase(
+                                    mediaId,
+                                    page
+                                ).toListOfMovieSimilarUI()
                             }
                         )
                     }
@@ -300,8 +356,7 @@ class MovieDetailsViewModel @Inject constructor(
             onSuccess = { isLoggedIn ->
                 if (isLoggedIn) {
                     updateState(screenState.value.copy(showRatingDialog = true))
-                }
-                else {
+                } else {
                     navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.rate))
                 }
             },
@@ -336,7 +391,8 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun onAddToSelectedList() {
-        val selectedList = screenState.value.availableLists.getOrNull(screenState.value.selectedListIndex)
+        val selectedList =
+            screenState.value.availableLists.getOrNull(screenState.value.selectedListIndex)
         if (selectedList != null) {
             tryToExecute(
                 execute = {

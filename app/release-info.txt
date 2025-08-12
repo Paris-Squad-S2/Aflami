@@ -1,2 +1,3 @@
-versionName=0.8.7
-- remove navigation components from Home feature
+versionName=0.8.8
+- add content restriction in profile screen
+- now we can change language without restart app

@@ -307,6 +307,8 @@ fun TvShowDetailsScreenContent(
                                                                         .fillMaxWidth()
                                                                         .padding(horizontal = 8.dp),
                                                                     hasVideo = true,
+                                                                    nsfwThreshold = state.nsfwThreshold,
+                                                                    genderThreshold = state.genderThreshold,
                                                                     onPlayClick = {
                                                                         tvShowScreenInteractionListener.onClickPlayEpisodeTrailer(
                                                                             state.tvShowDetailsUiState.tvShowUi.id,
@@ -364,6 +366,8 @@ fun TvShowDetailsScreenContent(
                                                     imageUri = media.posterPath,
                                                     rating = media.voteAverage?.toFloat(),
                                                     movieName = media.title,
+                                                    nsfwThreshold = state.nsfwThreshold,
+                                                    genderThreshold = state.genderThreshold,
                                                     mediaType = stringResource(
                                                         featureMediaDetailsUiR.string.tvshow
                                                     ),

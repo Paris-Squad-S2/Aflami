@@ -25,6 +25,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.components.AppLanguageDialog
 import com.feature.profile.profileUi.screen.components.AppLogOutDialog
+import com.feature.profile.profileUi.screen.components.AppRestrictionDialog
 import com.feature.profile.profileUi.screen.components.AppSettingDialog
 import com.feature.profile.profileUi.screen.components.AppThemeDialog
 import com.feature.profile.profileUi.screen.components.ProfileDetails
@@ -140,13 +141,8 @@ fun ProfileContent(
             isVisible = state.profile.isLanguageDialogOpen,
             onDismiss = profileInteractionListener::onDismissLanguageDialog,
             languageState = state.profile.language,
-            onLanguageSelected = {
-                profileInteractionListener.onLanguageApplyClicked(it)
-                val intent =
-                    context.packageManager.getLaunchIntentForPackage(context.packageName)
-                intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                context.startActivities(arrayOf(intent))
-            }
+            onLanguageSelected = profileInteractionListener::onLanguageApplyClicked
+
         )
 
 
@@ -165,12 +161,19 @@ fun ProfileContent(
         AppSettingDialog(
             isVisible = state.profile.isSettingDialogOpen,
             onDismiss = profileInteractionListener::onDismissSettingDialog,
-            isLogoutDialogVisible = profileInteractionListener::onLogoutClicked
+            isLogoutDialogVisible = profileInteractionListener::onLogoutClicked,
+            isRestrictionDialogVisible = profileInteractionListener::onContentRestrictionClicked
         )
         AppLogOutDialog(
             isVisible = state.profile.isLogoutDialogOpen,
             onDismiss = profileInteractionListener::onDismissLogoutDialog,
             onLogout = profileInteractionListener::onLogoutApplyClicked
+        )
+        AppRestrictionDialog(
+            isVisible = state.profile.isContentRestrictionDialogOpen,
+            onDismiss = profileInteractionListener::onDismissContentRestrictionDialog,
+            onSave = profileInteractionListener::onRestrictionSelected,
+            restriction = state.profile.contentRestriction
         )
     }
 }
