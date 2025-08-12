@@ -1,18 +1,21 @@
 package com.feature.categories.categoriesUi.screen.categoryDetails
 
 import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import com.feature.categories.categoriesUi.paging.PagingSource
 import com.feature.categories.categoriesUi.shared.BaseViewModel
 import com.feature.categories.categoriesUi.shared.CategoryUiState
-import com.feature.categories.categoriesUi.shared.Status
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.useCase.GetMoviesByCategoryUseCase
 import com.paris_2.domain.media.useCase.GetTvShowsByCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
@@ -25,51 +28,51 @@ class CategoryDetailsScreenViewModel @Inject constructor(
     BaseViewModel<CategoryDetailsScreenUIState>(CategoryDetailsScreenUIState()) {
 
     fun initialCategory(category: CategoryUiState) {
-        tryToExecute(
-            execute = {
-                updateState(
-                    screenState.value.copy(
-                        categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
-                            selectedCategory = category,
-                            title = when (category.type) {
-                                MediaType.TvShow -> RDesignSystem.string.tv_shows
-                                MediaType.Movie -> RDesignSystem.string.movies
-                            },
-                            categories = when (category.type) {
-                                MediaType.TvShow -> CategoryUiState.getTvShowsCategories()
-                                MediaType.Movie -> CategoryUiState.getMoviesCategories()
-                            },
-                        ),
-                    )
-                )
-            },
-            onSuccess = {
-                onCategorySelected(category)
-            },
-            onError = ::handleError,
+        updateState(
+            screenState.value.copy(
+                categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
+                    selectedCategory = category,
+                    title = when (category.type) {
+                        MediaType.TvShow -> RDesignSystem.string.tv_shows
+                        MediaType.Movie -> RDesignSystem.string.movies
+                    },
+                    categories = when (category.type) {
+                        MediaType.TvShow -> CategoryUiState.getTvShowsCategories()
+                        MediaType.Movie -> CategoryUiState.getMoviesCategories()
+                    },
+                ),
+            )
         )
+        onCategorySelected(category)
     }
 
     override fun onCategorySelected(category: CategoryUiState) {
         reloadAnimation()
         selectCategory(category)
-        tryToExecute(
-            execute = {
-                when (category.type) {
-                    MediaType.TvShow -> getTvShowsByCategoryUseCase(
-                        category = category.category,
-                        page = 1
-                    )
+        viewModelScope.launch {
+            Pager(
+                config = PagingConfig(pageSize = 10),
+                pagingSourceFactory = {
+                    PagingSource(
+                        mediaUseCase = { page ->
+                            when (category.type) {
+                                MediaType.TvShow -> getTvShowsByCategoryUseCase(
+                                    category = category.category,
+                                    page = page
+                                ).toMediaUIList()
 
-                    MediaType.Movie -> getMoviesByCategoryUseCase(
-                        category = category.category,
-                        page = 1
+                                MediaType.Movie -> getMoviesByCategoryUseCase(
+                                    category = category.category,
+                                    page = page
+                                ).toMediaUIList()
+                            }
+                        }
                     )
                 }
-            },
-            onSuccess = ::handleSuccess,
-            onError = ::handleError,
-        )
+            ).flow.cachedIn(viewModelScope).also {
+                handleSuccess(it)
+            }
+        }
     }
 
     private fun selectCategory(category: CategoryUiState) {
@@ -104,7 +107,6 @@ class CategoryDetailsScreenViewModel @Inject constructor(
                 categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
                     mediaVisibility = false
                 ),
-                status = Status.Loading
             )
         )
         viewModelScope.launch {
@@ -119,33 +121,13 @@ class CategoryDetailsScreenViewModel @Inject constructor(
         }
     }
 
-    private fun handleSuccess(mediaList: List<Media>) {
+    private fun handleSuccess(mediaList: Flow<PagingData<MediaUI>>) {
         updateState(
             screenState.value.copy(
                 categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
-                    media = mediaList.toMediaUIList(),
+                    media = mediaList,
                 ),
-                status = Status.Success
             )
         )
-    }
-
-    private fun handleError(error: Throwable) {
-        when (error) {
-            is NoInternetConnectionException -> {
-                updateState(
-                    screenState.value.copy(
-                        status = Status.NetworkError
-                    )
-                )
-            }
-            else -> {
-                updateState(
-                    screenState.value.copy(
-                        status = Status.UnknownError
-                    )
-                )
-            }
-        }
     }
 }

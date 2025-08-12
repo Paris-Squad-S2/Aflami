@@ -47,6 +47,7 @@ dependencies {
     implementation(libs.bundles.navigation)
     implementation(libs.bundles.datetime)
     implementation(libs.bundles.serialization)
+    implementation(libs.bundles.paging)
     implementation(projects.domain.media)
 
 }

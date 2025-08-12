@@ -20,16 +20,18 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.categories.categoriesUi.screen.categoryDetails.components.CategoriesList
 import com.feature.categories.categoriesUi.screen.categoryDetails.components.CategoryDetailsEmptyScreen
 import com.feature.categories.categoriesUi.screen.categoryDetails.components.CategoryDetailsMediaList
 import com.feature.categories.categoriesUi.shared.CategoryUiState
-import com.feature.categories.categoriesUi.shared.Status
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 @Composable
@@ -49,11 +51,13 @@ fun CategoryDetailsScreen(
 }
 
 @Composable
-fun CategoriesScreenContent(
+private fun CategoriesScreenContent(
     state: CategoryDetailsScreenUIState,
     interactionListener: CategoryDetailsScreenInteractionListener,
 ) {
     val activity = LocalActivity.current
+    val mediaList = state.categoryDetailsUIState.media.collectAsLazyPagingItems()
+
     Column(
         modifier = Modifier
             .background(Theme.colors.surface)
@@ -86,31 +90,37 @@ fun CategoriesScreenContent(
                 enter = slideInHorizontally { -it },
                 exit = slideOutHorizontally { -it }
             ) {
-                when (state.status) {
-                    Status.Loading -> {
+                when {
+                    mediaList.loadState.refresh is LoadState.Loading -> {
                         PageLoadingPlaceHolder(
                             modifier = Modifier.fillMaxSize()
                         )
                     }
 
-                    Status.NetworkError -> {
-                        NetworkError(
-                            modifier = Modifier.fillMaxSize(),
-                            onRetry = interactionListener::onRetry
-                        )
+                    mediaList.loadState.refresh is LoadState.Error -> {
+                        when ((mediaList.loadState.refresh as LoadState.Error).error) {
+                            is NoInternetConnectionException -> {
+                                NetworkError(
+                                    modifier = Modifier.fillMaxSize(),
+                                    onRetry = interactionListener::onRetry
+                                )
+                            }
+
+                            else -> { //TODO: Handle other errors
+                                CategoryDetailsEmptyScreen()
+                            }
+                        }
                     }
-                    Status.UnknownError -> { //TODO: Handle unknown error
+
+                    mediaList.itemSnapshotList.isEmpty() -> {
                         CategoryDetailsEmptyScreen()
                     }
-                    Status.Success -> {
-                        if (state.categoryDetailsUIState.media.isEmpty()) {
-                            CategoryDetailsEmptyScreen()
-                        } else {
-                            CategoryDetailsMediaList(
-                                mediaList = state.categoryDetailsUIState.media,
-                                onMediaSelected = interactionListener::onMediaSelected,
-                            )
-                        }
+
+                    else -> {
+                        CategoryDetailsMediaList(
+                            mediaList = mediaList,
+                            onMediaSelected = interactionListener::onMediaSelected,
+                        )
                     }
                 }
             }

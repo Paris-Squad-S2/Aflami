@@ -1,14 +1,16 @@
 package com.feature.categories.categoriesUi.screen.categoryDetails
 
+import androidx.paging.PagingData
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.categories.categoriesUi.shared.Status
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import com.paris_2.aflami.designsystem.R as RDesignSystem
 
 data class CategoryDetailsScreenUIState(
     val categoryDetailsUIState: CategoryDetailsUIState = CategoryDetailsUIState(),
-    val status: Status = Status.Loading
 )
 
 data class CategoryDetailsUIState(
@@ -16,7 +18,7 @@ data class CategoryDetailsUIState(
     val mediaVisibility: Boolean = false,
     val categories: List<CategoryUiState> = CategoryUiState.getMoviesCategories(),
     val title: Int = RDesignSystem.string.movies,
-    val media: List<MediaUI> = emptyList(),
+    val media: Flow<PagingData<MediaUI>> = flowOf(PagingData.empty()),
     val selectedCategory: CategoryUiState = CategoryUiState.getDefault()
 )
 

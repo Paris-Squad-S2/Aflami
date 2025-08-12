@@ -30,7 +30,7 @@ fun CategoriesScreen(
 }
 
 @Composable
-fun CategoriesScreenContent(
+private fun CategoriesScreenContent(
     state: CategoriesScreenUIState,
     interactionListener: CategoriesScreenInteractionListener,
 ) {
