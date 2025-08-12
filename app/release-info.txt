@@ -1,2 +1,2 @@
-versionName=0.8.9
-- add categories domain and data and ui
+versionName=0.8.10
+- add guess game components

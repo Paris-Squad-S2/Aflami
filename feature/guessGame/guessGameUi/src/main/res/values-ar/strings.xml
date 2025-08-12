@@ -10,4 +10,19 @@
     <string name="when_was_it_released_desc">اختر سنة الإصدار الصحيحة.</string>
     <string name="which_genre_desc">أي واحد هو فيلم الحركة الحقيقي؟</string>
     <string name="points_label">%1$d نقطة</string>
+    <string name="points_achieved">النقاط المحققة</string>
+    <string name="total_time">الوقت الإجمالي</string>
+    <string name="pts">%1$d نقاط.</string>
+    <string name="sec">%1$d ثانية.</string>
+    <string name="Choose_Difficulty_Level">اختر مستوى الصعوبة</string>
+    <string name="Lets_Play">لنلعب</string>
+    <string name="Easy">سهل</string>
+    <string name="Medium">متوسط</string>
+    <string name="Hard">صعب</string>
+    <string name="five_questions_45_sec_5_points_per_question">5 أسئلة، 45 ثانية، 5 نقاط لكل سؤال.</string>
+    <string name="ten_questions_30_sec_10_points_per_question">10 أسئلة، 30 ثانية، 10 نقاط لكل سؤال.</string>
+    <string name="twenty_questions_10_sec_20_points_per_question">20 سؤالاً، 10 ثوانٍ، 20 نقطة لكل سؤال.</string>
+    <string name="Not_enough_points">ليس هناك نقاط كافية</string>
+    <string name="OK">حسنا</string>
+    <string name="sorry_not_enough_points_hint">عذرا، ليس لديك نقاط كافية للحصول على تلميح</string>
 </resources>
