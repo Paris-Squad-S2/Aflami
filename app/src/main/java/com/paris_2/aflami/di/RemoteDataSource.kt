@@ -10,32 +10,43 @@ import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object RemoteDataSource {
-    @Provides
-    @Singleton
-    fun provideGenresRemoteDataSource(impl: GenresRemoteDataSourceImpl): GenresRemoteDataSource = impl
+abstract class RemoteDataSourceModule {
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideMediaRemoteDataSource(impl: MediaRemoteDataSourceImpl): MediaRemoteDataSource = impl
+    abstract fun bindGenresRemoteDataSource(
+        impl: GenresRemoteDataSourceImpl
+    ): GenresRemoteDataSource
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideMovieDetailsRemoteDataSource(impl: MovieRemoteDataSourceImpl): MovieRemoteDataSource = impl
+    abstract fun bindMediaRemoteDataSource(
+        impl: MediaRemoteDataSourceImpl
+    ): MediaRemoteDataSource
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideTvShowDetailsRemoteDataSource(impl: TvShowDetailsRemoteDataSourceImpl): TvShowDetailsRemoteDataSource = impl
+    abstract fun bindMovieRemoteDataSource(
+        impl: MovieRemoteDataSourceImpl
+    ): MovieRemoteDataSource
 
-    @Provides
+    @Binds
     @Singleton
-    fun provideSearchRemoteDataSource(impl: SearchRemoteDataSourceImpl): SearchRemoteDataSource = impl
+    abstract fun bindTvShowDetailsRemoteDataSource(
+        impl: TvShowDetailsRemoteDataSourceImpl
+    ): TvShowDetailsRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindSearchRemoteDataSource(
+        impl: SearchRemoteDataSourceImpl
+    ): SearchRemoteDataSource
 }
