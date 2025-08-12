@@ -132,11 +132,11 @@ fun TvShowResult.toDomain(type: MediaType): Media? {
 
 
 fun ResultDto.toDomain(): Media? {
-    val parsedDate = runCatching { LocalDate.parse(release_date) }.getOrNull() ?: return null
+    val parsedDate = runCatching { release_date?.let { LocalDate.parse(it) } }.getOrNull() ?: return null
     return Media(
-        id = id,
+        id = id ?: return null,
         imageUri = poster_path.toImageUrl().orEmpty(),
-        title = title,
+        title = title.orEmpty(),
         type = MediaType.Movie,
         categories = genre_ids.intListToCategoryList(),
         yearOfRelease = parsedDate,
