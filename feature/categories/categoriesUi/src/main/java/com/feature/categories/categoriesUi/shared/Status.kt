@@ -5,4 +5,5 @@ enum class Status {
     Loading,
     NetworkError,
     UnknownError,
+    Empty,
 }

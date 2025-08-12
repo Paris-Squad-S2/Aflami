@@ -25,4 +25,5 @@
     <string name="talk">Talk</string>
     <string name="reality">Reality</string>
     <string name="soap">Soap</string>
+    <string name="no_items_for_this_genre">No items for this genre!</string>
 </resources>
