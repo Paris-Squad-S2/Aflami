@@ -1,3 +1,18 @@
 <resources>
-    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main" translatable="false">MainActivity</string>
+    <string name="points_achieved">Points Achieved</string>
+    <string name="total_time">Total time</string>
+    <string name="pts">%1$d Pts.</string>
+    <string name="sec">%1$d Sec.</string>
+    <string name="Choose_Difficulty_Level">Choose Difficulty Level</string>
+    <string name="Lets_Play">Let\'s Play</string>
+    <string name="Easy">Easy</string>
+    <string name="Medium">Medium</string>
+    <string name="Hard">Hard</string>
+    <string name="five_questions_45_sec_5_points_per_question">5 questions, 45 sec, 5 points per question.</string>
+    <string name="ten_questions_30_sec_10_points_per_question">10 questions, 30 sec, 10 points per question.</string>
+    <string name="twenty_questions_10_sec_20_points_per_question">20 questions, 10 sec, 20 points per question.</string>
+    <string name="Not_enough_points">Not enough points</string>
+    <string name="OK">OK</string>
+    <string name="sorry_not_enough_points_hint">Sorry, you don’t have the enough points to have a hint</string>
 </resources>
