@@ -27,6 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
@@ -135,7 +136,7 @@ fun MoodPicker(
                             .clickable(
                                 indication = null,
                                 interactionSource = remember { MutableInteractionSource() }
-                            ){
+                            ) {
                                 isEmojiSelected.value = true
                                 selectedEmojiIndex.intValue = index
                                 selectedEmojiMood.value = MoodType.entries[index]
@@ -144,13 +145,13 @@ fun MoodPicker(
                 }
             }
             AppText(
-                text = "Get now",
+                text = stringResource(com.feature.home.homeUi.R.string.get_now),
                 style = Theme.textStyle.label.medium,
                 color = if (isEmojiSelected.value) Theme.colors.primary else Theme.colors.disable,
                 modifier = Modifier
-                    .padding(top = 12.dp , bottom = 3.dp)
+                    .padding(top = 12.dp, bottom = 3.dp)
                     .wrapContentSize()
-                    .clickable{ if (isEmojiSelected.value) onEmojiClick(selectedEmojiMood.value) }
+                    .clickable { if (isEmojiSelected.value) onEmojiClick(selectedEmojiMood.value) }
             )
         }
     }
