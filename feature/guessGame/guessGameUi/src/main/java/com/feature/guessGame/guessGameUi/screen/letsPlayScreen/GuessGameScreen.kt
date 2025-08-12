@@ -19,6 +19,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.screen.letsPlayScreen.components.PointsBadge
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppTopBar
@@ -27,9 +29,17 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun LetsPlayScreen(
-    userPoints: Int,
-    onPlayClicked: (String) -> Unit,
+fun GuessGameScreen(
+    viewModel: GuessGameScreenViewModel = hiltViewModel(),
+) {
+    val letsPlayScreenState = viewModel.screenState.collectAsStateWithLifecycle()
+    GuessGameScreenContent(state = letsPlayScreenState.value, action = viewModel)
+}
+
+@Composable
+fun GuessGameScreenContent(
+    state: LetsPlayScreenUiState,
+    action: GuessGameScreenInteractionListener,
 ) {
     val games = listOf(
         GameData(
@@ -83,7 +93,7 @@ fun LetsPlayScreen(
             AppTopBar(
                 title = stringResource(R.string.let_s_play),
                 trailingContent = {
-                    PointsBadge(points = userPoints)
+                    PointsBadge(points = state.userPoints)
                 }
             )
         }
@@ -91,7 +101,7 @@ fun LetsPlayScreen(
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 16.dp, vertical = 8.dp),
+                .padding(horizontal = 16.dp, vertical = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             items(games) { game ->
@@ -100,7 +110,7 @@ fun LetsPlayScreen(
                     description = game.description,
                     backgroundColors = game.backgroundColors,
                     trailingImages = game.trailingImages,
-                    onPlayClick = { onPlayClicked(game.title) },
+                    onPlayClick = { action.onGamePlayClicked(game.title) },
                     isPlayButtonLocked = game.isLocked,
                     pointsToUnlock = game.pointsToUnlock
                 )
@@ -123,11 +133,17 @@ data class GameData(
     showBackground = true,
     showSystemUi = true
 )
+@Preview(showBackground = true, name = "LTR")
+@Preview(showBackground = true, name = "RTL", locale = "ar")
 fun LetsPlayScreenPreview() {
     AflamiTheme {
-        LetsPlayScreen(
-            userPoints = 250,
-            onPlayClicked = {},
+        GuessGameScreenContent(
+            state = LetsPlayScreenUiState(userPoints = 120),
+            action = object : GuessGameScreenInteractionListener {
+                override fun onGamePlayClicked(gameTitle: String) {}
+            }
         )
     }
 }
+
+
