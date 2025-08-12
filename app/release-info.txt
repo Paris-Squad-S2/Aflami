@@ -1,3 +1,2 @@
-versionName=0.8.8
-- add content restriction in profile screen
-- now we can change language without restart app
+versionName=0.8.9
+- add categories domain and data and ui
