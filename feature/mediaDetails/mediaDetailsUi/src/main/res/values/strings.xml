@@ -71,4 +71,5 @@
     <string name="category_talk">Talk</string>
     <string name="category_war_politics">War &amp; Politics</string>
     <string name="category_unknown" />
+    <string name="select_how_much_you_like_it">Select how much you like it</string>
 </resources>
