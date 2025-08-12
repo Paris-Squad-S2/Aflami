@@ -8,8 +8,8 @@ import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.work.WorkManager
 import com.datasource.local.dao.MovieDao
 import com.datasource.local.dao.TvShowDao
-import com.datasource.local.datasource.MovieLocalDataSourceImp
-import com.datasource.local.datasource.TvShowLocalDataSourceImp
+import com.datasource.local.datasource.MovieLocalDataSourceImpl
+import com.datasource.local.datasource.TvShowLocalDataSourceImpl
 import com.datasource.local.media.dao.ContinueWatchingDao
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
@@ -20,10 +20,10 @@ import com.datasource.local.media.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.media.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
 import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
-import com.datasource.remote.lists.ListsRemoteDataSourceImp
+import com.datasource.remote.lists.ListsRemoteDataSourceImpl
 import com.datasource.remote.lists.service.ListApiService
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
-import com.paris_2.dataSource.local.user.SettingLocalDataSourceImp
+import com.paris_2.dataSource.local.user.SettingLocalDataSourceImpl
 import com.paris_2.datasource.remote.user.UserApi
 import com.paris_2.datasource.remote.user.UserRemoteDataSourceImpl
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
@@ -80,14 +80,14 @@ object DataSourceModule {
     fun provideMovieLocalDataSource(
         workManager: WorkManager,
         movieDao: MovieDao,
-    ): MovieLocalDataSource = MovieLocalDataSourceImp(workManager, movieDao)
+    ): MovieLocalDataSource = MovieLocalDataSourceImpl(workManager, movieDao)
 
     @Provides
     @Singleton
     fun provideTvShowLocalDataSource(
         workManager: WorkManager,
         dao: TvShowDao,
-    ): TvShowLocalDataSource = TvShowLocalDataSourceImp(workManager, dao)
+    ): TvShowLocalDataSource = TvShowLocalDataSourceImpl(workManager, dao)
 
     @Provides
     @Singleton
@@ -118,14 +118,14 @@ object DataSourceModule {
     @Singleton
     fun provideLanguageLocalDataSource(
        @ApplicationContext context: Context,
-    ): SettingLocalDataSource = SettingLocalDataSourceImp(context)
+    ): SettingLocalDataSource = SettingLocalDataSourceImpl(context)
 
     @Provides
     @Singleton
     fun provideListRemoteDataSource(
         listApiService: ListApiService
     ): ListsRemoteDataSource {
-        return ListsRemoteDataSourceImp(listApiService)
+        return ListsRemoteDataSourceImpl(listApiService)
     }
 
 }
