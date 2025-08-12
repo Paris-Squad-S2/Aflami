@@ -43,12 +43,12 @@ private object DifficultyDialogDefaults {
 
 @Composable
 fun DifficultyDialog(
-    title: Int,
     selectedDifficulty: Int,
     onDismiss: () -> Unit,
     onClickButton: () -> Unit,
     onSelectChip: (Int) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    title: Int = R.string.Choose_Difficulty_Level,
 ) {
     val layoutDirection = LocalLayoutDirection.current
 
