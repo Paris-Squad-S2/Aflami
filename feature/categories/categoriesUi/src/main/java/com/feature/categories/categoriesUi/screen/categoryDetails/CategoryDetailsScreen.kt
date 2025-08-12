@@ -100,10 +100,7 @@ fun CategoriesScreenContent(
                         )
                     }
                     Status.UnknownError -> { //TODO: Handle unknown error
-                        NetworkError(
-                            modifier = Modifier.fillMaxSize(),
-                            onRetry = interactionListener::onRetry
-                        )
+                        CategoryDetailsEmptyScreen()
                     }
                     Status.Success -> {
                         if (state.categoryDetailsUIState.media.isEmpty()) {
