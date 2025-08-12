@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.mapLatest
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class SettingLocalDataSourceImp @Inject constructor(
+class SettingLocalDataSourceImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
 ) : SettingLocalDataSource {
 

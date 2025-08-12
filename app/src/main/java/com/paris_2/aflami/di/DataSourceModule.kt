@@ -121,8 +121,8 @@ object DataSourceModule {
     @Provides
     fun provideSettingLocalDataSource(
         dataStore: DataStore<Preferences>
-    ): SettingLocalDataSource{
-        return SettingLocalDataSourceImp(dataStore)
+    ): SettingLocalDataSource {
+        return SettingLocalDataSourceImpl(dataStore)
     }
 
     @Provides
@@ -133,6 +133,6 @@ object DataSourceModule {
         return ListsRemoteDataSourceImpl(listApiService)
     }
 
-   private const val DATA_STORE_NAME = "AppPrefStorage"
+    private const val DATA_STORE_NAME = "AppPrefStorage"
 
 }

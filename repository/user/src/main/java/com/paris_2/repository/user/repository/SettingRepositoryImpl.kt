@@ -5,7 +5,7 @@ import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SettingRepositoryImp(
+class SettingRepositoryImpl(
     private val settingLocalDataSource: SettingLocalDataSource,
 ) : SettingRepository {
     override fun getLanguage(): Flow<String> {

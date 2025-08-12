@@ -17,14 +17,14 @@ import kotlin.test.assertEquals
 class SettingLocalDataSourceImpTest {
 
     private lateinit var dataStore: DataStore<Preferences>
-    private lateinit var dataSource: SettingLocalDataSourceImp
+    private lateinit var dataSource: SettingLocalDataSourceImpl
 
     @BeforeEach
     fun setUp() {
         dataStore = PreferenceDataStoreFactory.create(
             produceFile = { File.createTempFile("test-datastore", ".preferences_pb") }
         )
-        dataSource = SettingLocalDataSourceImp(dataStore)
+        dataSource = SettingLocalDataSourceImpl(dataStore)
     }
 
     @Test
