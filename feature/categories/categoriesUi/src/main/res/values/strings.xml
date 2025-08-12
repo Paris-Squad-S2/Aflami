@@ -26,4 +26,6 @@
     <string name="reality">Reality</string>
     <string name="soap">Soap</string>
     <string name="no_items_for_this_genre">No items for this genre!</string>
+    <string name="movie">Movie\n</string>
+    <string name="tv_show">TV show</string>
 </resources>

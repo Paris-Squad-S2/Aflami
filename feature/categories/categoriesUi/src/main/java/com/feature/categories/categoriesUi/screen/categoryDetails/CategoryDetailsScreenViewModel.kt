@@ -86,7 +86,7 @@ class CategoryDetailsScreenViewModel @Inject constructor(
         onCategorySelected(category = screenState.value.categoryDetailsUIState.selectedCategory)
     }
 
-    override fun onMediaSelected(media: Media) {
+    override fun onMediaSelected(media: MediaUI) {
         when (media.type) {
             MediaType.TvShow -> mediaDetailsFeatureAPI.startTvShowDetails(
                 tvShowId = media.id,
@@ -123,7 +123,7 @@ class CategoryDetailsScreenViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
-                    media = mediaList,
+                    media = mediaList.toMediaUIList(),
                 ),
                 status = Status.Success
             )

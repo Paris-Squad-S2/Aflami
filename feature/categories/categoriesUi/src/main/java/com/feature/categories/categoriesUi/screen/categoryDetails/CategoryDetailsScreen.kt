@@ -59,6 +59,7 @@ fun CategoriesScreenContent(
             .background(Theme.colors.surface)
             .fillMaxSize()
             .statusBarsPadding()
+            .navigationBarsPadding()
     ) {
         AppTopBar(
             leadingIcons = listOf(
@@ -72,7 +73,6 @@ fun CategoriesScreenContent(
         Row(
             modifier = Modifier
                 .fillMaxSize()
-                .navigationBarsPadding()
         ) {
             CategoriesList(
                 categories = state.categoryDetailsUIState.categories,
@@ -110,7 +110,7 @@ fun CategoriesScreenContent(
                             CategoryDetailsEmptyScreen()
                         } else {
                             CategoryDetailsMediaList(
-                                media = state.categoryDetailsUIState.media,
+                                mediaList = state.categoryDetailsUIState.media,
                                 onMediaSelected = interactionListener::onMediaSelected,
                             )
                         }

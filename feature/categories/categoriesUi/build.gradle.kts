@@ -39,11 +39,13 @@ dependencies {
     implementation(projects.feature.categories.categoriesApi)
     implementation(projects.feature.mediaDetails.mediaDetailsApi)
     implementation(projects.designsystem)
+    implementation(projects.safeimageviewer)
 
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.bundles.navigation)
+    implementation(libs.bundles.datetime)
     implementation(libs.bundles.serialization)
     implementation(projects.domain.media)
 
