@@ -116,7 +116,83 @@ data class CategoriesUIState(
             icon = R.drawable.img_category_animation
         ),
     ),
-    val tvShowsCategories: List<CategoryUiState> = emptyList(),
+    val tvShowsCategories: List<CategoryUiState> = listOf(
+        CategoryUiState(
+            category = Category.ActionAdventure,
+            name = R.string.action_adventure,
+            icon = R.drawable.img_category_adventure
+        ),
+        CategoryUiState(
+            category = Category.Western,
+            name = R.string.western,
+            icon = R.drawable.img_category_western
+        ),
+        CategoryUiState(
+            category = Category.Family,
+            name = R.string.family,
+            icon = R.drawable.img_category_family
+        ),
+        CategoryUiState(
+            category = Category.Kids,
+            name = R.string.kids,
+            icon = R.drawable.img_category_kids
+        ),
+        CategoryUiState(
+            category = Category.Comedy,
+            name = R.string.comedy,
+            icon = R.drawable.img_category_comedy
+        ),
+        CategoryUiState(
+            category = Category.War,
+            name = R.string.war,
+            icon = R.drawable.img_category_war
+        ),
+        CategoryUiState(
+            category = Category.Mystery,
+            name = R.string.mystery,
+            icon = R.drawable.img_category_mystery
+        ),
+        CategoryUiState(
+            category = Category.ScienceFiction,
+            name = R.string.science_fiction,
+            icon = R.drawable.img_category_science_fiction
+        ),
+        CategoryUiState(
+            category = Category.Documentary,
+            name = R.string.documentary,
+            icon = R.drawable.img_category_documentary
+        ),
+        CategoryUiState(
+            category = Category.Drama,
+            name = R.string.drama,
+            icon = R.drawable.img_category_drama
+        ),
+        CategoryUiState(
+            category = Category.Crime,
+            name = R.string.crime,
+            icon = R.drawable.img_category_crime
+        ),
+        CategoryUiState(
+            category = Category.News,
+            name = R.string.news,
+            icon = R.drawable.img_category_news
+        ),
+        CategoryUiState(
+            category = Category.Talk,
+            name = R.string.talk,
+            icon = R.drawable.img_category_talk
+        ),
+        CategoryUiState(
+            category = Category.Reality,
+            name = R.string.reality,
+            icon = R.drawable.img_category_reality
+        ),
+        CategoryUiState(
+            category = Category.Soap,
+            name = R.string.soap,
+            icon = R.drawable.img_category_soap
+        ),
+    )
 )
 
 data class CategoryUiState(
