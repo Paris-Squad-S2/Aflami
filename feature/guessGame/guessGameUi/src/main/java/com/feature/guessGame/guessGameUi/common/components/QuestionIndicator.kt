@@ -51,7 +51,7 @@ fun QuestionIndicator(
         }
 
         indices.forEach { index ->
-            IndictorBox(
+            IndicatorBox(
                 modifier = Modifier
                     .weight(1f)
                     .padding(horizontal = 2.dp),
@@ -66,7 +66,7 @@ fun QuestionIndicator(
 }
 
 @Composable
-private fun IndictorBox(
+private fun IndicatorBox(
     modifier: Modifier = Modifier,
     isSelect: Boolean = false
 ) {
@@ -160,7 +160,7 @@ private fun PreviewIndictorBox() {
     var isSelect by remember { mutableStateOf(false) }
     AflamiTheme {
         Box(Modifier.clickable { isSelect = !isSelect }) {
-            IndictorBox(isSelect = isSelect)
+            IndicatorBox(isSelect = isSelect)
         }
     }
 }
