@@ -1,13 +1,8 @@
 package com.repository.tvshow.repository
 
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.media.exception.FailedToAddRatingException
-import com.paris_2.domain.media.exception.NoCastFoundException
-import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.NoSeasonFoundException
-import com.paris_2.domain.media.exception.NoTvShowFoundException
-import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
@@ -56,7 +51,7 @@ class TvShowRepositoryImplTest {
     }
 
     @Test
-    fun `addRatingToTvShow - should throw FailedToAddRatingException when remote fails`() =
+    fun `addRatingToTvShow - should throw FailedException when remote fails`() =
         runTest {
             // Given
             val movieId = 1
@@ -68,7 +63,7 @@ class TvShowRepositoryImplTest {
             } throws RuntimeException("Failed")
 
             // When & Then
-            assertThrows<FailedToAddRatingException> {
+            assertThrows<FailedException> {
                 tvShowRepository.addRatingToTvShow(movieId, rating)
             }
         }
@@ -214,7 +209,7 @@ class TvShowRepositoryImplTest {
             } just Runs
 
             // When & Then
-            assertThrows<NoTvShowFoundException> {
+            assertThrows<FailedException> {
                 tvShowRepository.getTvShowDetails(tvShowId)
             }
         }
@@ -579,7 +574,7 @@ class TvShowRepositoryImplTest {
             } just Runs
 
             // When & Then
-            assertThrows<NoGalleryFoundException> {
+            assertThrows<FailedException> {
                 tvShowRepository.getTvShowGallery(tvShowId)
             }
         }
@@ -919,7 +914,7 @@ class TvShowRepositoryImplTest {
     }
 
     @Test
-    fun `getSeasonDetails - should throw NoSeasonFoundException when local data source returns null after adding`() =
+    fun `getSeasonDetails - should throw FailedException when local data source returns null after adding`() =
         runTest {
             // Given
             val mockTvShowSeasonDto = TvShowSeasonDto(
@@ -943,7 +938,7 @@ class TvShowRepositoryImplTest {
             } just Runs
 
             // When & Then
-            assertThrows<NoSeasonFoundException> {
+            assertThrows<FailedException> {
                 tvShowRepository.getSeasonDetails(tvShowId, seasonNumber)
             }
         }
@@ -977,7 +972,7 @@ class TvShowRepositoryImplTest {
     }
 
     @Test
-    fun `getTvShowCast should throw NoCastFoundException when remote throws generic exception`() =
+    fun `getTvShowCast should throw FailedException when remote throws generic exception`() =
         runTest {
             // Given
             coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
@@ -995,7 +990,7 @@ class TvShowRepositoryImplTest {
             } throws RuntimeException("Something went wrong")
 
             // When & Then
-            assertThrows<NoCastFoundException> {
+            assertThrows<FailedException> {
                 tvShowRepository.getTvShowCast(tvShowId)
             }
         }
@@ -1148,7 +1143,7 @@ class TvShowRepositoryImplTest {
         }
 
     @Test
-    fun `deleteTvShowRating should return FailedToDeleteRatingException when remote throws exception`() = runTest {
+    fun `deleteTvShowRating should return FailedException when remote throws exception`() = runTest {
         // Given
         val causeException = RuntimeException("Network error")
         coEvery { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) } throws causeException
@@ -1160,7 +1155,7 @@ class TvShowRepositoryImplTest {
 
         // Then
         assertThat(result.exceptionOrNull())
-            .isInstanceOf(FailedToDeleteRatingException::class.java)
+            .isInstanceOf(FailedException::class.java)
         coVerify(exactly = 1) { tvShowDetailsRemoteDataSource.deleteTvShowRating(tvShowId = 123) }
     }
 

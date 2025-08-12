@@ -19,7 +19,9 @@ import com.feature.lists.listsUi.screens.listDetails.MediaUiState
 fun ListDetailsResultContent(
     listDetailResult: LazyPagingItems<MediaUiState>,
     onMediaCardClick: (MediaUiState) -> Unit,
-    onRemoveClick: (MediaUiState) -> Unit
+    onRemoveClick: (MediaUiState) -> Unit,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
 ) {
     val lazyGridState = rememberLazyGridState()
     val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
@@ -47,7 +49,9 @@ fun ListDetailsResultContent(
                     year = media.yearOfRelease.year.toString(),
                     showGradientFilter = true,
                     enabled = !isScrolling,
-                    onRemoveClick = {onRemoveClick(media)}
+                    onRemoveClick = {onRemoveClick(media)},
+                    nsfwThreshold = nsfwThreshold,
+                    genderThreshold = genderThreshold,
                 )
             }
         }

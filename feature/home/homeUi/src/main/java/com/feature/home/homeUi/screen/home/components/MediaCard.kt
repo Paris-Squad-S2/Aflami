@@ -1,6 +1,5 @@
 package com.feature.home.homeUi.screen.home.components
 
-import com.paris_2.aflami.designsystem.components.AppText
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,6 +29,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -49,6 +49,8 @@ fun MediaCard(
     cardWidth: Dp? = null,
     cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
     onPlayButtonClick: () -> Unit = {},
     enabled: Boolean = true
 ) {
@@ -83,11 +85,15 @@ fun MediaCard(
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
+            nsfwThreshold = nsfwThreshold,
+            genderThreshold = genderThreshold,
             loadingContent = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_film_roll),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp).align(Alignment.Center),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .align(Alignment.Center),
                     contentScale = ContentScale.Crop
                 )
             },
@@ -95,7 +101,9 @@ fun MediaCard(
                 Image(
                     painter = painterResource(id = R.drawable.img_disconnect),
                     contentDescription = null,
-                    modifier = Modifier.size(48.dp).align(Alignment.Center),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .align(Alignment.Center),
                     contentScale = ContentScale.Crop
                 )
             }

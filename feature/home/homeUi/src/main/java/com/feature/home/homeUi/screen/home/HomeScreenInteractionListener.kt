@@ -8,8 +8,6 @@ interface HomeScreenInteractionListener {
     fun onSearchIconClick()
     fun onMediaCardClick(media:MediaUiState,)
     fun onMediaSliderClick(media: SliderMedia)
-    fun navigateToContinueWatchingScreen()
-    fun navigateToTopRatingScreen()
     fun moodPickerSelected(mood: List<Category>)
     fun onCategorySelect(category: Category)
     fun onAllCategoriesSelect()

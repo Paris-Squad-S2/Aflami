@@ -92,6 +92,8 @@ fun ListDetailsScreenContent(
                 listDetailResult = pagingItems,
                 onMediaCardClick = listDetailsScreenInteractionListener::onMediaCardClick,
                 onRemoveClick = listDetailsScreenInteractionListener::onRemoveClick,
+                nsfwThreshold = state.nsfwThreshold,
+                genderThreshold = state.genderThreshold,
             )
         }
     }

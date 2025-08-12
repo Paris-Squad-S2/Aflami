@@ -1,6 +1,7 @@
 package com.feature.home.homeUi.screen.home
 
 import com.feature.home.homeUi.R
+import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.paris_2.domain.media.entity.Category
 import kotlinx.datetime.LocalDate

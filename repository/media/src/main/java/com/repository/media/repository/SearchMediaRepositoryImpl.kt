@@ -2,10 +2,8 @@ package com.repository.media.repository
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.exception.AflamiException
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.NoMediaForActorException
-import com.paris_2.domain.media.exception.NoMediaForCountryException
-import com.paris_2.domain.media.exception.NoMediaForSearchException
 import com.paris_2.domain.media.repository.SearchMediaRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
@@ -24,7 +22,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByActor(actorName: String, page: Int): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(NoMediaForActorException()) {
+        return safeCall(FailedException("getMediaByActor")) {
             val remoteDto = searchRemoteDataSource.searchPerson(
                 query = actorName,
                 language = language,
@@ -43,7 +41,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMoviesByCountry(countryName: String, page: Int): List<Media> {
         val language =  settingLocalDataSource.getLanguage().first()
-        return safeCall(NoMediaForCountryException()) {
+        return safeCall(FailedException("getMoviesByCountry")) {
             val remoteDto = searchRemoteDataSource.searchCountryCode(
                 countryCode = countryName,
                 language = language,
@@ -61,7 +59,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByQuery(query: String, page: Int): List<Media> {
         val language =  settingLocalDataSource.getLanguage().first()
-        return safeCall(NoMediaForSearchException()) {
+        return safeCall(FailedException("getMediaByQuery")) {
             val remoteDto = searchRemoteDataSource.searchMulti(
                 query = query,
                 language = language,

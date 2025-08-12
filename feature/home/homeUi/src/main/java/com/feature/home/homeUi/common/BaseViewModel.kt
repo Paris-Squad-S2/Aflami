@@ -2,9 +2,6 @@ package com.feature.home.homeUi.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptions
-import com.feature.home.homeUi.navigation.HomeDestination
-import com.feature.home.homeUi.navigation.HomeNavigator
 import jakarta.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -19,18 +16,8 @@ open class BaseViewModel<S> @Inject constructor(
     initialState: S
 ) : ViewModel() {
 
-    @Inject
-    lateinit var navigator: HomeNavigator
-
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
-
-    protected fun navigate(destination: HomeDestination, navOptions: NavOptions? = null) =
-        viewModelScope.launch {
-            navigator.navigate(destination = destination, navOptions = navOptions)
-        }
-
-    protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
 
     fun emitState(newState: S) {
         privateScreenState.update { newState }

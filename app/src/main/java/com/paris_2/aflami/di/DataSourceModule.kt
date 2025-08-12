@@ -107,18 +107,23 @@ object DataSourceModule {
         @ApplicationContext context: Context,
     ): AuthenticationLocalDataSource = AuthenticationLocalDataSourceImpl(context)
 
-    @Provides
     @Singleton
-    fun provideDataStore(@ApplicationContext context: Context): DataStore<Preferences> =
-        PreferenceDataStoreFactory.create {
-            context.preferencesDataStoreFile("lang_prev")
+    @Provides
+    fun provideLocalDataStore(
+        @ApplicationContext applicationContext: Context,
+    ): DataStore<Preferences> {
+        return PreferenceDataStoreFactory.create {
+            applicationContext.preferencesDataStoreFile(DATA_STORE_NAME)
         }
+    }
 
-    @Provides
     @Singleton
-    fun provideLanguageLocalDataSource(
-       @ApplicationContext context: Context,
-    ): SettingLocalDataSource = SettingLocalDataSourceImpl(context)
+    @Provides
+    fun provideSettingLocalDataSource(
+        dataStore: DataStore<Preferences>
+    ): SettingLocalDataSource {
+        return SettingLocalDataSourceImpl(dataStore)
+    }
 
     @Provides
     @Singleton
@@ -127,5 +132,7 @@ object DataSourceModule {
     ): ListsRemoteDataSource {
         return ListsRemoteDataSourceImpl(listApiService)
     }
+
+    private const val DATA_STORE_NAME = "AppPrefStorage"
 
 }

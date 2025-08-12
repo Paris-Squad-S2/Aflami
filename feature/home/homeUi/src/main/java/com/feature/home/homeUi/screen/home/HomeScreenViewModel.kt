@@ -1,10 +1,11 @@
 package com.feature.home.homeUi.screen.home
 
+import androidx.lifecycle.viewModelScope
 import com.feature.home.homeUi.common.BaseViewModel
+import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
-import com.feature.home.homeUi.navigation.HomeDestinations
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
@@ -12,12 +13,14 @@ import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
 import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
+import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,9 +34,11 @@ class HomeScreenViewModel @Inject constructor(
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    private val settingsUseCase: SettingsUseCase,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(HomeScreenUIState()) {
     init {
+        getRestriction()
         loadPopularMedia()
         loadTopRatingMedia()
         loadContinueWatchingMedia()
@@ -47,6 +52,47 @@ class HomeScreenViewModel @Inject constructor(
         loadContinueWatchingMedia()
         loadCategories()
         onAllCategoriesSelect()
+    }
+
+    private fun getRestriction() {
+        viewModelScope.launch {
+            val restriction = settingsUseCase.getRestriction()
+            emitState(
+                screenState.value.copy(
+                    homeUIState = screenState.value.homeUIState.copy(
+                        contentRestriction = ContentRestriction.valueOf(restriction)
+                    ),
+                )
+            )
+            when (screenState.value.homeUIState.contentRestriction) {
+                ContentRestriction.Strict -> emitState(
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            nsfwThreshold = 0.8f,
+                            genderThreshold = 0.6f
+                        ),
+                    )
+                )
+
+                ContentRestriction.Moderate -> emitState(
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            nsfwThreshold = 0.4f,
+                            genderThreshold = 0.6f
+                        ),
+                    )
+                )
+
+                ContentRestriction.Off -> emitState(
+                    screenState.value.copy(
+                        homeUIState = screenState.value.homeUIState.copy(
+                            nsfwThreshold = 0f,
+                            genderThreshold = 0f
+                        ),
+                    )
+                )
+            }
+        }
     }
 
     private fun loadCategories() {
@@ -275,41 +321,6 @@ class HomeScreenViewModel @Inject constructor(
             }
         )
     }
-
-    override fun navigateToContinueWatchingScreen() {
-        tryToExecute(
-            execute = {
-                navigate(
-                    destination = HomeDestinations.ContinueWatchingScreen,
-                )
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
-    }
-
-    override fun navigateToTopRatingScreen() {
-        tryToExecute(
-            execute = {
-                navigate(
-                    destination = HomeDestinations.TopRatingMoviesScreen,
-                )
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
-    }
-
 
     override fun getRandomMoodPickerMovie() {
         val movies = screenState.value.homeUIState.upComingMediaList
