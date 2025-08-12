@@ -2,7 +2,7 @@ package com.repository.media.repository
 
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.exception.AflamiException
-import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.repository.MoviesCategoriesRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
@@ -18,13 +18,9 @@ class MoviesCategoriesRepositoryImpl(
 ): MoviesCategoriesRepository {
     override suspend fun getMoviesCategories(): List<Category> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(NoCategoriesFoundException()) {
+        return safeCall(FailedException("getMoviesCategories")) {
             val genresDto = genresRemoteDataSource.getMoviesGenres(language)
-            val categories = genresDto.genreListToCategoryList()
-            if (categories.isEmpty()) {
-                throw NoCategoriesFoundException()
-            }
-            categories
+            genresDto.genreListToCategoryList()
         }
     }
 

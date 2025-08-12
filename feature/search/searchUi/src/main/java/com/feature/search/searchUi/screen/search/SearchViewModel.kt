@@ -28,6 +28,7 @@ import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SearchByQueryUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +54,7 @@ class SearchViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    private val settingsUseCase: SettingsUseCase,
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(
@@ -76,7 +78,50 @@ class SearchViewModel @Inject constructor(
     ) {
 
     init {
+        getRestriction()
         loadRecentSearches()
+    }
+
+    private fun getRestriction() {
+        viewModelScope.launch {
+            val restriction = settingsUseCase.getRestriction()
+            updateState(
+                screenState.value.copy(
+                    screenState.value.searchUiState.copy(
+                        contentRestriction = ContentRestriction.valueOf(restriction)
+                    )
+
+                )
+            )
+            when (screenState.value.searchUiState.contentRestriction) {
+                ContentRestriction.Strict -> updateState(
+                    screenState.value.copy(
+                        screenState.value.searchUiState.copy(
+                            nsfwThreshold = 0.8f,
+                            genderThreshold = 0.6f
+                        )
+                    )
+                )
+
+                ContentRestriction.Moderate -> updateState(
+                    screenState.value.copy(
+                        screenState.value.searchUiState.copy(
+                            nsfwThreshold = 0.4f,
+                            genderThreshold = 0.6f
+                        )
+                    )
+                )
+
+                ContentRestriction.Off -> updateState(
+                    screenState.value.copy(
+                        screenState.value.searchUiState.copy(
+                            nsfwThreshold = 0f,
+                            genderThreshold = 0f
+                        )
+                    )
+                )
+            }
+        }
     }
 
     private fun loadRecentSearches() {
@@ -178,7 +223,7 @@ class SearchViewModel @Inject constructor(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
                         PagingSource(
-                            searchUseCase = {page ->
+                            searchUseCase = { page ->
                                 sortingMediaByCategoriesInteractionUseCase(
                                     searchByQueryUseCase(
                                         query,

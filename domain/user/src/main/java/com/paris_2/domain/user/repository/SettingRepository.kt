@@ -6,7 +6,9 @@ interface SettingRepository {
     fun getLanguage(): Flow<String>
     suspend fun setLanguage(language: String)
     suspend fun setOnboardingCompleted()
-    fun isOnboardingCompleted(): Boolean
-    fun setTheme(isDarkTheme: Boolean)
-    fun getTheme(): Boolean
+    suspend fun isOnboardingCompleted(): Boolean
+    suspend fun setTheme(isDarkTheme: Boolean)
+    fun getTheme(): Flow<Boolean>
+    suspend fun setRestriction(restriction: String)
+    suspend fun getRestriction(): String
 }

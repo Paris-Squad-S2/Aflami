@@ -44,7 +44,9 @@ fun HomeSlider(
     onMediaClick: (media: SliderMedia) -> Unit,
     mediaList: List<SliderMedia>,
     modifier: Modifier,
-    isShimmerEnabled: Boolean
+    isShimmerEnabled: Boolean,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
 ) {
     val mediaState = remember {
         mutableStateOf(
@@ -116,7 +118,9 @@ fun HomeSlider(
                         },
                         modifier = modifier,
                         currentMedia = mediaState,
-                        shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled)
+                        shimmerModifier = Modifier.shimmerable(enabled = isShimmerEnabled),
+                        nsfwThreshold = nsfwThreshold,
+                        genderThreshold = genderThreshold,
                     )
                 }else if(isShimmerEnabled){
                     Box{
@@ -129,7 +133,8 @@ fun HomeSlider(
                             modifier = modifier,
                             currentMedia = mediaState,
                             scrollingDuration = Long.MAX_VALUE,
-                            shimmerModifier = Modifier.shimmerable(enabled = true)
+                            shimmerModifier = Modifier.shimmerable(enabled = true),
+
                         )
                         MediaPlayButton(
                             modifier = Modifier.align(Alignment.Center),

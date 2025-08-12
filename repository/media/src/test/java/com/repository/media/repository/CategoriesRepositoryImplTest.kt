@@ -1,7 +1,7 @@
 package com.repository.media.repository
 
 import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.exception.NoCategoriesFoundException
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
@@ -71,7 +71,7 @@ class CategoriesRepositoryImplTest {
         coEvery { genresRemoteDataSource.getMoviesGenres(language) } throws Exception()
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         // When + Then
-        val exception = assertThrows<NoCategoriesFoundException> {
+        val exception = assertThrows<FailedException> {
             repository.getAllCategories()
         }
         assertNotNull(exception)

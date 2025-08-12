@@ -115,5 +115,6 @@ private fun SearchScreenContent(
                 searchScreenInteractionListener = searchScreenInteractionListener,
             )
         }
+
     }
 }

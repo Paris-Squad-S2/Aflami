@@ -2,6 +2,8 @@ package com.repository.media.mapper
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
+import com.repository.media.dto.category.ResultDto
+import com.repository.media.dto.category.TvResultDto
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.TvDto
 import com.repository.media.dto.profile.MovieResult
@@ -122,6 +124,33 @@ fun TvShowResult.toDomain(type: MediaType): Media? {
         imageUri = poster_path.toImageUrl().orEmpty(),
         title = name,
         type = type,
+        categories = genre_ids.intListToCategoryList(),
+        yearOfRelease = parsedDate,
+        rating = vote_average
+    )
+}
+
+
+fun ResultDto.toDomain(): Media? {
+    val parsedDate = runCatching { release_date?.let { LocalDate.parse(it) } }.getOrNull() ?: return null
+    return Media(
+        id = id ?: return null,
+        imageUri = poster_path.toImageUrl().orEmpty(),
+        title = title.orEmpty(),
+        type = MediaType.Movie,
+        categories = genre_ids.intListToCategoryList(),
+        yearOfRelease = parsedDate,
+        rating = vote_average
+    )
+}
+
+fun TvResultDto.toDomain(): Media? {
+    val parsedDate = runCatching { LocalDate.parse(first_air_date) }.getOrNull() ?: return null
+    return Media(
+        id = id,
+        imageUri = poster_path.toImageUrl().orEmpty(),
+        title = name,
+        type = MediaType.TvShow,
         categories = genre_ids.intListToCategoryList(),
         yearOfRelease = parsedDate,
         rating = vote_average

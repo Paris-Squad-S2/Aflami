@@ -43,8 +43,10 @@ fun AppSlider(
     items: List<SliderMedia>,
     onClick: (media: SliderMedia) -> Unit,
     modifier: Modifier = Modifier,
-    shimmerModifier:Modifier,
+    shimmerModifier: Modifier,
     scrollingDuration: Long = 4000,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
     currentMedia: MutableState<SliderMedia>,
 ) {
     val pagerState = rememberPagerState(
@@ -125,6 +127,8 @@ fun AppSlider(
                     showRating = isFocused,
                     showPlayButton = isFocused,
                     onPlayButtonClick = { onClick(item) },
+                    nsfwThreshold = nsfwThreshold,
+                    genderThreshold = genderThreshold,
                     cardHeight = if (isFocused) 300.dp else 276.dp
                 )
             }

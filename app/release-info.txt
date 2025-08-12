@@ -1,2 +1,2 @@
-versionName=0.8.6
-- refactor/rename-imp-to-impl
+versionName=0.8.9
+- add categories domain and data and ui
