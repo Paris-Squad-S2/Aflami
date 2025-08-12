@@ -18,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaTypeUi
@@ -97,7 +98,7 @@ fun HomeSection(
                     imageUri = media.imageUri,
                     rating = media.rating?.toFloat(),
                     movieName = media.title,
-                    mediaType = media.type.mediaName,
+                    mediaType = stringResource(media.type.mediaID),
                     year = media.yearOfRelease.year.toString(),
                     mediaCardType = MediaCardType.NORMAL,
                     showGradientFilter = true,

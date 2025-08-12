@@ -8,6 +8,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -38,13 +39,14 @@ fun RatingDialog(
                 .verticalScroll(rememberScrollState())
         ) {
             AppText(
-                text = "Select how much you like it",
+                text = stringResource(com.feature.mediaDetails.mediaDetailsUi.R.string.select_how_much_you_like_it),
                 style = Theme.textStyle.body.small,
                 color = Theme.colors.text.title,
                 modifier = Modifier.padding(start = 12.dp, end = 12.dp, bottom = 8.dp)
             )
             RatingBar(
-                modifier = Modifier.padding(top = 12.dp, bottom = 24.dp)
+                modifier = Modifier
+                    .padding(top = 12.dp, bottom = 24.dp)
                     .padding(start = 12.dp, end = 12.dp, bottom = 12.dp)
                     .align(Alignment.CenterHorizontally),
                 rating = currentRating,
