@@ -4,7 +4,6 @@ import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
-import com.feature.home.homeUi.navigation.HomeDestinations
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
@@ -302,41 +301,6 @@ class HomeScreenViewModel @Inject constructor(
             }
         )
     }
-
-    override fun navigateToContinueWatchingScreen() {
-        tryToExecute(
-            execute = {
-                navigate(
-                    destination = HomeDestinations.ContinueWatchingScreen,
-                )
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
-    }
-
-    override fun navigateToTopRatingScreen() {
-        tryToExecute(
-            execute = {
-                navigate(
-                    destination = HomeDestinations.TopRatingMoviesScreen,
-                )
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
-    }
-
 
     override fun getRandomMoodPickerMovie() {
         val movies = screenState.value.homeUIState.upComingMediaList
