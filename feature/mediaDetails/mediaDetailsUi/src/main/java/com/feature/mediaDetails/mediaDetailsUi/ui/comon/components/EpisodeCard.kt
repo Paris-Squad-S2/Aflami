@@ -24,6 +24,8 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun EpisodeCard(
     modifier: Modifier = Modifier,
     hasVideo: Boolean = true,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
     episodeRating: Float?,
     episodeNumber: String,
     episodeTitle: String,
@@ -45,7 +47,9 @@ fun EpisodeCard(
                 mediaCardType = MediaCardType.EPISODE,
                 imageUri = imageUri,
                 modifier = Modifier.padding(bottom = 8.dp, end = 12.dp),
-                clickable = true
+                clickable = true,
+                nsfwThreshold = nsfwThreshold,
+                genderThreshold = genderThreshold
             )
             Column(
                 modifier = Modifier

@@ -7,6 +7,17 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.R
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
+import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
 import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.TvShowVideo
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
@@ -20,17 +31,7 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.mediaDetails.mediaDetailsUi.R
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
@@ -51,6 +52,7 @@ class TvShowDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
+    private val settingsUseCase: SettingsUseCase,
     navigator: MediaDetailsNavigator,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
 
@@ -100,8 +102,56 @@ class TvShowDetailsViewModel @Inject constructor(
     }
 
     init {
+        getRestriction()
         loadTvShowDetails(mediaId)
         getInformationVideoTvShow()
+    }
+
+    private fun getRestriction() {
+        tryToExecute(
+            execute = { settingsUseCase.getRestriction() },
+            onSuccess = ::onGetRestrictionSuccess,
+            onError = ::onGetRestrictionError
+        )
+    }
+
+    private fun onGetRestrictionSuccess(restriction: String) {
+        updateState(
+            screenState.value.copy(
+                contentRestriction = ContentRestriction.valueOf(restriction),
+            )
+        )
+        when (screenState.value.contentRestriction) {
+            ContentRestriction.Strict -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.8f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Moderate -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.4f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Off -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0f,
+                    genderThreshold = 0f
+                )
+            )
+        }
+
+    }
+
+    private fun onGetRestrictionError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error,
+            )
+        )
     }
 
     private fun getInformationVideoTvShow() {

@@ -11,6 +11,8 @@ class SettingsUseCase(
     fun getLanguage(): Flow<String> = settingRepository.getLanguage()
     suspend fun setLanguage(language: String) = settingRepository.setLanguage(language)
     fun getUserName(): String = userRepository.getUserName()
-    fun isDarkTheme(): Boolean = settingRepository.getTheme()
-    fun setTheme(isDarkTheme: Boolean) = settingRepository.setTheme(isDarkTheme)
+    fun isDarkTheme(): Flow<Boolean> = settingRepository.getTheme()
+    suspend fun setTheme(isDarkTheme: Boolean) = settingRepository.setTheme(isDarkTheme)
+    suspend fun setRestriction(restriction: String) = settingRepository.setRestriction(restriction)
+    suspend fun getRestriction() = settingRepository.getRestriction()
 }

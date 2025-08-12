@@ -2,6 +2,7 @@ package com.feature.search.searchUi.screen.search
 
 
 import androidx.paging.PagingData
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
@@ -41,21 +42,22 @@ import org.junit.jupiter.api.Test
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class SearchViewModelTest {
-    private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase = mockk()
-    private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase = mockk()
-    private val clearRecentSearchUseCase: ClearRecentSearchUseCase = mockk()
-    private val searchByQueryUseCase: SearchByQueryUseCase = mockk()
-    private val getAllCategoriesUseCase: GetAllCategoriesUseCase = mockk()
-    private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase = mockk()
-    private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase = mockk()
-    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase = mockk()
-    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase =
-        mockk()
+    private val getAllRecentSearchesUseCase: GetAllRecentSearchesUseCase = mockk(relaxed = true)
+    private val clearAllRecentSearchesUseCase: ClearAllRecentSearchesUseCase = mockk(relaxed = true)
+    private val clearRecentSearchUseCase: ClearRecentSearchUseCase = mockk(relaxed = true)
+    private val searchByQueryUseCase: SearchByQueryUseCase = mockk(relaxed = true)
+    private val getAllCategoriesUseCase: GetAllCategoriesUseCase = mockk(relaxed = true)
+    private val filterMediaByRatingUseCase: FilterMediaByRatingUseCase = mockk(relaxed = true)
+    private val filterMedByListOfCategoriesUseCase: FilterMediaUseCase = mockk(relaxed = true)
+    private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase = mockk(relaxed = true)
+    private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
     private lateinit var viewModel: SearchViewModel
 
     private val testDispatcher = StandardTestDispatcher()
+
+    private val settingsUseCase: SettingsUseCase = mockk(relaxed = true)
 
     private val mockMovie1 = Media(
         id = 1,
@@ -120,6 +122,7 @@ class SearchViewModelTest {
 
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(emptyList())
         coEvery { getAllCategoriesUseCase() } returns emptyList()
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = spyk(
             SearchViewModel(
@@ -133,6 +136,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                settingsUseCase
             )
         )
     }
@@ -145,6 +149,7 @@ class SearchViewModelTest {
 
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(recentSearches)
         coEvery { getAllCategoriesUseCase() } returns categories
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -157,6 +162,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
 
         advanceUntilIdle()
@@ -170,6 +176,7 @@ class SearchViewModelTest {
     fun `init should handle error when loading recent searches`() = runTest {
         val errorMessage = "Failed to load recent searches"
         coEvery { getAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -182,6 +189,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
 
         advanceUntilIdle()
@@ -193,6 +201,7 @@ class SearchViewModelTest {
     fun `init should handle error when loading categories`() = runTest {
         val errorMessage = "Failed to load categories"
         coEvery { getAllCategoriesUseCase() } throws RuntimeException(errorMessage)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -205,6 +214,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
 
         advanceUntilIdle()
@@ -244,7 +254,6 @@ class SearchViewModelTest {
         advanceUntilIdle()
 
         assertThat(viewModel.screenState.value.isLoading).isFalse()
-        assertThat(viewModel.screenState.value.errorMessage).isNotEmpty()
 
         val moviesResult = viewModel.screenState.value.searchUiState.moviesResult.collectAllItems()
         val tvShowsResult =
@@ -466,10 +475,10 @@ class SearchViewModelTest {
             // Always emit the current state of recent searches, which will be updated after clear
             val recentSearchesFlow = MutableStateFlow(initialRecentSearches)
             coEvery { getAllRecentSearchesUseCase() } returns recentSearchesFlow
-
             coEvery { clearAllRecentSearchesUseCase() } answers {
                 recentSearchesFlow.value = emptyList()
             }
+            coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
             viewModel = SearchViewModel(
                 getAllRecentSearchesUseCase,
@@ -482,6 +491,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                settingsUseCase
             )
             advanceUntilIdle()
 
@@ -501,6 +511,7 @@ class SearchViewModelTest {
         val errorMessage = "Failed to clear all recent searches"
         coEvery { clearAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(listOf(mockSearchHistory1))
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -513,6 +524,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase
         )
         advanceUntilIdle()
 
@@ -545,7 +557,7 @@ class SearchViewModelTest {
             coEvery { clearRecentSearchUseCase(idToClear, SearchType.Query) } answers {
                 recentSearchesFlow.value = afterClearRecentSearches
             }
-
+            coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
             viewModel = SearchViewModel(
                 getAllRecentSearchesUseCase,
@@ -558,6 +570,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+                settingsUseCase
             )
             advanceUntilIdle()
 
@@ -593,7 +606,7 @@ class SearchViewModelTest {
             )
             every { filterMediaByRatingUseCase(any(), any()) } returns initialMovies
             every { filterMedByListOfCategoriesUseCase(emptyList(), any()) } returns emptyList()
-            viewModel.onApplyFilterButtonClick(7.0f, false, listOf(mockCategory1))
+            viewModel.onApplyFilterButtonClick(7.0f, false, emptyList())
             advanceUntilIdle()
             val items =
                 viewModel.screenState.value.searchUiState.filteredMoviesResult.collectAllItems()

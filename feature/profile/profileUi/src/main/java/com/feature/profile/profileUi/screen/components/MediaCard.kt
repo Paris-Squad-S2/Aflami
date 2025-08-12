@@ -1,6 +1,5 @@
 package com.feature.profile.profileUi.screen.components
 
-import com.paris_2.aflami.designsystem.components.AppText
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -33,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import com.designSystem.safeimageviewer.SafeImageViewer
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -54,6 +54,8 @@ fun MediaCard(
     showPlayButton: Boolean = false,
     onPlayButtonClick: () -> Unit = {},
     isRated: Boolean = false,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
     onFavouriteIconClick: () -> Unit = {},
 ) {
     val (finalCardWidth, finalCardHeight) = when (mediaCardType) {
@@ -87,6 +89,8 @@ fun MediaCard(
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
+            nsfwThreshold = nsfwThreshold,
+            genderThreshold = genderThreshold,
             loadingContent = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_film_roll),

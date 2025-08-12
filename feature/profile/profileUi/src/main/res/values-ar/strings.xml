@@ -24,5 +24,12 @@
     <string name="open_a_tv_show">افتح المسلسل، وقم بتقييمه، وسيتم عرض تقييماتك هنا.</string>
     <string name="no_watch_history_yet">لا يوجد سجل للمشاهدة حتى الآن!</string>
     <string name="are_you_sure_to_continue_if_you_re_tired_of_us_just_know_we_re_not_we_will_be_here">هل أنت متأكد من الاستمرار؟ إذا كنت قد سئمت منا، فقط اعلم أننا لسنا كذلك، سنكون هنا.</string>
+    <string name="strict">صارم</string>
+    <string name="blurs_all_sensitive_content">يطمس جميع المحتوى الحساس.</string>
+    <string name="moderate">معتدل</string>
+    <string name="blurs_explicit_scenes_only">يطمس المشاهد الصريحة فقط.</string>
+    <string name="off">إيقاف</string>
+    <string name="no_content_is_blurred">لا يتم طمس أي محتوى.</string>
+    <string name="save">حفظ</string>
 
 </resources>

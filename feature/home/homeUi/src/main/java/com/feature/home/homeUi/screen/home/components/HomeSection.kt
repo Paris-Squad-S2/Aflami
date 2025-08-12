@@ -38,6 +38,8 @@ fun HomeSection(
     isScrolling: Boolean,
     isShimmerEnabled: Boolean,
     modifier: Modifier,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f
 ) {
     Column(
         modifier = modifier
@@ -103,6 +105,8 @@ fun HomeSection(
                     mediaCardType = MediaCardType.NORMAL,
                     showGradientFilter = true,
                     enabled = !isScrolling,
+                    nsfwThreshold = nsfwThreshold,
+                    genderThreshold = genderThreshold
                 )
             }
         }

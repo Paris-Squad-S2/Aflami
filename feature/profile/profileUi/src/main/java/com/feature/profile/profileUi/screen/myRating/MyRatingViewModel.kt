@@ -10,8 +10,9 @@ import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
 import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
-import javax.inject.Inject
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 @HiltViewModel
 class MyRatingViewModel @Inject constructor(
@@ -20,6 +21,7 @@ class MyRatingViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
     private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase,
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase,
+    private val settingsUseCase: SettingsUseCase,
 ) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(
     initialState = MyRatingUiState(
         isLoading = false,
@@ -29,7 +31,55 @@ class MyRatingViewModel @Inject constructor(
 ) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
     init {
+        getRestriction()
         loadMyRatingMedia(selectedMediaType)
+    }
+
+    private fun getRestriction() {
+        tryToExecute(
+            execute = { settingsUseCase.getRestriction() },
+            onSuccess = ::onGetRestrictionSuccess,
+            onError = ::onGetRestrictionError
+        )
+    }
+
+    private fun onGetRestrictionSuccess(restriction: String) {
+        updateState(
+            screenState.value.copy(
+                contentRestriction = ContentRestriction.valueOf(restriction),
+            )
+        )
+        when (screenState.value.contentRestriction) {
+            ContentRestriction.Strict -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.8f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Moderate -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.4f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Off -> updateState(
+                screenState.value.copy(
+                    nsfwThreshold = 0f,
+                    genderThreshold = 0f
+                )
+            )
+        }
+
+    }
+
+    private fun onGetRestrictionError(error: String) {
+        updateState(
+            screenState.value.copy(
+                errorMessage = error,
+            )
+        )
     }
 
     private fun loadMyRatingMedia(mediaType: MediaTypeUi) {

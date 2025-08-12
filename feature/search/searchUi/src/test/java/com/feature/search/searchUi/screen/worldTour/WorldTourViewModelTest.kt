@@ -1,6 +1,7 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
@@ -14,6 +15,7 @@ import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.clearAllMocks
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -39,6 +41,9 @@ class WorldTourViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
+    private val settingsUseCase: SettingsUseCase = mockk()
+    private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     @BeforeEach
     fun setup() {
@@ -49,6 +54,7 @@ class WorldTourViewModelTest {
         getCountryCodeByNameUseCase = mockk(relaxed = true)
         incrementCategoryInteractionUseCase = mockk(relaxed = true)
         sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
+        coEvery { settingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = WorldTourViewModel(
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
@@ -57,7 +63,8 @@ class WorldTourViewModelTest {
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
-            mediaDetailsFeatureAPI = mockk(relaxed = true),
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase = settingsUseCase,
         )
     }
 
@@ -65,6 +72,7 @@ class WorldTourViewModelTest {
     @AfterEach
     fun tearDown() {
         Dispatchers.resetMain()
+        clearAllMocks()
     }
 
     @Test
@@ -76,6 +84,7 @@ class WorldTourViewModelTest {
         assertEquals(query, viewModel.screenState.value.uiState.searchQuery)
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onSearchQueryChange with empty query should not trigger autocomplete`() = runTest {
         val emptyQuery = ""
@@ -87,6 +96,7 @@ class WorldTourViewModelTest {
         coVerify(exactly = 0) { getCountryCodeByNameUseCase(any()) }
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onSearchQueryChange should trigger autocomplete and update hints`() = runTest {
         val query = "United"
@@ -114,6 +124,7 @@ class WorldTourViewModelTest {
         )
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onSearchQueryChange should cancel previous debounce job`() = runTest {
         val query1 = "United"
@@ -132,16 +143,6 @@ class WorldTourViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onMediaCardClick triggers navigation`() = runTest {
-        val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
-        val viewModel = WorldTourViewModel(
-            savedStateHandle = mockk(relaxed = true),
-            autoCompleteCountryUseCase = autoCompleteCountryUseCase,
-            getCountryCodeByNameUseCase = getCountryCodeByNameUseCase,
-            getMoviesByCountryUseCase = getMoviesByCountryUseCase,
-            incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
-            sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-        )
         val mediaUiState = MediaUiState(
             id = 12,
             imageUri = "",
