@@ -38,6 +38,7 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(projects.feature.categories.categoriesApi)
     implementation(projects.feature.mediaDetails.mediaDetailsApi)
+    implementation(projects.domain.user)
     implementation(projects.designsystem)
     implementation(projects.safeimageviewer)
 
