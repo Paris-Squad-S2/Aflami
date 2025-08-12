@@ -26,15 +26,15 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
 import kotlin.test.Test
 
-class TvShowLocalDataSourceImpTest {
-    private lateinit var tvShowLocalDataSourceImp: TvShowLocalDataSourceImp
+class TvShowLocalDataSourceImplTest {
+    private lateinit var tvShowLocalDataSourceImpl: TvShowLocalDataSourceImpl
     private var workManager: WorkManager = mockk(relaxed = true)
     private lateinit var tvShowDao: TvShowDao
 
     @BeforeEach
     fun setUp() {
         tvShowDao = mockk(relaxed = true)
-        tvShowLocalDataSourceImp = TvShowLocalDataSourceImp(workManager, tvShowDao)
+        tvShowLocalDataSourceImpl = TvShowLocalDataSourceImpl(workManager, tvShowDao)
 
     }
 
@@ -43,7 +43,7 @@ class TvShowLocalDataSourceImpTest {
         @Test
         fun `addTvShow should add tv show when addTvShow in TvShowDao is called`() = runTest {
             //Given
-            tvShowLocalDataSourceImp.addTvShow(sampleTvShow)
+            tvShowLocalDataSourceImpl.addTvShow(sampleTvShow)
 
             //When&Then
             coVerify(exactly = 1) { tvShowDao.addTvShow(sampleTvShow) }
@@ -56,7 +56,7 @@ class TvShowLocalDataSourceImpTest {
             coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns sampleTvShow
 
             //When
-            val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+            val result = tvShowLocalDataSourceImpl.getTvShowId(tvShowId, language)
 
             //Then
             assertEquals(sampleTvShow, result)
@@ -70,7 +70,7 @@ class TvShowLocalDataSourceImpTest {
                 coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns sampleTvShow
 
                 //When
-                tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+                tvShowLocalDataSourceImpl.getTvShowId(tvShowId, language)
 
                 //Then
                 coVerify(exactly = 1) { tvShowDao.getTvShowById(tvShowId, language) }
@@ -83,7 +83,7 @@ class TvShowLocalDataSourceImpTest {
             coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns null
 
             //When
-            val result = tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+            val result = tvShowLocalDataSourceImpl.getTvShowId(tvShowId, language)
 
             //Then
             assertNull(result)
@@ -98,7 +98,7 @@ class TvShowLocalDataSourceImpTest {
                 coEvery { tvShowDao.getTvShowById(tvShowId, language) } returns null
 
                 //When
-                tvShowLocalDataSourceImp.getTvShowId(tvShowId, language)
+                tvShowLocalDataSourceImpl.getTvShowId(tvShowId, language)
 
                 //Then
                 coVerify(exactly = 1) { tvShowDao.getTvShowById(tvShowId, language) }
@@ -110,7 +110,7 @@ class TvShowLocalDataSourceImpTest {
         @Test
         fun `addCast should add cast when addCast in CastDao called successfully`() = runTest {
             //Given
-            tvShowLocalDataSourceImp.addTvShowCast(
+            tvShowLocalDataSourceImpl.addTvShowCast(
                 listOf(
                     sampleCast,
                     sampleCast2
@@ -119,7 +119,7 @@ class TvShowLocalDataSourceImpTest {
 
             //When&Then
             coVerify(exactly = 1) {
-                tvShowLocalDataSourceImp.addTvShowCast(
+                tvShowLocalDataSourceImpl.addTvShowCast(
                     listOf(
                         sampleCast,
                         sampleCast2
@@ -143,7 +143,7 @@ class TvShowLocalDataSourceImpTest {
                 } returns sampleCastList
 
                 //When
-                val result = tvShowLocalDataSourceImp.getCastByTvShowId(
+                val result = tvShowLocalDataSourceImpl.getCastByTvShowId(
                     tvShowId,
                     language
                 )
@@ -166,7 +166,7 @@ class TvShowLocalDataSourceImpTest {
             } returns sampleCastList
 
             //When
-            tvShowLocalDataSourceImp.getCastByTvShowId(tvShowId, language)
+            tvShowLocalDataSourceImpl.getCastByTvShowId(tvShowId, language)
 
             //Then
             coVerify(exactly = 1) { tvShowDao.getCastByTvShowId(tvShowId, language) }
@@ -187,7 +187,7 @@ class TvShowLocalDataSourceImpTest {
             } returns emptyList
 
             //When
-            val result = tvShowLocalDataSourceImp.getCastByTvShowId(tvShowIdWithNoCast, language)
+            val result = tvShowLocalDataSourceImpl.getCastByTvShowId(tvShowIdWithNoCast, language)
 
             //Then
             assertEquals(emptyList, result)
@@ -207,7 +207,7 @@ class TvShowLocalDataSourceImpTest {
             } returns emptyList()
 
             //When
-            tvShowLocalDataSourceImp.getCastByTvShowId(tvShowIdWithNoCast, language)
+            tvShowLocalDataSourceImpl.getCastByTvShowId(tvShowIdWithNoCast, language)
 
             //Then
             coVerify(exactly = 1) { tvShowDao.getCastByTvShowId(tvShowIdWithNoCast, language) }
@@ -219,7 +219,7 @@ class TvShowLocalDataSourceImpTest {
         @Test
         fun `should add gallery when addGallery is called`() = runTest {
             // Given
-            tvShowLocalDataSourceImp.addTvShowGallery(sampleGallery)
+            tvShowLocalDataSourceImpl.addTvShowGallery(sampleGallery)
 
             // When&Then
             coVerify(exactly = 1) { tvShowDao.addTvShowGallery(sampleGallery) }
@@ -232,7 +232,7 @@ class TvShowLocalDataSourceImpTest {
             coEvery { tvShowDao.getGalleryByTvShowId(movieId) } returns sampleGallery
 
             //When
-            val result = tvShowLocalDataSourceImp.getGalleryByTvShowId(movieId)
+            val result = tvShowLocalDataSourceImpl.getGalleryByTvShowId(movieId)
 
             //Then
             assertThat(result).isEqualTo(sampleGallery)
@@ -245,7 +245,7 @@ class TvShowLocalDataSourceImpTest {
             coEvery { tvShowDao.getGalleryByTvShowId(movieId) } returns sampleGallery
 
             // WHEN
-            tvShowLocalDataSourceImp.getGalleryByTvShowId(movieId)
+            tvShowLocalDataSourceImpl.getGalleryByTvShowId(movieId)
 
             // THEN
             coVerify(exactly = 1) { tvShowDao.getGalleryByTvShowId(movieId) }
@@ -258,7 +258,7 @@ class TvShowLocalDataSourceImpTest {
             coEvery { tvShowDao.getGalleryByTvShowId(movieId) } returns null
 
             //When
-            val result = tvShowLocalDataSourceImp.getGalleryByTvShowId(movieId)
+            val result = tvShowLocalDataSourceImpl.getGalleryByTvShowId(movieId)
 
             //Then
             assertThat(result).isNull()
@@ -272,7 +272,7 @@ class TvShowLocalDataSourceImpTest {
                 coEvery { tvShowDao.getGalleryByTvShowId(movieId) } returns null
 
                 // WHEN
-                tvShowLocalDataSourceImp.getGalleryByTvShowId(movieId)
+                tvShowLocalDataSourceImpl.getGalleryByTvShowId(movieId)
 
                 // THEN
                 coVerify(exactly = 1) { tvShowDao.getGalleryByTvShowId(movieId) }
@@ -284,7 +284,7 @@ class TvShowLocalDataSourceImpTest {
         @Test
         fun `addReview should add review when addReview in ReviewDao is called`() = runTest {
             //Given
-            tvShowLocalDataSourceImp.addTvShowReviews(listOf(sampleReview))
+            tvShowLocalDataSourceImpl.addTvShowReviews(listOf(sampleReview))
 
             //When&Then
             coVerify(exactly = 1) { tvShowDao.addTvShowReviews(listOf(sampleReview)) }
@@ -299,7 +299,7 @@ class TvShowLocalDataSourceImpTest {
             )
 
             //When
-            val result = tvShowLocalDataSourceImp.getReviewsByTvShowId(
+            val result = tvShowLocalDataSourceImpl.getReviewsByTvShowId(
                 tvShowId,
                 language
             )
@@ -321,7 +321,7 @@ class TvShowLocalDataSourceImpTest {
             } returns listOf(sampleReview)
 
             // WHEN
-            tvShowLocalDataSourceImp.getReviewsByTvShowId(
+            tvShowLocalDataSourceImpl.getReviewsByTvShowId(
                 tvShowId,
                 language
             )
@@ -348,7 +348,7 @@ class TvShowLocalDataSourceImpTest {
                 } returns emptyList()
 
                 // WHEN
-                val result = tvShowLocalDataSourceImp.getReviewsByTvShowId(
+                val result = tvShowLocalDataSourceImpl.getReviewsByTvShowId(
                     tvShowId,
                     language
                 )
@@ -365,7 +365,7 @@ class TvShowLocalDataSourceImpTest {
                 coEvery { tvShowDao.getReviewsByTvShowId(tvShowId, language) } returns emptyList()
 
                 // WHEN
-                tvShowLocalDataSourceImp.getReviewsByTvShowId(tvShowId, language)
+                tvShowLocalDataSourceImpl.getReviewsByTvShowId(tvShowId, language)
 
                 // THEN
                 coVerify(exactly = 1) { tvShowDao.getReviewsByTvShowId(tvShowId, language) }
@@ -378,10 +378,10 @@ class TvShowLocalDataSourceImpTest {
         fun `addSeason should add season when addSeason in SeasonDao called successfully`() =
             runTest {
                 //Given
-                tvShowLocalDataSourceImp.addTvShowSeason(Companion.sampleSeason)
+                tvShowLocalDataSourceImpl.addTvShowSeason(Companion.sampleSeason)
 
                 //When&Then
-                coVerify(exactly = 1) { tvShowLocalDataSourceImp.addTvShowSeason(Companion.sampleSeason) }
+                coVerify(exactly = 1) { tvShowLocalDataSourceImpl.addTvShowSeason(Companion.sampleSeason) }
             }
 
         @Test
@@ -398,7 +398,7 @@ class TvShowLocalDataSourceImpTest {
                 } returns Companion.sampleSeason
 
                 //When
-                val result = tvShowLocalDataSourceImp.getSeasonByTvShowIdAndSeasonNumber(
+                val result = tvShowLocalDataSourceImpl.getSeasonByTvShowIdAndSeasonNumber(
                     tvShowId,
                     seasonNumber
                 )
@@ -419,7 +419,7 @@ class TvShowLocalDataSourceImpTest {
             } returns sampleSeason
 
             // When
-            tvShowLocalDataSourceImp.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+            tvShowLocalDataSourceImpl.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
             // Then
             coVerify(exactly = 1) {
@@ -444,7 +444,7 @@ class TvShowLocalDataSourceImpTest {
 
             //When
             val result =
-                tvShowLocalDataSourceImp.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+                tvShowLocalDataSourceImpl.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
             //Then
             assert(result == null)
@@ -464,7 +464,7 @@ class TvShowLocalDataSourceImpTest {
                 } returns null
 
                 // When
-                tvShowLocalDataSourceImp.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
+                tvShowLocalDataSourceImpl.getSeasonByTvShowIdAndSeasonNumber(tvShowId, seasonNumber)
 
                 // Then
                 coVerify(exactly = 1) {
@@ -482,7 +482,7 @@ class TvShowLocalDataSourceImpTest {
         fun `addSimilarTvShows should add tv show when addSimilarTvShows in tvShowSimilarDao is called`() =
             runTest {
                 //Given
-                tvShowLocalDataSourceImp.addSimilarTvShows(tvShowSimilarEntity)
+                tvShowLocalDataSourceImpl.addSimilarTvShows(tvShowSimilarEntity)
 
                 //When&Then
                 coVerify(exactly = 1) { tvShowDao.addSimilarTvShows(tvShowSimilarEntity) }
@@ -502,7 +502,7 @@ class TvShowLocalDataSourceImpTest {
                 } returns tvShowSimilarEntity
 
                 //When
-                val result = tvShowLocalDataSourceImp.getSimilarTvShows(
+                val result = tvShowLocalDataSourceImpl.getSimilarTvShows(
                     tvShowId, page,
                     language
                 )
@@ -523,7 +523,7 @@ class TvShowLocalDataSourceImpTest {
             } returns tvShowSimilarEntity
 
             // When
-            tvShowLocalDataSourceImp.getSimilarTvShows(
+            tvShowLocalDataSourceImpl.getSimilarTvShows(
                 tvShowId, page,
                 language
             )
@@ -550,7 +550,7 @@ class TvShowLocalDataSourceImpTest {
             } returns emptyList()
 
             //When
-            val result = tvShowLocalDataSourceImp.getSimilarTvShows(
+            val result = tvShowLocalDataSourceImpl.getSimilarTvShows(
                 tvShowId, page,
                 language
             )
@@ -572,7 +572,7 @@ class TvShowLocalDataSourceImpTest {
             } returns emptyList()
 
             // When
-            tvShowLocalDataSourceImp.getSimilarTvShows(
+            tvShowLocalDataSourceImpl.getSimilarTvShows(
                 tvShowId, page,
                 language
             )

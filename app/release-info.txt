@@ -1,2 +1,2 @@
-versionName=0.8.5
-- refactor di of navigator in each nav graph of feature
+versionName=0.8.6
+- refactor/rename-imp-to-impl
