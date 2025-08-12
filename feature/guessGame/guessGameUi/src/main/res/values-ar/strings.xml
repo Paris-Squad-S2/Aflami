@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="points_achieved">النقاط المحققة</string>
+    <string name="total_time">الوقت الإجمالي</string>
+    <string name="pts">%1$d نقاط.</string>
+    <string name="sec">%1$d ثانية.</string>
+</resources>
