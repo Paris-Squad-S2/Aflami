@@ -42,6 +42,7 @@ fun AppTopBar(
     logo: IconItem? = null,
     leadingIcons: List<IconItem> = emptyList(),
     trailingIcons: List<IconItem> = emptyList(),
+    trailingContent: (@Composable () -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     val scrollModifier = scrollBehavior?.let {
@@ -99,6 +100,8 @@ fun AppTopBar(
                 Spacer(modifier = Modifier.width(if (index > 0) 8.dp else 0.dp))
                 IconBox(iconItem)
             }
+
+            trailingContent?.invoke()
         }
     }
 }
