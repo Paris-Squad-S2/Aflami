@@ -408,6 +408,7 @@ class MovieDetailsViewModel @Inject constructor(
                             snackBarMessage = R.string.movie_added_to_list_successfully
                         )
                     )
+                    loadAvailableLists()
                 },
                 onError = { errorMessage ->
                     updateState(

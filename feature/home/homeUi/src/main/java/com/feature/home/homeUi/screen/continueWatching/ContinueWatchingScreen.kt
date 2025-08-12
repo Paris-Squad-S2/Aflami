@@ -98,7 +98,7 @@ fun ContinueWatchingContent(
                 imageUri = media.imageUri,
                 rating = media.rating?.toFloat(),
                 movieName = media.title,
-                mediaType = media.type.mediaName,
+                mediaType = stringResource(media.type.mediaID),
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,

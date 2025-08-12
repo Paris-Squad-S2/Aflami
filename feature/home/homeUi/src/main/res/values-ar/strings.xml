@@ -42,5 +42,8 @@
     <string name="category_talk">حواري</string>
     <string name="category_war_politics">حرب وسياسة</string>
     <string name="category_unknown" />
+    <string name="get_now">احصل على فيلم الان</string>
+    <string name="tv_show">برنامج تلفزيوني</string>
+    <string name="movie">فيلم</string>
 
 </resources>
