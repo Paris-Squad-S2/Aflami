@@ -9,15 +9,11 @@ import androidx.navigation.navigation
 import com.feature.authentication.authenticationUi.screen.forgotPassword.ForgotPasswordWebViewScreen
 import com.feature.authentication.authenticationUi.screen.login.LoginScreen
 import com.feature.authentication.authenticationUi.screen.register.RegisterWebViewScreen
-import dagger.hilt.android.EntryPointAccessors
-import androidx.compose.ui.platform.LocalContext
+
 
 @Composable
 fun AuthenticationNavGraph(
-    navigator: AuthenticationNavigator = EntryPointAccessors.fromApplication(
-        LocalContext.current.applicationContext as android.app.Application,
-        AuthenticationNavigatorEntryPoint::class.java
-    ).authenticationNavigator(),
+    navigator: AuthenticationNavigator ,
     startDestination: AuthenticationDestination? = null
 ) {
     val navController = rememberNavController()

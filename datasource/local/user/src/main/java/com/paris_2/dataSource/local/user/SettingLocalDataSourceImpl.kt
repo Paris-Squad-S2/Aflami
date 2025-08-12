@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class SettingLocalDataSourceImp @Inject constructor(
+class SettingLocalDataSourceImpl @Inject constructor(
     @ApplicationContext private val context: Context,
 ) : SettingLocalDataSource {
 

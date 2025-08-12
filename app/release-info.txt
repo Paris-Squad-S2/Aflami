@@ -1,2 +1,2 @@
-versionName=0.8.4
-- refactor gradle
+versionName=0.8.6
+- refactor/rename-imp-to-impl

@@ -10,7 +10,7 @@ import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.mapper.toDomain
 
-class ListsRepositoryImp(
+class ListsRepositoryImpl(
     private val listRemoteDataSource: ListsRemoteDataSource,
     private val remoteDataSource: UserRemoteDataSource,
     ) : ListsRepository {

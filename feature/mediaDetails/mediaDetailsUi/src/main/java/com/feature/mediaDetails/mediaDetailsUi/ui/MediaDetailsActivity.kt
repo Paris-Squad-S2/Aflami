@@ -10,12 +10,11 @@ import androidx.activity.enableEdgeToEdge
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavGraph
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigatorEntryPoint
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.fromJsonToMediaDetailsDestination
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.EntryPointAccessors
 import java.util.Locale
 import javax.inject.Inject
 
@@ -27,6 +26,9 @@ class MediaDetailsActivity : ComponentActivity() {
     @Inject
     lateinit var settingsUseCase: SettingsUseCase
 
+    @Inject
+    lateinit var navigator: MediaDetailsNavigator
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -35,10 +37,6 @@ class MediaDetailsActivity : ComponentActivity() {
             ?.fromJsonToMediaDetailsDestination()
             ?: MediaDetailsDestinations.MovieDetailsScreen(0)
 
-        val navigator = EntryPointAccessors.fromApplication(
-            applicationContext,
-            MediaDetailsNavigatorEntryPoint::class.java
-        ).mediaDetailsNavigator()
 
         setContent {
             AflamiTheme(settingsUseCase.isDarkTheme()) {

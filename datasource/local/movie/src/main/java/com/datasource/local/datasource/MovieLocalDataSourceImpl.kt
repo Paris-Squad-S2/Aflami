@@ -13,7 +13,7 @@ import com.repository.movie.models.local.MovieSimilarEntity
 import com.repository.movie.models.local.ReviewEntity
 import java.util.concurrent.TimeUnit
 
-class MovieLocalDataSourceImp(
+class MovieLocalDataSourceImpl(
     private val workManager: WorkManager,
     private val movieDao: MovieDao
 ) : MovieLocalDataSource {

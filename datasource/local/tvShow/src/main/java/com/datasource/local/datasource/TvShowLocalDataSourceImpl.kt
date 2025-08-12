@@ -14,7 +14,7 @@ import com.repository.model.local.TvShowEntity
 import com.repository.model.local.TvShowSimilarEntity
 import java.util.concurrent.TimeUnit
 
-class TvShowLocalDataSourceImp (
+class TvShowLocalDataSourceImpl (
     private val workManager: WorkManager,
     private val tvShowDao: TvShowDao
 ) : TvShowLocalDataSource {
