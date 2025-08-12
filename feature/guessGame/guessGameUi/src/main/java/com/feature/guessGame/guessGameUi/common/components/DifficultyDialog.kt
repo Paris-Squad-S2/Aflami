@@ -5,7 +5,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -76,21 +75,21 @@ fun DifficultyDialog(
         Column(
             modifier = Modifier.padding(horizontal = 12.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = if (layoutDirection == LayoutDirection.Rtl)
-                    Arrangement.End else Arrangement.Start
-            ) {
-                difficulties.forEachIndexed { index, difficultyId ->
-                    Chip(
-                        title = stringResource(difficultyId),
-                        isSelected = selectedDifficulty == difficultyId,
-                        onClick = { onSelectChip(difficultyId) },
-                        modifier = Modifier.padding(
-                            start = if (layoutDirection == LayoutDirection.Rtl && index != 0) DifficultyDialogDefaults.chipSpacing else 0.dp,
-                            end = if (layoutDirection == LayoutDirection.Ltr && index != difficulties.lastIndex) DifficultyDialogDefaults.chipSpacing else 0.dp
+            Box {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    difficulties.forEachIndexed { index, difficultyId ->
+                        Chip(
+                            title = stringResource(difficultyId),
+                            isSelected = selectedDifficulty == difficultyId,
+                            onClick = { onSelectChip(difficultyId) },
+                            modifier = Modifier.padding(
+                                start = if (layoutDirection == LayoutDirection.Rtl && index != 0) DifficultyDialogDefaults.chipSpacing else 0.dp,
+                                end = if (layoutDirection == LayoutDirection.Ltr && index != difficulties.lastIndex) DifficultyDialogDefaults.chipSpacing else 0.dp
+                            )
                         )
-                    )
+                    }
                 }
             }
 
@@ -167,12 +166,38 @@ private fun Chip(
     }
 }
 
-@Preview(locale = "en")
-@Preview(locale = "ar")
 @PreviewLightDark
 @Composable
 private fun Preview() {
     AflamiTheme {
+        DifficultyDialog(
+            title = R.string.Choose_Difficulty_Level,
+            selectedDifficulty = R.string.Easy,
+            onDismiss = {},
+            onClickButton = {},
+            onSelectChip = {}
+        )
+    }
+}
+
+@Preview(locale = "ar")
+@Composable
+private fun PreviewAR() {
+    AflamiTheme {
+        DifficultyDialog(
+            title = R.string.Choose_Difficulty_Level,
+            selectedDifficulty = R.string.Easy,
+            onDismiss = {},
+            onClickButton = {},
+            onSelectChip = {}
+        )
+    }
+}
+
+@Preview(locale = "ar")
+@Composable
+private fun PreviewARDark() {
+    AflamiTheme(isDarkTheme = true) {
         DifficultyDialog(
             title = R.string.Choose_Difficulty_Level,
             selectedDifficulty = R.string.Easy,
