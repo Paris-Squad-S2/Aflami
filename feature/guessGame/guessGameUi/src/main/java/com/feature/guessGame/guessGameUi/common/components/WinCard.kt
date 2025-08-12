@@ -80,9 +80,7 @@ fun WinCard(
 @Preview
 @Composable
 private fun Preview() {
-    AflamiTheme(
-        isDarkTheme = true
-    ) {
+    AflamiTheme {
         WinCard()
     }
 }
