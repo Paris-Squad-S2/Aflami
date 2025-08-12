@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="lets_play">هيا نلعب</string>
+    <string name="guess_the_character_title">خمن الشخصية</string>
+    <string name="guess_the_movie_title">خمن الفيلم من الملصق</string>
+    <string name="when_was_it_released_title">متى تم إصداره؟</string>
+    <string name="which_genre_title">أي نوع؟</string>
+    <string name="guess_the_character_desc">هل يمكنك معرفة من هي هذه الشخصية؟</string>
+    <string name="guess_the_movie_desc">طابق الملصق مع العنوان الصحيح!</string>
+    <string name="when_was_it_released_desc">اختر سنة الإصدار الصحيحة.</string>
+    <string name="which_genre_desc">أي واحد هو فيلم الحركة الحقيقي؟</string>
+    <string name="points_label">%1$d نقطة</string>
+</resources>
