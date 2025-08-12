@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
     alias(libs.plugins.kotlin.serialization)
 }
 
@@ -42,6 +43,7 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     implementation(libs.bundles.navigation)
+    implementation(libs.bundles.serialization)
     implementation(projects.domain.media)
 
 }

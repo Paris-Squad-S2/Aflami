@@ -5,6 +5,10 @@ import androidx.annotation.StringRes
 import com.feature.categories.categoriesUi.R
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.MediaType
+import kotlinx.serialization.InternalSerializationApi
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
 data class CategoriesScreenUIState(
     val categoriesUIState: CategoriesUIState = CategoriesUIState(),
@@ -230,9 +234,26 @@ data class CategoriesUIState(
     )
 )
 
+@Serializable
 data class CategoryUiState(
     val category: Category,
     val type: MediaType,
     @StringRes val name: Int,
     @DrawableRes val icon: Int,
-)
+){
+    companion object {
+        fun getDefault() = CategoryUiState(
+            category = Category.Action,
+            type = MediaType.Movie,
+            name = R.string.action,
+            icon = R.drawable.img_category_action
+        )
+    }
+}
+
+@OptIn(InternalSerializationApi::class)
+fun CategoryUiState.toJson(): String =
+    Json.encodeToString(CategoryUiState::class.serializer(), this)
+
+fun String.fromJsonToCategoryUiState(): CategoryUiState =
+    Json.decodeFromString(this)

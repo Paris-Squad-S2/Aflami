@@ -5,15 +5,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.feature.categories.categoriesUi.screen.categories.CategoryUiState
 import com.paris_2.aflami.designsystem.components.AppText
 
 @Composable
-fun CategoryDetailsScreen() {
+fun CategoryDetailsScreen(category: CategoryUiState) {
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         AppText(
-            text = "CategoryDetails",
+            text = stringResource(category.name),
             modifier = Modifier.align(Alignment.Center)
         )
     }

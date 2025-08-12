@@ -2,9 +2,6 @@ package com.feature.categories.categoriesUi.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptions
-import com.feature.categories.categoriesUi.navigation.Destination
-import com.feature.categories.categoriesUi.navigation.CategoriesNavigator
 
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -20,18 +17,9 @@ open class BaseViewModel<S> @Inject constructor(
     initialState: S
 ) : ViewModel() {
 
-    @Inject
-    lateinit var navigator: CategoriesNavigator
-
     private val _screenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = _screenState.asStateFlow()
 
-    protected fun navigate(destination: Destination, navOptions: NavOptions? = null) =
-        viewModelScope.launch {
-            navigator.navigate(destination = destination, navOptions = navOptions)
-        }
-
-    protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
 
     fun updateState(newState: S) {
         _screenState.update { newState }
