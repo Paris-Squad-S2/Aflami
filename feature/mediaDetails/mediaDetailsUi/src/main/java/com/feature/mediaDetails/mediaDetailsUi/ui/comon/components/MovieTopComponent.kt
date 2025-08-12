@@ -84,7 +84,9 @@ fun MovieTopComponentDetails(
                         }
                     },
                     hasVideo = !(site.isEmpty() || key.isEmpty()),
-                    modifier = Modifier.padding(bottom = 12.dp)
+                    modifier = Modifier.padding(bottom = 12.dp),
+                    nsfwThreshold = state.nsfwThreshold,
+                    genderThreshold = state.genderThreshold
                 )
             }
             AppTopBar(

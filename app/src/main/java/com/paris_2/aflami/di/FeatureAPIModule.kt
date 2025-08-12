@@ -15,9 +15,6 @@ import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigatorImpl
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
-import com.feature.home.homeUi.navigation.HomeDestinations
-import com.feature.home.homeUi.navigation.HomeNavigator
-import com.feature.home.homeUi.navigation.HomeNavigatorImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsUi.ListsFeatureAPIImpl
 import com.feature.lists.listsUi.navigation.ListDestinations
@@ -82,11 +79,6 @@ object FeatureAPIModule {
     fun provideAuthenticationNavigator(): AuthenticationNavigator =
         AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1)
 
-
-    @Provides
-    @Singleton
-    fun provideHomeNavigator(): HomeNavigator =
-        HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1)
 
     @Provides
     @Singleton

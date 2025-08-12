@@ -74,7 +74,9 @@ fun WatchHistoryScreen(
         } else if (state.value.watchHistoryMedia.isNotEmpty()) {
             WatchHistoryScreenContent(
                 watchHistoryList = state.value.watchHistoryMedia,
-                onMediaCardClick = viewModel::onMediaCardClick
+                onMediaCardClick = viewModel::onMediaCardClick,
+                nsfwThreshold = state.value.nsfwThreshold,
+                genderThreshold = state.value.genderThreshold
             )
         } else if (state.value.watchHistoryMedia.isEmpty() && state.value.errorMessage == null) {
             PlaceholderView(
@@ -94,6 +96,8 @@ fun WatchHistoryScreen(
 fun WatchHistoryScreenContent(
     watchHistoryList: List<MediaUiState>,
     onMediaCardClick: (MediaUiState) -> Unit,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
 ) {
     val lazyGridState = rememberLazyGridState()
 
@@ -115,7 +119,9 @@ fun WatchHistoryScreenContent(
                 mediaType = media.type.mediaName,
                 year = media.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.NORMAL,
-                showGradientFilter = true
+                showGradientFilter = true,
+                nsfwThreshold = nsfwThreshold,
+                genderThreshold = genderThreshold
             )
         }
     }

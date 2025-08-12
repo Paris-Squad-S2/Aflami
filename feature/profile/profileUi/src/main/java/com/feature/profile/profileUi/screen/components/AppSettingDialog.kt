@@ -22,6 +22,7 @@ import com.paris_2.aflami.designsystem.theme.Theme
 fun AppSettingDialog(
     isVisible: Boolean,
     isLogoutDialogVisible: () -> Unit,
+    isRestrictionDialogVisible: () -> Unit,
     modifier: Modifier = Modifier,
     onDismiss: () -> Unit,
 ) {
@@ -52,7 +53,7 @@ fun AppSettingDialog(
                         )
                     })
                 SettingsItem(
-                    onClick = {},
+                    onClick = isRestrictionDialogVisible,
                     title = stringResource(R.string.content_restriction),
                     icon = R.drawable.ic_security,
                     content = {

@@ -39,4 +39,6 @@
     <string name="empty"> </string>
     <string name="some_error_happened">حدث خطأ ما.</string>
     <string name="added_new_list_successfully">تمت إضافة قائمة جديدة بنجاح.</string>
+    <string name="movies">Movies</string>
+    <string name="tv_shows">TV Shows</string>
 </resources>

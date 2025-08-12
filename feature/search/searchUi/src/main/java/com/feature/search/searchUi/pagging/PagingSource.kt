@@ -12,7 +12,7 @@ class PagingSource<Media: Any>(
         return try {
             val response = searchUseCase(page)
             LoadResult.Page(
-                data = response as List<Media>,
+                data = response,
                 prevKey = if (page == 1) null else page - 1,
                 nextKey = if (response.isEmpty()) null else page + 1
             )

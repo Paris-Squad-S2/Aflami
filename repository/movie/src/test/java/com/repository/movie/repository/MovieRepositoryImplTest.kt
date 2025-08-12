@@ -4,11 +4,8 @@ import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.MovieSimilar
 import com.paris_2.domain.media.entity.ProductionCompany
-import com.paris_2.domain.media.exception.NoCastFoundException
-import com.paris_2.domain.media.exception.NoGalleryFoundException
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.NoMovieFoundException
-import com.paris_2.domain.media.exception.FailedToDeleteRatingException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
@@ -139,37 +136,37 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun `getMovieDetails should throw NoMovieFoundException when remote fails`() = runTest {
+    fun `getMovieDetails should throw FailedException when remote fails`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieRemoteDataSource.getMovieDetails(
                 movieId,
                 "en"
             )
-        } throws NoMovieFoundException()
+        } throws FailedException("")
 
         val result = runCatching { movieRepository.getMovieDetails(movieId) }
 
-        assertThat(result.exceptionOrNull()).isInstanceOf(NoMovieFoundException::class.java)
+        assertThat(result.exceptionOrNull()).isInstanceOf(FailedException::class.java)
     }
 
     @Test
-    fun `getMovieDetails throws NoMovieFoundException from remote`() = runTest {
+    fun `getMovieDetails throws FailedException from remote`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
         coEvery {
             movieRemoteDataSource.getMovieDetails(
                 movieId,
                 "en"
             )
-        } throws NoMovieFoundException()
+        } throws FailedException("")
 
         val result = runCatching { movieRepository.getMovieDetails(movieId) }
 
-        assertThat(result.exceptionOrNull()).isInstanceOf(NoMovieFoundException::class.java)
+        assertThat(result.exceptionOrNull()).isInstanceOf(FailedException::class.java)
     }
 
     @Test
-    fun `getMovieDetails throws NoMovieFoundException from remote, safeCall should rethrow`() =
+    fun `getMovieDetails throws FailedException from remote, safeCall should rethrow`() =
         runTest {
             coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
             coEvery {
@@ -177,13 +174,13 @@ class MovieRepositoryImplTest {
                     1,
                     language = "en"
                 )
-            } throws NoMovieFoundException()
+            } throws FailedException("")
 
             val result = runCatching {
                 movieRepository.getMovieDetails(1)
             }
 
-            assertThat(result.exceptionOrNull()).isInstanceOf(NoMovieFoundException::class.java)
+            assertThat(result.exceptionOrNull()).isInstanceOf(FailedException::class.java)
         }
 
     @Test
@@ -202,28 +199,28 @@ class MovieRepositoryImplTest {
                     movieId,
                     language
                 )
-            } throws NoCastFoundException(
+            } throws FailedException(
                 "No cast found"
             )
 
             // When & Then
-            assertThrows<NoCastFoundException> {
+            assertThrows<FailedException> {
                 movieRepository.getMovieCast(movieId)
             }
         }
 
     @Test
-    fun `getMovieGallery - should throw NoGalleryFoundException when remote throws it and local is null`() =
+    fun `getMovieGallery - should throw FailedException when remote throws it and local is null`() =
         runTest {
             // Given
             coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns null
-            coEvery { movieRemoteDataSource.getMovieImages(movieId) } throws NoGalleryFoundException(
+            coEvery { movieRemoteDataSource.getMovieImages(movieId) } throws FailedException(
                 "No gallery"
             )
 
             // When & Then
-            assertThrows<NoGalleryFoundException> {
+            assertThrows<FailedException> {
                 movieRepository.getMovieGallery(movieId)
             }
         }
@@ -293,14 +290,14 @@ class MovieRepositoryImplTest {
 
 
     @Test
-    fun `getMovieDetails - should throw NoMovieFoundException when local is empty and remote fetch fails`() =
+    fun `getMovieDetails - should throw FailedException when local is empty and remote fetch fails`() =
         runTest {
             // Given
             coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
             coEvery { movieLocalDataSource.getMovieById(movieId, language) } returns null
 
             // When & Then
-            assertThrows<NoMovieFoundException> {
+            assertThrows<FailedException> {
                 movieRepository.getMovieDetails(movieId)
             }
         }
@@ -329,7 +326,7 @@ class MovieRepositoryImplTest {
             } returnsMany listOf(null, null)
 
             // When & Then
-            assertThrows<NoMovieFoundException> {
+            assertThrows<FailedException> {
                 movieRepository.getMovieDetails(movieId)
             }
         }
@@ -775,7 +772,7 @@ class MovieRepositoryImplTest {
             )
 
             // When & Then
-            assertThrows<NoGalleryFoundException> {
+            assertThrows<FailedException> {
                 movieRepository.getMovieGallery(movieId)
             }
         }
@@ -1201,7 +1198,7 @@ class MovieRepositoryImplTest {
     }
 
     @Test
-    fun `deleteMovieRating should throw FailedToDeleteRatingException when remote throws exception`() = runTest {
+    fun `deleteMovieRating should throw FailedException when remote throws exception`() = runTest {
         // Given
         val causeException = RuntimeException("Network error")
         coEvery { movieRemoteDataSource.deleteMovieRating(movieId = 550) } throws causeException
@@ -1211,7 +1208,7 @@ class MovieRepositoryImplTest {
             movieRepository.deleteMovieRating(550)
         }
 
-        assertThat(result.exceptionOrNull()).isInstanceOf(FailedToDeleteRatingException()::class.java)
+        assertThat(result.exceptionOrNull()).isInstanceOf(FailedException::class.java)
         coVerify(exactly = 1) { movieRemoteDataSource.deleteMovieRating(movieId = 550) }
     }
 

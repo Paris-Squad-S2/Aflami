@@ -12,6 +12,7 @@ import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris_2.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.GetSessionIdUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -32,6 +33,7 @@ class MyRatingViewModelTest {
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase = mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
+    private val settingsUseCase: SettingsUseCase = mockk()
     private val profileNavigator: ProfileNavigator = mockk(relaxed = true)
     private lateinit var viewModel: MyRatingViewModel
 
@@ -51,7 +53,8 @@ class MyRatingViewModelTest {
             getAccountIdUseCase = getAccountIdUseCase,
             deleteMovieRatingUseCase = deleteMovieRatingUseCase,
             deleteTvShowRatingUseCase = deleteTvShowRatingUseCase,
-            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI
+            mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
+            settingsUseCase = settingsUseCase
         )
     }
 
