@@ -197,7 +197,7 @@ private fun PreviewAR() {
 @Preview(locale = "ar")
 @Composable
 private fun PreviewARDark() {
-    AflamiTheme(isDarkTheme = true) {
+    AflamiTheme {
         DifficultyDialog(
             title = R.string.Choose_Difficulty_Level,
             selectedDifficulty = R.string.Easy,
