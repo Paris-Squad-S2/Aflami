@@ -1,5 +1,9 @@
 package com.feature.categories.categoriesUi.screen.categories
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -49,13 +53,30 @@ fun CategoriesScreenContent(
                 selectedIndex = state.categoriesUIState.selectedTabIndex,
                 tabItems = tabs
             )
-            CategoriesList(
-                categories = when (state.categoriesUIState.selectedTabIndex) {
-                    0 -> state.categoriesUIState.moviesCategories
-                    else -> state.categoriesUIState.tvShowsCategories
-                },
-                onCategoryClick = ::navigateToMediaDetails
-            )
+            Box {
+                this@Column.AnimatedVisibility(
+                    visible = state.categoriesUIState.selectedTabIndex == 0,
+                    enter = slideInHorizontally(initialOffsetX = { -it }),
+                    exit = slideOutHorizontally(targetOffsetX = { -it }),
+                    label = "MoviesTabVisibility"
+                ) {
+                    CategoriesList(
+                        categories = state.categoriesUIState.moviesCategories,
+                        onCategoryClick = ::navigateToMediaDetails
+                    )
+                }
+                this@Column.AnimatedVisibility(
+                    visible = state.categoriesUIState.selectedTabIndex == 1,
+                    enter = slideInHorizontally(initialOffsetX = { it }),
+                    exit = slideOutHorizontally(targetOffsetX = { it }),
+                    label = "TVShowsTabVisibility"
+                ) {
+                    CategoriesList(
+                        categories = state.categoriesUIState.tvShowsCategories,
+                        onCategoryClick = ::navigateToMediaDetails
+                    )
+                }
+            }
         }
     }
 }
