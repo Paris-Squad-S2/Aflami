@@ -70,4 +70,5 @@
     <string name="category_talk">حواري</string>
     <string name="category_war_politics">حرب وسياسة</string>
     <string name="category_unknown" />
+    <string name="select_how_much_you_like_it">اختر مدى إعجابك به</string>
 </resources>
