@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.feature.categories.categoriesUi.screen.categories.CategoryUiState
+import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.paris_2.aflami.designsystem.components.AppText
 
 @Composable

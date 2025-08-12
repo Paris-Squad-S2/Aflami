@@ -1,6 +1,6 @@
 package com.feature.categories.categoriesUi.screen.categories
 
-import com.feature.categories.categoriesUi.common.BaseViewModel
+import com.feature.categories.categoriesUi.shared.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 

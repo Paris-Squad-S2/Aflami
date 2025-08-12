@@ -1,4 +1,4 @@
-package com.feature.categories.categoriesUi.common
+package com.feature.categories.categoriesUi.shared
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

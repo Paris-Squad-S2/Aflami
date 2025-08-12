@@ -2,9 +2,9 @@ package com.feature.categories.categoriesUi.navigation
 
 import android.content.Context
 import android.content.Intent
-import com.feature.categories.categoriesUi.screen.categories.CategoryUiState
-import com.feature.categories.categoriesUi.screen.categories.toJson
 import com.feature.categories.categoriesUi.screen.categoryDetails.CategoryDetailsActivity
+import com.feature.categories.categoriesUi.shared.CategoryUiState
+import com.feature.categories.categoriesUi.shared.toJson
 
 fun navigateToMediaDetails(
     context: Context,
