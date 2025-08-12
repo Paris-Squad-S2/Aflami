@@ -78,7 +78,9 @@ fun MyRatingScreen(
             MyRatingScreenContent(
                 myRatingList = state.value.myRatingMedia,
                 onMediaCardClick = viewModel::onMediaCardClick,
-                onFavouriteIconClick = viewModel::onFavouriteIconClick
+                onFavouriteIconClick = viewModel::onFavouriteIconClick,
+                nsfwThreshold = state.value.nsfwThreshold,
+                genderThreshold = state.value.genderThreshold
             )
         } else if (state.value.myRatingMedia.isEmpty() && state.value.errorMessage == null) {
             PlaceholderView(
@@ -101,6 +103,8 @@ fun MyRatingScreenContent(
     myRatingList: List<MediaUiState>,
     onMediaCardClick: (MediaUiState) -> Unit,
     onFavouriteIconClick: (MediaUiState) -> Unit,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
 ) {
     val lazyGridState = rememberLazyGridState()
     LazyVerticalGrid(
@@ -123,7 +127,9 @@ fun MyRatingScreenContent(
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,
                 isRated = true,
-                onFavouriteIconClick = {onFavouriteIconClick(media)}
+                onFavouriteIconClick = {onFavouriteIconClick(media)},
+                nsfwThreshold = nsfwThreshold,
+                genderThreshold = genderThreshold
             )
         }
     }

@@ -38,6 +38,7 @@ import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 import dropShadow
+import kotlinx.coroutines.flow.flowOf
 
 
 @Composable
@@ -253,7 +254,7 @@ private val playButtonBorderColor = Brush.linearGradient(
 @PreviewLightDark
 @Composable
 private fun GameCardCalenderPreview() {
-    AflamiTheme(isDarkTheme = true) {
+    AflamiTheme(isDarkTheme = flowOf(true)) {
         GameCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -294,7 +295,7 @@ private fun GameCardCalenderLockedPreview() {
 @PreviewLightDark
 @Composable
 private fun GameCardChairPreview() {
-    AflamiTheme(isDarkTheme = true) {
+    AflamiTheme(isDarkTheme = flowOf(true)) {
         GameCard(
             modifier = Modifier
                 .fillMaxWidth()
@@ -332,7 +333,7 @@ private fun GameCardChairLockedPreview() {
 @PreviewLightDark
 @Composable
 private fun GameCardClownPreview() {
-    AflamiTheme(isDarkTheme = true) {
+    AflamiTheme(isDarkTheme = flowOf(true)) {
         GameCard(
             modifier = Modifier
                 .fillMaxWidth()

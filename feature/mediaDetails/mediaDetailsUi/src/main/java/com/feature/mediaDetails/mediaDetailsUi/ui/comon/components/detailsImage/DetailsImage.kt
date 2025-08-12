@@ -41,6 +41,8 @@ fun DetailsImage(
     imageUris: List<String>,
     rating: Float?,
     hasVideo: Boolean = true,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
     onPlayClick: () -> Unit,
 ) {
     val displayImages = imageUris.take(10)
@@ -83,6 +85,8 @@ fun DetailsImage(
                             .align(Alignment.Center),
                         contentScale = ContentScale.Fit,
                         contentDescription = "poster",
+                        nsfwThreshold = nsfwThreshold,
+                        genderThreshold = genderThreshold,
                         loadingContent = {
                             Image(
                                 painter = painterResource(id = R.drawable.ic_film_roll),

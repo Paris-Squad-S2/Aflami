@@ -1,81 +1,56 @@
 package com.paris_2.dataSource.local.user
 
-import android.content.Context
-import android.content.SharedPreferences
-import io.mockk.every
-import io.mockk.mockk
-import io.mockk.verify
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.io.File
 import kotlin.test.assertEquals
 
-class SettingLocalDataSourceImplTest {
-    private lateinit var context: Context
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var editor: SharedPreferences.Editor
+@OptIn(ExperimentalCoroutinesApi::class)
+class SettingLocalDataSourceImpTest {
+
+    private lateinit var dataStore: DataStore<Preferences>
     private lateinit var dataSource: SettingLocalDataSourceImpl
 
     @BeforeEach
     fun setUp() {
-        context = mockk()
-        sharedPreferences = mockk(relaxed = true)
-        editor = mockk(relaxed = true)
-
-        every { context.getSharedPreferences(any(), any()) } returns sharedPreferences
-
-        // This is the real method, no lambda
-        every { sharedPreferences.edit() } returns editor
-
-        // Also mock putString/putBoolean chain
-        every { editor.putString(any(), any()) } returns editor
-        every { editor.putBoolean(any(), any()) } returns editor
-
-        // Default stubbing for getString/getBoolean
-        every { sharedPreferences.getString("language_code", any()) } returns "en"
-        every { sharedPreferences.getBoolean("onboarding_completed", any()) } returns false
-
-        dataSource = SettingLocalDataSourceImpl(context)
+        dataStore = PreferenceDataStoreFactory.create(
+            produceFile = { File.createTempFile("test-datastore", ".preferences_pb") }
+        )
+        dataSource = SettingLocalDataSourceImpl(dataStore)
     }
 
     @Test
-    fun `setLanguage should save language code to SharedPreferences`() = runTest {
+    fun `setLanguage should save language code to DataStore`() = runTest {
         dataSource.setLanguage("ar")
-
-        verify {
-            editor.putString("language_code", "ar")
-            editor.apply()
-        }
+        val language = dataSource.getLanguage().first()
+        assertEquals("ar", language)
     }
 
     @Test
-    fun `getLanguage should emit initial value from SharedPreferences`() = runTest {
-        every { sharedPreferences.getString("language_code", any()) } returns "ar"
-
-        val newDataSource = SettingLocalDataSourceImpl(context)
-
-        assertEquals("ar", newDataSource.getLanguage().first())
+    fun `getLanguage should emit initial value from DataStore`() = runTest {
+        val language = dataSource.getLanguage().first()
+        assertEquals("en", language)
     }
 
     @Test
-    fun `setOnboardingCompleted should save true`() {
+    fun `setOnboardingCompleted should save true`() = runTest {
         dataSource.setOnboardingCompleted()
-
-        verify {
-            editor.putBoolean("onboarding_completed", true)
-            editor.apply()
-        }
+        val completed = dataSource.isOnboardingCompleted()
+        assertTrue(completed)
     }
 
     @Test
-    fun `isOnboardingCompleted should return stored value`() {
-        every { sharedPreferences.getBoolean("onboarding_completed", false) } returns true
-        assertTrue(dataSource.isOnboardingCompleted())
-
-        every { sharedPreferences.getBoolean("onboarding_completed", false) } returns false
+    fun `isOnboardingCompleted should return stored value`() = runTest {
         assertFalse(dataSource.isOnboardingCompleted())
+        dataSource.setOnboardingCompleted()
+        assertTrue(dataSource.isOnboardingCompleted())
     }
 }

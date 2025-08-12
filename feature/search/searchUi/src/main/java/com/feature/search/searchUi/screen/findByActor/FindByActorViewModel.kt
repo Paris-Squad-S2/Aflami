@@ -1,6 +1,5 @@
 package com.feature.search.searchUi.screen.findByActor
 
-import com.feature.search.searchUi.screen.search.MediaUiState
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
@@ -13,9 +12,12 @@ import com.feature.search.searchUi.comon.BaseViewModel
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.PagingSource
+import com.feature.search.searchUi.screen.search.ContentRestriction
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
 import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -30,6 +32,7 @@ class FindByActorViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    private val settingsUseCase: SettingsUseCase,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(
         uiState = FindByActorUiState(
@@ -42,9 +45,52 @@ class FindByActorViewModel @Inject constructor(
 
 
     init {
+        getRestriction()
         val initialQuery = savedStateHandle.toRoute<SearchDestinations.FindByActorScreen>().name
         if (initialQuery != null) {
             onSearchQueryChange(initialQuery)
+        }
+    }
+
+    private fun getRestriction() {
+        viewModelScope.launch {
+            val restriction = settingsUseCase.getRestriction()
+            updateState(
+                screenState.value.copy(
+                    screenState.value.uiState.copy(
+                        contentRestriction = ContentRestriction.valueOf(restriction)
+                    )
+
+                )
+            )
+            when (screenState.value.uiState.contentRestriction) {
+                ContentRestriction.Strict -> updateState(
+                    screenState.value.copy(
+                        screenState.value.uiState.copy(
+                            nsfwThreshold = 0.8f,
+                            genderThreshold = 0.6f
+                        )
+                    )
+                )
+
+                ContentRestriction.Moderate -> updateState(
+                    screenState.value.copy(
+                        screenState.value.uiState.copy(
+                            nsfwThreshold = 0.4f,
+                            genderThreshold = 0.6f
+                        )
+                    )
+                )
+
+                ContentRestriction.Off -> updateState(
+                    screenState.value.copy(
+                        screenState.value.uiState.copy(
+                            nsfwThreshold = 0f,
+                            genderThreshold = 0f
+                        )
+                    )
+                )
+            }
         }
     }
 

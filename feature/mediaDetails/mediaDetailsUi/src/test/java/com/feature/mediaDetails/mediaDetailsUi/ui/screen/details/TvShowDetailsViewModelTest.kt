@@ -26,6 +26,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -58,6 +59,7 @@ class TvShowDetailsViewModelTest {
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
+    private val settingsUseCase: SettingsUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
     private lateinit var viewModel: TvShowDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -329,6 +331,7 @@ class TvShowDetailsViewModelTest {
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
             addRatingToTvShowUseCase,
+            settingsUseCase,
             navigator
         )
     }

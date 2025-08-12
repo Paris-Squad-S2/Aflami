@@ -49,6 +49,8 @@ fun MediaCard(
     cardWidth: Dp? = null,
     cardHeight: Dp? = null,
     showPlayButton: Boolean = false,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
     onPlayButtonClick: () -> Unit = {},
     enabled: Boolean = true
 ) {
@@ -82,6 +84,8 @@ fun MediaCard(
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
+            nsfwThreshold = nsfwThreshold,
+            genderThreshold = genderThreshold,
             loadingContent = {
                 Image(
                     painter = painterResource(id = R.drawable.ic_film_roll),
