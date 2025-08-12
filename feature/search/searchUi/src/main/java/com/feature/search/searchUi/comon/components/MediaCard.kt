@@ -45,6 +45,8 @@ fun MediaCard(
     showRating: Boolean = true,
     showGradientFilter: Boolean = false,
     showPlayButton: Boolean = false,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f,
     onPlayButtonClick: () -> Unit = {},
     enabled: Boolean = true
 ) {
@@ -72,7 +74,8 @@ fun MediaCard(
             contentScale = ContentScale.Crop,
             blurFemales = true,
             blurNSFW = true,
-            nsfwThreshold = 0.7f,
+            nsfwThreshold = nsfwThreshold,
+            genderThreshold = genderThreshold,
             onAnalysisComplete = { _ ->
             },
             loadingContent = {

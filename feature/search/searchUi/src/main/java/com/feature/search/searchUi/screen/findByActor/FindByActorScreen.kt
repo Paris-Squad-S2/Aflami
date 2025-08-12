@@ -93,7 +93,9 @@ fun FindByActorScreenContent(
         } else {
             SearchResultContent(
                 searchResult = state.uiState.searchResult.collectAsLazyPagingItems(),
-                onMediaCardClick = findByActorScreenInteractionListener::onMediaCardClick
+                onMediaCardClick = findByActorScreenInteractionListener::onMediaCardClick,
+                nsfwThreshold = state.uiState.nsfwThreshold,
+                genderThreshold = state.uiState.genderThreshold
             )
         }
     }

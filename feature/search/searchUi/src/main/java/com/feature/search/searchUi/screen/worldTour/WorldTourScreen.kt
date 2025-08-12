@@ -120,7 +120,9 @@ fun WorldTourScreenContent(
             else -> {
                 SearchResultContent(
                     searchResult = state.uiState.searchResult.collectAsLazyPagingItems(),
-                    onMediaCardClick = worldTourScreenInteractionListener::onMediaCardClick
+                    onMediaCardClick = worldTourScreenInteractionListener::onMediaCardClick,
+                    nsfwThreshold = state.uiState.nsfwThreshold,
+                    genderThreshold = state.uiState.genderThreshold
                 )
             }
         }

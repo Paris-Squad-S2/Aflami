@@ -1,9 +1,9 @@
 package com.paris_2.aflami.di
 
 import android.content.Context
-import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.authentication.authenticationUi.AuthenticationFeatureAPIImpl
+import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigatorImpl
 import com.feature.categories.categoriesApi.CategoriesFeatureAPI
@@ -12,9 +12,6 @@ import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
-import com.feature.home.homeUi.navigation.HomeDestinations
-import com.feature.home.homeUi.navigation.HomeNavigator
-import com.feature.home.homeUi.navigation.HomeNavigatorImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
 import com.feature.lists.listsUi.ListsFeatureAPIImpl
 import com.feature.lists.listsUi.navigation.ListDestinations
@@ -29,14 +26,14 @@ import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.feature.onboarding.onboardingUi.OnBoardingFeatureAPIImpl
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileUi.ProfileFeatureAPIImpl
+import com.feature.profile.profileUi.navigation.ProfileDestinations
+import com.feature.profile.profileUi.navigation.ProfileNavigator
+import com.feature.profile.profileUi.navigation.ProfileNavigatorImpl
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.navigation.SearchNavigator
 import com.feature.search.searchUi.navigation.SearchNavigatorImpl
-import com.feature.profile.profileUi.navigation.ProfileDestinations
-import com.feature.profile.profileUi.navigation.ProfileNavigator
-import com.feature.profile.profileUi.navigation.ProfileNavigatorImpl
 import com.paris_2.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
 import com.paris_2.aflami.bottomNavBar.bottomNavBarUI.BottomNavBarAPIImpl
 import dagger.Module
@@ -76,11 +73,6 @@ object FeatureAPIModule {
     fun provideAuthenticationNavigator(): AuthenticationNavigator =
         AuthenticationNavigatorImpl(startGraph = AuthenticationDestinations.AuthenticationGraph1)
 
-
-    @Provides
-    @Singleton
-    fun provideHomeNavigator(): HomeNavigator =
-        HomeNavigatorImpl(startGraph = HomeDestinations.HomeGraph1)
 
     @Provides
     @Singleton

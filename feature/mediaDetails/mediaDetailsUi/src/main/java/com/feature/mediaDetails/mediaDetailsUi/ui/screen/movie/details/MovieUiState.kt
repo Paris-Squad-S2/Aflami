@@ -27,8 +27,17 @@ data class MovieDetailsScreenState(
     val selectedListIndex: Int = -1,
     val showCreateListDialog: Boolean = false,
     val createListName: String = "",
-    val createListButtonState: ButtonState = ButtonState.Normal
+    val createListButtonState: ButtonState = ButtonState.Normal,
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
+
+enum class ContentRestriction() {
+    Strict,
+    Moderate,
+    Off
+}
 
 data class MovieDetailsUiState(
     val movie: MovieUi,

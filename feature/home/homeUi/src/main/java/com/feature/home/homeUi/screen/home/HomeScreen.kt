@@ -126,7 +126,9 @@ fun HomeScreenContent(
                     },
                     mediaList = state.homeUIState.popularMediaList,
                     modifier = Modifier.fillMaxSize(),
-                    isShimmerEnabled = state.isPopularMediaLoading
+                    isShimmerEnabled = state.isPopularMediaLoading,
+                    nsfwThreshold = state.homeUIState.nsfwThreshold,
+                    genderThreshold = state.homeUIState.genderThreshold
                 )
             }
 
@@ -142,7 +144,9 @@ fun HomeScreenContent(
                     },
                     isScrolling = continueWatchingScrolling,
                     modifier = Modifier.padding(top = 6.dp),
-                    isShimmerEnabled = state.isContinueWatchingLoading
+                    isShimmerEnabled = state.isContinueWatchingLoading,
+                    nsfwThreshold = state.homeUIState.nsfwThreshold,
+                    genderThreshold = state.homeUIState.genderThreshold
                 )
             }
 
@@ -160,7 +164,9 @@ fun HomeScreenContent(
                     },
                     isScrolling = topRatedScrolling,
                     modifier = Modifier.padding(top = 24.dp),
-                    isShimmerEnabled = state.isTopRatingLoading
+                    isShimmerEnabled = state.isTopRatingLoading,
+                    nsfwThreshold = state.homeUIState.nsfwThreshold,
+                    genderThreshold = state.homeUIState.genderThreshold
                 )
             }
 
@@ -285,6 +291,8 @@ fun HomeScreenContent(
                     year = upcomingMedia.yearOfRelease.year.toString(),
                     mediaCardType = MediaCardType.UP_COMING,
                     showGradientFilter = false,
+                    nsfwThreshold = state.homeUIState.nsfwThreshold,
+                    genderThreshold = state.homeUIState.genderThreshold,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
@@ -329,7 +337,9 @@ fun HomeScreenContent(
             movie = moodPickerMovie!!,
             onDismiss = { action.onDismissMoodPicker() },
             onViewDetailsClick = { action.onMediaCardClick(moodPickerMovie) },
-            onGetAnotherMovieClick = { action.getRandomMoodPickerMovie() }
+            onGetAnotherMovieClick = { action.getRandomMoodPickerMovie() },
+            nsfwThreshold = state.homeUIState.nsfwThreshold,
+            genderThreshold = state.homeUIState.genderThreshold
         )
     }
 

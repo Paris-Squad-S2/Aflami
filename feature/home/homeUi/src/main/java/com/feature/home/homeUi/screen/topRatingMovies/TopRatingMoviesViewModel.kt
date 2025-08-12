@@ -1,11 +1,13 @@
 package com.feature.home.homeUi.screen.topRatingMovies
 
 import com.feature.home.homeUi.common.BaseViewModel
+import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -13,6 +15,7 @@ import javax.inject.Inject
 class TopRatingMoviesViewModel @Inject constructor(
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
+    private val settingsUseCase: SettingsUseCase,
 ) : BaseViewModel<TopRatingMoviesUiState>(
     TopRatingMoviesUiState(
         topRatingMovies = emptyList(), isLoading = false, errorMessage = null
@@ -20,7 +23,55 @@ class TopRatingMoviesViewModel @Inject constructor(
 ), TopRatingInteractionListener {
 
     init {
+        getRestriction()
         loadContinueWatchingMedia()
+    }
+
+    private fun getRestriction() {
+        tryToExecute(
+            execute = { settingsUseCase.getRestriction() },
+            onSuccess = ::onGetRestrictionSuccess,
+            onError = ::onGetRestrictionError
+        )
+    }
+
+    private fun onGetRestrictionSuccess(restriction: String) {
+        emitState(
+            screenState.value.copy(
+                contentRestriction = ContentRestriction.valueOf(restriction),
+            )
+        )
+        when (screenState.value.contentRestriction) {
+            ContentRestriction.Strict -> emitState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.8f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Moderate -> emitState(
+                screenState.value.copy(
+                    nsfwThreshold = 0.4f,
+                    genderThreshold = 0.6f
+                )
+            )
+
+            ContentRestriction.Off -> emitState(
+                screenState.value.copy(
+                    nsfwThreshold = 0f,
+                    genderThreshold = 0f
+                )
+            )
+        }
+
+    }
+
+    private fun onGetRestrictionError(error: String) {
+        emitState(
+            screenState.value.copy(
+                errorMessage = error,
+            )
+        )
     }
 
     private fun loadContinueWatchingMedia() {
