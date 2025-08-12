@@ -1,2 +1,3 @@
 versionName=0.8.6
+feature/categories
 - add categories domain and data

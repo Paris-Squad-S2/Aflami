@@ -9,7 +9,7 @@ import com.repository.lists.model.dto.ResponseDto
 import jakarta.inject.Inject
 import retrofit2.HttpException
 
-class ListsRemoteDataSourceImp @Inject constructor(
+class ListsRemoteDataSourceImpl @Inject constructor(
     private val listApiService: ListApiService
 ) : ListsRemoteDataSource {
     override suspend fun getLists(page: Int, accountId: Int): ListsDto = safeApiCall {

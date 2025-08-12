@@ -24,14 +24,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MovieLocalDataSourceImpTest {
-    private lateinit var movieLocalDataSource: MovieLocalDataSourceImp
+    private lateinit var movieLocalDataSource: MovieLocalDataSourceImpl
     private var workManager: WorkManager = mockk(relaxed = true)
     private lateinit var movieDao: MovieDao
 
     @BeforeEach
     fun setUp() {
         movieDao = mockk(relaxed = true)
-        movieLocalDataSource = MovieLocalDataSourceImp(workManager, movieDao)
+        movieLocalDataSource = MovieLocalDataSourceImpl(workManager, movieDao)
     }
 
     @Nested
