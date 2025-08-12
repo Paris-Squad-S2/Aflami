@@ -6,37 +6,35 @@ import com.paris_2.domain.media.entity.Category
 import kotlinx.datetime.LocalDate
 
 data class HomeScreenUIState(
-    val homeUIState: HomeUIState,
-    val isPopularMediaLoading: Boolean,
-    val isTopRatingLoading: Boolean,
-    val isContinueWatchingLoading: Boolean,
-    val isCategoryLoading: Boolean,
-    val errorMessage: String?
+    val homeUIState: HomeUIState = HomeUIState(),
+    val isPopularMediaLoading: Boolean = false,
+    val isTopRatingLoading: Boolean = false,
+    val isContinueWatchingLoading: Boolean = false,
+    val isCategoryLoading: Boolean = false,
+    val errorMessage: String? = null
 )
 
 data class HomeUIState(
-    val popularMediaList: List<SliderMedia>,
-    val continueWatchingMediaList: List<MediaUiState>,
-    val topRatedMediaList: List<MediaUiState>,
-    val moviesBirthdayMediaList: List<MediaUiState>,
-    val categories: Map<Category, Boolean>,
-    val upComingMediaList: List<MediaUiState>,
-    val showMoodPickerDialog: Boolean,
-    val isAllCategories: Boolean,
-    val moodPickerMovie: MediaUiState?
-    )
-
-data class MediaUiState(
-    val id: Int,
-    val imageUri: String,
-    val title: String,
-    val type: MediaTypeUi,
-    val categories: List<Int>,
-    val yearOfRelease: LocalDate,
-    val rating: Double?,
+    val popularMediaList: List<SliderMedia> = emptyList(),
+    val continueWatchingMediaList: List<MediaUiState> = emptyList(),
+    val topRatedMediaList: List<MediaUiState> = emptyList(),
+    val moviesBirthdayMediaList: List<MediaUiState> = emptyList(),
+    val categories: Map<Category, Boolean> = emptyMap(),
+    val upComingMediaList: List<MediaUiState> = emptyList(),
+    val showMoodPickerDialog: Boolean = false,
+    val isAllCategories: Boolean = false,
+    val moodPickerMovie: MediaUiState? = null
 )
 
-
+data class MediaUiState(
+    val id: Int = 0,
+    val imageUri: String = "",
+    val title: String = "",
+    val type: MediaTypeUi = MediaTypeUi.MOVIE,
+    val categories: List<Int> = emptyList(),
+    val yearOfRelease: LocalDate = LocalDate(1970, 1, 1),
+    val rating: Double? = null
+)
 
 enum class MediaTypeUi(val mediaID: Int) {
     TVSHOW(R.string.tv_show),

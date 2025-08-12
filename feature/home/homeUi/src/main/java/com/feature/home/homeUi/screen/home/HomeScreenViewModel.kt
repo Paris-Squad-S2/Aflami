@@ -32,34 +32,7 @@ class HomeScreenViewModel @Inject constructor(
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
 ) : HomeScreenInteractionListener,
-    BaseViewModel<HomeScreenUIState>(
-        HomeScreenUIState(
-            homeUIState = HomeUIState(
-                popularMediaList = emptyList(),
-                continueWatchingMediaList = emptyList(),
-                topRatedMediaList = emptyList(),
-                moviesBirthdayMediaList = emptyList(),
-                categories = mapOf(),
-                upComingMediaList = emptyList(),
-                showMoodPickerDialog = false,
-                isAllCategories = true,
-                moodPickerMovie = MediaUiState(
-                    id = 0,
-                    title = "",
-                    imageUri = "",
-                    type = MediaTypeUi.MOVIE,
-                    categories = emptyList(),
-                    yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
-                    rating = 0.0,
-                )
-            ),
-            isPopularMediaLoading = false,
-            isTopRatingLoading = false,
-            isContinueWatchingLoading = false,
-            isCategoryLoading = false,
-            errorMessage = null
-        ),
-    ) {
+    BaseViewModel<HomeScreenUIState>(HomeScreenUIState()) {
     init {
         loadPopularMedia()
         loadTopRatingMedia()
