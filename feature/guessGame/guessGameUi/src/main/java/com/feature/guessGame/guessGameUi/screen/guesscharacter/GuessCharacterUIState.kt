@@ -10,6 +10,7 @@ data class GuessCharacterUIState(
     val isChoiceCorrect: Boolean = false,
     val imageBlur: Dp = 8.dp,
     val score: Int = 0,
+    val isHintVisible: Boolean = true,
 )
 
 data class Question(
