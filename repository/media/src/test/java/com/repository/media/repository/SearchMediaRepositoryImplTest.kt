@@ -1,9 +1,7 @@
 package com.repository.media.repository
 
+import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.exception.NoMediaForActorException
-import com.paris_2.domain.media.exception.NoMediaForCountryException
-import com.paris_2.domain.media.exception.NoMediaForSearchException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
@@ -125,7 +123,7 @@ class SearchMediaRepositoryImplTest {
             )
         } throws Exception("Some error")
 
-        assertFailsWith<NoMediaForActorException> {
+        assertFailsWith<FailedException> {
             repository.getMediaByActor(actorName, page)
         }
     }
@@ -183,9 +181,9 @@ class SearchMediaRepositoryImplTest {
                 language = any(),
                 page = page
             )
-        } throws NoMediaForCountryException()
+        } throws FailedException("getMoviesByCountry")
 
-        assertFailsWith<NoMediaForCountryException> {
+        assertFailsWith<FailedException> {
             repository.getMoviesByCountry(countryName, page)
         }
     }
@@ -219,9 +217,9 @@ class SearchMediaRepositoryImplTest {
                 language = any(),
                 page = page
             )
-        } throws NoMediaForSearchException()
+        } throws FailedException("getMediaByQuery")
 
-        assertFailsWith<NoMediaForSearchException> {
+        assertFailsWith<FailedException> {
             repository.getMediaByQuery(query, page)
         }
     }
