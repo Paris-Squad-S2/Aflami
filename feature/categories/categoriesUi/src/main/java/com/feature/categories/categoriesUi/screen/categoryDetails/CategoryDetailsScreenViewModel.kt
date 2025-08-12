@@ -13,7 +13,7 @@ import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.useCase.GetMoviesByCategoryUseCase
 import com.paris_2.domain.media.useCase.GetTvShowsByCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
