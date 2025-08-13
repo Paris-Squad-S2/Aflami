@@ -1,6 +1,7 @@
 package com.paris_2.aflami.di
 
 import com.paris.domain.lists.repository.ListsRepository
+import com.paris_2.domain.game.repositories.ActorPopularityRepository
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -19,6 +20,8 @@ import com.paris_2.repository.user.repository.SettingRepositoryImpl
 import com.paris_2.repository.user.repository.UserRepositoryImpl
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
+import com.repository.guessgame.repository.ActorPopularityRepositoryImpl
 import com.repository.lists.ListsRepositoryImpl
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
@@ -181,4 +184,16 @@ object RepositoryModule {
         listRemoteDataSource: ListsRemoteDataSource,
         userRemoteDataSource: UserRemoteDataSource
     ): ListsRepository = ListsRepositoryImpl(listRemoteDataSource, userRemoteDataSource)
+
+    @Provides
+    @Singleton
+    fun provideActorPopularityRepository(
+        networkConnectionChecker: com.repository.guessgame.utils.NetworkConnectionChecker,
+        actorPopularityDataSource: ActorPopularityRemoteDataSource,
+        settingLocalDataSource: SettingLocalDataSource
+    ) : ActorPopularityRepository = ActorPopularityRepositoryImpl(
+        networkConnectionChecker,
+        actorPopularityDataSource,
+        settingLocalDataSource
+    )
 }
