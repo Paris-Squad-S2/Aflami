@@ -1,4 +1,4 @@
-package com.paris_2.domain.game.usecases
+package com.paris_2.domain.game.usecases.guessActor
 
 import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
@@ -6,7 +6,7 @@ import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
 import java.util.UUID
 
-class GameSessionUseCase(
+class GuessActorSessionUseCase(
     private val actorPopularityRepository: ActorPopularityRepository
 ) {
 
