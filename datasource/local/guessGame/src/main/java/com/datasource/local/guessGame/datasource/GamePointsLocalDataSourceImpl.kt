@@ -10,4 +10,8 @@ class GamePointsLocalDataSourceImpl(
     override suspend fun saveUserGamePoints(gamePoints: UserGamePointsEntity) {
         gamePointsDao.upsertUserGamePoints(gamePoints)
     }
+
+    override suspend fun getUserGamePoints(userId: Int): UserGamePointsEntity? {
+        return gamePointsDao.getUserGamePoints(userId)
+    }
 }
