@@ -3,6 +3,7 @@ package com.repository.guessgame.repository
 import com.paris_2.domain.game.entity.UserPoints
 import com.paris_2.domain.game.repositories.GamePointsRepository
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
+import com.repository.guessgame.mapper.toDomain
 import com.repository.guessgame.mapper.toEntity
 
 class GamePointsRepositoryImpl(
@@ -10,5 +11,10 @@ class GamePointsRepositoryImpl(
 ) : GamePointsRepository {
     override suspend fun saveUserGamePoints(userPoints: UserPoints) {
         gamePointsLocalDataSource.saveUserGamePoints(userPoints.toEntity())
+    }
+
+    override suspend fun getUserGamePoints(userId: Int): UserPoints {
+        return gamePointsLocalDataSource.getUserGamePoints(userId)?.toDomain()
+            ?: throw IllegalStateException("No user game points found for userId: $userId")
     }
 }
