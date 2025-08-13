@@ -3,6 +3,8 @@ package com.paris_2.aflami.di
 import com.datasource.remote.movie.MovieRemoteDataSourceImpl
 import com.datasource.remote.tvShow.TvShowDetailsRemoteDataSourceImpl
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
+import com.repository.media.ActorPopularityRemoteDataSourceImpl
 import com.repository.media.GenresRemoteDataSourceImpl
 import com.repository.media.MediaRemoteDataSourceImpl
 import com.repository.media.SearchRemoteDataSourceImpl
@@ -49,4 +51,10 @@ abstract class RemoteDataSourceModule {
     abstract fun bindSearchRemoteDataSource(
         impl: SearchRemoteDataSourceImpl
     ): SearchRemoteDataSource
+
+    @Binds
+    @Singleton
+    abstract fun bindActorPopularityRemoteDataSource(
+        impl : ActorPopularityRemoteDataSourceImpl
+    ) : ActorPopularityRemoteDataSource
 }
