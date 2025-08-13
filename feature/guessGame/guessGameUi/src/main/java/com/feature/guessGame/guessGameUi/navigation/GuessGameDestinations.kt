@@ -17,12 +17,17 @@ sealed interface GuessGameDestinations : GuessGameGraph {
     data object GuessMovieScreen : GuessGameDestination
 
     @Serializable
-    data object GuessReleasedYearScreen : GuessGameDestination
-
-    @Serializable
-    data object GuessGenreScreen : GuessGameDestination
+    data class GuessQuestionScreen(
+        val questionType: QuestionType,
+    ) : GuessGameDestination
 
     @Serializable
     data object FinishGameScreen : GuessGameDestination
 
+}
+
+@Serializable
+enum class QuestionType {
+    RELEASE_YEAR,
+    GENRE
 }
