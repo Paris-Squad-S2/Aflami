@@ -1,18 +1,24 @@
 package com.paris_2.domain.game.entity
 
-import kotlinx.datetime.LocalDateTime
 
 data class GameSession(
     val id: String,
     val level: GameLevel,
-    val currentQuestion: Question,
-    val score: Int,
-    val isCompleted: Boolean,
-    val startTime: LocalDateTime
+    val questions: List<Question>,
+    var currentQuestionIndex: Int = 0,
+    var score: Int = 0,
+    var isCompleted: Boolean = false
 ) {
-    enum class GameLevel {
-        EASY,
-        MEDIUM,
-        HARD
+    enum class GameLevel { EASY, MEDIUM, HARD }
+
+    fun getCurrentQuestion(): Question? =
+        questions.getOrNull(currentQuestionIndex)
+
+    fun moveToNextQuestion() {
+        if (currentQuestionIndex < questions.size - 1) {
+            currentQuestionIndex++
+        } else {
+            isCompleted = true
+        }
     }
 }
