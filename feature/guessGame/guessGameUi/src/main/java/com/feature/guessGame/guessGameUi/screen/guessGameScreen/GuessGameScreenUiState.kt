@@ -1,6 +1,6 @@
-package com.feature.guessGame.guessGameUi.screen.letsPlayScreen
+package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
-data class LetsPlayScreenUiState(
+data class GuessGameScreenUiState(
     val userPoints: Int = 0,
     val games: List<GameUiState> = listOf(GameUiState()),
     val isLoading: Boolean = false,

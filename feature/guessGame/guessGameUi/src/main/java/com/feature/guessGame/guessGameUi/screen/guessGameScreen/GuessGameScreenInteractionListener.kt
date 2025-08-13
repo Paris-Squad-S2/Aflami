@@ -1,4 +1,4 @@
-package com.feature.guessGame.guessGameUi.screen.letsPlayScreen
+package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
 interface GuessGameScreenInteractionListener {
     fun onGamePlayClicked(gameTitle: String)

@@ -8,8 +8,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.guessGame.guessGameUi.screen.letsPlayScreen.GuessGameScreen
-import com.feature.guessGame.guessGameUi.screen.letsPlayScreen.GuessGameScreenViewModel
+import androidx.navigation.toRoute
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.GuessGameScreen
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.GuessGameScreenViewModel
+import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.GuessQuestionScreen
 
 
 @Composable
@@ -44,6 +46,11 @@ fun NavGraphBuilder.buildGuessGameNavGraph() {
         startDestination = GuessGameDestinations.GuessGameScreen
     ) {
         composable<GuessGameDestinations.GuessGameScreen> { GuessGameScreen() }
+        composable<GuessGameDestinations.GuessQuestionScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<GuessGameDestinations.GuessQuestionScreen>()
+            GuessQuestionScreen(questionType = args.questionType)
+        }
+
 
     }
 }
