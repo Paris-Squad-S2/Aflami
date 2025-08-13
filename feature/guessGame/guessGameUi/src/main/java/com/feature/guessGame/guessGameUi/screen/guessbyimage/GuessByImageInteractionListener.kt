@@ -1,6 +1,6 @@
-package com.feature.guessGame.guessGameUi.screen.guesscharacter
+package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
-interface GuessCharacterInteractionListener {
+interface GuessByImageInteractionListener {
     fun onHintClicked()
     fun onGuessClicked(guess: String)
     fun onNextClicked()
