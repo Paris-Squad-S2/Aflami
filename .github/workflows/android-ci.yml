@@ -68,7 +68,6 @@ jobs:
           filters: ./filters.yml
           base: ${{ github.event.pull_request.base.sha || github.sha }}
 
-
   test-changed-modules:
     needs: detect-changes
     if: ${{ github.event_name == 'pull_request' && (needs.detect-changes.outputs.modules != '[]' || github.event.pull_request.draft) }}
@@ -91,14 +90,12 @@ jobs:
       - name: Test changed module
         run: ./gradlew ${{ matrix.module.replace(/-/g, ':') }}:test --build-cache
 
-
       - name: Test dependent modules
         if: ${{ needs.detect-changes.outputs.has-domain-changes == 'true' && matrix.module == 'app' }}
         run: |
           ./gradlew :feature:authentication:test \
                    :feature:home:test \
                    :feature:profile:test
-
 
   full-verification:
     needs: [ detect-changes, test-changed-modules ]
@@ -131,7 +128,6 @@ jobs:
       - name: Verify coverage
         run: ./gradlew koverVerify --build-cache
 
-
   build-release:
     needs: full-verification
     if: github.event_name == 'push'
@@ -158,7 +154,6 @@ jobs:
           path: |
             app/build/outputs/apk/release/*.apk
             app/build/outputs/mapping/release/mapping.txt
-
 
   pr-signed-build:
     needs: full-verification
