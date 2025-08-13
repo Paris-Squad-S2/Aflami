@@ -2,6 +2,7 @@ package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.ImageType
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,8 +13,14 @@ class GuessGameScreenViewModel @Inject constructor() : GuessGameScreenInteractio
 
     override fun onGamePlayClicked(gameId: String) {
         when (gameId) {
-            "guess_character" -> {}
-            "guess_movie" -> {}
+            "guess_character" -> {
+                GuessGameDestinations.GuessByImageScreen(ImageType.ACTOR)
+            }
+
+            "guess_movie" -> {
+                GuessGameDestinations.GuessByImageScreen(ImageType.POSTER)
+            }
+
             "guess_release_year" -> {
                 navigate(GuessGameDestinations.GuessQuestionScreen(QuestionType.RELEASE_YEAR))
             }
