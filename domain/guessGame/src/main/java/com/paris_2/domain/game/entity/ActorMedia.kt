@@ -7,4 +7,5 @@ data class ActorMedia(
     val name: String,
     val posterImg: String,
     val yearOfRelease: LocalDate,
+    val genres: List<Int>
     )
