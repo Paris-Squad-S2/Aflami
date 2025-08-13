@@ -176,6 +176,7 @@ dependencies {
     implementation(projects.datasource.local.tvShow)
     implementation(projects.datasource.local.movie)
     implementation(projects.datasource.local.user)
+    implementation(projects.datasource.local.guessGame)
 
     implementation(projects.domain.media)
     implementation(projects.domain.lists)
