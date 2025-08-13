@@ -1,4 +1,4 @@
-package com.feature.guessGame.guessGameUi.screen.letsPlayScreen
+package com.feature.guessGame.guessGameUi.screen.GuessGameScreen
 
 data class LetsPlayScreenUiState(
     val userPoints: Int = 0,

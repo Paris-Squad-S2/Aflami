@@ -1,4 +1,4 @@
-package com.feature.guessGame.guessGameUi.screen.letsPlayScreen.components
+package com.feature.guessGame.guessGameUi.screen.GuessGameScreen.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

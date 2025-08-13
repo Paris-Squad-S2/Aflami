@@ -1,4 +1,4 @@
-package com.feature.guessGame.guessGameUi.screen.letsPlayScreen
+package com.feature.guessGame.guessGameUi.screen.GuessGameScreen
 
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

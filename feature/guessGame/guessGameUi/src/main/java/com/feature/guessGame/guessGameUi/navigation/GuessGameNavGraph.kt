@@ -8,8 +8,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import com.feature.guessGame.guessGameUi.screen.letsPlayScreen.GuessGameScreen
-import com.feature.guessGame.guessGameUi.screen.letsPlayScreen.GuessGameScreenViewModel
+import com.feature.guessGame.guessGameUi.screen.GuessGameScreen.GuessGameScreen
+import com.feature.guessGame.guessGameUi.screen.GuessGameScreen.GuessGameScreenViewModel
 
 
 @Composable

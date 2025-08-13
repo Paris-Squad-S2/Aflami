@@ -1,4 +1,4 @@
-package com.feature.guessGame.guessGameUi.screen.letsPlayScreen
+package com.feature.guessGame.guessGameUi.screen.GuessGameScreen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.feature.guessGame.guessGameUi.screen.letsPlayScreen.components.PointsBadge
+import com.feature.guessGame.guessGameUi.screen.GuessGameScreen.components.PointsBadge
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.GameCard
