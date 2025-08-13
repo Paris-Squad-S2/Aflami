@@ -2,9 +2,10 @@ name: Android CI
 
 on:
   push:
-    branches: [ test-ci ]
+    branches: [ feature/test-only-change-modules ]
   pull_request:
-    branches: [ test-ci ]
+    branches:
+      - feature/test-only-change-modules
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
