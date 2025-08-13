@@ -1,9 +1,9 @@
 package com.repository.guessgame.repository
 
+import com.paris_2.domain.game.entity.Actor
 import com.paris_2.domain.game.exception.FailedException
 import com.paris_2.domain.game.exception.GameException
 import com.paris_2.domain.game.exception.NoInternetConnectionException
-import com.paris_2.domain.game.entity.Actor
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
@@ -26,8 +26,20 @@ class ActorPopularityRepositoryImpl(
         }
     }
 
+    override suspend fun getRandomActors(numberOfActors: Int): List<Actor> {
+        val language = settingLocalDataSource.getLanguage().first()
+        return safeCall(FailedException("Failed to get random actors")) {
+            val allActors = actorPopularityDataSource
+                .getPopularActors(language)
+                .results
+                ?.mapNotNull { it?.toDomain() }
+                ?: emptyList()
+            allActors.shuffled().take(numberOfActors)
+        }
+    }
 
-private suspend fun <T> safeCall(exception: GameException, call: suspend () -> T): T {
+
+    private suspend fun <T> safeCall(exception: GameException, call: suspend () -> T): T {
     if (networkConnectionChecker.isConnected.value.not()) {
         throw NoInternetConnectionException()
     }
