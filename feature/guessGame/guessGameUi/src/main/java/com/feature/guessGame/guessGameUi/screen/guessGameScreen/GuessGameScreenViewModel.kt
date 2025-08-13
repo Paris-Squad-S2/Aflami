@@ -7,17 +7,22 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class GuessGameScreenViewModel @Inject constructor()
-    : GuessGameScreenInteractionListener,
+class GuessGameScreenViewModel @Inject constructor() : GuessGameScreenInteractionListener,
     BaseViewModel<GuessGameScreenUiState>(GuessGameScreenUiState()) {
-    override fun onGamePlayClicked(gameTitle: String) {
-        val questionType = when (gameTitle) {
-            "guess_release_year" -> QuestionType.RELEASE_YEAR
-            "guess_genre" -> QuestionType.GENRE
-            else -> QuestionType.RELEASE_YEAR
+
+    override fun onGamePlayClicked(gameId: String) {
+        when (gameId) {
+            "guess_character" -> {}
+            "guess_movie" -> {}
+            "guess_release_year" -> {
+                navigate(GuessGameDestinations.GuessQuestionScreen(QuestionType.RELEASE_YEAR))
+            }
+
+            "guess_genre" -> {
+                navigate(GuessGameDestinations.GuessQuestionScreen(QuestionType.GENRE))
+            }
+
+            else -> ""
         }
-        navigate(GuessGameDestinations.GuessQuestionScreen(questionType))
     }
-
-
 }

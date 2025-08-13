@@ -4,12 +4,16 @@ import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -24,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
 import com.feature.guessGame.guessGameUi.common.components.GuessQuestionBackground
+import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.paris_2.aflami.designsystem.components.AppTopBar
@@ -62,7 +67,10 @@ fun GuessQuestionContent(
     questionType: QuestionType,
 ) {
     Column(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+
     ) {
         AppTopBar(
             title = stringResource(id = getGameTitleResId(questionType)),
@@ -103,23 +111,31 @@ fun GuessQuestionContent(
 
             Spacer(Modifier.height(16.dp))
 
-            state.remainingAnswers.forEach { answer ->
-                AnimatedVisibility(
-                    visible = true,
-                    enter = fadeIn(),
-                    exit = fadeOut()
-                ) {
-//                    OptionItem(
-//                        text = answer,
-//                        isSelected = state.selectedAnswer == answer,
-//                        onClick = { listener.onAnswerSelected(answer) }
-//                    )
+            LazyColumn(
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                items(state.remainingAnswers) { answer ->
+                    AnimatedVisibility(
+                        visible = true,
+                        enter = fadeIn(),
+                        exit = fadeOut()
+                    ) {
+                        OptionItem(
+                            text = answer,
+                            selected = state.selectedAnswer == answer,
+                            isCorrect = state.correctAnswer == answer,
+                            onClick = { listener.onAnswerSelected(answer) }
+                        )
+                    }
                 }
             }
 
-            Spacer(Modifier
-                .weight(1f)
-                .height(24.dp))
+
+            Spacer(
+                Modifier
+                    .weight(1f)
+                    .height(24.dp)
+            )
 
             CustomButton(
                 onClick = { listener.onNextClicked() },
