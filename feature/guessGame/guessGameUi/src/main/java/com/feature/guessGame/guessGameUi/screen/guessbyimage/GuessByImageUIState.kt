@@ -18,3 +18,9 @@ data class Question(
     val isCorrect: Boolean = false,
     val isSelected: Boolean = false,
 )
+
+enum class CardState{
+    Hard,
+    Medium,
+    Show,
+}
