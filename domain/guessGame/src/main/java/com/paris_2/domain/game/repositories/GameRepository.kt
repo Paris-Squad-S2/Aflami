@@ -1,7 +1,7 @@
 package com.paris_2.domain.game.repositories
 
-import com.paris_2.domain.game.models.GameSession
-import com.paris_2.domain.game.models.Question
+import com.paris_2.domain.game.entity.GameSession
+import com.paris_2.domain.game.entity.Question
 
 interface GameRepository {
     suspend fun getQuestion(type: Question.QuestionType): Question
