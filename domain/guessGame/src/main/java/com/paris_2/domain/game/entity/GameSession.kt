@@ -1,4 +1,4 @@
-package com.paris_2.domain.game.models
+package com.paris_2.domain.game.entity
 
 import kotlinx.datetime.LocalDateTime
 

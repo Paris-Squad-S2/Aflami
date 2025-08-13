@@ -1,4 +1,4 @@
-package com.paris_2.domain.game.models
+package com.paris_2.domain.game.entity
 
 data class Question(
     val id: String,
