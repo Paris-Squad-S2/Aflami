@@ -7,6 +7,11 @@ import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
+import com.paris_2.domain.game.repositories.ActorPopularityRepository
+import com.paris_2.domain.game.repositories.GamePointsRepository
+import com.paris_2.domain.game.usecases.GetActorsMediaUseCase
+import com.paris_2.domain.game.usecases.GetPopularActorsUseCase
+import com.paris_2.domain.game.usecases.SaveUserGamePointsUseCase
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -332,5 +337,17 @@ object UseCaseModule {
     @Provides
     fun provideRemoveMovieFromListUseCase(listRepository: ListsRepository) =
         RemoveMovieFromListUseCase(listRepository)
+
+    @Provides
+    fun provideGetPopularActorsUseCase(repository : ActorPopularityRepository) =
+        GetPopularActorsUseCase(repository)
+
+    @Provides
+    fun provideGetActorsMediaUseCase(useCase: GetPopularActorsUseCase) =
+        GetActorsMediaUseCase(useCase)
+
+    @Provides
+    fun provideSaveUserGamePointsUseCase(repository: GamePointsRepository) =
+        SaveUserGamePointsUseCase(repository)
 
 }
