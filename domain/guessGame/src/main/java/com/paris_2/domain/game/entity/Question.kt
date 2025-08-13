@@ -6,7 +6,7 @@ data class Question(
     val content: String,
     val correctAnswer: String,
     val options: List<Answer>,
-    val usedHint: Boolean
+    var usedHint: Boolean
 ) {
     enum class QuestionType {
         IMAGE,
