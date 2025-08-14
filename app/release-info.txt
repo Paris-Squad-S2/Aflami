@@ -1,6 +1,2 @@
-versionName=0.8.11
-- refactor signing config and update dependencies
-- Move signing config to separate SigningExtensions.kt file
-- Update Firebase Crashlytics version to3.0.6
-- Add firebase-perf dependency with version1.4.2
-- Remove duplicate Firebase plugin declarations
+versionName=0.8.12
+- refactor slider behavior by handling user scroll state
