@@ -4,14 +4,13 @@ import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import kotlin.random.Random
 
-class RemoveAnswerHintUseCase(
-    private val requiredPointsForHint: Int = 10
-) {
+class RemoveAnswerHintUseCase() {
 
     operator fun invoke(
         gameSession: GameSession,
         usedHint: Boolean,
-        currentPoints: Int
+        currentPoints: Int,
+        requiredPointsForHint: Int = 10
     ): UseHintResult {
         if (currentPoints <= requiredPointsForHint) {
             return UseHintResult.NotEnoughPoints
