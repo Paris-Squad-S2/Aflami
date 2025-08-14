@@ -1,15 +1,13 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
-
 data class GuessCharacterUIState(
     val error: String? = null,
     val isLoading: Boolean = false,
     val question: List<Question> = emptyList(),
     val isChoiceCorrect: Boolean = false,
-    val imageBlur: Dp = 8.dp,
+    val screenTitle: String = "",
     val score: Int = 0,
+    val currentQuestion: Int = 0,
 )
 
 data class Question(
@@ -19,7 +17,7 @@ data class Question(
     val isSelected: Boolean = false,
 )
 
-enum class CardState{
+enum class CardState {
     Hard,
     Medium,
     Show,

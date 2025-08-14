@@ -1,7 +1,10 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
 import android.util.Log
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
+import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,8 +12,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GuessByImageViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val guessActorSessionUseCase: GuessActorSessionUseCase,
 ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
+
+    private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessByImageScreen>()
 
     init {
         Log.d("navTest", "GuessByImageViewModel")
@@ -32,7 +38,8 @@ class GuessByImageViewModel @Inject constructor(
 
                 updateState(
                     newState = screenState.value.copy(
-                        question = uiQuestions
+                        question = uiQuestions,
+                        screenTitle = args.questionType.name
                     )
                 )
             },
@@ -46,20 +53,29 @@ class GuessByImageViewModel @Inject constructor(
         )
     }
 
-    override fun onHintClicked() {
-        TODO("Not yet implemented")
+    override fun onAnswerSelected(answer: String) {
+
     }
 
-    override fun onGuessClicked(guess: String) {
-        TODO("Not yet implemented")
+    override fun onHintUsed() {
+
     }
 
     override fun onNextClicked() {
-        TODO("Not yet implemented")
+
     }
 
-    override fun onBackClicked() {
-        TODO("Not yet implemented")
+    override fun onTimeFinished() {
+
     }
+
+    override fun onDismissNotEnoughPointsDialog() {
+
+    }
+
+    override fun onCancelClick() {
+        navigateUp()
+    }
+
 
 }

@@ -23,6 +23,7 @@ fun QuestionType.getTitleResId(): Int = when (this) {
     QuestionType.GENRE -> R.string.which_genre_title
     QuestionType.RELEASE_YEAR -> R.string.when_was_it_released_title
     QuestionType.ACTOR -> R.string.Guess_the_character
+    QuestionType.POSTER -> R.string.guess_the_poster
 }
 
 data class Question(

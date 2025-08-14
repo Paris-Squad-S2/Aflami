@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,13 +39,11 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 @Composable
 fun GuessByImageScreen(
     modifier: Modifier = Modifier,
-    viewModel: GuessByImageViewModel = hiltViewModel()
+    viewModel: GuessByImageViewModel = hiltViewModel(),
 ) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
     GussByImageScreenContent(
-        state = screenState.value,
-        action = viewModel,
-        modifier = modifier.fillMaxWidth()
+        state = screenState.value, action = viewModel, modifier = modifier.fillMaxWidth()
     )
 }
 
@@ -52,34 +51,32 @@ fun GuessByImageScreen(
 private fun GussByImageScreenContent(
     state: GuessCharacterUIState,
     action: GuessByImageInteractionListener,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.padding(horizontal = 12.dp)) {
-        Header()
+
+        Header(state.screenTitle, action::onCancelClick)
+
         QuestionIndicator(5, 2, modifier = Modifier.padding(vertical = 18.dp))
+
         QuestionImage()
-
-
 
         LazyColumn(
             modifier = Modifier.padding(top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(4) { answer ->
+            items(state.question[state.currentQuestion].answers) { answer ->
+
                 AnimatedVisibility(
-                    visible = true,
-                    enter = fadeIn(),
-                    exit = fadeOut()
+                    visible = true, enter = fadeIn(), exit = fadeOut()
                 ) {
                     OptionItem(
-                        text = "Ahmed",
-                        selected = false,
-                        isCorrect = false,
-                        onClick = { }
-                    )
+                        text = answer, selected = false, isCorrect = false, onClick = { })
                 }
             }
+
         }
+
         Spacer(modifier = Modifier.weight(1f))
         CustomButton(
             onClick = { },
@@ -94,23 +91,16 @@ private fun GussByImageScreenContent(
 }
 
 @Composable
-private fun Header(modifier: Modifier = Modifier) {
+private fun Header(head: String, onCanceled: () -> Unit) {
     AppTopBar(
-        modifier = modifier,
-        title = "Guess character",
-        leadingIcons = listOf(
+        modifier = Modifier, title = head, leadingIcons = listOf(
             iconItemWithDefaults(
-                ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                {}
+                ImageVector.vectorResource(R.drawable.ic_cancel), onCanceled
             )
-        ),
-        trailingContent = {
+        ), trailingContent = {
             GameTimer(
-                totalSeconds = 45,
-                onFinished = { }
-            )
-        }
-    )
+                totalSeconds = 45, onFinished = { })
+        })
 
 }
 
