@@ -2,6 +2,7 @@ package com.feature.guessGame.guessGameUi.common.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +14,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppIcon
@@ -27,7 +27,7 @@ fun OptionItem(
     text: String,
     selected: Boolean,
     isCorrect: Boolean,
-    onClick: (Int) -> Unit,
+    onClick: () -> Unit,
 ) {
     val backgroundColor = when {
         selected && isCorrect -> Theme.colors.status.greenVariant
@@ -55,6 +55,7 @@ fun OptionItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .border(width = 1.dp, color = borderColor, shape = RoundedCornerShape(16.dp))
             .background(color = backgroundColor, shape = RoundedCornerShape(16.dp))
             .padding(horizontal = 12.dp, vertical = 16.dp),

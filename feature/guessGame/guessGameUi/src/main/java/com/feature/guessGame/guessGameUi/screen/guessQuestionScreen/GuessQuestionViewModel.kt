@@ -11,14 +11,17 @@ import javax.inject.Inject
 class GuessQuestionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
 ) : GuessQuestionInteractionListener,
-    BaseViewModel<GuessQuestionUiState>(GuessQuestionUiState()) {
+    BaseViewModel<GuessQuestionUiState>(
+        GuessQuestionUiState(
+            totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
+            timePerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().timePerQuestion,
+            pointsPerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().pointsPerQuestion,
+            gameTitle = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().questionType.name
+        )
+    ) {
 
     private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>()
     private val questionType = args.questionType
-    private val totalQuestions = args.totalQuestions
-    private val timePerQuestion = args.timePerQuestion
-    private val pointsPerQuestion = args.pointsPerQuestion
-
     private var questions: List<Question> = emptyList()
     private var currentIndex = 0
 
@@ -28,12 +31,49 @@ class GuessQuestionViewModel @Inject constructor(
 
     }
 
+
+    init {
+
+        questions = listOf(
+            Question(
+                text = "In which year was 'Batman' released?",
+                answers = listOf("2008", "2010", "2012", "2014"),
+                correctAnswer = "2010"
+            ),
+            Question(
+                text = "Which genre does 'Inception' belong to?",
+                answers = listOf("Action", "Sci-Fi", "Comedy", "Drama"),
+                correctAnswer = "Sci-Fi"
+            )
+        )
+
+        updateState(
+            screenState.value.copy(
+                totalQuestions = args.totalQuestions,
+                timePerQuestion = args.timePerQuestion,
+                pointsPerQuestion = args.pointsPerQuestion,
+                questionText = questions.first().text,
+                answers = questions.first().answers,
+                remainingAnswers = questions.first().answers,
+                correctAnswer = questions.first().correctAnswer
+            )
+        )
+    }
+
+
     private fun loadQuestions() {
 
     }
 
     override fun onAnswerSelected(answer: String) {
-        updateState(screenState.value.copy(selectedAnswer = answer))
+        val state = screenState.value
+        val isCorrect = answer == state.correctAnswer
+        updateState(
+            state.copy(
+                selectedAnswer = answer,
+                remainingAnswers = state.remainingAnswers,
+            )
+        )
     }
 
     override fun onHintUsed() {
@@ -80,6 +120,7 @@ class GuessQuestionViewModel @Inject constructor(
 
     override fun onTimeFinished() {
         updateState(screenState.value.copy(showNotEnoughPointsDialog = false))
+        onNextClicked()
     }
 
     override fun onDismissNotEnoughPointsDialog() {

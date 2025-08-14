@@ -112,9 +112,12 @@ fun GuessQuestionContent(
                         OptionItem(
                             text = answer,
                             selected = state.selectedAnswer == answer,
-                            isCorrect = state.correctAnswer == answer,
-                            onClick = { listener.onAnswerSelected(answer) }
-                        )
+                            isCorrect = state.selectedAnswer != null && answer == state.correctAnswer,
+                            onClick = {
+                                if (state.selectedAnswer == null) {
+                                    listener.onAnswerSelected(answer)
+                                }
+                            }                        )
                     }
                 }
             }
