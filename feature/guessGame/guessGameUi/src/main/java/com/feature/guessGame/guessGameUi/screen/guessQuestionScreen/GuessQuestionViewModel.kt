@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
@@ -20,10 +21,14 @@ class GuessQuestionViewModel @Inject constructor(
         )
     ) {
 
+    init {
+        Log.d("navTest", "GuessQuestionViewModel")
+    }
     private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>()
     private val questionType = args.questionType
     private var questions: List<Question> = emptyList()
     private var currentIndex = 0
+
 
     init {
 //       loadQuestions()

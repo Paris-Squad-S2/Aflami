@@ -117,7 +117,8 @@ fun GuessQuestionContent(
                                 if (state.selectedAnswer == null) {
                                     listener.onAnswerSelected(answer)
                                 }
-                            }                        )
+                            }
+                        )
                     }
                 }
             }
