@@ -26,4 +26,5 @@
     <string name="OK">حسنا</string>
     <string name="sorry_not_enough_points_hint">عذرا، ليس لديك نقاط كافية للحصول على تلميح</string>
     <string name="next">التالي</string>
+    <string name="Guess_the_character">تخمين الشخصية</string>
 </resources>

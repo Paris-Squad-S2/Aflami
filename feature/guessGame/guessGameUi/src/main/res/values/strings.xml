@@ -26,5 +26,6 @@
     <string name="which_genre_desc">Which one is the real action movie?</string>
     <string name="points_label">%1$d Pts.</string>
     <string name="next">Next</string>
+    <string name="Guess_the_character">Guess the character</string>
 
 </resources>
