@@ -42,6 +42,7 @@ dependencies {
     implementation(projects.feature.guessGame.guessGameApi)
     implementation(projects.designsystem)
     implementation(libs.bundles.navigation)
+    implementation(projects.domain.guessGame)
     //test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
