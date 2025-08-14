@@ -20,6 +20,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
@@ -34,12 +36,24 @@ import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.utils.BasePreview
 
 @Composable
-fun GuessByImageScreen(modifier: Modifier = Modifier) {
-    GussByImageScreenContent(modifier = modifier.fillMaxWidth())
+fun GuessByImageScreen(
+    modifier: Modifier = Modifier,
+    viewModel: GuessByImageViewModel = hiltViewModel()
+) {
+    val screenState = viewModel.screenState.collectAsStateWithLifecycle()
+    GussByImageScreenContent(
+        state = screenState.value,
+        action = viewModel,
+        modifier = modifier.fillMaxWidth()
+    )
 }
 
 @Composable
-private fun GussByImageScreenContent(modifier: Modifier = Modifier) {
+private fun GussByImageScreenContent(
+    state: GuessCharacterUIState,
+    action: GuessByImageInteractionListener,
+    modifier: Modifier = Modifier
+) {
     Column(modifier = modifier.padding(horizontal = 12.dp)) {
         Header()
         QuestionIndicator(5, 2, modifier = Modifier.padding(vertical = 18.dp))
