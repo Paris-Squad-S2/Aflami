@@ -7,6 +7,7 @@ data class GuessCharacterUIState(
     val isChoiceCorrect: Boolean = false,
     val screenTitle: String = "",
     val score: Int = 0,
+    val currentQuestion: Int = 0,
 )
 
 data class Question(
