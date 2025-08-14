@@ -10,9 +10,7 @@ android {
 
     defaultConfig {
         minSdk = Configurations.MIN_SDK
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        
     }
 
     buildTypes {
@@ -26,6 +24,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = Configurations.JVM_TARGET
+    }
+    buildFeatures {
+        buildConfig = true
     }
 }
 
