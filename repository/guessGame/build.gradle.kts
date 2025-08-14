@@ -39,6 +39,7 @@ tasks.withType<Test>().configureEach {
 dependencies {
     implementation(libs.androidx.room.runtime)
     implementation(libs.androidx.hilt.common)
+    testImplementation(libs.jupiter.junit.jupiter)
     ksp(libs.room.compiler)
     annotationProcessor(libs.room.compiler)
     implementation(libs.androidx.room.ktx)
