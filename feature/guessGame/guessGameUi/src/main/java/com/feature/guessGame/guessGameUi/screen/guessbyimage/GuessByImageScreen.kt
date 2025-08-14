@@ -38,7 +38,7 @@ import com.paris_2.aflami.designsystem.utils.BasePreview
 @Composable
 fun GuessByImageScreen(
     modifier: Modifier = Modifier,
-    viewModel: GuessByImageViewModel = hiltViewModel()
+    viewModel: GuessByImageViewModel = hiltViewModel(),
 ) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
     GussByImageScreenContent(
@@ -52,14 +52,15 @@ fun GuessByImageScreen(
 private fun GussByImageScreenContent(
     state: GuessCharacterUIState,
     action: GuessByImageInteractionListener,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier.padding(horizontal = 12.dp)) {
-        Header()
+
+        Header(state.screenTitle, action::onCancelClick)
+
         QuestionIndicator(5, 2, modifier = Modifier.padding(vertical = 18.dp))
+
         QuestionImage()
-
-
 
         LazyColumn(
             modifier = Modifier.padding(top = 16.dp),
@@ -94,14 +95,14 @@ private fun GussByImageScreenContent(
 }
 
 @Composable
-private fun Header(modifier: Modifier = Modifier) {
+private fun Header(head: String, onCanceled: () -> Unit) {
     AppTopBar(
-        modifier = modifier,
-        title = "Guess character",
+        modifier = Modifier,
+        title = head,
         leadingIcons = listOf(
             iconItemWithDefaults(
-                ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                {}
+                ImageVector.vectorResource(R.drawable.ic_cancel),
+                onCanceled
             )
         ),
         trailingContent = {

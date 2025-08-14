@@ -1,8 +1,10 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
 interface GuessByImageInteractionListener {
-    fun onHintClicked()
-    fun onGuessClicked(guess: String)
+    fun onAnswerSelected(answer: String)
+    fun onHintUsed()
     fun onNextClicked()
-    fun onBackClicked()
+    fun onTimeFinished()
+    fun onDismissNotEnoughPointsDialog()
+    fun onCancelClick()
 }

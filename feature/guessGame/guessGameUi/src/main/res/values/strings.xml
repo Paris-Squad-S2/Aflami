@@ -29,5 +29,6 @@
     <string name="Guess_the_character">Guess the character</string>
     <string name="Back_to_menu">Back to menu</string>
     <string name="Play_again">Play again</string>
+    <string name="guess_the_poster">Guess the poster</string>
 
 </resources>

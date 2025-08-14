@@ -4,7 +4,6 @@ import android.util.Log
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessByImageScreen
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessQuestionScreen
-import com.feature.guessGame.guessGameUi.navigation.ImageType
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
@@ -70,7 +69,19 @@ class GuessGameScreenViewModel @Inject constructor(
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
                         pointsPerQuestion = settings.pointsPerQuestion,
-                        imageType = ImageType.ACTOR
+                        imageType = QuestionType.ACTOR
+                    )
+                )
+            }
+
+            QuestionType.POSTER -> {
+                navigate(
+                    GuessByImageScreen(
+                        questionType = questionType,
+                        totalQuestions = settings.numberOfQuestions,
+                        timePerQuestion = settings.timePerQuestionSec,
+                        pointsPerQuestion = settings.pointsPerQuestion,
+                        imageType = QuestionType.POSTER
                     )
                 )
             }

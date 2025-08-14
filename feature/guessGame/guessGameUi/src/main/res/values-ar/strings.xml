@@ -29,4 +29,5 @@
     <string name="Guess_the_character">تخمين الشخصية</string>
     <string name="Back_to_menu">العودة إلى القائمة</string>
     <string name="Play_again">العب مرة أخرى</string>
+    <string name="guess_the_poster">Guess the poster</string>
 </resources>

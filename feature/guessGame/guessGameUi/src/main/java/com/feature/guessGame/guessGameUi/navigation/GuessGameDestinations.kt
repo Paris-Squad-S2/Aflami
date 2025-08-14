@@ -17,7 +17,7 @@ sealed interface GuessGameDestinations : GuessGameGraph {
         val totalQuestions: Int,
         val timePerQuestion: Int,
         val pointsPerQuestion: Int,
-        val imageType: ImageType,
+        val imageType: QuestionType,
     ) : GuessGameDestination
 
     @Serializable
@@ -38,11 +38,6 @@ sealed interface GuessGameDestinations : GuessGameGraph {
 enum class QuestionType {
     RELEASE_YEAR,
     GENRE,
-    ACTOR
-}
-
-@Serializable
-enum class ImageType {
     ACTOR,
     POSTER
 }
