@@ -6,15 +6,42 @@ import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessB
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessQuestionScreen
 import com.feature.guessGame.guessGameUi.navigation.ImageType
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
+import com.paris_2.domain.game.usecases.GetUserPointUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class GuessGameScreenViewModel @Inject constructor() :
+class GuessGameScreenViewModel @Inject constructor(
+    private val getUserPointUseCase: GetUserPointUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase,
+) :
     GuessGameScreenInteractionListener,
     BaseViewModel<GuessGameScreenUiState>(GuessGameScreenUiState()) {
 
+
+    init {
+        loadUserPoints()
+    }
+
+    fun loadUserPoints() {
+        tryToExecute(
+            onSuccess = { points ->
+                updateState(screenState.value.copy(userPoints = points))
+            },
+            onError = { error ->
+            },
+            execute = {
+                val userId = getAccountIdUseCase() ?: 0
+                getUserPointUseCase(userId)
+            }
+        )
+    }
+
+
     override fun onGamePlayClicked(gameId: String) {
+
         updateState(
             screenState.value.copy(
                 selectedGameId = gameId,
@@ -28,16 +55,12 @@ class GuessGameScreenViewModel @Inject constructor() :
     }
 
     override fun onStartGame() {
-        Log.d("navTest", "onStartGame")
         val settings =
             DifficultySettings.getDifficultySettings(screenState.value.selectedDifficulty)
-
-        Log.d("navTest", "settings = $settings")
-
         val questionType = gameIdToQuestionType[screenState.value.selectedGameId]
+        val uiLevel = screenState.value.selectedDifficulty.toUiGameLevel()
 
         updateState(screenState.value.copy(showDifficultyDialog = false))
-        Log.d("navTest", "questionType = $questionType")
         when (questionType) {
             QuestionType.ACTOR -> {
                 Log.d("navTest", "QuestionType.ACTOR")
@@ -64,7 +87,8 @@ class GuessGameScreenViewModel @Inject constructor() :
                         questionType = questionType,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
-                        pointsPerQuestion = settings.pointsPerQuestion
+                        pointsPerQuestion = settings.pointsPerQuestion,
+                        gameLevel = uiLevel
                     )
                 )
             }

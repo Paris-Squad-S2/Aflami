@@ -31,44 +31,4 @@ data class Question(
     val correctAnswer: String,
 )
 
-fun getFakeGuessQuestionUiState(): GuessQuestionUiState {
-    val sampleQuestions = listOf(
-        Question(
-            text = "In which year was 'Batman' released?",
-            answers = listOf("2008", "2010", "2012", "2014"),
-            correctAnswer = "2010"
-        ),
-        Question(
-            text = "Which genre does 'Inception' belong to?",
-            answers = listOf("Action", "Sci-Fi", "Comedy", "Drama"),
-            correctAnswer = "Sci-Fi"
-        ),
-        Question(
-            text = "Who directed 'Inception'?",
-            answers = listOf(
-                "Steven Spielberg",
-                "Christopher Nolan",
-                "James Cameron",
-                "Martin Scorsese"
-            ),
-            correctAnswer = "Christopher Nolan"
-        )
-    )
 
-    val firstQuestion = sampleQuestions.first()
-
-    return GuessQuestionUiState(
-        gameTitle = "guess_release_year",
-        totalQuestions = sampleQuestions.size,
-        currentStep = 0,
-        questionText = firstQuestion.text,
-        answers = firstQuestion.answers,
-        correctAnswer = firstQuestion.correctAnswer,
-        remainingAnswers = firstQuestion.answers,
-        selectedAnswer = null,
-        hintUsed = false,
-        timePerQuestion = 30,
-        pointsPerQuestion = 10,
-        userPoints = 50
-    )
-}

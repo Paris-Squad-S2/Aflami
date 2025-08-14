@@ -43,6 +43,8 @@ dependencies {
     implementation(projects.designsystem)
     implementation(libs.bundles.navigation)
     implementation(projects.domain.guessGame)
+    implementation(projects.domain.user)
+
     //test
     testImplementation(libs.junit)
     testImplementation(libs.mockk)
