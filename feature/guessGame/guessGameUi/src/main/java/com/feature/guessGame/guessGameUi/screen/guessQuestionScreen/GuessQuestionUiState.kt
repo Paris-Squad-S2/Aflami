@@ -22,6 +22,7 @@ data class GuessQuestionUiState(
 fun QuestionType.getTitleResId(): Int = when (this) {
     QuestionType.GENRE -> R.string.which_genre_title
     QuestionType.RELEASE_YEAR -> R.string.when_was_it_released_title
+    QuestionType.BY_IMAGE -> R.string.Guess_the_character
 }
 
 data class Question(
