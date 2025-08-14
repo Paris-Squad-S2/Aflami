@@ -58,12 +58,7 @@ fun AppSlider(
     val scope = rememberCoroutineScope()
 
     var userScrolled by remember { mutableStateOf(false) }
-    LaunchedEffect(Unit) {
-        snapshotFlow { pagerState.isScrollInProgress }
-            .collect { isScrolling ->
-                userScrolled = isScrolling
-            }
-    }
+
     LaunchedEffect(Unit) {
         snapshotFlow { pagerState.isScrollInProgress }
             .collect { isScrolling ->
