@@ -25,7 +25,8 @@ fun ActorMediaDto.toDomain() : ActorMedia?{
         id = id ?: -1,
         name = title ?: "",
         posterImg = posterPath ?: "",
-        yearOfRelease = parsedDate
+        yearOfRelease = parsedDate,
+        genres = emptyList()
     )
 }
 
