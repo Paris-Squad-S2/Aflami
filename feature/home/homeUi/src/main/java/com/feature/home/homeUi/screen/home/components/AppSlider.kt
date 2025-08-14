@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -56,13 +57,20 @@ fun AppSlider(
 
     val scope = rememberCoroutineScope()
 
+    var userScrolled by remember { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
-        scope.launch {
-            while (true) {
-                kotlinx.coroutines.delay(scrollingDuration)
+        snapshotFlow { pagerState.isScrollInProgress }
+            .collect { isScrolling ->
+                userScrolled = isScrolling
+            }
+    }
 
-                val nextPage = (pagerState.currentPage + 1).coerceAtMost(items.size - 1)
-
+    LaunchedEffect(pagerState.currentPage, userScrolled) {
+        if (!userScrolled) {
+            kotlinx.coroutines.delay(scrollingDuration)
+            val nextPage = (pagerState.currentPage + 1) % items.size
+            scope.launch {
                 pagerState.animateScrollToPage(
                     page = nextPage,
                     animationSpec = tween(durationMillis = 400, easing = FastOutSlowInEasing)
