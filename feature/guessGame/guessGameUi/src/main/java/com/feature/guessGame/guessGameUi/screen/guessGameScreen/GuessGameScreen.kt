@@ -60,10 +60,9 @@ fun GuessGameScreenContent(
             )
         }
 
-        val gamesToShow = getStaticGames().mapIndexed { index, game ->
+        val gamesToShow = getStaticGames().map { game ->
             game.copy(
-                isLocked = state.games.getOrNull(index)?.isLocked ?: game.isLocked,
-                pointsToUnlock = state.games.getOrNull(index)?.pointsToUnlock ?: game.pointsToUnlock
+                isLocked = state.userPoints < game.pointsToUnlock
             )
         }
 

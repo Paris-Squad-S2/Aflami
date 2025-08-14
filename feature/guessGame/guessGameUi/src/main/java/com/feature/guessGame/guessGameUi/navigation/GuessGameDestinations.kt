@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.navigation
 
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import kotlinx.serialization.Serializable
 
 sealed interface GuessGameDestinations : GuessGameGraph {
@@ -16,7 +17,7 @@ sealed interface GuessGameDestinations : GuessGameGraph {
         val totalQuestions: Int,
         val timePerQuestion: Int,
         val pointsPerQuestion: Int,
-        val imageType: ImageType
+        val imageType: ImageType,
     ) : GuessGameDestination
 
     @Serializable
@@ -24,7 +25,8 @@ sealed interface GuessGameDestinations : GuessGameGraph {
         val questionType: QuestionType,
         val totalQuestions: Int,
         val timePerQuestion: Int,
-        val pointsPerQuestion: Int
+        val pointsPerQuestion: Int,
+        val gameLevel: UiGameLevel,
     ) : GuessGameDestination
 
     @Serializable
