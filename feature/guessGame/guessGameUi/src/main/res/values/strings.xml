@@ -27,5 +27,7 @@
     <string name="points_label">%1$d Pts.</string>
     <string name="next">Next</string>
     <string name="Guess_the_character">Guess the character</string>
+    <string name="Back_to_menu">Back to menu</string>
+    <string name="Play_again">Play again</string>
 
 </resources>

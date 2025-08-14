@@ -27,4 +27,6 @@
     <string name="sorry_not_enough_points_hint">عذرا، ليس لديك نقاط كافية للحصول على تلميح</string>
     <string name="next">التالي</string>
     <string name="Guess_the_character">تخمين الشخصية</string>
+    <string name="Back_to_menu">العودة إلى القائمة</string>
+    <string name="Play_again">العب مرة أخرى</string>
 </resources>
