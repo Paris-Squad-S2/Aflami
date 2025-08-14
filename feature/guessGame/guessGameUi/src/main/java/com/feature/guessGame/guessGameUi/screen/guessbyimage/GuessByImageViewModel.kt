@@ -1,15 +1,19 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
+import android.util.Log
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class GuessByImageViewModel @Inject constructor(
     private val guessActorSessionUseCase: GuessActorSessionUseCase,
-) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()) {
+) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
     init {
+        Log.d("navTest", "GuessByImageViewModel")
         loadQuestionSession()
     }
 
@@ -40,6 +44,22 @@ class GuessByImageViewModel @Inject constructor(
                 )
             }
         )
+    }
+
+    override fun onHintClicked() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onGuessClicked(guess: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onNextClicked() {
+        TODO("Not yet implemented")
+    }
+
+    override fun onBackClicked() {
+        TODO("Not yet implemented")
     }
 
 }
