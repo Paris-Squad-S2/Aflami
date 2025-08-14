@@ -10,6 +10,9 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
+import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
+import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigatorImpl
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
@@ -48,11 +51,13 @@ import javax.inject.Singleton
 object FeatureAPIModule {
     @Provides
     @Singleton
-    fun provideAppNavigator(): com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator = com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.NavigatorImpl(com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Destinations.MainGraph)
+    fun provideAppNavigator(): com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator =
+        com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.NavigatorImpl(com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Destinations.MainGraph)
 
     @Provides
     @Singleton
-    fun provideOnBoardingFeatureAPI(@ApplicationContext context: Context): OnBoardingFeatureAPI = OnBoardingFeatureAPIImpl(context)
+    fun provideOnBoardingFeatureAPI(@ApplicationContext context: Context): OnBoardingFeatureAPI =
+        OnBoardingFeatureAPIImpl(context)
 
     @Provides
     @Singleton
@@ -61,7 +66,8 @@ object FeatureAPIModule {
 
     @Provides
     @Singleton
-    fun provideProfileNavigator(): ProfileNavigator = ProfileNavigatorImpl(startGraph = ProfileDestinations.ProfileMainGraph)
+    fun provideProfileNavigator(): ProfileNavigator =
+        ProfileNavigatorImpl(startGraph = ProfileDestinations.ProfileMainGraph)
 
     @Provides
     @Singleton
@@ -76,7 +82,14 @@ object FeatureAPIModule {
 
     @Provides
     @Singleton
-    fun provideListNavigator(): ListNavigator = ListNavigatorImpl(startGraph = ListDestinations.ListGraph1)
+    fun provideListNavigator(): ListNavigator =
+        ListNavigatorImpl(startGraph = ListDestinations.ListGraph1)
+
+    @Provides
+    @Singleton
+    fun provideGuessGameNavigator(): GuessGameNavigator =
+        GuessGameNavigatorImpl(startGraph = GuessGameDestinations.GuessGameGraph1)
+
 
     @Provides
     fun provideHomeFeatureAPI(): HomeFeatureAPI = HomeFeatureAPIImpl()
