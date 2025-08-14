@@ -1,0 +1,99 @@
+package com.paris_2.domain.game.usecases.guessMovieByPoster
+
+import com.google.common.truth.Truth.assertThat
+import com.paris_2.domain.game.entity.Actor
+import com.paris_2.domain.game.entity.ActorMedia
+import com.paris_2.domain.game.entity.MoviePosterQuestion
+import com.paris_2.domain.game.repositories.ActorPopularityRepository
+import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.mockk
+import kotlinx.datetime.LocalDate
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
+
+class GuessMovieSessionUseCaseTest {
+
+    private lateinit var repository: ActorPopularityRepository
+    private lateinit var useCase: GuessMovieSessionUseCase
+
+    @BeforeEach
+    fun setUp() {
+        repository = mockk()
+        useCase = GuessMovieSessionUseCase(repository)
+        coEvery { repository.getPopularActor() } returns sampleActors
+    }
+
+    @Test
+    fun `should create requested number of poster questions with valid options`() = runTest {
+        // Given
+        val count = 7
+        val allMovies = sampleActors.flatMap { it.media }
+        // When
+        val questions: List<MoviePosterQuestion> = useCase(count)
+        // Then
+        assertThat(questions).hasSize(count)
+        questions.forEach { q ->
+            assertThat(q.options).hasSize(4)
+            assertThat(q.options).contains(q.correctAnswer)
+            assertThat(allMovies.map { it.name }).contains(q.correctAnswer)
+            val movieWithPoster = allMovies.find { it.posterImg == q.posterImg }
+            assertThat(movieWithPoster).isNotNull()
+            assertThat(movieWithPoster!!.name).isEqualTo(q.correctAnswer)
+        }
+        coVerify(exactly = 1) { repository.getPopularActor() }
+    }
+
+    @Test
+    fun `should return empty list when count is zero`() = runTest {
+        // When
+        val questions = useCase(0)
+        // Then
+        assertThat(questions).isEmpty()
+        coVerify(exactly = 1) { repository.getPopularActor() }
+    }
+
+    private companion object {
+        private val actor1Movies = listOf(
+            ActorMedia(
+                id = 1,
+                name = "Movie A",
+                posterImg = "/pA.jpg",
+                yearOfRelease = LocalDate(2020, 1, 1),
+                genres = listOf(12)
+            ),
+            ActorMedia(
+                id = 2,
+                name = "Movie B",
+                posterImg = "/pB.jpg",
+                yearOfRelease = LocalDate(2021, 2, 2),
+                genres = listOf(28)
+            )
+        )
+        private val actor2Movies = listOf(
+            ActorMedia(
+                id = 3,
+                name = "Movie C",
+                posterImg = "/pC.jpg",
+                yearOfRelease = LocalDate(2019, 3, 3),
+                genres = listOf(18)
+            )
+        )
+        private val actor3Movies = listOf(
+            ActorMedia(
+                id = 4,
+                name = "Movie D",
+                posterImg = "/pD.jpg",
+                yearOfRelease = LocalDate(2018, 4, 4),
+                genres = listOf(35)
+            )
+        )
+
+        private val sampleActors = listOf(
+            Actor(id = 10, name = "Actor One", imageUri = "/img1.jpg", media = actor1Movies),
+            Actor(id = 20, name = "Actor Two", imageUri = "/img2.jpg", media = actor2Movies),
+            Actor(id = 30, name = "Actor Three", imageUri = "/img3.jpg", media = actor3Movies)
+        )
+    }
+}
