@@ -11,7 +11,11 @@ import com.paris_2.domain.game.repositories.ActorPopularityRepository
 import com.paris_2.domain.game.repositories.GamePointsRepository
 import com.paris_2.domain.game.usecases.GetActorsMediaUseCase
 import com.paris_2.domain.game.usecases.GetPopularActorsUseCase
+import com.paris_2.domain.game.usecases.GetUserPointUseCase
+import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
+import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris_2.domain.game.usecases.SaveUserGamePointsUseCase
+import com.paris_2.domain.game.usecases.SubmitAnswerUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
 import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
 import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
@@ -369,5 +373,21 @@ object UseCaseModule {
     @Provides
     fun provideWhichGenreSessionUseCase(repository: ActorPopularityRepository) =
         WhichGenreSessionUseCase(repository)
+
+    @Provides
+    fun provideGetUserPointUseCase(repository: GamePointsRepository) =
+        GetUserPointUseCase(repository)
+
+    @Provides
+    fun provideSubmitAnswerUseCase() =
+        SubmitAnswerUseCase()
+
+    @Provides
+    fun provideRemoveAnswerHintUseCase() =
+        RemoveAnswerHintUseCase()
+
+    @Provides
+    fun provideMoveToNextQuestionUseCase() =
+        MoveToNextQuestionUseCase()
 
 }
