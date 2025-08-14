@@ -12,6 +12,7 @@ import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.GuessGameScreen
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.GuessGameScreenViewModel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.GuessQuestionScreen
+import com.feature.guessGame.guessGameUi.screen.guessbyimage.GuessByImageScreen
 
 
 @Composable
@@ -49,6 +50,10 @@ fun NavGraphBuilder.buildGuessGameNavGraph() {
         composable<GuessGameDestinations.GuessQuestionScreen> { backStackEntry ->
             val args = backStackEntry.toRoute<GuessGameDestinations.GuessQuestionScreen>()
             GuessQuestionScreen(questionType = args.questionType)
+        }
+        composable<GuessGameDestinations.GuessByImageScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<GuessGameDestinations.GuessByImageScreen>()
+            GuessByImageScreen()
         }
 
 

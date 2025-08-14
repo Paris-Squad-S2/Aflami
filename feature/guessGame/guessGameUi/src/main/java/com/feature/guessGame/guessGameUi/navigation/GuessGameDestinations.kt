@@ -12,7 +12,11 @@ sealed interface GuessGameDestinations : GuessGameGraph {
 
     @Serializable
     data class GuessByImageScreen(
-        val imageType: ImageType,
+        val questionType: QuestionType,
+        val totalQuestions: Int,
+        val timePerQuestion: Int,
+        val pointsPerQuestion: Int,
+        val imageType: ImageType
     ) : GuessGameDestination
 
     @Serializable
@@ -31,7 +35,8 @@ sealed interface GuessGameDestinations : GuessGameGraph {
 @Serializable
 enum class QuestionType {
     RELEASE_YEAR,
-    GENRE
+    GENRE,
+    ACTOR
 }
 
 @Serializable
