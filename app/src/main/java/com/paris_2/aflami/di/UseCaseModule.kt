@@ -12,6 +12,10 @@ import com.paris_2.domain.game.repositories.GamePointsRepository
 import com.paris_2.domain.game.usecases.GetActorsMediaUseCase
 import com.paris_2.domain.game.usecases.GetPopularActorsUseCase
 import com.paris_2.domain.game.usecases.SaveUserGamePointsUseCase
+import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
+import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
+import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
+import com.paris_2.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -349,5 +353,21 @@ object UseCaseModule {
     @Provides
     fun provideSaveUserGamePointsUseCase(repository: GamePointsRepository) =
         SaveUserGamePointsUseCase(repository)
+
+    @Provides
+    fun provideGuessActorSessionUseCase(repository: ActorPopularityRepository) =
+        GuessActorSessionUseCase(repository)
+
+    @Provides
+    fun provideGuessMovieSessionUseCase(repository: ActorPopularityRepository) =
+        GuessMovieSessionUseCase(repository)
+
+    @Provides
+    fun provideWhenIsReleasedSessionUseCase(repository: ActorPopularityRepository) =
+        WhenIsReleasedSessionUseCase(repository)
+
+    @Provides
+    fun provideWhichGenreSessionUseCase(repository: ActorPopularityRepository) =
+        WhichGenreSessionUseCase(repository)
 
 }
