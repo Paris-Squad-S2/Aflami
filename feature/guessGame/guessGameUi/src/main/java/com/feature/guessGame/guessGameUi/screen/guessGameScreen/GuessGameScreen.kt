@@ -21,19 +21,21 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.feature.guessGame.guessGameUi.common.components.DifficultyDialog
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.components.PointsBadge
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.GameCard
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.feature.guessGame.guessGameUi.R as GuessR
 
 @Composable
 fun GuessGameScreen(
     viewModel: GuessGameScreenViewModel = hiltViewModel(),
 ) {
-    val letsPlayScreenState = viewModel.screenState.collectAsStateWithLifecycle()
-    GuessGameScreenContent(state = letsPlayScreenState.value, action = viewModel)
+    val screenState = viewModel.screenState.collectAsStateWithLifecycle()
+    GuessGameScreenContent(state = screenState.value, action = viewModel)
 }
 
 @Composable
@@ -41,49 +43,9 @@ fun GuessGameScreenContent(
     state: GuessGameScreenUiState,
     action: GuessGameScreenInteractionListener,
 ) {
-    val games = listOf(
-        GameData(
-            id = "guess_character",
-            title = stringResource(com.feature.guessGame.guessGameUi.R.string.guess_the_character_title),
-            description = stringResource(com.feature.guessGame.guessGameUi.R.string.guess_the_character_desc),
-            backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
-            trailingImages = listOf(painterResource(R.drawable.image_clown)),
-            isLocked = false
-        ),
-        GameData(
-            id = "guess_movie",
-            title = stringResource(com.feature.guessGame.guessGameUi.R.string.guess_the_movie_title),
-            description = stringResource(com.feature.guessGame.guessGameUi.R.string.guess_the_movie_desc),
-            backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
-            trailingImages = listOf(
-                painterResource(R.drawable.image_game2),
-                painterResource(R.drawable.image_game2),
-                painterResource(R.drawable.image_game2)
-            ),
-            isLocked = false
-        ),
-        GameData(
-            id = "guess_release_year",
-            title = stringResource(com.feature.guessGame.guessGameUi.R.string.when_was_it_released_title),
-            description = stringResource(com.feature.guessGame.guessGameUi.R.string.when_was_it_released_desc),
-            backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
-            trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
-            isLocked = true,
-            pointsToUnlock = 400
-        ),
-        GameData(
-            id = "guess_genre",
-            title = stringResource(com.feature.guessGame.guessGameUi.R.string.which_genre_title),
-            description = stringResource(com.feature.guessGame.guessGameUi.R.string.which_genre_desc),
-            backgroundColors = listOf(
-                Theme.colors.status.yellowCard,
-                Theme.colors.status.yellowAccent
-            ),
-            trailingImages = listOf(painterResource(R.drawable.image_chair)),
-            isLocked = true,
-            pointsToUnlock = 400
-        )
-    )
+    val layoutDirection =
+        if (LocalConfiguration.current.layoutDirection == android.util.LayoutDirection.RTL)
+            LayoutDirection.Rtl else LayoutDirection.Ltr
 
     Column(
         modifier = Modifier
@@ -91,26 +53,19 @@ fun GuessGameScreenContent(
             .background(Theme.colors.surface)
             .statusBarsPadding()
     ) {
-        val layoutDirection =
-            if (LocalConfiguration.current.layoutDirection == android.util.LayoutDirection.RTL)
-                LayoutDirection.Rtl else LayoutDirection.Ltr
         CompositionLocalProvider(LocalLayoutDirection provides layoutDirection) {
             AppTopBar(
                 title = stringResource(R.string.let_s_play),
-                trailingContent = {
-                    PointsBadge(points = state.userPoints)
-                }
+                trailingContent = { PointsBadge(points = state.userPoints) }
             )
         }
 
-        val gamesToShow = games.mapIndexed { index, staticGame ->
-            staticGame.copy(
-                isLocked = state.games.getOrNull(index)?.isLocked ?: staticGame.isLocked,
-                pointsToUnlock = state.games.getOrNull(index)?.pointsToUnlock
-                    ?: staticGame.pointsToUnlock
+        val gamesToShow = getStaticGames().mapIndexed { index, game ->
+            game.copy(
+                isLocked = state.games.getOrNull(index)?.isLocked ?: game.isLocked,
+                pointsToUnlock = state.games.getOrNull(index)?.pointsToUnlock ?: game.pointsToUnlock
             )
         }
-
 
         LazyColumn(
             modifier = Modifier
@@ -131,26 +86,69 @@ fun GuessGameScreenContent(
                 )
             }
         }
+
+        if (state.showDifficultyDialog) {
+            DifficultyDialog(
+                selectedDifficulty = state.selectedDifficulty,
+                onDismiss = action::onDismissDifficultyDialog,
+                onClickButton = action::onStartGame,
+                onSelectChip = action::onSelectDifficulty
+            )
+        }
     }
 }
 
-
 @Composable
-@Preview(
-    showBackground = true,
-    showSystemUi = true
+private fun getStaticGames(): List<GameData> = listOf(
+    GameData(
+        id = "guess_character",
+        title = stringResource(GuessR.string.guess_the_character_title),
+        description = stringResource(GuessR.string.guess_the_character_desc),
+        backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
+        trailingImages = listOf(painterResource(R.drawable.image_clown)),
+        isLocked = false
+    ),
+    GameData(
+        id = "guess_movie",
+        title = stringResource(GuessR.string.guess_the_movie_title),
+        description = stringResource(GuessR.string.guess_the_movie_desc),
+        backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
+        trailingImages = List(3) { painterResource(R.drawable.image_game2) },
+        isLocked = false
+    ),
+    GameData(
+        id = "guess_release_year",
+        title = stringResource(GuessR.string.when_was_it_released_title),
+        description = stringResource(GuessR.string.when_was_it_released_desc),
+        backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
+        trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
+        isLocked = true,
+        pointsToUnlock = 400
+    ),
+    GameData(
+        id = "guess_genre",
+        title = stringResource(GuessR.string.which_genre_title),
+        description = stringResource(GuessR.string.which_genre_desc),
+        backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
+        trailingImages = listOf(painterResource(R.drawable.image_chair)),
+        isLocked = true,
+        pointsToUnlock = 400
+    )
 )
-@Preview(showBackground = true, name = "LTR")
+
+@Preview(showBackground = true, showSystemUi = true, name = "LTR")
 @Preview(showBackground = true, name = "RTL", locale = "ar")
-fun LetsPlayScreenPreview() {
+@Composable
+fun GuessGameScreenPreview() {
     AflamiTheme {
         GuessGameScreenContent(
             state = GuessGameScreenUiState(userPoints = 120),
             action = object : GuessGameScreenInteractionListener {
-                override fun onGamePlayClicked(gameTitle: String) {}
+                override fun onGamePlayClicked(gameId: String) {}
+                override fun onSelectDifficulty(difficultyId: Int) {}
+                override fun onStartGame() {}
+                override fun onDismissDifficultyDialog() {}
             }
         )
     }
 }
-
-

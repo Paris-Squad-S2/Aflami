@@ -1,6 +1,8 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
 interface GuessGameScreenInteractionListener {
-    fun onGamePlayClicked(gameTitle: String)
-
+    fun onGamePlayClicked(gameId: String)
+    fun onSelectDifficulty(difficultyId: Int)
+    fun onStartGame()
+    fun onDismissDifficultyDialog()
 }

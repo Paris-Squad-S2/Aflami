@@ -12,8 +12,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
@@ -43,21 +41,15 @@ fun GuessQuestionScreen(
     viewModel: GuessQuestionViewModel = hiltViewModel(),
     questionType: QuestionType = QuestionType.RELEASE_YEAR,
 ) {
-    val guessQuestionScreenState = viewModel.screenState.collectAsStateWithLifecycle()
+    val uiState = viewModel.screenState.collectAsStateWithLifecycle().value
 
-    val background: @Composable (@Composable () -> Unit) -> Unit =
-        when (questionType) {
-            QuestionType.RELEASE_YEAR -> { content -> GuessQuestionBackground { content() } }
-            QuestionType.GENRE -> { content -> GuessQuestionBackground { content() } }
-        }
-    background {
+    GuessQuestionBackground {
         GuessQuestionContent(
-            state = guessQuestionScreenState.value,
+            state = uiState,
             listener = viewModel,
             questionType = questionType
         )
     }
-
 }
 
 @Composable
@@ -70,20 +62,19 @@ fun GuessQuestionContent(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-
     ) {
         AppTopBar(
-            title = stringResource(id = getGameTitleResId(questionType)),
+            title = stringResource(id = questionType.getTitleResId()),
             leadingIcons = listOf(
                 iconItemWithDefaults(
-                    ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                    {}
+                    icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
+                    onClick = listener::onCancelClick
                 )
             ),
             trailingContent = {
                 GameTimer(
                     totalSeconds = state.timePerQuestion,
-                    onFinished = { listener.onTimeFinished() }
+                    onFinished = listener::onTimeFinished
                 )
             }
         )
@@ -105,16 +96,14 @@ fun GuessQuestionContent(
                 textNoImage = state.questionText,
                 clickable = false,
                 showHint = !state.hintUsed,
-                hintPoints = 10,
-                onClick = { listener.onHintUsed() }
+                onClick = listener::onHintUsed
             )
 
             Spacer(Modifier.height(16.dp))
 
-            LazyColumn(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(state.remainingAnswers) { answer ->
+
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                state.remainingAnswers.forEach { answer ->
                     AnimatedVisibility(
                         visible = true,
                         enter = fadeIn(),
@@ -130,15 +119,10 @@ fun GuessQuestionContent(
                 }
             }
 
-
-            Spacer(
-                Modifier
-                    .weight(1f)
-                    .height(24.dp)
-            )
+            Spacer(Modifier.weight(1f))
 
             CustomButton(
-                onClick = { listener.onNextClicked() },
+                onClick = listener::onNextClicked,
                 text = R.string.next,
                 type = ButtonType.Primary,
                 state = if (state.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
@@ -148,7 +132,6 @@ fun GuessQuestionContent(
     }
 }
 
-
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -157,30 +140,29 @@ fun GuessQuestionContent(
 )
 @Composable
 fun GuessReleaseYearContentPreview() {
-    val previewState = GuessQuestionUiState(
-        gameTitle = "guess_release_year",
-        totalQuestions = 5,
-        currentStep = 2,
-        questionText = "In which year was 'Inception' released?",
-        answers = listOf("2008", "2010", "2012", "2014"),
-        correctAnswer = "2010",
-        remainingAnswers = listOf("2008", "2010", "2012", "2014"),
-        selectedAnswer = "2008",
-        hintUsed = false,
-        timePerQuestion = 30,
-        pointsPerQuestion = 100
-    )
-
-    val previewListener = object : GuessQuestionInteractionListener {
-        override fun onTimeFinished() {}
-        override fun onHintUsed() {}
-        override fun onAnswerSelected(answer: String) {}
-        override fun onNextClicked() {}
-    }
     GuessQuestionBackground {
         GuessQuestionContent(
-            state = previewState,
-            listener = previewListener,
+            state = GuessQuestionUiState(
+                gameTitle = "guess_release_year",
+                totalQuestions = 5,
+                currentStep = 2,
+                questionText = "In which year was 'Inception' released?",
+                answers = listOf("2008", "2010", "2012", "2014"),
+                correctAnswer = "2010",
+                remainingAnswers = listOf("2008", "2010", "2012", "2014"),
+                selectedAnswer = "2008",
+                hintUsed = false,
+                timePerQuestion = 30,
+                pointsPerQuestion = 100
+            ),
+            listener = object : GuessQuestionInteractionListener {
+                override fun onTimeFinished() {}
+                override fun onDismissNotEnoughPointsDialog() {}
+                override fun onCancelClick() {}
+                override fun onHintUsed() {}
+                override fun onAnswerSelected(answer: String) {}
+                override fun onNextClicked() {}
+            },
             questionType = QuestionType.RELEASE_YEAR
         )
     }

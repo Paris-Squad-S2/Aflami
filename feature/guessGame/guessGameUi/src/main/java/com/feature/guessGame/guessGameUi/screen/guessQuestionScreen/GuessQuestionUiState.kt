@@ -13,15 +13,61 @@ data class GuessQuestionUiState(
     val remainingAnswers: List<String> = emptyList(),
     val selectedAnswer: String? = null,
     val hintUsed: Boolean = false,
-    val timePerQuestion: Int = 30,
-    val pointsPerQuestion: Int = 0
+    val showNotEnoughPointsDialog: Boolean = false,
+    val timePerQuestion: Int = 0,
+    val pointsPerQuestion: Int = 0,
+    val userPoints: Int = 0,
 )
 
-
-fun getGameTitleResId(questionType: QuestionType): Int {
-    return when (questionType) {
-        QuestionType.GENRE -> R.string.which_genre_title
-        QuestionType.RELEASE_YEAR -> R.string.when_was_it_released_title
-    }
+fun QuestionType.getTitleResId(): Int = when (this) {
+    QuestionType.GENRE -> R.string.which_genre_title
+    QuestionType.RELEASE_YEAR -> R.string.when_was_it_released_title
 }
 
+data class Question(
+    val text: String,
+    val answers: List<String>,
+    val correctAnswer: String,
+)
+
+fun getFakeGuessQuestionUiState(): GuessQuestionUiState {
+    val sampleQuestions = listOf(
+        Question(
+            text = "In which year was 'Batman' released?",
+            answers = listOf("2008", "2010", "2012", "2014"),
+            correctAnswer = "2010"
+        ),
+        Question(
+            text = "Which genre does 'Inception' belong to?",
+            answers = listOf("Action", "Sci-Fi", "Comedy", "Drama"),
+            correctAnswer = "Sci-Fi"
+        ),
+        Question(
+            text = "Who directed 'Inception'?",
+            answers = listOf(
+                "Steven Spielberg",
+                "Christopher Nolan",
+                "James Cameron",
+                "Martin Scorsese"
+            ),
+            correctAnswer = "Christopher Nolan"
+        )
+    )
+
+    val firstQuestion = sampleQuestions.first()
+
+    return GuessQuestionUiState(
+        gameTitle = "guess_release_year",
+        totalQuestions = sampleQuestions.size,
+        currentStep = 0,
+        questionText = firstQuestion.text,
+        answers = firstQuestion.answers,
+        correctAnswer = firstQuestion.correctAnswer,
+        remainingAnswers = firstQuestion.answers,
+        selectedAnswer = null,
+        hintUsed = false,
+        timePerQuestion = 30,
+        pointsPerQuestion = 10,
+        userPoints = 50
+    )
+}

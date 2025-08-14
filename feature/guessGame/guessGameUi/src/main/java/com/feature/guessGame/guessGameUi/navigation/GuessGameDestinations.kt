@@ -18,6 +18,9 @@ sealed interface GuessGameDestinations : GuessGameGraph {
     @Serializable
     data class GuessQuestionScreen(
         val questionType: QuestionType,
+        val totalQuestions: Int,
+        val timePerQuestion: Int,
+        val pointsPerQuestion: Int
     ) : GuessGameDestination
 
     @Serializable

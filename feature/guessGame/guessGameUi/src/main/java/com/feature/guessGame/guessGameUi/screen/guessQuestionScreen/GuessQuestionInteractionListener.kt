@@ -5,4 +5,6 @@ interface GuessQuestionInteractionListener {
     fun onHintUsed()
     fun onNextClicked()
     fun onTimeFinished()
+   fun onDismissNotEnoughPointsDialog()
+    fun onCancelClick()
 }
