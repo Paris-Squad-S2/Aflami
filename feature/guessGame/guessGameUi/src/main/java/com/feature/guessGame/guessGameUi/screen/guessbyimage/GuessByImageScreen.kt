@@ -1,5 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
+import android.app.Activity
+import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -11,6 +13,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
@@ -18,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -29,6 +33,8 @@ import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
+import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.ButtonState
@@ -42,9 +48,29 @@ import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 
 @Composable
 fun GuessByImageScreen(
+    activity: GuessByImageActivity,
     viewModel: GuessByImageViewModel = hiltViewModel(),
 ) {
+
+    val intent = activity.intent
+    //  val questionType = intent.getStringExtra("question_type") ?: "Guess Poster"
+    val gameLevelName = intent.getStringExtra("game_level") ?: UiGameLevel.EASY.name
+    val imageTypeName = intent.getStringExtra("image_type") ?: QuestionType.ACTOR.name
+
+    val gameLevel = runCatching { UiGameLevel.valueOf(gameLevelName) }
+        .getOrDefault(UiGameLevel.EASY)
+    val imageType = runCatching { QuestionType.valueOf(imageTypeName) }
+        .getOrDefault(QuestionType.ACTOR)
+
+//    val totalQuestions = intent.getIntExtra("total_questions", 10)
+//    val timePerQuestion = intent.getIntExtra("time_per_question", 30)
+//    val pointsPerQuestion = intent.getIntExtra("points_per_question", 10)
+
     val state = viewModel.screenState.collectAsStateWithLifecycle().value
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.initialization(gameLevel, imageType)
+    }
 
     GuessGameBackground {
         GuessByImageContent(
@@ -79,12 +105,11 @@ fun GuessByImageContent(
         ) {
             Header(
                 head = state.screenTitle,
-                onCanceled = listener::onCancelClick,
                 onTimeFinished = listener::onTimeFinished,
                 time = state.time,
-                currentQuestion = state.currentQuestion
+                currentQuestion = state.currentQuestion,
+                context = LocalContext.current
             )
-
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -164,18 +189,22 @@ fun QuestionImage(
 
 @Composable
 private fun Header(
-    head: Int,
-    onCanceled: () -> Unit,
+    head: Int?,
+    context: Context,
     onTimeFinished: () -> Unit,
     time: Int,
     currentQuestion: Int,
 ) {
     AppTopBar(
         modifier = Modifier,
-        title = stringResource(id = head),
+        title = stringResource(
+            id = head ?: com.feature.guessGame.guessGameUi.R.string.guess_the_poster
+        ),
         leadingIcons = listOf(
             iconItemWithDefaults(
-                ImageVector.vectorResource(R.drawable.ic_cancel), onCanceled
+                ImageVector.vectorResource(R.drawable.ic_cancel), onClick = {
+                    (context as? Activity)?.finish()
+                }
             )
         ),
         trailingContent = {
