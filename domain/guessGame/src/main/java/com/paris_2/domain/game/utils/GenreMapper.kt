@@ -30,6 +30,6 @@ enum class Genre(val id: Int, val displayName: String) {
     WAR_POLITICS(10768, "War & Politics");
 
     companion object {
-        fun fromId(id: Int): Genre? = values().find { it.id == id }
+        fun fromId(id: Int): Genre? = entries.find { it.id == id }
     }
 }
