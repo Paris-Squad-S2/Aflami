@@ -20,11 +20,11 @@ data class GuessQuestionUiState(
     val showNotEnoughPointsDialog: Boolean = false,
     val timePerQuestion: Int = 0,
     val pointsPerQuestion: Int = 0,
-    val userPoints: Int = 0,
-    val score: Int = 0,
+    val time: Int = 0,
     val duration: Int = 0,
     val session: GameSessionUi? = GameSessionUi(),
-)
+    val error: String? = null,
+    )
 
 fun QuestionType.getTitleResId(): Int = when (this) {
     QuestionType.GENRE -> R.string.which_genre_title
