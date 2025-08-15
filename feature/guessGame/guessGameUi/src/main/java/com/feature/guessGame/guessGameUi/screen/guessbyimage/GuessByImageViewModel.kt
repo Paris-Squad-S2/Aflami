@@ -24,6 +24,13 @@ class GuessByImageViewModel @Inject constructor(
     private val level = args.gameLevel
     private val questionType = args.questionType
     private var currentSession: GameSession? = null
+    private var startTimeMillis: Long = 0
+    private val time = when (level) {
+        UiGameLevel.HARD -> 10
+        UiGameLevel.MEDIUM -> 30
+        UiGameLevel.EASY -> 45
+    }
+
 
     init {
         Log.d("navTest", "GuessByImageViewModel")
@@ -36,13 +43,20 @@ class GuessByImageViewModel @Inject constructor(
     fun generateSession(questionType: UiGameLevel) {
         tryToExecute(
             execute = {
+                Log.d("navTest", "generateSession Enter with $questionType")
                 Log.d("navTest", "generateSession Enter with ${questionType.toUiLevel()}")
                 val session = guessActorSessionUseCase.startNewSession(questionType.toUiLevel())
                 currentSession = session
+                startTimeMillis = System.currentTimeMillis()
                 Log.d("navTest", "generateSession done with ${session.questions.size} questions")
                 session
             },
             onSuccess = { session ->
+                updateState(
+                    newState = screenState.value.copy(
+                        time = time
+                    )
+                )
                 loadQuestion(session)
             },
             onError = {
@@ -65,10 +79,18 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     override fun onNextClicked() {
+        updateState(
+            newState = screenState.value.copy(
+                time = time
+            )
+        )
         currentSession?.let { session ->
             val updatedSession = moveToNextQuestionUseCase(session)
 
             if (updatedSession.isCompleted) {
+                val totalTimeSeconds =
+                    ((System.currentTimeMillis() - startTimeMillis) / 1000).toInt()
+                updatedSession.duration = totalTimeSeconds
                 navigate(
                     GuessGameDestinations.FinishGameScreen(
                         totalGameTime = updatedSession.duration,
@@ -100,14 +122,15 @@ class GuessByImageViewModel @Inject constructor(
             if (currentQuestion != null) {
                 currentQuestion.selectedAnswer = answer
                 val isCorrect = answer == currentQuestion.correctAnswer
-
+                if (isCorrect) {
+                    updateScore()
+                }
                 updateState(
                     screenState.value.copy(
                         questionUiState = session.questions.map { it.toUiModel() },
                         isChoiceCorrect = isCorrect,
                     )
                 )
-                updateScore()
             }
         } ?: Log.e("navTest", "No session found when onAnswerSelected called")
     }
@@ -115,11 +138,14 @@ class GuessByImageViewModel @Inject constructor(
     fun updateScore() {
         val points = when (level) {
             UiGameLevel.HARD -> 20
-
             UiGameLevel.MEDIUM -> 10
-
             UiGameLevel.EASY -> 5
         }
+        Log.d("navTest", "updateScore: ${currentSession?.score}")
+        currentSession?.let { session ->
+            session.score += points
+        }
+
         updateState(
             screenState.value.copy(
                 score = screenState.value.score + points
@@ -134,7 +160,7 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     override fun onTimeFinished() {
-
+        onNextClicked()
     }
 
     override fun onDismissNotEnoughPointsDialog() {
