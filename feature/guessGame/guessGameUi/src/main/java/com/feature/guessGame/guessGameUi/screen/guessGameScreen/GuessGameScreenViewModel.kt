@@ -69,7 +69,8 @@ class GuessGameScreenViewModel @Inject constructor(
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
                         pointsPerQuestion = settings.pointsPerQuestion,
-                        imageType = QuestionType.ACTOR
+                        imageType = QuestionType.ACTOR,
+                        gameLevel = uiLevel
                     )
                 )
             }
@@ -81,13 +82,23 @@ class GuessGameScreenViewModel @Inject constructor(
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
                         pointsPerQuestion = settings.pointsPerQuestion,
-                        imageType = QuestionType.POSTER
+                        imageType = QuestionType.POSTER,
+                        gameLevel = uiLevel
                     )
                 )
             }
 
             QuestionType.RELEASE_YEAR -> {
                 Log.d("navTest", "QuestionType.RELEASE_YEAR")
+                navigate(
+                    GuessQuestionScreen(
+                        questionType = questionType,
+                        totalQuestions = settings.numberOfQuestions,
+                        timePerQuestion = settings.timePerQuestionSec,
+                        pointsPerQuestion = settings.pointsPerQuestion,
+                        gameLevel = uiLevel
+                    )
+                )
 
             }
 

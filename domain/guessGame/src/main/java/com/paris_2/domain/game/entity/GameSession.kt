@@ -4,7 +4,7 @@ package com.paris_2.domain.game.entity
 data class GameSession(
     val id: String,
     val level: GameLevel,
-    val questions: List<Question>,
+    var questions: List<Question>,
     var currentQuestionIndex: Int = 0,
     var score: Int = 0,
     var duration: Int = 0,

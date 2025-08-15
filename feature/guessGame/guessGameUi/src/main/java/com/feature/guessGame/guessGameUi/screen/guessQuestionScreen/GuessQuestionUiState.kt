@@ -2,6 +2,8 @@ package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.paris_2.domain.game.entity.GameSession
 
 data class GuessQuestionUiState(
     val gameTitle: String = "",
@@ -17,6 +19,9 @@ data class GuessQuestionUiState(
     val timePerQuestion: Int = 0,
     val pointsPerQuestion: Int = 0,
     val userPoints: Int = 0,
+    val score: Int = 0,
+    val duration: Int = 0,
+    val session: GameSessionUi? = GameSessionUi(),
 )
 
 fun QuestionType.getTitleResId(): Int = when (this) {
@@ -26,10 +31,12 @@ fun QuestionType.getTitleResId(): Int = when (this) {
     QuestionType.POSTER -> R.string.guess_the_poster
 }
 
-data class Question(
-    val text: String,
-    val answers: List<String>,
-    val correctAnswer: String,
+data class GameSessionUi(
+    val id: String = "",
+    val level: String = UiGameLevel.EASY.name,
+    val currentQuestion: String = "",
+    val score: Int = 0,
+    val isCompleted: Boolean = false
 )
 
 

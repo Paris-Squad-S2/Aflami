@@ -6,6 +6,7 @@ import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
@@ -24,125 +25,139 @@ class GuessQuestionViewModel @Inject constructor(
     private val submitAnswerUseCase: SubmitAnswerUseCase,
     private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
-
-    ) : GuessQuestionInteractionListener,
-    BaseViewModel<GuessQuestionUiState>(
-        GuessQuestionUiState(
-            totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
-            timePerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().timePerQuestion,
-            pointsPerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().pointsPerQuestion,
-            gameTitle = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().questionType.name
-        )
-    ) {
-
-    init {
-        Log.d("navTest", "GuessQuestionViewModel")
-    }
+) : BaseViewModel<GuessQuestionUiState>(
+    GuessQuestionUiState(
+        totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
+        timePerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().timePerQuestion,
+        pointsPerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().pointsPerQuestion,
+        gameTitle = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().questionType.name
+    )
+), GuessQuestionInteractionListener {
 
     private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>()
     private val questionType = args.questionType
-    private lateinit var session: GameSession
+    private var currentSession: GameSession? = null
 
 
     init {
-        loadQuestions()
+        generateSession(args.gameLevel)
     }
 
-    private fun loadQuestions() {
+    private fun generateSession(level: UiGameLevel) {
         tryToExecute(
-            onSuccess = { gameSession ->
-                session = gameSession
-                val first = session.getCurrentQuestion()
-                updateState(
-                    screenState.value.copy(
-                        questionText = first?.content ?: "",
-                        answers = first?.options?.map { it.selectedAnswer }.orEmpty(),
-                        remainingAnswers = first?.options?.map { it.selectedAnswer }.orEmpty(),
-                        correctAnswer = first?.correctAnswer ?: ""
-                    )
-                )
+            execute = {
+                when (questionType) {
+                    QuestionType.RELEASE_YEAR -> whenIsReleasedSessionUseCase.startNewSession(level.toUiLevel())
+                    QuestionType.GENRE -> whichGenreSessionUseCase.startNewSession(level.toUiLevel())
+                    QuestionType.ACTOR, QuestionType.POSTER -> TODO()
+                }
             },
-            onError = { error -> }
-        ) {
-            when (questionType) {
-                QuestionType.RELEASE_YEAR -> whenIsReleasedSessionUseCase.startNewSession(args.gameLevel.toUiLevel())
-                QuestionType.GENRE -> whichGenreSessionUseCase.startNewSession(args.gameLevel.toUiLevel())
-                QuestionType.ACTOR -> TODO()
+            onSuccess = { session ->
+                currentSession = session
+                loadQuestion(session)
+            },
+            onError = { error ->
+                Log.e("GuessQuestionVM", "Error generating session: $error")
             }
-        }
+        )
     }
 
-
-    override fun onAnswerSelected(answer: String) {
-        if (!::session.isInitialized) return
-
-        submitAnswerUseCase(session, answer)
-
-        val currentQuestion = session.getCurrentQuestion()
-
+    private fun loadQuestion(session: GameSession) {
+        val currentQ = session.getCurrentQuestion()
         updateState(
             screenState.value.copy(
-                selectedAnswer = answer,
-                questionText = currentQuestion?.content ?: "",
-                answers = currentQuestion?.options?.map { it.selectedAnswer }.orEmpty(),
-                remainingAnswers = currentQuestion?.options?.map { it.selectedAnswer }.orEmpty(),
-                correctAnswer = currentQuestion?.correctAnswer ?: "",
-                userPoints = session.score
+                session = GameSessionUi(
+                    id = session.id,
+                    level = session.level.name,
+                    currentQuestion = currentQ?.content.orEmpty(),
+                    score = session.score,
+                    isCompleted = session.isCompleted
+                ),
+                totalQuestions = session.questions.size,
+                currentStep = session.currentQuestionIndex,
+                questionText = currentQ?.content.orEmpty(),
+                answers = currentQ?.options?.map { it.text } ?: emptyList(),
+                correctAnswer = currentQ?.correctAnswer,
+                remainingAnswers = currentQ?.options?.map { it.text } ?: emptyList(),
+                selectedAnswer = currentQ?.selectedAnswer,
+                hintUsed = currentQ?.usedHint ?: false
             )
         )
     }
 
+    override fun onAnswerSelected(answer: String) {
+        currentSession?.let { session ->
+            val currentQ = session.getCurrentQuestion() ?: return
+            if (currentQ.selectedAnswer != null) return
 
-    override fun onHintUsed() {
-        val state = screenState.value
-        if (!::session.isInitialized) return
+            currentQ.selectedAnswer = answer
+            val isCorrect = answer == currentQ.correctAnswer
 
-        when (val result = removeAnswerHintUseCase(session, state.hintUsed, state.userPoints)) {
-            is RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints -> {
-                updateState(state.copy(showNotEnoughPointsDialog = true))
-            }
-
-            is RemoveAnswerHintUseCase.UseHintResult.AlreadyUsed -> {
-            }
-
-            is RemoveAnswerHintUseCase.UseHintResult.Success -> {
-                updateState(
-                    state.copy(
-                        userPoints = state.userPoints - 10,
-                        hintUsed = true,
-                        remainingAnswers = result.updatedQuestion.options.map { it.selectedAnswer }
-                    )
+            updateState(
+                screenState.value.copy(
+                    answers = currentQ.options.map { it.text },
+                    selectedAnswer = answer,
+                    correctAnswer = currentQ.correctAnswer,
+                    hintUsed = currentQ.usedHint
                 )
-            }
+            )
+
+            submitAnswerUseCase(session, answer)
         }
     }
 
     override fun onNextClicked() {
-        if (!::session.isInitialized) return
+        currentSession?.let { session ->
+            val updatedSession = moveToNextQuestionUseCase(session)
+            currentSession = updatedSession
 
-        val updatedSession = moveToNextQuestionUseCase(session)
-
-        if (updatedSession.isCompleted) {
-            navigate(GuessGameDestinations.FinishGameScreen)
-        } else {
-            val nextQuestion = updatedSession.getCurrentQuestion()
-            updateState(
-                screenState.value.copy(
-                    currentStep = updatedSession.currentQuestionIndex + 1,
-                    questionText = nextQuestion?.content ?: "",
-                    answers = nextQuestion?.options?.map { it.selectedAnswer }.orEmpty(),
-                    remainingAnswers = nextQuestion?.options?.map { it.selectedAnswer }.orEmpty(),
-                    correctAnswer = nextQuestion?.correctAnswer ?: "",
-                    selectedAnswer = null,
-                    hintUsed = false
+            if (updatedSession.isCompleted) {
+                navigate(
+                    GuessGameDestinations.FinishGameScreen(
+                        totalGameTime = updatedSession.duration,
+                        totalGamePoints = updatedSession.score,
+                        gameType = questionType,
+                        gameLevel = args.gameLevel
+                    )
                 )
-            )
+            } else {
+                loadQuestion(updatedSession)
+            }
+        }
+    }
+
+    override fun onHintUsed() {
+        currentSession?.let { session ->
+            val currentPoints = screenState.value.userPoints
+
+            when (val result = removeAnswerHintUseCase(
+                gameSession = session,
+                usedHint = screenState.value.hintUsed,
+                currentPoints = currentPoints
+            )) {
+                is RemoveAnswerHintUseCase.UseHintResult.Success -> {
+                    val updatedQuestion = result.updatedQuestion
+                    updateState(
+                        screenState.value.copy(
+                            answers = updatedQuestion.options.map { it.text },
+                            hintUsed = true
+                        )
+                    )
+                }
+
+                RemoveAnswerHintUseCase.UseHintResult.AlreadyUsed -> {
+                    Log.d("GuessQuestionVM", "Hint already used for this question")
+                }
+
+                RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints -> {
+                    updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
+                }
+            }
         }
     }
 
 
     override fun onTimeFinished() {
-        updateState(screenState.value.copy(showNotEnoughPointsDialog = false))
         onNextClicked()
     }
 
@@ -151,6 +166,6 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
     override fun onCancelClick() {
-        navigate(GuessGameDestinations.GuessGameScreen)
+        navigateUp()
     }
 }

@@ -121,8 +121,8 @@ private fun getStaticGames(): List<GameData> = listOf(
         description = stringResource(GuessR.string.when_was_it_released_desc),
         backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
         trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
-        isLocked = true,
-        pointsToUnlock = 400
+        isLocked = false,
+        pointsToUnlock = 0
     ),
     GameData(
         id = "guess_genre",
@@ -130,8 +130,8 @@ private fun getStaticGames(): List<GameData> = listOf(
         description = stringResource(GuessR.string.which_genre_desc),
         backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
         trailingImages = listOf(painterResource(R.drawable.image_chair)),
-        isLocked = true,
-        pointsToUnlock = 400
+        isLocked = false,
+        pointsToUnlock = 0
     )
 )
 
