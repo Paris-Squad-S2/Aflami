@@ -1,8 +1,5 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -57,38 +54,80 @@ private fun GussByImageScreenContent(
 
         Header(state.screenTitle, action::onCancelClick)
 
-        QuestionIndicator(5, 2, modifier = Modifier.padding(vertical = 18.dp))
+        QuestionIndicator(
+            numberOfQuestions = state.questionUiState.size,
+            step = state.currentQuestion,
+            modifier = Modifier.padding(vertical = 18.dp)
+        )
 
-        QuestionImage()
+        QuestionImage(
+            showHint = !state.isChoiceCorrect,
+            onHintUsed = { action.onHintUsed() }
+        )
 
         LazyColumn(
             modifier = Modifier.padding(top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            items(state.question[state.currentQuestion].answers) { answer ->
+            val currentQ = state.questionUiState.getOrNull(state.currentQuestion)
+            currentQ?.answers?.let { answers ->
+                items(answers) { answer ->
+                    val isSelected = answer == currentQ.selectedAnswer
+                    val isCorrect = answer == currentQ.correctAnswer
 
-                AnimatedVisibility(
-                    visible = true, enter = fadeIn(), exit = fadeOut()
-                ) {
                     OptionItem(
-                        text = answer, selected = false, isCorrect = false, onClick = { })
+                        text = answer,
+                        selected = isSelected,
+                        isCorrect = if (currentQ.selectedAnswer != null) isCorrect else false,
+                        onClick = { action.onAnswerSelected(answer) }
+                    )
                 }
             }
-
         }
 
         Spacer(modifier = Modifier.weight(1f))
+        val hasAnswered = state.questionUiState
+            .getOrNull(state.currentQuestion)
+            ?.selectedAnswer != null
+
         CustomButton(
-            onClick = { },
+            onClick = { action.onNextClicked() },
             text = com.feature.guessGame.guessGameUi.R.string.next,
             type = ButtonType.Primary,
-            state = ButtonState.Normal,
+            state = if (hasAnswered) ButtonState.Normal else ButtonState.Disabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 16.dp)
         )
     }
 }
+
+@Composable
+fun QuestionImage(
+    modifier: Modifier = Modifier,
+    showHint: Boolean = true,
+    onHintUsed: () -> Unit = {}
+) {
+    var state by remember { mutableStateOf(GuessCardImageState.Hard) }
+    GuessCard(
+        imagePainter = painterResource(R.drawable.img_guess_character),
+        clickable = true,
+        imageState = state,
+        showHint = showHint && state == GuessCardImageState.Hard,
+        onClick = {
+            state = when (state) {
+                GuessCardImageState.Hard -> {
+                    onHintUsed()
+                    GuessCardImageState.Medium
+                }
+
+                GuessCardImageState.Medium -> GuessCardImageState.Show
+                GuessCardImageState.Show -> GuessCardImageState.Hard
+            }
+        },
+    )
+}
+
 
 @Composable
 private fun Header(head: String, onCanceled: () -> Unit) {
@@ -99,33 +138,35 @@ private fun Header(head: String, onCanceled: () -> Unit) {
             )
         ), trailingContent = {
             GameTimer(
-                totalSeconds = 45, onFinished = { })
-        })
-
-}
-
-@Composable
-fun QuestionImage(modifier: Modifier = Modifier) {
-    var state by remember { mutableStateOf(GuessCardImageState.Hard) }
-    GuessCard(
-        imagePainter = painterResource(R.drawable.img_guess_character),
-        clickable = true,
-        imageState = state,
-        showHint = state == GuessCardImageState.Hard,
-        onClick = {
-            state = when (state) {
-                GuessCardImageState.Hard -> GuessCardImageState.Medium
-                GuessCardImageState.Medium -> GuessCardImageState.Show
-                GuessCardImageState.Show -> GuessCardImageState.Hard
-            }
-        },
+                totalSeconds = 45, onFinished = { }
+            )
+        }
     )
 }
+
 
 @PreviewLightDark
 @Composable
 private fun GuessByImagePrev() {
     BasePreview {
-        GuessByImageScreen()
+        GussByImageScreenContent(
+            state = GuessCharacterUIState(
+                screenTitle = "Guess the Character",
+                questionUiState = listOf(
+                    QuestionUiState(
+                        answers = listOf("Answer 1", "Answer 2", "Answer 3", "Answer 4")
+                    )
+                ),
+                currentQuestion = 0
+            ),
+            action = object : GuessByImageInteractionListener {
+                override fun onAnswerSelected(answer: String) {}
+                override fun onHintUsed() {}
+                override fun onNextClicked() {}
+                override fun onTimeFinished() {}
+                override fun onDismissNotEnoughPointsDialog() {}
+                override fun onCancelClick() {}
+            }
+        )
     }
 }

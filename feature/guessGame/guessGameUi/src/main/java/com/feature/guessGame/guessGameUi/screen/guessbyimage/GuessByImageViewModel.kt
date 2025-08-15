@@ -5,7 +5,10 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
+import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -14,54 +17,119 @@ import javax.inject.Inject
 class GuessByImageViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val guessActorSessionUseCase: GuessActorSessionUseCase,
+    private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
 ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
     private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessByImageScreen>()
+    private val level = args.gameLevel
+    private val questionType = args.questionType
+    private var currentSession: GameSession? = null
 
     init {
         Log.d("navTest", "GuessByImageViewModel")
-        loadQuestionSession()
+        generateSession(level)
+        currentSession?.let { session ->
+            loadQuestion(session)
+        } ?: Log.e("navTest", "Error: currentSession is null")
     }
 
-    fun loadQuestionSession() {
+    fun generateSession(questionType: UiGameLevel) {
         tryToExecute(
-            execute = { guessActorSessionUseCase.startNewSession(GameSession.GameLevel.EASY) },
-            onSuccess = { session ->
-                val uiQuestions = session.questions.map { q ->
-                    Question(
-                        image = q.content,
-                        answers = q.options.map { it.selectedAnswer },
-                        isCorrect = false,
-                        isSelected = false
-                    )
-                }
-
-                updateState(
-                    newState = screenState.value.copy(
-                        question = uiQuestions,
-                        screenTitle = args.questionType.name
-                    )
-                )
+            execute = {
+                Log.d("navTest", "generateSession Enter with ${questionType.toUiLevel()}")
+                val session = guessActorSessionUseCase.startNewSession(questionType.toUiLevel())
+                currentSession = session
+                Log.d("navTest", "generateSession done with ${session.questions.size} questions")
+                session
             },
-            onError = { error ->
-                updateState(
-                    newState = screenState.value.copy(
-                        error = error
-                    )
-                )
+            onSuccess = { session ->
+                loadQuestion(session)
+            },
+            onError = {
+                Log.e("navTest", "Error in generateSession $it")
+                updateState(screenState.value.copy(error = it))
             }
         )
     }
 
-    override fun onAnswerSelected(answer: String) {
-
-    }
-
-    override fun onHintUsed() {
-
+    private fun loadQuestion(session: GameSession) {
+        val firstQuestion = session.questions.firstOrNull()
+        if (firstQuestion != null) {
+            updateState(
+                screenState.value.copy(
+                    currentQuestion = session.currentQuestionIndex,
+                    questionUiState = session.questions.map { it.toUiModel() },
+                )
+            )
+        }
     }
 
     override fun onNextClicked() {
+        currentSession?.let { session ->
+            val updatedSession = moveToNextQuestionUseCase(session)
+
+            if (updatedSession.isCompleted) {
+                navigate(
+                    GuessGameDestinations.FinishGameScreen(
+                        totalGameTime = updatedSession.duration,
+                        totalGamePoints = updatedSession.score,
+                        gameType = questionType,
+                        gameLevel = level,
+                    )
+                )
+            } else {
+                updateState(
+                    screenState.value.copy(
+                        currentQuestion = updatedSession.currentQuestionIndex,
+                        questionUiState = updatedSession.questions.map { it.toUiModel() }
+                    )
+                )
+            }
+        } ?: Log.e("navTest", "No session found when onNextClicked called")
+    }
+
+
+
+    override fun onAnswerSelected(answer: String) {
+        currentSession?.let { session ->
+            val currentIndex = session.currentQuestionIndex
+            val currentQuestion = session.questions.getOrNull(currentIndex)
+
+            if (currentQuestion?.selectedAnswer != null) return
+
+            if (currentQuestion != null) {
+                currentQuestion.selectedAnswer = answer
+                val isCorrect = answer == currentQuestion.correctAnswer
+
+                updateState(
+                    screenState.value.copy(
+                        questionUiState = session.questions.map { it.toUiModel() },
+                        isChoiceCorrect = isCorrect,
+                    )
+                )
+                updateScore()
+            }
+        } ?: Log.e("navTest", "No session found when onAnswerSelected called")
+    }
+
+    fun updateScore() {
+        val points = when (level) {
+            UiGameLevel.HARD -> 20
+
+            UiGameLevel.MEDIUM -> 10
+
+            UiGameLevel.EASY -> 5
+        }
+        updateState(
+            screenState.value.copy(
+                score = screenState.value.score + points
+            )
+        )
+    }
+
+
+
+    override fun onHintUsed() {
 
     }
 
