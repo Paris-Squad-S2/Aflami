@@ -36,7 +36,6 @@ fun QuestionType.getTitleResId(): Int = when (this) {
 }
 
 data class GameSessionUi(
-    val id: String = "",
     val level: String = UiGameLevel.EASY.name,
     val currentQuestion: String = "",
     val score: Int = 0,
@@ -45,7 +44,6 @@ data class GameSessionUi(
 
 
 data class UiQuestion(
-    val id: String,
     val content: String,
     val options: List<UiAnswer>,
     val selectedAnswer: String? = null,
@@ -59,7 +57,6 @@ data class UiAnswer(
 
 fun Question.toUiQuestion(): UiQuestion {
     return UiQuestion(
-        id = id,
         content = content,
         options = options.map { it.toUiAnswer() },
         selectedAnswer = selectedAnswer,

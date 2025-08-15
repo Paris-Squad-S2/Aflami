@@ -79,7 +79,6 @@ class GuessQuestionViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 session = GameSessionUi(
-                    id = session.id,
                     level = session.level.name,
                     currentQuestion = currentQuestion.content,
                     score = session.score,
