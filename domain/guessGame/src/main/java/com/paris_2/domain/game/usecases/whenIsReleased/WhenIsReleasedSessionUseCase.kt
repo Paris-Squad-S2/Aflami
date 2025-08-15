@@ -30,7 +30,7 @@ class WhenIsReleasedSessionUseCase(
             .map { year ->
                 Answer(
                     questionId = questionId,
-                    selectedAnswer = year.toString(),
+                    text = year.toString(),
                     isCorrect = year == correctMovie.yearOfRelease.year
                 )
             }
