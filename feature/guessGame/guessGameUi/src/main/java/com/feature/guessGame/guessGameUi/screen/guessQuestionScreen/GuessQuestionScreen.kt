@@ -34,6 +34,7 @@ import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.GuessCard
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 
 @Composable
@@ -58,80 +59,85 @@ fun GuessQuestionContent(
     listener: GuessQuestionInteractionListener,
     questionType: QuestionType,
 ) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .statusBarsPadding()
-    ) {
-        AppTopBar(
-            title = stringResource(id = questionType.getTitleResId()),
-            leadingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                    onClick = listener::onCancelClick
-                )
-            ),
-            trailingContent = {
-                GameTimer(
-                    totalSeconds = state.timePerQuestion,
-                    onFinished = listener::onTimeFinished
-                )
-            }
+    if (state.isLoading) {
+        PageLoadingPlaceHolder(
+            modifier = Modifier.fillMaxSize()
         )
-
+    } else {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .statusBarsPadding()
         ) {
-            QuestionIndicator(
-                numberOfQuestions = state.totalQuestions,
-                step = state.currentStep
+            AppTopBar(
+                title = stringResource(id = questionType.getTitleResId()),
+                leadingIcons = listOf(
+                    iconItemWithDefaults(
+                        icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
+                        onClick = listener::onCancelClick
+                    )
+                ),
+                trailingContent = {
+                    GameTimer(
+                        totalSeconds = state.timePerQuestion,
+                        onFinished = listener::onTimeFinished
+                    )
+                }
             )
 
-            Spacer(Modifier.height(16.dp))
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
+            ) {
+                QuestionIndicator(
+                    numberOfQuestions = state.totalQuestions,
+                    step = state.currentStep
+                )
 
-            GuessCard(
-                textNoImage = state.questionText,
-                clickable = true,
-                showHint = !state.hintUsed,
-                onClick = { listener.onHintUsed() }
-            )
+                Spacer(Modifier.height(16.dp))
 
-            Spacer(Modifier.height(16.dp))
+                GuessCard(
+                    textNoImage = state.questionText,
+                    clickable = true,
+                    showHint = !state.hintUsed,
+                    onClick = { listener.onHintUsed() }
+                )
 
+                Spacer(Modifier.height(16.dp))
 
-            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                state.remainingAnswers.forEach { answer ->
-                    AnimatedVisibility(
-                        visible = true,
-                        enter = fadeIn(),
-                        exit = fadeOut()
-                    ) {
-                        OptionItem(
-                            text = answer,
-                            selected = state.selectedAnswer == answer,
-                            isCorrect = state.selectedAnswer != null && answer == state.correctAnswer,
-                            onClick = {
-                                if (state.selectedAnswer == null) {
-                                    listener.onAnswerSelected(answer)
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    state.remainingAnswers.forEach { answer ->
+                        AnimatedVisibility(
+                            visible = true,
+                            enter = fadeIn(),
+                            exit = fadeOut()
+                        ) {
+                            OptionItem(
+                                text = answer,
+                                selected = state.selectedAnswer == answer,
+                                isCorrect = state.selectedAnswer != null && answer == state.correctAnswer,
+                                onClick = {
+                                    if (state.selectedAnswer == null) {
+                                        listener.onAnswerSelected(answer)
+                                    }
                                 }
-                            }
-                        )
+                            )
+                        }
                     }
                 }
+
+                Spacer(Modifier.weight(1f))
+
+                CustomButton(
+                    onClick = listener::onNextClicked,
+                    text = R.string.next,
+                    type = ButtonType.Primary,
+                    state = if (state.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-
-            Spacer(Modifier.weight(1f))
-
-            CustomButton(
-                onClick = listener::onNextClicked,
-                text = R.string.next,
-                type = ButtonType.Primary,
-                state = if (state.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
-                modifier = Modifier.fillMaxWidth()
-            )
         }
     }
 }
