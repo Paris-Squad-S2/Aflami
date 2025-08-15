@@ -102,6 +102,11 @@ fun GuessGameScreenContent(
     }
 }
 
+val imageIds = listOf(
+    R.drawable.image_game3,
+    R.drawable.image_game2,
+    R.drawable.image_game1,
+)
 @Composable
 private fun getStaticGames(): List<GameData> = listOf(
     GameData(
@@ -117,7 +122,7 @@ private fun getStaticGames(): List<GameData> = listOf(
         title = stringResource(GuessR.string.guess_the_movie_title),
         description = stringResource(GuessR.string.guess_the_movie_desc),
         backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
-        trailingImages = List(3) { painterResource(R.drawable.image_game2) },
+        trailingImages = imageIds.map { painterResource(it) },
         isLocked = false
     ),
     GameData(
@@ -139,6 +144,8 @@ private fun getStaticGames(): List<GameData> = listOf(
         pointsToUnlock = 5
     )
 )
+
+
 
 @Preview(showBackground = true, showSystemUi = true, name = "LTR")
 @Preview(showBackground = true, name = "RTL", locale = "ar")

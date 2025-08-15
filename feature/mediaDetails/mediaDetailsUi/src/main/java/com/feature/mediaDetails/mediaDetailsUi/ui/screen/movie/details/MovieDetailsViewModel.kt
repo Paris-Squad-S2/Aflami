@@ -14,6 +14,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toMedia
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
@@ -23,6 +24,7 @@ import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
@@ -51,6 +53,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
+    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase,
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
     private val addMovieToListUseCase: AddMovieToListUseCase,
     private val getListsUseCase: GetListUseCase,
@@ -196,12 +199,13 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadedMovieDetails(mediaId: Int) {
         tryToExecute(
             execute = { getMovieDetailsUseCase(mediaId) },
-            onSuccess = {
+            onSuccess = { movie ->
+                addMediaToLocalDatabaseUseCase(movie.toMedia())
                 updateState(
                     screenState.value.copy(
                         isLoading = false,
                         movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            movie = it.toUi(),
+                            movie = movie.toUi(),
                         )
                     )
                 )

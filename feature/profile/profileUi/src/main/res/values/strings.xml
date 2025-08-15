@@ -30,4 +30,6 @@
     <string name="off">Off</string>
     <string name="no_content_is_blurred">No content is blurred.</string>
     <string name="save">Save</string>
+    <string name="pts">%1$d Pts.</string>
+
 </resources>

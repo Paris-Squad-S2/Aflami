@@ -31,5 +31,6 @@
     <string name="off">إيقاف</string>
     <string name="no_content_is_blurred">لا يتم طمس أي محتوى.</string>
     <string name="save">حفظ</string>
+    <string name="pts">%1$d نقطة</string>
 
 </resources>

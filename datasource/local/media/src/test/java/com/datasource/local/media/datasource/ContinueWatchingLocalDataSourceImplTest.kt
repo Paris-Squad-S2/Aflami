@@ -7,6 +7,8 @@ import com.repository.media.entity.MediaTypeEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -25,9 +27,9 @@ class ContinueWatchingLocalDataSourceImplTest {
     fun `getAllMedia should return media list when getAllMedia in HomeMediaDao called successfully`() =
         runTest {
             // Given
-            coEvery { mediaDao.getMediaContinueWatching() } returns listOf(sampleMedia)
+            coEvery { mediaDao.getMediaContinueWatching() } returns flowOf(listOf(sampleMedia))
             // When
-            val result = continueWatchingLocalDataSource.getAllMedia()
+            val result = continueWatchingLocalDataSource.getAllMedia().first()
             // Then
             assertThat(result).containsExactly(sampleMedia)
         }
@@ -36,9 +38,9 @@ class ContinueWatchingLocalDataSourceImplTest {
     fun `getAllMedia should return empty list when HomeMediaDao returns nothing`() =
         runTest {
             // Given
-            coEvery { mediaDao.getMediaContinueWatching() } returns emptyList()
+            coEvery { mediaDao.getMediaContinueWatching() } returns flowOf(emptyList())
             // When
-            val result = continueWatchingLocalDataSource.getAllMedia()
+            val result = continueWatchingLocalDataSource.getAllMedia().first()
             // Then
             Assertions.assertTrue(result.isEmpty())
         }
