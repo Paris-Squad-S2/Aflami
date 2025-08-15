@@ -128,15 +128,21 @@ class GuessQuestionViewModel @Inject constructor(
 
     override fun onHintUsed() {
         currentSession?.let { session ->
+            val currentQ = session.getCurrentQuestion() ?: return
             val currentPoints = screenState.value.userPoints
 
             when (val result = removeAnswerHintUseCase(
                 gameSession = session,
-                usedHint = screenState.value.hintUsed,
+                usedHint = currentQ.usedHint,
                 currentPoints = currentPoints
             )) {
                 is RemoveAnswerHintUseCase.UseHintResult.Success -> {
                     val updatedQuestion = result.updatedQuestion
+                    val index = session.currentQuestionIndex
+                    session.questions = session.questions.toMutableList().also {
+                        it[index] = updatedQuestion.copy(usedHint = true)
+                    }
+
                     updateState(
                         screenState.value.copy(
                             answers = updatedQuestion.options.map { it.text },
@@ -155,7 +161,6 @@ class GuessQuestionViewModel @Inject constructor(
             }
         }
     }
-
 
     override fun onTimeFinished() {
         onNextClicked()
