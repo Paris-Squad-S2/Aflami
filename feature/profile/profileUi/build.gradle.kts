@@ -59,6 +59,7 @@ dependencies {
     implementation(projects.feature.mediaDetails.mediaDetailsApi)
     implementation(projects.domain.media)
     implementation(projects.domain.user)
+    implementation(projects.domain.guessGame)
 }
 tasks.withType<Test> {
     useJUnitPlatform()
