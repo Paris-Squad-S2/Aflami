@@ -13,6 +13,7 @@ import com.feature.guessGame.guessGameUi.screen.guessGameScreen.GuessGameScreen
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.GuessGameScreenViewModel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.GuessQuestionScreen
 import com.feature.guessGame.guessGameUi.screen.guessbyimage.GuessByImageScreen
+import com.feature.guessGame.guessGameUi.screen.resultScreen.ResultScreen
 
 
 @Composable
@@ -55,7 +56,14 @@ fun NavGraphBuilder.buildGuessGameNavGraph() {
             val args = backStackEntry.toRoute<GuessGameDestinations.GuessByImageScreen>()
             GuessByImageScreen()
         }
-
+        composable<GuessGameDestinations.FinishGameScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<GuessGameDestinations.FinishGameScreen>()
+            ResultScreen(
+                totalGameTime = args.totalGameTime,
+                totalGamePoints = args.totalGamePoints,
+                gameType = args.gameType,
+            )
+        }
 
     }
 }
