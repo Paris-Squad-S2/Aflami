@@ -7,6 +7,7 @@ import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
@@ -40,11 +41,15 @@ class GuessByImageViewModel @Inject constructor(
 
 
     init {
-        Log.d("navTest", "GuessByImageViewModel")
         generateSession(level)
+        updateState(
+            screenState.value.copy(
+                screenTitle = questionType.getTitleResId()
+            )
+        )
         currentSession?.let { session ->
             loadQuestion(session)
-        } ?: Log.e("navTest", "Error: currentSession is null")
+        }
     }
 
     fun generateSession(gameLevel: UiGameLevel) {
