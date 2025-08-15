@@ -83,15 +83,18 @@ class WatchHistoryViewModel @Inject constructor(
                         isLoading = true
                     )
                 )
-                filterWatchHistoryUseCase.invoke(mediaType.toMediaType())
+                filterWatchHistoryUseCase(mediaType.toMediaType())
             },
-            onSuccess = { mediaList ->
-                updateState(
-                    screenState.value.copy(
-                        watchHistoryMedia = mediaList.toMediaUiStateList(),
-                        isLoading = false
+            onSuccess = { mediaListFlow ->
+                mediaListFlow.collect { mediaList ->
+                    updateState(
+                        screenState.value.copy(
+                            watchHistoryMedia = mediaList.toMediaUiStateList(),
+                            isLoading = false
+                        )
                     )
-                )},
+                }
+            },
             onError = {error ->
                 updateState(
                     screenState.value.copy(

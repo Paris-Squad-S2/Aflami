@@ -86,13 +86,15 @@ class ContinueWatchingViewModel @Inject constructor(
                 )
                 getWatchHistoryUseCase.invoke()
             },
-            onSuccess = { mediaList ->
-                emitState(
-                    screenState.value.copy(
-                        continueWatchingMediaList = mediaList.toMediaUiStateList(),
-                        isLoading = false
+            onSuccess = { mediaListFlow ->
+                mediaListFlow.collect { mediaList ->
+                    emitState(
+                        screenState.value.copy(
+                            continueWatchingMediaList = mediaList.toMediaUiStateList(),
+                            isLoading = false
+                        )
                     )
-                )
+                }
             },
             onError = { error ->
                 emitState(

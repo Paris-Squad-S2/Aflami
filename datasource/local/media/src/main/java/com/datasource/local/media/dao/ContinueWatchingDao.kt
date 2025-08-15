@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.repository.media.entity.MediaEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ContinueWatchingDao {
@@ -13,5 +14,5 @@ interface ContinueWatchingDao {
     suspend fun addMediaContinueWatching(media: MediaEntity)
 
     @Query("SELECT * FROM media_table")
-    suspend fun getMediaContinueWatching(): List<MediaEntity>
+    fun getMediaContinueWatching(): Flow<List<MediaEntity>>
 }
