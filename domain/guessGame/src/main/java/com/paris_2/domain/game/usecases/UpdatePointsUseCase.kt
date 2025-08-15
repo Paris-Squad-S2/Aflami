@@ -7,7 +7,8 @@ class UpdatePointsUseCase(
 ) {
     suspend operator fun invoke(userId: Int, points: Int) {
         val userPoints = gamePointsRepository.getUserGamePoints(userId)
-        val updatedPoints = userPoints.gamePoints + points
+        val currentPoints = userPoints.gamePoints ?: 0
+        val updatedPoints = currentPoints + points
         gamePointsRepository.saveUserGamePoints(
             userPoints.copy(
                 gamePoints = updatedPoints
