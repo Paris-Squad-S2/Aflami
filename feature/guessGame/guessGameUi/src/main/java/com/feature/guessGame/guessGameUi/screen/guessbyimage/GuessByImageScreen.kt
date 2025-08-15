@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
@@ -41,114 +40,110 @@ import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 
 @Composable
 fun GuessByImageScreen(
-    modifier: Modifier = Modifier,
     viewModel: GuessByImageViewModel = hiltViewModel(),
 ) {
-    val screenState = viewModel.screenState.collectAsStateWithLifecycle()
+    val state = viewModel.screenState.collectAsStateWithLifecycle().value
+
     GuessGameBackground {
-        GussByImageScreenContent(
-            state = screenState.value,
-            action = viewModel,
-            modifier = modifier.fillMaxWidth()
+        GuessByImageContent(
+            state = state,
+            listener = viewModel
         )
     }
 }
 
 @Composable
-private fun GussByImageScreenContent(
+fun GuessByImageContent(
     state: GuessCharacterUIState,
-    action: GuessByImageInteractionListener,
-    modifier: Modifier = Modifier,
+    listener: GuessByImageInteractionListener,
 ) {
     if (state.isLoading) {
         PageLoadingPlaceHolder(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         )
-        return
-    }else{
+    } else {
         if (state.showNotEnoughPointsDialog) {
             NotEnoughPointsDialog(
-                onDismiss = action::onDismissNotEnoughPointsDialog,
-                onConfirm = action::onDismissNotEnoughPointsDialog,
-                title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points,
+                onDismiss = listener::onDismissNotEnoughPointsDialog,
+                onConfirm = listener::onDismissNotEnoughPointsDialog,
+                title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points
             )
         }
 
         Column(
-            modifier = modifier
+            modifier = Modifier
+                .fillMaxSize()
                 .statusBarsPadding()
-                .padding(horizontal = 12.dp)
         ) {
             Header(
                 head = state.screenTitle,
-                onCanceled = action::onCancelClick,
-                onTimeFinished = action::onTimeFinished,
+                onCanceled = listener::onCancelClick,
+                onTimeFinished = listener::onTimeFinished,
                 time = state.time,
                 currentQuestion = state.currentQuestion
             )
 
-            QuestionIndicator(
-                numberOfQuestions = state.questionUiState.size,
-                step = state.currentQuestion,
-                modifier = Modifier.padding(vertical = 18.dp)
-            )
-
-            val currentQ = state.questionUiState.getOrNull(state.currentQuestion)
-            QuestionImage(
-                showHint = !state.isChoiceCorrect,
-                onHintUsed = { action.onHintUsed() },
-                imageUrl = currentQ?.image ?: "",
-                uiState = currentQ ?: QuestionUiState()
-            )
-
-            LazyColumn(
-                modifier = Modifier.padding(top = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 16.dp, vertical = 8.dp)
             ) {
-                currentQ?.answers?.let { answers ->
-                    items(answers) { answer ->
-                        val isSelected = answer == currentQ.selectedAnswer
-                        val isCorrect = answer == currentQ.correctAnswer
+                QuestionIndicator(
+                    numberOfQuestions = state.questionUiState.size,
+                    step = state.currentQuestion,
+                    modifier = Modifier.padding(vertical = 16.dp)
+                )
+
+                val currentQuestion = state.questionUiState.getOrNull(state.currentQuestion)
+
+                QuestionImage(
+                    showHint = !state.isChoiceCorrect,
+                    onHintUsed = listener::onHintUsed,
+                    imageUrl = currentQuestion?.image.orEmpty(),
+                    uiState = currentQuestion ?: QuestionUiState()
+                )
+
+                Spacer(Modifier.height(16.dp))
+
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    currentQuestion?.answers?.forEach { answer ->
+                        val isSelected = answer == currentQuestion.selectedAnswer
+                        val isCorrect = answer == currentQuestion.correctAnswer
 
                         OptionItem(
                             text = answer,
                             selected = isSelected,
-                            isCorrect = if (currentQ.selectedAnswer != null) isCorrect else false,
-                            onClick = { action.onAnswerSelected(answer) }
+                            isCorrect = currentQuestion.selectedAnswer != null && isCorrect,
+                            onClick = { listener.onAnswerSelected(answer) }
                         )
                     }
                 }
+
+                Spacer(Modifier.weight(1f))
+
+                CustomButton(
+                    onClick = listener::onNextClicked,
+                    text = com.feature.guessGame.guessGameUi.R.string.next,
+                    type = ButtonType.Primary,
+                    state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                    modifier = Modifier.fillMaxWidth()
+                )
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            val hasAnswered = currentQ?.selectedAnswer != null
-            CustomButton(
-                onClick = { action.onNextClicked() },
-                text = com.feature.guessGame.guessGameUi.R.string.next,
-                type = ButtonType.Primary,
-                state = if (hasAnswered) ButtonState.Normal else ButtonState.Disabled,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 16.dp)
-            )
         }
 
+
     }
-
-
 }
 
 @Composable
 fun QuestionImage(
-    modifier: Modifier = Modifier,
-    showHint: Boolean = true,
-    onHintUsed: () -> Unit = {},
     imageUrl: String,
     uiState: QuestionUiState,
+    showHint: Boolean = true,
+    onHintUsed: () -> Unit = {},
 ) {
     var state by remember { mutableStateOf(GuessCardImageState.Hard) }
+
     GuessCard(
         imagePainter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500$imageUrl"),
         clickable = !uiState.usedHint,
@@ -159,7 +154,7 @@ fun QuestionImage(
                 onHintUsed()
                 state = GuessCardImageState.Medium
             }
-        },
+        }
     )
 }
 
