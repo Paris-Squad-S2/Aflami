@@ -53,6 +53,7 @@ class GuessQuestionViewModel @Inject constructor(
     private fun generateSession(level: UiGameLevel) {
         tryToExecute(
             execute = {
+                updateState(screenState.value.copy(isLoading = true))
                 val session = when (questionType) {
                     QuestionType.RELEASE_YEAR -> whenIsReleasedSessionUseCase.startNewSession(level.toUiLevel())
                     QuestionType.GENRE -> whichGenreSessionUseCase.startNewSession(level.toUiLevel())
@@ -65,10 +66,11 @@ class GuessQuestionViewModel @Inject constructor(
             onSuccess = { session ->
                 updateState(screenState.value.copy(time = timePerQuestion))
                 loadQuestion(session)
+                updateState(screenState.value.copy(isLoading = false))
             },
             onError = { error ->
                 Log.e("GuessQuestionVM", "Error generating session: $error")
-                updateState(screenState.value.copy(error = error))
+                updateState(screenState.value.copy(error = error, isLoading = false))
             }
         )
     }

@@ -24,6 +24,7 @@ data class GuessQuestionUiState(
     val duration: Int = 0,
     val session: GameSessionUi? = GameSessionUi(),
     val error: String? = null,
+    val isLoading: Boolean = false,
 )
 
 fun QuestionType.getTitleResId(): Int = when (this) {
