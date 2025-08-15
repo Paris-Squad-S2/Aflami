@@ -3,7 +3,9 @@ package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
+import com.paris_2.domain.game.entity.Question
 
 data class GuessQuestionUiState(
     val gameTitle: String = "",
@@ -39,4 +41,29 @@ data class GameSessionUi(
     val isCompleted: Boolean = false
 )
 
+
+data class UiQuestion(
+    val id: String,
+    val content: String,
+    val options: List<UiAnswer>,
+    val selectedAnswer: String? = null,
+    val hintUsed: Boolean = false,
+)
+
+data class UiAnswer(
+    val text: String,
+    val isCorrect: Boolean
+)
+
+fun Question.toUiQuestion(): UiQuestion {
+    return UiQuestion(
+        id = id,
+        content = content,
+        options = options.map { it.toUiAnswer() },
+        selectedAnswer = selectedAnswer,
+        hintUsed = usedHint
+    )
+}
+
+fun Answer.toUiAnswer(): UiAnswer = UiAnswer(text = text, isCorrect = isCorrect)
 

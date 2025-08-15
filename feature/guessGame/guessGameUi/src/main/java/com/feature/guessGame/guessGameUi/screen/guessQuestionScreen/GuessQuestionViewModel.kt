@@ -63,26 +63,30 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
     private fun loadQuestion(session: GameSession) {
-        val currentQ = session.getCurrentQuestion()
+        val currentQ = session.getCurrentQuestion()?.toUiQuestion()
+        if (currentQ == null) return
+
         updateState(
             screenState.value.copy(
                 session = GameSessionUi(
                     id = session.id,
                     level = session.level.name,
-                    currentQuestion = currentQ?.content.orEmpty(),
+                    currentQuestion = currentQ.content,
                     score = session.score,
                     isCompleted = session.isCompleted
                 ),
                 totalQuestions = session.questions.size,
                 currentStep = session.currentQuestionIndex,
-                questionText = currentQ?.content.orEmpty(),
-                answers = currentQ?.options?.map { it.text } ?: emptyList(),
-                correctAnswer = currentQ?.correctAnswer,
-                remainingAnswers = currentQ?.options?.map { it.text } ?: emptyList(),
-                selectedAnswer = currentQ?.selectedAnswer,
-                hintUsed = currentQ?.usedHint ?: false
+                questionText = currentQ.content,
+                answers = currentQ.options.map { it.text },
+                correctAnswer = currentQ.options.firstOrNull { it.isCorrect }?.text,
+                remainingAnswers = currentQ.options.map { it.text },
+                selectedAnswer = currentQ.selectedAnswer,
+                hintUsed = currentQ.hintUsed
             )
         )
+
+        Log.d("GuessQuestionVM", "Loaded questions: ${session.questions.map { it.content }}")
     }
 
     override fun onAnswerSelected(answer: String) {
