@@ -2,7 +2,6 @@ package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
@@ -28,23 +27,19 @@ class GuessByImageViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
 ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
-    private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessByImageScreen>()
-    private val level = args.gameLevel
-    private val questionType = args.questionType
+    private var level = UiGameLevel.EASY
+    private var questionType = QuestionType.ACTOR
     private var currentSession: GameSession? = null
     private var startTimeMillis: Long = 0
-    private val time = when (level) {
-        UiGameLevel.HARD -> 10
-        UiGameLevel.MEDIUM -> 30
-        UiGameLevel.EASY -> 45
-    }
 
-
-    init {
-        generateSession(level)
+    fun initialization(gameLevel: UiGameLevel, questionType: QuestionType) {
+        level = gameLevel
+        Log.d("TAG", "initialization: ${questionType}")
+        this.questionType = questionType
+        generateSession(this.level)
         updateState(
             screenState.value.copy(
-                screenTitle = questionType.getTitleResId()
+                screenTitle = this.questionType.getTitleResId()
             )
         )
         currentSession?.let { session ->
@@ -52,7 +47,13 @@ class GuessByImageViewModel @Inject constructor(
         }
     }
 
+
     fun generateSession(gameLevel: UiGameLevel) {
+        val time = when (level) {
+            UiGameLevel.HARD -> 10
+            UiGameLevel.MEDIUM -> 30
+            UiGameLevel.EASY -> 45
+        }
         Log.d("TAG", "generateSession:${questionType} ")
         Log.d("TAG", "generateSession:${level} ")
 
@@ -228,9 +229,5 @@ class GuessByImageViewModel @Inject constructor(
                 showNotEnoughPointsDialog = false
             )
         )
-    }
-
-    override fun onCancelClick() {
-        navigateUp()
     }
 }
