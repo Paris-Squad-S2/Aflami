@@ -13,6 +13,7 @@ import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
+import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
 import com.paris_2.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
@@ -28,6 +29,7 @@ class GuessQuestionViewModel @Inject constructor(
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val getUserPointUseCase: GetUserPointUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
+    private val useHintUseCase: UseHintUseCase,
 ) : BaseViewModel<GuessQuestionUiState>(
     GuessQuestionUiState(
         totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
@@ -178,27 +180,42 @@ class GuessQuestionViewModel @Inject constructor(
 
         tryToExecute(
             execute = {
-                val userId = getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
-                val currentPoints = getUserPointUseCase(userId)
+                val userId =
+                    getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
 
-                if (currentPoints < HINT_COST) {
-                    return@tryToExecute RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints
+                val hintUsed = useHintUseCase(session, userId)
+
+                if (hintUsed) {
+                    val hintResult =
+                        removeAnswerHintUseCase(session, false, getUserPointUseCase(userId))
+
+                    if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {
+                        return@tryToExecute HintUsageResult.Success(hintResult.updatedQuestion)
+                    } else {
+                        return@tryToExecute HintUsageResult.Failed("Failed to remove wrong answer")
+                    }
+                } else {
+                    return@tryToExecute HintUsageResult.NotEnoughPoints
                 }
-
-                removeAnswerHintUseCase(session, currentQuestion.usedHint, currentPoints)
             },
             onSuccess = { result ->
                 when (result) {
-                    is RemoveAnswerHintUseCase.UseHintResult.Success -> {
+                    is HintUsageResult.Success -> {
                         applyHint(result.updatedQuestion)
-                        Log.d("GuessQuestionVM", "Hint applied successfully. Points deducted: $HINT_COST")
+                        Log.d("GuessQuestionVM", "Hint applied successfully. 10 points deducted.")
                     }
-                    RemoveAnswerHintUseCase.UseHintResult.AlreadyUsed -> {
-                        Log.d("GuessQuestionVM", "Hint already used")
-                    }
-                    RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints -> {
+
+                    HintUsageResult.NotEnoughPoints -> {
                         updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
                         Log.d("GuessQuestionVM", "Not enough points for hint. Required: $HINT_COST")
+                    }
+
+                    is HintUsageResult.Failed -> {
+                        Log.e("GuessQuestionVM", "Hint usage failed: ${result.error}")
+                    }
+
+                    HintUsageResult.AlreadyUsed -> {
+                        Log.d("GuessQuestionVM", "Hint already used")
                     }
                 }
             },
@@ -207,7 +224,6 @@ class GuessQuestionViewModel @Inject constructor(
             }
         )
     }
-
 
     private fun applyHint(updatedQuestion: Question) {
         val session = currentSession ?: return
@@ -228,12 +244,15 @@ class GuessQuestionViewModel @Inject constructor(
             )
         )
 
-        Log.d("GuessQuestionVM",
+        Log.d(
+            "GuessQuestionVM",
             "Hint applied: ${updatedQuestion.options.size} options remaining"
         )
     }
 
     override fun onTimeFinished() = onNextClicked()
+
+
     override fun onDismissNotEnoughPointsDialog() =
         updateState(screenState.value.copy(showNotEnoughPointsDialog = false))
 
@@ -270,6 +289,14 @@ class GuessQuestionViewModel @Inject constructor(
                 "Answered Question ${session.currentQuestionIndex + 1} correctly, Points added: $points, Score now: ${session.score}"
             )
         }
+    }
+
+
+    private sealed class HintUsageResult {
+        data class Success(val updatedQuestion: Question) : HintUsageResult()
+        object AlreadyUsed : HintUsageResult()
+        object NotEnoughPoints : HintUsageResult()
+        data class Failed(val error: String) : HintUsageResult()
     }
 
     companion object {
