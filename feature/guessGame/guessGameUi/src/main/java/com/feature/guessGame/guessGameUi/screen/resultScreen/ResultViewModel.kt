@@ -6,7 +6,7 @@ import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.DifficultySettings
-import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toInt
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ class ResultViewModel @Inject constructor(
     }
 
     override fun onPlayAgainClicked() {
-        val settings = DifficultySettings.getDifficultySettings(difficultyId = 0)
+        val settings = DifficultySettings.getDifficultySettings(args.gameLevel.toInt())
         when (args.gameType) {
             QuestionType.ACTOR -> {
                 navigate(
@@ -58,7 +58,7 @@ class ResultViewModel @Inject constructor(
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
                         pointsPerQuestion = settings.pointsPerQuestion,
-                        gameLevel = UiGameLevel.EASY
+                        gameLevel = gameLevel
                     )
                 )
             }
@@ -70,7 +70,7 @@ class ResultViewModel @Inject constructor(
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
                         pointsPerQuestion = settings.pointsPerQuestion,
-                        gameLevel = UiGameLevel.EASY
+                        gameLevel = gameLevel
                     )
                 )
             }
