@@ -3,6 +3,7 @@ package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessbyimage.QuestionUiState
 import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
@@ -11,8 +12,9 @@ data class GuessQuestionUiState(
     val gameTitle: String = "",
     val totalQuestions: Int = 0,
     val currentStep: Int = 0,
+    val questionUiState: List<UiQuestion> = emptyList(),
     val questionText: String = "",
-    val answers: List<String> = emptyList(),
+    val answers: List<UiAnswer> = emptyList(),
     val correctAnswer: String? = null,
     val remainingAnswers: List<String> = emptyList(),
     val selectedAnswer: String? = null,
@@ -20,11 +22,11 @@ data class GuessQuestionUiState(
     val showNotEnoughPointsDialog: Boolean = false,
     val timePerQuestion: Int = 0,
     val pointsPerQuestion: Int = 0,
-    val userPoints: Int = 0,
-    val score: Int = 0,
+    val time: Int = 0,
     val duration: Int = 0,
     val session: GameSessionUi? = GameSessionUi(),
-)
+    val error: String? = null,
+    )
 
 fun QuestionType.getTitleResId(): Int = when (this) {
     QuestionType.GENRE -> R.string.which_genre_title
@@ -34,7 +36,6 @@ fun QuestionType.getTitleResId(): Int = when (this) {
 }
 
 data class GameSessionUi(
-    val id: String = "",
     val level: String = UiGameLevel.EASY.name,
     val currentQuestion: String = "",
     val score: Int = 0,
@@ -43,7 +44,6 @@ data class GameSessionUi(
 
 
 data class UiQuestion(
-    val id: String,
     val content: String,
     val options: List<UiAnswer>,
     val selectedAnswer: String? = null,
@@ -57,7 +57,6 @@ data class UiAnswer(
 
 fun Question.toUiQuestion(): UiQuestion {
     return UiQuestion(
-        id = id,
         content = content,
         options = options.map { it.toUiAnswer() },
         selectedAnswer = selectedAnswer,

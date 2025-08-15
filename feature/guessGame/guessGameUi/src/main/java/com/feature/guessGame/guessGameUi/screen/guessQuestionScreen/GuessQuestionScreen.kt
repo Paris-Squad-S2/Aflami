@@ -151,7 +151,7 @@ fun GuessReleaseYearContentPreview() {
                 totalQuestions = 5,
                 currentStep = 2,
                 questionText = "In which year was 'Inception' released?",
-                answers = listOf("2008", "2010", "2012", "2014"),
+                answers = listOf(),
                 correctAnswer = "2010",
                 remainingAnswers = listOf("2008", "2010", "2012", "2014"),
                 selectedAnswer = "2008",
