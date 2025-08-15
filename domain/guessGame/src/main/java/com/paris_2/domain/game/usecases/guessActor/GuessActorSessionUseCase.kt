@@ -18,7 +18,7 @@ class GuessActorSessionUseCase(
         val options = actors.map {
             Answer(
                 questionId = questionId,
-                selectedAnswer = it.name,
+                text = it.name,
                 isCorrect = it.name == correctActor.name
             )
         }.shuffled()

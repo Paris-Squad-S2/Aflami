@@ -7,6 +7,7 @@ data class GameSession(
     val questions: List<Question>,
     var currentQuestionIndex: Int = 0,
     var score: Int = 0,
+    var duration: Int = 0,
     var isCompleted: Boolean = false
 ) {
     enum class GameLevel { EASY, MEDIUM, HARD }
