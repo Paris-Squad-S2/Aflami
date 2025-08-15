@@ -47,7 +47,9 @@ class GuessQuestionViewModel @Inject constructor(
 
     init {
         generateSession(args.gameLevel)
-    }
+        currentSession?.let { session ->
+            loadQuestion(session)
+        } ?: Log.e("QuestionViewModel", "Error: currentSession is null")    }
 
     private fun generateSession(level: UiGameLevel) {
         tryToExecute(
@@ -73,26 +75,27 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
     private fun loadQuestion(session: GameSession) {
-        val currentQuestion = session.getCurrentQuestion()?.toUiQuestion()
-        if (currentQuestion == null) return
+        val currentIndex = session.currentQuestionIndex
+        val currentQuestion = session.getCurrentQuestion() ?: return
 
         updateState(
             screenState.value.copy(
-                questionUiState = listOf(currentQuestion),
+                currentStep = currentIndex,
                 totalQuestions = session.questions.size,
-                currentStep = session.currentQuestionIndex,
+                questionUiState = session.questions.map { it.toUiQuestion() },
                 questionText = currentQuestion.content,
-                answers = currentQuestion.options,
+                answers = currentQuestion.options.map { it.toUiAnswer() },
                 correctAnswer = currentQuestion.options.firstOrNull { it.isCorrect }?.text,
                 remainingAnswers = currentQuestion.options.map { it.text },
                 selectedAnswer = currentQuestion.selectedAnswer,
-                hintUsed = currentQuestion.hintUsed,
+                hintUsed = currentQuestion.usedHint,
                 time = timePerQuestion,
             )
         )
 
-        Log.d("GuessQuestionVM", "Loaded questions: ${session.questions.map { it.content }}")
+        Log.d("GuessQuestionVM", "Loaded question ${currentIndex + 1}: ${currentQuestion.content}")
     }
+
 
     override fun onAnswerSelected(answer: String) {
         currentSession?.let { session ->
@@ -159,7 +162,6 @@ class GuessQuestionViewModel @Inject constructor(
                 )
             } else {
                 loadQuestion(updatedSession)
-
             }
         } ?: Log.e("GuessQuestionVM", "No session found when onNextClicked called")
     }
