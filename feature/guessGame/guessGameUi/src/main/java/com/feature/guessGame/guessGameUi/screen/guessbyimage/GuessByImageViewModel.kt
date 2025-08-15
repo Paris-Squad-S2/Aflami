@@ -5,12 +5,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
+import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GuessByImageViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val guessMovieSessionUseCase: GuessMovieSessionUseCase,
     private val guessActorSessionUseCase: GuessActorSessionUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val useHintUseCase: UseHintUseCase,
@@ -37,19 +41,27 @@ class GuessByImageViewModel @Inject constructor(
 
 
     init {
-        Log.d("navTest", "GuessByImageViewModel")
         generateSession(level)
+        updateState(
+            screenState.value.copy(
+                screenTitle = questionType.getTitleResId()
+            )
+        )
         currentSession?.let { session ->
             loadQuestion(session)
-        } ?: Log.e("navTest", "Error: currentSession is null")
+        }
     }
 
-    fun generateSession(questionType: UiGameLevel) {
+    fun generateSession(gameLevel: UiGameLevel) {
+        Log.d("TAG", "generateSession:${questionType} ")
+        Log.d("TAG", "generateSession:${level} ")
         tryToExecute(
             execute = {
-                Log.d("navTest", "generateSession Enter with $questionType")
-                Log.d("navTest", "generateSession Enter with ${questionType.toUiLevel()}")
-                val session = guessActorSessionUseCase.startNewSession(questionType.toUiLevel())
+                val session =
+                    if (questionType == QuestionType.ACTOR) guessActorSessionUseCase.startNewSession(
+                        gameLevel.toUiLevel()
+                    ) else
+                        guessMovieSessionUseCase.startNewSession(gameLevel.toUiLevel())
                 currentSession = session
                 startTimeMillis = System.currentTimeMillis()
                 Log.d("navTest", "generateSession done with ${session.questions.size} questions")
@@ -125,7 +137,6 @@ class GuessByImageViewModel @Inject constructor(
     }
 
 
-
     override fun onAnswerSelected(answer: String) {
         currentSession?.let { session ->
             val currentIndex = session.currentQuestionIndex
@@ -166,7 +177,6 @@ class GuessByImageViewModel @Inject constructor(
             )
         )
     }
-
 
 
     override fun onHintUsed() {
@@ -215,6 +225,4 @@ class GuessByImageViewModel @Inject constructor(
     override fun onCancelClick() {
         navigateUp()
     }
-
-
 }

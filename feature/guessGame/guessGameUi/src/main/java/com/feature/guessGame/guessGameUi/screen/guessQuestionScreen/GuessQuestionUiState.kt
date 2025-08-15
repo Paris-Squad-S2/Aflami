@@ -3,9 +3,7 @@ package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
-import com.feature.guessGame.guessGameUi.screen.guessbyimage.QuestionUiState
 import com.paris_2.domain.game.entity.Answer
-import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 
 data class GuessQuestionUiState(
@@ -26,7 +24,7 @@ data class GuessQuestionUiState(
     val duration: Int = 0,
     val session: GameSessionUi? = GameSessionUi(),
     val error: String? = null,
-    )
+)
 
 fun QuestionType.getTitleResId(): Int = when (this) {
     QuestionType.GENRE -> R.string.which_genre_title
@@ -39,7 +37,7 @@ data class GameSessionUi(
     val level: String = UiGameLevel.EASY.name,
     val currentQuestion: String = "",
     val score: Int = 0,
-    val isCompleted: Boolean = false
+    val isCompleted: Boolean = false,
 )
 
 
@@ -52,7 +50,7 @@ data class UiQuestion(
 
 data class UiAnswer(
     val text: String,
-    val isCorrect: Boolean
+    val isCorrect: Boolean,
 )
 
 fun Question.toUiQuestion(): UiQuestion {

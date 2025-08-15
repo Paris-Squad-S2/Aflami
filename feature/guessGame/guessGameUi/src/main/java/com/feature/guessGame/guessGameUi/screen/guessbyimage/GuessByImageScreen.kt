@@ -16,13 +16,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
+import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
@@ -34,7 +35,6 @@ import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.GuessCard
 import com.paris_2.aflami.designsystem.components.GuessCardImageState
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.utils.BasePreview
 
 
 @Composable
@@ -43,9 +43,13 @@ fun GuessByImageScreen(
     viewModel: GuessByImageViewModel = hiltViewModel(),
 ) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
-    GussByImageScreenContent(
-        state = screenState.value, action = viewModel, modifier = modifier.fillMaxWidth()
-    )
+    GuessGameBackground {
+        GussByImageScreenContent(
+            state = screenState.value,
+            action = viewModel,
+            modifier = modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Composable
@@ -133,7 +137,7 @@ fun QuestionImage(
     showHint: Boolean = true,
     onHintUsed: () -> Unit = {},
     imageUrl: String,
-    uiState: QuestionUiState
+    uiState: QuestionUiState,
 ) {
     var state by remember { mutableStateOf(GuessCardImageState.Hard) }
     GuessCard(
@@ -153,18 +157,21 @@ fun QuestionImage(
 
 @Composable
 private fun Header(
-    head: String,
+    head: Int,
     onCanceled: () -> Unit,
     onTimeFinished: () -> Unit,
     time: Int,
-    currentQuestion: Int
+    currentQuestion: Int,
 ) {
     AppTopBar(
-        modifier = Modifier, title = head, leadingIcons = listOf(
+        modifier = Modifier,
+        title = stringResource(id = head),
+        leadingIcons = listOf(
             iconItemWithDefaults(
                 ImageVector.vectorResource(R.drawable.ic_cancel), onCanceled
             )
-        ), trailingContent = {
+        ),
+        trailingContent = {
             key(currentQuestion) {
                 GameTimer(
                     totalSeconds = time,
@@ -173,31 +180,4 @@ private fun Header(
             }
         }
     )
-}
-
-
-@PreviewLightDark
-@Composable
-private fun GuessByImagePrev() {
-    BasePreview {
-        GussByImageScreenContent(
-            state = GuessCharacterUIState(
-                screenTitle = "Guess the Character",
-                questionUiState = listOf(
-                    QuestionUiState(
-                        answers = listOf("Answer 1", "Answer 2", "Answer 3", "Answer 4")
-                    )
-                ),
-                currentQuestion = 0
-            ),
-            action = object : GuessByImageInteractionListener {
-                override fun onAnswerSelected(answer: String) {}
-                override fun onHintUsed() {}
-                override fun onNextClicked() {}
-                override fun onTimeFinished() {}
-                override fun onDismissNotEnoughPointsDialog() {}
-                override fun onCancelClick() {}
-            }
-        )
-    }
 }
