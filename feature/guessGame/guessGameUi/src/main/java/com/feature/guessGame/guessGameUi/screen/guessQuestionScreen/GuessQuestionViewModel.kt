@@ -78,14 +78,9 @@ class GuessQuestionViewModel @Inject constructor(
 
         updateState(
             screenState.value.copy(
-                session = GameSessionUi(
-                    level = session.level.name,
-                    currentQuestion = currentQuestion.content,
-                    score = session.score,
-                    isCompleted = session.isCompleted
-                ),
+                questionUiState = listOf(currentQuestion),
                 totalQuestions = session.questions.size,
-                currentStep = (session.currentQuestionIndex),
+                currentStep = session.currentQuestionIndex,
                 questionText = currentQuestion.content,
                 answers = currentQuestion.options,
                 correctAnswer = currentQuestion.options.firstOrNull { it.isCorrect }?.text,
@@ -163,7 +158,7 @@ class GuessQuestionViewModel @Inject constructor(
                     )
                 )
             } else {
-               loadQuestion(updatedSession)
+                loadQuestion(updatedSession)
 
             }
         } ?: Log.e("GuessQuestionVM", "No session found when onNextClicked called")
