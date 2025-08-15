@@ -7,6 +7,10 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
 android {
     namespace = "com.feature.guessGame.guessGameUi"
     compileSdk = Configurations.COMPILE_SDK
@@ -46,13 +50,8 @@ dependencies {
     implementation(projects.domain.user)
 
     //test
-    testImplementation(libs.junit)
-    testImplementation(libs.mockk)
-    testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.truth)
-    androidTestImplementation(libs.androidx.junit)
+    testImplementation(libs.bundles.test)
+
 
     // Junit 5
     testImplementation(libs.junit.jupiter.api)
