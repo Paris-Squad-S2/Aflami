@@ -60,9 +60,9 @@ class WhichGenreSessionUseCaseTest {
         val movieGenreNames = movie!!.genres.mapNotNull { Genre.fromId(it)?.displayName }.toSet()
         assertThat(movieGenreNames).isNotEmpty()
         assertThat(movieGenreNames).contains(q.correctAnswer)
-        assertThat(q.options.map { it.selectedAnswer }).contains(q.correctAnswer)
+        assertThat(q.options.map { it.text }).contains(q.correctAnswer)
         assertThat(q.options.count { it.isCorrect }).isEqualTo(1)
-        assertThat(q.options.all { it.selectedAnswer in allDisplayNames }).isTrue()
+        assertThat(q.options.all { it.text in allDisplayNames }).isTrue()
     }
 
     private companion object {

@@ -40,7 +40,7 @@ class GuessActorSessionUseCaseTest {
             assertThat(sampleActors.map { it.imageUri }).contains(q.content)
             assertThat(sampleActors.map { it.name }).contains(q.correctAnswer)
             assertThat(q.options.count { it.isCorrect }).isEqualTo(1)
-            assertThat(q.options.map { it.selectedAnswer }.toSet())
+            assertThat(q.options.map { it.text }.toSet())
                 .isEqualTo(sampleActors.map { it.name }.toSet())
         }
         coVerify(exactly = 5) { repository.getRandomActors(4) }

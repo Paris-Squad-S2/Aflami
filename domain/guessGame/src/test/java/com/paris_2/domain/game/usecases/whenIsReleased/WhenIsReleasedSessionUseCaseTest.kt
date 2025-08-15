@@ -55,13 +55,13 @@ class WhenIsReleasedSessionUseCaseTest {
         assertThat(q.type).isEqualTo(Question.QuestionType.TEXT)
         assertThat(q.usedHint).isFalse()
         assertThat(q.options).hasSize(4)
-        assertThat(q.options.map { it.selectedAnswer }).contains(q.correctAnswer)
+        assertThat(q.options.map { it.text }).contains(q.correctAnswer)
         val movie = allMovies.find { it.name == q.content }
         assertThat(movie).isNotNull()
         assertThat(q.correctAnswer).isEqualTo(movie!!.yearOfRelease.year.toString())
         assertThat(q.options.count { it.isCorrect }).isEqualTo(1)
         val allYears = allMovies.map { it.yearOfRelease.year.toString() }.toSet()
-        assertThat(q.options.map { it.selectedAnswer }.toSet().subtract(allYears)).isEmpty()
+        assertThat(q.options.map { it.text }.toSet().subtract(allYears)).isEmpty()
     }
 
     private companion object {

@@ -24,7 +24,7 @@ class RemoveAnswerHintUseCase() {
             ?: throw IllegalStateException("No current question found")
 
         val correctAnswer = currentQuestion.correctAnswer
-        val wrongAnswers = currentQuestion.options.filter { it.selectedAnswer != correctAnswer }
+        val wrongAnswers = currentQuestion.options.filter { it.text != correctAnswer }
 
         if (wrongAnswers.isEmpty()) {
             return UseHintResult.Success(currentQuestion)
@@ -32,7 +32,7 @@ class RemoveAnswerHintUseCase() {
 
         val optionToRemove = wrongAnswers[Random.Default.nextInt(wrongAnswers.size)]
         val updatedOptions =
-            currentQuestion.options.filter { it.selectedAnswer != optionToRemove.selectedAnswer }
+            currentQuestion.options.filter { it.text != optionToRemove.text }
 
         val updatedQuestion = currentQuestion.copy(
             options = updatedOptions

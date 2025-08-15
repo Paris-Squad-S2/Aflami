@@ -134,7 +134,7 @@ class SubmitAnswerUseCaseTest {
 
     private fun answer(questionId: String, value: String, isCorrect: Boolean) = Answer(
         questionId = questionId,
-        selectedAnswer = value,
+        text = value,
         isCorrect = isCorrect
     )
 }

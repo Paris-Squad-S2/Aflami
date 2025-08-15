@@ -18,6 +18,7 @@ sealed interface GuessGameDestinations : GuessGameGraph {
         val timePerQuestion: Int,
         val pointsPerQuestion: Int,
         val imageType: QuestionType,
+        val gameLevel: UiGameLevel,
     ) : GuessGameDestination
 
     @Serializable
@@ -33,7 +34,8 @@ sealed interface GuessGameDestinations : GuessGameGraph {
     data class FinishGameScreen (
        val totalGameTime : Int,
        val totalGamePoints : Int,
-       val gameType : QuestionType
+       val gameType: QuestionType,
+       val gameLevel: UiGameLevel,
     ) : GuessGameDestination
 
 }

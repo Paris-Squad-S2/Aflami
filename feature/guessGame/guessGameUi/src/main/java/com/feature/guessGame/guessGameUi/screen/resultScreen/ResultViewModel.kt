@@ -16,6 +16,7 @@ class ResultViewModel @Inject constructor(
 ) : BaseViewModel<ResultUiState>(ResultUiState()), ResultInteractionListener {
 
     private val args = savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>()
+    private val gameLevel = args.gameLevel
 
     override fun onExitClicked() {
         navigate(destination = GuessGameDestinations.GuessGameScreen)
@@ -31,7 +32,8 @@ class ResultViewModel @Inject constructor(
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
                         pointsPerQuestion = settings.pointsPerQuestion,
-                        imageType = QuestionType.ACTOR
+                        imageType = QuestionType.ACTOR,
+                        gameLevel = gameLevel
                     )
                 )
             }
@@ -43,7 +45,8 @@ class ResultViewModel @Inject constructor(
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
                         pointsPerQuestion = settings.pointsPerQuestion,
-                        imageType = QuestionType.POSTER
+                        imageType = QuestionType.POSTER,
+                        gameLevel = gameLevel
                     )
                 )
             }

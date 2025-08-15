@@ -93,7 +93,7 @@ class RemoveAnswerHintUseCaseTest {
         val wrong = listOf("B", "C", "D")
         val q = questionWithAnswers(correct = correct, wrong = wrong)
         val session = sessionWithQuestion(q)
-        val originalWrongCount = q.options.count { it.selectedAnswer != correct }
+        val originalWrongCount = q.options.count { it.text != correct }
         val originalSize = q.options.size
         // When
         val result = useCase(session, usedHint = false, currentPoints = 20)
@@ -101,8 +101,8 @@ class RemoveAnswerHintUseCaseTest {
         assertThat(result).isInstanceOf(RemoveAnswerHintUseCase.UseHintResult.Success::class.java)
         val updated = (result as RemoveAnswerHintUseCase.UseHintResult.Success).updatedQuestion
         assertThat(updated.options).hasSize(originalSize - 1)
-        assertThat(updated.options.any { it.selectedAnswer == correct }).isTrue()
-        val updatedWrongCount = updated.options.count { it.selectedAnswer != correct }
+        assertThat(updated.options.any { it.text == correct }).isTrue()
+        val updatedWrongCount = updated.options.count { it.text != correct }
         assertThat(updatedWrongCount).isEqualTo(originalWrongCount - 1)
         assertThat(session.questions.first().options).hasSize(originalSize)
     }
@@ -127,7 +127,7 @@ class RemoveAnswerHintUseCaseTest {
 
     private fun answer(questionId: String, value: String, isCorrect: Boolean) = Answer(
         questionId = questionId,
-        selectedAnswer = value,
+        text = value,
         isCorrect = isCorrect
     )
 }

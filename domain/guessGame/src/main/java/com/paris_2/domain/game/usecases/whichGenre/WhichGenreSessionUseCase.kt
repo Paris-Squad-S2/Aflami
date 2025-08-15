@@ -35,7 +35,7 @@ class WhichGenreSessionUseCase(
             .map { genreName ->
                 Answer(
                     questionId = questionId,
-                    selectedAnswer = genreName,
+                    text = genreName,
                     isCorrect = genreName == correctGenreName
                 )
             }
