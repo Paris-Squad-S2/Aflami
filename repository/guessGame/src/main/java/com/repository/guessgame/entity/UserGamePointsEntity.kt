@@ -6,6 +6,6 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "user_game_points")
 data class UserGamePointsEntity(
     @PrimaryKey
-    val userId: Int = 0,
+    val userId: Int ,
     val gamePoints: Int
 )
