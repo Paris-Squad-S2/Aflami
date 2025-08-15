@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -59,6 +60,8 @@ fun GuessQuestionContent(
     listener: GuessQuestionInteractionListener,
     questionType: QuestionType,
 ) {
+    val currentQuestionIndex = state.currentStep
+
     if (state.isLoading) {
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()
@@ -78,10 +81,12 @@ fun GuessQuestionContent(
                     )
                 ),
                 trailingContent = {
-                    GameTimer(
-                        totalSeconds = state.timePerQuestion,
-                        onFinished = listener::onTimeFinished
-                    )
+                    key(currentQuestionIndex) {
+                        GameTimer(
+                            totalSeconds = state.timePerQuestion,
+                            onFinished = listener::onTimeFinished
+                        )
+                    }
                 }
             )
 
