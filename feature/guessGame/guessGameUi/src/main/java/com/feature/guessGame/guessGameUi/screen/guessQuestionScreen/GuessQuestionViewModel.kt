@@ -168,6 +168,8 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
 
+
+
     override fun onHintUsed() {
         tryToExecute(
             execute = {
@@ -191,15 +193,19 @@ class GuessQuestionViewModel @Inject constructor(
                 when (result) {
                     is RemoveAnswerHintUseCase.UseHintResult.Success -> {
                         val updatedQuestion = result.updatedQuestion
-                        val index = currentSession?.currentQuestionIndex ?: -1
-                        currentSession?.questions =
-                            currentSession?.questions?.toMutableList()?.also {
+                        val session = currentSession ?: return@tryToExecute
+                        val index = session.questions.indexOfFirst { it.id == updatedQuestion.id }
+                        if (index != -1) {
+                            session.questions = session.questions.toMutableList().also {
                                 it[index] = updatedQuestion.copy(usedHint = true)
-                            } ?: return@tryToExecute
+                            }
+                        }
 
                         updateState(
                             screenState.value.copy(
+                                questionText = updatedQuestion.content,
                                 answers = updatedQuestion.options.map { it.toUiAnswer() },
+                                remainingAnswers = updatedQuestion.options.map { it.text },
                                 hintUsed = true
                             )
                         )
@@ -221,6 +227,7 @@ class GuessQuestionViewModel @Inject constructor(
             }
         )
     }
+
 
 
     override fun onTimeFinished() {
