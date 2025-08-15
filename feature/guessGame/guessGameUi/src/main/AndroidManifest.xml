@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <application>
+        <activity
+            android:name=".screen.guessbyimage.GuessByImageActivity"
+            android:exported="true">
+
+        </activity>
     </application>
 
 </manifest>

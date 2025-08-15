@@ -1,10 +1,13 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
+import android.content.Context
+import android.content.Intent
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessByImageScreen
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessQuestionScreen
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessbyimage.GuessByImageActivity
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -51,7 +54,7 @@ class GuessGameScreenViewModel @Inject constructor(
         updateState(screenState.value.copy(selectedDifficulty = difficultyId))
     }
 
-    override fun onStartGame() {
+    override fun onStartGame(context: Context) {
         val settings =
             DifficultySettings.getDifficultySettings(screenState.value.selectedDifficulty)
         val questionType = gameIdToQuestionType[screenState.value.selectedGameId]
@@ -60,16 +63,25 @@ class GuessGameScreenViewModel @Inject constructor(
         updateState(screenState.value.copy(showDifficultyDialog = false))
         when (questionType) {
             QuestionType.ACTOR -> {
-                navigate(
-                    GuessByImageScreen(
-                        questionType = questionType,
-                        totalQuestions = settings.numberOfQuestions,
-                        timePerQuestion = settings.timePerQuestionSec,
-                        pointsPerQuestion = settings.pointsPerQuestion,
-                        imageType = QuestionType.ACTOR,
-                        gameLevel = uiLevel
-                    )
-                )
+                val intent = Intent(context, GuessByImageActivity::class.java).apply {
+                    putExtra("question_type", questionType.name)
+                    putExtra("total_questions", settings.numberOfQuestions)
+                    putExtra("time_per_question", settings.timePerQuestionSec)
+                    putExtra("points_per_question", settings.pointsPerQuestion)
+                    putExtra("image_type", QuestionType.ACTOR.name)
+                    putExtra("game_level", uiLevel.name)
+                }
+                context.startActivity(intent)
+//                navigate(
+//                    GuessByImageScreen(
+//                        questionType = questionType,
+//                        totalQuestions = settings.numberOfQuestions,
+//                        timePerQuestion = settings.timePerQuestionSec,
+//                        pointsPerQuestion = settings.pointsPerQuestion,
+//                        imageType = QuestionType.ACTOR,
+//                        gameLevel = uiLevel
+//                    )
+//                )
             }
 
             QuestionType.POSTER -> {
