@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paris_2.aflami.designsystem.R
@@ -72,8 +73,7 @@ fun AppTopBar(
 
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp, end = 8.dp),
+                    .weight(1f, fill = true)                     .padding(start = 8.dp, end = 8.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 title?.let {
@@ -82,7 +82,8 @@ fun AppTopBar(
                         style = titleTextStyle,
                         color = Theme.colors.text.title,
                         maxLines = 1,
-                        modifier = Modifier.padding(bottom = 2.dp)
+                        modifier = Modifier.padding(bottom = 2.dp),
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
                 subtitle?.let {
@@ -91,7 +92,8 @@ fun AppTopBar(
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.text.body,
                         maxLines = 1,
-                        lineHeight = 16.sp
+                        lineHeight = 16.sp,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
