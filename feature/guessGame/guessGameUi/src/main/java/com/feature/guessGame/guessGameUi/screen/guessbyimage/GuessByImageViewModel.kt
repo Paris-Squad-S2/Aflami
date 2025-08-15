@@ -5,6 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
@@ -46,12 +47,16 @@ class GuessByImageViewModel @Inject constructor(
         } ?: Log.e("navTest", "Error: currentSession is null")
     }
 
-    fun generateSession(questionType: UiGameLevel) {
+    fun generateSession(gameLevel: UiGameLevel) {
+        Log.d("TAG", "generateSession:${questionType} ")
+        Log.d("TAG", "generateSession:${level} ")
         tryToExecute(
             execute = {
-                Log.d("navTest", "generateSession Enter with $questionType")
-                Log.d("navTest", "generateSession Enter with ${questionType.toUiLevel()}")
-                val session = guessActorSessionUseCase.startNewSession(questionType.toUiLevel())
+                val session =
+                    if (questionType == QuestionType.ACTOR) guessActorSessionUseCase.startNewSession(
+                        gameLevel.toUiLevel()
+                    ) else
+                        guessMovieSessionUseCase.startNewSession(gameLevel.toUiLevel())
                 currentSession = session
                 startTimeMillis = System.currentTimeMillis()
                 Log.d("navTest", "generateSession done with ${session.questions.size} questions")
