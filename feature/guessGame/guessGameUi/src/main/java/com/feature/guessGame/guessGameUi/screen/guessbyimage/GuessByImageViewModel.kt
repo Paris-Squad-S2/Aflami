@@ -55,6 +55,9 @@ class GuessByImageViewModel @Inject constructor(
     fun generateSession(gameLevel: UiGameLevel) {
         Log.d("TAG", "generateSession:${questionType} ")
         Log.d("TAG", "generateSession:${level} ")
+
+        updateState(screenState.value.copy(isLoading = true))
+
         tryToExecute(
             execute = {
                 val session =
@@ -70,14 +73,19 @@ class GuessByImageViewModel @Inject constructor(
             onSuccess = { session ->
                 updateState(
                     newState = screenState.value.copy(
-                        time = time
+                        time = time,
+                        isLoading = false
                     )
                 )
                 loadQuestion(session)
             },
             onError = {
                 Log.e("navTest", "Error in generateSession $it")
-                updateState(screenState.value.copy(error = it))
+                updateState(
+                    screenState.value.copy(
+                        error = it, isLoading = false
+                    )
+                )
             }
         )
     }

@@ -3,6 +3,7 @@ package com.feature.guessGame.guessGameUi.screen.guessbyimage
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -34,6 +35,7 @@ import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.GuessCard
 import com.paris_2.aflami.designsystem.components.GuessCardImageState
+import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 
 
@@ -58,6 +60,14 @@ private fun GussByImageScreenContent(
     action: GuessByImageInteractionListener,
     modifier: Modifier = Modifier,
 ) {
+    if (state.isLoading) {
+        PageLoadingPlaceHolder(
+            modifier = Modifier
+                .fillMaxSize()
+        )
+        return
+    }
+
     if (state.showNotEnoughPointsDialog) {
         NotEnoughPointsDialog(
             onDismiss = action::onDismissNotEnoughPointsDialog,
@@ -65,12 +75,12 @@ private fun GussByImageScreenContent(
             title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points,
         )
     }
+
     Column(
         modifier = modifier
             .statusBarsPadding()
             .padding(horizontal = 12.dp)
     ) {
-
         Header(
             head = state.screenTitle,
             onCanceled = action::onCancelClick,
@@ -91,14 +101,12 @@ private fun GussByImageScreenContent(
             onHintUsed = { action.onHintUsed() },
             imageUrl = currentQ?.image ?: "",
             uiState = currentQ ?: QuestionUiState()
-
         )
 
         LazyColumn(
             modifier = Modifier.padding(top = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            val currentQ = state.questionUiState.getOrNull(state.currentQuestion)
             currentQ?.answers?.let { answers ->
                 items(answers) { answer ->
                     val isSelected = answer == currentQ.selectedAnswer
@@ -115,10 +123,8 @@ private fun GussByImageScreenContent(
         }
 
         Spacer(modifier = Modifier.weight(1f))
-        val hasAnswered = state.questionUiState
-            .getOrNull(state.currentQuestion)
-            ?.selectedAnswer != null
 
+        val hasAnswered = currentQ?.selectedAnswer != null
         CustomButton(
             onClick = { action.onNextClicked() },
             text = com.feature.guessGame.guessGameUi.R.string.next,
