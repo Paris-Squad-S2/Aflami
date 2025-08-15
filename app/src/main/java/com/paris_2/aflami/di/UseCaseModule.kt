@@ -16,6 +16,7 @@ import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris_2.domain.game.usecases.SaveUserGamePointsUseCase
 import com.paris_2.domain.game.usecases.SubmitAnswerUseCase
+import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
 import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
 import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
@@ -389,5 +390,9 @@ object UseCaseModule {
     @Provides
     fun provideMoveToNextQuestionUseCase() =
         MoveToNextQuestionUseCase()
+
+    @Provides
+    fun provideUseHintUseCase(gamePointsRepository: GamePointsRepository) =
+        UseHintUseCase(gamePointsRepository)
 
 }

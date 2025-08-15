@@ -9,7 +9,9 @@ import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLev
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
+import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -18,6 +20,8 @@ class GuessByImageViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val guessActorSessionUseCase: GuessActorSessionUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
+    private val useHintUseCase: UseHintUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase,
 ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
     private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessByImageScreen>()
@@ -81,14 +85,13 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     override fun onNextClicked() {
-        updateState(
-            newState = screenState.value.copy(
-                time = time
-            )
-        )
         currentSession?.let { session ->
             val updatedSession = moveToNextQuestionUseCase(session)
-            Log.d("image", "loadQuestion: ${updatedSession.questions.firstOrNull()?.content}")
+            Log.d(
+                "image",
+                "loadQuestion: ${updatedSession.questions.getOrNull(updatedSession.currentQuestionIndex)?.content}"
+            )
+
             if (updatedSession.isCompleted) {
                 val totalTimeSeconds =
                     ((System.currentTimeMillis() - startTimeMillis) / 1000).toInt()
@@ -102,10 +105,19 @@ class GuessByImageViewModel @Inject constructor(
                     )
                 )
             } else {
+                val newTime = when (level) {
+                    UiGameLevel.HARD -> 10
+                    UiGameLevel.MEDIUM -> 30
+                    UiGameLevel.EASY -> 45
+                }
+                startTimeMillis = System.currentTimeMillis()
+
                 updateState(
                     screenState.value.copy(
                         currentQuestion = updatedSession.currentQuestionIndex,
-                        questionUiState = updatedSession.questions.map { it.toUiModel() }
+                        questionUiState = updatedSession.questions.map { it.toUiModel() },
+                        time = newTime,
+                        isChoiceCorrect = false
                     )
                 )
             }
@@ -158,7 +170,34 @@ class GuessByImageViewModel @Inject constructor(
 
 
     override fun onHintUsed() {
+        val session = currentSession
+        val currentQ = session?.getCurrentQuestion()
+        if (currentQ?.usedHint == true) return
 
+        tryToExecute(
+            execute = {
+                val userId = getAccountIdUseCase() ?: -1
+                if (session != null && currentQ != null) {
+                    val used = useHintUseCase(session, userId)
+                    if (!used) {
+                        updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
+                        return@tryToExecute
+                    }
+                    currentQ.usedHint = true
+                    updateState(
+                        screenState.value.copy(
+                            questionUiState = session.questions.map { it.toUiModel() }
+                        )
+                    )
+                } else {
+                    updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
+                }
+            },
+            onError = { error ->
+                Log.e("navTest", "Error using hint: $error")
+                updateState(screenState.value.copy(error = error))
+            }
+        )
     }
 
     override fun onTimeFinished() {
@@ -166,7 +205,11 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     override fun onDismissNotEnoughPointsDialog() {
-
+        updateState(
+            newState = screenState.value.copy(
+                showNotEnoughPointsDialog = false
+            )
+        )
     }
 
     override fun onCancelClick() {

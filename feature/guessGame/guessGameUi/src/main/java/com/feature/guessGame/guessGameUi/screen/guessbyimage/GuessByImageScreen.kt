@@ -10,6 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -22,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
+import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.paris_2.aflami.designsystem.R
@@ -52,6 +54,13 @@ private fun GussByImageScreenContent(
     action: GuessByImageInteractionListener,
     modifier: Modifier = Modifier,
 ) {
+    if (state.showNotEnoughPointsDialog) {
+        NotEnoughPointsDialog(
+            onDismiss = action::onDismissNotEnoughPointsDialog,
+            onConfirm = action::onDismissNotEnoughPointsDialog,
+            title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points,
+        )
+    }
     Column(
         modifier = modifier
             .statusBarsPadding()
@@ -62,7 +71,8 @@ private fun GussByImageScreenContent(
             head = state.screenTitle,
             onCanceled = action::onCancelClick,
             onTimeFinished = action::onTimeFinished,
-            time = state.time
+            time = state.time,
+            currentQuestion = state.currentQuestion
         )
 
         QuestionIndicator(
@@ -76,6 +86,8 @@ private fun GussByImageScreenContent(
             showHint = !state.isChoiceCorrect,
             onHintUsed = { action.onHintUsed() },
             imageUrl = currentQ?.image ?: "",
+            uiState = currentQ ?: QuestionUiState()
+
         )
 
         LazyColumn(
@@ -121,22 +133,18 @@ fun QuestionImage(
     showHint: Boolean = true,
     onHintUsed: () -> Unit = {},
     imageUrl: String,
+    uiState: QuestionUiState
 ) {
     var state by remember { mutableStateOf(GuessCardImageState.Hard) }
     GuessCard(
-        imagePainter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500${imageUrl}"),
-        clickable = true,
+        imagePainter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500$imageUrl"),
+        clickable = !uiState.usedHint,
         imageState = state,
-        showHint = showHint && state == GuessCardImageState.Hard,
+        showHint = showHint && !uiState.usedHint && state == GuessCardImageState.Hard,
         onClick = {
-            state = when (state) {
-                GuessCardImageState.Hard -> {
-                    onHintUsed()
-                    GuessCardImageState.Medium
-                }
-
-                GuessCardImageState.Medium -> GuessCardImageState.Show
-                GuessCardImageState.Show -> GuessCardImageState.Hard
+            if (!uiState.usedHint && state == GuessCardImageState.Hard) {
+                onHintUsed()
+                state = GuessCardImageState.Medium
             }
         },
     )
@@ -149,6 +157,7 @@ private fun Header(
     onCanceled: () -> Unit,
     onTimeFinished: () -> Unit,
     time: Int,
+    currentQuestion: Int
 ) {
     AppTopBar(
         modifier = Modifier, title = head, leadingIcons = listOf(
@@ -156,10 +165,12 @@ private fun Header(
                 ImageVector.vectorResource(R.drawable.ic_cancel), onCanceled
             )
         ), trailingContent = {
-            GameTimer(
-                totalSeconds = time,
-                onFinished = { onTimeFinished() }
-            )
+            key(currentQuestion) {
+                GameTimer(
+                    totalSeconds = time,
+                    onFinished = { onTimeFinished() }
+                )
+            }
         }
     )
 }

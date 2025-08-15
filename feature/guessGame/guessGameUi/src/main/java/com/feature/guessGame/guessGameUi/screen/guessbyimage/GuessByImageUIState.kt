@@ -10,6 +10,8 @@ data class GuessCharacterUIState(
     val duration: Int = 0,
     val time: Int = 0,
     val currentQuestion: Int = 0,
+    val showNotEnoughPointsDialog: Boolean = false,
+    val hintUsed: Boolean = false
 )
 
 data class QuestionUiState(
@@ -17,6 +19,7 @@ data class QuestionUiState(
     val answers: List<String> = emptyList(),
     val correctAnswer: String = "",
     val selectedAnswer: String? = null,
+    val usedHint: Boolean = false
 )
 
 fun com.paris_2.domain.game.entity.Question.toUiModel(): com.feature.guessGame.guessGameUi.screen.guessbyimage.QuestionUiState {
@@ -24,7 +27,8 @@ fun com.paris_2.domain.game.entity.Question.toUiModel(): com.feature.guessGame.g
         image = content,
         answers = options.map { it.text },
         correctAnswer = correctAnswer,
-        selectedAnswer = selectedAnswer
+        selectedAnswer = selectedAnswer,
+        usedHint = usedHint
     )
 }
 
