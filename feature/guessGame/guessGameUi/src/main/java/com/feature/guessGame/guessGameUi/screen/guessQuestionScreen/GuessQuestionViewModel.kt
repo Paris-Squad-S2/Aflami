@@ -9,6 +9,7 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
+import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
@@ -24,12 +25,12 @@ class GuessQuestionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val whenIsReleasedSessionUseCase: WhenIsReleasedSessionUseCase,
     private val whichGenreSessionUseCase: WhichGenreSessionUseCase,
+    private val submitAnswerUseCase: SubmitAnswerUseCase,
     private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val getUserPointUseCase: GetUserPointUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
-
-    ) : BaseViewModel<GuessQuestionUiState>(
+) : BaseViewModel<GuessQuestionUiState>(
     GuessQuestionUiState(
         totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
         timePerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().timePerQuestion,
@@ -46,9 +47,6 @@ class GuessQuestionViewModel @Inject constructor(
 
     init {
         generateSession(args.gameLevel)
-        currentSession?.let { session ->
-            loadQuestion(session)
-        } ?: Log.e("QuestionViewModel", "Error: currentSession is null")
     }
 
     private fun generateSession(level: UiGameLevel) {
@@ -75,97 +73,86 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
     private fun loadQuestion(session: GameSession) {
-        val currentIndex = session.currentQuestionIndex
-        val currentQuestion = session.getCurrentQuestion() ?: return
+        session.getCurrentQuestion()?.let { question ->
+            updateState(
+                screenState.value.copy(
+                    currentStep = session.currentQuestionIndex,
+                    totalQuestions = session.questions.size,
+                    questionUiState = session.questions.map { it.toUiQuestion() },
+                    questionText = question.content,
+                    answers = question.options.map { it.toUiAnswer() },
+                    correctAnswer = question.options.firstOrNull { it.isCorrect }?.text,
+                    remainingAnswers = question.options.map { it.text },
+                    selectedAnswer = question.selectedAnswer,
+                    hintUsed = question.usedHint,
+                    time = timePerQuestion,
+                )
+            )
+            Log.d(
+                "GuessQuestionVM",
+                "Loaded question ${session.currentQuestionIndex + 1}: ${question.content}"
+            )
+        } ?: Log.e("GuessQuestionVM", "No current question found")
+    }
+
+    override fun onAnswerSelected(answer: String) {
+        val session = currentSession ?: return
+        val question = session.getCurrentQuestion() ?: return
+        if (question.selectedAnswer != null) return
+
+        question.selectedAnswer = answer
+        val wasCorrect = answer == question.correctAnswer
+
+        if (wasCorrect) updateScore()
 
         updateState(
             screenState.value.copy(
-                currentStep = currentIndex,
-                totalQuestions = session.questions.size,
-                questionUiState = session.questions.map { it.toUiQuestion() },
-                questionText = currentQuestion.content,
-                answers = currentQuestion.options.map { it.toUiAnswer() },
-                correctAnswer = currentQuestion.options.firstOrNull { it.isCorrect }?.text,
-                remainingAnswers = currentQuestion.options.map { it.text },
-                selectedAnswer = currentQuestion.selectedAnswer,
-                hintUsed = currentQuestion.usedHint,
-                time = timePerQuestion,
+                answers = question.options.map { it.toUiAnswer() },
+                selectedAnswer = answer,
+                correctAnswer = question.correctAnswer,
+                hintUsed = question.usedHint,
+                session = screenState.value.session?.copy(score = session.score)
             )
         )
 
-        Log.d("GuessQuestionVM", "Loaded question ${currentIndex + 1}: ${currentQuestion.content}")
+        submitAnswerUseCase(session, answer)
+        Log.d(
+            "GuessQuestionVM",
+            "Answered Question ${session.currentQuestionIndex + 1} Correct: $wasCorrect, Score now: ${session.score}"
+        )
     }
-
-
-    override fun onAnswerSelected(answer: String) {
-        currentSession?.let { session ->
-            val currentQuestion = session.getCurrentQuestion() ?: return
-            if (currentQuestion.selectedAnswer != null) return
-
-            currentQuestion.selectedAnswer = answer
-            val questionNumber = session.currentQuestionIndex + 1
-
-            val wasCorrect = answer == currentQuestion.correctAnswer
-            if (wasCorrect) {
-                val scoreBefore = session.score
-                updateScore()
-                Log.d(
-                    "GuessQuestionVM",
-                    "Answered Question $questionNumber Correct: true, Points added: ${session.score - scoreBefore}, " +
-                            "Score before: $scoreBefore, Score now: ${session.score}"
-                )
-            } else {
-                Log.d(
-                    "GuessQuestionVM",
-                    "Answered Question $questionNumber Correct: false, Points added: 0, Score before: ${session.score}, Score now: ${session.score}"
-                )
-            }
-
-            updateState(
-                screenState.value.copy(
-                    answers = currentQuestion.options.map { it.toUiAnswer() },
-                    selectedAnswer = answer,
-                    correctAnswer = currentQuestion.correctAnswer,
-                    hintUsed = currentQuestion.usedHint,
-                    session = screenState.value.session?.copy(score = session.score)
-                )
-            )
-        }
-    }
-
 
     override fun onNextClicked() {
-        currentSession?.let { session ->
-            val updatedSession = moveToNextQuestionUseCase(session)
-            currentSession = updatedSession
+        val session = currentSession ?: run {
+            Log.e("GuessQuestionVM", "No session found when onNextClicked called")
+            return
+        }
 
-            updateState(
-                screenState.value.copy(
-                    currentStep = updatedSession.currentQuestionIndex,
-                    time = timePerQuestion,
-                    questionUiState = updatedSession.questions.map { it.toUiQuestion() }
+        val updatedSession = moveToNextQuestionUseCase(session)
+        currentSession = updatedSession
+
+        updateState(
+            screenState.value.copy(
+                currentStep = updatedSession.currentQuestionIndex,
+                time = timePerQuestion,
+                questionUiState = updatedSession.questions.map { it.toUiQuestion() }
+            )
+        )
+
+        if (updatedSession.isCompleted) {
+            updatedSession.duration = calculateTotalGameTime()
+            navigate(
+                GuessGameDestinations.FinishGameScreen(
+                    totalGameTime = updatedSession.duration,
+                    totalGamePoints = updatedSession.score,
+                    gameType = questionType,
+                    gameLevel = args.gameLevel
                 )
             )
-
-            if (updatedSession.isCompleted) {
-                val totalGameTimeSeconds = calculateTotalGameTime()
-                updatedSession.duration = totalGameTimeSeconds
-                navigate(
-                    GuessGameDestinations.FinishGameScreen(
-                        totalGameTime = totalGameTimeSeconds,
-                        totalGamePoints = updatedSession.score,
-                        gameType = questionType,
-                        gameLevel = args.gameLevel
-                    )
-                )
-            } else {
-                loadQuestion(updatedSession)
-            }
-        } ?: Log.e("GuessQuestionVM", "No session found when onNextClicked called")
+        } else {
+            loadQuestion(updatedSession)
+        }
     }
-
-
-
 
     override fun onHintUsed() {
         tryToExecute(
@@ -173,67 +160,55 @@ class GuessQuestionViewModel @Inject constructor(
                 val userId = getAccountIdUseCase() ?: 0
                 val currentPoints = getUserPointUseCase(userId)
 
-                if (currentPoints < 10) {
-                    return@tryToExecute RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints
-                }
+                if (currentPoints < 10) return@tryToExecute RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints
 
                 currentSession?.let { session ->
-                    val currentQ = session.getCurrentQuestion() ?: return@tryToExecute null
-                    removeAnswerHintUseCase(
-                        gameSession = session,
-                        usedHint = currentQ.usedHint,
-                        currentPoints = currentPoints
-                    )
+                    val question = session.getCurrentQuestion() ?: return@tryToExecute null
+                    removeAnswerHintUseCase(session, question.usedHint, currentPoints)
                 }
             },
             onSuccess = { result ->
                 when (result) {
-                    is RemoveAnswerHintUseCase.UseHintResult.Success -> {
-                        val updatedQuestion = result.updatedQuestion
-                        val session = currentSession ?: return@tryToExecute
-                        val index = session.questions.indexOfFirst { it.id == updatedQuestion.id }
-                        if (index != -1) {
-                            session.questions = session.questions.toMutableList().also {
-                                it[index] = updatedQuestion.copy(usedHint = true)
-                            }
-                        }
+                    is RemoveAnswerHintUseCase.UseHintResult.Success -> applyHint(result.updatedQuestion)
+                    RemoveAnswerHintUseCase.UseHintResult.AlreadyUsed -> Log.d(
+                        "GuessQuestionVM",
+                        "Hint already used"
+                    )
 
-                        updateState(
-                            screenState.value.copy(
-                                questionText = updatedQuestion.content,
-                                answers = updatedQuestion.options.map { it.toUiAnswer() },
-                                remainingAnswers = updatedQuestion.options.map { it.text },
-                                hintUsed = true
-                            )
+                    RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints -> updateState(
+                        screenState.value.copy(
+                            showNotEnoughPointsDialog = true
                         )
-                    }
-
-                    RemoveAnswerHintUseCase.UseHintResult.AlreadyUsed -> {
-                        Log.d("GuessQuestionVM", "Hint already used for this question")
-                    }
-
-                    RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints -> {
-                        updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
-                    }
+                    )
 
                     null -> Unit
                 }
             },
-            onError = { error ->
-                Log.e("GuessQuestionVM", "Error using hint: $error")
-            }
+            onError = { error -> Log.e("GuessQuestionVM", "Error using hint: $error") }
         )
     }
 
-
-
-    override fun onTimeFinished() {
-        onNextClicked()
+    private fun applyHint(updatedQuestion: Question) {
+        val session = currentSession ?: return
+        val index = session.questions.indexOfFirst { it.id == updatedQuestion.id }
+        if (index != -1) {
+            session.questions = session.questions.toMutableList().also {
+                it[index] = updatedQuestion.copy(usedHint = true)
+            }
+        }
+        updateState(
+            screenState.value.copy(
+                questionText = updatedQuestion.content,
+                answers = updatedQuestion.options.map { it.toUiAnswer() },
+                remainingAnswers = updatedQuestion.options.map { it.text },
+                hintUsed = true
+            )
+        )
     }
 
-    override fun onDismissNotEnoughPointsDialog() {
+    override fun onTimeFinished() = onNextClicked()
+    override fun onDismissNotEnoughPointsDialog() =
         updateState(screenState.value.copy(showNotEnoughPointsDialog = false))
-    }
 
     override fun onCancelClick() {
         navigateUp()
@@ -241,9 +216,7 @@ class GuessQuestionViewModel @Inject constructor(
 
     private fun calculateTotalGameTime(): Int {
         return if (gameStartTimeMillis > 0) {
-            val currentTimeMillis = System.currentTimeMillis()
-            val totalTimeMillis = currentTimeMillis - gameStartTimeMillis
-            (totalTimeMillis / 1000).toInt()
+            ((System.currentTimeMillis() - gameStartTimeMillis) / 1000).toInt()
         } else {
             Log.w("GuessQuestionVM", "Game start time not set, returning 0")
             0
@@ -260,19 +233,14 @@ class GuessQuestionViewModel @Inject constructor(
         currentSession?.let { session ->
             val oldScore = session.score
             session.score += points
-
-            Log.d(
-                "GuessQuestionVM",
-                "Answered Question ${session.currentQuestionIndex + 1} correctly, " +
-                        "Points added: $points, Score before: $oldScore, Score now: ${session.score}"
-            )
-
             updateState(
                 screenState.value.copy(
-                    session = screenState.value.session?.copy(
-                        score = session.score
-                    )
+                    session = screenState.value.session?.copy(score = session.score)
                 )
+            )
+            Log.d(
+                "GuessQuestionVM",
+                "Answered Question ${session.currentQuestionIndex + 1} correctly, Points added: $points, Score now: ${session.score}"
             )
         }
     }
