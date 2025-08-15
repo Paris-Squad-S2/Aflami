@@ -11,6 +11,7 @@ import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
+import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class GuessByImageViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
+    private val guessMovieSessionUseCase: GuessMovieSessionUseCase,
     private val guessActorSessionUseCase: GuessActorSessionUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val useHintUseCase: UseHintUseCase,
@@ -125,7 +127,6 @@ class GuessByImageViewModel @Inject constructor(
     }
 
 
-
     override fun onAnswerSelected(answer: String) {
         currentSession?.let { session ->
             val currentIndex = session.currentQuestionIndex
@@ -166,7 +167,6 @@ class GuessByImageViewModel @Inject constructor(
             )
         )
     }
-
 
 
     override fun onHintUsed() {
@@ -215,6 +215,4 @@ class GuessByImageViewModel @Inject constructor(
     override fun onCancelClick() {
         navigateUp()
     }
-
-
 }

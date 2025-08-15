@@ -1,6 +1,5 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
-import android.util.Log
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessByImageScreen
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessQuestionScreen
@@ -40,7 +39,6 @@ class GuessGameScreenViewModel @Inject constructor(
 
 
     override fun onGamePlayClicked(gameId: String) {
-
         updateState(
             screenState.value.copy(
                 selectedGameId = gameId,
@@ -62,7 +60,6 @@ class GuessGameScreenViewModel @Inject constructor(
         updateState(screenState.value.copy(showDifficultyDialog = false))
         when (questionType) {
             QuestionType.ACTOR -> {
-                Log.d("navTest", "QuestionType.ACTOR")
                 navigate(
                     GuessByImageScreen(
                         questionType = questionType,
@@ -89,7 +86,6 @@ class GuessGameScreenViewModel @Inject constructor(
             }
 
             QuestionType.RELEASE_YEAR -> {
-                Log.d("navTest", "QuestionType.RELEASE_YEAR")
                 navigate(
                     GuessQuestionScreen(
                         questionType = questionType,
@@ -103,7 +99,6 @@ class GuessGameScreenViewModel @Inject constructor(
             }
 
             QuestionType.GENRE -> {
-                Log.d("navTest", "QuestionType.GENRE")
                 navigate(
                     GuessQuestionScreen(
                         questionType = questionType,
@@ -116,10 +111,6 @@ class GuessGameScreenViewModel @Inject constructor(
             }
 
             null -> {
-                Log.d(
-                    "navTest",
-                    "Unknown question type for gameId: ${screenState.value.selectedGameId}"
-                )
             }
         }
     }
@@ -132,11 +123,13 @@ class GuessGameScreenViewModel @Inject constructor(
         const val GAME_ID_RELEASE_YEAR = "guess_release_year"
         const val GAME_ID_GENRE = "guess_genre"
         const val GAME_ID_ACTOR = "guess_character"
+        const val GAME_ID_POSTER = "guess_movie"
 
         private val gameIdToQuestionType = mapOf(
             GAME_ID_RELEASE_YEAR to QuestionType.RELEASE_YEAR,
             GAME_ID_GENRE to QuestionType.GENRE,
-            GAME_ID_ACTOR to QuestionType.ACTOR
+            GAME_ID_ACTOR to QuestionType.ACTOR,
+            GAME_ID_POSTER to QuestionType.POSTER
         )
     }
 }
