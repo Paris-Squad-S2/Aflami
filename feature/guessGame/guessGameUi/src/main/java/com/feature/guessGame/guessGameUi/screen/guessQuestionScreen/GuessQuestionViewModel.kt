@@ -13,7 +13,6 @@ import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
-import com.paris_2.domain.game.usecases.SubmitAnswerUseCase
 import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
 import com.paris_2.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
@@ -25,7 +24,6 @@ class GuessQuestionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val whenIsReleasedSessionUseCase: WhenIsReleasedSessionUseCase,
     private val whichGenreSessionUseCase: WhichGenreSessionUseCase,
-    private val submitAnswerUseCase: SubmitAnswerUseCase,
     private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val getUserPointUseCase: GetUserPointUseCase,
@@ -35,7 +33,10 @@ class GuessQuestionViewModel @Inject constructor(
         totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
         timePerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().timePerQuestion,
         pointsPerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().pointsPerQuestion,
-        gameTitle = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().questionType.name
+        gameTitle = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().questionType.name,
+        session = GameSessionUi(
+            level = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().gameLevel.name
+        )
     )
 ), GuessQuestionInteractionListener {
 
@@ -114,8 +115,6 @@ class GuessQuestionViewModel @Inject constructor(
                 session = screenState.value.session?.copy(score = session.score)
             )
         )
-
-        submitAnswerUseCase(session, answer)
         Log.d(
             "GuessQuestionVM",
             "Answered Question ${session.currentQuestionIndex + 1} Correct: $wasCorrect, Score now: ${session.score}"
