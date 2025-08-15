@@ -1,11 +1,14 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
+import androidx.annotation.StringRes
+
 data class GuessCharacterUIState(
     val error: String? = null,
     val isLoading: Boolean = false,
     val questionUiState: List<QuestionUiState> = emptyList(),
     val isChoiceCorrect: Boolean = false,
-    val screenTitle: Int = 1,
+    @StringRes
+    val screenTitle: Int? = null,
     val score: Int = 0,
     val duration: Int = 0,
     val time: Int = 0,
