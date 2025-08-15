@@ -70,4 +70,7 @@ dependencies {
     //blur
     implementation(libs.sifr.shaded)
 
+    //coil
+    implementation(libs.coil.compose.v240)
+
 }

@@ -1,6 +1,7 @@
 [versions]
 agp = "8.10.1"
 android-youtube-player = "12.1.2"
+coilComposeVersion = "2.4.0"
 datastorePreferences = "1.1.7"
 firebaseBom = "33.16.0"
 firebaseCrashlytics = "3.0.6"
@@ -84,6 +85,7 @@ androidx-foundation = { group = "androidx.compose.foundation", name = "foundatio
 android-youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "android-youtube-player" }
 
 # Kotlin
+coil-compose-v240 = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
