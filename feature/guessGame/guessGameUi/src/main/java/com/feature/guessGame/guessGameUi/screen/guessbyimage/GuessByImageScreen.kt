@@ -66,75 +66,78 @@ private fun GussByImageScreenContent(
                 .fillMaxSize()
         )
         return
-    }
-
-    if (state.showNotEnoughPointsDialog) {
-        NotEnoughPointsDialog(
-            onDismiss = action::onDismissNotEnoughPointsDialog,
-            onConfirm = action::onDismissNotEnoughPointsDialog,
-            title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points,
-        )
-    }
-
-    Column(
-        modifier = modifier
-            .statusBarsPadding()
-            .padding(horizontal = 12.dp)
-    ) {
-        Header(
-            head = state.screenTitle,
-            onCanceled = action::onCancelClick,
-            onTimeFinished = action::onTimeFinished,
-            time = state.time,
-            currentQuestion = state.currentQuestion
-        )
-
-        QuestionIndicator(
-            numberOfQuestions = state.questionUiState.size,
-            step = state.currentQuestion,
-            modifier = Modifier.padding(vertical = 18.dp)
-        )
-
-        val currentQ = state.questionUiState.getOrNull(state.currentQuestion)
-        QuestionImage(
-            showHint = !state.isChoiceCorrect,
-            onHintUsed = { action.onHintUsed() },
-            imageUrl = currentQ?.image ?: "",
-            uiState = currentQ ?: QuestionUiState()
-        )
-
-        LazyColumn(
-            modifier = Modifier.padding(top = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            currentQ?.answers?.let { answers ->
-                items(answers) { answer ->
-                    val isSelected = answer == currentQ.selectedAnswer
-                    val isCorrect = answer == currentQ.correctAnswer
-
-                    OptionItem(
-                        text = answer,
-                        selected = isSelected,
-                        isCorrect = if (currentQ.selectedAnswer != null) isCorrect else false,
-                        onClick = { action.onAnswerSelected(answer) }
-                    )
-                }
-            }
+    }else{
+        if (state.showNotEnoughPointsDialog) {
+            NotEnoughPointsDialog(
+                onDismiss = action::onDismissNotEnoughPointsDialog,
+                onConfirm = action::onDismissNotEnoughPointsDialog,
+                title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points,
+            )
         }
 
-        Spacer(modifier = Modifier.weight(1f))
+        Column(
+            modifier = modifier
+                .statusBarsPadding()
+                .padding(horizontal = 12.dp)
+        ) {
+            Header(
+                head = state.screenTitle,
+                onCanceled = action::onCancelClick,
+                onTimeFinished = action::onTimeFinished,
+                time = state.time,
+                currentQuestion = state.currentQuestion
+            )
 
-        val hasAnswered = currentQ?.selectedAnswer != null
-        CustomButton(
-            onClick = { action.onNextClicked() },
-            text = com.feature.guessGame.guessGameUi.R.string.next,
-            type = ButtonType.Primary,
-            state = if (hasAnswered) ButtonState.Normal else ButtonState.Disabled,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp)
-        )
+            QuestionIndicator(
+                numberOfQuestions = state.questionUiState.size,
+                step = state.currentQuestion,
+                modifier = Modifier.padding(vertical = 18.dp)
+            )
+
+            val currentQ = state.questionUiState.getOrNull(state.currentQuestion)
+            QuestionImage(
+                showHint = !state.isChoiceCorrect,
+                onHintUsed = { action.onHintUsed() },
+                imageUrl = currentQ?.image ?: "",
+                uiState = currentQ ?: QuestionUiState()
+            )
+
+            LazyColumn(
+                modifier = Modifier.padding(top = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                currentQ?.answers?.let { answers ->
+                    items(answers) { answer ->
+                        val isSelected = answer == currentQ.selectedAnswer
+                        val isCorrect = answer == currentQ.correctAnswer
+
+                        OptionItem(
+                            text = answer,
+                            selected = isSelected,
+                            isCorrect = if (currentQ.selectedAnswer != null) isCorrect else false,
+                            onClick = { action.onAnswerSelected(answer) }
+                        )
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            val hasAnswered = currentQ?.selectedAnswer != null
+            CustomButton(
+                onClick = { action.onNextClicked() },
+                text = com.feature.guessGame.guessGameUi.R.string.next,
+                type = ButtonType.Primary,
+                state = if (hasAnswered) ButtonState.Normal else ButtonState.Disabled,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 16.dp)
+            )
+        }
+
     }
+
+
 }
 
 @Composable
