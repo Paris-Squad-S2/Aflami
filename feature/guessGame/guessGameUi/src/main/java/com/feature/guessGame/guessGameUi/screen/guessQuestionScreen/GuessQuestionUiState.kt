@@ -3,6 +3,7 @@ package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessbyimage.QuestionUiState
 import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
@@ -11,8 +12,9 @@ data class GuessQuestionUiState(
     val gameTitle: String = "",
     val totalQuestions: Int = 0,
     val currentStep: Int = 0,
+    val questionUiState: List<UiQuestion> = emptyList(),
     val questionText: String = "",
-    val answers: List<String> = emptyList(),
+    val answers: List<UiAnswer> = emptyList(),
     val correctAnswer: String? = null,
     val remainingAnswers: List<String> = emptyList(),
     val selectedAnswer: String? = null,

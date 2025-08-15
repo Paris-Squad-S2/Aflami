@@ -88,7 +88,7 @@ class GuessQuestionViewModel @Inject constructor(
                 totalQuestions = session.questions.size,
                 currentStep = (session.currentQuestionIndex),
                 questionText = currentQ.content,
-                answers = currentQ.options.map { it.text },
+                answers = currentQ.options,
                 correctAnswer = currentQ.options.firstOrNull { it.isCorrect }?.text,
                 remainingAnswers = currentQ.options.map { it.text },
                 selectedAnswer = currentQ.selectedAnswer,
@@ -126,7 +126,7 @@ class GuessQuestionViewModel @Inject constructor(
 
             updateState(
                 screenState.value.copy(
-                    answers = currentQ.options.map { it.text },
+                    answers = currentQ.options.map { it.toUiAnswer() },
                     selectedAnswer = answer,
                     correctAnswer = currentQ.correctAnswer,
                     hintUsed = currentQ.usedHint,
@@ -139,24 +139,22 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
 
-
     override fun onNextClicked() {
-        updateState(
-            newState = screenState.value.copy(
-                time = timePerQuestion
-            )
-        )
-
         currentSession?.let { session ->
             val updatedSession = moveToNextQuestionUseCase(session)
             currentSession = updatedSession
 
+            updateState(
+                screenState.value.copy(
+                    currentStep = updatedSession.currentQuestionIndex,
+                    time = timePerQuestion,
+                    questionUiState = updatedSession.questions.map { it.toUiQuestion() }
+                )
+            )
+
             if (updatedSession.isCompleted) {
                 val totalGameTimeSeconds = calculateTotalGameTime()
                 updatedSession.duration = totalGameTimeSeconds
-
-                Log.d("GuessQuestionVM", "Passing score to finish screen: ${updatedSession.score}")
-
                 navigate(
                     GuessGameDestinations.FinishGameScreen(
                         totalGameTime = totalGameTimeSeconds,
@@ -166,23 +164,16 @@ class GuessQuestionViewModel @Inject constructor(
                     )
                 )
             } else {
-                updateState(
-                    screenState.value.copy(
-                        currentStep = updatedSession.currentQuestionIndex,
-                        time = timePerQuestion
-                    )
-                )
                 loadQuestion(updatedSession)
             }
         } ?: Log.e("GuessQuestionVM", "No session found when onNextClicked called")
     }
 
 
-
     override fun onHintUsed() {
         tryToExecute(
             execute = {
-                val userId = getAccountIdUseCase()?:0
+                val userId = getAccountIdUseCase() ?: 0
                 val currentPoints = getUserPointUseCase(userId)
 
                 if (currentPoints < 10) {
@@ -203,13 +194,14 @@ class GuessQuestionViewModel @Inject constructor(
                     is RemoveAnswerHintUseCase.UseHintResult.Success -> {
                         val updatedQuestion = result.updatedQuestion
                         val index = currentSession?.currentQuestionIndex ?: 0
-                        currentSession?.questions = currentSession?.questions?.toMutableList()?.also {
-                            it[index] = updatedQuestion.copy(usedHint = true)
-                        } ?: return@tryToExecute
+                        currentSession?.questions =
+                            currentSession?.questions?.toMutableList()?.also {
+                                it[index] = updatedQuestion.copy(usedHint = true)
+                            } ?: return@tryToExecute
 
                         updateState(
                             screenState.value.copy(
-                                answers = updatedQuestion.options.map { it.text },
+                                answers = updatedQuestion.options.map { it.toUiAnswer() },
                                 hintUsed = true
                             )
                         )
