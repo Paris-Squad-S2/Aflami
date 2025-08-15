@@ -30,7 +30,11 @@ sealed interface GuessGameDestinations : GuessGameGraph {
     ) : GuessGameDestination
 
     @Serializable
-    data object FinishGameScreen : GuessGameDestination
+    data class FinishGameScreen (
+       val totalGameTime : Int,
+       val totalGamePoints : Int,
+       val gameType : QuestionType
+    ) : GuessGameDestination
 
 }
 
