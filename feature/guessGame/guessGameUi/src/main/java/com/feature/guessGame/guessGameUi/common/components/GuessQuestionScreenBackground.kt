@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun GuessQuestionBackground(content: @Composable () -> Unit) {
+fun GuessGameBackground(content: @Composable () -> Unit) {
     Box(
         modifier = Modifier
             .fillMaxSize()

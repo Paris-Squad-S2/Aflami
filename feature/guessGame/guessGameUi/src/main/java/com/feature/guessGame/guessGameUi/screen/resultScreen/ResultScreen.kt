@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.common.components.GameResultCard
-import com.feature.guessGame.guessGameUi.common.components.GuessQuestionBackground
+import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.WinCard
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
@@ -38,7 +38,7 @@ fun ResultScreen(
     viewModel: ResultViewModel = hiltViewModel()
 
 ) {
-    GuessQuestionBackground {
+    GuessGameBackground {
         ResultScreenContent(
             listener = viewModel,
             totalGameTime = totalGameTime,
@@ -126,7 +126,7 @@ fun ResultScreenContent(
 @Composable
 private fun Preview() {
     AflamiTheme {
-        GuessQuestionBackground {
+        GuessGameBackground {
             ResultScreenContent(
                 listener = object : ResultInteractionListener {
                     override fun onExitClicked() {}

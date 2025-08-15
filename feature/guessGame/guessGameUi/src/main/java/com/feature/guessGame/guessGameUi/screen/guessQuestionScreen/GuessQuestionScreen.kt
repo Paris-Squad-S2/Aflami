@@ -25,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
-import com.feature.guessGame.guessGameUi.common.components.GuessQuestionBackground
+import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
@@ -43,7 +43,7 @@ fun GuessQuestionScreen(
 ) {
     val uiState = viewModel.screenState.collectAsStateWithLifecycle().value
 
-    GuessQuestionBackground {
+    GuessGameBackground {
         GuessQuestionContent(
             state = uiState,
             listener = viewModel,
@@ -144,7 +144,7 @@ fun GuessQuestionContent(
 )
 @Composable
 fun GuessReleaseYearContentPreview() {
-    GuessQuestionBackground {
+    GuessGameBackground {
         GuessQuestionContent(
             state = GuessQuestionUiState(
                 gameTitle = "guess_release_year",

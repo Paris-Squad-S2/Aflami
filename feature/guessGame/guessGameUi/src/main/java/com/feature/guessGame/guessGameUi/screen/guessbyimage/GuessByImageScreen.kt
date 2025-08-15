@@ -23,6 +23,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.rememberAsyncImagePainter
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
+import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
@@ -43,9 +44,11 @@ fun GuessByImageScreen(
     viewModel: GuessByImageViewModel = hiltViewModel(),
 ) {
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
-    GussByImageScreenContent(
-        state = screenState.value, action = viewModel, modifier = modifier.fillMaxWidth()
-    )
+    GuessGameBackground{
+        GussByImageScreenContent(
+            state = screenState.value, action = viewModel, modifier = modifier.fillMaxWidth()
+        )
+    }
 }
 
 @Composable
