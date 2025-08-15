@@ -11,16 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.common.components.GameResultCard
 import com.feature.guessGame.guessGameUi.common.components.GuessQuestionBackground
 import com.feature.guessGame.guessGameUi.common.components.WinCard
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
@@ -30,27 +31,33 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 
 @Composable
 fun ResultScreen(
-    viewModel: ResultViewModel = hiltViewModel(),
-    questionType: QuestionType = QuestionType.RELEASE_YEAR,
-) {
-    val uiState = viewModel.screenState.collectAsStateWithLifecycle().value
+    totalGameTime: Int,
+    totalGamePoints: Int,
+    gameType: QuestionType,
+    viewModel: ResultViewModel = hiltViewModel()
 
+) {
     GuessQuestionBackground {
         ResultScreenContent(
-            state = uiState,
-            listener = viewModel
+            listener = viewModel,
+            totalGameTime = totalGameTime,
+            totalGamePoints = totalGamePoints,
+            gameType = gameType
         )
     }
 }
 
 @Composable
 fun ResultScreenContent(
-    state: ResultUiState,
-    listener: ResultInteractionListener,
+    totalGameTime: Int,
+    totalGamePoints: Int,
+    gameType: QuestionType,
+    listener: ResultInteractionListener
+
 ) {
     Column {
         AppTopBar(
-            title = state.gameType,
+            title = stringResource(id = gameType.getTitleResId()),
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
@@ -70,11 +77,11 @@ fun ResultScreenContent(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             GameResultCard(
-                value = state.totalSessionPoints,
+                value = totalGamePoints,
                 isPoint = true,
             )
             GameResultCard(
-                value = state.totalSessionDuration,
+                value = totalGameTime,
                 isPoint = false,
             )
         }
@@ -117,16 +124,14 @@ private fun Preview() {
     AflamiTheme {
         GuessQuestionBackground {
             ResultScreenContent(
-                state = ResultUiState(
-                    gameType = "Guess the character",
-                    totalSessionPoints = 120,
-                    totalSessionDuration = 45
-                ),
                 listener = object : ResultInteractionListener {
                     override fun onExitClicked() {}
                     override fun onBackToMenuClicked() {}
                     override fun onPlayAgainClicked() {}
-                }
+                },
+                totalGameTime = 100,
+                totalGamePoints = 150,
+                gameType = QuestionType.ACTOR
             )
         }
     }
