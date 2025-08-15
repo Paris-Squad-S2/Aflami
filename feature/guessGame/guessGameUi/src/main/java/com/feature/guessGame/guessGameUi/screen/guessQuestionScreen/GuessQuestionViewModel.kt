@@ -102,13 +102,13 @@ class GuessQuestionViewModel @Inject constructor(
 
     override fun onAnswerSelected(answer: String) {
         currentSession?.let { session ->
-            val currentQ = session.getCurrentQuestion() ?: return
-            if (currentQ.selectedAnswer != null) return
+            val currentQuestion = session.getCurrentQuestion() ?: return
+            if (currentQuestion.selectedAnswer != null) return
 
-            currentQ.selectedAnswer = answer
+            currentQuestion.selectedAnswer = answer
             val questionNumber = session.currentQuestionIndex + 1
 
-            val wasCorrect = answer == currentQ.correctAnswer
+            val wasCorrect = answer == currentQuestion.correctAnswer
             if (wasCorrect) {
                 val scoreBefore = session.score
                 updateScore()
@@ -126,10 +126,10 @@ class GuessQuestionViewModel @Inject constructor(
 
             updateState(
                 screenState.value.copy(
-                    answers = currentQ.options.map { it.toUiAnswer() },
+                    answers = currentQuestion.options.map { it.toUiAnswer() },
                     selectedAnswer = answer,
-                    correctAnswer = currentQ.correctAnswer,
-                    hintUsed = currentQ.usedHint,
+                    correctAnswer = currentQuestion.correctAnswer,
+                    hintUsed = currentQuestion.usedHint,
                     session = screenState.value.session?.copy(score = session.score)
                 )
             )
