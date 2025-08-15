@@ -18,15 +18,16 @@ fun ActorDto.toDomain() : Actor? {
 }
 
 fun ActorMediaDto.toDomain() : ActorMedia?{
-    val parsedDate = releaseDate?.let {
+    val dateString = releaseDate ?: firstAirDate
+    val parsedDate = dateString?.let {
         runCatching { LocalDate.parse(it) }.getOrNull()
     } ?: return null
     return ActorMedia(
         id = id ?: -1,
-        name = title ?: "",
+        name = title ?: name ?: originalTitle ?: originalName ?: "",
         posterImg = posterPath ?: "",
         yearOfRelease = parsedDate,
-        genres = emptyList()
+        genres = genreIds?.mapNotNull { it } ?: emptyList()
     )
 }
 
