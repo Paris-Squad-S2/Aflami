@@ -15,12 +15,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.rememberAsyncImagePainter
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
@@ -33,6 +33,7 @@ import com.paris_2.aflami.designsystem.components.GuessCard
 import com.paris_2.aflami.designsystem.components.GuessCardImageState
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.utils.BasePreview
+
 
 @Composable
 fun GuessByImageScreen(
@@ -70,9 +71,11 @@ private fun GussByImageScreenContent(
             modifier = Modifier.padding(vertical = 18.dp)
         )
 
+        val currentQ = state.questionUiState.getOrNull(state.currentQuestion)
         QuestionImage(
             showHint = !state.isChoiceCorrect,
-            onHintUsed = { action.onHintUsed() }
+            onHintUsed = { action.onHintUsed() },
+            imageUrl = currentQ?.image ?: "",
         )
 
         LazyColumn(
@@ -116,11 +119,12 @@ private fun GussByImageScreenContent(
 fun QuestionImage(
     modifier: Modifier = Modifier,
     showHint: Boolean = true,
-    onHintUsed: () -> Unit = {}
+    onHintUsed: () -> Unit = {},
+    imageUrl: String,
 ) {
     var state by remember { mutableStateOf(GuessCardImageState.Hard) }
     GuessCard(
-        imagePainter = painterResource(R.drawable.img_guess_character),
+        imagePainter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500${imageUrl}"),
         clickable = true,
         imageState = state,
         showHint = showHint && state == GuessCardImageState.Hard,

@@ -75,6 +75,8 @@ class GuessByImageViewModel @Inject constructor(
                     questionUiState = session.questions.map { it.toUiModel() },
                 )
             )
+            val image = firstQuestion.content
+            Log.d("image", "loadQuestion: $image")
         }
     }
 
@@ -86,7 +88,7 @@ class GuessByImageViewModel @Inject constructor(
         )
         currentSession?.let { session ->
             val updatedSession = moveToNextQuestionUseCase(session)
-
+            Log.d("image", "loadQuestion: ${updatedSession.questions.firstOrNull()?.content}")
             if (updatedSession.isCompleted) {
                 val totalTimeSeconds =
                     ((System.currentTimeMillis() - startTimeMillis) / 1000).toInt()
