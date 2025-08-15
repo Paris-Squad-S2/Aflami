@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -50,9 +51,18 @@ private fun GussByImageScreenContent(
     action: GuessByImageInteractionListener,
     modifier: Modifier = Modifier,
 ) {
-    Column(modifier = modifier.padding(horizontal = 12.dp)) {
+    Column(
+        modifier = modifier
+            .statusBarsPadding()
+            .padding(horizontal = 12.dp)
+    ) {
 
-        Header(state.screenTitle, action::onCancelClick)
+        Header(
+            head = state.screenTitle,
+            onCanceled = action::onCancelClick,
+            onTimeFinished = action::onTimeFinished,
+            time = state.time
+        )
 
         QuestionIndicator(
             numberOfQuestions = state.questionUiState.size,
@@ -130,7 +140,12 @@ fun QuestionImage(
 
 
 @Composable
-private fun Header(head: String, onCanceled: () -> Unit) {
+private fun Header(
+    head: String,
+    onCanceled: () -> Unit,
+    onTimeFinished: () -> Unit,
+    time: Int,
+) {
     AppTopBar(
         modifier = Modifier, title = head, leadingIcons = listOf(
             iconItemWithDefaults(
@@ -138,7 +153,8 @@ private fun Header(head: String, onCanceled: () -> Unit) {
             )
         ), trailingContent = {
             GameTimer(
-                totalSeconds = 45, onFinished = { }
+                totalSeconds = time,
+                onFinished = { onTimeFinished() }
             )
         }
     )
