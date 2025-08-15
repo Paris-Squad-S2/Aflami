@@ -14,7 +14,8 @@ class GamePointsRepositoryImpl(
     }
 
     override suspend fun getUserGamePoints(userId: Int): UserPoints {
-        val entity = gamePointsLocalDataSource.getUserGamePoints(userId)
-        return entity?.toDomain() ?: UserPoints(userId = userId, gamePoints = 0)
+        return  gamePointsLocalDataSource.getUserGamePoints(userId)?.toDomain()
+            ?: UserPoints(userId = userId, gamePoints = 0)
+
     }
 }
