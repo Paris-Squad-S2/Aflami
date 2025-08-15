@@ -14,7 +14,7 @@ class GamePointsRepositoryImpl(
     }
 
     override suspend fun getUserGamePoints(userId: Int): UserPoints {
-        return gamePointsLocalDataSource.getUserGamePoints(userId)?.toDomain()
-            ?: throw IllegalStateException("No user game points found for userId: $userId")
+        val entity = gamePointsLocalDataSource.getUserGamePoints(userId)
+        return entity?.toDomain() ?: UserPoints(userId = userId, gamePoints = 0)
     }
 }
