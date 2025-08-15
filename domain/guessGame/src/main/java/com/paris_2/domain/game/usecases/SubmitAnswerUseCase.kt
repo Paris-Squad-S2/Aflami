@@ -10,6 +10,5 @@ class SubmitAnswerUseCase {
                 session.score += if (question.usedHint) 5 else 10
             }
         }
-        session.moveToNextQuestion()
     }
 }
