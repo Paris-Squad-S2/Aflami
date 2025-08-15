@@ -73,26 +73,26 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
     private fun loadQuestion(session: GameSession) {
-        val currentQ = session.getCurrentQuestion()?.toUiQuestion()
-        if (currentQ == null) return
+        val currentQuestion = session.getCurrentQuestion()?.toUiQuestion()
+        if (currentQuestion == null) return
 
         updateState(
             screenState.value.copy(
                 session = GameSessionUi(
                     id = session.id,
                     level = session.level.name,
-                    currentQuestion = currentQ.content,
+                    currentQuestion = currentQuestion.content,
                     score = session.score,
                     isCompleted = session.isCompleted
                 ),
                 totalQuestions = session.questions.size,
                 currentStep = (session.currentQuestionIndex),
-                questionText = currentQ.content,
-                answers = currentQ.options,
-                correctAnswer = currentQ.options.firstOrNull { it.isCorrect }?.text,
-                remainingAnswers = currentQ.options.map { it.text },
-                selectedAnswer = currentQ.selectedAnswer,
-                hintUsed = currentQ.hintUsed,
+                questionText = currentQuestion.content,
+                answers = currentQuestion.options,
+                correctAnswer = currentQuestion.options.firstOrNull { it.isCorrect }?.text,
+                remainingAnswers = currentQuestion.options.map { it.text },
+                selectedAnswer = currentQuestion.selectedAnswer,
+                hintUsed = currentQuestion.hintUsed,
                 time = timePerQuestion,
             )
         )
@@ -164,7 +164,8 @@ class GuessQuestionViewModel @Inject constructor(
                     )
                 )
             } else {
-                loadQuestion(updatedSession)
+               loadQuestion(updatedSession)
+
             }
         } ?: Log.e("GuessQuestionVM", "No session found when onNextClicked called")
     }
