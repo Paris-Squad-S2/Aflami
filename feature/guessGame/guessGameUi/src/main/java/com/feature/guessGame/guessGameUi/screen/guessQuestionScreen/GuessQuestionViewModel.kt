@@ -156,47 +156,69 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
     override fun onHintUsed() {
+        val session = currentSession ?: run {
+            Log.e("GuessQuestionVM", "No active session when hint requested")
+            return
+        }
+
+        val currentQuestion = session.getCurrentQuestion() ?: run {
+            Log.e("GuessQuestionVM", "No current question when hint requested")
+            return
+        }
+
+        if (currentQuestion.usedHint) {
+            Log.d("GuessQuestionVM", "Hint already used for this question")
+            return
+        }
+
+        if (currentQuestion.selectedAnswer != null) {
+            Log.d("GuessQuestionVM", "Cannot use hint after answering")
+            return
+        }
+
         tryToExecute(
             execute = {
-                val userId = getAccountIdUseCase() ?: 0
+                val userId = getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
                 val currentPoints = getUserPointUseCase(userId)
 
-                if (currentPoints < 10) return@tryToExecute RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints
-
-                currentSession?.let { session ->
-                    val question = session.getCurrentQuestion() ?: return@tryToExecute null
-                    removeAnswerHintUseCase(session, question.usedHint, currentPoints)
+                if (currentPoints < HINT_COST) {
+                    return@tryToExecute RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints
                 }
+
+                removeAnswerHintUseCase(session, currentQuestion.usedHint, currentPoints)
             },
             onSuccess = { result ->
                 when (result) {
-                    is RemoveAnswerHintUseCase.UseHintResult.Success -> applyHint(result.updatedQuestion)
-                    RemoveAnswerHintUseCase.UseHintResult.AlreadyUsed -> Log.d(
-                        "GuessQuestionVM",
-                        "Hint already used"
-                    )
-
-                    RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints -> updateState(
-                        screenState.value.copy(
-                            showNotEnoughPointsDialog = true
-                        )
-                    )
-
-                    null -> Unit
+                    is RemoveAnswerHintUseCase.UseHintResult.Success -> {
+                        applyHint(result.updatedQuestion)
+                        Log.d("GuessQuestionVM", "Hint applied successfully. Points deducted: $HINT_COST")
+                    }
+                    RemoveAnswerHintUseCase.UseHintResult.AlreadyUsed -> {
+                        Log.d("GuessQuestionVM", "Hint already used")
+                    }
+                    RemoveAnswerHintUseCase.UseHintResult.NotEnoughPoints -> {
+                        updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
+                        Log.d("GuessQuestionVM", "Not enough points for hint. Required: $HINT_COST")
+                    }
                 }
             },
-            onError = { error -> Log.e("GuessQuestionVM", "Error using hint: $error") }
+            onError = { error ->
+                Log.e("GuessQuestionVM", "Error using hint: $error")
+            }
         )
     }
 
+
     private fun applyHint(updatedQuestion: Question) {
         val session = currentSession ?: return
-        val index = session.questions.indexOfFirst { it.id == updatedQuestion.id }
-        if (index != -1) {
-            session.questions = session.questions.toMutableList().also {
-                it[index] = updatedQuestion.copy(usedHint = true)
+
+        val questionIndex = session.questions.indexOfFirst { it.id == updatedQuestion.id }
+        if (questionIndex != -1) {
+            session.questions = session.questions.toMutableList().also { questions ->
+                questions[questionIndex] = updatedQuestion.copy(usedHint = true)
             }
         }
+
         updateState(
             screenState.value.copy(
                 questionText = updatedQuestion.content,
@@ -204,6 +226,10 @@ class GuessQuestionViewModel @Inject constructor(
                 remainingAnswers = updatedQuestion.options.map { it.text },
                 hintUsed = true
             )
+        )
+
+        Log.d("GuessQuestionVM",
+            "Hint applied: ${updatedQuestion.options.size} options remaining"
         )
     }
 
@@ -244,5 +270,9 @@ class GuessQuestionViewModel @Inject constructor(
                 "Answered Question ${session.currentQuestionIndex + 1} correctly, Points added: $points, Score now: ${session.score}"
             )
         }
+    }
+
+    companion object {
+        private const val HINT_COST = 10
     }
 }
