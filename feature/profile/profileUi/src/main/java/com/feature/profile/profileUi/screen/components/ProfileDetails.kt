@@ -23,7 +23,7 @@ import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun ProfileDetails(modifier: Modifier = Modifier, username: String) {
+fun ProfileDetails(modifier: Modifier = Modifier, username: String,userPoints: Int) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -49,7 +49,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, username: String) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppText(
-                text = "325 Pts.",
+                text = "$userPoints Pts.",
                 style = Theme.textStyle.label.small,
                 color = Theme.colors.onPrimaryColors.onPrimary
             )

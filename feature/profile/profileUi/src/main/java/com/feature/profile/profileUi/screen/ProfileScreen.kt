@@ -107,7 +107,7 @@ fun ProfileContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            ProfileDetails(modifier, state.profile.name)
+            ProfileDetails(modifier, state.profile.name,state.profile.points)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
