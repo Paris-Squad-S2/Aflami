@@ -49,7 +49,8 @@ class GuessQuestionViewModel @Inject constructor(
         generateSession(args.gameLevel)
         currentSession?.let { session ->
             loadQuestion(session)
-        } ?: Log.e("QuestionViewModel", "Error: currentSession is null")    }
+        } ?: Log.e("QuestionViewModel", "Error: currentSession is null")
+    }
 
     private fun generateSession(level: UiGameLevel) {
         tryToExecute(
@@ -190,7 +191,7 @@ class GuessQuestionViewModel @Inject constructor(
                 when (result) {
                     is RemoveAnswerHintUseCase.UseHintResult.Success -> {
                         val updatedQuestion = result.updatedQuestion
-                        val index = currentSession?.currentQuestionIndex ?: 0
+                        val index = currentSession?.currentQuestionIndex ?: -1
                         currentSession?.questions =
                             currentSession?.questions?.toMutableList()?.also {
                                 it[index] = updatedQuestion.copy(usedHint = true)
