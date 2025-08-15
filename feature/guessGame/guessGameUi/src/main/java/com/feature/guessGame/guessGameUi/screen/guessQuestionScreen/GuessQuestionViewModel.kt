@@ -24,7 +24,6 @@ class GuessQuestionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val whenIsReleasedSessionUseCase: WhenIsReleasedSessionUseCase,
     private val whichGenreSessionUseCase: WhichGenreSessionUseCase,
-    private val submitAnswerUseCase: SubmitAnswerUseCase,
     private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val getUserPointUseCase: GetUserPointUseCase,
@@ -131,8 +130,6 @@ class GuessQuestionViewModel @Inject constructor(
                     session = screenState.value.session?.copy(score = session.score)
                 )
             )
-
-            submitAnswerUseCase(session, answer)
         }
     }
 
