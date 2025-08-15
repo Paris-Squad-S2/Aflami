@@ -38,7 +38,8 @@ class ResultViewModelTest {
         every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
             totalGameTime = 100,
             totalGamePoints = 200,
-            gameType = QuestionType.ACTOR
+            gameType = QuestionType.ACTOR,
+            gameLevel = UiGameLevel.EASY
         )
         val viewModel = ResultViewModel(savedStateHandle)
         viewModel.navigator = navigator
@@ -54,7 +55,8 @@ class ResultViewModelTest {
         every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
             totalGameTime = 100,
             totalGamePoints = 200,
-            gameType = QuestionType.GENRE
+            gameType = QuestionType.GENRE,
+            gameLevel = UiGameLevel.EASY
         )
         val viewModel = ResultViewModel(savedStateHandle)
         viewModel.navigator = navigator
@@ -71,7 +73,8 @@ class ResultViewModelTest {
             every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
                 totalGameTime = 90,
                 totalGamePoints = 150,
-                gameType = QuestionType.ACTOR
+                gameType = QuestionType.ACTOR,
+                gameLevel = UiGameLevel.EASY
             )
             val viewModel = ResultViewModel(savedStateHandle)
             viewModel.navigator = navigator
@@ -103,7 +106,8 @@ class ResultViewModelTest {
             every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
                 totalGameTime = 120,
                 totalGamePoints = 250,
-                gameType = QuestionType.GENRE
+                gameType = QuestionType.GENRE,
+                gameLevel = UiGameLevel.EASY
             )
             val viewModel = ResultViewModel(savedStateHandle)
             viewModel.navigator = navigator
