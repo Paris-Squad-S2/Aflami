@@ -1,6 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import io.mockk.coEvery
@@ -71,8 +71,10 @@ class GuessGameScreenViewModelTest {
         // prepare state
         viewModel.onGamePlayClicked(GuessGameScreenViewModel.GAME_ID_ACTOR)
         viewModel.onSelectDifficulty(0) // EASY
+        // Pass a mock or test context if required by DifficultySettings.getDifficultySettings
+        val context = mockk<android.content.Context>(relaxed = true)
 
-        viewModel.onStartGame()
+        viewModel.onStartGame(context)
         runCurrent()
 
         val settings = DifficultySettings.getDifficultySettings(0)
@@ -80,8 +82,8 @@ class GuessGameScreenViewModelTest {
         coVerify {
             navigator.navigate(
                 withArg { destination ->
-                    assert(destination is GuessGameDestinations.GuessByImageScreen)
-                    val d = destination as GuessGameDestinations.GuessByImageScreen
+                    assert(destination is Destinations.GuessByImageScreen)
+                    val d = destination as Destinations.GuessByImageScreen
                     assert(d.questionType == QuestionType.ACTOR)
                     assert(d.imageType == QuestionType.ACTOR)
                     assert(d.totalQuestions == settings.numberOfQuestions)
@@ -97,8 +99,10 @@ class GuessGameScreenViewModelTest {
     fun `onStartGame with GENRE navigates to GuessQuestionScreen with expected args`() = runTest {
         viewModel.onGamePlayClicked(GuessGameScreenViewModel.GAME_ID_GENRE)
         viewModel.onSelectDifficulty(0) // EASY
+        val context = mockk<android.content.Context>(relaxed = true)
 
-        viewModel.onStartGame()
+
+        viewModel.onStartGame(context)
         runCurrent()
 
         val settings = DifficultySettings.getDifficultySettings(0)
@@ -106,8 +110,8 @@ class GuessGameScreenViewModelTest {
         coVerify {
             navigator.navigate(
                 withArg { destination ->
-                    assert(destination is GuessGameDestinations.GuessQuestionScreen)
-                    val d = destination as GuessGameDestinations.GuessQuestionScreen
+                    assert(destination is Destinations.GuessQuestionScreen)
+                    val d = destination as Destinations.GuessQuestionScreen
                     assert(d.questionType == QuestionType.GENRE)
                     assert(d.totalQuestions == settings.numberOfQuestions)
                     assert(d.timePerQuestion == settings.timePerQuestionSec)

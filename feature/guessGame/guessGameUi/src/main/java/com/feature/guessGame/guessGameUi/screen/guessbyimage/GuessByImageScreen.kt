@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -59,6 +60,7 @@ fun GuessByImageContent(
     state: GuessCharacterUIState,
     listener: GuessByImageInteractionListener,
 ) {
+    val activity = LocalActivity.current
     if (state.isLoading) {
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()
@@ -79,7 +81,7 @@ fun GuessByImageContent(
         ) {
             Header(
                 head = state.screenTitle,
-                onCanceled = listener::onCancelClick,
+                onCanceled = { activity?.finish() },
                 onTimeFinished = listener::onTimeFinished,
                 time = state.time,
                 currentQuestion = state.currentQuestion

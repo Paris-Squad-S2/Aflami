@@ -10,7 +10,7 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigatorImpl
 import com.feature.home.homeApi.HomeFeatureAPI
@@ -88,7 +88,7 @@ object FeatureAPIModule {
     @Provides
     @Singleton
     fun provideGuessGameNavigator(): GuessGameNavigator =
-        GuessGameNavigatorImpl(startGraph = GuessGameDestinations.GuessGameGraph1)
+        GuessGameNavigatorImpl(startGraph = Destinations.Graph1)
 
 
     @Provides
