@@ -3,9 +3,11 @@ package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.navigation.navigateToGame
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import android.util.Log
+import com.feature.guessGame.guessGameUi.navigation.Destination
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GuessGameScreenViewModelTest {
@@ -35,6 +38,15 @@ class GuessGameScreenViewModelTest {
         every { Log.d(any(), any()) } returns 0
         every { Log.i(any(), any()) } returns 0
         every { Log.e(any(), any()) } returns 0
+
+        // Mock navigateToGame to delegate to navigator.navigate
+        mockkStatic(::navigateToGame)
+        coEvery { navigateToGame(any(), any()) } coAnswers {
+            val context = firstArg<android.content.Context>()
+            val destination = secondArg<Destination>()
+            navigator.navigate(destination, null)
+        }
+
         viewModel = GuessGameScreenViewModel(getUserPointUseCase, getAccountIdUseCase)
         viewModel.navigator = navigator
     }
