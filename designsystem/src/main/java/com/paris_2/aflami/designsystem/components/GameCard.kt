@@ -35,6 +35,7 @@ import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
@@ -42,6 +43,7 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import dropShadow
+import kotlinx.coroutines.flow.flowOf
 
 
 @Composable
@@ -277,122 +279,122 @@ private val playButtonBorderColor = Brush.linearGradient(
     )
 )
 
-//@PreviewLightDark
-//@Composable
-//private fun GameCardCalenderPreview() {
-//    AflamiTheme(isDarkTheme = flowOf(true)) {
-//        GameCard(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(140.dp),
-//            title = "When Was It Released?",
-//            description = "Pick the right release year",
-//            backgroundColors = listOf(
-//                Theme.colors.status.navyCard,
-//                Theme.colors.status.darkBlue
-//            ),
-//            trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
-//            onPlayClick = {},
-//            isPlayButtonLocked = false,
-//        )
-//    }
-//}
-//
-//@PreviewLightDark
-//@Composable
-//private fun GameCardCalenderLockedPreview() {
-//    AflamiTheme {
-//        GameCard(
-//            modifier = Modifier
-//                .width(328.dp)
-//                .height(140.dp),
-//            title = "When Was It Released?",
-//            description = "Pick the right release year",
-//            backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
-//            trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
-//            onPlayClick = {},
-//            isPlayButtonLocked = true,
-//            pointsToUnlock = 400,
-//        )
-//    }
-//}
-//
-//
-//@PreviewLightDark
-//@Composable
-//private fun GameCardChairPreview() {
-//    AflamiTheme(isDarkTheme = flowOf(true)) {
-//        GameCard(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(140.dp),
-//            title = "Which Genre?",
-//            description = "Which one is the real action movie?",
-//            backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
-//            trailingImages = listOf(painterResource(R.drawable.image_chair)),
-//            onPlayClick = {},
-//            isPlayButtonLocked = false,
-//        )
-//    }
-//}
-//
-//@PreviewLightDark
-//@Composable
-//private fun GameCardChairLockedPreview() {
-//    AflamiTheme {
-//        GameCard(
-//            modifier = Modifier
-//                .width(328.dp)
-//                .height(140.dp),
-//            title = "Which Genre?",
-//            description = "Which one is the real action movie?",
-//            backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
-//            trailingImages = listOf(painterResource(R.drawable.image_chair)),
-//            onPlayClick = {},
-//            isPlayButtonLocked = true,
-//            pointsToUnlock = 400,
-//        )
-//    }
-//}
-//
-//
-//@PreviewLightDark
-//@Composable
-//private fun GameCardClownPreview() {
-//    AflamiTheme(isDarkTheme = flowOf(true)) {
-//        GameCard(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(140.dp),
-//            title = "Guess the Character",
-//            description = "Can you tell who this characher?",
-//            backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
-//            trailingImages = listOf(painterResource(R.drawable.image_clown)),
-//            onPlayClick = {},
-//            isPlayButtonLocked = false,
-//        )
-//    }
-//}
-//
-//@PreviewLightDark
-//@Composable
-//private fun GameCardClownLockedPreview() {
-//    AflamiTheme {
-//        GameCard(
-//            modifier = Modifier
-//                .width(328.dp)
-//                .height(140.dp),
-//            title = "Guess the Character",
-//            description = "Can you tell who this characher?",
-//            backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
-//            trailingImages = listOf(painterResource(R.drawable.image_clown)),
-//            onPlayClick = {},
-//            isPlayButtonLocked = true,
-//            pointsToUnlock = 400,
-//        )
-//    }
-//}
-//
+@PreviewLightDark
+@Composable
+private fun GameCardCalenderPreview() {
+    AflamiTheme(isDarkTheme = flowOf(true)) {
+        GameCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp),
+            title = "When Was It Released?",
+            description = "Pick the right release year",
+            backgroundColors = listOf(
+                Theme.colors.status.navyCard,
+                Theme.colors.status.darkBlue
+            ),
+            trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
+            onPlayClick = {},
+            isPlayButtonLocked = false,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GameCardCalenderLockedPreview() {
+    AflamiTheme {
+        GameCard(
+            modifier = Modifier
+                .width(328.dp)
+                .height(140.dp),
+            title = "When Was It Released?",
+            description = "Pick the right release year",
+            backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
+            trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
+            onPlayClick = {},
+            isPlayButtonLocked = true,
+            pointsToUnlock = 400,
+        )
+    }
+}
+
+
+@PreviewLightDark
+@Composable
+private fun GameCardChairPreview() {
+    AflamiTheme(isDarkTheme = flowOf(true)) {
+        GameCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp),
+            title = "Which Genre?",
+            description = "Which one is the real action movie?",
+            backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
+            trailingImages = listOf(painterResource(R.drawable.image_chair)),
+            onPlayClick = {},
+            isPlayButtonLocked = false,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GameCardChairLockedPreview() {
+    AflamiTheme {
+        GameCard(
+            modifier = Modifier
+                .width(328.dp)
+                .height(140.dp),
+            title = "Which Genre?",
+            description = "Which one is the real action movie?",
+            backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
+            trailingImages = listOf(painterResource(R.drawable.image_chair)),
+            onPlayClick = {},
+            isPlayButtonLocked = true,
+            pointsToUnlock = 400,
+        )
+    }
+}
+
+
+@PreviewLightDark
+@Composable
+private fun GameCardClownPreview() {
+    AflamiTheme(isDarkTheme = flowOf(true)) {
+        GameCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp),
+            title = "Guess the Character",
+            description = "Can you tell who this characher?",
+            backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
+            trailingImages = listOf(painterResource(R.drawable.image_clown)),
+            onPlayClick = {},
+            isPlayButtonLocked = false,
+        )
+    }
+}
+
+@PreviewLightDark
+@Composable
+private fun GameCardClownLockedPreview() {
+    AflamiTheme {
+        GameCard(
+            modifier = Modifier
+                .width(328.dp)
+                .height(140.dp),
+            title = "Guess the Character",
+            description = "Can you tell who this characher?",
+            backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
+            trailingImages = listOf(painterResource(R.drawable.image_clown)),
+            onPlayClick = {},
+            isPlayButtonLocked = true,
+            pointsToUnlock = 400,
+        )
+    }
+}
+
 
 @PreviewMultiDevices
 @Composable
@@ -418,28 +420,28 @@ private fun GameCardThreeImagesPreview() {
 
 }
 
-//@PreviewLightDark
-//@Composable
-//private fun GameCardThreeImagesLockedPreview() {
-//    AflamiTheme {
-//        GameCard(
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .height(140.dp),
-//            title = "Guess the Movie by Poster",
-//            description = "Match the poster with the right title!",
-//            backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
-//            trailingImages = listOf(
-//                painterResource(R.drawable.image_game2),
-//                painterResource(R.drawable.image_game2),
-//                painterResource(R.drawable.image_game2)
-//            ),
-//            onPlayClick = {},
-//            isPlayButtonLocked = true,
-//            pointsToUnlock = 400
-//        )
-//    }
-//
-//}
-//
-//
+@PreviewLightDark
+@Composable
+private fun GameCardThreeImagesLockedPreview() {
+    AflamiTheme {
+        GameCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(140.dp),
+            title = "Guess the Movie by Poster",
+            description = "Match the poster with the right title!",
+            backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
+            trailingImages = listOf(
+                painterResource(R.drawable.image_game2),
+                painterResource(R.drawable.image_game2),
+                painterResource(R.drawable.image_game2)
+            ),
+            onPlayClick = {},
+            isPlayButtonLocked = true,
+            pointsToUnlock = 400
+        )
+    }
+
+}
+
+
