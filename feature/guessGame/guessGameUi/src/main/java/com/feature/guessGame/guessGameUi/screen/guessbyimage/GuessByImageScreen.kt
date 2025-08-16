@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
@@ -131,7 +132,10 @@ fun GuessByImageContent(
                     text = com.feature.guessGame.guessGameUi.R.string.next,
                     type = ButtonType.Primary,
                     state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .navigationBarsPadding()
+
                 )
             }
         }
