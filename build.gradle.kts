@@ -104,8 +104,8 @@ val koverExcludedPackages = listOf(
     "**.ChangePasswordViewModel.*",
     "**.profileUi.screen.**",
     "**.InstallSavedAppLanguage*",
-    "**.MainViewModel*",
     "**.PagingSource*",
+    "**.MainViewModel*",
     "**.*_Factory*",
     "**.*_HiltModules*",
     "**.*_HiltModules_*"
