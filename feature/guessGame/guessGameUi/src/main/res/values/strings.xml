@@ -31,5 +31,6 @@
     <string name="Play_again">Play again</string>
     <string name="guess_the_poster">Guess the poster</string>
     <string name="you_finished_the_game">You finished the GAME!</string>
+    <string name="title_activity_game" translatable="false">GameActivity</string>
 
 </resources>

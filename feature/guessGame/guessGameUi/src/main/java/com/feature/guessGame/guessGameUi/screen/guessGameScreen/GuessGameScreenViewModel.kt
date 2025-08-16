@@ -1,9 +1,11 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
+import android.content.Context
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessByImageScreen
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessQuestionScreen
+import com.feature.guessGame.guessGameUi.navigation.Destinations.GuessByImageScreen
+import com.feature.guessGame.guessGameUi.navigation.Destinations.GuessQuestionScreen
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.navigation.navigateToGame
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
@@ -51,7 +53,7 @@ class GuessGameScreenViewModel @Inject constructor(
         updateState(screenState.value.copy(selectedDifficulty = difficultyId))
     }
 
-    override fun onStartGame() {
+    override fun onStartGame(context: Context) {
         val settings =
             DifficultySettings.getDifficultySettings(screenState.value.selectedDifficulty)
         val questionType = gameIdToQuestionType[screenState.value.selectedGameId]
@@ -60,8 +62,9 @@ class GuessGameScreenViewModel @Inject constructor(
         updateState(screenState.value.copy(showDifficultyDialog = false))
         when (questionType) {
             QuestionType.ACTOR -> {
-                navigate(
-                    GuessByImageScreen(
+                navigateToGame(
+                    context,
+                    gameDestination = GuessByImageScreen(
                         questionType = questionType,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
@@ -73,8 +76,9 @@ class GuessGameScreenViewModel @Inject constructor(
             }
 
             QuestionType.POSTER -> {
-                navigate(
-                    GuessByImageScreen(
+                navigateToGame(
+                    context,
+                    gameDestination = GuessByImageScreen(
                         questionType = questionType,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
@@ -86,8 +90,9 @@ class GuessGameScreenViewModel @Inject constructor(
             }
 
             QuestionType.RELEASE_YEAR -> {
-                navigate(
-                    GuessQuestionScreen(
+                navigateToGame(
+                    context,
+                    gameDestination = GuessQuestionScreen(
                         questionType = questionType,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
@@ -99,8 +104,9 @@ class GuessGameScreenViewModel @Inject constructor(
             }
 
             QuestionType.GENRE -> {
-                navigate(
-                    GuessQuestionScreen(
+                navigateToGame(
+                    context,
+                    gameDestination = GuessQuestionScreen(
                         questionType = questionType,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,

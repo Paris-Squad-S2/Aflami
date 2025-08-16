@@ -5,8 +5,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface GuessGameNavigator {
 
-    val startGraph: GuessGameGraph
+    val startGraph: Graph
     val guessGameNavigationEvent: Flow<GuessGameNavigationEvent>
-    suspend fun navigate(destination: GuessGameDestination, navOptions: NavOptions? = null)
+    suspend fun navigate(destination: Destination, navOptions: NavOptions? = null)
     suspend fun navigateUp()
 }

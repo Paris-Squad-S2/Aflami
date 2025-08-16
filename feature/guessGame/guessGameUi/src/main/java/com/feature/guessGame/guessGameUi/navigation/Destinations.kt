@@ -1,15 +1,23 @@
 package com.feature.guessGame.guessGameUi.navigation
 
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.serializer
 
-sealed interface GuessGameDestinations : GuessGameGraph {
+interface Graph
+
+@Serializable
+sealed interface Destination
+
+sealed interface Destinations : Graph {
 
     @Serializable
-    data object GuessGameGraph1 : GuessGameGraph
+    data object Graph1 : Graph
 
     @Serializable
-    data object GuessGameScreen : GuessGameDestination
+    data object Screen : Destination
 
     @Serializable
     data class GuessByImageScreen(
@@ -19,7 +27,7 @@ sealed interface GuessGameDestinations : GuessGameGraph {
         val pointsPerQuestion: Int,
         val imageType: QuestionType,
         val gameLevel: UiGameLevel,
-    ) : GuessGameDestination
+    ) : Destination
 
     @Serializable
     data class GuessQuestionScreen(
@@ -28,7 +36,7 @@ sealed interface GuessGameDestinations : GuessGameGraph {
         val timePerQuestion: Int,
         val pointsPerQuestion: Int,
         val gameLevel: UiGameLevel,
-    ) : GuessGameDestination
+    ) : Destination
 
     @Serializable
     data class FinishGameScreen (
@@ -36,9 +44,15 @@ sealed interface GuessGameDestinations : GuessGameGraph {
        val totalGamePoints : Int,
        val gameType: QuestionType,
        val gameLevel: UiGameLevel,
-    ) : GuessGameDestination
-
+    ) : Destination
 }
+
+@OptIn(InternalSerializationApi::class)
+fun Destination.toJson(): String =
+    Json.encodeToString(Destination::class.serializer(), this)
+
+fun String.fromJsonToDestination(): Destination =
+    Json.decodeFromString(this)
 
 @Serializable
 enum class QuestionType {

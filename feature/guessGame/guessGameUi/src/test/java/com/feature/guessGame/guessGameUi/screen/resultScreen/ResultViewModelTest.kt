@@ -2,7 +2,7 @@ package com.feature.guessGame.guessGameUi.screen.resultScreen
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.DifficultySettings
@@ -41,7 +41,7 @@ class ResultViewModelTest {
 
     @Test
     fun `onExitClicked navigates to GuessGameScreen`() = runTest {
-        every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
+        every { savedStateHandle.toRoute<Destinations.FinishGameScreen>() } returns Destinations.FinishGameScreen(
             totalGameTime = 100,
             totalGamePoints = 200,
             gameType = QuestionType.ACTOR,
@@ -58,12 +58,12 @@ class ResultViewModelTest {
         viewModel.onExitClicked()
         runCurrent()
 
-        coVerify { navigator.navigate(GuessGameDestinations.GuessGameScreen, null) }
+        coVerify { navigator.navigate(Destinations.Screen, null) }
     }
 
     @Test
     fun `onBackToMenuClicked navigates to GuessGameScreen`() = runTest {
-        every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
+        every { savedStateHandle.toRoute<Destinations.FinishGameScreen>() } returns Destinations.FinishGameScreen(
             totalGameTime = 100,
             totalGamePoints = 200,
             gameType = QuestionType.GENRE,
@@ -80,12 +80,12 @@ class ResultViewModelTest {
         viewModel.onBackToMenuClicked()
         runCurrent()
 
-        coVerify { navigator.navigate(GuessGameDestinations.GuessGameScreen, null) }
+        coVerify { navigator.navigate(Destinations.Screen, null) }
     }
 
     @Test
     fun `onPlayAgainClicked with ACTOR navigates to GuessByImageScreen with EASY defaults`() = runTest {
-        every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
+        every { savedStateHandle.toRoute<Destinations.FinishGameScreen>() } returns Destinations.FinishGameScreen(
             totalGameTime = 90,
             totalGamePoints = 150,
             gameType = QuestionType.ACTOR,
@@ -107,8 +107,8 @@ class ResultViewModelTest {
         coVerify {
             navigator.navigate(
                 withArg { destination ->
-                    assert(destination is GuessGameDestinations.GuessByImageScreen)
-                    val d = destination as GuessGameDestinations.GuessByImageScreen
+                    assert(destination is Destinations.GuessByImageScreen)
+                    val d = destination as Destinations.GuessByImageScreen
                     assert(d.questionType == QuestionType.ACTOR)
                     assert(d.imageType == QuestionType.ACTOR)
                     assert(d.totalQuestions == settings.numberOfQuestions)
@@ -122,7 +122,7 @@ class ResultViewModelTest {
 
     @Test
     fun `onPlayAgainClicked with GENRE navigates to GuessQuestionScreen with EASY defaults`() = runTest {
-        every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
+        every { savedStateHandle.toRoute<Destinations.FinishGameScreen>() } returns Destinations.FinishGameScreen(
             totalGameTime = 120,
             totalGamePoints = 250,
             gameType = QuestionType.GENRE,
@@ -144,8 +144,8 @@ class ResultViewModelTest {
         coVerify {
             navigator.navigate(
                 withArg { destination ->
-                    assert(destination is GuessGameDestinations.GuessQuestionScreen)
-                    val d = destination as GuessGameDestinations.GuessQuestionScreen
+                    assert(destination is Destinations.GuessQuestionScreen)
+                    val d = destination as Destinations.GuessQuestionScreen
                     assert(d.questionType == QuestionType.GENRE)
                     assert(d.totalQuestions == settings.numberOfQuestions)
                     assert(d.timePerQuestion == settings.timePerQuestionSec)

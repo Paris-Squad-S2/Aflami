@@ -1,11 +1,13 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.navigation.navigateToGame
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
+import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
@@ -18,6 +20,7 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import android.util.Log
+import com.feature.guessGame.guessGameUi.navigation.Destination
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GuessGameScreenViewModelTest {
@@ -35,6 +38,15 @@ class GuessGameScreenViewModelTest {
         every { Log.d(any(), any()) } returns 0
         every { Log.i(any(), any()) } returns 0
         every { Log.e(any(), any()) } returns 0
+
+        // Mock navigateToGame to delegate to navigator.navigate
+        mockkStatic(::navigateToGame)
+        coEvery { navigateToGame(any(), any()) } coAnswers {
+            val context = firstArg<android.content.Context>()
+            val destination = secondArg<Destination>()
+            navigator.navigate(destination, null)
+        }
+
         viewModel = GuessGameScreenViewModel(getUserPointUseCase, getAccountIdUseCase)
         viewModel.navigator = navigator
     }
@@ -71,8 +83,10 @@ class GuessGameScreenViewModelTest {
         // prepare state
         viewModel.onGamePlayClicked(GuessGameScreenViewModel.GAME_ID_ACTOR)
         viewModel.onSelectDifficulty(0) // EASY
+        // Pass a mock or test context if required by DifficultySettings.getDifficultySettings
+        val context = mockk<android.content.Context>(relaxed = true)
 
-        viewModel.onStartGame()
+        viewModel.onStartGame(context)
         runCurrent()
 
         val settings = DifficultySettings.getDifficultySettings(0)
@@ -80,8 +94,8 @@ class GuessGameScreenViewModelTest {
         coVerify {
             navigator.navigate(
                 withArg { destination ->
-                    assert(destination is GuessGameDestinations.GuessByImageScreen)
-                    val d = destination as GuessGameDestinations.GuessByImageScreen
+                    assert(destination is Destinations.GuessByImageScreen)
+                    val d = destination as Destinations.GuessByImageScreen
                     assert(d.questionType == QuestionType.ACTOR)
                     assert(d.imageType == QuestionType.ACTOR)
                     assert(d.totalQuestions == settings.numberOfQuestions)
@@ -97,8 +111,10 @@ class GuessGameScreenViewModelTest {
     fun `onStartGame with GENRE navigates to GuessQuestionScreen with expected args`() = runTest {
         viewModel.onGamePlayClicked(GuessGameScreenViewModel.GAME_ID_GENRE)
         viewModel.onSelectDifficulty(0) // EASY
+        val context = mockk<android.content.Context>(relaxed = true)
 
-        viewModel.onStartGame()
+
+        viewModel.onStartGame(context)
         runCurrent()
 
         val settings = DifficultySettings.getDifficultySettings(0)
@@ -106,8 +122,8 @@ class GuessGameScreenViewModelTest {
         coVerify {
             navigator.navigate(
                 withArg { destination ->
-                    assert(destination is GuessGameDestinations.GuessQuestionScreen)
-                    val d = destination as GuessGameDestinations.GuessQuestionScreen
+                    assert(destination is Destinations.GuessQuestionScreen)
+                    val d = destination as Destinations.GuessQuestionScreen
                     assert(d.questionType == QuestionType.GENRE)
                     assert(d.totalQuestions == settings.numberOfQuestions)
                     assert(d.timePerQuestion == settings.timePerQuestionSec)
