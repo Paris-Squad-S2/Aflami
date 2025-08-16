@@ -14,8 +14,6 @@ import com.paris_2.domain.game.usecases.GetPopularActorsUseCase
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
-import com.paris_2.domain.game.usecases.SaveUserGamePointsUseCase
-import com.paris_2.domain.game.usecases.SubmitAnswerUseCase
 import com.paris_2.domain.game.usecases.UpdatePointsUseCase
 import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
@@ -357,10 +355,6 @@ object UseCaseModule {
         GetActorsMediaUseCase(useCase)
 
     @Provides
-    fun provideSaveUserGamePointsUseCase(repository: GamePointsRepository) =
-        SaveUserGamePointsUseCase(repository)
-
-    @Provides
     fun provideGuessActorSessionUseCase(repository: ActorPopularityRepository) =
         GuessActorSessionUseCase(repository)
 
@@ -379,10 +373,6 @@ object UseCaseModule {
     @Provides
     fun provideGetUserPointUseCase(repository: GamePointsRepository) =
         GetUserPointUseCase(repository)
-
-    @Provides
-    fun provideSubmitAnswerUseCase() =
-        SubmitAnswerUseCase()
 
     @Provides
     fun provideRemoveAnswerHintUseCase() =
