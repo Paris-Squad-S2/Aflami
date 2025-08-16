@@ -4,7 +4,9 @@ import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.ProfileDestinations
+import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +22,9 @@ class ProfileViewModel @Inject constructor(
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
-) :
+    private val getUserPoints: GetUserPointUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase,
+    ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
 
@@ -28,12 +32,13 @@ class ProfileViewModel @Inject constructor(
         checkUserLoggedIn()
         getUserName()
         getRestriction()
+        getUserPoints()
         viewModelScope.launch {
             settingsUseCase.getLanguage().collect {
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
-                            language = it.toLanguage()
+                            language = it.toLanguage(),
                         )
                     )
                 )
@@ -52,18 +57,34 @@ class ProfileViewModel @Inject constructor(
                 )
             )
         }
-
+    }
+    private fun getUserPoints(){
+        tryToExecute(
+            execute = { getUserPoints.invoke(getAccountIdUseCase.invoke() ?: 0) },
+            onSuccess = { userPoints ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            points = userPoints
+                        )
+                    )
+                )
+            },
+            onError = {},
+        )
     }
 
     private fun getUserName() {
-        updateState(
-            screenState.value.copy(
-                profile = screenState.value.profile
-                    .copy(
-                        name = settingsUseCase.getUserName()
-                    )
+        viewModelScope.launch{
+            updateState(
+                screenState.value.copy(
+                    profile = screenState.value.profile.copy(
+                            name = settingsUseCase.getUserName()
+                        )
+                )
             )
-        )
+        }
+
     }
 
     private fun checkUserLoggedIn() {

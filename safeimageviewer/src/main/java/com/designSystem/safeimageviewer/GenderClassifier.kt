@@ -35,7 +35,7 @@ internal class GenderClassifier(private val context: Context) {
     private var isModelLoaded = false
     private var inputSize = 224
     private var inputChannels = 3
-    private var expectedInputDataType: org.tensorflow.lite.DataType = org.tensorflow.lite.DataType.UINT8
+    private var expectedInputDataType: DataType = DataType.UINT8
 
     private var imageProcessor: ImageProcessor? = null
     
@@ -53,7 +53,7 @@ internal class GenderClassifier(private val context: Context) {
             val inputTensor = interpreter?.getInputTensor(0)
             val inputShape = inputTensor?.shape()
             val dataType = inputTensor?.dataType()
-            expectedInputDataType = dataType ?: org.tensorflow.lite.DataType.UINT8
+            expectedInputDataType = dataType ?: DataType.UINT8
             
             if (inputShape != null && inputShape.size >= 3) {
 
@@ -76,8 +76,8 @@ internal class GenderClassifier(private val context: Context) {
                 Log.d(TAG, "Using input size: $inputSize, channels: $inputChannels")
                 
                 val expectedBufferSize = when (expectedInputDataType) {
-                    org.tensorflow.lite.DataType.FLOAT32 -> inputSize * inputSize * inputChannels * 4 // 4 bytes per float
-                    org.tensorflow.lite.DataType.UINT8 -> inputSize * inputSize * inputChannels // 1 byte per uint8
+                    DataType.FLOAT32 -> inputSize * inputSize * inputChannels * 4 // 4 bytes per float
+                    DataType.UINT8 -> inputSize * inputSize * inputChannels // 1 byte per uint8
                     else -> inputSize * inputSize * inputChannels
                 }
                 Log.d(TAG, "Expected buffer size: $expectedBufferSize bytes")
@@ -127,7 +127,7 @@ internal class GenderClassifier(private val context: Context) {
                 processedImage.buffer
             }
 
-            Log.d(TAG, "Input buffer size: ${inputBuffer.capacity()} bytes, expected: ${inputSize * inputSize * inputChannels * if (expectedInputDataType == org.tensorflow.lite.DataType.FLOAT32) 4 else 1} bytes")
+            Log.d(TAG, "Input buffer size: ${inputBuffer.capacity()} bytes, expected: ${inputSize * inputSize * inputChannels * if (expectedInputDataType == DataType.FLOAT32) 4 else 1} bytes")
 
             val outputBuffer = TensorBuffer.createFixedSize(intArrayOf(1, 2), DataType.FLOAT32)
 

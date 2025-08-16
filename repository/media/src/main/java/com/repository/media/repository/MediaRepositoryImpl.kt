@@ -3,8 +3,8 @@ package com.repository.media.repository
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.exception.AflamiException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.exception.FailedException
+import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.repository.MediaRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
@@ -16,7 +16,10 @@ import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toId
 import com.repository.media.mapper.toMediaEntity
 import com.repository.media.util.NetworkConnectionChecker
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 
 class MediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
@@ -115,10 +118,13 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun getContinueWatchingMedia(): List<Media> {
-        return safeCall(FailedException("getContinueWatchingMedia")) {
-            continueWatchingLocalDataSource.getAllMedia().map { it.toDomain() }
+    override fun getContinueWatchingMedia(): Flow<List<Media>> {
+        return continueWatchingLocalDataSource.getAllMedia().map { list ->
+            list.map { it.toDomain() }
         }
+            .catch {
+                throw FailedException("getContinueWatchingMedia")
+            }
     }
 
     override suspend fun getRatedMedia(accountId: Int): List<Media> {
@@ -135,19 +141,33 @@ class MediaRepositoryImpl(
         }
     }
 
-    override suspend fun getMoviesByCategory(category: com.paris_2.domain.media.entity.Category, page: Int): List<Media> {
+    override suspend fun getMoviesByCategory(
+        category: com.paris_2.domain.media.entity.Category,
+        page: Int
+    ): List<Media> {
         return safeCall(FailedException("getMoviesByCategory")) {
             val language = settingLocalDataSource.getLanguage().first()
-            mediaRemoteDataSource.getMoviesByCategory(category.toId(), page, language).resultDto?.mapNotNull {
+            mediaRemoteDataSource.getMoviesByCategory(
+                category.toId(),
+                page,
+                language
+            ).resultDto?.mapNotNull {
                 it.toDomain()
             } ?: emptyList()
         }
     }
 
-    override suspend fun getTvShowsByCategory(category: com.paris_2.domain.media.entity.Category, page: Int): List<Media> {
+    override suspend fun getTvShowsByCategory(
+        category: com.paris_2.domain.media.entity.Category,
+        page: Int
+    ): List<Media> {
         return safeCall(FailedException("getTvShowsByCategory")) {
             val language = settingLocalDataSource.getLanguage().first()
-            mediaRemoteDataSource.getTvShowsByCategory(category.toId(), page, language).tvResultDto.mapNotNull {
+            mediaRemoteDataSource.getTvShowsByCategory(
+                category.toId(),
+                page,
+                language
+            ).tvResultDto.mapNotNull {
                 it.toDomain()
             }
         }

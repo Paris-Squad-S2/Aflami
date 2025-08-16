@@ -14,4 +14,25 @@ kotlin {
 
 dependencies{
     implementation(libs.kotlinx.datetime)
+    implementation(libs.kotlinx.coroutines.core)
+    testImplementation(libs.bundles.test)
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
 }

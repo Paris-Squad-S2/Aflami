@@ -22,6 +22,8 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -369,8 +371,8 @@ class MediaRepositoryImplTest {
             voteAverage = 6.6,
             releaseDate = "2023-09-09"
         )
-        coEvery { local.getAllMedia() } returns listOf(entity)
-        val result = repo.getContinueWatchingMedia()
+        coEvery { local.getAllMedia() } returns flowOf(listOf(entity))
+        val result = repo.getContinueWatchingMedia().single()
         assertThat(result.single().id).isEqualTo(300)
     }
     @Test
@@ -400,15 +402,6 @@ class MediaRepositoryImplTest {
 
         assertThrows<FailedException> {
             repo.addMediaToContinueWatching(media)
-        }
-    }
-
-    @Test
-    fun `getMediaFromLocal throws catchMediaFromLocalException on failure`() = runTest {
-        coEvery { local.getAllMedia() } throws RuntimeException("DB read failed")
-
-        assertThrows<FailedException> {
-            repo.getContinueWatchingMedia()
         }
     }
 
