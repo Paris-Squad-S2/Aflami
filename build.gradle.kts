@@ -106,6 +106,9 @@ val koverExcludedPackages = listOf(
     "**.InstallSavedAppLanguage*",
     "**.MainViewModel*",
     "**.PagingSource*",
+    "**.*_Factory*",
+    "**.*_HiltModules*",
+    "**.*_HiltModules_*"
 )
 
 allprojects {
