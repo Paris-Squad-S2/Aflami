@@ -27,6 +27,7 @@ import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -58,6 +59,7 @@ class MovieDetailsViewModelTest {
     private val getMovieVideoUseCase: GetMovieVideoUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
+    private val addWatchHistoryUseCase: AddWatchHistoryUseCase = mockk(relaxed = true)
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase = mockk()
     private val addMovieToListUseCase: AddMovieToListUseCase = mockk()
     private val getListsUseCase: GetListUseCase = mockk()
@@ -402,6 +404,7 @@ class MovieDetailsViewModelTest {
             getMovieVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
+            addWatchHistoryUseCase,
             addRatingToMovieUseCase,
             addMovieToListUseCase,
             getListsUseCase,
