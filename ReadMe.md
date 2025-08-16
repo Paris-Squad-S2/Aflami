@@ -236,13 +236,8 @@ If you encounter issues during setup:
 ## 📄 License
 [MIT](LICENSE.md)
 
-## 🙏 Acknowledgments
-- TMDB, Material Design, Android Team.
-
----
 
 <div align="center">
-[![Email](https://img.shields.io/badge/Email-Contact-red)](mailto:your-email@domain.com)
 [![Issues](https://img.shields.io/badge/Issues-Report-orange)](https://github.com/Paris-Squad-S2/Aflami/issues)
 ⭐ Star this repo!
 
