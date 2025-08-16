@@ -35,8 +35,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var bottomNavBarAPI: BottomNavBarAPI
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val splashScreen = installSplashScreen()
-        splashScreen.setKeepOnScreenCondition { false}
+        installSplashScreen()
         enableEdgeToEdge()
         setContent {
             InstallSavedAppLanguage(this)
