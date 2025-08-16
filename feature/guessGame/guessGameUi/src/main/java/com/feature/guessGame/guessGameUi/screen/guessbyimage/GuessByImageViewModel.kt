@@ -108,10 +108,6 @@ class GuessByImageViewModel @Inject constructor(
     override fun onNextClicked() {
         currentSession?.let { session ->
             val updatedSession = moveToNextQuestionUseCase(session)
-            Log.d(
-                "image",
-                "loadQuestion: ${updatedSession.questions.getOrNull(updatedSession.currentQuestionIndex)?.content}"
-            )
 
             if (updatedSession.isCompleted) {
                 val totalTimeSeconds =

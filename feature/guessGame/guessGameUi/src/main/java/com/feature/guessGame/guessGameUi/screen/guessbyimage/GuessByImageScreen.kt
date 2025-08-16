@@ -53,7 +53,6 @@ fun GuessByImageScreen(
 ) {
 
     val intent = activity.intent
-    //  val questionType = intent.getStringExtra("question_type") ?: "Guess Poster"
     val gameLevelName = intent.getStringExtra("game_level") ?: UiGameLevel.EASY.name
     val imageTypeName = intent.getStringExtra("image_type") ?: QuestionType.ACTOR.name
 
@@ -61,10 +60,6 @@ fun GuessByImageScreen(
         .getOrDefault(UiGameLevel.EASY)
     val imageType = runCatching { QuestionType.valueOf(imageTypeName) }
         .getOrDefault(QuestionType.ACTOR)
-
-//    val totalQuestions = intent.getIntExtra("total_questions", 10)
-//    val timePerQuestion = intent.getIntExtra("time_per_question", 30)
-//    val pointsPerQuestion = intent.getIntExtra("points_per_question", 10)
 
     val state = viewModel.screenState.collectAsStateWithLifecycle().value
 

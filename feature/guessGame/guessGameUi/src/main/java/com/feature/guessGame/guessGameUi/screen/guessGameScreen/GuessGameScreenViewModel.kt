@@ -3,7 +3,6 @@ package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 import android.content.Context
 import android.content.Intent
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessByImageScreen
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessQuestionScreen
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
@@ -72,29 +71,18 @@ class GuessGameScreenViewModel @Inject constructor(
                     putExtra("game_level", uiLevel.name)
                 }
                 context.startActivity(intent)
-//                navigate(
-//                    GuessByImageScreen(
-//                        questionType = questionType,
-//                        totalQuestions = settings.numberOfQuestions,
-//                        timePerQuestion = settings.timePerQuestionSec,
-//                        pointsPerQuestion = settings.pointsPerQuestion,
-//                        imageType = QuestionType.ACTOR,
-//                        gameLevel = uiLevel
-//                    )
-//                )
             }
 
             QuestionType.POSTER -> {
-                navigate(
-                    GuessByImageScreen(
-                        questionType = questionType,
-                        totalQuestions = settings.numberOfQuestions,
-                        timePerQuestion = settings.timePerQuestionSec,
-                        pointsPerQuestion = settings.pointsPerQuestion,
-                        imageType = QuestionType.POSTER,
-                        gameLevel = uiLevel
-                    )
-                )
+                val intent = Intent(context, GuessByImageActivity::class.java).apply {
+                    putExtra("question_type", questionType.name)
+                    putExtra("total_questions", settings.numberOfQuestions)
+                    putExtra("time_per_question", settings.timePerQuestionSec)
+                    putExtra("points_per_question", settings.pointsPerQuestion)
+                    putExtra("image_type", QuestionType.POSTER.name)
+                    putExtra("game_level", uiLevel.name)
+                }
+                context.startActivity(intent)
             }
 
             QuestionType.RELEASE_YEAR -> {
