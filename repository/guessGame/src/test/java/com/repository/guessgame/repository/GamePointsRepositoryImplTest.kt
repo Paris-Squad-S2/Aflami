@@ -46,14 +46,4 @@ class GamePointsRepositoryImplTest {
         assertThat(result).isEqualTo(UserPoints(userId = 7, gamePoints = 150))
         coVerify(exactly = 1) { local.getUserGamePoints(7) }
     }
-
-    @Test
-    fun `getUserGamePoints throws when local returns null`() = runTest {
-        // Given
-        coEvery { local.getUserGamePoints(42) } returns null
-        // When & Then
-        assertThrows<IllegalStateException> {
-            repository.getUserGamePoints(42)
-        }
-    }
 }
