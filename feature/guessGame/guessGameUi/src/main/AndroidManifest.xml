@@ -7,6 +7,10 @@
             android:exported="true">
 
         </activity>
+        <activity
+            android:name=".screen.guessQuestionScreen.GuessQuestionActivity"
+            android:exported="true" />
+
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
+import android.app.Activity
 import android.content.res.Configuration
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
@@ -15,9 +16,11 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,6 +33,7 @@ import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
@@ -40,16 +44,33 @@ import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 
 @Composable
 fun GuessQuestionScreen(
+    activity: GuessQuestionActivity,
     viewModel: GuessQuestionViewModel = hiltViewModel(),
-    questionType: QuestionType = QuestionType.RELEASE_YEAR,
+    // questionType: QuestionType = QuestionType.RELEASE_YEAR,
 ) {
+
+    val intent = activity.intent
+    val gameLevelName = intent.getStringExtra("game_level") ?: UiGameLevel.EASY.name
+    val gameLevel = runCatching { UiGameLevel.valueOf(gameLevelName) }
+        .getOrDefault(UiGameLevel.EASY)
+
+    val questionTypeName = intent.getStringExtra("question_type") ?: QuestionType.ACTOR.name
+    val questionType = runCatching { QuestionType.valueOf(questionTypeName) }
+        .getOrDefault(QuestionType.ACTOR)
+
+    val timePerRequest: Int = intent.getIntExtra("time_per_question", 10)
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.initialization(gameLevel, questionType, timePerQuestion = timePerRequest)
+    }
+
     val uiState = viewModel.screenState.collectAsStateWithLifecycle().value
 
     GuessGameBackground {
         GuessQuestionContent(
             state = uiState,
             listener = viewModel,
-            questionType = questionType
+            title = uiState.screenTitle
         )
     }
 }
@@ -58,9 +79,10 @@ fun GuessQuestionScreen(
 fun GuessQuestionContent(
     state: GuessQuestionUiState,
     listener: GuessQuestionInteractionListener,
-    questionType: QuestionType,
+    title: Int?,
 ) {
     val currentQuestionIndex = state.currentStep
+    val context = LocalContext.current
 
     if (state.isLoading) {
         PageLoadingPlaceHolder(
@@ -73,11 +95,13 @@ fun GuessQuestionContent(
                 .statusBarsPadding()
         ) {
             AppTopBar(
-                title = stringResource(id = questionType.getTitleResId()),
+                title = stringResource(id = title ?: R.string.when_was_it_released_title),
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                        onClick = listener::onCancelClick
+                        onClick = {
+                            (context as? Activity)?.finish()
+                        }
                     )
                 ),
                 trailingContent = {
@@ -158,7 +182,7 @@ fun GuessReleaseYearContentPreview() {
     GuessGameBackground {
         GuessQuestionContent(
             state = GuessQuestionUiState(
-                gameTitle = "guess_release_year",
+                screenTitle = R.string.when_was_it_released_title,
                 totalQuestions = 5,
                 currentStep = 2,
                 questionText = "In which year was 'Inception' released?",
@@ -178,7 +202,7 @@ fun GuessReleaseYearContentPreview() {
                 override fun onAnswerSelected(answer: String) {}
                 override fun onNextClicked() {}
             },
-            questionType = QuestionType.RELEASE_YEAR
+            title = R.string.when_was_it_released_title
         )
     }
 }

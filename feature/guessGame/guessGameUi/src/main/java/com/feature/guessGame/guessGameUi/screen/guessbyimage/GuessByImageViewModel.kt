@@ -1,7 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
@@ -19,7 +18,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GuessByImageViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val guessMovieSessionUseCase: GuessMovieSessionUseCase,
     private val guessActorSessionUseCase: GuessActorSessionUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
@@ -27,10 +25,10 @@ class GuessByImageViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
 ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
-    private var level = UiGameLevel.EASY
     private var questionType = QuestionType.ACTOR
     private var currentSession: GameSession? = null
     private var startTimeMillis: Long = 0
+    private var level = UiGameLevel.EASY
 
     fun initialization(gameLevel: UiGameLevel, questionType: QuestionType) {
         level = gameLevel
@@ -54,8 +52,6 @@ class GuessByImageViewModel @Inject constructor(
             UiGameLevel.MEDIUM -> 30
             UiGameLevel.EASY -> 45
         }
-        Log.d("TAG", "generateSession:${questionType} ")
-        Log.d("TAG", "generateSession:${level} ")
 
         updateState(screenState.value.copy(isLoading = true))
 
@@ -68,7 +64,6 @@ class GuessByImageViewModel @Inject constructor(
                         guessMovieSessionUseCase.startNewSession(gameLevel.toUiLevel())
                 currentSession = session
                 startTimeMillis = System.currentTimeMillis()
-                Log.d("navTest", "generateSession done with ${session.questions.size} questions")
                 session
             },
             onSuccess = { session ->
@@ -100,8 +95,6 @@ class GuessByImageViewModel @Inject constructor(
                     questionUiState = session.questions.map { it.toUiModel() },
                 )
             )
-            val image = firstQuestion.content
-            Log.d("image", "loadQuestion: $image")
         }
     }
 
@@ -162,7 +155,7 @@ class GuessByImageViewModel @Inject constructor(
                     )
                 )
             }
-        } ?: Log.e("navTest", "No session found when onAnswerSelected called")
+        }
     }
 
     fun updateScore() {

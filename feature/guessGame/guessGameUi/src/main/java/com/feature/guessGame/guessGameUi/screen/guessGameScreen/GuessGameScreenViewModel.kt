@@ -3,9 +3,9 @@ package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 import android.content.Context
 import android.content.Intent
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations.GuessQuestionScreen
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
+import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.GuessQuestionActivity
 import com.feature.guessGame.guessGameUi.screen.guessbyimage.GuessByImageActivity
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
@@ -86,28 +86,44 @@ class GuessGameScreenViewModel @Inject constructor(
             }
 
             QuestionType.RELEASE_YEAR -> {
-                navigate(
-                    GuessQuestionScreen(
-                        questionType = questionType,
-                        totalQuestions = settings.numberOfQuestions,
-                        timePerQuestion = settings.timePerQuestionSec,
-                        pointsPerQuestion = settings.pointsPerQuestion,
-                        gameLevel = uiLevel
-                    )
-                )
+                val intent = Intent(context, GuessQuestionActivity::class.java).apply {
+                    putExtra("question_type", questionType.name)
+                    putExtra("total_questions", settings.numberOfQuestions)
+                    putExtra("time_per_question", settings.timePerQuestionSec)
+                    putExtra("points_per_question", settings.pointsPerQuestion)
+                    putExtra("game_level", uiLevel.name)
+                }
+                context.startActivity(intent)
+//                navigate(
+//                    GuessQuestionScreen(
+//                        questionType = questionType,
+//                        totalQuestions = settings.numberOfQuestions,
+//                        timePerQuestion = settings.timePerQuestionSec,
+//                        pointsPerQuestion = settings.pointsPerQuestion,
+//                        gameLevel = uiLevel
+//                    )
+//                )
 
             }
 
             QuestionType.GENRE -> {
-                navigate(
-                    GuessQuestionScreen(
-                        questionType = questionType,
-                        totalQuestions = settings.numberOfQuestions,
-                        timePerQuestion = settings.timePerQuestionSec,
-                        pointsPerQuestion = settings.pointsPerQuestion,
-                        gameLevel = uiLevel
-                    )
-                )
+                val intent = Intent(context, GuessQuestionActivity::class.java).apply {
+                    putExtra("question_type", questionType.name)
+                    putExtra("total_questions", settings.numberOfQuestions)
+                    putExtra("time_per_question", settings.timePerQuestionSec)
+                    putExtra("points_per_question", settings.pointsPerQuestion)
+                    putExtra("game_level", uiLevel.name)
+                }
+                context.startActivity(intent)
+//                navigate(
+//                    GuessQuestionScreen(
+//                        questionType = questionType,
+//                        totalQuestions = settings.numberOfQuestions,
+//                        timePerQuestion = settings.timePerQuestionSec,
+//                        pointsPerQuestion = settings.pointsPerQuestion,
+//                        gameLevel = uiLevel
+//                    )
+//                )
             }
 
             null -> {

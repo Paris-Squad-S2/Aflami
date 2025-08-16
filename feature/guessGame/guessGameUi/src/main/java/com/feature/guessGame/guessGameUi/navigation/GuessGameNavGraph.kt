@@ -48,10 +48,10 @@ fun NavGraphBuilder.buildGuessGameNavGraph() {
         startDestination = GuessGameDestinations.GuessGameScreen
     ) {
         composable<GuessGameDestinations.GuessGameScreen> { GuessGameScreen() }
-        composable<GuessGameDestinations.GuessQuestionScreen> { backStackEntry ->
-            val args = backStackEntry.toRoute<GuessGameDestinations.GuessQuestionScreen>()
-            GuessQuestionScreen(questionType = args.questionType)
-        }
+//        composable<GuessGameDestinations.GuessQuestionScreen> { backStackEntry ->
+//            val args = backStackEntry.toRoute<GuessGameDestinations.GuessQuestionScreen>()
+//            GuessQuestionScreen(questionType = args.questionType)
+//        }
 //        composable<GuessGameDestinations.GuessByImageScreen> { backStackEntry ->
 //            val args = backStackEntry.toRoute<GuessGameDestinations.GuessByImageScreen>()
 //            GuessByImageScreen()

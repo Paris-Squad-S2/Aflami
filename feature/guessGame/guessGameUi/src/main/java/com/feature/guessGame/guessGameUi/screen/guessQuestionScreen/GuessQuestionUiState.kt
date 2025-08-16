@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
+import androidx.annotation.StringRes
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
@@ -7,7 +8,8 @@ import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.Question
 
 data class GuessQuestionUiState(
-    val gameTitle: String = "",
+    @StringRes
+    val screenTitle: Int? = null,
     val totalQuestions: Int = 0,
     val currentStep: Int = 0,
     val questionUiState: List<UiQuestion> = emptyList(),

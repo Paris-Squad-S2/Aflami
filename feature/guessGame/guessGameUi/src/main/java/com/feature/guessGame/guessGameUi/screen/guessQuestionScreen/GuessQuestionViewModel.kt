@@ -2,7 +2,6 @@ package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
 import android.util.Log
 import androidx.lifecycle.SavedStateHandle
-import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
@@ -22,7 +21,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class GuessQuestionViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
     private val whenIsReleasedSessionUseCase: WhenIsReleasedSessionUseCase,
     private val whichGenreSessionUseCase: WhichGenreSessionUseCase,
     private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
@@ -31,50 +29,59 @@ class GuessQuestionViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
     private val useHintUseCase: UseHintUseCase,
 ) : BaseViewModel<GuessQuestionUiState>(
-    GuessQuestionUiState(
-        totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
-        timePerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().timePerQuestion,
-        pointsPerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().pointsPerQuestion,
-        gameTitle = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().questionType.name,
-        session = GameSessionUi(
-            level = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().gameLevel.name
-        )
-    )
+    GuessQuestionUiState()
 ), GuessQuestionInteractionListener {
 
-    private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>()
-    private val questionType = args.questionType
+    private var questionType = QuestionType.RELEASE_YEAR
     private var currentSession: GameSession? = null
     private var gameStartTimeMillis: Long = 0L
-    private val timePerQuestion = args.timePerQuestion
+    private var timePerQuestion = 45
+    private var level: UiGameLevel = UiGameLevel.EASY
 
-    init {
-        generateSession(args.gameLevel)
+    fun initialization(gameLevel: UiGameLevel, questionType: QuestionType, timePerQuestion: Int) {
+        level = gameLevel
+        Log.d("TAG", "initialization: ${questionType}")
+        this.questionType = questionType
+        this.timePerQuestion = timePerQuestion
+        generateSession(this.level)
+        updateState(
+            screenState.value.copy(
+                screenTitle = this.questionType.getTitleResId()
+            )
+        )
+        currentSession?.let { session ->
+            loadQuestion(session)
+        }
     }
 
-    private fun generateSession(level: UiGameLevel) {
-        tryToExecute(
-            execute = {
-                updateState(screenState.value.copy(isLoading = true))
-                val session = when (questionType) {
-                    QuestionType.RELEASE_YEAR -> whenIsReleasedSessionUseCase.startNewSession(level.toUiLevel())
-                    QuestionType.GENRE -> whichGenreSessionUseCase.startNewSession(level.toUiLevel())
-                    QuestionType.ACTOR, QuestionType.POSTER -> TODO()
-                }
-                currentSession = session
-                gameStartTimeMillis = System.currentTimeMillis()
-                session
-            },
-            onSuccess = { session ->
-                updateState(screenState.value.copy(time = timePerQuestion))
-                loadQuestion(session)
-                updateState(screenState.value.copy(isLoading = false))
-            },
-            onError = { error ->
-                Log.e("GuessQuestionVM", "Error generating session: $error")
-                updateState(screenState.value.copy(error = error, isLoading = false))
-            }
-        )
+
+//    init {
+//        generateSession(args.gameLevel)
+//    }
+
+    private fun generateSession(gameLevel: UiGameLevel) {
+        val time = when (level) {
+            UiGameLevel.HARD -> 10
+            UiGameLevel.MEDIUM -> 30
+            UiGameLevel.EASY -> 45
+        }
+
+        tryToExecute(execute = {
+            updateState(screenState.value.copy(isLoading = true))
+            val session =
+                if (questionType == QuestionType.RELEASE_YEAR) whenIsReleasedSessionUseCase.startNewSession(
+                    gameLevel.toUiLevel()
+                )
+                else whichGenreSessionUseCase.startNewSession(gameLevel.toUiLevel())
+            currentSession = session
+            gameStartTimeMillis = System.currentTimeMillis()
+            session
+        }, onSuccess = { session ->
+            loadQuestion(session)
+            updateState(screenState.value.copy(time = time, isLoading = false))
+        }, onError = { error ->
+            updateState(screenState.value.copy(error = error, isLoading = false))
+        })
     }
 
     private fun loadQuestion(session: GameSession) {
@@ -93,11 +100,7 @@ class GuessQuestionViewModel @Inject constructor(
                     time = timePerQuestion,
                 )
             )
-            Log.d(
-                "GuessQuestionVM",
-                "Loaded question ${session.currentQuestionIndex + 1}: ${question.content}"
-            )
-        } ?: Log.e("GuessQuestionVM", "No current question found")
+        }
     }
 
     override fun onAnswerSelected(answer: String) {
@@ -138,8 +141,7 @@ class GuessQuestionViewModel @Inject constructor(
             screenState.value.copy(
                 currentStep = updatedSession.currentQuestionIndex,
                 time = timePerQuestion,
-                questionUiState = updatedSession.questions.map { it.toUiQuestion() }
-            )
+                questionUiState = updatedSession.questions.map { it.toUiQuestion() })
         )
 
         if (updatedSession.isCompleted) {
@@ -149,7 +151,7 @@ class GuessQuestionViewModel @Inject constructor(
                     totalGameTime = updatedSession.duration,
                     totalGamePoints = updatedSession.score,
                     gameType = questionType,
-                    gameLevel = args.gameLevel
+                    gameLevel = level
                 )
             )
         } else {
@@ -178,51 +180,47 @@ class GuessQuestionViewModel @Inject constructor(
             return
         }
 
-        tryToExecute(
-            execute = {
-                val userId =
-                    getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
+        tryToExecute(execute = {
+            val userId =
+                getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
 
-                val hintUsed = useHintUseCase(session, userId)
+            val hintUsed = useHintUseCase(session, userId)
 
-                if (hintUsed) {
-                    val hintResult =
-                        removeAnswerHintUseCase(session, false, getUserPointUseCase(userId))
+            if (hintUsed) {
+                val hintResult =
+                    removeAnswerHintUseCase(session, false, getUserPointUseCase(userId))
 
-                    if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {
-                        return@tryToExecute HintUsageResult.Success(hintResult.updatedQuestion)
-                    } else {
-                        return@tryToExecute HintUsageResult.Failed("Failed to remove wrong answer")
-                    }
+                if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {
+                    return@tryToExecute HintUsageResult.Success(hintResult.updatedQuestion)
                 } else {
-                    return@tryToExecute HintUsageResult.NotEnoughPoints
+                    return@tryToExecute HintUsageResult.Failed("Failed to remove wrong answer")
                 }
-            },
-            onSuccess = { result ->
-                when (result) {
-                    is HintUsageResult.Success -> {
-                        applyHint(result.updatedQuestion)
-                        Log.d("GuessQuestionVM", "Hint applied successfully. 10 points deducted.")
-                    }
-
-                    HintUsageResult.NotEnoughPoints -> {
-                        updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
-                        Log.d("GuessQuestionVM", "Not enough points for hint. Required: $HINT_COST")
-                    }
-
-                    is HintUsageResult.Failed -> {
-                        Log.e("GuessQuestionVM", "Hint usage failed: ${result.error}")
-                    }
-
-                    HintUsageResult.AlreadyUsed -> {
-                        Log.d("GuessQuestionVM", "Hint already used")
-                    }
-                }
-            },
-            onError = { error ->
-                Log.e("GuessQuestionVM", "Error using hint: $error")
+            } else {
+                return@tryToExecute HintUsageResult.NotEnoughPoints
             }
-        )
+        }, onSuccess = { result ->
+            when (result) {
+                is HintUsageResult.Success -> {
+                    applyHint(result.updatedQuestion)
+                    Log.d("GuessQuestionVM", "Hint applied successfully. 10 points deducted.")
+                }
+
+                HintUsageResult.NotEnoughPoints -> {
+                    updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
+                    Log.d("GuessQuestionVM", "Not enough points for hint. Required: $HINT_COST")
+                }
+
+                is HintUsageResult.Failed -> {
+                    Log.e("GuessQuestionVM", "Hint usage failed: ${result.error}")
+                }
+
+                HintUsageResult.AlreadyUsed -> {
+                    Log.d("GuessQuestionVM", "Hint already used")
+                }
+            }
+        }, onError = { error ->
+            Log.e("GuessQuestionVM", "Error using hint: $error")
+        })
     }
 
     private fun applyHint(updatedQuestion: Question) {
@@ -245,13 +243,11 @@ class GuessQuestionViewModel @Inject constructor(
         )
 
         Log.d(
-            "GuessQuestionVM",
-            "Hint applied: ${updatedQuestion.options.size} options remaining"
+            "GuessQuestionVM", "Hint applied: ${updatedQuestion.options.size} options remaining"
         )
     }
 
     override fun onTimeFinished() = onNextClicked()
-
 
     override fun onDismissNotEnoughPointsDialog() =
         updateState(screenState.value.copy(showNotEnoughPointsDialog = false))
@@ -270,7 +266,7 @@ class GuessQuestionViewModel @Inject constructor(
     }
 
     private fun updateScore() {
-        val points = when (args.gameLevel) {
+        val points = when (level) {
             UiGameLevel.HARD -> 20
             UiGameLevel.MEDIUM -> 10
             UiGameLevel.EASY -> 5
