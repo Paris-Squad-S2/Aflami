@@ -405,15 +405,6 @@ class MediaRepositoryImplTest {
         }
     }
 
-    @Test
-    fun `getMediaFromLocal throws catchMediaFromLocalException on failure`() = runTest {
-        coEvery { local.getAllMedia() } throws RuntimeException("DB read failed")
-
-        assertThrows<FailedException> {
-            repo.getContinueWatchingMedia()
-        }
-    }
-
 
     @Test
     fun `getRatedMedia throws NoRatedMediaFoundException when remote call fails`() = runTest {

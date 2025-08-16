@@ -59,28 +59,32 @@ class ProfileViewModel @Inject constructor(
         }
     }
     private fun getUserPoints(){
-        viewModelScope.launch {
-            val userId = getAccountIdUseCase.invoke()
-            val userPoints = getUserPoints.invoke(userId ?: 0)
-            updateState(
-                screenState.value.copy(
-                    profile = screenState.value.profile.copy(
-                        points = userPoints
+        tryToExecute(
+            execute = { getUserPoints.invoke(getAccountIdUseCase.invoke() ?: 0) },
+            onSuccess = { userPoints ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            points = userPoints
+                        )
                     )
                 )
-            )
-        }
+            },
+            onError = {},
+        )
     }
 
     private fun getUserName() {
-        updateState(
-            screenState.value.copy(
-                profile = screenState.value.profile
-                    .copy(
-                        name = settingsUseCase.getUserName()
-                    )
+        viewModelScope.launch{
+            updateState(
+                screenState.value.copy(
+                    profile = screenState.value.profile.copy(
+                            name = settingsUseCase.getUserName()
+                        )
+                )
             )
-        )
+        }
+
     }
 
     private fun checkUserLoggedIn() {
