@@ -7,6 +7,8 @@ import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.DifficultySettings
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
+import com.paris_2.domain.game.usecases.UpdatePointsUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
@@ -25,6 +27,10 @@ class ResultViewModelTest {
 
     private val savedStateHandle: SavedStateHandle = mockk(relaxed = true)
     private val navigator: GuessGameNavigator = mockk(relaxed = true)
+
+    private val getAccountIdUseCase: GetAccountIdUseCase = mockk(relaxed = true)
+    private val updatePointsUseCase: UpdatePointsUseCase = mockk(relaxed = true)
+
     private val testDispatcher = StandardTestDispatcher()
 
     @BeforeEach
@@ -41,7 +47,12 @@ class ResultViewModelTest {
             gameType = QuestionType.ACTOR,
             gameLevel = UiGameLevel.EASY
         )
-        val viewModel = ResultViewModel(savedStateHandle)
+
+        val viewModel = ResultViewModel(
+            savedStateHandle,
+            getAccountIdUseCase,
+            updatePointsUseCase
+        )
         viewModel.navigator = navigator
 
         viewModel.onExitClicked()
@@ -58,7 +69,12 @@ class ResultViewModelTest {
             gameType = QuestionType.GENRE,
             gameLevel = UiGameLevel.EASY
         )
-        val viewModel = ResultViewModel(savedStateHandle)
+
+        val viewModel = ResultViewModel(
+            savedStateHandle,
+            getAccountIdUseCase,
+            updatePointsUseCase
+        )
         viewModel.navigator = navigator
 
         viewModel.onBackToMenuClicked()
@@ -68,68 +84,76 @@ class ResultViewModelTest {
     }
 
     @Test
-    fun `onPlayAgainClicked with ACTOR navigates to GuessByImageScreen with EASY defaults`() =
-        runTest {
-            every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
-                totalGameTime = 90,
-                totalGamePoints = 150,
-                gameType = QuestionType.ACTOR,
-                gameLevel = UiGameLevel.EASY
+    fun `onPlayAgainClicked with ACTOR navigates to GuessByImageScreen with EASY defaults`() = runTest {
+        every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
+            totalGameTime = 90,
+            totalGamePoints = 150,
+            gameType = QuestionType.ACTOR,
+            gameLevel = UiGameLevel.EASY
+        )
+
+        val viewModel = ResultViewModel(
+            savedStateHandle,
+            getAccountIdUseCase,
+            updatePointsUseCase
+        )
+        viewModel.navigator = navigator
+
+        val settings = DifficultySettings.getDifficultySettings(difficultyId = 0)
+
+        viewModel.onPlayAgainClicked()
+        runCurrent()
+
+        coVerify {
+            navigator.navigate(
+                withArg { destination ->
+                    assert(destination is GuessGameDestinations.GuessByImageScreen)
+                    val d = destination as GuessGameDestinations.GuessByImageScreen
+                    assert(d.questionType == QuestionType.ACTOR)
+                    assert(d.imageType == QuestionType.ACTOR)
+                    assert(d.totalQuestions == settings.numberOfQuestions)
+                    assert(d.timePerQuestion == settings.timePerQuestionSec)
+                    assert(d.pointsPerQuestion == settings.pointsPerQuestion)
+                },
+                null
             )
-            val viewModel = ResultViewModel(savedStateHandle)
-            viewModel.navigator = navigator
-
-            val settings = DifficultySettings.getDifficultySettings(difficultyId = 0)
-
-            viewModel.onPlayAgainClicked()
-            runCurrent()
-
-            coVerify {
-                navigator.navigate(
-                    withArg { destination ->
-                        assert(destination is GuessGameDestinations.GuessByImageScreen)
-                        val d = destination as GuessGameDestinations.GuessByImageScreen
-                        assert(d.questionType == QuestionType.ACTOR)
-                        assert(d.imageType == QuestionType.ACTOR)
-                        assert(d.totalQuestions == settings.numberOfQuestions)
-                        assert(d.timePerQuestion == settings.timePerQuestionSec)
-                        assert(d.pointsPerQuestion == settings.pointsPerQuestion)
-                    },
-                    null
-                )
-            }
         }
+    }
 
     @Test
-    fun `onPlayAgainClicked with GENRE navigates to GuessQuestionScreen with EASY defaults`() =
-        runTest {
-            every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
-                totalGameTime = 120,
-                totalGamePoints = 250,
-                gameType = QuestionType.GENRE,
-                gameLevel = UiGameLevel.EASY
+    fun `onPlayAgainClicked with GENRE navigates to GuessQuestionScreen with EASY defaults`() = runTest {
+        every { savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>() } returns GuessGameDestinations.FinishGameScreen(
+            totalGameTime = 120,
+            totalGamePoints = 250,
+            gameType = QuestionType.GENRE,
+            gameLevel = UiGameLevel.EASY
+        )
+
+        val viewModel = ResultViewModel(
+            savedStateHandle,
+            getAccountIdUseCase,
+            updatePointsUseCase
+        )
+        viewModel.navigator = navigator
+
+        val settings = DifficultySettings.getDifficultySettings(difficultyId = 0)
+
+        viewModel.onPlayAgainClicked()
+        runCurrent()
+
+        coVerify {
+            navigator.navigate(
+                withArg { destination ->
+                    assert(destination is GuessGameDestinations.GuessQuestionScreen)
+                    val d = destination as GuessGameDestinations.GuessQuestionScreen
+                    assert(d.questionType == QuestionType.GENRE)
+                    assert(d.totalQuestions == settings.numberOfQuestions)
+                    assert(d.timePerQuestion == settings.timePerQuestionSec)
+                    assert(d.pointsPerQuestion == settings.pointsPerQuestion)
+                    assert(d.gameLevel == UiGameLevel.EASY)
+                },
+                null
             )
-            val viewModel = ResultViewModel(savedStateHandle)
-            viewModel.navigator = navigator
-
-            val settings = DifficultySettings.getDifficultySettings(difficultyId = 0)
-
-            viewModel.onPlayAgainClicked()
-            runCurrent()
-
-            coVerify {
-                navigator.navigate(
-                    withArg { destination ->
-                        assert(destination is GuessGameDestinations.GuessQuestionScreen)
-                        val d = destination as GuessGameDestinations.GuessQuestionScreen
-                        assert(d.questionType == QuestionType.GENRE)
-                        assert(d.totalQuestions == settings.numberOfQuestions)
-                        assert(d.timePerQuestion == settings.timePerQuestionSec)
-                        assert(d.pointsPerQuestion == settings.pointsPerQuestion)
-                        assert(d.gameLevel == UiGameLevel.EASY)
-                    },
-                    null
-                )
-            }
         }
+    }
 }
