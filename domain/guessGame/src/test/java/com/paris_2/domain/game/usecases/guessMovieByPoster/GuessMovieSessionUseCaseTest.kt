@@ -3,7 +3,9 @@ package com.paris_2.domain.game.usecases.guessMovieByPoster
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.game.entity.Actor
 import com.paris_2.domain.game.entity.ActorMedia
+import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.MoviePosterQuestion
+import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -31,27 +33,28 @@ class GuessMovieSessionUseCaseTest {
         val count = 7
         val allMovies = sampleActors.flatMap { it.media }
         // When
-        val questions: List<MoviePosterQuestion> = useCase(count)
+        val session: GameSession = useCase.startNewSession(GameSession.GameLevel.MEDIUM)
+        val questions: List<Question> = session.questions
         // Then
-        assertThat(questions).hasSize(count)
+        assertThat(questions).hasSize(10) // MEDIUM level is 10 questions
         questions.forEach { q ->
             assertThat(q.options).hasSize(4)
-            assertThat(q.options).contains(q.correctAnswer)
+            assertThat(q.options.map { it.text }).contains(q.correctAnswer)
             assertThat(allMovies.map { it.name }).contains(q.correctAnswer)
-            val movieWithPoster = allMovies.find { it.posterImg == q.posterImg }
+            val movieWithPoster = allMovies.find { it.posterImg == q.content }
             assertThat(movieWithPoster).isNotNull()
             assertThat(movieWithPoster!!.name).isEqualTo(q.correctAnswer)
         }
-        coVerify(exactly = 1) { repository.getPopularActor() }
+        coVerify(exactly = 10) { repository.getPopularActor() }
     }
 
     @Test
     fun `should return empty list when count is zero`() = runTest {
         // When
-        val questions = useCase(0)
+        val session = useCase.startNewSession(GameSession.GameLevel.EASY)
         // Then
-        assertThat(questions).isEmpty()
-        coVerify(exactly = 1) { repository.getPopularActor() }
+        assertThat(session.questions).hasSize(5) // EASY level is 5 questions
+        coVerify(exactly = 5) { repository.getPopularActor() }
     }
 
     private companion object {

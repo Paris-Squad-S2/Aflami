@@ -32,7 +32,7 @@ fun AflamiTheme(
     val view = LocalView.current
     val activity = context as? ComponentActivity
 
-    LaunchedEffect(isDarkTheme) {
+    LaunchedEffect(isInDarkTheme.value) {
         activity?.window?.also { window ->
             WindowInsetsControllerCompat(window, view).apply {
                 isAppearanceLightStatusBars = isLightStatusBars ?: !isInDarkTheme.value
