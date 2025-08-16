@@ -53,7 +53,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val getMovieVideoUseCase: GetMovieVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
-    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase,
+    private val addWatchHistoryUseCase: AddWatchHistoryUseCase,
     private val addRatingToMovieUseCase: AddRatingToMovieUseCase,
     private val addMovieToListUseCase: AddMovieToListUseCase,
     private val getListsUseCase: GetListUseCase,
@@ -200,7 +200,7 @@ class MovieDetailsViewModel @Inject constructor(
         tryToExecute(
             execute = { getMovieDetailsUseCase(mediaId) },
             onSuccess = { movie ->
-                addMediaToLocalDatabaseUseCase(movie.toMedia())
+                addWatchHistoryUseCase(movie.toMedia())
                 updateState(
                     screenState.value.copy(
                         isLoading = false,

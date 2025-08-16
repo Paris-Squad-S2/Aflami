@@ -50,7 +50,7 @@ class TvShowDetailsViewModel @Inject constructor(
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
-    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase,
+    private val addWatchHistoryUseCase: AddWatchHistoryUseCase,
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
@@ -169,7 +169,7 @@ class TvShowDetailsViewModel @Inject constructor(
         tryToExecute(
             execute = { getTvShowDetailsUseCase(mediaId) },
             onSuccess = { tvShow ->
-                addMediaToLocalDatabaseUseCase(tvShow.toMedia())
+                addWatchHistoryUseCase(tvShow.toMedia())
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(

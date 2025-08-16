@@ -11,7 +11,6 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
@@ -43,7 +42,6 @@ class HomeScreenViewModelTest {
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase =
         mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
-    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase = mockk()
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase = mockk()
     private val settingsUseCase: SettingsUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
@@ -130,7 +128,6 @@ class HomeScreenViewModelTest {
         coEvery { getMoviesCategoriesUseCase() } returns fakeCategories
         coEvery { getUpcomingMediaUseCase() } returns fakeUpcomingList.map { it.toMedia() }
         coEvery { getWatchHistoryUseCase() } returns flowOf(fakeContinueWatchingList.map { it.toMedia() })
-        coEvery { addMediaToLocalDatabaseUseCase.invoke(any()) } returns Unit
         coEvery { filterUpComingMediaByCategoriesUseCase.invoke(any()) } returns fakeUpcomingList.map { it.toMedia() }
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -295,27 +292,13 @@ class HomeScreenViewModelTest {
             coEvery { settingsUseCase.getRestriction() } returns "Off"
             val movie = fakePopularList.first().copy(type = MOVIE)
             val tv = fakePopularList.last().copy(type = TVSHOW)
-            coEvery { addMediaToLocalDatabaseUseCase.invoke(movie.toMedia()) } returns Unit
-            coEvery { addMediaToLocalDatabaseUseCase.invoke(tv.toMedia()) } returns Unit
             viewModel.onMediaCardClick(movie)
             runCurrent()
-            coVerify { addMediaToLocalDatabaseUseCase.invoke(movie.toMedia()) }
             coVerify { mediaDetailsFeatureAPI.startMovieDetails(movie.id) }
             viewModel.onMediaCardClick(tv)
             runCurrent()
-            coVerify { addMediaToLocalDatabaseUseCase.invoke(tv.toMedia()) }
             coVerify { mediaDetailsFeatureAPI.startTvShowDetails(tv.id) }
         }
-
-    @Test
-    fun `onMediaCardClick handles error`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
-        val movie = fakePopularList.first()
-        coEvery { addMediaToLocalDatabaseUseCase.invoke(movie.toMedia()) } throws RuntimeException("add error")
-        viewModel.onMediaCardClick(movie)
-        runCurrent()
-        assertThat(viewModel.screenState.value.errorMessage).isEqualTo("add error")
-    }
 
     @Test
     fun `getRandomMoodPickerMovie picks a random movie from upComingMediaList`() = runTest {
