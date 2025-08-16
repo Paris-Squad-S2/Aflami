@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
             releaseSplash = true
         }
 
-        installSplashScreen()
         enableEdgeToEdge()
         setContent {
             InstallSavedAppLanguage(this)
