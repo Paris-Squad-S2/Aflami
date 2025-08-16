@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
 import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
+import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
@@ -64,6 +65,13 @@ fun GuessQuestionContent(
     val currentQuestionIndex = state.currentStep
     val activity = LocalActivity.current
 
+
+    if (state.showNotEnoughPointsDialog) {
+        NotEnoughPointsDialog(
+            onDismiss = listener::onDismissNotEnoughPointsDialog,
+            onConfirm = listener::onDismissNotEnoughPointsDialog
+        )
+    }
     if (state.isLoading) {
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()

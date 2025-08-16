@@ -147,17 +147,22 @@ fun QuestionImage(
     showHint: Boolean = true,
     onHintUsed: () -> Unit = {},
 ) {
-    var state by remember { mutableStateOf(GuessCardImageState.Hard) }
-
+    var imageState by remember(uiState.usedHint) {
+        mutableStateOf(
+            if (uiState.usedHint) GuessCardImageState.Medium
+            else GuessCardImageState.Hard
+        )
+    }
     GuessCard(
         imagePainter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500$imageUrl"),
         clickable = !uiState.usedHint,
-        imageState = state,
-        showHint = showHint && !uiState.usedHint && state == GuessCardImageState.Hard,
+        imageState = imageState,
+        showHint = showHint && !uiState.usedHint && imageState == GuessCardImageState.Hard,
         onClick = {
-            if (!uiState.usedHint && state == GuessCardImageState.Hard) {
+            if (!uiState.usedHint && imageState == GuessCardImageState.Hard) {
                 onHintUsed()
-                state = GuessCardImageState.Medium
+                imageState = GuessCardImageState.Medium
+
             }
         }
     )

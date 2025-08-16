@@ -10,7 +10,10 @@ import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLev
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
+import com.paris_2.domain.game.entity.Question
+import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
+import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
 import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
@@ -26,7 +29,9 @@ class GuessByImageViewModel @Inject constructor(
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val useHintUseCase: UseHintUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
-) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
+    private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
+    private val getUserPointUseCase: GetUserPointUseCase,
+    ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
     private val args = savedStateHandle.toRoute<Destinations.GuessByImageScreen>()
     private val level = args.gameLevel
@@ -186,37 +191,94 @@ class GuessByImageViewModel @Inject constructor(
         )
     }
 
-
     override fun onHintUsed() {
-        val session = currentSession
-        val currentQ = session?.getCurrentQuestion()
-        if (currentQ?.usedHint == true) return
+        val session = currentSession ?: run {
+            Log.e("GuessByImageVM", "No active session when hint requested")
+            return
+        }
+
+        val currentQuestion = session.getCurrentQuestion() ?: run {
+            Log.e("GuessByImageVM", "No current question when hint requested")
+            return
+        }
+
+        if (currentQuestion.usedHint) {
+            Log.d("GuessByImageVM", "Hint already used for this question")
+            return
+        }
+
+        if (currentQuestion.selectedAnswer != null) {
+            Log.d("GuessByImageVM", "Cannot use hint after answering")
+            return
+        }
 
         tryToExecute(
             execute = {
-                val userId = getAccountIdUseCase() ?: -1
-                if (session != null && currentQ != null) {
-                    val used = useHintUseCase(session, userId)
-                    if (!used) {
-                        updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
-                        return@tryToExecute
+                val userId = getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
+
+                val hintUsed = useHintUseCase(session, userId)
+
+                if (hintUsed) {
+                    val userPoints = getUserPointUseCase(userId)
+                    val hintResult = removeAnswerHintUseCase(session, false, userPoints)
+
+                    if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {
+                        return@tryToExecute HintUsageResult.Success(hintResult.updatedQuestion)
+                    } else {
+                        return@tryToExecute HintUsageResult.Failed("Failed to remove wrong answer")
                     }
-                    currentQ.usedHint = true
-                    updateState(
-                        screenState.value.copy(
-                            questionUiState = session.questions.map { it.toUiModel() }
-                        )
-                    )
                 } else {
-                    updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
+                    return@tryToExecute HintUsageResult.NotEnoughPoints
+                }
+            },
+            onSuccess = { result ->
+                when (result) {
+                    is HintUsageResult.Success -> {
+                        applyHint(result.updatedQuestion)
+                        Log.d("GuessByImageVM", "Hint applied successfully. $HINT_COST points deducted.")
+                    }
+
+                    HintUsageResult.NotEnoughPoints -> {
+                        updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
+                        Log.d("GuessByImageVM", "Not enough points for hint. Required: $HINT_COST")
+                    }
+
+                    is HintUsageResult.Failed -> {
+                        Log.e("GuessByImageVM", "Hint usage failed: ${result.error}")
+                    }
+
+                    HintUsageResult.AlreadyUsed -> {
+                        Log.d("GuessByImageVM", "Hint already used")
+                    }
                 }
             },
             onError = { error ->
-                Log.e("navTest", "Error using hint: $error")
-                updateState(screenState.value.copy(error = error))
+                Log.e("GuessByImageVM", "Error using hint: $error")
             }
         )
     }
+
+    private fun applyHint(updatedQuestion: Question) {
+        val session = currentSession ?: return
+
+        val updatedQuestions = session.questions.mapIndexed { index, question ->
+            if (index == session.currentQuestionIndex) {
+                updatedQuestion
+            } else {
+                question
+            }
+        }
+
+        session.questions = updatedQuestions
+
+        updateState(
+            screenState.value.copy(
+                questionUiState = session.questions.map { it.toUiModel() }
+            )
+        )
+    }
+
+
 
     override fun onTimeFinished() {
         onNextClicked()
@@ -232,5 +294,17 @@ class GuessByImageViewModel @Inject constructor(
 
     override fun onCancelClick() {
         navigateUp()
+    }
+
+
+    private sealed class HintUsageResult {
+        data class Success(val updatedQuestion: Question) : HintUsageResult()
+        object AlreadyUsed : HintUsageResult()
+        object NotEnoughPoints : HintUsageResult()
+        data class Failed(val error: String) : HintUsageResult()
+    }
+
+    companion object {
+        private const val HINT_COST = 10
     }
 }
