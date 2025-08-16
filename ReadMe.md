@@ -12,15 +12,6 @@
 
 ---
 
-## 📱 Screenshots
-<div align="center">
-  - [Home](https://via.placeholder.com/300x600/FF6B35/FFFFFF?text=🏠+Home)
-  - [Search](https://via.placeholder.com/300x600/4ECDC4/FFFFFF?text=🔍+Search)
-  - [Details](https://via.placeholder.com/300x600/45B7D1/FFFFFF?text=📱+Details)
-  - [Profile](https://via.placeholder.com/300x600/F7DC6F/333333?text=👤+Profile)
-  - [Game](https://via.placeholder.com/300x600/BB8FCE/FFFFFF?text=🎮+Game)
-</div>
-
 ## 🌟 Features
 - 🎭 **Comprehensive Entertainment Database** - Browse thousands of movies and TV shows
 - 🔍 **Advanced Search & Filtering** - Find content by genre, year, rating, and more
