@@ -29,8 +29,9 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -117,12 +118,12 @@ fun GameCard(
                     brush = changeBrushDirection
                 )
         ) {
-
+            val screenWidth = with(LocalDensity){ LocalWindowInfo.current.containerSize.width.dp }
             Column(
                 modifier = Modifier
                     .padding(vertical = if (isPlayButtonLocked) 4.dp else 8.dp)
                     .fillMaxSize()
-                    .padding(start = 12.dp, end = LocalConfiguration.current.screenWidthDp.dp / 4),
+                    .padding(start = 12.dp, end = screenWidth / 10),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start
             ) {
