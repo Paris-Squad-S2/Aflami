@@ -52,25 +52,17 @@ dependencies {
     //test
     testImplementation(libs.bundles.test)
 
-
-    // Junit 5
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.engine)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(kotlin("test"))
-
-    testImplementation(libs.mockk)
-    testImplementation(libs.kotlinx.coroutines.test)
-
     //Hilt
-    implementation(libs.hilt.android)
-    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.bundles.hilt)
+
     ksp(libs.hilt.android.compiler)
 
-    //blur
-    implementation(libs.sifr.shaded)
+    implementation(libs.bundles.blur)
 
     //coil
-    implementation(libs.coil.compose.v240)
+    implementation(libs.bundles.coil)
+
+    //serialization
+    implementation(libs.bundles.serialization)
 
 }

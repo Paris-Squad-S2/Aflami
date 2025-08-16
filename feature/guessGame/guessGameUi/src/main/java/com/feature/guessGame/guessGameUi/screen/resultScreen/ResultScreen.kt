@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.resultScreen
 
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -56,6 +57,7 @@ fun ResultScreenContent(
     listener: ResultInteractionListener
 
 ) {
+    val activity = LocalActivity.current
     Column(
         modifier = Modifier
             .statusBarsPadding()
@@ -65,7 +67,7 @@ fun ResultScreenContent(
             leadingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                    onClick = { listener.onExitClicked() }
+                    onClick = { activity?.finish() },
                 )
             ),
         )
@@ -100,7 +102,7 @@ fun ResultScreenContent(
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 CustomButton(
-                    onClick = { listener.onBackToMenuClicked() },
+                    onClick = { activity?.finish() },
                     text = R.string.Back_to_menu,
                     type = ButtonType.Primary,
                     state = ButtonState.Normal,

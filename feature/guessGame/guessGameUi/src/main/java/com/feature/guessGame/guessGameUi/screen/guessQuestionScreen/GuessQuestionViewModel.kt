@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
@@ -32,17 +32,17 @@ class GuessQuestionViewModel @Inject constructor(
     private val useHintUseCase: UseHintUseCase,
 ) : BaseViewModel<GuessQuestionUiState>(
     GuessQuestionUiState(
-        totalQuestions = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().totalQuestions,
-        timePerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().timePerQuestion,
-        pointsPerQuestion = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().pointsPerQuestion,
-        gameTitle = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().questionType.name,
+        totalQuestions = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().totalQuestions,
+        timePerQuestion = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().timePerQuestion,
+        pointsPerQuestion = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().pointsPerQuestion,
+        gameTitle = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().questionType.name,
         session = GameSessionUi(
-            level = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>().gameLevel.name
+            level = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().gameLevel.name
         )
     )
 ), GuessQuestionInteractionListener {
 
-    private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessQuestionScreen>()
+    private val args = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>()
     private val questionType = args.questionType
     private var currentSession: GameSession? = null
     private var gameStartTimeMillis: Long = 0L
@@ -145,7 +145,7 @@ class GuessQuestionViewModel @Inject constructor(
         if (updatedSession.isCompleted) {
             updatedSession.duration = calculateTotalGameTime()
             navigate(
-                GuessGameDestinations.FinishGameScreen(
+                Destinations.FinishGameScreen(
                     totalGameTime = updatedSession.duration,
                     totalGamePoints = updatedSession.score,
                     gameType = questionType,

@@ -3,7 +3,7 @@ package com.feature.guessGame.guessGameUi.common
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavOptions
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestination
+import com.feature.guessGame.guessGameUi.navigation.Destination
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
@@ -25,7 +25,7 @@ open class BaseViewModel<S> @Inject constructor(
     private val _screenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = _screenState.asStateFlow()
 
-    protected fun navigate(destination: GuessGameDestination, navOptions: NavOptions? = null) =
+    protected fun navigate(destination: Destination, navOptions: NavOptions? = null) =
         viewModelScope.launch {
             navigator.navigate(destination = destination, navOptions = navOptions)
         }

@@ -19,6 +19,7 @@ import com.feature.guessGame.guessGameUi.screen.resultScreen.ResultScreen
 @Composable
 fun GuessGameNavGraph(
     guessGameScreenViewModel: GuessGameScreenViewModel = hiltViewModel(),
+    destination: Destination
 ) {
     val navController = rememberNavController()
 
@@ -38,26 +39,27 @@ fun GuessGameNavGraph(
         navController = navController,
         startDestination = navigator.startGraph
     ) {
-        buildGuessGameNavGraph()
+        buildGuessGameNavGraph(destination)
     }
 
 }
 
-fun NavGraphBuilder.buildGuessGameNavGraph() {
-    navigation<GuessGameDestinations.GuessGameGraph1>(
-        startDestination = GuessGameDestinations.GuessGameScreen
+fun NavGraphBuilder.buildGuessGameNavGraph(destination: Destination) {
+    navigation<Destinations.Graph1>(
+        startDestination = destination
     ) {
-        composable<GuessGameDestinations.GuessGameScreen> { GuessGameScreen() }
-        composable<GuessGameDestinations.GuessQuestionScreen> { backStackEntry ->
-            val args = backStackEntry.toRoute<GuessGameDestinations.GuessQuestionScreen>()
+        composable<Destinations.Screen> { GuessGameScreen() }
+
+        composable<Destinations.GuessQuestionScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<Destinations.GuessQuestionScreen>()
             GuessQuestionScreen(questionType = args.questionType)
         }
-        composable<GuessGameDestinations.GuessByImageScreen> { backStackEntry ->
-            val args = backStackEntry.toRoute<GuessGameDestinations.GuessByImageScreen>()
+        composable<Destinations.GuessByImageScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<Destinations.GuessByImageScreen>()
             GuessByImageScreen()
         }
-        composable<GuessGameDestinations.FinishGameScreen> { backStackEntry ->
-            val args = backStackEntry.toRoute<GuessGameDestinations.FinishGameScreen>()
+        composable<Destinations.FinishGameScreen> { backStackEntry ->
+            val args = backStackEntry.toRoute<Destinations.FinishGameScreen>()
             ResultScreen(
                 totalGameTime = args.totalGameTime,
                 totalGamePoints = args.totalGamePoints,

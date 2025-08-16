@@ -1,5 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
+import android.content.Context
+import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -45,6 +48,8 @@ fun GuessGameScreenContent(
     val layoutDirection =
         if (LocalConfiguration.current.layoutDirection == android.util.LayoutDirection.RTL)
             LayoutDirection.Rtl else LayoutDirection.Ltr
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -88,7 +93,7 @@ fun GuessGameScreenContent(
             DifficultyDialog(
                 selectedDifficulty = state.selectedDifficulty,
                 onDismiss = action::onDismissDifficultyDialog,
-                onClickButton = action::onStartGame,
+                onClickButton = { action.onStartGame(context) },
                 onSelectChip = action::onSelectDifficulty
             )
         }
@@ -150,7 +155,7 @@ fun GuessGameScreenPreview() {
             action = object : GuessGameScreenInteractionListener {
                 override fun onGamePlayClicked(gameId: String) {}
                 override fun onSelectDifficulty(difficultyId: Int) {}
-                override fun onStartGame() {}
+                override fun onStartGame(context: Context) {}
                 override fun onDismissDifficultyDialog() {}
             }
         )

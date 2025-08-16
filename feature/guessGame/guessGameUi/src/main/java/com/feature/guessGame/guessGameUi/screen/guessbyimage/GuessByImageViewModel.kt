@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
@@ -28,7 +28,7 @@ class GuessByImageViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
 ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
-    private val args = savedStateHandle.toRoute<GuessGameDestinations.GuessByImageScreen>()
+    private val args = savedStateHandle.toRoute<Destinations.GuessByImageScreen>()
     private val level = args.gameLevel
     private val questionType = args.questionType
     private var currentSession: GameSession? = null
@@ -117,7 +117,7 @@ class GuessByImageViewModel @Inject constructor(
                     ((System.currentTimeMillis() - startTimeMillis) / 1000).toInt()
                 updatedSession.duration = totalTimeSeconds
                 navigate(
-                    GuessGameDestinations.FinishGameScreen(
+                    Destinations.FinishGameScreen(
                         totalGameTime = updatedSession.duration,
                         totalGamePoints = updatedSession.score,
                         gameType = questionType,

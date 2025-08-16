@@ -6,13 +6,13 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
-class GuessGameNavigatorImpl(override val startGraph: GuessGameGraph) : GuessGameNavigator {
+class GuessGameNavigatorImpl(override val startGraph: Graph) : GuessGameNavigator {
     private val _navigateEvent = Channel<GuessGameNavigationEvent>()
     override val guessGameNavigationEvent = _navigateEvent.receiveAsFlow()
     private val mutex = Mutex()
     private var lastNavigateTime = 0L
 
-    override suspend fun navigate(destination: GuessGameDestination, navOptions: NavOptions?) {
+    override suspend fun navigate(destination: Destination, navOptions: NavOptions?) {
         mutex.withLock {
             val now = System.currentTimeMillis()
             if (now - lastNavigateTime >= 1000) {

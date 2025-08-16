@@ -1,6 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
 import android.content.res.Configuration
+import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -61,6 +62,7 @@ fun GuessQuestionContent(
     questionType: QuestionType,
 ) {
     val currentQuestionIndex = state.currentStep
+    val activity = LocalActivity.current
 
     if (state.isLoading) {
         PageLoadingPlaceHolder(
@@ -77,7 +79,7 @@ fun GuessQuestionContent(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                        onClick = listener::onCancelClick
+                        onClick = { activity?.finish() }
                     )
                 ),
                 trailingContent = {

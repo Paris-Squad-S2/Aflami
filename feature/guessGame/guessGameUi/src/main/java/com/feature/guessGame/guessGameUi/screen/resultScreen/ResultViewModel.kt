@@ -4,7 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
-import com.feature.guessGame.guessGameUi.navigation.GuessGameDestinations
+import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.DifficultySettings
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toInt
@@ -22,7 +22,7 @@ class ResultViewModel @Inject constructor(
 
     ) : BaseViewModel<ResultUiState>(ResultUiState()), ResultInteractionListener {
 
-    private val args = savedStateHandle.toRoute<GuessGameDestinations.FinishGameScreen>()
+    private val args = savedStateHandle.toRoute<Destinations.FinishGameScreen>()
     private val gameLevel = args.gameLevel
 
     init {
@@ -33,7 +33,7 @@ class ResultViewModel @Inject constructor(
     }
 
     override fun onExitClicked() {
-        navigate(destination = GuessGameDestinations.GuessGameScreen)
+        navigate(destination = Destinations.Screen)
     }
 
     override fun onPlayAgainClicked() {
@@ -41,7 +41,7 @@ class ResultViewModel @Inject constructor(
         when (args.gameType) {
             QuestionType.ACTOR -> {
                 navigate(
-                    GuessGameDestinations.GuessByImageScreen(
+                    Destinations.GuessByImageScreen(
                         questionType = QuestionType.ACTOR,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
@@ -54,7 +54,7 @@ class ResultViewModel @Inject constructor(
 
             QuestionType.POSTER -> {
                 navigate(
-                    GuessGameDestinations.GuessByImageScreen(
+                    Destinations.GuessByImageScreen(
                         questionType = QuestionType.POSTER,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
@@ -67,7 +67,7 @@ class ResultViewModel @Inject constructor(
 
             QuestionType.RELEASE_YEAR -> {
                 navigate(
-                    GuessGameDestinations.GuessQuestionScreen(
+                    Destinations.GuessQuestionScreen(
                         questionType = QuestionType.RELEASE_YEAR,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
@@ -79,7 +79,7 @@ class ResultViewModel @Inject constructor(
 
             QuestionType.GENRE -> {
                 navigate(
-                    GuessGameDestinations.GuessQuestionScreen(
+                    Destinations.GuessQuestionScreen(
                         questionType = QuestionType.GENRE,
                         totalQuestions = settings.numberOfQuestions,
                         timePerQuestion = settings.timePerQuestionSec,
@@ -92,7 +92,7 @@ class ResultViewModel @Inject constructor(
     }
 
     override fun onBackToMenuClicked() {
-        navigate(destination = GuessGameDestinations.GuessGameScreen)
+        navigate(destination = Destinations.Screen)
     }
 
 }
