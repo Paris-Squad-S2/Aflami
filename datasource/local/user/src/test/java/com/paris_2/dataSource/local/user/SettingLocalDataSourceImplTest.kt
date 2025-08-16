@@ -6,25 +6,38 @@ import androidx.datastore.preferences.core.Preferences
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 import java.io.File
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class SettingLocalDataSourceImpTest {
 
     private lateinit var dataStore: DataStore<Preferences>
     private lateinit var dataSource: SettingLocalDataSourceImpl
+    private lateinit var tempFile: File
 
     @BeforeEach
     fun setUp() {
+        tempFile = File.createTempFile("test-datastore-${System.nanoTime()}", ".preferences_pb")
+        if (tempFile.exists()) tempFile.delete()
         dataStore = PreferenceDataStoreFactory.create(
-            produceFile = { File.createTempFile("test-datastore", ".preferences_pb") }
+            produceFile = { tempFile }
         )
         dataSource = SettingLocalDataSourceImpl(dataStore)
+    }
+
+    @AfterEach
+    fun tearDown() {
+        if (tempFile.exists()) {
+            tempFile.delete()
+        }
     }
 
     @Test
