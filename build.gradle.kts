@@ -133,8 +133,6 @@ dependencies {
     kover(projects.repository.guessGame)
     kover(projects.datasource.remote.user)
     kover(projects.datasource.remote.categories)
-    kover(projects.datasource.local.movie)
-    kover(projects.datasource.local.tvShow)
     kover(projects.datasource.local.guessGame)
     kover(projects.datasource.local.categories)
     kover(projects.feature.onboarding.onboardingUi)

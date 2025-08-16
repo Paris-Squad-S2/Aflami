@@ -1,7 +1,7 @@
-package com.datasource.local.datasource
+package com.datasource.local.media.datasource
 
 import androidx.work.WorkManager
-import com.datasource.local.dao.MovieDao
+import com.datasource.local.media.dao.MovieDao
 import com.google.common.truth.Truth.assertThat
 import com.repository.movie.models.local.CastEntity
 import com.repository.movie.models.local.GalleryEntity
@@ -20,8 +20,8 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
-import kotlin.test.Test
-import kotlin.test.assertEquals
+import org.junit.jupiter.api.Test
+
 
 class MovieLocalDataSourceImpTest {
     private lateinit var movieLocalDataSource: MovieLocalDataSourceImpl
@@ -140,7 +140,7 @@ class MovieLocalDataSourceImpTest {
             )
 
             //Then
-            assertEquals(sampleCastList, result)
+            assertThat(result).isEqualTo(sampleCastList)
         }
 
         @Test
@@ -192,7 +192,7 @@ class MovieLocalDataSourceImpTest {
             )
 
             //Then
-            assertEquals(emptyList, result)
+            assertThat(result).isEmpty()
         }
 
         @Test
@@ -302,12 +302,16 @@ class MovieLocalDataSourceImpTest {
         fun `getReviewsForMovie should return list of reviews when DAO returns data`() = runTest {
             //Given
             val movieId = 2
-            coEvery { movieDao.getReviewsByMovieId(movieId,
-                language
-            ) } returns listOf(sampleReview)
+            coEvery {
+                movieDao.getReviewsByMovieId(
+                    movieId,
+                    language
+                )
+            } returns listOf(sampleReview)
 
             //When
-            val result = movieLocalDataSource.getReviewsByMovieId(movieId,
+            val result = movieLocalDataSource.getReviewsByMovieId(
+                movieId,
                 language
             )
 
@@ -319,31 +323,42 @@ class MovieLocalDataSourceImpTest {
         fun `getReviewsForMovie should call DAO once when reviews are returned`() = runTest {
             //Given
             val movieId = 2
-            coEvery { movieDao.getReviewsByMovieId(movieId,
-                language
-            ) } returns listOf(sampleReview)
+            coEvery {
+                movieDao.getReviewsByMovieId(
+                    movieId,
+                    language
+                )
+            } returns listOf(sampleReview)
 
             //When
-            movieLocalDataSource.getReviewsByMovieId(movieId,
+            movieLocalDataSource.getReviewsByMovieId(
+                movieId,
                 language
             )
 
             //Then
-            coVerify(exactly = 1) { movieDao.getReviewsByMovieId(movieId,
-                language
-            ) }
+            coVerify(exactly = 1) {
+                movieDao.getReviewsByMovieId(
+                    movieId,
+                    language
+                )
+            }
         }
 
         @Test
         fun `getReviewsForMovie should return empty list when DAO returns empty list`() = runTest {
             //Given
             val movieId = 3
-            coEvery { movieDao.getReviewsByMovieId(movieId,
-                language
-            ) } returns emptyList()
+            coEvery {
+                movieDao.getReviewsByMovieId(
+                    movieId,
+                    language
+                )
+            } returns emptyList()
 
             //When
-            val result = movieLocalDataSource.getReviewsByMovieId(movieId,
+            val result = movieLocalDataSource.getReviewsByMovieId(
+                movieId,
                 language
             )
 
@@ -355,19 +370,26 @@ class MovieLocalDataSourceImpTest {
         fun `getReviewsForMovie should call DAO once when DAO returns empty list`() = runTest {
             //Given
             val movieId = 3
-            coEvery { movieDao.getReviewsByMovieId(movieId,
-                language
-            ) } returns emptyList()
+            coEvery {
+                movieDao.getReviewsByMovieId(
+                    movieId,
+                    language
+                )
+            } returns emptyList()
 
             //When
-            movieLocalDataSource.getReviewsByMovieId(movieId,
+            movieLocalDataSource.getReviewsByMovieId(
+                movieId,
                 language
             )
 
             //Then
-            coVerify(exactly = 1) { movieDao.getReviewsByMovieId(movieId,
-                language
-            ) }
+            coVerify(exactly = 1) {
+                movieDao.getReviewsByMovieId(
+                    movieId,
+                    language
+                )
+            }
         }
     }
 

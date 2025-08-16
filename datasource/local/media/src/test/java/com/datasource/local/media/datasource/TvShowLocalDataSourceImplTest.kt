@@ -1,7 +1,7 @@
-package com.datasource.local.datasource
+package com.datasource.local.media.datasource
 
 import androidx.work.WorkManager
-import com.datasource.local.dao.TvShowDao
+import com.datasource.local.media.dao.TvShowDao
 import com.google.common.truth.Truth.assertThat
 import com.repository.model.local.CastEntity
 import com.repository.model.local.EpisodeEntity
@@ -20,11 +20,11 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNull
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Nested
-import kotlin.test.Test
+import org.junit.jupiter.api.Test
+
 
 class TvShowLocalDataSourceImplTest {
     private lateinit var tvShowLocalDataSourceImpl: TvShowLocalDataSourceImpl
@@ -59,7 +59,7 @@ class TvShowLocalDataSourceImplTest {
             val result = tvShowLocalDataSourceImpl.getTvShowId(tvShowId, language)
 
             //Then
-            assertEquals(sampleTvShow, result)
+            Assertions.assertEquals(sampleTvShow, result)
         }
 
         @Test
@@ -86,7 +86,7 @@ class TvShowLocalDataSourceImplTest {
             val result = tvShowLocalDataSourceImpl.getTvShowId(tvShowId, language)
 
             //Then
-            assertNull(result)
+            Assertions.assertNull(result)
 
         }
 
@@ -149,7 +149,7 @@ class TvShowLocalDataSourceImplTest {
                 )
 
                 //Then
-                kotlin.test.assertEquals(sampleCastList, result)
+                assertThat(result).isEqualTo(sampleCastList)
             }
 
         @Test
@@ -190,7 +190,7 @@ class TvShowLocalDataSourceImplTest {
             val result = tvShowLocalDataSourceImpl.getCastByTvShowId(tvShowIdWithNoCast, language)
 
             //Then
-            assertEquals(emptyList, result)
+            Assertions.assertEquals(emptyList, result)
         }
 
         @Test
@@ -378,10 +378,10 @@ class TvShowLocalDataSourceImplTest {
         fun `addSeason should add season when addSeason in SeasonDao called successfully`() =
             runTest {
                 //Given
-                tvShowLocalDataSourceImpl.addTvShowSeason(Companion.sampleSeason)
+                tvShowLocalDataSourceImpl.addTvShowSeason(sampleSeason)
 
                 //When&Then
-                coVerify(exactly = 1) { tvShowLocalDataSourceImpl.addTvShowSeason(Companion.sampleSeason) }
+                coVerify(exactly = 1) { tvShowLocalDataSourceImpl.addTvShowSeason(sampleSeason) }
             }
 
         @Test
@@ -395,7 +395,7 @@ class TvShowLocalDataSourceImplTest {
                         tvShowId,
                         seasonNumber
                     )
-                } returns Companion.sampleSeason
+                } returns sampleSeason
 
                 //When
                 val result = tvShowLocalDataSourceImpl.getSeasonByTvShowIdAndSeasonNumber(
@@ -403,7 +403,7 @@ class TvShowLocalDataSourceImplTest {
                     seasonNumber
                 )
                 //Then
-                assert(result == Companion.sampleSeason)
+                assert(result == sampleSeason)
             }
 
         @Test

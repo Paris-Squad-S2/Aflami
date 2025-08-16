@@ -1,9 +1,9 @@
-package com.datasource.local.datasource
+package com.datasource.local.media.datasource
 
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.datasource.local.dao.MovieDao
+import com.datasource.local.media.dao.MovieDao
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.workmanager.ClearMovieDetailWorker
 import com.repository.movie.models.local.CastEntity
@@ -54,8 +54,8 @@ class MovieLocalDataSourceImpl(
 
     private fun scheduleClearMovieWork(movieId: Int, language: String) {
         val inputData = workDataOf(
-            ClearMovieDetailWorker.MOVIE_ID to movieId,
-            ClearMovieDetailWorker.LANGUAGE to language
+            ClearMovieDetailWorker.Companion.MOVIE_ID to movieId,
+            ClearMovieDetailWorker.Companion.LANGUAGE to language
         )
 
         val workRequest = OneTimeWorkRequestBuilder<ClearMovieDetailWorker>()

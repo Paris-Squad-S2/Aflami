@@ -1,9 +1,9 @@
-package com.datasource.local
+package com.datasource.local.media
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.datasource.local.dao.TvShowDao
+import com.datasource.local.media.dao.TvShowDao
 import com.repository.model.local.CastEntity
 import com.repository.model.local.GalleryEntity
 import com.repository.model.local.ReviewEntity

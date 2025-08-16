@@ -1,9 +1,9 @@
-package com.datasource.local.datasource
+package com.datasource.local.media.datasource
 
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.datasource.local.dao.TvShowDao
+import com.datasource.local.media.dao.TvShowDao
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.local.workmanager.ClearTvShowDetailsWorker
 import com.repository.model.local.CastEntity
@@ -61,8 +61,8 @@ class TvShowLocalDataSourceImpl (
 
     private fun scheduleClearTvShowWork(tvShowId: Int, language: String) {
         val inputData = workDataOf(
-            ClearTvShowDetailsWorker.TV_SHOW_ID to tvShowId,
-            ClearTvShowDetailsWorker.LANGUAGE to language
+            ClearTvShowDetailsWorker.Companion.TV_SHOW_ID to tvShowId,
+            ClearTvShowDetailsWorker.Companion.LANGUAGE to language
         )
 
         val workRequest = OneTimeWorkRequestBuilder<ClearTvShowDetailsWorker>()

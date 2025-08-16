@@ -6,10 +6,10 @@ import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.work.WorkManager
-import com.datasource.local.dao.MovieDao
-import com.datasource.local.dao.TvShowDao
-import com.datasource.local.datasource.MovieLocalDataSourceImpl
-import com.datasource.local.datasource.TvShowLocalDataSourceImpl
+import com.datasource.local.media.dao.MovieDao
+import com.datasource.local.media.dao.TvShowDao
+import com.datasource.local.media.datasource.MovieLocalDataSourceImpl
+import com.datasource.local.media.datasource.TvShowLocalDataSourceImpl
 import com.datasource.local.guessGame.dao.GamePointsDao
 import com.datasource.local.guessGame.datasource.GamePointsLocalDataSourceImpl
 import com.datasource.local.media.dao.ContinueWatchingDao

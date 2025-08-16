@@ -1,11 +1,11 @@
-package com.datasource
+package com.datasource.local.media
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.datasource.local.dao.MovieDao
+import com.datasource.local.media.dao.MovieDao
 import com.repository.movie.models.local.CastEntity
 import com.repository.movie.models.local.GalleryEntity
 import com.repository.movie.models.local.MovieEntity

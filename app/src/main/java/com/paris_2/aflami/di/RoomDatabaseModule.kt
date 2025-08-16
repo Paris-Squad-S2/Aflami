@@ -3,9 +3,8 @@ package com.paris_2.aflami.di
 
 import android.content.Context
 import androidx.room.Room
-import com.datasource.MovieDetailDataBase
-import com.datasource.local.TvShowDetailDataBase
-import com.datasource.local.dao.*
+import com.datasource.local.media.MovieDetailDataBase
+import com.datasource.local.media.TvShowDetailDataBase
 import com.datasource.local.guessGame.GuessGameDatabase
 import com.datasource.local.guessGame.dao.GamePointsDao
 import com.datasource.local.media.HomeDatabase
@@ -15,6 +14,8 @@ import com.datasource.local.media.dao.ContinueWatchingDao
 import com.datasource.local.media.dao.SearchHistoryDao
 import com.datasource.local.media.SearchDatabase
 import com.datasource.local.media.dao.HomeMediaDao
+import com.datasource.local.media.dao.MovieDao
+import com.datasource.local.media.dao.TvShowDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

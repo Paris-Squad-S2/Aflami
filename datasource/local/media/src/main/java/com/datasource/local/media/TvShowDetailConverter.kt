@@ -1,17 +1,19 @@
-package com.datasource
+package com.datasource.local.media
 
 import androidx.room.TypeConverter
-import com.repository.movie.models.local.GenreEntity
-import com.repository.movie.models.local.ImageEntity
-import com.repository.movie.models.local.ProductionCompanyEntity
+import com.repository.model.local.EpisodeEntity
+import com.repository.model.local.GenreEntity
+import com.repository.model.local.ImageEntity
+import com.repository.model.local.ProductionCompanyEntity
+import com.repository.model.local.SeasonEntity
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.serializer
 
-class MovieDetailConverter {
+class TvShowDetailConverter {
+
     private val json = Json { ignoreUnknownKeys = true }
 
     @TypeConverter
@@ -43,6 +45,23 @@ class MovieDetailConverter {
         return json.decodeFromString<List<GenreEntity>>(genresString)
     }
 
+   /* @TypeConverter
+    fun fromCountryEntity(country: CountryEntity?): String? {
+        if (country == null) {
+            return null
+        }
+        return json.encodeToString(country)
+    }
+
+    @TypeConverter
+    fun toCountryEntity(countryString: String?): CountryEntity? {
+        if (countryString == null) {
+            return null
+        }
+        return json.decodeFromString<CountryEntity>(countryString)
+    }
+*/
+
     @TypeConverter
     fun fromImageList(images: List<ImageEntity>?): String? {
         if (images == null) {
@@ -57,18 +76,23 @@ class MovieDetailConverter {
     }
 
     @TypeConverter
-    fun toImageList(imagesString: String?): List<ImageEntity>? {
-        if (imagesString == null) {
-            return null
-        }
-        return json.decodeFromString<List<ImageEntity>>(imagesString)
-    }
+    fun toImageList(imagesString: String?): List<ImageEntity>? =
+        imagesString?.let { json.decodeFromString<List<ImageEntity>>(it) }
+
 
     @TypeConverter
     fun fromLocalDate(value: LocalDate?): String? = value?.toString()
 
     @TypeConverter
     fun toLocalDate(value: String?): LocalDate? = value?.let { LocalDate.parse(it) }
+
+    @TypeConverter
+    fun fromEpisodeList(episodes: List<EpisodeEntity>?): String? =
+        json.encodeToString(episodes)
+
+    @TypeConverter
+    fun toEpisodeList(episodesJson: String?): List<EpisodeEntity>? =
+        episodesJson?.let { json.decodeFromString<List<EpisodeEntity>>(it) }
 
     @TypeConverter
     fun fromLocalDateTime(date: LocalDateTime?): String? {
@@ -78,5 +102,15 @@ class MovieDetailConverter {
     @TypeConverter
     fun toLocalDateTime(dateString: String?): LocalDateTime? {
         return dateString?.let { LocalDateTime.Companion.parse(it) }
+    }
+
+    @TypeConverter
+    fun fronListOfSeasonEntity(seasons: List<SeasonEntity>?): String? {
+        return seasons?.let { json.encodeToString(it) }
+    }
+
+    @TypeConverter
+    fun toListOfSeasonEntity(seasonsString: String?): List<SeasonEntity>? {
+        return seasonsString?.let { json.decodeFromString<List<SeasonEntity>>(it) }
     }
 }
