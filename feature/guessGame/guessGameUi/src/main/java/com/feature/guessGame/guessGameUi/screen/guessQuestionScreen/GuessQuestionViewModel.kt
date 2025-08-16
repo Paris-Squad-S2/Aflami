@@ -119,10 +119,6 @@ class GuessQuestionViewModel @Inject constructor(
                 session = screenState.value.session?.copy(score = session.score)
             )
         )
-        Log.d(
-            "GuessQuestionVM",
-            "Answered Question ${session.currentQuestionIndex + 1} Correct: $wasCorrect, Score now: ${session.score}"
-        )
     }
 
     override fun onNextClicked() {
@@ -284,10 +280,7 @@ class GuessQuestionViewModel @Inject constructor(
                     session = screenState.value.session?.copy(score = session.score)
                 )
             )
-            Log.d(
-                "GuessQuestionVM",
-                "Answered Question ${session.currentQuestionIndex + 1} correctly, Points added: $points, Score now: ${session.score}"
-            )
+
         }
     }
 
