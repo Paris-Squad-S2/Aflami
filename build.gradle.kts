@@ -48,7 +48,7 @@ val koverExcludedPackages = listOf(
     "*.searchUi.comon.**",
     "*.SearchApp*",
     "*.AflamiApplication*",
-    "**.components**",
+    "**.components*",
     "*ScreenKt",
     "**.ClearMediaWorker",
     "**FeatureAPI**",
@@ -69,9 +69,7 @@ val koverExcludedPackages = listOf(
     "AppScafold.kt",
     "**Screen.kt",
     "**Activity**",
-    "**Navigation**",
     "**appnavigation**",
-    "**appNavigation**",
     "**.HomeConverter*",
     "**.HomeDatabase*",
     "**.workmanager.**",
@@ -83,7 +81,6 @@ val koverExcludedPackages = listOf(
     "**.AflamiNavBar.**",
     "**.AflamiNavBarItem.**",
     "**bottomNavBar**",
-    "**.PagingSource.**",
     "**.ListDetailsViewModel*",
     "**.MediaUi*",
     "**.SimilarMediaUI.*",
@@ -96,7 +93,6 @@ val koverExcludedPackages = listOf(
     "**.ContinueWatchingScreen*",
     "**.HomeScreenUIState*",
     "**.RetrofitListApiService*",
-    "**.PagingSource.*",
     "**.ListDetailsViewModel*",
     "**.MovieDetailsScreen*",
     "**.MovieUiState.*",
@@ -106,9 +102,10 @@ val koverExcludedPackages = listOf(
     "**.LanguageLocalDataSourceRepositoryImp.*",
     "**.LanguageRepositoryImp.*",
     "**.ChangePasswordViewModel.*",
-    "**.SettingsUseCase.*",
     "**.profileUi.screen.**",
-
+    "**.InstallSavedAppLanguage*",
+    "**.MainViewModel*",
+    "**.PagingSource*",
 )
 
 allprojects {
@@ -137,19 +134,12 @@ dependencies {
     kover(projects.datasource.local.tvShow)
     kover(projects.datasource.local.guessGame)
     kover(projects.datasource.local.categories)
-    kover(projects.feature.onboarding.onboardingApi)
     kover(projects.feature.onboarding.onboardingUi)
-    kover(projects.feature.authentication.authenticationApi)
     kover(projects.feature.authentication.authenticationUi)
-    kover(projects.feature.home.homeApi)
     kover(projects.feature.home.homeUi)
-    kover(projects.feature.search.searchApi)
     kover(projects.feature.search.searchUi)
-    kover(projects.feature.mediaDetails.mediaDetailsApi)
     kover(projects.feature.mediaDetails.mediaDetailsUi)
-    kover(projects.feature.guessGame.guessGameApi)
     kover(projects.feature.guessGame.guessGameUi)
-    kover(projects.feature.categories.categoriesApi)
     kover(projects.feature.categories.categoriesUi)
     kover(projects.feature.lists.listsApi)
 }
