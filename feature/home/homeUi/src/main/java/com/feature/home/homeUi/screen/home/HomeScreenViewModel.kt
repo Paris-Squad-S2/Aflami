@@ -299,26 +299,15 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     override fun onMediaCardClick(media: MediaUiState) {
-        tryToExecute(
-            execute = {
-                when (media.type) {
-                    MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
-                        movieId = media.id
-                    )
+        when (media.type) {
+            MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
+                movieId = media.id
+            )
 
-                    MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
-                        tvShowId = media.id
-                    )
-                }
-            },
-            onError = { errorMessage ->
-                emitState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage
-                    )
-                )
-            }
-        )
+            MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
+                tvShowId = media.id
+            )
+        }
     }
 
     override fun onMediaSliderClick(media: SliderMedia) {
