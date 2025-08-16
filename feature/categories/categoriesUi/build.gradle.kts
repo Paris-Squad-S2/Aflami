@@ -51,4 +51,30 @@ dependencies {
     implementation(libs.bundles.paging)
     implementation(projects.domain.media)
 
+    // test
+    testImplementation(kotlin("test"))
+    testImplementation(libs.mockk)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.junit.jupiter)
+    testImplementation(libs.truth)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
+}
+
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
 }
