@@ -33,6 +33,7 @@ val koverExcludedPackages = listOf(
     "**.dao.**",
     "**.SearchConverter*",
     "**.SearchDatabase*",
+    "**.GuessGameDatabase*",
     "**.NetworkConnectionChecker*",
     "**.navigation.**",
     "**.ui.theme.**",
