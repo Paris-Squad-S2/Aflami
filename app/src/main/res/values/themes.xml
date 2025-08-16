@@ -7,5 +7,5 @@
         <item name="postSplashScreenTheme">@style/Theme.Aflami</item>
     </style>
 
-    <style name="Theme.Aflami"  parent="Theme.AppCompat.DayNight.NoActionBar"  />
+    <style name="Theme.Aflami" parent="Theme.AppCompat.DayNight.NoActionBar" />
 </resources>
