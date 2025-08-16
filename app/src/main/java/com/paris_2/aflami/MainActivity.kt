@@ -48,7 +48,11 @@ class MainActivity : AppCompatActivity() {
 
         splash.setKeepOnScreenCondition {
             val elapsed = SystemClock.uptimeMillis() - startTime
-            !releaseSplash && elapsed < minSplashMillis
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+                !releaseSplash && elapsed < minSplashMillis
+            } else {
+                !releaseSplash
+            }
         }
 
         super.onCreate(savedInstanceState)
