@@ -3,13 +3,6 @@
 
 <div align="center">
 
-![Aflami Logo](https://via.placeholder.com/200x200/FF6B35/FFFFFF?text=🎬+AFLAMI)
-
-[![Android](https://img.shields.io/badge/Platform-Android-green.svg)](https://android.com/)
-[![Kotlin](https://img.shields.io/badge/Language-Kotlin-purple.svg)](https://kotlinlang.org/)
-[![Clean Architecture](https://img.shields.io/badge/Architecture-Clean-blue.svg)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
-[![MVVM](https://img.shields.io/badge/Pattern-MVVM-orange.svg)](https://developer.android.com/jetpack/guide)
-
 **English**: Discover, explore, and manage your favorite movies and TV shows with Aflami  
 **العربية**: اكتشف، واستكشف، ونظم أفلامك ومسلسلاتك المفضلة مع أفلامي
 
