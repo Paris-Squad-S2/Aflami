@@ -24,6 +24,7 @@ import io.mockk.clearAllMocks
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -128,7 +129,7 @@ class HomeScreenViewModelTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
         coEvery { getMoviesCategoriesUseCase() } returns fakeCategories
         coEvery { getUpcomingMediaUseCase() } returns fakeUpcomingList.map { it.toMedia() }
-        coEvery { getWatchHistoryUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase() } returns flowOf(fakeContinueWatchingList.map { it.toMedia() })
         coEvery { addMediaToLocalDatabaseUseCase.invoke(any()) } returns Unit
         coEvery { filterUpComingMediaByCategoriesUseCase.invoke(any()) } returns fakeUpcomingList.map { it.toMedia() }
         viewModel = HomeScreenViewModel(
@@ -137,11 +138,10 @@ class HomeScreenViewModelTest {
             getMoviesCategoriesUseCase,
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
-            addMediaToLocalDatabaseUseCase,
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            settingsUseCase
+            settingsUseCase,
         )
     }
 
@@ -184,7 +184,6 @@ class HomeScreenViewModelTest {
             getMoviesCategoriesUseCase,
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
-            addMediaToLocalDatabaseUseCase,
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
@@ -204,7 +203,6 @@ class HomeScreenViewModelTest {
             getMoviesCategoriesUseCase,
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
-            addMediaToLocalDatabaseUseCase,
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
@@ -224,7 +222,6 @@ class HomeScreenViewModelTest {
             getMoviesCategoriesUseCase,
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
-            addMediaToLocalDatabaseUseCase,
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
@@ -242,11 +239,11 @@ class HomeScreenViewModelTest {
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
-                    continueWatchingMediaList = emptyList<MediaUiState>()
+                    continueWatchingMediaList = emptyList()
                 )
             )
         )
-        coEvery { getWatchHistoryUseCase() } returns fakeContinueWatchingList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase() } returns kotlinx.coroutines.flow.flowOf(fakeContinueWatchingList.map { it.toMedia() })
         viewModel.apply {
             this.javaClass.getDeclaredMethod("loadContinueWatchingMedia")
                 .apply { isAccessible = true }.invoke(this)
@@ -438,7 +435,6 @@ class HomeScreenViewModelTest {
             getMoviesCategoriesUseCase,
             filterUpComingMediaByCategoriesUseCase,
             getUpcomingMediaUseCase,
-            addMediaToLocalDatabaseUseCase = mockk(relaxed = true),
             getWatchHistoryUseCase,
             searchFeatureAPI = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),

@@ -3,7 +3,6 @@ package com.feature.home.homeUi.screen.home
 import androidx.lifecycle.viewModelScope
 import com.feature.home.homeUi.common.BaseViewModel
 import com.feature.home.homeUi.common.ContentRestriction
-import com.feature.home.homeUi.mapper.toMedia
 import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.mapper.toSliderMediaList
 import com.feature.home.homeUi.screen.home.components.SliderMedia
@@ -11,7 +10,6 @@ import com.feature.home.homeUi.screen.home.components.SliderMediaTypeUi
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
 import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
@@ -30,7 +28,6 @@ class HomeScreenViewModel @Inject constructor(
     private val getMoviesCategoriesUseCase: GetMoviesCategoriesUseCase,
     private val filterUpComingMediaByCategoriesUseCase: FilterUpComingMediaByCategoriesUseCase,
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase,
-    private val addMediaToLocalDatabaseUseCase: AddWatchHistoryUseCase,
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
@@ -130,7 +127,7 @@ class HomeScreenViewModel @Inject constructor(
                         isCategoryLoading = true
                     )
                 )
-                getMoviesCategoriesUseCase.invoke()
+                getMoviesCategoriesUseCase()
             },
             onSuccess = { categories ->
                 emitState(
@@ -163,7 +160,7 @@ class HomeScreenViewModel @Inject constructor(
                         isPopularMediaLoading = true
                     )
                 )
-                getPopularMediaUseCase.invoke()
+                getPopularMediaUseCase()
             },
             onSuccess = {
                 emitState(
@@ -196,7 +193,7 @@ class HomeScreenViewModel @Inject constructor(
                         isTopRatingLoading = true
                     )
                 )
-                getTopRatingMediaUseCase.invoke()
+                getTopRatingMediaUseCase()
             },
             onSuccess = { topRatingMedia ->
                 emitState(
@@ -229,19 +226,21 @@ class HomeScreenViewModel @Inject constructor(
                         isContinueWatchingLoading = true
                     )
                 )
-                getWatchHistoryUseCase.invoke()
+                getWatchHistoryUseCase()
             },
-            onSuccess = { mediaList ->
-                emitState(
-                    screenState.value.copy(
-                        homeUIState = screenState.value.homeUIState.copy(
-                            continueWatchingMediaList = mediaList.toMediaUiStateList()
-                        ),
-                        isContinueWatchingLoading = false,
-                        errorMessage = null
+            onSuccess = { mediaListFlow ->
+                mediaListFlow.collect { mediaList ->
+                    emitState(
+                        screenState.value.copy(
+                            homeUIState = screenState.value.homeUIState.copy(
+                                continueWatchingMediaList = mediaList.toMediaUiStateList()
+                            ),
+                            isContinueWatchingLoading = false,
+                            errorMessage = null
 
+                        )
                     )
-                )
+                }
             },
             onError = { errorMessage ->
                 emitState(
@@ -257,7 +256,7 @@ class HomeScreenViewModel @Inject constructor(
     override fun onAllCategoriesSelect() {
         tryToExecute(
             execute = {
-                getUpcomingMediaUseCase.invoke()
+                getUpcomingMediaUseCase()
             },
             onSuccess = { upcomingMovies ->
                 emitState(
@@ -302,8 +301,6 @@ class HomeScreenViewModel @Inject constructor(
     override fun onMediaCardClick(media: MediaUiState) {
         tryToExecute(
             execute = {
-                addMediaToLocalDatabaseUseCase.invoke(media.toMedia())
-                loadContinueWatchingMedia()
                 when (media.type) {
                     MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
                         movieId = media.id
@@ -327,8 +324,6 @@ class HomeScreenViewModel @Inject constructor(
     override fun onMediaSliderClick(media: SliderMedia) {
         tryToExecute(
             execute = {
-                addMediaToLocalDatabaseUseCase.invoke(media.toMedia())
-                loadContinueWatchingMedia()
                 when (media.type) {
                     SliderMediaTypeUi.Movie -> mediaDetailsFeatureAPI.startMovieDetails(
                         movieId = media.id
@@ -406,7 +401,7 @@ class HomeScreenViewModel @Inject constructor(
                         )
                     )
                 )
-                filterUpComingMediaByCategoriesUseCase.invoke(
+                filterUpComingMediaByCategoriesUseCase(
                     screenState.value.homeUIState.categories
                         .filter { it.value }
                         .keys
