@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
@@ -47,6 +47,8 @@ fun GuessGameScreenContent(
         if (LocalConfiguration.current.layoutDirection == android.util.LayoutDirection.RTL)
             LayoutDirection.Rtl else LayoutDirection.Ltr
 
+    val scrollState = rememberScrollState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,20 +62,21 @@ fun GuessGameScreenContent(
             )
         }
 
-        val gamesToShow = getStaticGames().map { game ->
-            game.copy(
-                isLocked = state.userPoints < game.pointsToUnlock
-            )
-        }
-
-        LazyColumn(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
+                .verticalScroll(scrollState)
                 .systemBarsPadding()
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(gamesToShow) { game ->
+            val gamesToShow = getStaticGames().map { game ->
+                game.copy(
+                    isLocked = state.userPoints < game.pointsToUnlock
+                )
+            }
+
+            gamesToShow.forEach { game ->
                 GameCard(
                     title = game.title,
                     description = game.description,
@@ -84,15 +87,15 @@ fun GuessGameScreenContent(
                     pointsToUnlock = game.pointsToUnlock
                 )
             }
-        }
 
-        if (state.showDifficultyDialog) {
-            DifficultyDialog(
-                selectedDifficulty = state.selectedDifficulty,
-                onDismiss = action::onDismissDifficultyDialog,
-                onClickButton = action::onStartGame,
-                onSelectChip = action::onSelectDifficulty
-            )
+            if (state.showDifficultyDialog) {
+                DifficultyDialog(
+                    selectedDifficulty = state.selectedDifficulty,
+                    onDismiss = action::onDismissDifficultyDialog,
+                    onClickButton = action::onStartGame,
+                    onSelectChip = action::onSelectDifficulty
+                )
+            }
         }
     }
 }
@@ -102,6 +105,7 @@ val imageIds = listOf(
     R.drawable.image_game2,
     R.drawable.image_game1,
 )
+
 @Composable
 private fun getStaticGames(): List<GameData> = listOf(
     GameData(
@@ -139,8 +143,6 @@ private fun getStaticGames(): List<GameData> = listOf(
         pointsToUnlock = 5
     )
 )
-
-
 
 @Preview(showBackground = true, showSystemUi = true, name = "LTR")
 @Preview(showBackground = true, name = "RTL", locale = "ar")
