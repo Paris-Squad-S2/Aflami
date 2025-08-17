@@ -11,7 +11,7 @@ import kotlinx.datetime.LocalDate
 fun ActorDto.toDomain() : Actor? {
     return Actor(
       id = id ?: -1,
-        name = originalName ?: "",
+        name = name ?: "",
         imageUri = profilePath ?: "",
         media = knownFor?.mapNotNull { it?.toDomain() } ?: emptyList()
     )

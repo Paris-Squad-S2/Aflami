@@ -11,9 +11,7 @@ import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResI
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
-import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
-import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris_2.domain.game.usecases.UseHintUseCase
 import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
 import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
@@ -29,9 +27,7 @@ class GuessByImageViewModel @Inject constructor(
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val useHintUseCase: UseHintUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
-    private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
-    private val getUserPointUseCase: GetUserPointUseCase,
-    ) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
+) : BaseViewModel<GuessCharacterUIState>(GuessCharacterUIState()), GuessByImageInteractionListener {
 
     private val args = savedStateHandle.toRoute<Destinations.GuessByImageScreen>()
     private val level = args.gameLevel
@@ -142,7 +138,8 @@ class GuessByImageViewModel @Inject constructor(
                         currentQuestion = updatedSession.currentQuestionIndex,
                         questionUiState = updatedSession.questions.map { it.toUiModel() },
                         time = newTime,
-                        isChoiceCorrect = false
+                        isChoiceCorrect = false,
+                        hintUsed = currentSession?.getCurrentQuestion()?.usedHint ?: false
                     )
                 )
             }
@@ -167,6 +164,7 @@ class GuessByImageViewModel @Inject constructor(
                     screenState.value.copy(
                         questionUiState = session.questions.map { it.toUiModel() },
                         isChoiceCorrect = isCorrect,
+                        hintUsed = currentQuestion.usedHint,
                     )
                 )
             }
@@ -202,31 +200,28 @@ class GuessByImageViewModel @Inject constructor(
             return
         }
 
-        if (currentQuestion.usedHint) {
-            Log.d("GuessByImageVM", "Hint already used for this question")
-            return
-        }
+        when {
+            currentQuestion.usedHint -> {
+                Log.d("GuessByImageVM", "Hint already used for this question")
+                return
+            }
 
-        if (currentQuestion.selectedAnswer != null) {
-            Log.d("GuessByImageVM", "Cannot use hint after answering")
-            return
+            currentQuestion.selectedAnswer != null -> {
+                Log.d("GuessByImageVM", "Cannot use hint after answering")
+                return
+            }
         }
 
         tryToExecute(
             execute = {
-                val userId = getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
+                val userId = getAccountIdUseCase()
+                    ?: throw IllegalStateException("No user account found")
 
                 val hintUsed = useHintUseCase(session, userId)
 
                 if (hintUsed) {
-                    val userPoints = getUserPointUseCase(userId)
-                    val hintResult = removeAnswerHintUseCase(session, false, userPoints)
-
-                    if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {
-                        return@tryToExecute HintUsageResult.Success(hintResult.updatedQuestion)
-                    } else {
-                        return@tryToExecute HintUsageResult.Failed("Failed to remove wrong answer")
-                    }
+                    currentQuestion.usedHint = true
+                    return@tryToExecute HintUsageResult.Success(currentQuestion)
                 } else {
                     return@tryToExecute HintUsageResult.NotEnoughPoints
                 }
@@ -235,7 +230,11 @@ class GuessByImageViewModel @Inject constructor(
                 when (result) {
                     is HintUsageResult.Success -> {
                         applyHint(result.updatedQuestion)
-                        Log.d("GuessByImageVM", "Hint applied successfully. $HINT_COST points deducted.")
+                        updateState(screenState.value.copy(hintUsed = true))
+                        Log.d(
+                            "GuessByImageVM",
+                            "Hint applied successfully. $HINT_COST points deducted."
+                        )
                     }
 
                     HintUsageResult.NotEnoughPoints -> {
@@ -258,18 +257,16 @@ class GuessByImageViewModel @Inject constructor(
         )
     }
 
+
     private fun applyHint(updatedQuestion: Question) {
         val session = currentSession ?: return
 
-        val updatedQuestions = session.questions.mapIndexed { index, question ->
-            if (index == session.currentQuestionIndex) {
-                updatedQuestion
-            } else {
-                question
+        val questionIndex = session.questions.indexOfFirst { it.id == updatedQuestion.id }
+        if (questionIndex != -1) {
+            session.questions = session.questions.toMutableList().also { questions ->
+                questions[questionIndex] = questions[questionIndex].copy(usedHint = true)
             }
         }
-
-        session.questions = updatedQuestions
 
         updateState(
             screenState.value.copy(
@@ -277,7 +274,6 @@ class GuessByImageViewModel @Inject constructor(
             )
         )
     }
-
 
 
     override fun onTimeFinished() {
