@@ -284,7 +284,7 @@ fun TvShowDetailsScreenContent(
                                                         ) {
 
                                                             AnimatedContent(
-                                                                targetState = episode.stillUrl.ifEmpty { state.tvShowDetailsUiState.tvShowUi.posterUrl },
+                                                                targetState = episode.episodePhotoUrl.ifEmpty { state.tvShowDetailsUiState.tvShowUi.posterUrl },
                                                                 transitionSpec = {
                                                                     fadeIn(animationSpec = tween(300)) togetherWith
                                                                             fadeOut(

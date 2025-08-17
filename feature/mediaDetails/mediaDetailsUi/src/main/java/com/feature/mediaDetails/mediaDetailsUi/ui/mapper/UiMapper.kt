@@ -110,7 +110,7 @@ fun Episode.toUi(): EpisodeUi {
         airDate = this.airDate.formatToUi(),
         runtime = "${this.runtime} min",
         description = this.description,
-        stillUrl = this.stillUrl
+        episodePhotoUrl = this.stillUrl
     )
 }
 
