@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -47,7 +49,7 @@ fun MyRatingScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(Theme.colors.surface)
-            .padding(top = 12.dp)
+            .statusBarsPadding()
     ) {
         var selectedIndex by remember { mutableIntStateOf(0) }
         AppTopBar(

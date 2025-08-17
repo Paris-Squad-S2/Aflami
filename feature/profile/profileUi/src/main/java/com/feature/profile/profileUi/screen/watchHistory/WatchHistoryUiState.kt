@@ -3,9 +3,9 @@ package com.feature.profile.profileUi.screen.watchHistory
 import kotlinx.datetime.LocalDate
 
 data class WatchHistoryUiState(
-    val watchHistoryMedia: List<MediaUiState>,
-    val isLoading: Boolean,
-    val errorMessage: String?,
+    val watchHistoryMedia: List<MediaUiState> = emptyList(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
     val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
     val genderThreshold: Float = 0.6f

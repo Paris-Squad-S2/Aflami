@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Upsert
 import com.repository.guessgame.entity.UserGamePointsEntity
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GamePointsDao {
@@ -11,5 +12,5 @@ interface GamePointsDao {
     suspend fun upsertUserGamePoints(userGamePoints: UserGamePointsEntity)
 
     @Query("SELECT * FROM user_game_points WHERE userId = :userId LIMIT 1")
-    suspend fun getUserGamePoints(userId: Int): UserGamePointsEntity?
+    fun getUserGamePoints(userId: Int): Flow<UserGamePointsEntity?>
 }
