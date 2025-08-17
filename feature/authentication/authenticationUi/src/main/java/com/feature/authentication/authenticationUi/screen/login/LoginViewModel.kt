@@ -1,14 +1,17 @@
 package com.feature.authentication.authenticationUi.screen.login
 
-import com.paris_2.domain.user.usecase.GuestLoginUseCase
-import com.paris_2.domain.user.usecase.LoginUseCase
-import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
+import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
+import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris_2.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
 import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.domain.user.usecase.GuestLoginUseCase
+import com.paris_2.domain.user.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -66,6 +69,7 @@ class LoginViewModel @Inject constructor(
                             showSnackBar = true,
                         )
                     )
+                    hideSnackBar()
                 } else {
                     navigateToHome()
                 }
@@ -78,6 +82,7 @@ class LoginViewModel @Inject constructor(
                         showSnackBar = true,
                     )
                 )
+                hideSnackBar()
             },
             onError = {
                 updateState(
@@ -87,6 +92,7 @@ class LoginViewModel @Inject constructor(
                         snackBarMessage = R.string.login_failed
                     )
                 )
+                hideSnackBar()
             }
         )
     }
@@ -113,6 +119,7 @@ class LoginViewModel @Inject constructor(
                             snackBarMessage = R.string.guest_login_failed
                         )
                     )
+                    hideSnackBar()
                 }
             },
             onError = {
@@ -123,6 +130,7 @@ class LoginViewModel @Inject constructor(
                         snackBarMessage = R.string.guest_login_failed
                     )
                 )
+                hideSnackBar()
             }
         )
     }
@@ -158,6 +166,15 @@ class LoginViewModel @Inject constructor(
 
     override fun onHideSnackBar() {
         updateState(screenState.value.copy(showSnackBar = false))
+    }
+
+    private fun hideSnackBar() {
+        viewModelScope.launch {
+            if (screenState.value.showSnackBar) {
+                delay(3000)
+                updateState(screenState.value.copy(showSnackBar = false))
+            }
+        }
     }
 
 }
