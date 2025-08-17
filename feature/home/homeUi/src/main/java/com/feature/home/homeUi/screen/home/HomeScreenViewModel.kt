@@ -44,6 +44,7 @@ class HomeScreenViewModel @Inject constructor(
                 upComingMediaList = emptyList(),
                 showMoodPickerDialog = false,
                 isAllCategories = true,
+                moodPickerFilteredMovies =emptyList(),
                 moodPickerMovie = MediaUiState(
                     id = 0,
                     title = "",
@@ -334,25 +335,22 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     override fun getRandomMoodPickerMovie() {
-        val movies = screenState.value.homeUIState.upComingMediaList
-        emitState(
-            screenState.value.copy(
-                homeUIState = screenState.value.homeUIState.copy(
-                    moodPickerMovie = movies.random(),
+        val movies = screenState.value.homeUIState.moodPickerFilteredMovies
+        if (movies.isNotEmpty()) {
+            emitState(
+                screenState.value.copy(
+                    homeUIState = screenState.value.homeUIState.copy(
+                        moodPickerMovie = movies.random(),
+                    )
                 )
             )
-        )
+        }
     }
 
     override fun moodPickerSelected(mood: List<Category>) {
         tryToExecute(
             execute = {
-                emitState(
-                    screenState.value.copy(
-                    )
-                )
-                val moodPickerMovies = getTopRatingMediaUseCase()
-                moodPickerMovies.filter { movie ->
+                getTopRatingMediaUseCase().filter { movie ->
                     movie.categories.any { mood.contains(it) }
                 }
             },
@@ -360,6 +358,7 @@ class HomeScreenViewModel @Inject constructor(
                 emitState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
+                            moodPickerFilteredMovies = filteredMovies.toMediaUiStateList() ,
                             moodPickerMovie = filteredMovies.toMediaUiStateList().random(),
                             showMoodPickerDialog = true
                         ),
