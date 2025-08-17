@@ -25,7 +25,7 @@ data class SearchUiState(
     val filteredTvShowsResult: Flow<PagingData<MediaUiState>> = emptyFlow(),
     val categories: Map<Category, Boolean> = emptyMap(),
     val selectedRating: Float = 0f,
-    val isAllCategories: Boolean = false,
+    val isAllCategories: Boolean = true,
     val isApplyFilter: Boolean = false,
     val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
