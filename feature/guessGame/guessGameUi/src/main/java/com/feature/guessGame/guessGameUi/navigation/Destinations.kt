@@ -55,6 +55,7 @@ fun String.fromJsonToDestination(): Destination =
     Json.decodeFromString(this)
 
 @Serializable
+@androidx.annotation.Keep
 enum class QuestionType {
     RELEASE_YEAR,
     GENRE,
