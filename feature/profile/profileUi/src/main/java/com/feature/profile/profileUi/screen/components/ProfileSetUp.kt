@@ -16,7 +16,11 @@ import com.paris_2.aflami.designsystem.components.AppText
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
-fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterActionListener) {
+fun ProfileSetUp(
+    typeMode: String,
+    interactionListener: InterActionListener,
+    modifier: Modifier = Modifier
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -47,7 +51,7 @@ fun ProfileSetUp(modifier: Modifier = Modifier, interactionListener: InterAction
             icon = R.drawable.ic_moon,
             content = {
                 AppText(
-                    text = "Dark",
+                    text = typeMode,
                     style = Theme.textStyle.label.small,
                     color = Theme.colors.text.body,
                     modifier = Modifier.padding(end = 8.dp)
