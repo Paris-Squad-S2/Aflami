@@ -1,8 +1,12 @@
 package com.paris_2.dataSource.local.user
 
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -22,6 +26,7 @@ class SettingLocalDataSourceImpTest {
     private lateinit var dataStore: DataStore<Preferences>
     private lateinit var dataSource: SettingLocalDataSourceImpl
     private lateinit var tempFile: File
+    private val context = mockk<Context>()
 
     @BeforeEach
     fun setUp() {
@@ -30,7 +35,7 @@ class SettingLocalDataSourceImpTest {
         dataStore = PreferenceDataStoreFactory.create(
             produceFile = { tempFile }
         )
-        dataSource = SettingLocalDataSourceImpl(dataStore)
+        dataSource = SettingLocalDataSourceImpl(dataStore , context)
     }
 
     @AfterEach

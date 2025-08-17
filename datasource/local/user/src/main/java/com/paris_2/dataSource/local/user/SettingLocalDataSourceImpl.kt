@@ -1,11 +1,14 @@
 package com.paris_2.dataSource.local.user
 
+import android.content.Context
+import android.content.res.Configuration
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +18,7 @@ import kotlinx.coroutines.flow.mapLatest
 @OptIn(ExperimentalCoroutinesApi::class)
 class SettingLocalDataSourceImpl @Inject constructor(
     private val dataStore: DataStore<Preferences>,
+    @ApplicationContext private val context: Context
 ) : SettingLocalDataSource {
 
     override fun getLanguage(): Flow<String> {
@@ -43,7 +47,7 @@ class SettingLocalDataSourceImpl @Inject constructor(
 
     override fun getTheme(): Flow<Boolean> {
         return dataStore.data.mapLatest {
-            it[KEY_IS_DARK_THEME] ?: true
+            it[KEY_IS_DARK_THEME] ?: isSystemInDarkTheme()
         }
     }
 
@@ -55,6 +59,10 @@ class SettingLocalDataSourceImpl @Inject constructor(
         return dataStore.data.mapLatest {
             it[RESTRICTION] ?: STRICT
         }.first()
+    }
+
+    private fun isSystemInDarkTheme(): Boolean {
+        return (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
 
     private suspend fun <T> DataStore<Preferences>.setValue(
