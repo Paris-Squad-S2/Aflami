@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.feature.guessGame.guessGameUi.R
@@ -66,7 +67,7 @@ fun WinCard(
                         .size(100.dp)
                 )
                 AppText(
-                    text = "You finished the GAME!",
+                    text = stringResource(R.string.you_finished_the_game),
                     style = Theme.textStyle.title.medium,
                     color = Theme.colors.text.title,
                     modifier = Modifier

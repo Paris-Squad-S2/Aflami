@@ -8,7 +8,6 @@ import android.util.Log
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.util.concurrent.ConcurrentHashMap
 
 data class ImageAnalysisResult(
     val originalBitmap: Bitmap,
@@ -21,112 +20,25 @@ data class ImageAnalysisResult(
     val blurReason: String
 )
 
-class SafeImageProcessor(private val context: Context) {
-    private companion object {
+class SafeImageProcessor private constructor(context: Context) {
+    companion object {
         const val TAG = "SafeImageProcessor"
         const val MAX_CONCURRENT_PROCESSING = 3
+
+        @Volatile
+        private var INSTANCE: SafeImageProcessor? = null
+
+        fun getInstance(context: Context): SafeImageProcessor {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: SafeImageProcessor(context.applicationContext).also { INSTANCE = it }
+            }
+        }
     }
 
     private val nsfwDetector = NSFWDetector(context)
     private val genderClassifier = GenderClassifier(context)
-    
-    private val resultCache = ConcurrentHashMap<String, ImageAnalysisResult>()
-    
+
     private val processingDispatcher: CoroutineDispatcher = Dispatchers.Default.limitedParallelism(MAX_CONCURRENT_PROCESSING)
-
-    fun processImage(
-        bitmap: Bitmap,
-        blurFemales: Boolean = true,
-        blurNSFW: Boolean = true,
-        nsfwThreshold: Float = 0.8f,
-        genderThreshold: Float = 0.6f,
-        callback: (ImageAnalysisResult) -> Unit
-    ) {
-        Log.d(TAG, "Starting image analysis...")
-        
-        val cacheKey = "${bitmap.width}x${bitmap.height}_${bitmap.byteCount}"
-        
-        resultCache[cacheKey]?.let { cachedResult ->
-            Log.d(TAG, "Returning cached result for key: $cacheKey")
-            callback(cachedResult)
-            return
-        }
-
-        var isNSFW = false
-        var nsfwConfidence = 0f
-        var isFemale = false
-        var genderConfidence = 0f
-        var shouldBlur = false
-        var blurReason = ""
-        var processedBitmap = bitmap
-
-        try {
-            nsfwDetector.isNSFW(bitmap, nsfwThreshold) { nsfw, confidence, _ ->
-                isNSFW = nsfw
-                nsfwConfidence = confidence
-
-                if (isNSFW && blurNSFW) {
-                    shouldBlur = true
-                    blurReason = "NSFW content detected"
-                    Log.d(TAG, "NSFW detected with confidence: $confidence")
-                }
-
-                if (!shouldBlur && blurFemales) {
-                    val genderResult = genderClassifier.classifyGender(bitmap, genderThreshold)
-                    genderResult?.let { result ->
-                        isFemale = result.isFemale
-                        genderConfidence = result.confidence
-
-                        if (result.isFemale) {
-                            shouldBlur = true
-                            blurReason = "Female subject detected"
-                            Log.d(TAG, "Female detected with confidence: ${result.confidence}")
-                        }
-                    }
-                }
-
-                processedBitmap = when {
-                    isNSFW && blurNSFW -> {
-                        ImageBlurUtils.createNSFWBlur(bitmap) ?: bitmap
-                    }
-                    isFemale && blurFemales -> {
-                        ImageBlurUtils.createFemaleBlur(bitmap) ?: bitmap
-                    }
-                    else -> bitmap
-                }
-
-                val result = ImageAnalysisResult(
-                    originalBitmap = bitmap,
-                    processedBitmap = processedBitmap,
-                    isNSFW = isNSFW,
-                    nsfwConfidence = nsfwConfidence,
-                    isFemale = isFemale,
-                    genderConfidence = genderConfidence,
-                    shouldBlur = shouldBlur,
-                    blurReason = blurReason
-                )
-                
-                resultCache[cacheKey] = result
-
-                Log.d(TAG, "Image analysis complete. Should blur: $shouldBlur, Reason: $blurReason")
-                callback(result)
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Error processing image: ${e.message}")
-            callback(
-                ImageAnalysisResult(
-                    originalBitmap = bitmap,
-                    processedBitmap = bitmap,
-                    isNSFW = false,
-                    nsfwConfidence = 0f,
-                    isFemale = false,
-                    genderConfidence = 0f,
-                    shouldBlur = false,
-                    blurReason = "Error during analysis: ${e.message}"
-                )
-            )
-        }
-    }
 
     fun processImageSync(
         bitmap: Bitmap,
@@ -136,13 +48,6 @@ class SafeImageProcessor(private val context: Context) {
         genderThreshold: Float = 0.6f
     ): ImageAnalysisResult {
         Log.d(TAG, "Starting sync image analysis - blurFemales: $blurFemales, blurNSFW: $blurNSFW")
-
-        val cacheKey = "${bitmap.width}x${bitmap.height}_${bitmap.byteCount}"
-
-        resultCache[cacheKey]?.let { cachedResult ->
-            Log.d(TAG, "Returning cached result")
-            return cachedResult
-        }
 
         var isNSFW = false
         var nsfwConfidence = 0f
@@ -223,8 +128,6 @@ class SafeImageProcessor(private val context: Context) {
                 blurReason = blurReason
             )
 
-            resultCache[cacheKey] = result
-
             Log.d(TAG, "Image analysis complete. Should blur: $shouldBlur, Reason: $blurReason")
             return result
 
@@ -243,15 +146,12 @@ class SafeImageProcessor(private val context: Context) {
         }
     }
 
-
     fun getProcessingDispatcher(): CoroutineDispatcher = processingDispatcher
-
 
     fun release() {
         try {
             nsfwDetector.close()
             genderClassifier.release()
-            resultCache.clear()
         } catch (e: Exception) {
             Log.e(TAG, "Error releasing resources: ${e.message}")
         }

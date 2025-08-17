@@ -31,6 +31,7 @@ android {
 dependencies {
     implementation(libs.bundles.android)
     implementation(projects.repository.media)
+    implementation(projects.repository.guessGame)
     implementation(libs.bundles.retrofit)
 
     testImplementation(libs.bundles.test)

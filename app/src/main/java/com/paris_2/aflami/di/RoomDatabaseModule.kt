@@ -6,6 +6,8 @@ import androidx.room.Room
 import com.datasource.MovieDetailDataBase
 import com.datasource.local.TvShowDetailDataBase
 import com.datasource.local.dao.*
+import com.datasource.local.guessGame.GuessGameDatabase
+import com.datasource.local.guessGame.dao.GamePointsDao
 import com.datasource.local.media.HomeDatabase
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
@@ -64,6 +66,17 @@ object RoomDatabaseModule {
         DatabaseConstants.TV_SHOW_DATABASE_NAME
     ).build()
 
+    @Provides
+    @Singleton
+    fun provideGuessGameDatabase(
+        @ApplicationContext context: Context
+    ): GuessGameDatabase = Room.databaseBuilder(
+        context,
+        GuessGameDatabase::class.java,
+        DatabaseConstants.GAME_DATABASE_NAME
+    ).build()
+
+
     @Provides fun provideSearchHistoryDao(db: SearchDatabase): SearchHistoryDao = db.searchHistoryDao()
     @Provides fun provideCountryDao(db: SearchDatabase): CountryDao = db.countryDao()
     @Provides fun provideGenresUserInteractionDao(db: SearchDatabase): GenresUserInteractionDao = db.genreUserInteractionDao()
@@ -75,6 +88,8 @@ object RoomDatabaseModule {
     @Provides fun provideHomeMediaDao(db: HomeDatabase): ContinueWatchingDao = db.continueWatchingDao()
 
     @Provides fun provideHomeDao(db: HomeDatabase): HomeMediaDao = db.homeMediaDao()
+
+    @Provides fun provideGameDao(db: GuessGameDatabase) : GamePointsDao = db.gamePointsDao()
 }
 
 object DatabaseConstants {
@@ -82,4 +97,5 @@ object DatabaseConstants {
     const val TV_SHOW_DATABASE_NAME = "tv_show_database"
     const val SEARCH_DATABASE_NAME = "search_db"
     const val HOME_DATABASE_NAME = "home_db"
+    const val GAME_DATABASE_NAME = "Transform Selected Code..."
 }

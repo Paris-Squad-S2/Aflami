@@ -15,4 +15,22 @@
     <string name="Not_enough_points">Not enough points</string>
     <string name="OK">OK</string>
     <string name="sorry_not_enough_points_hint">Sorry, you don’t have the enough points to have a hint</string>
+    <string name="lets_play">Let\'s play</string>
+    <string name="guess_the_character_title">Guess the Character</string>
+    <string name="guess_the_movie_title">Guess the Movie by Poster</string>
+    <string name="when_was_it_released_title">When Was It Released?</string>
+    <string name="which_genre_title">Which Genre?</string>
+    <string name="guess_the_character_desc">Can you tell who this character?</string>
+    <string name="guess_the_movie_desc">Match the poster with the right title!</string>
+    <string name="when_was_it_released_desc">Pick the right release year.</string>
+    <string name="which_genre_desc">Which one is the real action movie?</string>
+    <string name="points_label">%1$d Pts.</string>
+    <string name="next">Next</string>
+    <string name="Guess_the_character">Guess the character</string>
+    <string name="Back_to_menu">Back to menu</string>
+    <string name="Play_again">Play again</string>
+    <string name="guess_the_poster">Guess the poster</string>
+    <string name="you_finished_the_game">You finished the GAME!</string>
+    <string name="title_activity_game" translatable="false">GameActivity</string>
+
 </resources>
