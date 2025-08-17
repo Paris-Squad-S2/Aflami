@@ -34,6 +34,9 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUse
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -71,6 +74,16 @@ class TvShowDetailsViewModel @Inject constructor(
         getRestriction()
         loadTvShowDetails(mediaId)
         getInformationVideoTvShow()
+    }
+
+    private fun hideSnackBar() {
+        viewModelScope.launch {
+            if (screenState.value.showSnackBar) {
+                delay(3000)
+                updateState(screenState.value.copy(showSnackBar = false))
+            }
+        }
+
     }
 
     private fun getRestriction() {
@@ -409,6 +422,7 @@ class TvShowDetailsViewModel @Inject constructor(
                         showRatingDialog = false
                     )
                 )
+                hideSnackBar()
             },
             onError = {
                 updateState(
@@ -419,6 +433,7 @@ class TvShowDetailsViewModel @Inject constructor(
                         errorMessage = it
                     )
                 )
+                hideSnackBar()
             }
         )
     }
@@ -486,6 +501,7 @@ class TvShowDetailsViewModel @Inject constructor(
                     showSnackBar = true,
                 )
             )
+            hideSnackBar()
         } else {
             playYoutubeVideo(episodeVideo.key)
         }
@@ -512,6 +528,7 @@ class TvShowDetailsViewModel @Inject constructor(
                 showSnackBar = true
             )
         )
+        hideSnackBar()
     }
 
 }

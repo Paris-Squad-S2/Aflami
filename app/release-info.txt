@@ -1,2 +1,2 @@
-versionName=1.0.1
-- fix type mode in profile screen
+versionName=1.0.3
+- Implement System-Aware Dark Theme Handling
