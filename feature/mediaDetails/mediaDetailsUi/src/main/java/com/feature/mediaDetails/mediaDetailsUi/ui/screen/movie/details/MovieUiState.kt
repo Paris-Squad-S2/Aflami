@@ -59,7 +59,7 @@ data class MovieVideoUi(
 )
 
 data class MovieUi(
-    val id :Int = 0,
+    val id: Int = 0,
     override val posterUrl: String = "",
     override val rating: Float? = null,
     override val title: String = "",

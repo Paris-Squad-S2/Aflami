@@ -36,7 +36,6 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -61,11 +60,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val createListUseCase: CreateListUseCase,
     private val settingsUseCase: SettingsUseCase,
     navigator: MediaDetailsNavigator,
-) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
-    MovieDetailsScreenState(
-        movieDetailsUiState = MovieDetailsUiState(),
-    ), navigator
-) {
+) : MovieDetailsScreenInteractionListener,
+    BaseViewModel<MovieDetailsScreenState>(MovieDetailsScreenState(), navigator) {
 
 
     private val movieId by lazy {

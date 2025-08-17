@@ -15,9 +15,7 @@ class WatchHistoryViewModel @Inject constructor(
     private val filterWatchHistoryUseCase: FilterWatchHistoryUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
-) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(
-    WatchHistoryUiState()
-) {
+) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(WatchHistoryUiState()) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
 
     init {

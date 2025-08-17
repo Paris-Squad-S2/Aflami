@@ -22,9 +22,7 @@ class MyRatingViewModel @Inject constructor(
     private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase,
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase,
     private val settingsUseCase: SettingsUseCase,
-) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(
-    MyRatingUiState()
-) {
+) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(MyRatingUiState()) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
 
     init {
