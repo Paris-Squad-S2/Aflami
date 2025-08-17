@@ -1,6 +1,5 @@
 package com.paris_2.repository.user.repository
 
-import com.google.common.base.Verify.verify
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.user.exception.UnknownAuthException
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
@@ -20,7 +19,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFailsWith
 
 
-class AuthenticationRepositoryImplTest {
+class UserRepositoryImplTest {
     private lateinit var remoteDataSource: UserRemoteDataSource
     private lateinit var localDataSource: AuthenticationLocalDataSource
     private lateinit var repository: UserRepositoryImpl
