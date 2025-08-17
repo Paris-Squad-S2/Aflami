@@ -142,13 +142,14 @@ dependencies {
     implementation(projects.repository.media)
     implementation(projects.repository.guessGame)
 
-    implementation(projects.datasource.remote.lists)
     implementation(projects.datasource.remote.user)
     implementation(projects.datasource.remote.media)
     implementation(projects.datasource.remote.categories)
+    implementation(projects.datasource.remote.lists)
 
     implementation(projects.datasource.local.media)
     implementation(projects.datasource.local.user)
+    implementation(projects.datasource.local.categories)
     implementation(projects.datasource.local.guessGame)
 
     implementation(projects.domain.media)
