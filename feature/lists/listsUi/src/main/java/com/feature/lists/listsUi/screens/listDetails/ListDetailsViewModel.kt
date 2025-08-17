@@ -23,9 +23,8 @@ class ListDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel<ListDetailsScreenState>(
-    initialState = ListDetailsScreenState(),
-), ListDetailsScreenInteractionListener {
+) : BaseViewModel<ListDetailsScreenState>(ListDetailsScreenState()),
+    ListDetailsScreenInteractionListener {
     private val listId = savedStateHandle.toRoute<ListDestinations.ListDetails>().listId
 
     init {
@@ -42,27 +41,27 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     private fun onGetRestrictionSuccess(restriction: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 contentRestriction = ContentRestriction.valueOf(restriction),
             )
         )
         when (screenState.value.contentRestriction) {
-            ContentRestriction.Strict -> emitState(
+            ContentRestriction.Strict -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.8f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.Moderate -> emitState(
+            ContentRestriction.Moderate -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.4f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.Off -> emitState(
+            ContentRestriction.Off -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0f,
                     genderThreshold = 0f
@@ -73,7 +72,7 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     private fun onGetRestrictionError(error: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 errorMessage = error,
             )
@@ -84,7 +83,7 @@ class ListDetailsViewModel @Inject constructor(
         tryToExecute(execute = {
             mediaDetailsFeatureAPI.startMovieDetails(movieId = mediaUiState.id)
         }, onError = { errorMessage ->
-            emitState(
+            updateState(
                 screenState.value.copy(
                     errorMessage = errorMessage
                 )
@@ -93,7 +92,7 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     private fun getListDetails(listId: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 isLoading = true, errorMessage = null
             )
@@ -120,7 +119,7 @@ class ListDetailsViewModel @Inject constructor(
                         listDetails.name
                     },
                     onSuccess = { name ->
-                        emitState(
+                        updateState(
                             screenState.value.copy(
                                 listTitle = name,
                                 mediaItems = pagingFlow,
@@ -130,7 +129,7 @@ class ListDetailsViewModel @Inject constructor(
                         )
                     },
                     onError = { errorMessage ->
-                        emitState(
+                        updateState(
                             screenState.value.copy(
                                 errorMessage = errorMessage, isLoading = false
                             )
@@ -139,7 +138,7 @@ class ListDetailsViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage, isLoading = false
                     )
@@ -156,7 +155,7 @@ class ListDetailsViewModel @Inject constructor(
 
             navigateUp()
         }, onError = { errorMessage ->
-            emitState(
+            updateState(
                 screenState.value.copy(
                     errorMessage = errorMessage,
                 )
@@ -171,7 +170,7 @@ class ListDetailsViewModel @Inject constructor(
         }, onSuccess = {
             getListDetails(listId)
         }, onError = { errorMessage ->
-            emitState(
+            updateState(
                 screenState.value.copy(
                     errorMessage = errorMessage,
                 )
@@ -184,7 +183,7 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     override fun onDeleteListClick() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 showDeleteDialog = true
             )
@@ -192,7 +191,7 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     override fun onDeleteDialogDismiss() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 showDeleteDialog = false
             )
@@ -200,7 +199,7 @@ class ListDetailsViewModel @Inject constructor(
     }
 
     override fun onDeleteDialogConfirm() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 showDeleteDialog = false
             )

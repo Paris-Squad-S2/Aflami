@@ -39,14 +39,7 @@ class WorldTourViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
-        WorldTourScreenState(
-            uiState = WorldTourUiState(
-                searchQuery = "",
-                searchResult = flowOf(PagingData.empty()),
-                hints = listOf()
-            ),
-            errorMessage = null
-        ),
+        WorldTourScreenState(),
     ) {
 
     init {
@@ -167,7 +160,12 @@ class WorldTourViewModel @Inject constructor(
                     pagingSourceFactory = {
                         PagingSource(
                             searchUseCase = { page ->
-                                sortingMediaByCategoriesInteractionUseCase(getMoviesByCountryUseCase(query,page)).toMediaUiList()
+                                sortingMediaByCategoriesInteractionUseCase(
+                                    getMoviesByCountryUseCase(
+                                        query,
+                                        page
+                                    )
+                                ).toMediaUiList()
                             }
                         )
                     }
