@@ -301,12 +301,12 @@ class HomeScreenViewModelTest {
         }
 
     @Test
-    fun `getRandomMoodPickerMovie picks a random movie from upComingMediaList`() = runTest {
+    fun `getRandomMoodPickerMovie picks a random movie from moodPickerFilteredMovies`() = runTest {
         coEvery { settingsUseCase.getRestriction() } returns "Off"
         viewModel.emitState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
-                    upComingMediaList = fakeUpcomingList
+                    moodPickerFilteredMovies = fakeUpcomingList
                 )
             )
         )

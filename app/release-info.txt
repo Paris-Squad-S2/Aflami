@@ -1,2 +1,2 @@
-versionName=0.8.12
-- refactor slider behavior by handling user scroll state
+versionName=1.0.0
+- first stable production version
