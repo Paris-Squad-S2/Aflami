@@ -24,6 +24,7 @@ data class HomeUIState(
     val upComingMediaList: List<MediaUiState>,
     val showMoodPickerDialog: Boolean,
     val isAllCategories: Boolean,
+    val moodPickerFilteredMovies : List<MediaUiState>,
     val moodPickerMovie: MediaUiState?,
     val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
