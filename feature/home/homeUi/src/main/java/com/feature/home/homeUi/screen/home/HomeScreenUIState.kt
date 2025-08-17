@@ -23,7 +23,7 @@ data class HomeUIState(
     val categories: Map<Category, Boolean> = emptyMap(),
     val upComingMediaList: List<MediaUiState> = emptyList(),
     val showMoodPickerDialog: Boolean = false,
-    val isAllCategories: Boolean = false,
+    val isAllCategories: Boolean = true,
     val moodPickerFilteredMovies : List<MediaUiState> = emptyList(),
     val moodPickerMovie: MediaUiState? = MediaUiState(),
     val contentRestriction: ContentRestriction = ContentRestriction.Strict,
@@ -37,7 +37,7 @@ data class MediaUiState(
     val title: String = "",
     val type: MediaTypeUi = MediaTypeUi.MOVIE,
     val categories: List<Int> = emptyList(),
-    val yearOfRelease: LocalDate = kotlinx.datetime.LocalDate(2023, 1, 1),
+    val yearOfRelease: LocalDate = LocalDate(2023, 1, 1),
     val rating: Double? = 0.0,
 )
 
