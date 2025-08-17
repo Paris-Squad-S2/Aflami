@@ -39,13 +39,18 @@ class ActorPopularityRepositoryImplTest {
         // Given
         val dto = ActorPopularityListDto(results = sampleActorDtos)
         coEvery { remote.getPopularActors(language) } returns dto
+
         // When
         val result = repository.getPopularActor()
+
         // Then
         assertThat(result).hasSize(sampleActorDtos.size)
-        assertThat(result.map { it.name }).containsAtLeastElementsIn(sampleActorDtos.mapNotNull { it.originalName })
+        assertThat(result.map { it.name })
+            .containsExactlyElementsIn(sampleActorDtos.map { it.name!! })
+
         coVerify(exactly = 1) { remote.getPopularActors(language) }
     }
+
 
     @Test
     fun `getPopularActor returns empty list when remote returns null results`() = runTest {
@@ -81,7 +86,7 @@ class ActorPopularityRepositoryImplTest {
         val result = repository.getRandomActors(3)
         // Then
         assertThat(result).hasSize(3)
-        assertThat(sampleActorDtos.mapNotNull { it.originalName }
+        assertThat(sampleActorDtos.mapNotNull { it.name }
             .toSet()).containsAtLeastElementsIn(result.map { it.name }.toSet())
         coVerify(exactly = 1) { remote.getPopularActors(language) }
     }
@@ -98,7 +103,7 @@ class ActorPopularityRepositoryImplTest {
         private val sampleActorDtos = listOf(
             ActorDto(
                 id = 1,
-                originalName = "Actor One",
+                name = "Actor One",
                 profilePath = "/img1.jpg",
                 knownFor = listOf(
                     ActorMediaDto(
@@ -112,7 +117,7 @@ class ActorPopularityRepositoryImplTest {
             ),
             ActorDto(
                 id = 2,
-                originalName = "Actor Two",
+                name = "Actor Two",
                 profilePath = "/img2.jpg",
                 knownFor = listOf(
                     ActorMediaDto(
@@ -126,19 +131,19 @@ class ActorPopularityRepositoryImplTest {
             ),
             ActorDto(
                 id = 3,
-                originalName = "Actor Three",
+                name = "Actor Three",
                 profilePath = "/img3.jpg",
                 knownFor = emptyList()
             ),
             ActorDto(
                 id = 4,
-                originalName = "Actor Four",
+                name = "Actor Four",
                 profilePath = "/img4.jpg",
                 knownFor = emptyList()
             ),
             ActorDto(
                 id = 5,
-                originalName = "Actor Five",
+                name = "Actor Five",
                 profilePath = "/img5.jpg",
                 knownFor = emptyList()
             )
