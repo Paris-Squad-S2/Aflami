@@ -9,6 +9,7 @@ import com.paris_2.domain.game.repositories.GamePointsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -28,7 +29,7 @@ class UseHintUseCaseTest {
     fun `should set hint used and deduct 10 points when user has enough points`() = runTest {
         // Given
         val session = sessionWithQuestion(question("q1", correct = "A", usedHint = false))
-        coEvery { repository.getUserGamePoints(USER_ID) } returns UserPoints(USER_ID, 25)
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 25))
         // When
         useCase(session, USER_ID)
         // Then
@@ -40,7 +41,7 @@ class UseHintUseCaseTest {
     fun `should set hint used and reduce points to zero when exactly cost`() = runTest {
         // Given
         val session = sessionWithQuestion(question("q1", correct = "A", usedHint = false))
-        coEvery { repository.getUserGamePoints(USER_ID) } returns UserPoints(USER_ID, 10)
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 10))
         // When
         useCase(session, USER_ID)
         // Then
@@ -52,7 +53,7 @@ class UseHintUseCaseTest {
     fun `should not set hint or save when user has insufficient points`() = runTest {
         // Given
         val session = sessionWithQuestion(question("q1", correct = "A", usedHint = false))
-        coEvery { repository.getUserGamePoints(USER_ID) } returns UserPoints(USER_ID, 5)
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 5))
         // When
         useCase(session, USER_ID)
         // Then
@@ -68,7 +69,7 @@ class UseHintUseCaseTest {
             level = GameSession.GameLevel.EASY,
             questions = emptyList()
         )
-        coEvery { repository.getUserGamePoints(USER_ID) } returns UserPoints(USER_ID, 20)
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 20))
         // When
         useCase(session, USER_ID)
         // Then

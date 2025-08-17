@@ -6,6 +6,8 @@ import com.paris_2.domain.game.repositories.GamePointsRepository
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -24,9 +26,9 @@ class GetUserPointUseCaseTest {
     @Test
     fun `should return user points from repository`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns sampleUserPoints
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints)
         // When
-        val result = useCase(USER_ID)
+        val result = useCase(USER_ID).first()
         // Then
         assertThat(result).isEqualTo(sampleUserPoints.gamePoints)
     }
@@ -34,7 +36,7 @@ class GetUserPointUseCaseTest {
     @Test
     fun `should call getUserGamePoints exactly once with correct id`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns sampleUserPoints
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints)
         // When
         useCase(USER_ID)
         // Then
