@@ -11,7 +11,7 @@ import com.paris_2.aflami.designsystem.components.UiText
 import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
 import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.launch
 
 @HiltViewModel

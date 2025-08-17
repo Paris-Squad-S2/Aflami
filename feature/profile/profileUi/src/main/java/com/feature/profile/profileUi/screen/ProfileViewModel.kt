@@ -1,11 +1,13 @@
 package com.feature.profile.profileUi.screen
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.ProfileDestinations
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,7 +23,7 @@ class ProfileViewModel @Inject constructor(
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
-    private val getUserPointsUseCase: GetUserPointUseCase
+    private val getUserPointsUseCase: GetUserPointUseCase,
     ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
@@ -302,11 +304,11 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    override fun onWatchHistoryClicked() {
-        navigate(ProfileDestinations.WatchHistoryScreen)
+    override fun onWatchHistoryClicked(context: Context) {
+        navigateDestination(context, Destination.WatchHistoryScreen)
     }
 
-    override fun onMyRatingClicked() {
-        navigate(ProfileDestinations.MyRatingScreen)
+    override fun onMyRatingClicked(context: Context) {
+        navigateDestination(context, Destination.MyRatingScreen)
     }
 }

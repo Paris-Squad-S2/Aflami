@@ -126,21 +126,6 @@ class MyRatingViewModel @Inject constructor(
         })
     }
 
-    override fun onBackClick() {
-        tryToExecute(
-            execute = {
-                navigateUp()
-            },
-            onError = { errorMessage ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
-    }
-
     override fun onFavouriteIconClick(media: MediaUiState) {
         tryToExecute(
             execute = {

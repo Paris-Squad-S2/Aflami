@@ -9,7 +9,7 @@ import com.feature.search.searchUi.screen.main.InstallSavedAppLanguage
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
-import jakarta.inject.Inject
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchActivity : AppCompatActivity() {

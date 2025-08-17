@@ -1,5 +1,7 @@
 package com.feature.profile.profileUi.screen.watchHistory
 
+import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -39,16 +41,18 @@ fun WatchHistoryScreen(
     viewModel: WatchHistoryViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
+    val activity = LocalActivity.current
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Theme.colors.surface)
             .statusBarsPadding()
     ) {
         var selectedIndex by remember { mutableIntStateOf(0) }
         AppTopBar(
             logo = iconItemWithDefaults(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
-                onClick = viewModel::onBackClick,
+                onClick = { activity?.finish() },
                 backgroundColor = Theme.colors.surface,
                 tint = Theme.colors.text.title
             ),
