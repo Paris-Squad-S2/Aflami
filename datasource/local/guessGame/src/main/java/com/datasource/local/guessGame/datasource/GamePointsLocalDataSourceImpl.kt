@@ -3,6 +3,7 @@ package com.datasource.local.guessGame.datasource
 import com.datasource.local.guessGame.dao.GamePointsDao
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.guessgame.entity.UserGamePointsEntity
+import kotlinx.coroutines.flow.Flow
 
 class GamePointsLocalDataSourceImpl(
    private val gamePointsDao: GamePointsDao
@@ -11,7 +12,8 @@ class GamePointsLocalDataSourceImpl(
         gamePointsDao.upsertUserGamePoints(gamePoints)
     }
 
-    override suspend fun getUserGamePoints(userId: Int): UserGamePointsEntity? {
+
+    override fun getUserGamePoints(userId: Int): Flow<UserGamePointsEntity?> {
         return gamePointsDao.getUserGamePoints(userId)
     }
 }

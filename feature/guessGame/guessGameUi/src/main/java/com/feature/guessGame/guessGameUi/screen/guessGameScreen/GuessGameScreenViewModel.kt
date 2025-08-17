@@ -25,20 +25,17 @@ class GuessGameScreenViewModel @Inject constructor(
         loadUserPoints()
     }
 
-    fun loadUserPoints() {
-        tryToExecute(
-            onSuccess = { points ->
+    private fun loadUserPoints() {
+        tryToCollect(
+            flow = getUserPointUseCase(),
+            onEach = { points ->
                 updateState(screenState.value.copy(userPoints = points))
             },
             onError = { error ->
-            },
-            execute = {
-                val userId = getAccountIdUseCase() ?: 0
-                getUserPointUseCase(userId)
+                updateState(screenState.value.copy(errorMessage = error))
             }
         )
     }
-
 
     override fun onGamePlayClicked(gameId: String) {
         updateState(
