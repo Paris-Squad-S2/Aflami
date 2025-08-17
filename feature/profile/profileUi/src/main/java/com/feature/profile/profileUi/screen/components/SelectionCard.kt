@@ -1,5 +1,6 @@
 package com.feature.profile.profileUi.screen.components
 
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -52,13 +53,8 @@ fun SelectionCard(
         else -> Color.Gray
     }
 
-
-
-    val iconTint = when {
-        isSelected && optionDescription != null -> Theme.colors.primary
-        !isSelected && optionDescription != null -> Theme.colors.text.hint
-        else -> Color.Unspecified
-    }
+    val iconTint =
+        animateColorAsState(if (isSelected) Theme.colors.primary else Theme.colors.text.body).value
 
     Row(
         modifier = modifier
@@ -105,7 +101,7 @@ fun SelectionCard(
             AppRadioButton(
                 selected = isSelected,
                 isDisable = false,
-                onClick =  onClick,
+                onClick = onClick,
             )
         }
 
