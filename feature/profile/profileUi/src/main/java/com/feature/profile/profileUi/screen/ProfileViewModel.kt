@@ -6,7 +6,6 @@ import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.ProfileDestinations
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,8 +21,7 @@ class ProfileViewModel @Inject constructor(
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
-    private val getUserPoints: GetUserPointUseCase,
-    private val getAccountIdUseCase: GetAccountIdUseCase,
+    private val getUserPointsUseCase: GetUserPointUseCase
     ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
@@ -59,9 +57,9 @@ class ProfileViewModel @Inject constructor(
         }
     }
     private fun getUserPoints() {
-        viewModelScope.launch {
-            val userId = getAccountIdUseCase() ?: return@launch
-            getUserPoints(userId).collectLatest { points ->
+        tryToCollect(
+            flow = getUserPointsUseCase(),
+            onEach = { points ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
@@ -69,8 +67,15 @@ class ProfileViewModel @Inject constructor(
                         )
                     )
                 )
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
             }
-        }
+        )
     }
 
     private fun getUserName() {

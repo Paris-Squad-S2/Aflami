@@ -220,7 +220,7 @@ class GuessByImageViewModel @Inject constructor(
                 val hintUsed = useHintUseCase(session, userId)
 
                 if (hintUsed) {
-                    val userPoints = getUserPointUseCase(userId).first()
+                    val userPoints = getUserPointUseCase().first()
                     val hintResult = removeAnswerHintUseCase(session, false, userPoints)
 
                     if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {
