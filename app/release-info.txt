@@ -1,2 +1,2 @@
-versionName=1.0.4
-- Refactor: Simplify profile feature navigation
+versionName=1.0.5
+- fix navigation of guess game question
