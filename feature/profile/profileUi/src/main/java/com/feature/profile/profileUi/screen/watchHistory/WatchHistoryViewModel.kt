@@ -15,13 +15,7 @@ class WatchHistoryViewModel @Inject constructor(
     private val filterWatchHistoryUseCase: FilterWatchHistoryUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
-) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(
-    initialState = WatchHistoryUiState(
-        isLoading = false,
-        errorMessage = null,
-        watchHistoryMedia = emptyList()
-    )
-){
+) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(WatchHistoryUiState()) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
     init {
         getRestriction()
