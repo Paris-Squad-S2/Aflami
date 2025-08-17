@@ -36,16 +36,11 @@ class GuessGameScreenViewModel @Inject constructor(
                     updateState(screenState.value.copy(userPoints = points))
                 },
                 onError = { error ->
-                    updateState(
-                        screenState.value.copy(
-                            errorMessage = error
-                        )
-                    )
+                    updateState(screenState.value.copy(errorMessage = error))
                 }
             )
         }
     }
-
 
     override fun onGamePlayClicked(gameId: String) {
         updateState(
