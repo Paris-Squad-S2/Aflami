@@ -124,24 +124,32 @@ fun GuessQuestionContent(
                 Spacer(Modifier.height(16.dp))
 
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    state.remainingAnswers.forEach { answer ->
+
+                    val currentOptions = state.remainingAnswers
+
+
+                    currentOptions.forEach { answer ->
+                        val displayText =
+                            answer.genreText?.let { stringResource(id = it) } ?: answer.text
+
                         AnimatedVisibility(
                             visible = true,
                             enter = fadeIn(),
                             exit = fadeOut()
                         ) {
                             OptionItem(
-                                text = answer,
-                                selected = state.selectedAnswer == answer,
-                                isCorrect = state.selectedAnswer != null && answer == state.correctAnswer,
+                                text = displayText,
+                                selected = state.selectedAnswer == answer.text,
+                                isCorrect = state.selectedAnswer != null && answer.text == state.correctAnswer,
                                 onClick = {
                                     if (state.selectedAnswer == null) {
-                                        listener.onAnswerSelected(answer)
+                                        listener.onAnswerSelected(answer.text)
                                     }
                                 }
                             )
                         }
                     }
+
                 }
 
                 Spacer(Modifier.weight(1f))
@@ -178,7 +186,7 @@ fun GuessReleaseYearContentPreview() {
                 questionText = "In which year was 'Inception' released?",
                 answers = listOf(),
                 correctAnswer = "2010",
-                remainingAnswers = listOf("2008", "2010", "2012", "2014"),
+                remainingAnswers = listOf(),
                 selectedAnswer = "2008",
                 hintUsed = false,
                 timePerQuestion = 30,

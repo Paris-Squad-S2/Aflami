@@ -83,21 +83,17 @@ class GuessQuestionViewModel @Inject constructor(
                 screenState.value.copy(
                     currentStep = session.currentQuestionIndex,
                     totalQuestions = session.questions.size,
-                    questionUiState = session.questions.map { it.toUiQuestion() },
+                    questionUiState = session.questions.map { it.toUiQuestion(questionType) },
                     questionText = question.content,
-                    answers = question.options.map { it.toUiAnswer() },
+                    answers = question.options.map { it.toUiAnswer(questionType) },
                     correctAnswer = question.options.firstOrNull { it.isCorrect }?.text,
-                    remainingAnswers = question.options.map { it.text },
+                    remainingAnswers = question.options.map { it.toUiAnswer(questionType) },
                     selectedAnswer = question.selectedAnswer,
                     hintUsed = question.usedHint,
                     time = timePerQuestion,
                 )
             )
-            Log.d(
-                "GuessQuestionVM",
-                "Loaded question ${session.currentQuestionIndex + 1}: ${question.content}"
-            )
-        } ?: Log.e("GuessQuestionVM", "No current question found")
+        }
     }
 
     override fun onAnswerSelected(answer: String) {
@@ -112,7 +108,7 @@ class GuessQuestionViewModel @Inject constructor(
 
         updateState(
             screenState.value.copy(
-                answers = question.options.map { it.toUiAnswer() },
+                answers = question.options.map { it.toUiAnswer(questionType) },
                 selectedAnswer = answer,
                 correctAnswer = question.correctAnswer,
                 hintUsed = question.usedHint,
@@ -134,7 +130,7 @@ class GuessQuestionViewModel @Inject constructor(
             screenState.value.copy(
                 currentStep = updatedSession.currentQuestionIndex,
                 time = timePerQuestion,
-                questionUiState = updatedSession.questions.map { it.toUiQuestion() }
+                questionUiState = updatedSession.questions.map { it.toUiQuestion(questionType) }
             )
         )
 
@@ -198,6 +194,7 @@ class GuessQuestionViewModel @Inject constructor(
                 when (result) {
                     is HintUsageResult.Success -> {
                         applyHint(result.updatedQuestion)
+                        updateState(screenState.value.copy(hintUsed = true))
                         Log.d("GuessQuestionVM", "Hint applied successfully. 10 points deducted.")
                     }
 
@@ -234,8 +231,8 @@ class GuessQuestionViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 questionText = updatedQuestion.content,
-                answers = updatedQuestion.options.map { it.toUiAnswer() },
-                remainingAnswers = updatedQuestion.options.map { it.text },
+                answers = updatedQuestion.options.map { it.toUiAnswer(questionType) },
+                remainingAnswers = updatedQuestion.options.map { it.toUiAnswer(questionType) },
                 hintUsed = true
             )
         )

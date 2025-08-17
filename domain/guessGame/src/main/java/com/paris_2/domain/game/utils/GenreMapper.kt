@@ -31,5 +31,7 @@ enum class Genre(val id: Int, val displayName: String) {
 
     companion object {
         fun fromId(id: Int): Genre? = entries.find { it.id == id }
+        fun fromDisplayName(name: String): Genre? = entries.find { it.displayName == name }
+
     }
 }
