@@ -3,14 +3,14 @@ package com.datasource.local.media.datasource
 import androidx.work.WorkManager
 import com.datasource.local.media.dao.MovieDao
 import com.google.common.truth.Truth.assertThat
-import com.repository.movie.models.local.CastEntity
-import com.repository.movie.models.local.GalleryEntity
-import com.repository.movie.models.local.GenreEntity
-import com.repository.movie.models.local.ImageEntity
+import com.repository.movie.models.local.MovieCastEntity
+import com.repository.movie.models.local.MovieGalleryEntity
+import com.repository.movie.models.local.MovieGenreEntity
+import com.repository.movie.models.local.MovieImageEntity
 import com.repository.movie.models.local.MovieEntity
 import com.repository.movie.models.local.MovieSimilarEntity
-import com.repository.movie.models.local.ProductionCompanyEntity
-import com.repository.movie.models.local.ReviewEntity
+import com.repository.movie.models.local.MovieProductionCompanyEntity
+import com.repository.movie.models.local.MovieReviewEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -175,7 +175,7 @@ class MovieLocalDataSourceImpTest {
         fun `getCastByMovieId should return empty list when DAO returns empty list`() = runTest {
             //Given
             val movieId = 200
-            val emptyList = emptyList<CastEntity>()
+            val emptyList = emptyList<MovieCastEntity>()
             every {
                 runBlocking {
                     movieDao.getCastByMovieId(
@@ -480,21 +480,21 @@ class MovieLocalDataSourceImpTest {
             description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea.",
             posterPath = "/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
             genres = listOf(
-                GenreEntity(id = 28, name = "Action"),
-                GenreEntity(id = 878, name = "Science Fiction"),
-                GenreEntity(id = 12, name = "Adventure")
+                MovieGenreEntity(id = 28, name = "Action"),
+                MovieGenreEntity(id = 878, name = "Science Fiction"),
+                MovieGenreEntity(id = 12, name = "Adventure")
             ),
             releaseDate = "2010-07-16",
             runtime = 148,
             country = "Egypt",
             productionCompanies = listOf(
-                ProductionCompanyEntity(
+                MovieProductionCompanyEntity(
                     id = 923,
                     logoPath = "/5UQsZrfbfG2dYJbx8DxfoTr2xYh.png",
                     name = "Legendary Pictures",
                     originCountry = "US"
                 ),
-                ProductionCompanyEntity(
+                MovieProductionCompanyEntity(
                     id = 9996,
                     logoPath = "/3T19XSr6yqaLNkD2RY2zwnYQhjq.png",
                     name = "Syncopy",
@@ -504,14 +504,14 @@ class MovieLocalDataSourceImpTest {
             language = language
         )
 
-        val sampleCast = CastEntity(
+        val sampleCast = MovieCastEntity(
             id = 1,
             movieId = 2,
             name = "name",
             imageUri = "path",
             language = language
         )
-        val sampleCast2 = CastEntity(
+        val sampleCast2 = MovieCastEntity(
             id = 2,
             movieId = 4,
             name = "Maze",
@@ -523,15 +523,15 @@ class MovieLocalDataSourceImpTest {
             sampleCast,
             sampleCast2
         )
-        val sampleGallery = GalleryEntity(
+        val sampleGallery = MovieGalleryEntity(
             id = 1,
             movieId = 1,
             images = listOf(
-                ImageEntity(
+                MovieImageEntity(
                     id = 10,
                     url = "uri"
                 ),
-                ImageEntity(
+                MovieImageEntity(
                     id = 20,
                     url = "uri"
                 ),
@@ -549,7 +549,7 @@ class MovieLocalDataSourceImpTest {
                 page = page
             )
         )
-        val sampleReview = ReviewEntity(
+        val sampleReview = MovieReviewEntity(
             id = 1,
             movieId = 2,
             name = "الاسطوره",

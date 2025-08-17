@@ -1,6 +1,6 @@
 package com.repository.movie.testUtils
 
-import com.repository.movie.models.local.ReviewEntity
+import com.repository.movie.models.local.MovieReviewEntity
 import com.repository.movie.models.remote.MovieCastDto
 import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieDto
@@ -52,7 +52,7 @@ val mockMovieImagesDto = MovieImagesDto(
     )
 )
 
-val review = ReviewEntity(
+val review = MovieReviewEntity(
     name = "mohammed",
     id = 0,
     movieId = 550,

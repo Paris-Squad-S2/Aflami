@@ -6,9 +6,9 @@ import androidx.work.workDataOf
 import com.datasource.local.media.dao.TvShowDao
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.local.workmanager.ClearTvShowDetailsWorker
-import com.repository.model.local.CastEntity
-import com.repository.model.local.GalleryEntity
-import com.repository.model.local.ReviewEntity
+import com.repository.model.local.TvShowCastEntity
+import com.repository.model.local.TVShowGalleryEntity
+import com.repository.model.local.TVShowReviewEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TvShowEntity
 import com.repository.model.local.TvShowSimilarEntity
@@ -29,18 +29,18 @@ class TvShowLocalDataSourceImpl (
     override suspend fun clearTvShowById(tvShowId: Int, language: String) =
         tvShowDao.clearTVShowDetailsById(tvShowId, language)
 
-    override suspend fun addTvShowCast(cast: List<CastEntity>) = tvShowDao.addTvShowCast(cast)
+    override suspend fun addTvShowCast(cast: List<TvShowCastEntity>) = tvShowDao.addTvShowCast(cast)
 
-    override suspend fun getCastByTvShowId(tvShowId: Int,language: String): List<CastEntity> =
+    override suspend fun getCastByTvShowId(tvShowId: Int,language: String): List<TvShowCastEntity> =
         tvShowDao.getCastByTvShowId(tvShowId,language)
-    override suspend fun addTvShowGallery(gallery: GalleryEntity) = tvShowDao.addTvShowGallery(gallery)
+    override suspend fun addTvShowGallery(gallery: TVShowGalleryEntity) = tvShowDao.addTvShowGallery(gallery)
 
-    override suspend fun getGalleryByTvShowId(tvShowId: Int): GalleryEntity? =
+    override suspend fun getGalleryByTvShowId(tvShowId: Int): TVShowGalleryEntity? =
         tvShowDao.getGalleryByTvShowId(tvShowId)
 
-    override suspend fun addTvShowReviews(reviews: List<ReviewEntity>) = tvShowDao.addTvShowReviews(reviews)
+    override suspend fun addTvShowReviews(reviews: List<TVShowReviewEntity>) = tvShowDao.addTvShowReviews(reviews)
 
-    override suspend fun getReviewsByTvShowId(tvShowId: Int,language: String): List<ReviewEntity> =
+    override suspend fun getReviewsByTvShowId(tvShowId: Int,language: String): List<TVShowReviewEntity> =
         tvShowDao.getReviewsByTvShowId(tvShowId,language)
     override suspend fun addTvShowSeason(seasons: SeasonEntity) = tvShowDao.addTvShowSeason(seasons)
 

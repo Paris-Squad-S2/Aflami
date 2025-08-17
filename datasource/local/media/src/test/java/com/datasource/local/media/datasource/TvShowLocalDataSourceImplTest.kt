@@ -3,13 +3,13 @@ package com.datasource.local.media.datasource
 import androidx.work.WorkManager
 import com.datasource.local.media.dao.TvShowDao
 import com.google.common.truth.Truth.assertThat
-import com.repository.model.local.CastEntity
+import com.repository.model.local.TvShowCastEntity
 import com.repository.model.local.EpisodeEntity
-import com.repository.model.local.GalleryEntity
-import com.repository.model.local.GenreEntity
-import com.repository.model.local.ImageEntity
-import com.repository.model.local.ProductionCompanyEntity
-import com.repository.model.local.ReviewEntity
+import com.repository.model.local.TVShowGalleryEntity
+import com.repository.model.local.TVGenreEntity
+import com.repository.model.local.TVImageEntity
+import com.repository.model.local.TVProductionCompanyEntity
+import com.repository.model.local.TVShowReviewEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TvShowEntity
 import com.repository.model.local.TvShowSimilarEntity
@@ -176,7 +176,7 @@ class TvShowLocalDataSourceImplTest {
         fun `getCastByMovieId should return empty list if DAO returns empty list`() = runTest {
             //Given
             val tvShowIdWithNoCast = 200
-            val emptyList = emptyList<CastEntity>()
+            val emptyList = emptyList<TvShowCastEntity>()
             every {
                 runBlocking {
                     tvShowDao.getCastByTvShowId(
@@ -596,21 +596,21 @@ class TvShowLocalDataSourceImplTest {
             description = "A group of young friends witness supernatural forces and secret government exploits.",
             posterPath = "/stranger_things_poster.jpg",
             genres = listOf(
-                GenreEntity(id = 1, name = "Drama"),
-                GenreEntity(id = 2, name = "Fantasy"),
-                GenreEntity(id = 3, name = "Horror")
+                TVGenreEntity(id = 1, name = "Drama"),
+                TVGenreEntity(id = 2, name = "Fantasy"),
+                TVGenreEntity(id = 3, name = "Horror")
             ),
             releaseDate = "2016-07-15",
             runtime = 50,
             country = "Egypt",
             productionCompanies = listOf(
-                ProductionCompanyEntity(
+                TVProductionCompanyEntity(
                     id = 1001,
                     logoPath = "/netflix_logo.png",
                     name = "Netflix",
                     originCountry = "US"
                 ),
-                ProductionCompanyEntity(
+                TVProductionCompanyEntity(
                     id = 1002,
                     logoPath = "/21laps_logo.png",
                     name = "21 Laps Entertainment",
@@ -620,14 +620,14 @@ class TvShowLocalDataSourceImplTest {
             seasons = listOf(),
             language = language
         )
-        val sampleCast = CastEntity(
+        val sampleCast = TvShowCastEntity(
             id = 1,
             tvShowId = 2,
             name = "name",
             imageUri = "path",
             language = language
         )
-        val sampleCast2 = CastEntity(
+        val sampleCast2 = TvShowCastEntity(
             id = 2,
             tvShowId = 4,
             name = "Maze",
@@ -635,21 +635,21 @@ class TvShowLocalDataSourceImplTest {
             language = language
         )
         val sampleCastList = listOf(sampleCast, sampleCast2)
-        val sampleGallery = GalleryEntity(
+        val sampleGallery = TVShowGalleryEntity(
             id = 1,
             tvShowId = 1,
             images = listOf(
-                ImageEntity(
+                TVImageEntity(
                     id = 10,
                     url = "uri"
                 ),
-                ImageEntity(
+                TVImageEntity(
                     id = 20,
                     url = "uri"
                 ),
             )
         )
-        val sampleReview = ReviewEntity(
+        val sampleReview = TVShowReviewEntity(
             id = 1,
             tvShowId = 2,
             name = "الاسطوره",

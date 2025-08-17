@@ -4,9 +4,9 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.model.local.CastEntity
-import com.repository.model.local.GalleryEntity
-import com.repository.model.local.ReviewEntity
+import com.repository.model.local.TvShowCastEntity
+import com.repository.model.local.TVShowGalleryEntity
+import com.repository.model.local.TVShowReviewEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TvShowEntity
 import com.repository.model.local.TvShowSimilarEntity
@@ -29,22 +29,22 @@ interface TvShowDao {
     suspend fun getSeasonByTvShowIdAndSeasonNumber(tvShowId: Int, seasonNumber: Int): SeasonEntity?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    suspend fun addTvShowCast(casts: List<CastEntity>)
+    suspend fun addTvShowCast(casts: List<TvShowCastEntity>)
 
     @Query("SELECT * FROM cast_tv_shows_table WHERE tvShowId = :tvShowId AND language = :language")
-    suspend fun getCastByTvShowId(tvShowId: Int, language: String): List<CastEntity>
+    suspend fun getCastByTvShowId(tvShowId: Int, language: String): List<TvShowCastEntity>
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    suspend fun addTvShowGallery(gallery: GalleryEntity)
+    suspend fun addTvShowGallery(gallery: TVShowGalleryEntity)
 
-    @Query("SELECT * FROM gallery_table WHERE tvShowId = :tvShowId")
-    suspend fun getGalleryByTvShowId(tvShowId: Int): GalleryEntity?
+    @Query("SELECT * FROM tv_gallery_table WHERE tvShowId = :tvShowId")
+    suspend fun getGalleryByTvShowId(tvShowId: Int): TVShowGalleryEntity?
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    suspend fun addTvShowReviews(reviews: List<ReviewEntity>)
+    suspend fun addTvShowReviews(reviews: List<TVShowReviewEntity>)
 
-    @Query("SELECT * FROM reviews_table WHERE tvShowId = :tvShowId AND language = :language")
-    suspend fun getReviewsByTvShowId(tvShowId: Int, language: String): List<ReviewEntity>
+    @Query("SELECT * FROM tv_reviews_table WHERE tvShowId = :tvShowId AND language = :language")
+    suspend fun getReviewsByTvShowId(tvShowId: Int, language: String): List<TVShowReviewEntity>
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
     suspend fun addSimilarTvShows(tvShows: List<TvShowSimilarEntity>)

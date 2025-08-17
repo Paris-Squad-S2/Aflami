@@ -5,17 +5,18 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "gallery_table",
-    foreignKeys = [ForeignKey(
+    tableName = "cast_tv_shows_table", foreignKeys = [ForeignKey(
         entity = TvShowEntity::class,
         parentColumns = ["id"],
         childColumns = ["tvShowId"],
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class GalleryEntity(
-    @PrimaryKey(autoGenerate = true)
+data class TvShowCastEntity(
+    @PrimaryKey()
     val id: Int,
     val tvShowId: Int,
-    val images: List<ImageEntity>,
+    val name: String,
+    val imageUri: String,
+    val language: String
 )

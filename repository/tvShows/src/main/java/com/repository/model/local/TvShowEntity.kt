@@ -11,11 +11,11 @@ data class TvShowEntity(
     val voteAverage: Double?,
     val description: String,
     val posterPath: String,
-    val genres: List<GenreEntity>,
+    val genres: List<TVGenreEntity>,
     val releaseDate: String,
     val runtime: Int,
     val seasons: List<SeasonEntity>,
     val country: String,
-    val productionCompanies: List<ProductionCompanyEntity>,
+    val productionCompanies: List<TVProductionCompanyEntity>,
     val language: String
 )

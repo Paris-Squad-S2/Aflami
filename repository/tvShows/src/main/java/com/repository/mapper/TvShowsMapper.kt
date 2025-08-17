@@ -11,13 +11,13 @@ import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
 import com.paris_2.domain.media.entity.TvShowVideo
-import com.repository.model.local.CastEntity
+import com.repository.model.local.TvShowCastEntity
 import com.repository.model.local.EpisodeEntity
-import com.repository.model.local.GalleryEntity
-import com.repository.model.local.GenreEntity
-import com.repository.model.local.ImageEntity
-import com.repository.model.local.ProductionCompanyEntity
-import com.repository.model.local.ReviewEntity
+import com.repository.model.local.TVShowGalleryEntity
+import com.repository.model.local.TVGenreEntity
+import com.repository.model.local.TVImageEntity
+import com.repository.model.local.TVProductionCompanyEntity
+import com.repository.model.local.TVShowReviewEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TvShowEntity
 import com.repository.model.local.TvShowSimilarEntity
@@ -101,7 +101,7 @@ fun TvShowEntity.toEntity(): TvShow {
     )
 }
 
-fun CastEntity.toEntity(): Cast {
+fun TvShowCastEntity.toEntity(): Cast {
     return Cast(
         id = this.id,
         name = this.name,
@@ -127,19 +127,19 @@ fun  EpisodeVideoResultDto.toEntity(): EpisodeVideo {
     )
 }
 
-private fun TvShowGenreDto.toLocalDto(): GenreEntity {
-    return GenreEntity(
+private fun TvShowGenreDto.toLocalDto(): TVGenreEntity {
+    return TVGenreEntity(
         id = this.id ?: 0,
         name = this.name.orEmpty()
     )
 }
 
-private fun GenreEntity.toEntity(): Category {
+private fun TVGenreEntity.toEntity(): Category {
     return id.toGenre()
 }
 
-private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
-    return ProductionCompanyEntity(
+private fun TvShowProductionCompanyDto.toLocalDto(): TVProductionCompanyEntity {
+    return TVProductionCompanyEntity(
         id = this.id ?: 0,
         logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
@@ -147,7 +147,7 @@ private fun TvShowProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     )
 }
 
-fun ProductionCompanyEntity.toEntity(): ProductionCompany {
+fun TVProductionCompanyEntity.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id,
         logoPath = this.logoPath.toImageUrl().orEmpty(),
@@ -157,8 +157,8 @@ fun ProductionCompanyEntity.toEntity(): ProductionCompany {
 }
 
 
-fun TvShowCastDto.toLocalDto(language: String,tvShowId: Int): CastEntity {
-    return CastEntity(
+fun TvShowCastDto.toLocalDto(language: String,tvShowId: Int): TvShowCastEntity {
+    return TvShowCastEntity(
         tvShowId = tvShowId,
         name = this.name.orEmpty(),
         id = this.id ?: 0,
@@ -192,27 +192,27 @@ fun TvShowSimilarDto.toLocalDto(tvShowId: Int,language: String,page: Int): TvSho
     )
 }
 
-fun TvShowImagesDto.toLocalDto(tvShowId: Int): GalleryEntity{
-    return GalleryEntity(
+fun TvShowImagesDto.toLocalDto(tvShowId: Int): TVShowGalleryEntity{
+    return TVShowGalleryEntity(
         id = this.id ?: 0,
         images = this.posters?.map { it.toLocalDto() } ?: emptyList(),
         tvShowId = tvShowId
     )
 }
 
-private fun TvShowPosterDto.toLocalDto(): ImageEntity{
-    return ImageEntity(
+private fun TvShowPosterDto.toLocalDto(): TVImageEntity{
+    return TVImageEntity(
         id = 0,
         url = this.filePath.toImageUrl().orEmpty()
     )
 }
 
 
-fun GalleryEntity.toEntity(): List<Image> {
+fun TVShowGalleryEntity.toEntity(): List<Image> {
     return this.images.map { it.toEntity() }
 }
 
-fun ImageEntity.toEntity(): Image {
+fun TVImageEntity.toEntity(): Image {
     return Image(
         id = this.id,
         url = this.url.toImageUrl().orEmpty()
@@ -220,14 +220,14 @@ fun ImageEntity.toEntity(): Image {
 }
 
 
-fun TvShowReviewDto.toLocalDto(tvShowId: Int,language: String): ReviewEntity{
+fun TvShowReviewDto.toLocalDto(tvShowId: Int,language: String): TVShowReviewEntity{
     val createdAt = try {
         LocalDate.parse(this.createdAt.orEmpty().substring(0,10))
     }
     catch (_: Exception) {
         LocalDate(9999, 1, 1)
     }
-    return ReviewEntity(
+    return TVShowReviewEntity(
         id = 0,
         name = this.authorDetails?.name.orEmpty(),
         createdAt = createdAt,
@@ -262,7 +262,7 @@ private fun EpisodeEntity.toEntity(): Episode{
         stillUrl = this.stillUrl
     )
 }
-fun ReviewEntity.toEntity(): Review {
+fun TVShowReviewEntity.toEntity(): Review {
     return Review(
         id = this.id.toString(),
         name = this.name,

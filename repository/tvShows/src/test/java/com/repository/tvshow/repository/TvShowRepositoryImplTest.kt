@@ -8,7 +8,7 @@ import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.mapper.toEntity
 import com.repository.mapper.toLocalDto
-import com.repository.model.local.GalleryEntity
+import com.repository.model.local.TVShowGalleryEntity
 import com.repository.model.remote.TvShowSeasonDto
 import com.repository.repository.TvShowRepositoryImpl
 import com.repository.tvshow.testUtils.mockTvShowCreditsDto
@@ -482,7 +482,7 @@ class TvShowRepositoryImplTest {
 
         coEvery {
             tvShowLocalDataSource.getGalleryByTvShowId(tvShowId)
-        } returns GalleryEntity(
+        } returns TVShowGalleryEntity(
             id = 0,
             tvShowId = 123,
             images = expectedImages.map { it },

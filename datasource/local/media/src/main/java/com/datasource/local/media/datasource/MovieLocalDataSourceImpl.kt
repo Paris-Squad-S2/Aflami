@@ -6,11 +6,11 @@ import androidx.work.workDataOf
 import com.datasource.local.media.dao.MovieDao
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.local.workmanager.ClearMovieDetailWorker
-import com.repository.movie.models.local.CastEntity
-import com.repository.movie.models.local.GalleryEntity
+import com.repository.movie.models.local.MovieCastEntity
+import com.repository.movie.models.local.MovieGalleryEntity
 import com.repository.movie.models.local.MovieEntity
 import com.repository.movie.models.local.MovieSimilarEntity
-import com.repository.movie.models.local.ReviewEntity
+import com.repository.movie.models.local.MovieReviewEntity
 import java.util.concurrent.TimeUnit
 
 class MovieLocalDataSourceImpl(
@@ -28,19 +28,19 @@ class MovieLocalDataSourceImpl(
     override suspend fun clearMovieById(movieId: Int, language: String) =
         movieDao.clearMovieDetailsById(movieId, language)
 
-    override suspend fun addMovieCast(cast: List<CastEntity>) = movieDao.addMovieCast(cast)
+    override suspend fun addMovieCast(cast: List<MovieCastEntity>) = movieDao.addMovieCast(cast)
 
-    override suspend fun getCastByMovieId(movieId: Int, language: String): List<CastEntity> =
+    override suspend fun getCastByMovieId(movieId: Int, language: String): List<MovieCastEntity> =
         movieDao.getCastByMovieId(movieId, language)
 
-    override suspend fun addMovieGallery(gallery: GalleryEntity) = movieDao.addMovieGallery(gallery)
-    override suspend fun getGalleryByMovieId(movieId: Int): GalleryEntity? =
+    override suspend fun addMovieGallery(gallery: MovieGalleryEntity) = movieDao.addMovieGallery(gallery)
+    override suspend fun getGalleryByMovieId(movieId: Int): MovieGalleryEntity? =
         movieDao.getGalleryByMovieId(movieId)
 
-    override suspend fun addMovieReviews(reviews: List<ReviewEntity>) =
+    override suspend fun addMovieReviews(reviews: List<MovieReviewEntity>) =
         movieDao.addMovieReviews(reviews)
 
-    override suspend fun getReviewsByMovieId(movieId: Int, language: String): List<ReviewEntity> =
+    override suspend fun getReviewsByMovieId(movieId: Int, language: String): List<MovieReviewEntity> =
         movieDao.getReviewsByMovieId(movieId, language)
 
     override suspend fun addSimilarMovies(movieSimilar: List<MovieSimilarEntity>) =

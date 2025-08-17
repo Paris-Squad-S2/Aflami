@@ -2,11 +2,9 @@ package com.repository.movie.models.local
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.repository.movie.util.getCurrentDate
-import kotlinx.datetime.LocalDateTime
 
 
-@Entity(tableName = "movies_table")
+@Entity(tableName = "movie_table")
 data class MovieEntity(
     @PrimaryKey
     val id: Int,
@@ -14,10 +12,10 @@ data class MovieEntity(
     val voteAverage: Double?,
     val description: String,
     val posterPath: String,
-    val genres: List<GenreEntity>,
+    val genres: List<MovieGenreEntity>,
     val releaseDate: String,
     val runtime: Int,
     val country: String,
-    val productionCompanies: List<ProductionCompanyEntity>,
+    val productionCompanies: List<MovieProductionCompanyEntity>,
     val language: String
 )

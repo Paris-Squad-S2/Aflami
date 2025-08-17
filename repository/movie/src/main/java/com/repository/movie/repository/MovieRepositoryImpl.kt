@@ -16,7 +16,7 @@ import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
-import com.repository.movie.models.local.GalleryEntity
+import com.repository.movie.models.local.MovieGalleryEntity
 import com.repository.movie.util.NetworkConnectionChecker
 import kotlinx.coroutines.flow.first
 
@@ -105,7 +105,7 @@ class MovieRepositoryImpl(
                 val remoteGallery = movieRemoteDataSource.getMovieImages(movieId).toEntity()
                 val remoteGalleryImages = remoteGallery
                 movieLocalDataSource.addMovieGallery(
-                    GalleryEntity(
+                    MovieGalleryEntity(
                         movieId = movieId,
                         images = remoteGalleryImages.map { it.toLocalDto() },
                     )

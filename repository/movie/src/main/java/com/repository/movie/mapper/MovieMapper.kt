@@ -8,14 +8,14 @@ import com.paris_2.domain.media.entity.MovieSimilar
 import com.paris_2.domain.media.entity.MovieVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
-import com.repository.movie.models.local.CastEntity
-import com.repository.movie.models.local.GalleryEntity
-import com.repository.movie.models.local.GenreEntity
-import com.repository.movie.models.local.ImageEntity
+import com.repository.movie.models.local.MovieCastEntity
+import com.repository.movie.models.local.MovieGalleryEntity
+import com.repository.movie.models.local.MovieGenreEntity
+import com.repository.movie.models.local.MovieImageEntity
 import com.repository.movie.models.local.MovieEntity
 import com.repository.movie.models.local.MovieSimilarEntity
-import com.repository.movie.models.local.ProductionCompanyEntity
-import com.repository.movie.models.local.ReviewEntity
+import com.repository.movie.models.local.MovieProductionCompanyEntity
+import com.repository.movie.models.local.MovieReviewEntity
 import com.repository.movie.models.remote.MovieCastDto
 import com.repository.movie.models.remote.MovieDto
 import com.repository.movie.models.remote.MovieGenreDto
@@ -32,8 +32,8 @@ fun MovieGenreDto.toEntity(): Category {
     return id?.toGenre() ?: Category.Unknown
 }
 
-private fun MovieGenreDto.toLocalDto(): GenreEntity {
-    return GenreEntity(
+private fun MovieGenreDto.toLocalDto(): MovieGenreEntity {
+    return MovieGenreEntity(
         id = this.id ?: 0,
         name = this.name.orEmpty()
     )
@@ -56,8 +56,8 @@ fun MovieCastDto.toEntity(): Cast {
     )
 }
 
-fun Cast.toLocalDto(movieIds: Int, language: String): CastEntity {
-    return CastEntity(
+fun Cast.toLocalDto(movieIds: Int, language: String): MovieCastEntity {
+    return MovieCastEntity(
         movieId = movieIds,
         name = this.name,
         id = this.id,
@@ -66,7 +66,7 @@ fun Cast.toLocalDto(movieIds: Int, language: String): CastEntity {
     )
 }
 
-fun CastEntity.toEntity(): Cast {
+fun MovieCastEntity.toEntity(): Cast {
     return Cast(
         id = this.id,
         name = this.name,
@@ -146,26 +146,26 @@ fun MovieSimilarDto.toLocalDto(movieId: Int, page: Int, language: String): Movie
     )
 }
 
-fun Image.toLocalDto(): ImageEntity {
-    return ImageEntity(
+fun Image.toLocalDto(): MovieImageEntity {
+    return MovieImageEntity(
         id = this.id,
         url = this.url
     )
 }
 
-fun ImageEntity.toEntity(): Image {
+fun MovieImageEntity.toEntity(): Image {
     return Image(
         id = this.id,
         url = this.url
     )
 }
 
-fun GalleryEntity.toEntity(): List<Image> {
+fun MovieGalleryEntity.toEntity(): List<Image> {
     return this.images.map { it.toEntity() }
 }
 
-fun Review.toLocalDto(movieId: Int, language: String): ReviewEntity {
-    return ReviewEntity(
+fun Review.toLocalDto(movieId: Int, language: String): MovieReviewEntity {
+    return MovieReviewEntity(
         id = 0,
         name = this.name,
         createdAt = this.createdAt,
@@ -178,7 +178,7 @@ fun Review.toLocalDto(movieId: Int, language: String): ReviewEntity {
     )
 }
 
-fun ReviewEntity.toEntity(): Review {
+fun MovieReviewEntity.toEntity(): Review {
     return Review(
         id = this.id.toString(),
         name = this.name,
@@ -222,12 +222,12 @@ fun MovieSimilar.toLocalDto(movieId: Int, pager: Int, language: String): MovieSi
     )
 }
 
-fun GenreEntity.toEntity(): Category {
+fun MovieGenreEntity.toEntity(): Category {
     return id.toGenre()
 }
 
-fun MovieProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
-    return ProductionCompanyEntity(
+fun MovieProductionCompanyDto.toLocalDto(): MovieProductionCompanyEntity {
+    return MovieProductionCompanyEntity(
         id = this.id ?: 0,
         logoPath = this.logoPath.toImageUrl().orEmpty(),
         name = this.name.orEmpty(),
@@ -235,7 +235,7 @@ fun MovieProductionCompanyDto.toLocalDto(): ProductionCompanyEntity {
     )
 }
 
-fun ProductionCompanyEntity.toEntity(): ProductionCompany {
+fun MovieProductionCompanyEntity.toEntity(): ProductionCompany {
     return ProductionCompany(
         id = this.id,
         logoPath = this.logoPath,

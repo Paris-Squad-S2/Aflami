@@ -3,7 +3,7 @@ package com.repository.model.local
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class GenreEntity(
+data class TVImageEntity(
     val id: Int,
-    val name: String,
+    val url: String,
 )

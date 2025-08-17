@@ -7,18 +7,19 @@ import com.repository.movie.util.getCurrentDate
 import kotlinx.datetime.LocalDateTime
 
 @Entity(
-    tableName = "gallery_table",
-    foreignKeys = [ForeignKey(
+    tableName = "movie_cast_table", foreignKeys = [ForeignKey(
         entity = MovieEntity::class,
         parentColumns = ["id"],
         childColumns = ["movieId"],
         onDelete = ForeignKey.CASCADE
     )]
 )
-data class GalleryEntity(
-    @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+data class MovieCastEntity(
+    @PrimaryKey
+    val id: Int,
     val movieId: Int,
-    val images: List<ImageEntity>,
-    val galleryCacheDate: LocalDateTime = getCurrentDate(),
-    )
+    val name: String,
+    val imageUri: String,
+    val castCacheDate: LocalDateTime = getCurrentDate(),
+    val language: String
+)

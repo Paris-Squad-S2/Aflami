@@ -11,8 +11,8 @@ import com.repository.movie.dataSource.local.MovieLocalDataSource
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.mapper.toEntity
 import com.repository.movie.mapper.toLocalDto
-import com.repository.movie.models.local.CastEntity
-import com.repository.movie.models.local.GalleryEntity
+import com.repository.movie.models.local.MovieCastEntity
+import com.repository.movie.models.local.MovieGalleryEntity
 import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieProductionCompanyDto
 import com.repository.movie.models.remote.MovieReviewsDto
@@ -81,7 +81,7 @@ class MovieRepositoryImplTest {
                 1,
                 "en"
             )
-        } returns emptyList<CastEntity>()
+        } returns emptyList<MovieCastEntity>()
         coEvery { movieRemoteDataSource.getMovieCredits(1, "en") } returns MovieCreditsDto()
         val result = movieRepository.getMovieCast(1)
         assertThat(result).isEmpty()
@@ -684,14 +684,14 @@ class MovieRepositoryImplTest {
     fun `getMovieGallery - should return movie gallery from local when available`() = runTest {
         // Given
         val expectedGallery = mockMovieImagesDto.toEntity()
-        val localGalleryEntity = GalleryEntity(
+        val localMovieGalleryEntity = MovieGalleryEntity(
             images = expectedGallery.map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
 
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+        coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localMovieGalleryEntity
 
         // When
         val result = movieRepository.getMovieGallery(movieId)
@@ -704,13 +704,13 @@ class MovieRepositoryImplTest {
     fun `getMovieGallery - should not call remote data source when local gallery is available`() =
         runTest {
             // Given
-            val localGalleryEntity = GalleryEntity(
+            val localMovieGalleryEntity = MovieGalleryEntity(
                 images = mockMovieImagesDto.toEntity().map { it.toLocalDto() },
                 id = 0,
                 movieId = movieId
             )
 
-            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localMovieGalleryEntity
 
             // When
             movieRepository.getMovieGallery(movieId)
@@ -722,13 +722,13 @@ class MovieRepositoryImplTest {
     @Test
     fun `getMovieGallery - should not save gallery locally when it already exists`() = runTest {
         // Given
-        val localGalleryEntity = GalleryEntity(
+        val localMovieGalleryEntity = MovieGalleryEntity(
             images = mockMovieImagesDto.toEntity().map { it.toLocalDto() },
             id = 0,
             movieId = movieId
         )
 
-        coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+        coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localMovieGalleryEntity
 
         // When
         movieRepository.getMovieGallery(movieId)
@@ -742,7 +742,7 @@ class MovieRepositoryImplTest {
         runTest {
             // Given
             val expectedGallery = mockMovieImagesDto.toEntity()
-            val localGalleryEntity = GalleryEntity(
+            val localMovieGalleryEntity = MovieGalleryEntity(
                 images = expectedGallery.map { it.toLocalDto() },
                 id = 0,
                 movieId = movieId
@@ -751,7 +751,7 @@ class MovieRepositoryImplTest {
             coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns null
             coEvery { movieRemoteDataSource.getMovieImages(movieId) } returns mockMovieImagesDto
             coEvery { movieLocalDataSource.addMovieGallery(any()) } just Runs
-            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localGalleryEntity
+            coEvery { movieLocalDataSource.getGalleryByMovieId(movieId) } returns localMovieGalleryEntity
 
             // When
             val result = movieRepository.getMovieGallery(movieId)
