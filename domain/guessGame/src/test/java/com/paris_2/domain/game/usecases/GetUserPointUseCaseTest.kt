@@ -26,7 +26,7 @@ class GetUserPointUseCaseTest {
     @Test
     fun `should return user points from repository`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints)
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints.gamePoints)
         // When
         val result = useCase(USER_ID).first()
         // Then
@@ -36,7 +36,7 @@ class GetUserPointUseCaseTest {
     @Test
     fun `should call getUserGamePoints exactly once with correct id`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints)
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints.gamePoints)
         // When
         useCase(USER_ID)
         // Then

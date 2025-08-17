@@ -26,7 +26,7 @@ class UpdatePointsUseCaseTest {
     @Test
     fun `should add points to existing and save`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 100))
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(100)
         coEvery { repository.saveUserGamePoints(any()) } returns Unit
         // When
         useCase(USER_ID, 50)
@@ -38,7 +38,7 @@ class UpdatePointsUseCaseTest {
     @Test
     fun `should subtract points when negative and save`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 100))
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(100)
         coEvery { repository.saveUserGamePoints(any()) } returns Unit
         // When
         useCase(USER_ID, -30)
@@ -49,7 +49,7 @@ class UpdatePointsUseCaseTest {
     @Test
     fun `should no-op save when adding zero points`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 100))
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(100)
         coEvery { repository.saveUserGamePoints(any()) } returns Unit
         // When
         useCase(USER_ID, 0)
@@ -74,7 +74,7 @@ class UpdatePointsUseCaseTest {
     @Test
     fun `should propagate when saveUserGamePoints throws`() = runTest {
         // Given
-        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(UserPoints(USER_ID, 100))
+        coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(100)
         val exception = RuntimeException("DB save error")
         coEvery { repository.saveUserGamePoints(any()) } throws exception
 
