@@ -88,7 +88,7 @@ data class EpisodeUi(
     val airDate: String,
     val runtime: String,
     val description: String,
-    val stillUrl: String,
+    val episodePhotoUrl: String,
 )
 
 data class EpisodeVideoUi(
