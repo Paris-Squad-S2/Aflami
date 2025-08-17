@@ -123,9 +123,10 @@ object DataSourceModule {
     @Singleton
     @Provides
     fun provideSettingLocalDataSource(
-        dataStore: DataStore<Preferences>
+        dataStore: DataStore<Preferences>,
+        @ApplicationContext context: Context
     ): SettingLocalDataSource {
-        return SettingLocalDataSourceImpl(dataStore)
+        return SettingLocalDataSourceImpl(dataStore, context)
     }
 
     @Provides

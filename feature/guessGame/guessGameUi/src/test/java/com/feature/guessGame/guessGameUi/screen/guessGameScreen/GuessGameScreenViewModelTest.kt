@@ -1,5 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
+import android.util.Log
+import com.feature.guessGame.guessGameUi.navigation.Destination
 import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
@@ -7,11 +9,11 @@ import com.feature.guessGame.guessGameUi.navigation.navigateToGame
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
-import io.mockk.justRun
 import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -19,8 +21,6 @@ import kotlinx.coroutines.test.setMain
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import android.util.Log
-import com.feature.guessGame.guessGameUi.navigation.Destination
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class GuessGameScreenViewModelTest {
@@ -32,14 +32,14 @@ class GuessGameScreenViewModelTest {
     private val dispatcher = StandardTestDispatcher()
 
     @BeforeEach
-    fun setUp() {
+    fun setUp() = runTest {
         Dispatchers.setMain(dispatcher)
+
         mockkStatic(Log::class)
         every { Log.d(any(), any()) } returns 0
         every { Log.i(any(), any()) } returns 0
         every { Log.e(any(), any()) } returns 0
 
-        // Mock navigateToGame to delegate to navigator.navigate
         mockkStatic(::navigateToGame)
         coEvery { navigateToGame(any(), any()) } coAnswers {
             val context = firstArg<android.content.Context>()
@@ -47,16 +47,23 @@ class GuessGameScreenViewModelTest {
             navigator.navigate(destination, null)
         }
 
+        coEvery { getAccountIdUseCase() } returns 42
+        coEvery { getUserPointUseCase() } returns flowOf(123)
+
         viewModel = GuessGameScreenViewModel(getUserPointUseCase, getAccountIdUseCase)
         viewModel.navigator = navigator
+
+        runCurrent()
     }
 
     @Test
-    fun `loadUserPoints sets userPoints`() = runTest {
+    fun `userPoints loaded on init`() = runTest {
         coEvery { getAccountIdUseCase() } returns 42
-        coEvery { getUserPointUseCase(42) } returns 123
+        coEvery { getUserPointUseCase() } returns flowOf(123)
 
-        viewModel.loadUserPoints()
+        viewModel = GuessGameScreenViewModel(getUserPointUseCase, getAccountIdUseCase)
+        viewModel.navigator = navigator
+
         runCurrent()
 
         assertEquals(123, viewModel.screenState.value.userPoints)

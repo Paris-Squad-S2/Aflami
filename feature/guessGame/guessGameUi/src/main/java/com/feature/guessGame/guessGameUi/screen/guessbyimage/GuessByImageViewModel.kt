@@ -19,6 +19,7 @@ import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
 import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -219,7 +220,7 @@ class GuessByImageViewModel @Inject constructor(
                 val hintUsed = useHintUseCase(session, userId)
 
                 if (hintUsed) {
-                    val userPoints = getUserPointUseCase(userId)
+                    val userPoints = getUserPointUseCase().first()
                     val hintResult = removeAnswerHintUseCase(session, false, userPoints)
 
                     if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {

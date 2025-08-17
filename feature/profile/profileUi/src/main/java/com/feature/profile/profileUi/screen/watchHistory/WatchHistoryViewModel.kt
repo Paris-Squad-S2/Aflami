@@ -15,13 +15,7 @@ class WatchHistoryViewModel @Inject constructor(
     private val filterWatchHistoryUseCase: FilterWatchHistoryUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
-) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(
-    initialState = WatchHistoryUiState(
-        isLoading = false,
-        errorMessage = null,
-        watchHistoryMedia = emptyList()
-    )
-){
+) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(WatchHistoryUiState()) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
     init {
         getRestriction()
@@ -122,21 +116,6 @@ class WatchHistoryViewModel @Inject constructor(
                 )
             )
         })
-    }
-
-    override fun onBackClick() {
-        tryToExecute(
-            execute = {
-                navigateUp()
-            },
-            onError = { errorMessage ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
     }
 
     fun onTabSelected(mediaTypeUi: MediaTypeUi) {

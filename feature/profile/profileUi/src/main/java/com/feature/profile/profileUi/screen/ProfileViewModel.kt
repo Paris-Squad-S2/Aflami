@@ -1,29 +1,28 @@
 package com.feature.profile.profileUi.screen
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
-import com.feature.profile.profileUi.navigation.ProfileDestinations
+import com.feature.profile.profileUi.navigation.Destination
+import com.feature.profile.profileUi.navigation.navigateDestination
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-@Suppress("DEPRECATION")
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
-    private val getUserPoints: GetUserPointUseCase,
-    private val getAccountIdUseCase: GetAccountIdUseCase,
+    private val getUserPointsUseCase: GetUserPointUseCase,
     ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
@@ -58,19 +57,25 @@ class ProfileViewModel @Inject constructor(
             )
         }
     }
-    private fun getUserPoints(){
-        tryToExecute(
-            execute = { getUserPoints.invoke(getAccountIdUseCase.invoke() ?: 0) },
-            onSuccess = { userPoints ->
+    private fun getUserPoints() {
+        tryToCollect(
+            flow = getUserPointsUseCase(),
+            onEach = { points ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
-                            points = userPoints
+                            points = points
                         )
                     )
                 )
             },
-            onError = {},
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
+            }
         )
     }
 
@@ -298,11 +303,11 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    override fun onWatchHistoryClicked() {
-        navigate(ProfileDestinations.WatchHistoryScreen)
+    override fun onWatchHistoryClicked(context: Context) {
+        navigateDestination(context, Destination.WatchHistoryScreen)
     }
 
-    override fun onMyRatingClicked() {
-        navigate(ProfileDestinations.MyRatingScreen)
+    override fun onMyRatingClicked(context: Context) {
+        navigateDestination(context, Destination.MyRatingScreen)
     }
 }
