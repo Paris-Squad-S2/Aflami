@@ -18,6 +18,7 @@ import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseC
 import com.paris_2.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -182,8 +183,8 @@ class GuessQuestionViewModel @Inject constructor(
                 val hintUsed = useHintUseCase(session, userId)
 
                 if (hintUsed) {
-                    val hintResult =
-                        removeAnswerHintUseCase(session, false, getUserPointUseCase(userId))
+                    val userPoints = getUserPointUseCase().first()
+                    val hintResult = removeAnswerHintUseCase(session, false, userPoints)
 
                     if (hintResult is RemoveAnswerHintUseCase.UseHintResult.Success) {
                         return@tryToExecute HintUsageResult.Success(hintResult.updatedQuestion)
@@ -273,7 +274,6 @@ class GuessQuestionViewModel @Inject constructor(
         }
 
         currentSession?.let { session ->
-            val oldScore = session.score
             session.score += points
             updateState(
                 screenState.value.copy(

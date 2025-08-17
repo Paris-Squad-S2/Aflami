@@ -7,6 +7,8 @@ import com.repository.guessgame.entity.UserGamePointsEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
@@ -24,9 +26,9 @@ class GamePointsLocalDataSourceImplTest {
     @Test
     fun `getUserGamePoints should return entity when DAO returns value`() = runTest {
         // Given
-        coEvery { dao.getUserGamePoints(USER_ID) } returns samplePoints
+        coEvery { dao.getUserGamePoints(USER_ID) } returns flowOf(samplePoints)
         // When
-        val result = dataSource.getUserGamePoints(USER_ID)
+        val result = dataSource.getUserGamePoints(USER_ID).first()
         // Then
         assertThat(result).isEqualTo(samplePoints)
     }
@@ -34,9 +36,9 @@ class GamePointsLocalDataSourceImplTest {
     @Test
     fun `getUserGamePoints should return null when DAO returns null`() = runTest {
         // Given
-        coEvery { dao.getUserGamePoints(USER_ID) } returns null
+        coEvery { dao.getUserGamePoints(USER_ID) } returns flowOf(null)
         // When
-        val result = dataSource.getUserGamePoints(USER_ID)
+        val result = dataSource.getUserGamePoints(USER_ID).first()
         // Then
         Assertions.assertNull(result)
     }

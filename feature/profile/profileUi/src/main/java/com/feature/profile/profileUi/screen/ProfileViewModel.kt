@@ -8,15 +8,13 @@ import com.feature.profile.profileUi.navigation.Destination
 import com.feature.profile.profileUi.navigation.navigateDestination
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-
+import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
@@ -24,8 +22,7 @@ class ProfileViewModel @Inject constructor(
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
-    private val getUserPoints: GetUserPointUseCase,
-    private val getAccountIdUseCase: GetAccountIdUseCase,
+    private val getUserPointsUseCase: GetUserPointUseCase,
     ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
@@ -60,19 +57,25 @@ class ProfileViewModel @Inject constructor(
             )
         }
     }
-    private fun getUserPoints(){
-        tryToExecute(
-            execute = { getUserPoints(getAccountIdUseCase() ?: 0) },
-            onSuccess = { userPoints ->
+    private fun getUserPoints() {
+        tryToCollect(
+            flow = getUserPointsUseCase(),
+            onEach = { points ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
-                            points = userPoints
+                            points = points
                         )
                     )
                 )
             },
-            onError = {},
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = error
+                    )
+                )
+            }
         )
     }
 
