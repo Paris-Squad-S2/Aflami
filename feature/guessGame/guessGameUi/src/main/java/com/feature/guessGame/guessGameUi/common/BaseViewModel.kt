@@ -54,4 +54,24 @@ open class BaseViewModel<S> @Inject constructor(
             }
         }
     }
+
+    protected fun <T> tryToCollect(
+        flow: kotlinx.coroutines.flow.Flow<T>,
+        onEach: suspend (T) -> Unit,
+        onError: (String) -> Unit = {},
+        scope: CoroutineScope = viewModelScope
+    ): Job {
+        val exceptionHandler = CoroutineExceptionHandler { _, throwable ->
+            onError(throwable.message ?: "Unexpected error")
+        }
+        return scope.launch(exceptionHandler) {
+            try {
+                flow.collect { value ->
+                    onEach(value)
+                }
+            } catch (e: Exception) {
+                onError(e.message ?: "Unexpected error")
+            }
+        }
+    }
 }
