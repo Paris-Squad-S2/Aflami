@@ -1,7 +1,7 @@
-package com.datasource.remote.tvShow
+package com.repository.media
 
-import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.google.common.truth.Truth.assertThat
+import com.repository.media.services.RetrofitTvShowDetailsApiService
 import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.EpisodeVideoResultDto
 import com.repository.model.remote.RemoveTvRatingDto
@@ -10,7 +10,7 @@ import com.repository.movie.models.remote.RatingResponseDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertThrows
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 
@@ -90,7 +90,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         } throws RuntimeException("Server error")
 
         // Then
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest {
                 tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
             }
@@ -107,7 +107,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 language
             )
         } throws RuntimeException("API error")
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowDetails(tvShowId, language) }
         }
     }
@@ -118,7 +118,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         coEvery { retrofitTvShowDetailsApiService.getTvShowImages(tvShowId) } throws RuntimeException(
             "API error"
         )
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowImages(tvShowId) }
         }
     }
@@ -135,7 +135,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 language
             )
         } throws RuntimeException("API error")
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowReviews(tvShowId, page, language) }
         }
     }
@@ -152,7 +152,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 language
             )
         } throws RuntimeException("API error")
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest {
                 tvShowDetailsRemoteDataSourceImpl.getSimilarTvShows(
                     tvShowId,
@@ -173,7 +173,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 language
             )
         } throws RuntimeException("API error")
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest { tvShowDetailsRemoteDataSourceImpl.getTvShowCredits(tvShowId, language) }
         }
     }
@@ -190,7 +190,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 language
             )
         } throws RuntimeException("API error")
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest {
                 tvShowDetailsRemoteDataSourceImpl.getSeasonDetails(
                     tvShowId,
@@ -207,7 +207,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         coEvery { retrofitTvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId) } throws RuntimeException(
             "API error"
         )
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest { tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForTvShow(tvShowId) }
         }
     }
@@ -226,7 +226,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
                 language
             )
         } throws RuntimeException("API error")
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest {
                 tvShowDetailsRemoteDataSourceImpl.getTrailerVideoForEpisode(
                     tvShowId,
@@ -288,7 +288,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         } returns response
 
         // Then
-        assertThrows(Exception::class.java) {
+        Assert.assertThrows(Exception::class.java) {
             runTest {
                 tvShowDetailsRemoteDataSourceImpl.addRatingToTvShow(movieId, rating)
             }
@@ -461,7 +461,11 @@ class TvShowDetailsRemoteDataSourceImplTest {
     fun `deleteTvShowRating should return true when status code is 13`() = runTest {
         // Given
         val tvShowId = 123
-        val response = RemoveTvRatingDto(status_code = 13, status_message = "Deleted successfully", success = true)
+        val response = RemoveTvRatingDto(
+            status_code = 13,
+            status_message = "Deleted successfully",
+            success = true
+        )
 
         coEvery {
             retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
@@ -478,7 +482,8 @@ class TvShowDetailsRemoteDataSourceImplTest {
     fun `deleteTvShowRating should return false when status code is not 13`() = runTest {
         // Given
         val tvShowId = 456
-        val response = RemoveTvRatingDto(status_code = 10, status_message = "Not authorized",success = false)
+        val response =
+            RemoveTvRatingDto(status_code = 10, status_message = "Not authorized", success = false)
 
         coEvery {
             retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
@@ -501,7 +506,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         } throws RuntimeException("Server error")
 
         // Then
-        assertThrows(RuntimeException::class.java) {
+        Assert.assertThrows(RuntimeException::class.java) {
             runTest {
                 tvShowDetailsRemoteDataSourceImpl.deleteTvShowRating(tvShowId)
             }

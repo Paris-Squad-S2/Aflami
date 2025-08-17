@@ -1,4 +1,4 @@
-package com.datasource.remote.tvShow.service
+package com.repository.media.services
 
 import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.RemoveTvRatingDto

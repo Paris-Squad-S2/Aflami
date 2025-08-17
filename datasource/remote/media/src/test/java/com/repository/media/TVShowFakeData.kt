@@ -1,4 +1,4 @@
-package com.datasource.remote.tvShow
+package com.repository.media
 
 import com.repository.model.remote.TvShowCastDto
 import com.repository.model.remote.TvShowCreditsDto
@@ -14,7 +14,7 @@ import com.repository.model.remote.TvShowSimilarsDto
 import com.repository.model.remote.TvShowVideoDto
 import com.repository.model.remote.TvShowVideoResultDto
 
-val genres = listOf(
+val tvShowGenres = listOf(
     TvShowGenreDto(
         id = 1,
         name = "Drama"
@@ -26,7 +26,7 @@ val tvShowDetails = TvShowDto(
     name = "Sample TV Show",
     overview = "This is a sample overview of the TV show.",
     firstAirDate = "2023-01-01",
-    genres = genres,
+    genres = tvShowGenres,
     voteAverage = 8.5,
     voteCount = 1000,
     posterPath = "/sample_poster.jpg",

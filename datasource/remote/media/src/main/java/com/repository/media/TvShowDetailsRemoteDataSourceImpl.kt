@@ -1,7 +1,7 @@
-package com.datasource.remote.tvShow
+package com.repository.media
 
-import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.media.services.RetrofitTvShowDetailsApiService
 import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.TvShowCreditsDto
 import com.repository.model.remote.TvShowDto

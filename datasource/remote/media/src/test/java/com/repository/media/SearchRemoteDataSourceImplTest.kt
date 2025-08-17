@@ -1,7 +1,6 @@
-package com
+package com.repository.media
 
 import com.google.common.truth.Truth
-import com.repository.media.SearchRemoteDataSourceImpl
 import com.repository.media.dto.search.SearchDto
 import com.repository.media.services.MediaApiService
 import io.mockk.coEvery

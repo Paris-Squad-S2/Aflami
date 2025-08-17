@@ -1,7 +1,7 @@
-package com.datasource.remote.movie
+package com.repository.media
 
-import com.datasource.remote.movie.service.MovieApiService
 import com.google.common.truth.Truth.assertThat
+import com.repository.media.services.MovieApiService
 import com.repository.movie.models.remote.RatingDto
 import com.repository.movie.models.remote.RatingResponseDto
 import com.repository.movie.models.remote.RemoveRatingDto

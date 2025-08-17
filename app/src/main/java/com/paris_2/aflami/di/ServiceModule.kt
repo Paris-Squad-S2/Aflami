@@ -1,8 +1,8 @@
 package com.paris_2.aflami.di
 
 import com.datasource.remote.lists.service.ListApiService
-import com.datasource.remote.movie.service.MovieApiService
-import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
+import com.repository.media.services.MovieApiService
+import com.repository.media.services.RetrofitTvShowDetailsApiService
 import com.paris_2.datasource.remote.user.UserApi
 import com.repository.media.services.ActorPopularityApiService
 import com.repository.media.services.GenresApiServices

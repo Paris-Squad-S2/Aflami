@@ -1,7 +1,7 @@
 package com.paris_2.aflami.di
 
-import com.datasource.remote.movie.MovieRemoteDataSourceImpl
-import com.datasource.remote.tvShow.TvShowDetailsRemoteDataSourceImpl
+import com.repository.media.MovieRemoteDataSourceImpl
+import com.repository.media.TvShowDetailsRemoteDataSourceImpl
 import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
 import com.repository.media.ActorPopularityRemoteDataSourceImpl

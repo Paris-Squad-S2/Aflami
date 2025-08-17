@@ -1,10 +1,9 @@
-package com
+package com.repository.media
 
-import com.google.common.truth.Truth.assertThat
-import com.repository.media.ActorPopularityRemoteDataSourceImpl
-import com.repository.media.services.ActorPopularityApiService
+import com.google.common.truth.Truth
 import com.repository.guessgame.dto.ActorDto
 import com.repository.guessgame.dto.ActorPopularityListDto
+import com.repository.media.services.ActorPopularityApiService
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -33,7 +32,7 @@ class ActorPopularityRemoteDataSourceImplTest {
             dataSource.getPopularActors(LANGUAGE)
             throw AssertionError("Should have propagated the exception")
         } catch (e: Exception) {
-            assertThat(e).isEqualTo(apiException)
+            Truth.assertThat(e).isEqualTo(apiException)
         }
     }
 
@@ -44,7 +43,7 @@ class ActorPopularityRemoteDataSourceImplTest {
         // When
         val result = dataSource.getPopularActors(LANGUAGE)
         // Then
-        assertThat(result).isEqualTo(expectedActors)
+        Truth.assertThat(result).isEqualTo(expectedActors)
     }
 
     @Test

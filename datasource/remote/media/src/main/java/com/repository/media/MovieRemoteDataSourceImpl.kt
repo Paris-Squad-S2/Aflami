@@ -1,6 +1,6 @@
-package com.datasource.remote.movie
+package com.repository.media
 
-import com.datasource.remote.movie.service.MovieApiService
+import com.repository.media.services.MovieApiService
 import com.repository.movie.dataSource.remote.MovieRemoteDataSource
 import com.repository.movie.models.remote.MovieCreditsDto
 import com.repository.movie.models.remote.MovieDto
@@ -56,4 +56,3 @@ class MovieRemoteDataSourceImpl @Inject constructor(
         private const val STATUS_CODE_UPDATED = 12
     }
 }
-

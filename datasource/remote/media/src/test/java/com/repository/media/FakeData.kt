@@ -1,4 +1,4 @@
-package com.datasource.remote.movie
+package com.repository.media
 
 import com.repository.movie.models.remote.MovieCastDto
 import com.repository.movie.models.remote.MovieCreditsDto
