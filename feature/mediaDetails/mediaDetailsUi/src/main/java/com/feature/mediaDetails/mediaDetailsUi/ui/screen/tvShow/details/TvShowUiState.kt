@@ -8,12 +8,13 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.CastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 data class TvShowDetailsScreenState(
-    val tvShowDetailsUiState: TvShowDetailsUiState,
-    val isLoading: Boolean,
-    val errorMessage: String?,
-    val isEpisodesLoading: Boolean,
+    val tvShowDetailsUiState: TvShowDetailsUiState = TvShowDetailsUiState(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
+    val isEpisodesLoading: Boolean = false,
     val isImageLoading: Boolean = false,
     val isDescriptionLoading: Boolean = false,
     val isCastLoading: Boolean = false,
@@ -39,60 +40,60 @@ enum class ContentRestriction() {
 }
 
 data class TvShowDetailsUiState(
-    val tvShowUi: TvShowUi,
-    val recommendations: Flow<PagingData<SimilarMediaUI>>,
-    val cast: List<CastUi>,
-    val reviews:List<ReviewUi>,
-    val gallery: List<String>,
-    val tvShowVideoUi: TvShowVideoUi,
-    val selectedRating: Float,
-    val episodeVideoUi: EpisodeVideoUi,
+    val tvShowUi: TvShowUi = TvShowUi(),
+    val recommendations: Flow<PagingData<SimilarMediaUI>> = emptyFlow(),
+    val cast: List<CastUi> = emptyList(),
+    val reviews:List<ReviewUi> = emptyList(),
+    val gallery: List<String> = emptyList(),
+    val tvShowVideoUi: TvShowVideoUi = TvShowVideoUi(),
+    val selectedRating: Float = 0f,
+    val episodeVideoUi: EpisodeVideoUi = EpisodeVideoUi(),
     val isYoutubePlayerVisible: Boolean = false,
     val youtubeVideoKey: String? = null
 )
 
 data class TvShowVideoUi(
-    val key: String,
-    val name: String,
-    val site: String,
+    val key: String = "",
+    val name: String = "",
+    val site: String = "",
 )
 
 data class TvShowUi(
-    val id: Int,
-    override val posterUrl: String,
-    override val rating: Float?,
-    override val title: String,
-    val genres: List<Int>,
-    override val releaseDate: String,
-    val runtime: String,
-    val country: String,
-    val description: String,
-    val seasons: List<SeasonUi>,
-    val productionCompanies: List<ProductionCompanyUi>,
+    val id: Int = 0,
+    override val posterUrl: String = "",
+    override val rating: Float? = null,
+    override val title: String = "",
+    val genres: List<Int> = emptyList(),
+    override val releaseDate: String = "",
+    val runtime: String = "",
+    val country: String = "",
+    val description: String = "",
+    val seasons: List<SeasonUi> = emptyList(),
+    val productionCompanies: List<ProductionCompanyUi> = emptyList(),
 ) : MediaUi
 
 data class SeasonUi(
-    val id: Int,
-    val name: String,
-    val episodeCount: Int,
-    val seasonNumber: Int,
+    val id: Int = 0,
+    val name: String = "",
+    val episodeCount: Int = 0,
+    val seasonNumber: Int = 0,
     val isExpanded: Boolean = false,
-    val episodes: List<EpisodeUi>,
+    val episodes: List<EpisodeUi> = emptyList(),
 )
 
 
 data class EpisodeUi(
-    val episodeNumber: Int,
-    val posterUrl: String,
-    val voteAverage: Double?,
-    val airDate: String,
-    val runtime: String,
-    val description: String,
-    val episodePhotoUrl: String,
+    val episodeNumber: Int = 0,
+    val posterUrl: String = "",
+    val voteAverage: Double? = null,
+    val airDate: String = "",
+    val runtime: String = "",
+    val description: String = "",
+    val episodePhotoUrl: String = "",
 )
 
 data class EpisodeVideoUi(
-    val key: String,
-    val name: String,
-    val site: String,
+    val key: String = "",
+    val name: String = "",
+    val site: String = "",
 )
