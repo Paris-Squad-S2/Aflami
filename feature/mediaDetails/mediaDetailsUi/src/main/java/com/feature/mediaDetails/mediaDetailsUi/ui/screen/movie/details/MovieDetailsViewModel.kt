@@ -36,7 +36,9 @@ import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCas
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import com.paris_2.aflami.designsystem.R as RDesignSystem
@@ -159,6 +161,7 @@ class MovieDetailsViewModel @Inject constructor(
                 snackBarMessage = R.string.failed_to_load_restriction_settings,
             )
         )
+        hideSnackBar()
     }
 
     private fun loadAvailableLists() {
@@ -412,6 +415,7 @@ class MovieDetailsViewModel @Inject constructor(
                             snackBarMessage = R.string.movie_added_to_list_successfully
                         )
                     )
+                    hideSnackBar()
                     loadAvailableLists()
                 },
                 onError = { errorMessage ->
@@ -422,6 +426,7 @@ class MovieDetailsViewModel @Inject constructor(
                             snackBarSuccess = false,
                         )
                     )
+                    hideSnackBar()
                 }
             )
         }
@@ -475,6 +480,7 @@ class MovieDetailsViewModel @Inject constructor(
                             snackBarMessage = if (result.success) RDesignSystem.string.added_new_list_successfully else RDesignSystem.string.some_error_happened
                         )
                     )
+                    hideSnackBar()
                     loadAvailableLists()
                 },
                 onError = { errorMessage ->
@@ -573,6 +579,7 @@ class MovieDetailsViewModel @Inject constructor(
                         showRatingDialog = false
                     )
                 )
+                hideSnackBar()
             },
             onError = {
                 updateState(
@@ -583,6 +590,7 @@ class MovieDetailsViewModel @Inject constructor(
                         errorMessage = it
                     )
                 )
+                hideSnackBar()
             }
         )
     }
@@ -594,6 +602,15 @@ class MovieDetailsViewModel @Inject constructor(
                 showSnackBar = false
             )
         )
+    }
+
+    private fun hideSnackBar() {
+        viewModelScope.launch {
+            if (screenState.value.showSnackBar) {
+                delay(3000)
+                updateState(screenState.value.copy(showSnackBar = false))
+            }
+        }
     }
 
 }

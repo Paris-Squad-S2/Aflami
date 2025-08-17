@@ -1,2 +1,2 @@
-versionName=1.0.1
-- fix type mode in profile screen
+versionName=1.0.2
+- hide snack bar after 3 second
