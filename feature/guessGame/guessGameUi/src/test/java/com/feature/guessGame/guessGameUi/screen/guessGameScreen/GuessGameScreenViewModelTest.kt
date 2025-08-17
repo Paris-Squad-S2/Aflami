@@ -48,7 +48,7 @@ class GuessGameScreenViewModelTest {
         }
 
         coEvery { getAccountIdUseCase() } returns 42
-        coEvery { getUserPointUseCase(42) } returns flowOf(123)
+        coEvery { getUserPointUseCase() } returns flowOf(123)
 
         viewModel = GuessGameScreenViewModel(getUserPointUseCase, getAccountIdUseCase)
         viewModel.navigator = navigator
@@ -59,7 +59,7 @@ class GuessGameScreenViewModelTest {
     @Test
     fun `userPoints loaded on init`() = runTest {
         coEvery { getAccountIdUseCase() } returns 42
-        coEvery { getUserPointUseCase(42) } returns flowOf(123)
+        coEvery { getUserPointUseCase() } returns flowOf(123)
 
         viewModel = GuessGameScreenViewModel(getUserPointUseCase, getAccountIdUseCase)
         viewModel.navigator = navigator
