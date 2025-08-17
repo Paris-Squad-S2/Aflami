@@ -61,7 +61,7 @@ data class MovieVideoUi(
 data class MovieUi(
     val id :Int = 0,
     override val posterUrl: String = "",
-    override val rating: Float? = 0f,
+    override val rating: Float? = null,
     override val title: String = "",
     val genres: List<Int> = emptyList(),
     override val releaseDate: String = "",
