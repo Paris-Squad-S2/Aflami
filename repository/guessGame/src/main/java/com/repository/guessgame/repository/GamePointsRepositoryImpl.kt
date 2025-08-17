@@ -5,6 +5,8 @@ import com.paris_2.domain.game.repositories.GamePointsRepository
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.guessgame.mapper.toDomain
 import com.repository.guessgame.mapper.toEntity
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
 class GamePointsRepositoryImpl(
     private val gamePointsLocalDataSource: GamePointsLocalDataSource
@@ -13,9 +15,9 @@ class GamePointsRepositoryImpl(
         gamePointsLocalDataSource.saveUserGamePoints(userPoints.toEntity())
     }
 
-    override suspend fun getUserGamePoints(userId: Int): UserPoints {
-        return  gamePointsLocalDataSource.getUserGamePoints(userId)?.toDomain()
-            ?: UserPoints(userId = userId, gamePoints = 0)
-
+    override fun getUserGamePoints(userId: Int): Flow<UserPoints> {
+        return gamePointsLocalDataSource.getUserGamePoints(userId).map { entity ->
+            entity?.toDomain() ?: UserPoints(userId = userId, gamePoints = 0)
+        }
     }
 }
