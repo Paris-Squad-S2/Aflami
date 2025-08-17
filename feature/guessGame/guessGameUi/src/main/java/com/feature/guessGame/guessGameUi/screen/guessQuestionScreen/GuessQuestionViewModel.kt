@@ -274,7 +274,6 @@ class GuessQuestionViewModel @Inject constructor(
         }
 
         currentSession?.let { session ->
-            val oldScore = session.score
             session.score += points
             updateState(
                 screenState.value.copy(
