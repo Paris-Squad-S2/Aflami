@@ -2,13 +2,11 @@ package com.paris_2.domain.game.usecases
 
 import com.paris_2.domain.game.repositories.GamePointsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class GetUserPointUseCase(
     private val gamePointsRepository: GamePointsRepository
 ) {
     operator fun invoke(userId: Int): Flow<Int> {
         return gamePointsRepository.getUserGamePoints(userId)
-            .map { it.gamePoints }
     }
 }
