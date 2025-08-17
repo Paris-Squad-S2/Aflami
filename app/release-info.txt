@@ -1,2 +1,2 @@
-versionName=1.0.2
-- hide snack bar after 3 second
+versionName=1.0.3
+- Implement System-Aware Dark Theme Handling

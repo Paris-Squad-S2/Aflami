@@ -19,12 +19,12 @@ import kotlinx.coroutines.flow.flowOf
 
 @Composable
 fun AflamiTheme(
-    isDarkTheme: Flow<Boolean> = flowOf(false),
+    isDarkTheme: Flow<Boolean> = flowOf(true),
     isLightStatusBars : Boolean? = null,
     content: @Composable () -> Unit
 ){
 
-    val isInDarkTheme = isDarkTheme.collectAsStateWithLifecycle(initialValue = false)
+    val isInDarkTheme = isDarkTheme.collectAsStateWithLifecycle(initialValue = true)
     val colors = if (isInDarkTheme.value) darkThemeColors else lightThemeColors
     val coloredTextStyle = remember(colors) { generateAflamiTextStyle(colors) }
 
