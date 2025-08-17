@@ -135,7 +135,10 @@ fun ProfileContent(
                 color = Theme.colors.stroke,
                 modifier = Modifier.padding(vertical = 24.dp)
             )
-            ProfileSetUp(interactionListener = profileInteractionListener)
+            ProfileSetUp(
+                interactionListener = profileInteractionListener,
+                typeMode = state.profile.theme.name
+            )
         }
 
 
@@ -151,7 +154,7 @@ fun ProfileContent(
         AppThemeDialog(
             isVisible = state.profile.isThemeDialogOpen,
             onDismiss = profileInteractionListener::onDismissAppearanceDialog,
-            onThemeSelected = {appearance->
+            onThemeSelected = { appearance ->
                 profileInteractionListener.onAppearanceApplyClicked(appearance)
                 val intent =
                     context.packageManager.getLaunchIntentForPackage(context.packageName)
