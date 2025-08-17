@@ -18,6 +18,7 @@ import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseC
 import com.paris_2.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 @HiltViewModel
@@ -195,15 +196,22 @@ class GuessQuestionViewModel @Inject constructor(
 
     private suspend fun handleHint(session: GameSession, question: Question): HintUsageResult {
         val userId = getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
-        val userPoints = getUserPointUseCase(userId)
-        if (userPoints <= HINT_COST) return HintUsageResult.NotEnoughPoints
 
-        return when (val hintResult =
-            removeAnswerHintUseCase(session, question.usedHint, userPoints, HINT_COST)) {
+        val points = getUserPointUseCase().first { it >= 0 }
+
+        if (points < HINT_COST) return HintUsageResult.NotEnoughPoints
+
+        Log.e("handleHint", "points: $points, HINT_COST: $HINT_COST, comparison: ${points < HINT_COST}")
+
+        val hintResult = removeAnswerHintUseCase(gameSession = session, usedHint = question.usedHint,  currentPoints = points, requiredPointsForHint = HINT_COST)
+
+        return when (hintResult) {
             is RemoveAnswerHintUseCase.UseHintResult.Success -> {
                 if (!useHintUseCase(session, userId)) return HintUsageResult.NotEnoughPoints
+
                 val updatedQuestion = hintResult.updatedQuestion.copy(usedHint = true)
                 updateSessionQuestion(session, updatedQuestion)
+
                 HintUsageResult.Success(updatedQuestion)
             }
 
@@ -215,8 +223,9 @@ class GuessQuestionViewModel @Inject constructor(
     private fun updateSessionQuestion(session: GameSession, updatedQuestion: Question) {
         val index = session.questions.indexOfFirst { it.id == updatedQuestion.id }
         if (index != -1) {
-            session.questions =
-                session.questions.toMutableList().also { it[index] = updatedQuestion }
+            session.questions = session.questions.toMutableList().also {
+                it[index] = updatedQuestion
+            }
         }
     }
 
