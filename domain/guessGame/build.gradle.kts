@@ -15,6 +15,7 @@ kotlin {
 dependencies{
     implementation(libs.kotlinx.datetime)
     implementation(libs.kotlinx.coroutines.core)
+    implementation(project(":domain:user"))
     testImplementation(libs.bundles.test)
 }
 
