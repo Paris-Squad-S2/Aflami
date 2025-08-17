@@ -14,7 +14,6 @@ import kotlinx.coroutines.flow.map
 
 class GamePointsRepositoryImpl(
     private val gamePointsLocalDataSource: GamePointsLocalDataSource,
-    private val networkConnectionChecker: NetworkConnectionChecker,
     ) : GamePointsRepository {
     override suspend fun saveUserGamePoints(userPoints: UserPoints) {
         return safeCall(FailedException("Failed to save user game points")) {
@@ -31,9 +30,7 @@ class GamePointsRepositoryImpl(
     }
 
     private suspend fun <T> safeCall(exception: GameException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
-            throw NoInternetConnectionException()
-        }
+
         return try {
             call()
         } catch (e: GameException) {

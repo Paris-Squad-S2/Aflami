@@ -203,7 +203,6 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideGamePointsRepository(
-        networkConnectionChecker: com.repository.guessgame.utils.NetworkConnectionChecker,
         gamePointsLocalDataSource: GamePointsLocalDataSource
-    ) : GamePointsRepository = GamePointsRepositoryImpl(gamePointsLocalDataSource, networkConnectionChecker)
+    ) : GamePointsRepository = GamePointsRepositoryImpl(gamePointsLocalDataSource)
 }
