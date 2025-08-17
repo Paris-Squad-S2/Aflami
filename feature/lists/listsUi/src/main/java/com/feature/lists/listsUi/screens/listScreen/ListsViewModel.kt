@@ -1,5 +1,6 @@
 package com.feature.lists.listsUi.screens.listScreen
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.map
@@ -12,7 +13,9 @@ import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -104,6 +107,7 @@ class ListsViewModel @Inject constructor(
                         snackBarSuccess = result.success
                     )
                 )
+                hideSnackBar()
                 getLists()
             },
             onError = { errorMessage ->
@@ -173,10 +177,20 @@ class ListsViewModel @Inject constructor(
         emitState(
             screenState.value.copy(showSnackBar = true)
         )
+        hideSnackBar()
     }
 
     override fun onLogoutApplyClicked() {
         authenticationFeatureAPI()
+    }
+
+    private fun hideSnackBar() {
+        viewModelScope.launch {
+            if (screenState.value.showSnackBar) {
+                delay(3000)
+                emitState(screenState.value.copy(showSnackBar = false))
+            }
+        }
     }
 
 }
