@@ -34,33 +34,7 @@ class HomeScreenViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
-        HomeScreenUIState(
-            homeUIState = HomeUIState(
-                popularMediaList = emptyList(),
-                continueWatchingMediaList = emptyList(),
-                topRatedMediaList = emptyList(),
-                moviesBirthdayMediaList = emptyList(),
-                categories = mapOf(),
-                upComingMediaList = emptyList(),
-                showMoodPickerDialog = false,
-                isAllCategories = true,
-                moodPickerFilteredMovies =emptyList(),
-                moodPickerMovie = MediaUiState(
-                    id = 0,
-                    title = "",
-                    imageUri = "",
-                    type = MediaTypeUi.MOVIE,
-                    categories = emptyList(),
-                    yearOfRelease = kotlinx.datetime.LocalDate(2023, 1, 1),
-                    rating = 0.0,
-                )
-            ),
-            isPopularMediaLoading = false,
-            isTopRatingLoading = false,
-            isContinueWatchingLoading = false,
-            isCategoryLoading = false,
-            errorMessage = null
-        ),
+        HomeScreenUIState()
     ) {
     init {
         getRestriction()
@@ -82,7 +56,7 @@ class HomeScreenViewModel @Inject constructor(
     private fun getRestriction() {
         viewModelScope.launch {
             val restriction = settingsUseCase.getRestriction()
-            emitState(
+            updateState(
                 screenState.value.copy(
                     homeUIState = screenState.value.homeUIState.copy(
                         contentRestriction = ContentRestriction.valueOf(restriction)
@@ -90,7 +64,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             )
             when (screenState.value.homeUIState.contentRestriction) {
-                ContentRestriction.Strict -> emitState(
+                ContentRestriction.Strict -> updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             nsfwThreshold = 0.8f,
@@ -99,7 +73,7 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.Moderate -> emitState(
+                ContentRestriction.Moderate -> updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             nsfwThreshold = 0.4f,
@@ -108,7 +82,7 @@ class HomeScreenViewModel @Inject constructor(
                     )
                 )
 
-                ContentRestriction.Off -> emitState(
+                ContentRestriction.Off -> updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             nsfwThreshold = 0f,
@@ -123,7 +97,7 @@ class HomeScreenViewModel @Inject constructor(
     private fun loadCategories() {
         tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isCategoryLoading = true
                     )
@@ -131,7 +105,7 @@ class HomeScreenViewModel @Inject constructor(
                 getMoviesCategoriesUseCase()
             },
             onSuccess = { categories ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             categories = categories.associateWith { false }
@@ -143,7 +117,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         isCategoryLoading = false
@@ -156,7 +130,7 @@ class HomeScreenViewModel @Inject constructor(
     private fun loadPopularMedia() {
         tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isPopularMediaLoading = true
                     )
@@ -164,7 +138,7 @@ class HomeScreenViewModel @Inject constructor(
                 getPopularMediaUseCase()
             },
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             popularMediaList = it.toSliderMediaList()
@@ -176,7 +150,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         isPopularMediaLoading = false
@@ -189,7 +163,7 @@ class HomeScreenViewModel @Inject constructor(
     private fun loadTopRatingMedia() {
         tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isTopRatingLoading = true
                     )
@@ -197,7 +171,7 @@ class HomeScreenViewModel @Inject constructor(
                 getTopRatingMediaUseCase()
             },
             onSuccess = { topRatingMedia ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             topRatedMediaList = topRatingMedia.toMediaUiStateList()
@@ -209,7 +183,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         isTopRatingLoading = false
@@ -222,7 +196,7 @@ class HomeScreenViewModel @Inject constructor(
     private fun loadContinueWatchingMedia() {
         tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isContinueWatchingLoading = true
                     )
@@ -231,7 +205,7 @@ class HomeScreenViewModel @Inject constructor(
             },
             onSuccess = { mediaListFlow ->
                 mediaListFlow.collect { mediaList ->
-                    emitState(
+                    updateState(
                         screenState.value.copy(
                             homeUIState = screenState.value.homeUIState.copy(
                                 continueWatchingMediaList = mediaList.toMediaUiStateList()
@@ -244,7 +218,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         isContinueWatchingLoading = false
@@ -260,7 +234,7 @@ class HomeScreenViewModel @Inject constructor(
                 getUpcomingMediaUseCase()
             },
             onSuccess = { upcomingMovies ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             upComingMediaList = upcomingMovies.toMediaUiStateList(),
@@ -275,7 +249,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                     )
@@ -290,7 +264,7 @@ class HomeScreenViewModel @Inject constructor(
                 searchFeatureAPI()
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                     )
@@ -325,7 +299,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
@@ -337,7 +311,7 @@ class HomeScreenViewModel @Inject constructor(
     override fun getRandomMoodPickerMovie() {
         val movies = screenState.value.homeUIState.moodPickerFilteredMovies
         if (movies.isNotEmpty()) {
-            emitState(
+            updateState(
                 screenState.value.copy(
                     homeUIState = screenState.value.homeUIState.copy(
                         moodPickerMovie = movies.random(),
@@ -355,7 +329,7 @@ class HomeScreenViewModel @Inject constructor(
                 }
             },
             onSuccess = { filteredMovies ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             moodPickerFilteredMovies = filteredMovies.toMediaUiStateList() ,
@@ -366,7 +340,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                     )
@@ -379,7 +353,7 @@ class HomeScreenViewModel @Inject constructor(
     override fun onCategorySelect(category: Category) {
         tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             categories = screenState.value.homeUIState.categories.toMutableMap()
@@ -397,7 +371,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             },
             onSuccess = { filteredMovies ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         homeUIState = screenState.value.homeUIState.copy(
                             upComingMediaList = filteredMovies.toMediaUiStateList(),
@@ -406,7 +380,7 @@ class HomeScreenViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                     )
@@ -416,7 +390,7 @@ class HomeScreenViewModel @Inject constructor(
     }
 
     override fun onDismissMoodPicker() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 homeUIState = screenState.value.homeUIState.copy(
                     showMoodPickerDialog = false,

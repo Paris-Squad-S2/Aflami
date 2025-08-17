@@ -17,11 +17,7 @@ class ContinueWatchingViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
 ) : BaseViewModel<ContinueWatchingUiState>(
-    ContinueWatchingUiState(
-        continueWatchingMediaList = emptyList(),
-        isLoading = false,
-        errorMessage = null
-    )
+    ContinueWatchingUiState()
 ), ContinueWatchingInteractionListener {
 
     init {
@@ -38,27 +34,27 @@ class ContinueWatchingViewModel @Inject constructor(
     }
 
     private fun onGetRestrictionSuccess(restriction: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 contentRestriction = ContentRestriction.valueOf(restriction),
             )
         )
         when (screenState.value.contentRestriction) {
-            ContentRestriction.Strict -> emitState(
+            ContentRestriction.Strict -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.8f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.Moderate -> emitState(
+            ContentRestriction.Moderate -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.4f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.Off -> emitState(
+            ContentRestriction.Off -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0f,
                     genderThreshold = 0f
@@ -69,7 +65,7 @@ class ContinueWatchingViewModel @Inject constructor(
     }
 
     private fun onGetRestrictionError(error: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 errorMessage = error,
             )
@@ -79,7 +75,7 @@ class ContinueWatchingViewModel @Inject constructor(
     private fun loadContinueWatchingMedia() {
         tryToExecute(
             execute = {
-                emitState(
+                updateState(
                     screenState.value.copy(
                         isLoading = true
                     )
@@ -88,7 +84,7 @@ class ContinueWatchingViewModel @Inject constructor(
             },
             onSuccess = { mediaListFlow ->
                 mediaListFlow.collect { mediaList ->
-                    emitState(
+                    updateState(
                         screenState.value.copy(
                             continueWatchingMediaList = mediaList.toMediaUiStateList(),
                             isLoading = false
@@ -97,7 +93,7 @@ class ContinueWatchingViewModel @Inject constructor(
                 }
             },
             onError = { error ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = error,
                         isLoading = false
@@ -125,7 +121,7 @@ class ContinueWatchingViewModel @Inject constructor(
                 }
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage
                     )
