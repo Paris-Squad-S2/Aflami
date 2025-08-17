@@ -1,9 +1,11 @@
 package com.feature.profile.profileUi.screen
 
+import android.content.Context
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
-import com.feature.profile.profileUi.navigation.ProfileDestinations
+import com.feature.profile.profileUi.navigation.Destination
+import com.feature.profile.profileUi.navigation.navigateDestination
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
@@ -15,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-@Suppress("DEPRECATION")
+
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
     private val settingsUseCase: SettingsUseCase,
@@ -60,7 +62,7 @@ class ProfileViewModel @Inject constructor(
     }
     private fun getUserPoints(){
         tryToExecute(
-            execute = { getUserPoints.invoke(getAccountIdUseCase.invoke() ?: 0) },
+            execute = { getUserPoints(getAccountIdUseCase() ?: 0) },
             onSuccess = { userPoints ->
                 updateState(
                     screenState.value.copy(
@@ -298,11 +300,11 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    override fun onWatchHistoryClicked() {
-        navigate(ProfileDestinations.WatchHistoryScreen)
+    override fun onWatchHistoryClicked(context: Context) {
+        navigateDestination(context, Destination.WatchHistoryScreen)
     }
 
-    override fun onMyRatingClicked() {
-        navigate(ProfileDestinations.MyRatingScreen)
+    override fun onMyRatingClicked(context: Context) {
+        navigateDestination(context, Destination.MyRatingScreen)
     }
 }

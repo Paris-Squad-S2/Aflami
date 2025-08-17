@@ -42,30 +42,27 @@ import com.paris_2.aflami.designsystem.theme.Theme
 
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     if (state.value.isLogin)
         ProfileContent(
-            modifier = modifier,
             state = state.value,
             profileInteractionListener = viewModel,
             context = context
         )
     else
         LoggedOutContent(
-            modifier = modifier,
             profileInteractionListener = viewModel,
         )
 }
 
 @Composable
 fun LoggedOutContent(
-    modifier: Modifier,
     profileInteractionListener: ProfileViewModel,
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -100,7 +97,9 @@ fun ProfileContent(
     context: Context,
 ) {
 
-    Column(modifier = modifier.fillMaxSize().verticalScroll(rememberScrollState())) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())) {
         ProfileHeader(modifier = Modifier)
         Column(
             modifier = Modifier
@@ -119,14 +118,14 @@ fun ProfileContent(
                 CategoryCard(
                     stringResource(R.string.watch_history),
                     painterResource(R.drawable.ic_clock_3d),
-                    onCategoryClick = profileInteractionListener::onWatchHistoryClicked,
+                    onCategoryClick = { profileInteractionListener.onWatchHistoryClicked(context) },
                     modifier = Modifier.weight(1F)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 CategoryCard(
                     categoryName = stringResource(R.string.my_rating),
                     categoryImage = painterResource(R.drawable.ic_star_3d),
-                    onCategoryClick = profileInteractionListener::onMyRatingClicked,
+                    onCategoryClick = { profileInteractionListener.onMyRatingClicked(context) },
                     modifier = Modifier.weight(1F)
                 )
             }

@@ -1,5 +1,7 @@
 package com.feature.profile.profileUi.screen.myRating
 
+import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -40,16 +42,18 @@ fun MyRatingScreen(
     viewModel: MyRatingViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
+    val activity = LocalActivity.current
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .background(Theme.colors.surface)
             .padding(top = 12.dp)
     ) {
         var selectedIndex by remember { mutableIntStateOf(0) }
         AppTopBar(
             logo = iconItemWithDefaults(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
-                onClick = viewModel::onBackClick,
+                onClick = { activity?.finish() },
                 backgroundColor = Theme.colors.surface,
                 tint = Theme.colors.text.title
             ),
