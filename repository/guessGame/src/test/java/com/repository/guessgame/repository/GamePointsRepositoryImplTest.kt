@@ -7,10 +7,11 @@ import com.repository.guessgame.entity.UserGamePointsEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.assertThrows
 
 class GamePointsRepositoryImplTest {
 
@@ -36,14 +37,16 @@ class GamePointsRepositoryImplTest {
     @Test
     fun `getUserGamePoints returns mapped domain from local`() = runTest {
         // Given
-        coEvery { local.getUserGamePoints(7) } returns UserGamePointsEntity(
-            userId = 7,
-            gamePoints = 150
+        coEvery { local.getUserGamePoints(7) } returns flowOf(
+            UserGamePointsEntity(
+                userId = 7,
+                gamePoints = 150
+            )
         )
         // When
-        val result = repository.getUserGamePoints(7)
+        val result = repository.getUserGamePoints(7).first()
         // Then
-        assertThat(result).isEqualTo(UserPoints(userId = 7, gamePoints = 150))
+        assertThat(result).isEqualTo(150)
         coVerify(exactly = 1) { local.getUserGamePoints(7) }
     }
 }
