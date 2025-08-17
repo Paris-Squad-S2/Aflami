@@ -31,7 +31,7 @@ open class BaseViewModel<S>(
 
     protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
 
-    fun emitState(newState: S) {
+    fun updateState(newState: S) {
         privateScreenState.update { newState }
     }
 

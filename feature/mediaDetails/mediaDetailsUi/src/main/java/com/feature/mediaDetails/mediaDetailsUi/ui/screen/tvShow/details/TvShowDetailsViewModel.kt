@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -62,42 +61,7 @@ class TvShowDetailsViewModel @Inject constructor(
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
 
     TvShowDetailsScreenState(
-        TvShowDetailsUiState(
-            tvShowUi = TvShowUi(
-                id = 0,
-                posterUrl = "",
-                rating = 0f,
-                title = "",
-                genres = emptyList(),
-                releaseDate = "",
-                runtime = "",
-                country = "",
-                description = "",
-                seasons = emptyList(),
-                productionCompanies = emptyList()
-            ),
-            cast = emptyList(),
-            reviews = emptyList(),
-            gallery = emptyList(),
-            recommendations = flowOf(PagingData.empty()),
-            tvShowVideoUi = TvShowVideoUi(
-                key = "",
-                name = "",
-                site = ""
-            ),
-            selectedRating = 0f,
-            episodeVideoUi = EpisodeVideoUi(
-                key = "",
-                name = "",
-                site = ""
-            ),
-            isYoutubePlayerVisible = false,
-            youtubeVideoKey = null,
-        ),
-        isLoading = true,
-        errorMessage = null,
-        isEpisodesLoading = true,
-        seasonsLoadingStates = emptyMap()
+        TvShowDetailsUiState()
     ), navigator
 ) {
 
