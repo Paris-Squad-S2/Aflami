@@ -1,8 +1,8 @@
 package com.paris_2.aflami.di
 
 import android.content.Context
-import com.paris_2.datasource.remote.user.UserAuthInterceptor
 import com.paris_2.aflami.BuildConfig
+import com.paris_2.datasource.remote.user.UserAuthInterceptor
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import dagger.Module
 import dagger.Provides
@@ -16,6 +16,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
+import com.repository.guessgame.utils.NetworkConnectionChecker as GuessGameConnectionChecker
 import com.repository.media.util.NetworkConnectionChecker as HomeNetworkConnectionChecker
 import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkConnectionChecker
 import com.repository.util.NetworkConnectionChecker as CommonNetworkConnectionChecker
@@ -37,6 +38,11 @@ object NetworkModule {
     @Singleton
     fun provideHomeNetworkConnectionChecker(@ApplicationContext context: Context): HomeNetworkConnectionChecker =
         HomeNetworkConnectionChecker(context)
+
+    @Provides
+    @Singleton
+    fun provideGuessGameConnectionChecker(@ApplicationContext context: Context): GuessGameConnectionChecker =
+        GuessGameConnectionChecker(context)
 
     @Provides
     @Singleton

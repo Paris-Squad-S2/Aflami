@@ -24,6 +24,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.EpisodeV
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.SeasonUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
+import com.paris_2.domain.media.entity.Media
+import com.paris_2.domain.media.entity.MediaType
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 
@@ -202,5 +204,29 @@ fun EpisodeVideo.toUi(): EpisodeVideoUi{
         key = this.key,
         name = this.name,
         site = this.site
+    )
+}
+
+fun Movie.toMedia(): Media {
+    return Media(
+        id = id,
+        imageUri = posterPath,
+        title = title,
+        type = MediaType.Movie,
+        categories = categories,
+        yearOfRelease = releaseDate,
+        rating = voteAverage
+    )
+}
+
+fun TvShow.toMedia(): Media {
+    return Media(
+        id = id,
+        imageUri = posterPath,
+        title = title,
+        type = MediaType.TvShow,
+        categories = categories,
+        yearOfRelease = releaseDate,
+        rating = voteAverage
     )
 }

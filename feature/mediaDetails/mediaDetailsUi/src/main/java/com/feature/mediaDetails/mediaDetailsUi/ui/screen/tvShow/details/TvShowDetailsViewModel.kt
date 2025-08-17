@@ -14,12 +14,14 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toMedia
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
 import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
@@ -48,6 +50,7 @@ class TvShowDetailsViewModel @Inject constructor(
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
+    private val addWatchHistoryUseCase: AddWatchHistoryUseCase,
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
@@ -166,6 +169,7 @@ class TvShowDetailsViewModel @Inject constructor(
         tryToExecute(
             execute = { getTvShowDetailsUseCase(mediaId) },
             onSuccess = { tvShow ->
+                addWatchHistoryUseCase(tvShow.toMedia())
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(

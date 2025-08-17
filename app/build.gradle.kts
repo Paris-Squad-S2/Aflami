@@ -140,6 +140,7 @@ dependencies {
     implementation(projects.repository.movie)
     implementation(projects.repository.user)
     implementation(projects.repository.media)
+    implementation(projects.repository.guessGame)
 
 
     implementation(projects.datasource.remote.lists)
@@ -153,10 +154,12 @@ dependencies {
     implementation(projects.datasource.local.tvShow)
     implementation(projects.datasource.local.movie)
     implementation(projects.datasource.local.user)
+    implementation(projects.datasource.local.guessGame)
 
     implementation(projects.domain.media)
     implementation(projects.domain.lists)
     implementation(projects.domain.user)
+    implementation(projects.domain.guessGame)
     implementation(projects.designsystem)
 
 }

@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,16 +41,12 @@ fun SafeImageViewer(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val safeImageProcessor = remember { SafeImageProcessor(context) }
+    val safeImageProcessor = remember { SafeImageProcessor.getInstance(context) }
     val analysisCache = remember { mutableMapOf<String, ImageAnalysisResult>() }
     var imageState by remember { mutableStateOf<SafeImageState>(SafeImageState.Loading) }
     var originalBitmap by remember { mutableStateOf<Bitmap?>(null) }
     var shouldBlur by remember { mutableStateOf(false) }
     var blurRadius by remember { mutableStateOf(0) }
-
-    DisposableEffect(safeImageProcessor) {
-        onDispose { safeImageProcessor.release() }
-    }
 
     LaunchedEffect(imageUrl) {
         analysisCache[imageUrl]?.let { cached ->

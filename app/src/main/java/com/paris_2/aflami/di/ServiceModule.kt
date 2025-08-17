@@ -4,6 +4,7 @@ import com.datasource.remote.lists.service.ListApiService
 import com.datasource.remote.movie.service.MovieApiService
 import com.datasource.remote.tvShow.service.RetrofitTvShowDetailsApiService
 import com.paris_2.datasource.remote.user.UserApi
+import com.repository.media.services.ActorPopularityApiService
 import com.repository.media.services.GenresApiServices
 import com.repository.media.services.MediaApiService
 import dagger.Module
@@ -11,6 +12,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -44,6 +46,10 @@ object ServiceModule {
     @Provides
     fun provideRetrofitListApiService(retrofit: Retrofit): ListApiService {
         return retrofit.create(ListApiService::class.java)
+    }
+    @Provides
+    fun provideActorPopularityApiService(retrofit: Retrofit): ActorPopularityApiService {
+        return retrofit.create(ActorPopularityApiService::class.java)
     }
 }
 

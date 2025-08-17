@@ -192,7 +192,7 @@ fun GuessCard(
                         color = Theme.colors.status.yellowAccent,
                     )
                     AppText(
-                        text = hintPoints.toString() + " " + stringResource(R.string.pts),
+                        text =  stringResource(R.string.pts,hintPoints),
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.status.yellowAccent,
                         modifier = Modifier.padding(start = 4.dp)

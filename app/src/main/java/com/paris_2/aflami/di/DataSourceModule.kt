@@ -10,6 +10,8 @@ import com.datasource.local.dao.MovieDao
 import com.datasource.local.dao.TvShowDao
 import com.datasource.local.datasource.MovieLocalDataSourceImpl
 import com.datasource.local.datasource.TvShowLocalDataSourceImpl
+import com.datasource.local.guessGame.dao.GamePointsDao
+import com.datasource.local.guessGame.datasource.GamePointsLocalDataSourceImpl
 import com.datasource.local.media.dao.ContinueWatchingDao
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
@@ -30,6 +32,7 @@ import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSourc
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
+import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
@@ -132,6 +135,12 @@ object DataSourceModule {
     ): ListsRemoteDataSource {
         return ListsRemoteDataSourceImpl(listApiService)
     }
+
+    @Provides
+    @Singleton
+    fun provideGamePointsLocalDataSource(
+        gamePointsDao: GamePointsDao
+    ): GamePointsLocalDataSource = GamePointsLocalDataSourceImpl(gamePointsDao)
 
     private const val DATA_STORE_NAME = "AppPrefStorage"
 

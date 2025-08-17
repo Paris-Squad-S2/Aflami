@@ -25,6 +25,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.paris_2.aflami.designsystem.R
@@ -42,6 +43,7 @@ fun AppTopBar(
     logo: IconItem? = null,
     leadingIcons: List<IconItem> = emptyList(),
     trailingIcons: List<IconItem> = emptyList(),
+    trailingContent: (@Composable () -> Unit)? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
 ) {
     val scrollModifier = scrollBehavior?.let {
@@ -71,8 +73,7 @@ fun AppTopBar(
 
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(start = 8.dp, end = 8.dp),
+                    .weight(1f, fill = true)                     .padding(start = 8.dp, end = 8.dp),
                 verticalArrangement = Arrangement.Center
             ) {
                 title?.let {
@@ -81,7 +82,8 @@ fun AppTopBar(
                         style = titleTextStyle,
                         color = Theme.colors.text.title,
                         maxLines = 1,
-                        modifier = Modifier.padding(bottom = 2.dp)
+                        modifier = Modifier.padding(bottom = 2.dp),
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
                 subtitle?.let {
@@ -90,7 +92,8 @@ fun AppTopBar(
                         style = Theme.textStyle.label.small,
                         color = Theme.colors.text.body,
                         maxLines = 1,
-                        lineHeight = 16.sp
+                        lineHeight = 16.sp,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
@@ -99,6 +102,8 @@ fun AppTopBar(
                 Spacer(modifier = Modifier.width(if (index > 0) 8.dp else 0.dp))
                 IconBox(iconItem)
             }
+
+            trailingContent?.invoke()
         }
     }
 }

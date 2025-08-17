@@ -2,6 +2,13 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+}
+
+tasks.withType<Test>().configureEach {
+    useJUnitPlatform()
 }
 
 android {
@@ -29,6 +36,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -37,4 +45,24 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(projects.feature.guessGame.guessGameApi)
     implementation(projects.designsystem)
+    implementation(libs.bundles.navigation)
+    implementation(projects.domain.guessGame)
+    implementation(projects.domain.user)
+
+    //test
+    testImplementation(libs.bundles.test)
+
+    //Hilt
+    implementation(libs.bundles.hilt)
+
+    ksp(libs.hilt.android.compiler)
+
+    implementation(libs.bundles.blur)
+
+    //coil
+    implementation(libs.bundles.coil)
+
+    //serialization
+    implementation(libs.bundles.serialization)
+
 }

@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="lets_play">هيا نلعب</string>
+    <string name="guess_the_character_title">خمن الشخصية</string>
+    <string name="guess_the_movie_title">خمن الفيلم من الملصق</string>
+    <string name="when_was_it_released_title">متى تم إصداره؟</string>
+    <string name="which_genre_title">أي نوع؟</string>
+    <string name="guess_the_character_desc">هل يمكنك معرفة من هي هذه الشخصية؟</string>
+    <string name="guess_the_movie_desc">طابق الملصق مع العنوان الصحيح!</string>
+    <string name="when_was_it_released_desc">اختر سنة الإصدار الصحيحة.</string>
+    <string name="which_genre_desc">أي واحد هو فيلم الحركة الحقيقي؟</string>
+    <string name="points_label">%1$d نقطة</string>
     <string name="points_achieved">النقاط المحققة</string>
     <string name="total_time">الوقت الإجمالي</string>
     <string name="pts">%1$d نقاط.</string>
@@ -15,4 +25,10 @@
     <string name="Not_enough_points">ليس هناك نقاط كافية</string>
     <string name="OK">حسنا</string>
     <string name="sorry_not_enough_points_hint">عذرا، ليس لديك نقاط كافية للحصول على تلميح</string>
+    <string name="next">التالي</string>
+    <string name="Guess_the_character">تخمين الشخصية</string>
+    <string name="Back_to_menu">العودة إلى القائمة</string>
+    <string name="Play_again">العب مرة أخرى</string>
+    <string name="guess_the_poster">Guess the poster</string>
+    <string name="you_finished_the_game">لقد أنهيت اللعبة!</string>
 </resources>
