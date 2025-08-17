@@ -1,2 +1,2 @@
-versionName=1.0.3
-- Implement System-Aware Dark Theme Handling
+versionName=1.0.4
+- Refactor: Simplify profile feature navigation
