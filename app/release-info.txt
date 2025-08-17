@@ -1,4 +1,4 @@
-versionName=1.0.1
+versionName=1.0.2
 - refactored status padding for better alignment in history and my rating screens
 - refactored getPoints return type to flow to update UI correctly
 - refactor some viewModel and it's UiState for cleaner initialization and default values
