@@ -1,2 +1,2 @@
-versionName=1.0.0
-- first stable production version
+versionName=1.0.1
+- fix type mode in profile screen
