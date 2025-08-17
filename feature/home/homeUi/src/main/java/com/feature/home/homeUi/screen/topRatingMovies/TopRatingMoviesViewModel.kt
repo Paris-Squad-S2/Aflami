@@ -17,9 +17,7 @@ class TopRatingMoviesViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
 ) : BaseViewModel<TopRatingMoviesUiState>(
-    TopRatingMoviesUiState(
-        topRatingMovies = emptyList(), isLoading = false, errorMessage = null
-    )
+    TopRatingMoviesUiState()
 ), TopRatingInteractionListener {
 
     init {
@@ -36,27 +34,27 @@ class TopRatingMoviesViewModel @Inject constructor(
     }
 
     private fun onGetRestrictionSuccess(restriction: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 contentRestriction = ContentRestriction.valueOf(restriction),
             )
         )
         when (screenState.value.contentRestriction) {
-            ContentRestriction.Strict -> emitState(
+            ContentRestriction.Strict -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.8f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.Moderate -> emitState(
+            ContentRestriction.Moderate -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0.4f,
                     genderThreshold = 0.6f
                 )
             )
 
-            ContentRestriction.Off -> emitState(
+            ContentRestriction.Off -> updateState(
                 screenState.value.copy(
                     nsfwThreshold = 0f,
                     genderThreshold = 0f
@@ -67,7 +65,7 @@ class TopRatingMoviesViewModel @Inject constructor(
     }
 
     private fun onGetRestrictionError(error: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 errorMessage = error,
             )
@@ -76,20 +74,20 @@ class TopRatingMoviesViewModel @Inject constructor(
 
     private fun loadContinueWatchingMedia() {
         tryToExecute(execute = {
-            emitState(
+            updateState(
                 screenState.value.copy(
                     isLoading = true
                 )
             )
             getTopRatingMediaUseCase.invoke()
         }, onSuccess = { mediaList ->
-            emitState(
+            updateState(
                 screenState.value.copy(
                     topRatingMovies = mediaList.toMediaUiStateList(), isLoading = false
                 )
             )
         }, onError = { error ->
-            emitState(
+            updateState(
                 screenState.value.copy(
                     errorMessage = error, isLoading = false
                 )
@@ -113,7 +111,7 @@ class TopRatingMoviesViewModel @Inject constructor(
                 )
             }
         }, onError = { errorMessage ->
-            emitState(
+            updateState(
                 screenState.value.copy(
                     errorMessage = errorMessage
                 )

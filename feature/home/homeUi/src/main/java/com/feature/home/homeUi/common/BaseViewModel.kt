@@ -19,7 +19,7 @@ open class BaseViewModel<S> @Inject constructor(
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
 
-    fun emitState(newState: S) {
+    fun updateState(newState: S) {
         privateScreenState.update { newState }
     }
 
