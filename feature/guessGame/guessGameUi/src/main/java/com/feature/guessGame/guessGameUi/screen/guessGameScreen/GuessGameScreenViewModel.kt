@@ -1,6 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
 import android.content.Context
+import androidx.lifecycle.viewModelScope
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.Destinations.GuessByImageScreen
 import com.feature.guessGame.guessGameUi.navigation.Destinations.GuessQuestionScreen
@@ -10,6 +11,7 @@ import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameL
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,18 +27,23 @@ class GuessGameScreenViewModel @Inject constructor(
         loadUserPoints()
     }
 
-    fun loadUserPoints() {
-        tryToExecute(
-            onSuccess = { points ->
-                updateState(screenState.value.copy(userPoints = points))
-            },
-            onError = { error ->
-            },
-            execute = {
-                val userId = getAccountIdUseCase() ?: 0
-                getUserPointUseCase(userId)
-            }
-        )
+    private fun loadUserPoints() {
+        viewModelScope.launch {
+            val userId = getAccountIdUseCase() ?: 0
+            tryToCollect(
+                flow = getUserPointUseCase(userId),
+                onEach = { points: Int ->
+                    updateState(screenState.value.copy(userPoints = points))
+                },
+                onError = { error ->
+                    updateState(
+                        screenState.value.copy(
+                            errorMessage = error
+                        )
+                    )
+                }
+            )
+        }
     }
 
 

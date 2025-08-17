@@ -58,20 +58,19 @@ class ProfileViewModel @Inject constructor(
             )
         }
     }
-    private fun getUserPoints(){
-        tryToExecute(
-            execute = { getUserPoints.invoke(getAccountIdUseCase.invoke() ?: 0) },
-            onSuccess = { userPoints ->
+    private fun getUserPoints() {
+        viewModelScope.launch {
+            val userId = getAccountIdUseCase() ?: return@launch
+            getUserPoints(userId).collectLatest { points ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
-                            points = userPoints
+                            points = points
                         )
                     )
                 )
-            },
-            onError = {},
-        )
+            }
+        }
     }
 
     private fun getUserName() {
