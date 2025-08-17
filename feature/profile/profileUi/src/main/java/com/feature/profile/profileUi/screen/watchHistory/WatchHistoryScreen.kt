@@ -1,10 +1,13 @@
 package com.feature.profile.profileUi.screen.watchHistory
 
+import androidx.activity.compose.LocalActivity
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
@@ -22,31 +25,34 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.components.MediaCard
 import com.feature.profile.profileUi.screen.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
-import com.feature.profile.profileUi.R
 import com.paris_2.aflami.designsystem.components.PlaceholderView
 import com.paris_2.aflami.designsystem.components.TabRow
+import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
+import com.paris_2.aflami.designsystem.theme.Theme
+
 @Composable
 fun WatchHistoryScreen(
     viewModel: WatchHistoryViewModel = hiltViewModel(),
 ) {
     val state = viewModel.screenState.collectAsState()
+    val activity = LocalActivity.current
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top = 12.dp)
+            .background(Theme.colors.surface)
+            .statusBarsPadding()
     ) {
         var selectedIndex by remember { mutableIntStateOf(0) }
         AppTopBar(
             logo = iconItemWithDefaults(
                 icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
-                onClick = viewModel::onBackClick,
+                onClick = { activity?.finish() },
                 backgroundColor = Theme.colors.surface,
                 tint = Theme.colors.text.title
             ),

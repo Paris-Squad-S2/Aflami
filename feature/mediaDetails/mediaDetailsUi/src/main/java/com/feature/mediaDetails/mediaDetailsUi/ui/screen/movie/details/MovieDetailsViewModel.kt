@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -37,7 +36,6 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -62,44 +60,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val createListUseCase: CreateListUseCase,
     private val settingsUseCase: SettingsUseCase,
     navigator: MediaDetailsNavigator,
-) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
-    MovieDetailsScreenState(
-        movieDetailsUiState = MovieDetailsUiState(
-            movie = MovieUi(
-                id = 0,
-                posterUrl = "",
-                rating = 0f,
-                title = "",
-                genres = emptyList(),
-                releaseDate = "",
-                runtime = "",
-                country = "",
-                description = "",
-                productionCompanies = emptyList(),
-            ),
-            cast = emptyList(),
-            reviews = emptyList(),
-            gallery = emptyList(),
-            recommendations = flowOf(PagingData.empty()),
-            movieVideoUi = MovieVideoUi(
-                key = "",
-                name = "",
-                site = "",
-            ),
-            selectedRating = 0f,
-            isYoutubePlayerVisible = false,
-            youtubeVideoKey = null
-        ),
-        isLoading = true,
-        errorMessage = null,
-        showSnackBar = false,
-        availableLists = emptyList(),
-        selectedListIndex = -1,
-        showCreateListDialog = false,
-        createListName = "",
-        createListButtonState = ButtonState.Normal
-    ), navigator
-) {
+) : MovieDetailsScreenInteractionListener,
+    BaseViewModel<MovieDetailsScreenState>(MovieDetailsScreenState(), navigator) {
 
 
     private val movieId by lazy {

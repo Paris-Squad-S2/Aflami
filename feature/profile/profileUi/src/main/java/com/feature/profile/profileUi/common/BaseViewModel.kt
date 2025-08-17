@@ -2,35 +2,24 @@ package com.feature.profile.profileUi.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.navigation.NavOptions
-import com.feature.profile.profileUi.navigation.ProfileDestination
-import com.feature.profile.profileUi.navigation.ProfileNavigator
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 open class BaseViewModel<S>(
     initialState: S,
 ) : ViewModel() {
 
-    @Inject
-    lateinit var navigator: ProfileNavigator
-
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
-
-    protected fun navigate(destination: ProfileDestination, navOptions: NavOptions? = null) =
-        viewModelScope.launch {
-            navigator.navigate(destination = destination, navOptions = navOptions)
-        }
-
-    protected fun navigateUp() = viewModelScope.launch { navigator.navigateUp() }
 
     fun updateState(newState: S) {
         privateScreenState.update { newState }
@@ -53,5 +42,17 @@ open class BaseViewModel<S>(
                 onError(e.message ?: "Unexpected error")
             }
         }
+    }
+
+    protected fun <T> tryToCollect(
+        flow: kotlinx.coroutines.flow.Flow<T>,
+        onEach: suspend (T) -> Unit,
+        onError: (String) -> Unit = {},
+        scope: CoroutineScope = viewModelScope
+    ): Job {
+        return flow
+            .onEach { value -> onEach(value) }
+            .catch { e -> onError(e.message ?: "Unexpected error") }
+            .launchIn(scope)
     }
 }
