@@ -187,7 +187,7 @@ class ListsViewModel @Inject constructor(
         viewModelScope.launch {
             if (screenState.value.showSnackBar) {
                 delay(3000)
-                emitState(screenState.value.copy(showSnackBar = false))
+                updateState(screenState.value.copy(showSnackBar = false))
             }
         }
     }
