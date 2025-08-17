@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.navigation
 
+import androidx.annotation.Keep
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
@@ -55,6 +56,7 @@ fun String.fromJsonToDestination(): Destination =
     Json.decodeFromString(this)
 
 @Serializable
+@Keep
 enum class QuestionType {
     RELEASE_YEAR,
     GENRE,
