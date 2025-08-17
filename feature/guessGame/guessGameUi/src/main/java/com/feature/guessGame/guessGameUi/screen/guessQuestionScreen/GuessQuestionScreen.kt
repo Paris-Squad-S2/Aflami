@@ -118,7 +118,7 @@ fun GuessQuestionContent(
                     textNoImage = state.questionText,
                     clickable = true,
                     showHint = !state.hintUsed,
-                    onClick = { listener.onHintUsed() }
+                    onClick =  listener::onHintUsed
                 )
 
                 Spacer(Modifier.height(16.dp))
