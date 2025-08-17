@@ -1,6 +1,6 @@
 package com.feature.profile.profileUi.screen.changepassword
 
-import com.feature.profile.profileUi.utils.BaseViewModel
+import com.feature.profile.profileUi.common.BaseViewModel
 import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject

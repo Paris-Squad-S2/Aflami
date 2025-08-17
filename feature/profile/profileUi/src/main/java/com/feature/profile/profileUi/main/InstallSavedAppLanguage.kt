@@ -1,4 +1,4 @@
-package com.feature.profile.profileUi.screen.main
+package com.feature.profile.profileUi.main
 
 import android.content.Context
 import android.os.Build
