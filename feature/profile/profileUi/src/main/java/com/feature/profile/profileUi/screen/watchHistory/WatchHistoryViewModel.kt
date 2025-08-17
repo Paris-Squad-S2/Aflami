@@ -124,21 +124,6 @@ class WatchHistoryViewModel @Inject constructor(
         })
     }
 
-    override fun onBackClick() {
-        tryToExecute(
-            execute = {
-                navigateUp()
-            },
-            onError = { errorMessage ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
-    }
-
     fun onTabSelected(mediaTypeUi: MediaTypeUi) {
         if (mediaTypeUi == selectedMediaType) return
         selectedMediaType = mediaTypeUi
