@@ -5,5 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface GamePointsRepository {
     suspend fun saveUserGamePoints(userPoints: UserPoints)
-    fun getUserGamePoints(userId: Int): Flow<UserPoints>
+    fun getUserGamePoints(userId: Int): Flow<Int>
 }

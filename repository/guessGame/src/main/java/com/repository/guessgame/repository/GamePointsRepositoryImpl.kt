@@ -15,9 +15,9 @@ class GamePointsRepositoryImpl(
         gamePointsLocalDataSource.saveUserGamePoints(userPoints.toEntity())
     }
 
-    override fun getUserGamePoints(userId: Int): Flow<UserPoints> {
+    override fun getUserGamePoints(userId: Int): Flow<Int> {
         return gamePointsLocalDataSource.getUserGamePoints(userId).map { entity ->
-            entity?.toDomain() ?: UserPoints(userId = userId, gamePoints = 0)
+            entity?.toDomain()?.gamePoints ?: 0
         }
     }
 }
