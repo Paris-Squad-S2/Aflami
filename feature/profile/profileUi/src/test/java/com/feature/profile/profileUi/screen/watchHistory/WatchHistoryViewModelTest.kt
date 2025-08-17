@@ -1,8 +1,6 @@
 package com.feature.profile.profileUi.screen.watchHistory
 
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.profile.profileUi.common.BaseViewModel
-import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.useCase.FilterWatchHistoryUseCase
@@ -89,25 +87,6 @@ class WatchHistoryViewModelTest {
         advanceUntilIdle()
 
         coVerify { mediaDetailsFeatureAPI.startTvShowDetails(2) }
-    }
-
-    @Test
-    fun `onBackClick should trigger navigateUp`() = runTest {
-        // Arrange
-        coEvery { filterWatchHistoryUseCase(any()) } returns flow { emit(fakeMediaList.map { it.toDomain() }) }
-        val mockNavigator: ProfileNavigator = mockk(relaxed = true)
-
-        viewModel = WatchHistoryViewModel(filterWatchHistoryUseCase, mediaDetailsFeatureAPI, settingsUseCase)
-
-        val field = BaseViewModel::class.java.getDeclaredField("navigator")
-        field.isAccessible = true
-        field.set(viewModel, mockNavigator)
-
-        viewModel.onBackClick()
-        advanceUntilIdle()
-
-        // Assert
-        coVerify { mockNavigator.navigateUp() }
     }
 
     @Test

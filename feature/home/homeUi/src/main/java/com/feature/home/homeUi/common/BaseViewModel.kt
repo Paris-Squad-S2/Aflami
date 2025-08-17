@@ -2,7 +2,7 @@ package com.feature.home.homeUi.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job

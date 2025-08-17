@@ -1,5 +1,7 @@
 package com.feature.profile.profileUi.screen
 
+import android.content.Context
+
 interface InterActionListener {
     fun onChooseLanguageClicked()
     fun onChooseAppearanceClicked()
@@ -16,6 +18,6 @@ interface InterActionListener {
     fun onDismissContentRestrictionDialog()
     fun onLanguageSelected(language: Language)
     fun onRestrictionSelected(contentRestriction: ContentRestriction)
-    fun onWatchHistoryClicked()
-    fun onMyRatingClicked()
+    fun onWatchHistoryClicked(context: Context)
+    fun onMyRatingClicked(context: Context)
 }

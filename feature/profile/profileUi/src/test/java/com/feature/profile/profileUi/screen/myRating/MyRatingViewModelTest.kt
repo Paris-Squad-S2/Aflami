@@ -1,7 +1,6 @@
 package com.feature.profile.profileUi.screen.myRating
 
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.profile.profileUi.navigation.ProfileNavigator
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris_2.domain.media.entity.Category
@@ -34,7 +33,6 @@ class MyRatingViewModelTest {
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val settingsUseCase: SettingsUseCase = mockk()
-    private val profileNavigator: ProfileNavigator = mockk(relaxed = true)
     private lateinit var viewModel: MyRatingViewModel
 
     @BeforeEach
@@ -142,17 +140,6 @@ class MyRatingViewModelTest {
         viewModel.onFavouriteIconClick(media)
 
         coVerify(exactly = 1) { deleteTvShowRatingUseCase(2) }
-    }
-
-    @Test
-    fun `onBackClick should call navigateUp`() = runTest {
-        val field = viewModel::class.java.superclass!!.getDeclaredField("navigator")
-        field.isAccessible = true
-        field.set(viewModel, profileNavigator)
-
-        viewModel.onBackClick()
-
-        coVerify { profileNavigator.navigateUp() }
     }
 
     @Test
