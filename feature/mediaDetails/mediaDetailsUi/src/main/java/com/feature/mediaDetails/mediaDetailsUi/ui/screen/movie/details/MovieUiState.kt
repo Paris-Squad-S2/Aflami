@@ -6,11 +6,12 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.paris_2.aflami.designsystem.components.ButtonState
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 data class MovieDetailsScreenState(
-    val movieDetailsUiState: MovieDetailsUiState,
-    val isLoading: Boolean,
-    val errorMessage: String?,
+    val movieDetailsUiState: MovieDetailsUiState = MovieDetailsUiState(),
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null,
     val isImageLoading: Boolean = false,
     val isDescriptionLoading: Boolean = false,
     val isCastLoading: Boolean = false,
@@ -40,58 +41,58 @@ enum class ContentRestriction() {
 }
 
 data class MovieDetailsUiState(
-    val movie: MovieUi,
-    val recommendations: Flow<PagingData<SimilarMediaUI>>,
-    val cast: List<CastUi>,
-    val reviews: List<ReviewUi>,
-    val gallery: List<String>,
-    val movieVideoUi: MovieVideoUi,
-    val selectedRating: Float,
+    val movie: MovieUi = MovieUi(),
+    val recommendations: Flow<PagingData<SimilarMediaUI>> = emptyFlow(),
+    val cast: List<CastUi> = emptyList(),
+    val reviews: List<ReviewUi> = emptyList(),
+    val gallery: List<String> = emptyList(),
+    val movieVideoUi: MovieVideoUi = MovieVideoUi(),
+    val selectedRating: Float = 0f,
     val isYoutubePlayerVisible: Boolean = false,
     val youtubeVideoKey: String? = null
 )
 
 data class MovieVideoUi(
-    val key: String,
-    val name: String,
-    val site: String,
+    val key: String = "",
+    val name: String = "",
+    val site: String = "",
 )
 
 data class MovieUi(
-    val id :Int,
-    override val posterUrl: String,
-    override val rating: Float?,
-    override val title: String,
-    val genres: List<Int>,
-    override val releaseDate: String,
-    val runtime: String,
-    val country: String,
-    val description: String,
-    val productionCompanies: List<ProductionCompanyUi>,
+    val id :Int = 0,
+    override val posterUrl: String = "",
+    override val rating: Float? = 0f,
+    override val title: String = "",
+    val genres: List<Int> = emptyList(),
+    override val releaseDate: String = "",
+    val runtime: String = "",
+    val country: String = "",
+    val description: String = "",
+    val productionCompanies: List<ProductionCompanyUi> = emptyList(),
 ): MediaUi
 
 data class ProductionCompanyUi(
-    val logoUrl: String,
-    val name: String,
-    val originCountry: String
+    val logoUrl: String = "",
+    val name: String = "",
+    val originCountry: String = ""
 )
 
 data class CastUi(
-    val name: String,
-    val imageUrl: String
+    val name: String = "",
+    val imageUrl: String = ""
 )
 
 data class ReviewUi(
-    val avatarUrl: String,
-    val username: String,
-    val name: String,
-    val rating: Double?,
-    val createdAt : String,
-    val description: String
+    val avatarUrl: String = "",
+    val username: String = "",
+    val name: String = "",
+    val rating: Double? = null,
+    val createdAt : String = "",
+    val description: String = ""
 )
 
 data class ListItemUi(
-    val id: String,
-    val name: String,
-    val itemCount: Int
+    val id: String = "",
+    val name: String = "",
+    val itemCount: Int = 0
 )

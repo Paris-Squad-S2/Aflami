@@ -16,13 +16,10 @@ class WatchHistoryViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
 ) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(
-    initialState = WatchHistoryUiState(
-        isLoading = false,
-        errorMessage = null,
-        watchHistoryMedia = emptyList()
-    )
-){
+    WatchHistoryUiState()
+) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
+
     init {
         getRestriction()
         loadWatchHistoryMedia(selectedMediaType)
@@ -95,7 +92,7 @@ class WatchHistoryViewModel @Inject constructor(
                     )
                 }
             },
-            onError = {error ->
+            onError = { error ->
                 updateState(
                     screenState.value.copy(
                         errorMessage = error,
@@ -105,12 +102,14 @@ class WatchHistoryViewModel @Inject constructor(
             }
         )
     }
+
     override fun onMediaCardClick(media: MediaUiState) {
         tryToExecute(execute = {
             when (media.type) {
                 MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
                     movieId = media.id
                 )
+
                 MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
                     tvShowId = media.id
                 )
@@ -145,7 +144,7 @@ class WatchHistoryViewModel @Inject constructor(
         loadWatchHistoryMedia(mediaTypeUi)
     }
 
-    fun onRetry(){
+    fun onRetry() {
         loadWatchHistoryMedia(selectedMediaType)
     }
 }

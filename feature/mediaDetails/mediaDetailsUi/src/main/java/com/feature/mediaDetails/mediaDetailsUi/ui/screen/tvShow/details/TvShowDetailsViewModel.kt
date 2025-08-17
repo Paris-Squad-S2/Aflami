@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -35,7 +34,6 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUse
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flowOf
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -60,42 +58,7 @@ class TvShowDetailsViewModel @Inject constructor(
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
 
     TvShowDetailsScreenState(
-        TvShowDetailsUiState(
-            tvShowUi = TvShowUi(
-                id = 0,
-                posterUrl = "",
-                rating = 0f,
-                title = "",
-                genres = emptyList(),
-                releaseDate = "",
-                runtime = "",
-                country = "",
-                description = "",
-                seasons = emptyList(),
-                productionCompanies = emptyList()
-            ),
-            cast = emptyList(),
-            reviews = emptyList(),
-            gallery = emptyList(),
-            recommendations = flowOf(PagingData.empty()),
-            tvShowVideoUi = TvShowVideoUi(
-                key = "",
-                name = "",
-                site = ""
-            ),
-            selectedRating = 0f,
-            episodeVideoUi = EpisodeVideoUi(
-                key = "",
-                name = "",
-                site = ""
-            ),
-            isYoutubePlayerVisible = false,
-            youtubeVideoKey = null,
-        ),
-        isLoading = true,
-        errorMessage = null,
-        isEpisodesLoading = true,
-        seasonsLoadingStates = emptyMap()
+        TvShowDetailsUiState()
     ), navigator
 ) {
 
@@ -250,8 +213,11 @@ class TvShowDetailsViewModel @Inject constructor(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
                         PagingSource(
-                            mediaUseCase ={ page ->
-                                getTvShowRecommendationsUseCase(mediaId,page).toListOfMTvShowSimilarUI()
+                            mediaUseCase = { page ->
+                                getTvShowRecommendationsUseCase(
+                                    mediaId,
+                                    page
+                                ).toListOfMTvShowSimilarUI()
                             }
                         )
                     }
@@ -281,7 +247,7 @@ class TvShowDetailsViewModel @Inject constructor(
         tryToExecute(
             execute = {
 
-                getTvShowReviewsUseCase(mediaId,1).toListOfReviewUi()
+                getTvShowReviewsUseCase(mediaId, 1).toListOfReviewUi()
 
             },
             onSuccess = { reviews ->
@@ -337,8 +303,7 @@ class TvShowDetailsViewModel @Inject constructor(
                             showRatingDialog = true
                         )
                     )
-                }
-                else{
+                } else {
                     navigate(
                         MediaDetailsDestinations.LoginDialogDestination(
                             R.string.rate
