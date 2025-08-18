@@ -33,7 +33,7 @@
 ## 📽️ Gifs
 | Light Mode                                                            | Dark Mode                                                            |
 |-----------------------------------------------------------------------|----------------------------------------------------------------------|
-| [![Watch the video](https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view)](https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view) | [![Watch the video](https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view)](https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view) |
+| [![Watch the video](assets/light_theme.gif)](https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view) | [![Watch the video](assets/night_theme.gif)](https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view) |
 
 
 ## 🚀 Quick Start Guide
