@@ -1,2 +1,2 @@
-versionName=1.0.7
-- improve test coverage in repositories
+versionName=1.0.10
+- unifying all video entities into media video entity

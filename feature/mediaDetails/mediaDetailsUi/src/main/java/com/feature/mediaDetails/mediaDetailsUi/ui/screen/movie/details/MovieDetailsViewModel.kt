@@ -14,6 +14,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMovieSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toMedia
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toMovieVideoUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
@@ -22,7 +23,7 @@ import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.domain.media.entity.MovieVideo
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
@@ -497,11 +498,11 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onGetVideoMovieSuccess(movieVideo: MovieVideo) {
+    private fun onGetVideoMovieSuccess(movieVideo: MediaVideo) {
         updateState(
             screenState.value.copy(
                 movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                    movieVideoUi = movieVideo.toUi()
+                    movieVideoUi = movieVideo.toMovieVideoUi()
                 )
             )
         )
