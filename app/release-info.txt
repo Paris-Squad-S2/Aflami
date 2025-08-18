@@ -1,2 +1,2 @@
-versionName=1.0.8
-- improve test coverage in datasource
+versionName=1.0.9
+- fix bug: crash on start game
