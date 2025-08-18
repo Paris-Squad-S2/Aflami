@@ -42,7 +42,7 @@ dependencies {
 
     implementation(projects.feature.onboarding.onboardingApi)
     implementation(libs.bundles.pager)
-
+    implementation(libs.bundles.test)
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 
