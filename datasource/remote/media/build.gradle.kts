@@ -39,3 +39,19 @@ dependencies {
     implementation(projects.repository.guessGame)
     implementation(projects.repository.tvShows)
 }
+
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
+}

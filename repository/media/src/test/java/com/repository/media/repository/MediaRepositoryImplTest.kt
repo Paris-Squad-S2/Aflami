@@ -14,6 +14,16 @@ import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.HomeMediaEntity
 import com.repository.media.models.local.media.MediaEntity
 import com.repository.media.models.local.media.MediaTypeEntity
+import com.repository.media.dto.category.MovieByCategoryDto
+import com.repository.media.dto.category.ResultDto
+import com.repository.media.dto.category.TvResultDto
+import com.repository.media.dto.category.TvShowByCategoryDto
+import com.repository.media.dto.home.MovieDto
+import com.repository.media.dto.home.TvDto
+import com.repository.media.entity.Category
+import com.repository.media.entity.HomeMediaEntity
+import com.repository.media.entity.MediaEntity
+import com.repository.media.entity.MediaTypeEntity
 import com.repository.media.mapper.toEntity
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery
@@ -205,7 +215,6 @@ class MediaRepositoryImplTest {
     }
 
 
-
     @Test
     fun `getTopRatingMedia aggregates and sorts by voteAverage descending`() = runTest {
         val movie = MovieDto(
@@ -371,10 +380,19 @@ class MediaRepositoryImplTest {
         val result = repo.getContinueWatchingMedia().single()
         assertThat(result.single().id).isEqualTo(300)
     }
+
     @Test
     fun `addMediaToContinueWatching throws NoInternetConnectionException when offline`() = runTest {
         every { networkChecker.isConnected } returns MutableStateFlow(false)
-        val media = Media(1, "", "Test", MediaType.Movie, listOf(com.paris_2.domain.media.entity.Category.Action), mockk(), 8.0)
+        val media = Media(
+            1,
+            "",
+            "Test",
+            MediaType.Movie,
+            listOf(com.paris_2.domain.media.entity.Category.Action),
+            mockk(),
+            8.0
+        )
 
         assertThrows<NoInternetConnectionException> {
             repo.addMediaToContinueWatching(media)
@@ -392,7 +410,15 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal throws addMediaToLocalException on failure`() = runTest {
-        val media = Media(123, "", "Fail", MediaType.TvShow, listOf(com.paris_2.domain.media.entity.Category.Action), mockk(), 4.0)
+        val media = Media(
+            123,
+            "",
+            "Fail",
+            MediaType.TvShow,
+            listOf(com.paris_2.domain.media.entity.Category.Action),
+            mockk(),
+            4.0
+        )
 
         coEvery { mediaLocalDataSource.addMediaContinueWatching(any()) } throws RuntimeException("DB insert failed")
 
@@ -413,4 +439,86 @@ class MediaRepositoryImplTest {
         }
     }
 
+    @Test
+    fun `getMoviesByCategory should return mapped movie list from remote`() = runTest {
+        val category = com.paris_2.domain.media.entity.Category.Action // assume .toId() = 28
+        val page = 1
+        val language = "en"
+
+        val resultDto = ResultDto(
+            id = 1,
+            title = "Action Movie",
+            genre_ids = listOf(28),
+            overview = "Explosions everywhere",
+            poster_path = "/action.jpg",
+            vote_average = 8.0,
+            vote_count = 100,
+            adult = false,
+            backdrop_path = "/backdrop.jpg",
+            original_language = "en",
+            original_title = "Action Movie",
+            release_date = "2023-01-01",
+            popularity = 1.0,
+            video = true,
+        )
+
+        val movieByCategoryDto = MovieByCategoryDto(
+            page = 1,
+            resultDto = listOf(resultDto),
+            total_pages = 5,
+            total_results = 20
+        )
+
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
+        coEvery { remote.getMoviesByCategory(28, page, language) } returns movieByCategoryDto
+
+
+        val result = repo.getMoviesByCategory(category, page)
+
+
+        assertThat(result.first().type).isEqualTo(MediaType.Movie)
+        coVerify(exactly = 1) { remote.getMoviesByCategory(28, page, language) }
+    }
+
+    @Test
+    fun `getTvShowsByCategory should return mapped TV list from remote`() = runTest {
+        // Given
+        val category = com.paris_2.domain.media.entity.Category.Drama // Assume toId() = 18
+        val page = 1
+        val language = "en"
+
+        val tvResultDto = TvResultDto(
+            adult = false,
+            backdrop_path = "/backdrop_tv.jpg",
+            first_air_date = "2022-05-05",
+            genre_ids = listOf(18),
+            id = 100,
+            name = "Drama Series",
+            origin_country = listOf("US"),
+            original_language = "en",
+            original_name = "Drama Series",
+            overview = "Emotional rollercoaster",
+            popularity = 70.0,
+            poster_path = "/drama.jpg",
+            vote_average = 9.0,
+            vote_count = 500
+        )
+
+        val tvShowByCategoryDto = TvShowByCategoryDto(
+            page = 1,
+            tvResultDto = listOf(tvResultDto),
+            total_pages = 5,
+            total_results = 10
+        )
+
+        coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
+        coEvery { remote.getTvShowsByCategory(18, page, language) } returns tvShowByCategoryDto
+
+        // When
+        val result = repo.getTvShowsByCategory(category, page)
+
+        // Then
+        assertThat(result.first().type).isEqualTo(MediaType.TvShow)
+        coVerify(exactly = 1) { remote.getTvShowsByCategory(18, page, language) }
+    }
 }

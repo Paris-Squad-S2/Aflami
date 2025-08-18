@@ -1,2 +1,2 @@
-versionName=1.0.6
-- refactor view model
+versionName=1.0.8
+- improve test coverage in datasource
