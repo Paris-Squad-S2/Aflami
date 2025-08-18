@@ -1,2 +1,2 @@
-versionName=1.0.6
-- refactor view model
+versionName=1.0.7
+- unifying all video entities into media video entity
