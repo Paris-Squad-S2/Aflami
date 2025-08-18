@@ -4,11 +4,10 @@ import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
-import com.paris_2.domain.game.utils.Genre
 import java.util.UUID
 
 class WhichGenreSessionUseCase(
-    private val actorPopularityRepository: ActorPopularityRepository
+    private val actorPopularityRepository: ActorPopularityRepository,
 ) {
 
     private suspend fun generateQuestion(): Question {
@@ -16,27 +15,25 @@ class WhichGenreSessionUseCase(
         val allMovies = actors.flatMap { it.media }.filter { it.genres.isNotEmpty() }
 
         val correctMovie = allMovies.random()
-        val correctGenreId = correctMovie.genres.first()
-        val correctGenreName = Genre.fromId(correctGenreId)?.displayName
-            ?: throw IllegalStateException("Genre ID $correctGenreId not found")
+        val correctGenreName = correctMovie.genres.random()
 
         val questionId = UUID.randomUUID().toString()
 
         val wrongGenreNames = allMovies
             .flatMap { it.genres }
             .distinct()
-            .filter { it != correctGenreId }
+            .filter { it != correctGenreName }
             .shuffled()
             .take(3)
-            .mapNotNull { Genre.fromId(it)?.displayName }
 
         val allOptions = (wrongGenreNames + correctGenreName)
             .shuffled()
             .map { genreName ->
                 Answer(
                     questionId = questionId,
-                    text = genreName,
-                    isCorrect = genreName == correctGenreName
+                    text = genreName.toString(),
+                    isCorrect = genreName == correctGenreName,
+                    genre = genreName
                 )
             }
 
@@ -44,7 +41,7 @@ class WhichGenreSessionUseCase(
             id = questionId,
             type = Question.QuestionType.TEXT,
             content = correctMovie.name,
-            correctAnswer = correctGenreName,
+            correctAnswer = correctGenreName.toString(),
             options = allOptions,
             usedHint = false
         )
