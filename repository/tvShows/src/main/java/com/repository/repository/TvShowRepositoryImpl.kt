@@ -8,7 +8,6 @@ import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
-import com.paris_2.domain.media.entity.TvShowVideo
 import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
@@ -191,7 +190,7 @@ class TvShowRepositoryImpl(
     }
 
 
-    override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
+    override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<MediaVideo> {
         return safeCall(FailedException("getTrailerVideoForTvShow")) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
                 .tvShowVideoResultDto

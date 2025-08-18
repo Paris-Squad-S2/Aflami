@@ -16,13 +16,11 @@ import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
-import com.paris_2.domain.media.entity.MovieVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
-import com.paris_2.domain.media.entity.TvShowVideo
 
 @OptIn(ExperimentalTime::class)
 fun createMedia(
@@ -406,15 +404,6 @@ val fakeImages = listOf(
 )
 
 val fakeGallery = fakeImages
-
-val fakeMovieVideo = listOf(
-    MovieVideo(
-        key = "dQw4w9WgXcQ",
-        name = "Trailer 1",
-        site = "YouTube",
-        type = "Trailer"
-    )
-)
 
 val fakeMediaVideo = listOf(
     MediaVideo(

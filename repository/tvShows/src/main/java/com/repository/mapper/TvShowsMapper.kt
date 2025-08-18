@@ -10,7 +10,6 @@ import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
-import com.paris_2.domain.media.entity.TvShowVideo
 import com.repository.model.local.CastEntity
 import com.repository.model.local.EpisodeEntity
 import com.repository.model.local.GalleryEntity
@@ -109,8 +108,8 @@ fun CastEntity.toEntity(): Cast {
     )
 }
 
-fun  TvShowVideoResultDto.toEntity(): TvShowVideo {
-    return TvShowVideo(
+fun  TvShowVideoResultDto.toEntity(): MediaVideo {
+    return MediaVideo(
         key = this.key.orEmpty(),
         name = this.name.orEmpty(),
         site = this.site.orEmpty(),

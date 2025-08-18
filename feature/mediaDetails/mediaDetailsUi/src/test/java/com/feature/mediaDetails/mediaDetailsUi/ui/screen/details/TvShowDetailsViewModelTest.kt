@@ -12,7 +12,6 @@ import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
-import com.paris_2.domain.media.entity.TvShowVideo
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
@@ -150,7 +149,7 @@ class TvShowDetailsViewModelTest {
     @Test
     fun `init loads tv show details and video info`() = runTest {
         coEvery { getTvShowDetailsUseCase(any()) } returns mockk<TvShow>(relaxed = true)
-        coEvery { getTvShowVideoUseCase(any()) } returns mockk<TvShowVideo>(relaxed = true)
+        coEvery { getTvShowVideoUseCase(any()) } returns mockk<MediaVideo>(relaxed = true)
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         coVerify { getTvShowDetailsUseCase(testTvShowId) }
@@ -319,7 +318,7 @@ class TvShowDetailsViewModelTest {
 
         coEvery { getTvShowDetailsUseCase(testTvShowId) } returns mockTvShow
         coEvery { addWatchHistoryUseCase(mockTvShow.toMedia()) } returns Unit
-        coEvery { getTvShowVideoUseCase(testTvShowId) } returns mockk<TvShowVideo>(relaxed = true)
+        coEvery { getTvShowVideoUseCase(testTvShowId) } returns mockk<MediaVideo>(relaxed = true)
         coEvery { getTvShowReviewsUseCase(testTvShowId, 1) } returns domainReviews
 
         viewModel = makeViewModelWithDefaultStateHandle()
