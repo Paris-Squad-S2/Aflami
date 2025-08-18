@@ -30,6 +30,11 @@
 |-----------------------------------------------------------------------|----------------------------------------------------------------------|
 | <img src="assets/light_theme.gif" alt="Light Mode Demo" width="500"/> | <img src="assets/night_theme.gif" alt="Dark Mode Demo" width="500"/> |
 
+## 📽️ Gifs
+| Light Mode                                                            | Dark Mode                                                            |
+|-----------------------------------------------------------------------|----------------------------------------------------------------------|
+| [![Watch the video](https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view)](https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view) | [![Watch the video](https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view)](https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view) |
+
 
 ## 🚀 Quick Start Guide
 
@@ -240,3 +245,5 @@ If you encounter issues during setup:
 
 **🎉 You're Ready to Start Developing! 🚀**
 </div>
+
+[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
