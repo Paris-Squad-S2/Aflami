@@ -25,15 +25,15 @@
 - 📱 **Responsive Design** - Optimized for all screen sizes
 - 🌐 **Language Support** - Available in English and Arabic
 
-## 📽️ Gifs
-| Light Mode                                                            | Dark Mode                                                            |
-|-----------------------------------------------------------------------|----------------------------------------------------------------------|
-| <img src="assets/light_theme.gif" alt="Light Mode Demo" width="500"/> | <img src="assets/night_theme.gif" alt="Dark Mode Demo" width="500"/> |
+## 📽️ Gifs ( click on gif for high quality video )
 
-## 📽️ Gifs
-| Light Mode                                                            | Dark Mode                                                            |
-|-----------------------------------------------------------------------|----------------------------------------------------------------------|
-| [![Watch the video](assets/light_theme.gif)](https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view) | [![Watch the video](assets/night_theme.gif)](https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view) |
+| Dark Mode |
+|-----------|
+| <a href="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view"> <img src="assets/night_theme.gif" alt="Watch the video" width="980" height="1200"/> </a> |
+
+| Light Mode |
+|------------|
+| <a href="https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view"> <img src="assets/light_theme.gif" alt="Watch the video" width="980" height="1200"/> </a> |
 
 
 ## 🚀 Quick Start Guide
@@ -240,10 +240,10 @@ If you encounter issues during setup:
 
 
 <div align="center">
-[![Issues](https://img.shields.io/badge/Issues-Report-orange)](https://github.com/Paris-Squad-S2/Aflami/issues)
+    <a href="https://github.com/Paris-Squad-S2/Aflami/issues">
+  <img src="https://img.shields.io/badge/Issues-Report-orange?logo=github" alt="Report Issues"/>
+</a>
 ⭐ Star this repo!
 
 **🎉 You're Ready to Start Developing! 🚀**
 </div>
-
-[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://www.youtube.com/watch?v=VIDEO_ID)
