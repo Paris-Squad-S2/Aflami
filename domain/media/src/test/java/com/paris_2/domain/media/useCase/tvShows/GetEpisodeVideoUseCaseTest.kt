@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.runTest
 
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.paris_2.domain.media.testUtils.fakeEpisodeVideo
+import com.paris_2.domain.media.testUtils.fakeMediaVideo
 
 class GetEpisodeVideoUseCaseTest {
 
@@ -32,12 +32,12 @@ class GetEpisodeVideoUseCaseTest {
                 seasonNumber,
                 episodeNumber
             )
-        } returns fakeEpisodeVideo
+        } returns fakeMediaVideo
 
         // When
         val result = getEpisodeVideoUseCase(tvShowId,seasonNumber,episodeNumber)
 
         // Then
-        assertThat(result).isEqualTo(fakeEpisodeVideo.first())
+        assertThat(result).isEqualTo(fakeMediaVideo.first())
     }
 }
