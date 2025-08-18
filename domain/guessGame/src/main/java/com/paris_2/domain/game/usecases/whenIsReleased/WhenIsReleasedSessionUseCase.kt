@@ -4,6 +4,7 @@ import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
+import com.paris_2.domain.media.entity.Category
 import java.util.UUID
 
 class WhenIsReleasedSessionUseCase(
@@ -31,7 +32,8 @@ class WhenIsReleasedSessionUseCase(
                 Answer(
                     questionId = questionId,
                     text = year.toString(),
-                    isCorrect = year == correctMovie.yearOfRelease.year
+                    isCorrect = year == correctMovie.yearOfRelease.year,
+                    genre = correctMovie.genres.firstOrNull() ?: Category.Unknown
                 )
             }
 

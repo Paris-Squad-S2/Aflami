@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -35,9 +36,9 @@ import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.home.components.MediaCard
 import com.feature.home.homeUi.screen.home.components.MediaCardType
 import com.paris_2.aflami.designsystem.components.AppIcon
+import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 import com.paris_2.aflami.designsystem.theme.Theme
 
@@ -132,7 +133,7 @@ fun TopRatingMoviesScreen(
                     tint = Theme.colors.text.title,
                 ),
                 title = stringResource(R.string.top_rating),
-                modifier = Modifier.padding(top = 23.dp, bottom = 0.dp)
+                modifier = Modifier.statusBarsPadding()
             )
             if (state.value.topRatingMovies.isNotEmpty()) {
                 TopRatingMoviesContent(
