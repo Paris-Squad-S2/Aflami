@@ -27,11 +27,10 @@ import com.repository.guessgame.repository.ActorPopularityRepositoryImpl
 import com.repository.guessgame.repository.GamePointsRepositoryImpl
 import com.repository.lists.ListsRepositoryImpl
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
-import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
@@ -130,13 +129,12 @@ object RepositoryModule {
     fun provideDetailedMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
-        continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
-        homeMediaLocalDataSource: HomeMediaLocalDataSource,
+        mediaLocalDataSource: MediaLocalDataSource,
         settingLocalDataSource: SettingLocalDataSource,
     ): MediaRepository = MediaRepositoryImpl(
         networkConnectionChecker,
         mediaRemoteDataSource,
-        continueWatchingLocalDataSource, homeMediaLocalDataSource,
+        mediaLocalDataSource,
         settingLocalDataSource
     )
 

@@ -3,10 +3,9 @@ package com.datasource.local.media
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.datasource.local.media.dao.ContinueWatchingDao
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
-import com.datasource.local.media.dao.HomeMediaDao
+import com.datasource.local.media.dao.MediaDao
 import com.datasource.local.media.dao.MovieDao
 import com.datasource.local.media.dao.SearchHistoryDao
 import com.datasource.local.media.dao.TvShowDao
@@ -40,8 +39,7 @@ import com.repository.movie.models.local.MovieReviewEntity
 
 @TypeConverters(MediaConverter::class)
 abstract class MediaDatabase : RoomDatabase() {
-    abstract fun continueWatchingDao(): ContinueWatchingDao
-    abstract fun homeMediaDao(): HomeMediaDao
+    abstract fun mediaDao(): MediaDao
     abstract fun movieDao(): MovieDao
     abstract fun searchHistoryDao(): SearchHistoryDao
     abstract fun countryDao(): CountryDao

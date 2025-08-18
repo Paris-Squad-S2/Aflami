@@ -8,9 +8,8 @@ import com.datasource.local.guessGame.dao.GamePointsDao
 import com.datasource.local.media.MediaDatabase
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
-import com.datasource.local.media.dao.ContinueWatchingDao
 import com.datasource.local.media.dao.SearchHistoryDao
-import com.datasource.local.media.dao.HomeMediaDao
+import com.datasource.local.media.dao.MediaDao
 import com.datasource.local.media.dao.MovieDao
 import com.datasource.local.media.dao.TvShowDao
 import dagger.Module
@@ -49,8 +48,7 @@ object RoomDatabaseModule {
     @Provides fun provideCountryDao(db: MediaDatabase): CountryDao = db.countryDao()
     @Provides fun provideGenresUserInteractionDao(db: MediaDatabase): GenresUserInteractionDao = db.genreUserInteractionDao()
     @Provides fun provideTvShowDao(db: MediaDatabase): TvShowDao = db.tvShowDao()
-    @Provides fun provideContinueWatchingDao(db: MediaDatabase): ContinueWatchingDao = db.continueWatchingDao()
-    @Provides fun provideHomeMediaDao(db: MediaDatabase): HomeMediaDao = db.homeMediaDao()
+    @Provides fun provideContinueWatchingDao(db: MediaDatabase): MediaDao = db.mediaDao()
     @Provides fun provideMovieDao(db: MediaDatabase): MovieDao = db.movieDao()
     @Provides fun provideGameDao(db: GuessGameDatabase) : GamePointsDao = db.gamePointsDao()
 

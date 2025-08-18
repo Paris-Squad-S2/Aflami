@@ -12,16 +12,14 @@ import com.datasource.local.media.datasource.MovieLocalDataSourceImpl
 import com.datasource.local.media.datasource.TvShowLocalDataSourceImpl
 import com.datasource.local.guessGame.dao.GamePointsDao
 import com.datasource.local.guessGame.datasource.GamePointsLocalDataSourceImpl
-import com.datasource.local.media.dao.ContinueWatchingDao
 import com.datasource.local.media.dao.CountryDao
 import com.datasource.local.media.dao.GenresUserInteractionDao
-import com.datasource.local.media.dao.HomeMediaDao
+import com.datasource.local.media.dao.MediaDao
 import com.datasource.local.media.dao.SearchHistoryDao
-import com.datasource.local.media.datasource.ContinueWatchingLocalDataSourceImpl
 import com.datasource.local.media.datasource.CountriesLocalDataSourceImpl
 import com.datasource.local.media.datasource.GenresInteractionDataSourceImpl
 import com.datasource.local.media.datasource.HistoryLocalDataSourceImpl
-import com.datasource.local.media.datasource.HomeMediaLocalDataSourceImpl
+import com.datasource.local.media.datasource.MediaLocalDataSourceImpl
 import com.datasource.remote.lists.ListsRemoteDataSourceImpl
 import com.datasource.remote.lists.service.ListApiService
 import com.paris_2.dataSource.local.user.AuthenticationLocalDataSourceImpl
@@ -34,11 +32,10 @@ import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.dataSource.local.TvShowLocalDataSource
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
-import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.movie.dataSource.local.MovieLocalDataSource
 import dagger.Module
 import dagger.Provides
@@ -59,9 +56,9 @@ object DataSourceModule {
     @Provides
     @Singleton
     fun provideHomeLocalDataSource(
-        dao: HomeMediaDao,
+        dao: MediaDao,
         workManager: WorkManager,
-    ): HomeMediaLocalDataSource = HomeMediaLocalDataSourceImpl(
+    ): MediaLocalDataSource = MediaLocalDataSourceImpl(
         dao,
         workManager = workManager
     )
@@ -92,11 +89,6 @@ object DataSourceModule {
         dao: TvShowDao,
     ): TvShowLocalDataSource = TvShowLocalDataSourceImpl(workManager, dao)
 
-    @Provides
-    @Singleton
-    fun provideHomeMediaLocalDataSource(
-        mediaDao: ContinueWatchingDao
-    ): ContinueWatchingLocalDataSource = ContinueWatchingLocalDataSourceImpl(mediaDao)
 
     @Provides
     @Singleton

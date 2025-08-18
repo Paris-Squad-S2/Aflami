@@ -3,19 +3,21 @@ package com.datasource.local.media.datasource
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.datasource.local.media.dao.HomeMediaDao
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.datasource.local.media.dao.MediaDao
+import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.local.workmanager.ClearMediaWorker
 import com.repository.media.entity.Category
 import com.repository.media.entity.HomeMediaEntity
+import com.repository.media.entity.MediaEntity
+import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.TimeUnit
 
-class HomeMediaLocalDataSourceImpl(
-    private val homeMediaDao: HomeMediaDao,
+class MediaLocalDataSourceImpl(
+    private val mediaDao: MediaDao,
     private val workManager: WorkManager,
-) : HomeMediaLocalDataSource {
+) : MediaLocalDataSource {
     override suspend fun addHomeMedia(mediaList: List<HomeMediaEntity>) {
-        homeMediaDao.addHomeMedia(mediaList)
+        mediaDao.addHomeMedia(mediaList)
         mediaList.map { it.category }.distinct().forEach { category ->
             scheduleClearHomeMediaByCategory(category)
         }
@@ -25,11 +27,19 @@ class HomeMediaLocalDataSourceImpl(
         category: Category,
         language: String,
     ): List<HomeMediaEntity> {
-        return homeMediaDao.getHomeMediaByCategory(category = category, language = language)
+        return mediaDao.getHomeMediaByCategory(category = category, language = language)
     }
 
     override suspend fun clearHomeMediaByCategory(category: Category) {
-        homeMediaDao.clearHomeMediaByCategory(category = category)
+        mediaDao.clearHomeMediaByCategory(category = category)
+    }
+
+    override suspend fun addMediaContinueWatching(media: MediaEntity) {
+        mediaDao.addMediaContinueWatching(media)
+    }
+
+    override fun getMediaContinueWatching(): Flow<List<MediaEntity>> {
+        return mediaDao.getMediaContinueWatching()
     }
 
     private fun scheduleClearHomeMediaByCategory(category: Category) {
