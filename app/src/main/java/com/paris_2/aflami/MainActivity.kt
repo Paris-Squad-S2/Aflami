@@ -15,6 +15,7 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.main.InstallSavedAppLanguage
 import com.paris_2.domain.user.usecase.HasAnySessionUseCase
 import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
+import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -37,6 +38,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var bottomNavBarAPI: BottomNavBarAPI
+
+    @Inject
+    lateinit var settingsUseCase: SettingsUseCase
 
     private val minSplashMillis = 2833L
     @Volatile private var releaseSplash = false
@@ -66,7 +70,7 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             InstallSavedAppLanguage(this)
-            AflamiTheme {
+            AflamiTheme(isDarkTheme = settingsUseCase.isDarkTheme()) {
                 LaunchedEffect(Unit) {
                     when {
                         hasAnySessionUseCase() -> bottomNavBarAPI()

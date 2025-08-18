@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -37,7 +36,8 @@ import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCas
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 import com.paris_2.aflami.designsystem.R as RDesignSystem
@@ -61,44 +61,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val createListUseCase: CreateListUseCase,
     private val settingsUseCase: SettingsUseCase,
     navigator: MediaDetailsNavigator,
-) : MovieDetailsScreenInteractionListener, BaseViewModel<MovieDetailsScreenState>(
-    MovieDetailsScreenState(
-        movieDetailsUiState = MovieDetailsUiState(
-            movie = MovieUi(
-                id = 0,
-                posterUrl = "",
-                rating = 0f,
-                title = "",
-                genres = emptyList(),
-                releaseDate = "",
-                runtime = "",
-                country = "",
-                description = "",
-                productionCompanies = emptyList(),
-            ),
-            cast = emptyList(),
-            reviews = emptyList(),
-            gallery = emptyList(),
-            recommendations = flowOf(PagingData.empty()),
-            movieVideoUi = MovieVideoUi(
-                key = "",
-                name = "",
-                site = "",
-            ),
-            selectedRating = 0f,
-            isYoutubePlayerVisible = false,
-            youtubeVideoKey = null
-        ),
-        isLoading = true,
-        errorMessage = null,
-        showSnackBar = false,
-        availableLists = emptyList(),
-        selectedListIndex = -1,
-        showCreateListDialog = false,
-        createListName = "",
-        createListButtonState = ButtonState.Normal
-    ), navigator
-) {
+) : MovieDetailsScreenInteractionListener,
+    BaseViewModel<MovieDetailsScreenState>(MovieDetailsScreenState(), navigator) {
 
 
     private val movieId by lazy {
@@ -160,6 +124,7 @@ class MovieDetailsViewModel @Inject constructor(
                 snackBarMessage = R.string.failed_to_load_restriction_settings,
             )
         )
+        hideSnackBar()
     }
 
     private fun loadAvailableLists() {
@@ -413,6 +378,7 @@ class MovieDetailsViewModel @Inject constructor(
                             snackBarMessage = R.string.movie_added_to_list_successfully
                         )
                     )
+                    hideSnackBar()
                     loadAvailableLists()
                 },
                 onError = { errorMessage ->
@@ -423,6 +389,7 @@ class MovieDetailsViewModel @Inject constructor(
                             snackBarSuccess = false,
                         )
                     )
+                    hideSnackBar()
                 }
             )
         }
@@ -476,6 +443,7 @@ class MovieDetailsViewModel @Inject constructor(
                             snackBarMessage = if (result.success) RDesignSystem.string.added_new_list_successfully else RDesignSystem.string.some_error_happened
                         )
                     )
+                    hideSnackBar()
                     loadAvailableLists()
                 },
                 onError = { errorMessage ->
@@ -574,6 +542,7 @@ class MovieDetailsViewModel @Inject constructor(
                         showRatingDialog = false
                     )
                 )
+                hideSnackBar()
             },
             onError = {
                 updateState(
@@ -584,6 +553,7 @@ class MovieDetailsViewModel @Inject constructor(
                         errorMessage = it
                     )
                 )
+                hideSnackBar()
             }
         )
     }
@@ -595,6 +565,15 @@ class MovieDetailsViewModel @Inject constructor(
                 showSnackBar = false
             )
         )
+    }
+
+    private fun hideSnackBar() {
+        viewModelScope.launch {
+            if (screenState.value.showSnackBar) {
+                delay(3000)
+                updateState(screenState.value.copy(showSnackBar = false))
+            }
+        }
     }
 
 }

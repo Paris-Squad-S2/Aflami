@@ -232,8 +232,8 @@ class HomeScreenViewModelTest {
     fun `loadContinueWatchingMedia does not affect errorMessage`() = runTest {
         val oldError = "Something else before"
         coEvery { settingsUseCase.getRestriction() } returns "Off"
-        viewModel.emitState(viewModel.screenState.value.copy(errorMessage = oldError))
-        viewModel.emitState(
+        viewModel.updateState(viewModel.screenState.value.copy(errorMessage = oldError))
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
                     continueWatchingMediaList = emptyList()
@@ -255,7 +255,7 @@ class HomeScreenViewModelTest {
         runTest {
             coEvery { settingsUseCase.getRestriction() } returns "Off"
             val catMap = fakeCategories.associateWith { true }.toMutableMap()
-            viewModel.emitState(
+            viewModel.updateState(
                 viewModel.screenState.value.copy(
                     homeUIState = viewModel.screenState.value.homeUIState.copy(
                         categories = catMap
@@ -303,7 +303,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `getRandomMoodPickerMovie picks a random movie from moodPickerFilteredMovies`() = runTest {
         coEvery { settingsUseCase.getRestriction() } returns "Off"
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
                     moodPickerFilteredMovies = fakeUpcomingList
@@ -323,7 +323,7 @@ class HomeScreenViewModelTest {
         val filteredMovies =
             fakeTopRatedList.filter { it.categories.contains(R.string.category_drama) }
         coEvery { getTopRatingMediaUseCase.invoke() } returns filteredMovies.map { it.toMedia() }
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
                     moodPickerMovie = filteredMovies.random()
@@ -354,7 +354,7 @@ class HomeScreenViewModelTest {
         val cat = fakeCategories.first()
         val filteredMovies = fakeUpcomingList.filter { it.toMedia().categories.contains(cat) }
         coEvery { filterUpComingMediaByCategoriesUseCase(listOf(cat)) } returns filteredMovies.map { it.toMedia() }
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
                     categories = fakeCategories.associateWith { false }.toMutableMap()
@@ -376,7 +376,7 @@ class HomeScreenViewModelTest {
         coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(cat)) } throws RuntimeException(
             "Category error"
         )
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
                     categories = fakeCategories.associateWith { false }.toMutableMap()
@@ -391,7 +391,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `onDismissMoodPicker hides dialog and resets moodPickerMovie`() = runTest {
         coEvery { settingsUseCase.getRestriction() } returns "Off"
-        viewModel.emitState(
+        viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
                     showMoodPickerDialog = true,

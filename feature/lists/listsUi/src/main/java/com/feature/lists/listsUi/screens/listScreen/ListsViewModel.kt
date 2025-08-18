@@ -1,5 +1,6 @@
 package com.feature.lists.listsUi.screens.listScreen
 
+import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.map
@@ -12,7 +13,9 @@ import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -21,9 +24,7 @@ class ListsViewModel @Inject constructor(
     private val createListUseCase: CreateListUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
-    ) : BaseViewModel<ListScreenUIState>(
-    initialState = ListScreenUIState()
-), ListsInteractionListener {
+) : BaseViewModel<ListScreenUIState>(ListScreenUIState()), ListsInteractionListener {
     init {
         getLists()
         getIsUserLoggedIn()
@@ -35,14 +36,14 @@ class ListsViewModel @Inject constructor(
                 isLoggedInUseCase.invoke()
             },
             onSuccess = {
-                emitState(
+                updateState(
                     screenState.value.copy(
-                       isLoggedIn = it
+                        isLoggedIn = it
                     )
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         isLoading = false
@@ -70,7 +71,7 @@ class ListsViewModel @Inject constructor(
                 }
             },
             onSuccess = { pagingDataFlow ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         lists = pagingDataFlow,
                         isLoading = false,
@@ -79,7 +80,7 @@ class ListsViewModel @Inject constructor(
                 )
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         isLoading = false
@@ -95,7 +96,7 @@ class ListsViewModel @Inject constructor(
                 createListUseCase.invoke(name)
             },
             onSuccess = { result ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         showCreateListDialog = false,
                         createListName = "",
@@ -104,10 +105,11 @@ class ListsViewModel @Inject constructor(
                         snackBarSuccess = result.success
                     )
                 )
+                hideSnackBar()
                 getLists()
             },
             onError = { errorMessage ->
-                emitState(
+                updateState(
                     screenState.value.copy(
                         errorMessage = errorMessage,
                         createListButtonState = ButtonState.Normal
@@ -122,7 +124,7 @@ class ListsViewModel @Inject constructor(
     }
 
     override fun onAddClicked() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 showCreateListDialog = true
             )
@@ -130,7 +132,7 @@ class ListsViewModel @Inject constructor(
     }
 
     override fun onCreateListDismiss() {
-        emitState(
+        updateState(
             screenState.value.copy(
                 showCreateListDialog = false,
                 createListName = "",
@@ -142,7 +144,7 @@ class ListsViewModel @Inject constructor(
     override fun onCreateListConfirm() {
         val listName = screenState.value.createListName.trim()
         if (listName.isNotEmpty()) {
-            emitState(
+            updateState(
                 screenState.value.copy(
                     createListButtonState = ButtonState.Loading
                 )
@@ -152,7 +154,7 @@ class ListsViewModel @Inject constructor(
     }
 
     override fun onCreateListNameChange(name: String) {
-        emitState(
+        updateState(
             screenState.value.copy(
                 createListName = name,
                 createListButtonState = if (name.isBlank()) ButtonState.Disabled else ButtonState.Normal
@@ -165,18 +167,29 @@ class ListsViewModel @Inject constructor(
     }
 
     override fun onHideSnackBar() {
-        emitState(
+        updateState(
             screenState.value.copy(showSnackBar = false)
-        )    }
+        )
+    }
 
     override fun onShowSnackBar() {
-        emitState(
+        updateState(
             screenState.value.copy(showSnackBar = true)
         )
+        hideSnackBar()
     }
 
     override fun onLogoutApplyClicked() {
         authenticationFeatureAPI()
+    }
+
+    private fun hideSnackBar() {
+        viewModelScope.launch {
+            if (screenState.value.showSnackBar) {
+                delay(3000)
+                updateState(screenState.value.copy(showSnackBar = false))
+            }
+        }
     }
 
 }

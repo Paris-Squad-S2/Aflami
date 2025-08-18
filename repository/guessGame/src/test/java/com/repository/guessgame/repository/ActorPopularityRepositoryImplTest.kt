@@ -25,7 +25,6 @@ class ActorPopularityRepositoryImplTest {
     private val networkChecker: NetworkConnectionChecker = mockk()
     private val remote: ActorPopularityRemoteDataSource = mockk()
     private val settings: SettingLocalDataSource = mockk()
-
     private val language = "en"
 
     @BeforeEach
