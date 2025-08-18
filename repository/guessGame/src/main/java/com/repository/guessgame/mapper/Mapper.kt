@@ -3,7 +3,7 @@ package com.repository.guessgame.mapper
 import com.paris_2.domain.game.entity.Actor
 import com.paris_2.domain.game.entity.ActorMedia
 import com.paris_2.domain.game.entity.UserPoints
-import com.paris_2.domain.game.utils.Genre
+import com.paris_2.domain.media.entity.Category
 import com.repository.guessgame.dto.ActorDto
 import com.repository.guessgame.dto.ActorMediaDto
 import com.repository.guessgame.entity.UserGamePointsEntity
@@ -28,7 +28,7 @@ fun ActorMediaDto.toDomain(): ActorMedia? {
         name = title ?: name ?: originalTitle ?: originalName ?: "",
         posterImg = posterPath ?: "",
         yearOfRelease = parsedDate,
-        genres = genreIds?.mapNotNull { it.toDomainGenre() } ?: emptyList()
+        genres = genreIds?.mapNotNull { it.toDomainCategory() } ?: emptyList()
     )
 }
 
@@ -47,36 +47,36 @@ fun UserPoints.toEntity(): UserGamePointsEntity {
 }
 
 
-private val genreIdMap = mapOf(
-    28 to Genre.ACTION,
-    12 to Genre.ADVENTURE,
-    16 to Genre.ANIMATION,
-    35 to Genre.COMEDY,
-    80 to Genre.CRIME,
-    99 to Genre.DOCUMENTARY,
-    18 to Genre.DRAMA,
-    10751 to Genre.FAMILY,
-    14 to Genre.FANTASY,
-    36 to Genre.HISTORY,
-    27 to Genre.HORROR,
-    10402 to Genre.MUSIC,
-    9648 to Genre.MYSTERY,
-    10749 to Genre.ROMANCE,
-    878 to Genre.SCIENCE_FICTION,
-    10770 to Genre.TV_MOVIE,
-    53 to Genre.THRILLER,
-    10752 to Genre.WAR,
-    37 to Genre.WESTERN,
-    10759 to Genre.ACTION_ADVENTURE,
-    10762 to Genre.KIDS,
-    10763 to Genre.NEWS,
-    10764 to Genre.REALITY,
-    10765 to Genre.SCI_FI_FANTASY,
-    10766 to Genre.SOAP,
-    10767 to Genre.TALK,
-    10768 to Genre.WAR_POLITICS
+private val categoryIdMap = mapOf(
+    28 to Category.Action,
+    12 to Category.Adventure,
+    16 to Category.Animation,
+    35 to Category.Comedy,
+    80 to Category.Crime,
+    99 to Category.Documentary,
+    18 to Category.Drama,
+    10751 to Category.Family,
+    14 to Category.Fantasy,
+    36 to Category.History,
+    27 to Category.Horror,
+    10402 to Category.Music,
+    9648 to Category.Mystery,
+    10749 to Category.Romance,
+    878 to Category.ScienceFiction,
+    10770 to Category.TvMovie,
+    53 to Category.Thriller,
+    10752 to Category.War,
+    37 to Category.Western,
+    10759 to Category.ActionAdventure,
+    10762 to Category.Kids,
+    10763 to Category.News,
+    10764 to Category.Reality,
+    10765 to Category.ScifiFantasy,
+    10766 to Category.Soap,
+    10767 to Category.Talk,
+    10768 to Category.WarPolitics
 )
 
-fun Int?.toDomainGenre(): Genre {
-    return this?.let { genreIdMap[it] } ?: Genre.UNKNOWN
+fun Int?.toDomainCategory(): Category {
+    return this?.let { categoryIdMap[it] } ?: Category.Unknown
 }

@@ -7,7 +7,7 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.Question
-import com.paris_2.domain.game.utils.Genre
+import com.paris_2.domain.media.entity.Category
 
 data class GuessQuestionUiState(
     val gameTitle: String = "",
@@ -82,35 +82,35 @@ fun Answer.toUiAnswer(questionType: QuestionType): UiAnswer =
         )
     }
 
-fun Genre.toUi(): GenreGameUi = when (this) {
-    Genre.ACTION -> GenreGameUi.Action
-    Genre.ADVENTURE -> GenreGameUi.Adventure
-    Genre.ANIMATION -> GenreGameUi.Animation
-    Genre.COMEDY -> GenreGameUi.Comedy
-    Genre.CRIME -> GenreGameUi.Crime
-    Genre.DOCUMENTARY -> GenreGameUi.Documentary
-    Genre.DRAMA -> GenreGameUi.Drama
-    Genre.FAMILY -> GenreGameUi.Family
-    Genre.FANTASY -> GenreGameUi.Fantasy
-    Genre.HISTORY -> GenreGameUi.History
-    Genre.HORROR -> GenreGameUi.Horror
-    Genre.MUSIC -> GenreGameUi.Music
-    Genre.MYSTERY -> GenreGameUi.Mystery
-    Genre.ROMANCE -> GenreGameUi.Romance
-    Genre.SCIENCE_FICTION -> GenreGameUi.ScienceFiction
-    Genre.TV_MOVIE -> GenreGameUi.TvMovie
-    Genre.THRILLER -> GenreGameUi.Thriller
-    Genre.WAR -> GenreGameUi.War
-    Genre.WESTERN -> GenreGameUi.Western
-    Genre.ACTION_ADVENTURE -> GenreGameUi.ActionAdventure
-    Genre.KIDS -> GenreGameUi.Kids
-    Genre.NEWS -> GenreGameUi.News
-    Genre.REALITY -> GenreGameUi.Reality
-    Genre.SCI_FI_FANTASY -> GenreGameUi.ScifiFantasy
-    Genre.SOAP -> GenreGameUi.Soap
-    Genre.TALK -> GenreGameUi.Talk
-    Genre.WAR_POLITICS -> GenreGameUi.WarPolitics
-    Genre.UNKNOWN -> GenreGameUi.Unknown
+fun Category.toUi(): GenreGameUi = when (this) {
+    Category.Action -> GenreGameUi.Action
+    Category.Adventure -> GenreGameUi.Adventure
+    Category.Animation -> GenreGameUi.Animation
+    Category.Comedy -> GenreGameUi.Comedy
+    Category.Crime -> GenreGameUi.Crime
+    Category.Documentary -> GenreGameUi.Documentary
+    Category.Drama -> GenreGameUi.Drama
+    Category.Family -> GenreGameUi.Family
+    Category.Fantasy -> GenreGameUi.Fantasy
+    Category.History -> GenreGameUi.History
+    Category.Horror -> GenreGameUi.Horror
+    Category.Music -> GenreGameUi.Music
+    Category.Mystery -> GenreGameUi.Mystery
+    Category.Romance -> GenreGameUi.Romance
+    Category.ScienceFiction -> GenreGameUi.ScienceFiction
+    Category.TvMovie -> GenreGameUi.TvMovie
+    Category.Thriller -> GenreGameUi.Thriller
+    Category.War -> GenreGameUi.War
+    Category.Western -> GenreGameUi.Western
+    Category.ActionAdventure -> GenreGameUi.ActionAdventure
+    Category.Kids -> GenreGameUi.Kids
+    Category.News -> GenreGameUi.News
+    Category.Reality -> GenreGameUi.Reality
+    Category.ScifiFantasy -> GenreGameUi.ScifiFantasy
+    Category.Soap -> GenreGameUi.Soap
+    Category.Talk -> GenreGameUi.Talk
+    Category.WarPolitics -> GenreGameUi.WarPolitics
+    Category.Unknown -> GenreGameUi.Unknown
 }
 
-fun Genre.toDisplayName(): Int = this.toUi().displayNameResId
+fun Category.toDisplayName(): Int = this.toUi().displayNameResId

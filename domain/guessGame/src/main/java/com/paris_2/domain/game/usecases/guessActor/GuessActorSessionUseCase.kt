@@ -4,7 +4,7 @@ import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
-import com.paris_2.domain.game.utils.Genre
+import com.paris_2.domain.media.entity.Category
 import java.util.UUID
 
 class GuessActorSessionUseCase(
@@ -21,7 +21,7 @@ class GuessActorSessionUseCase(
                 questionId = questionId,
                 text = it.name,
                 isCorrect = it.name == correctActor.name,
-                genre = it.media.firstOrNull()?.genres?.firstOrNull() ?: Genre.UNKNOWN
+                genre = it.media.firstOrNull()?.genres?.firstOrNull() ?: Category.Unknown
             )
         }.shuffled()
 

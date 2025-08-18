@@ -1,10 +1,11 @@
 package com.paris_2.domain.game.entity
 
-import com.paris_2.domain.game.utils.Genre
+import com.paris_2.domain.media.entity.Category
+
 
 data class Answer(
     val questionId: String,
     val text: String,
-    val genre: Genre,
+    val genre: Category,
     val isCorrect: Boolean
 )
