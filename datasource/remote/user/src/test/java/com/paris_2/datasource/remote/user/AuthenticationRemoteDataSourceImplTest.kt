@@ -265,4 +265,21 @@ class AuthenticationRemoteDataSourceImplTest {
             dataSource.createSession(requestToken)
         }
     }
+
+    @Test
+    fun `getRegisterUrl should return correct registration URL`() {
+        val expectedUrl = "https://www.themoviedb.org/signup"
+        val result = dataSource.getRegisterUrl()
+
+        assertThat(result.trim()).isEqualTo(expectedUrl) // Trim due to accidental whitespace in const
+    }
+
+    @Test
+    fun `getForgetPasswordUrl should return correct password reset URL`() {
+        val expectedUrl = "https://www.themoviedb.org/reset-password"
+        val result = dataSource.getForgetPasswordUrl()
+
+        assertThat(result.trim()).isEqualTo(expectedUrl)
+    }
+
 }
