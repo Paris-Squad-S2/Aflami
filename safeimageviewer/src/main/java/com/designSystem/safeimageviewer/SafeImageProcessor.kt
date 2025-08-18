@@ -21,23 +21,8 @@ data class ImageAnalysisResult(
 )
 
 class SafeImageProcessor private constructor(context: Context) {
-    companion object {
-        const val TAG = "SafeImageProcessor"
-        const val MAX_CONCURRENT_PROCESSING = 3
-
-        @Volatile
-        private var INSTANCE: SafeImageProcessor? = null
-
-        fun getInstance(context: Context): SafeImageProcessor {
-            return INSTANCE ?: synchronized(this) {
-                INSTANCE ?: SafeImageProcessor(context.applicationContext).also { INSTANCE = it }
-            }
-        }
-    }
-
     private val nsfwDetector = NSFWDetector(context)
     private val genderClassifier = GenderClassifier(context)
-
     private val processingDispatcher: CoroutineDispatcher = Dispatchers.Default.limitedParallelism(MAX_CONCURRENT_PROCESSING)
 
     fun processImageSync(
@@ -154,6 +139,20 @@ class SafeImageProcessor private constructor(context: Context) {
             genderClassifier.release()
         } catch (e: Exception) {
             Log.e(TAG, "Error releasing resources: ${e.message}")
+        }
+    }
+
+    companion object {
+        const val TAG = "SafeImageProcessor"
+        const val MAX_CONCURRENT_PROCESSING = 3
+
+        @Volatile
+        private var INSTANCE: SafeImageProcessor? = null
+
+        fun getInstance(context: Context): SafeImageProcessor {
+            return INSTANCE ?: synchronized(this) {
+                INSTANCE ?: SafeImageProcessor(context.applicationContext).also { INSTANCE = it }
+            }
         }
     }
 }

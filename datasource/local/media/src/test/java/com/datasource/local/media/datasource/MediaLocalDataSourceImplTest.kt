@@ -5,10 +5,10 @@ import androidx.work.WorkManager
 import com.datasource.local.media.dao.MediaDao
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.datasource.local.MediaLocalDataSource
-import com.repository.media.entity.Category
-import com.repository.media.entity.HomeMediaEntity
-import com.repository.media.entity.MediaEntity
-import com.repository.media.entity.MediaTypeEntity
+import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.HomeMediaEntity
+import com.repository.media.models.local.media.MediaEntity
+import com.repository.media.models.local.media.MediaTypeEntity
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.verify

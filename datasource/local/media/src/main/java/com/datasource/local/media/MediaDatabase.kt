@@ -9,22 +9,22 @@ import com.datasource.local.media.dao.MediaDao
 import com.datasource.local.media.dao.MovieDao
 import com.datasource.local.media.dao.SearchHistoryDao
 import com.datasource.local.media.dao.TvShowDao
-import com.repository.media.entity.CountryEntity
-import com.repository.media.entity.GenreUserInteractionEntity
-import com.repository.media.entity.HomeMediaEntity
-import com.repository.media.entity.MediaEntity
-import com.repository.media.entity.SearchHistoryEntity
+import com.repository.media.models.local.media.CountryEntity
+import com.repository.media.models.local.media.GenreUserInteractionEntity
+import com.repository.media.models.local.media.HomeMediaEntity
+import com.repository.media.models.local.media.MediaEntity
+import com.repository.media.models.local.media.SearchHistoryEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TVShowGalleryEntity
 import com.repository.model.local.TVShowReviewEntity
 import com.repository.model.local.TvShowCastEntity
 import com.repository.model.local.TvShowEntity
 import com.repository.model.local.TvShowSimilarEntity
-import com.repository.movie.models.local.MovieCastEntity
-import com.repository.movie.models.local.MovieGalleryEntity
-import com.repository.movie.models.local.MovieEntity
-import com.repository.movie.models.local.MovieSimilarEntity
-import com.repository.movie.models.local.MovieReviewEntity
+import com.repository.media.models.local.moive.MovieCastEntity
+import com.repository.media.models.local.moive.MovieGalleryEntity
+import com.repository.media.models.local.moive.MovieEntity
+import com.repository.media.models.local.moive.MovieSimilarEntity
+import com.repository.media.models.local.moive.MovieReviewEntity
 
 @Database(
     entities = [MediaEntity::class, HomeMediaEntity::class, MovieEntity::class,

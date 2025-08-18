@@ -11,7 +11,7 @@ import com.repository.media.SearchRemoteDataSourceImpl
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
-import com.repository.movie.dataSource.remote.MovieRemoteDataSource
+import com.repository.media.datasource.remote.MovieRemoteDataSource
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn

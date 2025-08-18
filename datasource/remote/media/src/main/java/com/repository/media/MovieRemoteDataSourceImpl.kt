@@ -1,14 +1,14 @@
 package com.repository.media
 
 import com.repository.media.services.MovieApiService
-import com.repository.movie.dataSource.remote.MovieRemoteDataSource
-import com.repository.movie.models.remote.MovieCreditsDto
-import com.repository.movie.models.remote.MovieDto
-import com.repository.movie.models.remote.MovieImagesDto
-import com.repository.movie.models.remote.MovieReviewsDto
-import com.repository.movie.models.remote.MovieSimilarsDto
-import com.repository.movie.models.remote.MovieVideoDto
-import com.repository.movie.models.remote.RatingDto
+import com.repository.media.datasource.remote.MovieRemoteDataSource
+import com.repository.media.models.remote.movie.MovieCreditsDto
+import com.repository.media.models.remote.movie.MovieDto
+import com.repository.media.models.remote.movie.MovieImagesDto
+import com.repository.media.models.remote.movie.MovieReviewsDto
+import com.repository.media.models.remote.movie.MovieSimilarsDto
+import com.repository.media.models.remote.movie.MovieVideoDto
+import com.repository.media.models.remote.movie.RatingDto
 import javax.inject.Inject
 
 class MovieRemoteDataSourceImpl @Inject constructor(

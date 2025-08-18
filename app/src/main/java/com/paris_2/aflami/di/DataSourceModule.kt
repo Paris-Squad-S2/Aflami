@@ -36,7 +36,7 @@ import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
-import com.repository.movie.dataSource.local.MovieLocalDataSource
+import com.repository.media.datasource.local.MovieLocalDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

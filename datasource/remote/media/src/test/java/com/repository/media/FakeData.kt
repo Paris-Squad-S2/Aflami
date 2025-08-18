@@ -1,17 +1,17 @@
 package com.repository.media
 
-import com.repository.movie.models.remote.MovieCastDto
-import com.repository.movie.models.remote.MovieCreditsDto
-import com.repository.movie.models.remote.MovieDto
-import com.repository.movie.models.remote.MovieGenreDto
-import com.repository.movie.models.remote.MovieImagesDto
-import com.repository.movie.models.remote.MoviePosterDto
-import com.repository.movie.models.remote.MovieReviewDto
-import com.repository.movie.models.remote.MovieReviewsDto
-import com.repository.movie.models.remote.MovieSimilarDto
-import com.repository.movie.models.remote.MovieSimilarsDto
-import com.repository.movie.models.remote.MovieVideoDto
-import com.repository.movie.models.remote.MovieVideoResultDto
+import com.repository.media.models.remote.movie.MovieCastDto
+import com.repository.media.models.remote.movie.MovieCreditsDto
+import com.repository.media.models.remote.movie.MovieDto
+import com.repository.media.models.remote.movie.MovieGenreDto
+import com.repository.media.models.remote.movie.MovieImagesDto
+import com.repository.media.models.remote.movie.MoviePosterDto
+import com.repository.media.models.remote.movie.MovieReviewDto
+import com.repository.media.models.remote.movie.MovieReviewsDto
+import com.repository.media.models.remote.movie.MovieSimilarDto
+import com.repository.media.models.remote.movie.MovieSimilarsDto
+import com.repository.media.models.remote.movie.MovieVideoDto
+import com.repository.media.models.remote.movie.MovieVideoResultDto
 
 val genres = listOf(
     MovieGenreDto(

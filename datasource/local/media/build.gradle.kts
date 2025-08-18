@@ -52,7 +52,7 @@ dependencies {
     testImplementation(libs.bundles.test)
     implementation(projects.repository.media)
     implementation(projects.repository.tvShows)
-    implementation(projects.repository.movie)
+
 }
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
 

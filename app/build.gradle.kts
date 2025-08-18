@@ -137,7 +137,6 @@ dependencies {
 
     implementation(projects.repository.tvShows)
     implementation(projects.repository.lists)
-    implementation(projects.repository.movie)
     implementation(projects.repository.user)
     implementation(projects.repository.media)
     implementation(projects.repository.guessGame)

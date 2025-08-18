@@ -1,7 +1,7 @@
 package com.repository.media.mapper.search
 
 import com.paris_2.domain.media.entity.Country
-import com.repository.media.entity.CountryEntity
+import com.repository.media.models.local.media.CountryEntity
 
 
 fun List<CountryEntity>.toCountry(): List<Country> = this.map {

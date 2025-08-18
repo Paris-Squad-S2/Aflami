@@ -1,16 +1,16 @@
 package com.datasource.local.media
 
 import androidx.room.TypeConverter
-import com.repository.media.entity.Category
-import com.repository.media.entity.MediaTypeEntity
+import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.MediaTypeEntity
 import com.repository.model.local.EpisodeEntity
 import com.repository.model.local.SeasonEntity
 import com.repository.model.local.TVGenreEntity
 import com.repository.model.local.TVProductionCompanyEntity
 import com.repository.model.local.TVImageEntity
-import com.repository.movie.models.local.MovieGenreEntity
-import com.repository.movie.models.local.MovieImageEntity
-import com.repository.movie.models.local.MovieProductionCompanyEntity
+import com.repository.media.models.local.moive.MovieGenreEntity
+import com.repository.media.models.local.moive.MovieImageEntity
+import com.repository.media.models.local.moive.MovieProductionCompanyEntity
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.LocalDateTime
 import kotlinx.serialization.builtins.ListSerializer

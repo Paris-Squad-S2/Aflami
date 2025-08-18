@@ -2,9 +2,9 @@ package com.repository.media
 
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.services.MovieApiService
-import com.repository.movie.models.remote.RatingDto
-import com.repository.movie.models.remote.RatingResponseDto
-import com.repository.movie.models.remote.RemoveRatingDto
+import com.repository.media.models.remote.movie.RatingDto
+import com.repository.media.models.remote.movie.RatingResponseDto
+import com.repository.media.models.remote.movie.RemoveRatingDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

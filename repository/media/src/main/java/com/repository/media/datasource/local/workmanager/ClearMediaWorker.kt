@@ -7,7 +7,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import androidx.hilt.work.HiltWorker
 import com.repository.media.datasource.local.MediaLocalDataSource
-import com.repository.media.entity.Category
+import com.repository.media.models.local.media.Category
 
 
 @HiltWorker

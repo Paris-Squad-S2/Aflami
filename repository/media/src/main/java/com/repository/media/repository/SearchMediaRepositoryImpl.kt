@@ -8,7 +8,7 @@ import com.paris_2.domain.media.repository.SearchMediaRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
-import com.repository.media.entity.SearchType
+import com.repository.media.models.local.media.SearchType
 import com.repository.media.mapper.search.toMedia
 import com.repository.media.util.NetworkConnectionChecker
 import kotlinx.coroutines.flow.first

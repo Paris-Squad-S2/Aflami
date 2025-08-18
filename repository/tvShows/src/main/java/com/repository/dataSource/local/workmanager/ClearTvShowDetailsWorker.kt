@@ -12,7 +12,7 @@ class ClearTvShowDetailsWorker(
 ) : CoroutineWorker(context, workerParams) {
     override suspend fun doWork(): Result {
         return try {
-            val movieId = inputData.getInt(TV_SHOW_ID, -1)
+            val movieId = inputData.getInt(TV_SHOW_ID, DEFAULT_TV_SHOW_ID)
             val language = inputData.getString(LANGUAGE) ?: run {
                 return Result.failure()
             }
@@ -29,6 +29,7 @@ class ClearTvShowDetailsWorker(
     companion object {
         const val TV_SHOW_ID = "tv_show_id"
         const val LANGUAGE = "language"
+        const val DEFAULT_TV_SHOW_ID = -1
 
     }
 }

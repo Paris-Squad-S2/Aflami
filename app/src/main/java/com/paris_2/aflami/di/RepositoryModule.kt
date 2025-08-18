@@ -42,9 +42,9 @@ import com.repository.media.repository.MoviesCategoriesRepositoryImpl
 import com.repository.media.repository.SearchHistoryRepositoryImpl
 import com.repository.media.repository.SearchMediaRepositoryImpl
 import com.repository.media.util.NetworkConnectionChecker
-import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.remote.MovieRemoteDataSource
-import com.repository.movie.repository.MovieRepositoryImpl
+import com.repository.media.datasource.local.MovieLocalDataSource
+import com.repository.media.datasource.remote.MovieRemoteDataSource
+import com.repository.media.repository.MovieRepositoryImpl
 import com.repository.repository.TvShowRepositoryImpl
 import dagger.Module
 import dagger.Provides
@@ -154,7 +154,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideDetailedMovieRepository(
-        networkConnectionChecker: com.repository.movie.util.NetworkConnectionChecker,
+        networkConnectionChecker: NetworkConnectionChecker,
         movieLocalDataSource: MovieLocalDataSource,
         movieRemoteDataSource: MovieRemoteDataSource,
         settingLocalDataSource: SettingLocalDataSource,

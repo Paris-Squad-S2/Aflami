@@ -1,7 +1,7 @@
 package com.repository.media.repository
 
 import com.repository.media.datasource.local.CountriesLocalDataSource
-import com.repository.media.entity.CountryEntity
+import com.repository.media.models.local.media.CountryEntity
 import com.repository.media.mapper.search.toCountry
 import io.mockk.*
 import kotlinx.coroutines.test.runTest

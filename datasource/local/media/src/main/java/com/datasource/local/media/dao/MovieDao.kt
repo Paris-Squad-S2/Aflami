@@ -4,11 +4,11 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.movie.models.local.MovieCastEntity
-import com.repository.movie.models.local.MovieGalleryEntity
-import com.repository.movie.models.local.MovieEntity
-import com.repository.movie.models.local.MovieSimilarEntity
-import com.repository.movie.models.local.MovieReviewEntity
+import com.repository.media.models.local.moive.MovieCastEntity
+import com.repository.media.models.local.moive.MovieGalleryEntity
+import com.repository.media.models.local.moive.MovieEntity
+import com.repository.media.models.local.moive.MovieSimilarEntity
+import com.repository.media.models.local.moive.MovieReviewEntity
 
 @Dao
 interface MovieDao {

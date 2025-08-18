@@ -4,13 +4,13 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.datasource.local.media.dao.MovieDao
-import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.local.workmanager.ClearMovieDetailWorker
-import com.repository.movie.models.local.MovieCastEntity
-import com.repository.movie.models.local.MovieGalleryEntity
-import com.repository.movie.models.local.MovieEntity
-import com.repository.movie.models.local.MovieSimilarEntity
-import com.repository.movie.models.local.MovieReviewEntity
+import com.repository.media.datasource.local.MovieLocalDataSource
+import com.repository.media.datasource.local.workmanager.ClearMovieDetailWorker
+import com.repository.media.models.local.moive.MovieCastEntity
+import com.repository.media.models.local.moive.MovieGalleryEntity
+import com.repository.media.models.local.moive.MovieEntity
+import com.repository.media.models.local.moive.MovieSimilarEntity
+import com.repository.media.models.local.moive.MovieReviewEntity
 import java.util.concurrent.TimeUnit
 
 class MovieLocalDataSourceImpl(
@@ -54,8 +54,8 @@ class MovieLocalDataSourceImpl(
 
     private fun scheduleClearMovieWork(movieId: Int, language: String) {
         val inputData = workDataOf(
-            ClearMovieDetailWorker.Companion.MOVIE_ID to movieId,
-            ClearMovieDetailWorker.Companion.LANGUAGE to language
+            ClearMovieDetailWorker.MOVIE_ID to movieId,
+            ClearMovieDetailWorker.LANGUAGE to language
         )
 
         val workRequest = OneTimeWorkRequestBuilder<ClearMovieDetailWorker>()

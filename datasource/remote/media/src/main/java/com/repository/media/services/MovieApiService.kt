@@ -1,14 +1,14 @@
 package com.repository.media.services
 
-import com.repository.movie.models.remote.MovieCreditsDto
-import com.repository.movie.models.remote.MovieDto
-import com.repository.movie.models.remote.MovieImagesDto
-import com.repository.movie.models.remote.MovieReviewsDto
-import com.repository.movie.models.remote.MovieSimilarsDto
-import com.repository.movie.models.remote.MovieVideoDto
-import com.repository.movie.models.remote.RatingDto
-import com.repository.movie.models.remote.RatingResponseDto
-import com.repository.movie.models.remote.RemoveRatingDto
+import com.repository.media.models.remote.movie.MovieCreditsDto
+import com.repository.media.models.remote.movie.MovieDto
+import com.repository.media.models.remote.movie.MovieImagesDto
+import com.repository.media.models.remote.movie.MovieReviewsDto
+import com.repository.media.models.remote.movie.MovieSimilarsDto
+import com.repository.media.models.remote.movie.MovieVideoDto
+import com.repository.media.models.remote.movie.RatingDto
+import com.repository.media.models.remote.movie.RatingResponseDto
+import com.repository.media.models.remote.movie.RemoveRatingDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

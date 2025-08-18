@@ -1,12 +1,12 @@
 package com.repository.media
 
 import com.google.common.truth.Truth.assertThat
-import com.repository.media.services.RetrofitTvShowDetailsApiService
+import com.repository.media.services.TvShowDetailsApiService
 import com.repository.model.remote.EpisodeVideoDto
 import com.repository.model.remote.EpisodeVideoResultDto
 import com.repository.model.remote.RemoveTvRatingDto
-import com.repository.movie.models.remote.RatingDto
-import com.repository.movie.models.remote.RatingResponseDto
+import com.repository.media.models.remote.movie.RatingDto
+import com.repository.media.models.remote.movie.RatingResponseDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -16,13 +16,13 @@ import org.junit.Test
 
 class TvShowDetailsRemoteDataSourceImplTest {
     private lateinit var tvShowDetailsRemoteDataSourceImpl: TvShowDetailsRemoteDataSourceImpl
-    private lateinit var retrofitTvShowDetailsApiService: RetrofitTvShowDetailsApiService
+    private lateinit var tvShowDetailsApiService: TvShowDetailsApiService
 
     @Before
     fun setup() {
-        retrofitTvShowDetailsApiService = mockk(relaxed = true)
+        tvShowDetailsApiService = mockk(relaxed = true)
         tvShowDetailsRemoteDataSourceImpl =
-            TvShowDetailsRemoteDataSourceImpl(retrofitTvShowDetailsApiService)
+            TvShowDetailsRemoteDataSourceImpl(tvShowDetailsApiService)
     }
 
     @Test
@@ -33,7 +33,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val response = RatingResponseDto(statusCode = 1, statusMessage = "Success")
 
         coEvery {
-            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+            tvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
         } returns response
 
         // When
@@ -51,7 +51,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val response = RatingResponseDto(statusCode = 12, statusMessage = "Updated")
 
         coEvery {
-            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+            tvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
         } returns response
 
         // When
@@ -69,7 +69,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val response = RatingResponseDto(statusCode = 10, statusMessage = "Not authorized")
 
         coEvery {
-            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+            tvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
         } returns response
 
         // When
@@ -86,7 +86,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val rating = 9.0f
 
         coEvery {
-            retrofitTvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
+            tvShowDetailsApiService.addRatingToTvShow(movieId, RatingDto(rating))
         } throws RuntimeException("Server error")
 
         // Then
@@ -102,7 +102,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val tvShowId = -1
         val language = ""
         coEvery {
-            retrofitTvShowDetailsApiService.getTvShowDetails(
+            tvShowDetailsApiService.getTvShowDetails(
                 tvShowId,
                 language
             )
@@ -115,7 +115,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
     @Test
     fun `getTvShowImages should throw when API throws exception`() = runTest {
         val tvShowId = -1
-        coEvery { retrofitTvShowDetailsApiService.getTvShowImages(tvShowId) } throws RuntimeException(
+        coEvery { tvShowDetailsApiService.getTvShowImages(tvShowId) } throws RuntimeException(
             "API error"
         )
         Assert.assertThrows(RuntimeException::class.java) {
@@ -129,7 +129,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val page = -1
         val language = ""
         coEvery {
-            retrofitTvShowDetailsApiService.getTvShowReviews(
+            tvShowDetailsApiService.getTvShowReviews(
                 tvShowId,
                 page,
                 language
@@ -146,7 +146,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val page = -1
         val language = ""
         coEvery {
-            retrofitTvShowDetailsApiService.getSimilarTvShows(
+            tvShowDetailsApiService.getSimilarTvShows(
                 tvShowId,
                 page,
                 language
@@ -168,7 +168,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val tvShowId = -1
         val language = ""
         coEvery {
-            retrofitTvShowDetailsApiService.getTvShowCredits(
+            tvShowDetailsApiService.getTvShowCredits(
                 tvShowId,
                 language
             )
@@ -184,7 +184,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val seasonNumber = -1
         val language = ""
         coEvery {
-            retrofitTvShowDetailsApiService.getSeasonDetails(
+            tvShowDetailsApiService.getSeasonDetails(
                 tvShowId,
                 seasonNumber,
                 language
@@ -204,7 +204,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
     @Test
     fun `getTrailerVideoForTvShow should throw when API throws exception`() = runTest {
         val tvShowId = -1
-        coEvery { retrofitTvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId) } throws RuntimeException(
+        coEvery { tvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId) } throws RuntimeException(
             "API error"
         )
         Assert.assertThrows(RuntimeException::class.java) {
@@ -219,7 +219,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val episodeNumber = -1
         val language = ""
         coEvery {
-            retrofitTvShowDetailsApiService.getTrailerVideoForEpisode(
+            tvShowDetailsApiService.getTrailerVideoForEpisode(
                 tvShowId,
                 seasonNumber,
                 episodeNumber,
@@ -245,7 +245,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val response = RatingResponseDto(1, "Success")
 
         coEvery {
-            retrofitTvShowDetailsApiService.addRatingToTvShow(
+            tvShowDetailsApiService.addRatingToTvShow(
                 movieId,
                 RatingDto(rating)
             )
@@ -263,7 +263,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val response = RatingResponseDto(12, "Success")
 
         coEvery {
-            retrofitTvShowDetailsApiService.addRatingToTvShow(
+            tvShowDetailsApiService.addRatingToTvShow(
                 movieId,
                 RatingDto(rating)
             )
@@ -281,7 +281,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val response = RatingResponseDto(10, "Invalid session")
 
         coEvery {
-            retrofitTvShowDetailsApiService.addRatingToTvShow(
+            tvShowDetailsApiService.addRatingToTvShow(
                 movieId,
                 RatingDto(rating)
             )
@@ -303,7 +303,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitTvShowDetailsApiService.getTvShowDetails(
+            tvShowDetailsApiService.getTvShowDetails(
                 tvShowId,
                 language
             )
@@ -321,7 +321,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitTvShowDetailsApiService.getTvShowImages(tvShowId)
+            tvShowDetailsApiService.getTvShowImages(tvShowId)
         } returns tvShowImages
 
         // Then
@@ -338,7 +338,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitTvShowDetailsApiService.getTvShowReviews(tvShowId, page, language)
+            tvShowDetailsApiService.getTvShowReviews(tvShowId, page, language)
         } returns tvShowReview
 
         // Then
@@ -355,7 +355,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitTvShowDetailsApiService.getSimilarTvShows(tvShowId, page, language)
+            tvShowDetailsApiService.getSimilarTvShows(tvShowId, page, language)
         } returns tvShowSimilarDto
 
         // Then
@@ -371,7 +371,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
 
         // When
         coEvery {
-            retrofitTvShowDetailsApiService.getTvShowCredits(tvShowId, language)
+            tvShowDetailsApiService.getTvShowCredits(tvShowId, language)
         } returns tvShowCreditsDto
 
         // Then
@@ -389,7 +389,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
 
             // When
             coEvery {
-                retrofitTvShowDetailsApiService.getSeasonDetails(tvShowId, seasonNumber, language)
+                tvShowDetailsApiService.getSeasonDetails(tvShowId, seasonNumber, language)
             } returns tvShowSeasonDetails
 
             // Then
@@ -406,7 +406,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
 
             // When
             coEvery {
-                retrofitTvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId)
+                tvShowDetailsApiService.getTrailerVideoForTvShow(tvShowId)
             } returns tvShowVideoDto
 
             // Then
@@ -440,7 +440,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         )
 
         coEvery {
-            retrofitTvShowDetailsApiService.getTrailerVideoForEpisode(
+            tvShowDetailsApiService.getTrailerVideoForEpisode(
                 tvShowId,
                 seasonNumber,
                 episodeNumber,
@@ -468,7 +468,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         )
 
         coEvery {
-            retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
+            tvShowDetailsApiService.deleteTvShowRating(tvShowId)
         } returns response
 
         // When
@@ -486,7 +486,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
             RemoveTvRatingDto(status_code = 10, status_message = "Not authorized", success = false)
 
         coEvery {
-            retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
+            tvShowDetailsApiService.deleteTvShowRating(tvShowId)
         } returns response
 
         // When
@@ -502,7 +502,7 @@ class TvShowDetailsRemoteDataSourceImplTest {
         val tvShowId = 789
 
         coEvery {
-            retrofitTvShowDetailsApiService.deleteTvShowRating(tvShowId)
+            tvShowDetailsApiService.deleteTvShowRating(tvShowId)
         } throws RuntimeException("Server error")
 
         // Then

@@ -6,9 +6,9 @@ import androidx.work.workDataOf
 import com.datasource.local.media.dao.MediaDao
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.local.workmanager.ClearMediaWorker
-import com.repository.media.entity.Category
-import com.repository.media.entity.HomeMediaEntity
-import com.repository.media.entity.MediaEntity
+import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.HomeMediaEntity
+import com.repository.media.models.local.media.MediaEntity
 import kotlinx.coroutines.flow.Flow
 import java.util.concurrent.TimeUnit
 

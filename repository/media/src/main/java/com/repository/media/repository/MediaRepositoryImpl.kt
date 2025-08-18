@@ -9,7 +9,7 @@ import com.paris_2.domain.media.repository.MediaRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.entity.Category
+import com.repository.media.models.local.media.Category
 import com.repository.media.mapper.toDomain
 import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toId

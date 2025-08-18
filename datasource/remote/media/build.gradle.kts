@@ -37,6 +37,5 @@ dependencies {
 
     implementation(projects.repository.media)
     implementation(projects.repository.guessGame)
-    implementation(projects.repository.movie)
     implementation(projects.repository.tvShows)
 }
