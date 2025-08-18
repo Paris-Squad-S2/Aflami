@@ -2,12 +2,12 @@ package com.paris_2.domain.media.useCase.tvShows
 
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.TvShowRepository
+import com.paris_2.domain.media.testUtils.fakeMediaVideo
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.paris_2.domain.media.testUtils.fakeTvShowVideo
 
 class GetTvShowVideoUseCaseTest {
 
@@ -23,12 +23,12 @@ class GetTvShowVideoUseCaseTest {
     fun `should return tv show video from repository`() = runTest {
         // Given
         val tvShowId = 1
-        coEvery { tvShowRepository.getTrailerVideoForTvShow(tvShowId) } returns fakeTvShowVideo
+        coEvery { tvShowRepository.getTrailerVideoForTvShow(tvShowId) } returns fakeMediaVideo
 
         // When
         val result = getTvShowVideoUseCase(tvShowId)
 
         // Then
-        assertThat(result).isEqualTo(fakeTvShowVideo.first())
+        assertThat(result).isEqualTo(fakeMediaVideo.first())
     }
 }
