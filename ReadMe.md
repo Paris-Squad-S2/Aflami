@@ -25,10 +25,10 @@
 - 📱 **Responsive Design** - Optimized for all screen sizes
 - 🌐 **Language Support** - Available in English and Arabic
 
-## 📽️ Screen Videos
+## 📽️ Gifs
 | Light Mode                                                            | Dark Mode                                                            |
 |-----------------------------------------------------------------------|----------------------------------------------------------------------|
-| <img src="assets/light_theme.mp4" alt="Light Mode Demo" width="300"/> | <img src="assets/night_theme.mp4" alt="Dark Mode Demo" width="300"/> |
+| <img src="assets/light_theme.gif" alt="Light Mode Demo" width="300"/> | <img src="assets/night_theme.gif" alt="Dark Mode Demo" width="300"/> |
 
 
 ## 🚀 Quick Start Guide
