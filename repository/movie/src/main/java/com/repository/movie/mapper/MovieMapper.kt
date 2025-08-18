@@ -3,9 +3,9 @@ package com.repository.movie.mapper
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
-import com.paris_2.domain.media.entity.MovieVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.repository.movie.models.local.CastEntity
@@ -190,8 +190,8 @@ fun ReviewEntity.toEntity(): Review {
     )
 }
 
-fun  MovieVideoResultDto.toEntity(): MovieVideo {
-    return MovieVideo(
+fun  MovieVideoResultDto.toEntity(): MediaVideo {
+    return MediaVideo(
         key = this.key.orEmpty(),
         name = this.name.orEmpty(),
         site = this.site.orEmpty(),

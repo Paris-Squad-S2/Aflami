@@ -7,6 +7,19 @@ import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
+import com.paris_2.domain.game.repositories.ActorPopularityRepository
+import com.paris_2.domain.game.repositories.GamePointsRepository
+import com.paris_2.domain.game.usecases.GetActorsMediaUseCase
+import com.paris_2.domain.game.usecases.GetPopularActorsUseCase
+import com.paris_2.domain.game.usecases.GetUserPointUseCase
+import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
+import com.paris_2.domain.game.usecases.RemoveAnswerHintUseCase
+import com.paris_2.domain.game.usecases.UpdatePointsUseCase
+import com.paris_2.domain.game.usecases.UseHintUseCase
+import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
+import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
+import com.paris_2.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
+import com.paris_2.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
 import com.paris_2.domain.media.repository.CategoriesRepository
 import com.paris_2.domain.media.repository.CountryRepository
 import com.paris_2.domain.media.repository.GenresInteractionRepository
@@ -332,5 +345,51 @@ object UseCaseModule {
     @Provides
     fun provideRemoveMovieFromListUseCase(listRepository: ListsRepository) =
         RemoveMovieFromListUseCase(listRepository)
+
+    @Provides
+    fun provideGetPopularActorsUseCase(repository : ActorPopularityRepository) =
+        GetPopularActorsUseCase(repository)
+
+    @Provides
+    fun provideGetActorsMediaUseCase(useCase: GetPopularActorsUseCase) =
+        GetActorsMediaUseCase(useCase)
+
+    @Provides
+    fun provideGuessActorSessionUseCase(repository: ActorPopularityRepository) =
+        GuessActorSessionUseCase(repository)
+
+    @Provides
+    fun provideGuessMovieSessionUseCase(repository: ActorPopularityRepository) =
+        GuessMovieSessionUseCase(repository)
+
+    @Provides
+    fun provideWhenIsReleasedSessionUseCase(repository: ActorPopularityRepository) =
+        WhenIsReleasedSessionUseCase(repository)
+
+    @Provides
+    fun provideWhichGenreSessionUseCase(repository: ActorPopularityRepository) =
+        WhichGenreSessionUseCase(repository)
+
+    @Provides
+    fun provideGetUserPointUseCase(
+        repository: GamePointsRepository,
+        getAccountIdUseCase: GetAccountIdUseCase
+    ) = GetUserPointUseCase(repository, getAccountIdUseCase)
+
+    @Provides
+    fun provideRemoveAnswerHintUseCase() =
+        RemoveAnswerHintUseCase()
+
+    @Provides
+    fun provideMoveToNextQuestionUseCase() =
+        MoveToNextQuestionUseCase()
+
+    @Provides
+    fun provideUseHintUseCase(gamePointsRepository: GamePointsRepository) =
+        UseHintUseCase(gamePointsRepository)
+
+    @Provides
+    fun provideUpdateUserGamePointsUseCase(repository: GamePointsRepository) =
+        UpdatePointsUseCase(repository)
 
 }

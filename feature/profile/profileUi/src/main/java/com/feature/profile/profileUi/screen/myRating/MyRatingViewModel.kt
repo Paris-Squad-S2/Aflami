@@ -22,14 +22,9 @@ class MyRatingViewModel @Inject constructor(
     private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase,
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase,
     private val settingsUseCase: SettingsUseCase,
-) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(
-    initialState = MyRatingUiState(
-        isLoading = false,
-        errorMessage = null,
-        myRatingMedia = emptyList()
-    )
-) {
+) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(MyRatingUiState()) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
+
     init {
         getRestriction()
         loadMyRatingMedia(selectedMediaType)
@@ -92,7 +87,7 @@ class MyRatingViewModel @Inject constructor(
                 )
                 getRatedMediaUseCase(
                     accountId = getAccountIdUseCase() ?: 0,
-                    mediaType =  mediaType.toMediaType()
+                    mediaType = mediaType.toMediaType()
                 )
             },
             onSuccess = { mediaList ->
@@ -101,8 +96,9 @@ class MyRatingViewModel @Inject constructor(
                         myRatingMedia = mediaList.toMediaUiStateList(),
                         isLoading = false
                     )
-                )},
-            onError = {error ->
+                )
+            },
+            onError = { error ->
                 updateState(
                     screenState.value.copy(
                         errorMessage = error,
@@ -119,6 +115,7 @@ class MyRatingViewModel @Inject constructor(
                 MediaTypeUi.MOVIE -> mediaDetailsFeatureAPI.startMovieDetails(
                     movieId = media.id
                 )
+
                 MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
                     tvShowId = media.id
                 )
@@ -130,21 +127,6 @@ class MyRatingViewModel @Inject constructor(
                 )
             )
         })
-    }
-
-    override fun onBackClick() {
-        tryToExecute(
-            execute = {
-                navigateUp()
-            },
-            onError = { errorMessage ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage,
-                    )
-                )
-            }
-        )
     }
 
     override fun onFavouriteIconClick(media: MediaUiState) {
@@ -183,7 +165,7 @@ class MyRatingViewModel @Inject constructor(
         loadMyRatingMedia(mediaTypeUi)
     }
 
-    fun onRetry(){
+    fun onRetry() {
         loadMyRatingMedia(selectedMediaType)
     }
 }

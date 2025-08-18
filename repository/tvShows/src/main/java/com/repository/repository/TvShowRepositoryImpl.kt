@@ -1,14 +1,13 @@
 package com.repository.repository
 
 import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
-import com.paris_2.domain.media.entity.TvShowVideo
 import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
@@ -191,7 +190,7 @@ class TvShowRepositoryImpl(
     }
 
 
-    override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo> {
+    override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<MediaVideo> {
         return safeCall(FailedException("getTrailerVideoForTvShow")) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
                 .tvShowVideoResultDto
@@ -204,7 +203,7 @@ class TvShowRepositoryImpl(
         tvShowId: Int,
         seasonNumber: Int,
         episodeNumber: Int,
-    ): List<EpisodeVideo> {
+    ): List<MediaVideo> {
         val language = settingLocalDataSource.getLanguage().first()
         return tvShowDetailsRemoteDataSource.getTrailerVideoForEpisode(
             tvShowId,

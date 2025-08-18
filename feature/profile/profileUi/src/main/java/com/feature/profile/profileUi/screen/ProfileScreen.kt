@@ -12,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,30 +42,27 @@ import com.paris_2.aflami.designsystem.theme.Theme
 
 
 @Composable
-fun ProfileScreen(modifier: Modifier = Modifier, viewModel: ProfileViewModel = hiltViewModel()) {
+fun ProfileScreen(viewModel: ProfileViewModel = hiltViewModel()) {
     val context = LocalContext.current
     val state = viewModel.screenState.collectAsStateWithLifecycle()
     if (state.value.isLogin)
         ProfileContent(
-            modifier = modifier,
             state = state.value,
             profileInteractionListener = viewModel,
             context = context
         )
     else
         LoggedOutContent(
-            modifier = modifier,
             profileInteractionListener = viewModel,
         )
 }
 
 @Composable
 fun LoggedOutContent(
-    modifier: Modifier,
     profileInteractionListener: ProfileViewModel,
 ) {
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -98,7 +97,9 @@ fun ProfileContent(
     context: Context,
 ) {
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Column(modifier = modifier
+        .fillMaxSize()
+        .verticalScroll(rememberScrollState())) {
         ProfileHeader(modifier = Modifier)
         Column(
             modifier = Modifier
@@ -107,7 +108,7 @@ fun ProfileContent(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            ProfileDetails(modifier, state.profile.name)
+            ProfileDetails(modifier, state.profile.name,state.profile.points)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -117,14 +118,14 @@ fun ProfileContent(
                 CategoryCard(
                     stringResource(R.string.watch_history),
                     painterResource(R.drawable.ic_clock_3d),
-                    onCategoryClick = profileInteractionListener::onWatchHistoryClicked,
+                    onCategoryClick = { profileInteractionListener.onWatchHistoryClicked(context) },
                     modifier = Modifier.weight(1F)
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 CategoryCard(
                     categoryName = stringResource(R.string.my_rating),
                     categoryImage = painterResource(R.drawable.ic_star_3d),
-                    onCategoryClick = profileInteractionListener::onMyRatingClicked,
+                    onCategoryClick = { profileInteractionListener.onMyRatingClicked(context) },
                     modifier = Modifier.weight(1F)
                 )
             }
@@ -133,7 +134,10 @@ fun ProfileContent(
                 color = Theme.colors.stroke,
                 modifier = Modifier.padding(vertical = 24.dp)
             )
-            ProfileSetUp(interactionListener = profileInteractionListener)
+            ProfileSetUp(
+                interactionListener = profileInteractionListener,
+                typeMode = state.profile.theme.name
+            )
         }
 
 
@@ -149,7 +153,7 @@ fun ProfileContent(
         AppThemeDialog(
             isVisible = state.profile.isThemeDialogOpen,
             onDismiss = profileInteractionListener::onDismissAppearanceDialog,
-            onThemeSelected = {appearance->
+            onThemeSelected = { appearance ->
                 profileInteractionListener.onAppearanceApplyClicked(appearance)
                 val intent =
                     context.packageManager.getLaunchIntentForPackage(context.packageName)

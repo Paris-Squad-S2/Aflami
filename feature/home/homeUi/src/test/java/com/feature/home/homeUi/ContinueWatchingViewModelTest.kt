@@ -14,6 +14,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
@@ -73,7 +74,7 @@ class ContinueWatchingViewModelTest {
 
     @Test
     fun `init loads media and updates state`() = runTest {
-        coEvery { getWatchHistoryUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase.invoke() } returns flowOf(fakeMediaList.map { it.toMedia() })
         coEvery { settingsUseCase.getRestriction() } returns ContentRestriction.Off.name
         viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI, settingsUseCase)
         runCurrent()
@@ -98,7 +99,7 @@ class ContinueWatchingViewModelTest {
     fun `loading state is set true before media list returns`() = runTest {
         coEvery { getWatchHistoryUseCase() } coAnswers {
             assertThat(viewModel.screenState.value.isLoading).isTrue()
-            fakeMediaList.map { it.toMedia() }
+            flowOf(fakeMediaList.map { it.toMedia() })
         }
         viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase,mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
@@ -106,7 +107,7 @@ class ContinueWatchingViewModelTest {
 
     @Test
     fun `onMediaCardClick for tv show triggers correct navigation`() = runTest {
-        coEvery { getWatchHistoryUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase.invoke() } returns flowOf(fakeMediaList.map { it.toMedia() })
         viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
 
@@ -119,7 +120,7 @@ class ContinueWatchingViewModelTest {
 
     @Test
     fun `onMediaCardClick for movie triggers correct navigation`() = runTest {
-        coEvery { getWatchHistoryUseCase.invoke() } returns fakeMediaList.map { it.toMedia() }
+        coEvery { getWatchHistoryUseCase.invoke() } returns flowOf(fakeMediaList.map { it.toMedia() })
         viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI,settingsUseCase)
         runCurrent()
 

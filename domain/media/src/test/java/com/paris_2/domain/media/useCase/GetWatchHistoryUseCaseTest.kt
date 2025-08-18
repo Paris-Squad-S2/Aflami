@@ -10,6 +10,8 @@ import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.entity.Category
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 
 class GetWatchHistoryUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()
@@ -17,9 +19,9 @@ class GetWatchHistoryUseCaseTest {
 
     @Test
     fun `invoke returns local media list from repository`() = runTest {
-        coEvery { mediaRepository.getContinueWatchingMedia() } returns fakeMediaList
+        coEvery { mediaRepository.getContinueWatchingMedia() } returns flowOf(fakeMediaList)
         val result = useCase()
-        assertThat(result).isEqualTo(fakeMediaList)
+        assertThat(result.first()).isEqualTo(fakeMediaList)
     }
 
     private val fakeMediaList = listOf(

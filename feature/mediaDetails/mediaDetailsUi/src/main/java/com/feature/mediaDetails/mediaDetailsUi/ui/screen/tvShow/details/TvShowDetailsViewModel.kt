@@ -5,21 +5,23 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toEpisodeVideoUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toMedia
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toTvVideoUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
-import com.paris_2.domain.media.entity.EpisodeVideo
-import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.entity.MediaVideo
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
@@ -33,7 +35,9 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUse
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
@@ -48,6 +52,7 @@ class TvShowDetailsViewModel @Inject constructor(
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase,
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase,
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase,
+    private val addWatchHistoryUseCase: AddWatchHistoryUseCase,
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
@@ -57,42 +62,7 @@ class TvShowDetailsViewModel @Inject constructor(
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
 
     TvShowDetailsScreenState(
-        TvShowDetailsUiState(
-            tvShowUi = TvShowUi(
-                id = 0,
-                posterUrl = "",
-                rating = 0f,
-                title = "",
-                genres = emptyList(),
-                releaseDate = "",
-                runtime = "",
-                country = "",
-                description = "",
-                seasons = emptyList(),
-                productionCompanies = emptyList()
-            ),
-            cast = emptyList(),
-            reviews = emptyList(),
-            gallery = emptyList(),
-            recommendations = flowOf(PagingData.empty()),
-            tvShowVideoUi = TvShowVideoUi(
-                key = "",
-                name = "",
-                site = ""
-            ),
-            selectedRating = 0f,
-            episodeVideoUi = EpisodeVideoUi(
-                key = "",
-                name = "",
-                site = ""
-            ),
-            isYoutubePlayerVisible = false,
-            youtubeVideoKey = null,
-        ),
-        isLoading = true,
-        errorMessage = null,
-        isEpisodesLoading = true,
-        seasonsLoadingStates = emptyMap()
+        TvShowDetailsUiState()
     ), navigator
 ) {
 
@@ -105,6 +75,16 @@ class TvShowDetailsViewModel @Inject constructor(
         getRestriction()
         loadTvShowDetails(mediaId)
         getInformationVideoTvShow()
+    }
+
+    private fun hideSnackBar() {
+        viewModelScope.launch {
+            if (screenState.value.showSnackBar) {
+                delay(3000)
+                updateState(screenState.value.copy(showSnackBar = false))
+            }
+        }
+
     }
 
     private fun getRestriction() {
@@ -166,6 +146,7 @@ class TvShowDetailsViewModel @Inject constructor(
         tryToExecute(
             execute = { getTvShowDetailsUseCase(mediaId) },
             onSuccess = { tvShow ->
+                addWatchHistoryUseCase(tvShow.toMedia())
                 updateState(
                     screenState.value.copy(
                         tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
@@ -246,8 +227,11 @@ class TvShowDetailsViewModel @Inject constructor(
                     config = PagingConfig(pageSize = 10),
                     pagingSourceFactory = {
                         PagingSource(
-                            mediaUseCase ={ page ->
-                                getTvShowRecommendationsUseCase(mediaId,page).toListOfMTvShowSimilarUI()
+                            mediaUseCase = { page ->
+                                getTvShowRecommendationsUseCase(
+                                    mediaId,
+                                    page
+                                ).toListOfMTvShowSimilarUI()
                             }
                         )
                     }
@@ -277,7 +261,7 @@ class TvShowDetailsViewModel @Inject constructor(
         tryToExecute(
             execute = {
 
-                getTvShowReviewsUseCase(mediaId,1).toListOfReviewUi()
+                getTvShowReviewsUseCase(mediaId, 1).toListOfReviewUi()
 
             },
             onSuccess = { reviews ->
@@ -333,8 +317,7 @@ class TvShowDetailsViewModel @Inject constructor(
                             showRatingDialog = true
                         )
                     )
-                }
-                else{
+                } else {
                     navigate(
                         MediaDetailsDestinations.LoginDialogDestination(
                             R.string.rate
@@ -440,6 +423,7 @@ class TvShowDetailsViewModel @Inject constructor(
                         showRatingDialog = false
                     )
                 )
+                hideSnackBar()
             },
             onError = {
                 updateState(
@@ -450,6 +434,7 @@ class TvShowDetailsViewModel @Inject constructor(
                         errorMessage = it
                     )
                 )
+                hideSnackBar()
             }
         )
     }
@@ -500,30 +485,31 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onGetVideoTvShowSuccess(tvShowVideo: TvShowVideo) {
+    private fun onGetVideoTvShowSuccess(tvShowVideo: MediaVideo) {
         updateState(
             screenState.value.copy(
                 tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                    tvShowVideoUi = tvShowVideo.toUi()
+                    tvShowVideoUi = tvShowVideo.toTvVideoUi()
                 )
             )
         )
     }
 
-    private fun onGetVideoEpisodeSuccess(episodeVideo: EpisodeVideo) {
+    private fun onGetVideoEpisodeSuccess(episodeVideo: MediaVideo) {
         if (episodeVideo.site.isEmpty() || episodeVideo.key.isEmpty()) {
             updateState(
                 screenState.value.copy(
                     showSnackBar = true,
                 )
             )
+            hideSnackBar()
         } else {
             playYoutubeVideo(episodeVideo.key)
         }
         updateState(
             screenState.value.copy(
                 showSnackBar = false,
-                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(episodeVideoUi = episodeVideo.toUi())
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(episodeVideoUi = episodeVideo.toEpisodeVideoUi())
             )
         )
     }
@@ -543,6 +529,7 @@ class TvShowDetailsViewModel @Inject constructor(
                 showSnackBar = true
             )
         )
+        hideSnackBar()
     }
 
 }

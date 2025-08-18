@@ -34,13 +34,7 @@ class FindByActorViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val settingsUseCase: SettingsUseCase,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
-    FindByActorScreenState(
-        uiState = FindByActorUiState(
-            searchQuery = "",
-            searchResult = flowOf(PagingData.empty()),
-        ),
-        errorMessage = null
-    ),
+    FindByActorScreenState(),
 ) {
 
 

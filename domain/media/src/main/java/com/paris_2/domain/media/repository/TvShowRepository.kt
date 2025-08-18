@@ -1,14 +1,13 @@
 package com.paris_2.domain.media.repository
 
 import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
-import com.paris_2.domain.media.entity.TvShowVideo
 
 interface TvShowRepository {
     suspend fun getTvShowDetails(tvShowId: Int): TvShow
@@ -18,11 +17,11 @@ interface TvShowRepository {
     suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany>
     suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season
     suspend fun getTvShowReview(tvShowId: Int,page: Int): List<Review>
-    suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<TvShowVideo>
+    suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<MediaVideo>
     suspend fun getTrailerVideoForEpisode(
         tvShowId: Int, seasonNumber: Int,
         episodeNumber: Int,
-    ): List<EpisodeVideo>
+    ): List<MediaVideo>
     suspend fun addRatingToTvShow(movieId: Int, rating: Float)
 
     suspend fun deleteTvShowRating(tvShowId: Int)

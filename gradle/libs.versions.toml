@@ -1,9 +1,10 @@
 [versions]
 agp = "8.10.1"
 android-youtube-player = "12.1.2"
+coilComposeVersion = "2.4.0"
 datastorePreferences = "1.1.7"
 firebaseBom = "33.16.0"
-firebaseCrashlytics = "3.0.4"
+firebaseCrashlytics = "3.0.6"
 coil = "2.7.0"
 hiltAndroid = "2.57"
 hiltAndroidCompiler = "2.57"
@@ -56,6 +57,8 @@ hiltCommon = "1.2.0"
 datastoreCoreAndroid = "1.1.7"
 foundation = "1.8.3"
 accompanistPagerVersion = "0.36.0"
+firebasePerf = "1.4.2"
+junitJupiterVersion = "5.8.1"
 
 [libraries]
 # AndroidX
@@ -82,6 +85,7 @@ androidx-foundation = { group = "androidx.compose.foundation", name = "foundatio
 android-youtube-player = { group = "com.pierfrancescosoffritti.androidyoutubeplayer", name = "core", version.ref = "android-youtube-player" }
 
 # Kotlin
+coil-compose-v240 = { module = "io.coil-kt:coil-compose", version.ref = "coilComposeVersion" }
 kotlinx-coroutines-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-test", version.ref = "coroutines-test" }
@@ -157,6 +161,7 @@ accompanist-pager-v0340 = { group = "com.google.accompanist", name = "accompanis
 
 #datastore
 androidx-datastore-core-android = { group = "androidx.datastore", name = "datastore-core-android", version.ref = "datastoreCoreAndroid" }
+jupiter-junit-jupiter = { group = "org.junit.jupiter", name = "junit-jupiter", version.ref = "junitJupiterVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -171,6 +176,7 @@ kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", versi
 kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hiltAndroid" }
 firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics" }
+firebase-perf = { id = "com.google.firebase.firebase-perf", version.ref = "firebasePerf" }
 
 [bundles]
 

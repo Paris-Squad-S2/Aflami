@@ -2,11 +2,17 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.paris_2.domain.media.entity.EpisodeVideo
+import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toMedia
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
+import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
-import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
@@ -18,14 +24,6 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
-import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
-import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
-import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -39,6 +37,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -52,19 +51,44 @@ class TvShowDetailsViewModelTest {
     private val getTvShowCastUseCase: GetTvShowCastUseCase = mockk()
     private val getTvShowGalleryUseCase: GetTvShowGalleryUseCase = mockk()
     private val getTvShowRecommendationsUseCase: GetTvShowRecommendationsUseCase = mockk()
-    private val getTvShowReviewsUseCase: GetTvShowReviewsUseCase = mockk()
+    private val getTvShowReviewsUseCase: GetTvShowReviewsUseCase = mockk(relaxed = true)
     private val getTvShowProductionCompaniesUseCase: GetTvShowsProductionCompaniesUseCase = mockk()
     private val getSeasonDetailsUseCase: GetSeasonDetailsUseCase = mockk()
     private val getTvShowVideoUseCase: GetTvShowVideoUseCase = mockk()
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
+    private val addWatchHistoryUseCase: AddWatchHistoryUseCase = mockk()
     private val settingsUseCase: SettingsUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
     private lateinit var viewModel: TvShowDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testTvShowId = 88
     private val navigator: MediaDetailsNavigator = mockk(relaxed = true)
+
+    val mockReview: Review = Review(
+        id = "1",
+        name = "Test Review",
+        createdAt = LocalDate(2023, 10, 1),
+        avatarUrl = "https://example.com/avatar.jpg",
+        username = "testuser",
+        rating = 4.5,
+        description = "This is a test review."
+    )
+
+    val mockTvShow = TvShow(
+        id = testTvShowId,
+        posterPath = "https://example.com/poster.jpg",
+        voteAverage = 8.5,
+        title = "Test TV Show",
+        categories = emptyList(),
+        releaseDate = LocalDate(2023, 10, 1),
+        runtime = 45,
+        country = "USA",
+        description = "This is a test TV show.",
+        seasons = emptyList(),
+        productionCompanies = emptyList()
+    )
 
     @BeforeEach
     fun setUp() {
@@ -125,7 +149,7 @@ class TvShowDetailsViewModelTest {
     @Test
     fun `init loads tv show details and video info`() = runTest {
         coEvery { getTvShowDetailsUseCase(any()) } returns mockk<TvShow>(relaxed = true)
-        coEvery { getTvShowVideoUseCase(any()) } returns mockk<TvShowVideo>(relaxed = true)
+        coEvery { getTvShowVideoUseCase(any()) } returns mockk<MediaVideo>(relaxed = true)
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         coVerify { getTvShowDetailsUseCase(testTvShowId) }
@@ -221,7 +245,7 @@ class TvShowDetailsViewModelTest {
         val testTvShowId = 123
         val testSeasonNumber = 1
         val testEpisodeNumber = 2
-        val mockEpisodeVideo = mockk<EpisodeVideo> {
+        val mockEpisodeVideo = mockk<MediaVideo> {
             every { site } returns "YouTube"
             every { key } returns "abc123"
             every { name } returns "Test Episode"
@@ -240,7 +264,7 @@ class TvShowDetailsViewModelTest {
         val testTvShowId = 123
         val testSeasonNumber = 1
         val testEpisodeNumber = 2
-        val mockEpisodeVideo = mockk<EpisodeVideo> {
+        val mockEpisodeVideo = mockk<MediaVideo> {
             every { site } returns "YouTube"
             every { key } returns "abc123"
             every { name } returns "Test Episode"
@@ -259,7 +283,7 @@ class TvShowDetailsViewModelTest {
         val testTvShowId = 123
         val testSeasonNumber = 1
         val testEpisodeNumber = 2
-        val mockEpisodeVideo = mockk<EpisodeVideo> {
+        val mockEpisodeVideo = mockk<MediaVideo> {
             every { site } returns ""
             every { key } returns ""
             every { name } returns "Test Episode"
@@ -289,30 +313,22 @@ class TvShowDetailsViewModelTest {
 
     @Test
     fun `loadMovieReviews updates state with review UI list on success`() = runTest {
-        // Arrange
-        val domainReviews = listOf(mockk<Review>())
-        val uiReviews = listOf(mockk<ReviewUi>())
+        val domainReviews = listOf(mockReview)
+        val uiReviews = listOf(mockReview.toUi())
 
-        val domainTvShow = mockk<TvShow>(relaxed = true)
-        val tvShowUi = mockk<TvShowUi>()
-
-        coEvery { getTvShowDetailsUseCase(testTvShowId) } returns domainTvShow
-        coEvery { getTvShowVideoUseCase(testTvShowId) } returns mockk<TvShowVideo>(relaxed = true)
+        coEvery { getTvShowDetailsUseCase(testTvShowId) } returns mockTvShow
+        coEvery { addWatchHistoryUseCase(mockTvShow.toMedia()) } returns Unit
+        coEvery { getTvShowVideoUseCase(testTvShowId) } returns mockk<MediaVideo>(relaxed = true)
         coEvery { getTvShowReviewsUseCase(testTvShowId, 1) } returns domainReviews
-
-        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
-        mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
-        every { domainTvShow.toUi() } returns tvShowUi
-        every { domainReviews.toListOfReviewUi() } returns uiReviews
 
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
 
-
+        coVerify { getTvShowReviewsUseCase(any(), any()) }
         val actualReviews = viewModel.screenState.value.tvShowDetailsUiState.reviews
         assertEquals(uiReviews, actualReviews)
     }
-    
+
     private fun makeViewModelWithDefaultStateHandle(): TvShowDetailsViewModel {
         every { savedStateHandle.toRoute<MediaDetailsDestinations.TvShowDetailsScreen>() } returns MediaDetailsDestinations.TvShowDetailsScreen(
             tvShowId = testTvShowId
@@ -327,6 +343,7 @@ class TvShowDetailsViewModelTest {
             getTvShowProductionCompaniesUseCase,
             getSeasonDetailsUseCase,
             getTvShowVideoUseCase,
+            addWatchHistoryUseCase,
             getEpisodeVideoUseCase,
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,

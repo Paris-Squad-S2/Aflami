@@ -46,6 +46,8 @@ dependencies {
     implementation(libs.bundles.datetime)
 
     implementation(libs.bundles.navigation)
+    
+    implementation(libs.bundles.serialization)
 
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
@@ -59,6 +61,7 @@ dependencies {
     implementation(projects.feature.mediaDetails.mediaDetailsApi)
     implementation(projects.domain.media)
     implementation(projects.domain.user)
+    implementation(projects.domain.guessGame)
 }
 tasks.withType<Test> {
     useJUnitPlatform()

@@ -6,6 +6,7 @@ import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.Configuration
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject
+import com.repository.guessgame.utils.NetworkConnectionChecker as GuessNetworkChecker
 import com.repository.media.util.NetworkConnectionChecker as HomeNetworkChecker
 import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkChecker
 import com.repository.util.NetworkConnectionChecker as GenericNetworkChecker
@@ -24,13 +25,15 @@ class AflamiApplication : Application(), Configuration.Provider {
     @Inject
     lateinit var homeNetworkChecker: HomeNetworkChecker
 
+    @Inject
+    lateinit var GuessNetworkChecker: GuessNetworkChecker
+
     override fun onCreate() {
         super.onCreate()
         movieNetworkChecker.startChecker()
         genericNetworkChecker.startChecker()
         homeNetworkChecker.startChecker()
-
-
+        GuessNetworkChecker.startChecker()
     }
 
     override val workManagerConfiguration: Configuration

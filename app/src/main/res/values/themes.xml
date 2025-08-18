@@ -3,10 +3,9 @@
 
     <style name="Theme.Aflami.Splash" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/surface</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/aflami_splash</item>
-        <item name="android:animationDuration">2833</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_aflami_splash_static</item>
         <item name="postSplashScreenTheme">@style/Theme.Aflami</item>
     </style>
 
-    <style name="Theme.Aflami"  parent="Theme.AppCompat.DayNight.NoActionBar"  />
+    <style name="Theme.Aflami" parent="Theme.AppCompat.DayNight.NoActionBar" />
 </resources>

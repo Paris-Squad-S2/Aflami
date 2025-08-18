@@ -25,18 +25,23 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
 import dropShadow
 import kotlinx.coroutines.flow.flowOf
 
@@ -50,8 +55,10 @@ fun GameCard(
     trailingImages: List<Painter>,
     onPlayClick: () -> Unit,
     isPlayButtonLocked: Boolean,
-    pointsToUnlock: Int = 0
+    pointsToUnlock: Int = 0,
 ) {
+
+    val layoutDirection = LocalLayoutDirection.current
 
     Column(
         modifier = modifier
@@ -89,25 +96,36 @@ fun GameCard(
                 modifier = Modifier.padding(vertical = 4.dp)
             )
 
+        val changeBrushDirection = if (layoutDirection == LayoutDirection.Rtl)
+            Brush.horizontalGradient(
+                colorStops = arrayOf(
+                    0.0f to backgroundColors.last().copy(alpha = 0.50f),
+                    0.25f to backgroundColors.first(),
+                    1.0f to backgroundColors.first()
+                )
+            )
+            else
+                Brush.horizontalGradient(
+            colorStops = arrayOf(
+                0.0f to backgroundColors.first(),
+                0.75f to backgroundColors.first(),
+                1.0f to backgroundColors.last().copy(alpha = 0.50f)
+            )
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
-                    brush = Brush.horizontalGradient(
-                        colorStops = arrayOf(
-                            0.0f to backgroundColors.first(),
-                            0.75f to backgroundColors.first(),
-                            1.0f to backgroundColors.last().copy(alpha = 0.50f)
-                        )
-                    )
+                    brush = changeBrushDirection
                 )
         ) {
-
+            val screenWidth = with(LocalDensity){ LocalWindowInfo.current.containerSize.width.dp }
             Column(
                 modifier = Modifier
                     .padding(vertical = if (isPlayButtonLocked) 4.dp else 8.dp)
                     .fillMaxSize()
-                    .padding(start = 12.dp, end = LocalConfiguration.current.screenWidthDp.dp / 4),
+                    .padding(start = 12.dp, end = screenWidth / 10),
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start
             ) {
@@ -160,11 +178,16 @@ fun GameCard(
                 }
             }
 
-
+            val changeDirection = if (layoutDirection == LayoutDirection.Rtl) -1f else 1f
+            val alignmentOfLine = if (layoutDirection == LayoutDirection.Rtl) Alignment.TopStart else Alignment.TopEnd
+            val alignmentOfLineBottom = if (layoutDirection == LayoutDirection.Rtl) Alignment.BottomStart else Alignment.BottomEnd
 
             Box(
                 modifier = Modifier
                     .fillMaxSize()
+                    .graphicsLayer {
+                        scaleX = changeDirection
+                    }
 
             ) {
 
@@ -172,8 +195,7 @@ fun GameCard(
                     painter = painterResource(R.drawable.linear_light),
                     contentDescription = "linear light",
                     modifier = Modifier
-                        .align(Alignment.TopEnd),
-
+                        .align(alignmentOfLine)
                 )
 
 
@@ -183,11 +205,14 @@ fun GameCard(
                     contentScale = ContentScale.Fit,
                     modifier = Modifier
                         .padding(top = 30.dp)
-                        .align(Alignment.BottomEnd)
+                        .align(alignmentOfLineBottom)
                 )
 
             }
 
+
+            val rotationValueFirstImage = if (layoutDirection == LayoutDirection.Rtl) 20f else -20f
+            val rotationValueSecondImage = if (layoutDirection == LayoutDirection.Rtl) 15f else -15f
 
             when (trailingImages.size) {
                 1 -> {
@@ -204,10 +229,11 @@ fun GameCard(
 
                     Image(
                         modifier = Modifier
-                            .padding(end = 60.dp, top = 10.dp)
-                            .align(Alignment.BottomEnd)
+                            .padding(end = 65.dp)
+                            .width(64.dp)
                             .offset(y = 70.dp)
-                            .rotate(-20.62f)
+                            .rotate(rotationValueFirstImage)
+                            .align(Alignment.BottomEnd)
                             .clip(RoundedCornerShape(12.dp)),
                         painter = trailingImages.first(),
                         contentDescription = "trailing game icon",
@@ -215,10 +241,11 @@ fun GameCard(
 
                     Image(
                         modifier = Modifier
-                            .padding(end = 25.dp, top = 40.dp)
+                            .padding(end = 35.dp)
+                            .width(64.dp)
+                            .offset(y = 15.dp)
+                            .rotate(rotationValueSecondImage)
                             .align(Alignment.BottomEnd)
-                            .offset(y = 20.dp)
-                            .rotate(-15.32f)
                             .clip(RoundedCornerShape(12.dp)),
                         painter = trailingImages[1],
                         contentDescription = "center game icon"
@@ -226,9 +253,10 @@ fun GameCard(
 
                     Image(
                         modifier = Modifier
-                            .padding(end = 2.dp, top = 35.dp)
+                            .padding(end = 2.dp)
+                            .width(64.dp)
+                            .offset(y = 25.dp)
                             .align(Alignment.BottomEnd)
-                            .offset(y = 10.dp)
                             .clip(RoundedCornerShape(12.dp)),
                         painter = trailingImages.last(),
                         contentDescription = "leading game icon"
@@ -368,7 +396,7 @@ private fun GameCardClownLockedPreview() {
 }
 
 
-@PreviewLightDark
+@PreviewMultiDevices
 @Composable
 private fun GameCardThreeImagesPreview() {
     AflamiTheme {

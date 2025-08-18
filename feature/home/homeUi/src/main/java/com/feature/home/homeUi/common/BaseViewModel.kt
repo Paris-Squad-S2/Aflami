@@ -2,7 +2,7 @@ package com.feature.home.homeUi.common
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -19,7 +19,7 @@ open class BaseViewModel<S> @Inject constructor(
     private val privateScreenState = MutableStateFlow(initialState)
     val screenState: StateFlow<S> = privateScreenState.asStateFlow()
 
-    fun emitState(newState: S) {
+    fun updateState(newState: S) {
         privateScreenState.update { newState }
     }
 

@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.key
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,20 +42,23 @@ fun MoodPickerDialog(
             modifier = Modifier
                 .padding(horizontal = 12.dp)
         )
-        MediaCard(
-            imageUri = movie.imageUri,
-            rating = movie.rating?.toFloat(),
-            movieName = movie.title,
-            mediaType = movie.type.toString(),
-            year = movie.yearOfRelease.year.toString(),
-            mediaCardType = MediaCardType.UP_COMING,
-            showGradientFilter = false,
-            modifier = Modifier
-                .padding(12.dp),
-            nsfwThreshold = nsfwThreshold,
-            genderThreshold = genderThreshold
+        key(movie.id) {
+            MediaCard(
+                imageUri = movie.imageUri,
+                rating = movie.rating?.toFloat(),
+                movieName = movie.title,
+                mediaType = movie.type.toString(),
+                year = movie.yearOfRelease.year.toString(),
+                mediaCardType = MediaCardType.UP_COMING,
+                showGradientFilter = false,
+                modifier = Modifier
+                    .padding(12.dp),
+                nsfwThreshold = nsfwThreshold,
+                genderThreshold = genderThreshold
 
-        )
+            )
+        }
+
         Column(modifier = Modifier
             .padding(horizontal = 12.dp,vertical = 12.dp)) {
             CustomButton(

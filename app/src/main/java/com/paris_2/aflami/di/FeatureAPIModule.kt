@@ -10,6 +10,9 @@ import com.feature.categories.categoriesApi.CategoriesFeatureAPI
 import com.feature.categories.categoriesUi.CategoriesFeatureAPIImpl
 import com.feature.guessGame.guessGameApi.GuessGameFeatureAPI
 import com.feature.guessGame.guessGameUi.GuessGameFeatureAPIImpl
+import com.feature.guessGame.guessGameUi.navigation.Destinations
+import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
+import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigatorImpl
 import com.feature.home.homeApi.HomeFeatureAPI
 import com.feature.home.homeUi.HomeFeatureAPIImpl
 import com.feature.lists.listsApi.ListsFeatureAPI
@@ -26,9 +29,6 @@ import com.feature.onboarding.onboardingApi.OnBoardingFeatureAPI
 import com.feature.onboarding.onboardingUi.OnBoardingFeatureAPIImpl
 import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.feature.profile.profileUi.ProfileFeatureAPIImpl
-import com.feature.profile.profileUi.navigation.ProfileDestinations
-import com.feature.profile.profileUi.navigation.ProfileNavigator
-import com.feature.profile.profileUi.navigation.ProfileNavigatorImpl
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.feature.search.searchUi.SearchFeatureAPIImpl
 import com.feature.search.searchUi.navigation.SearchDestinations
@@ -48,20 +48,18 @@ import javax.inject.Singleton
 object FeatureAPIModule {
     @Provides
     @Singleton
-    fun provideAppNavigator(): com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator = com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.NavigatorImpl(com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Destinations.MainGraph)
+    fun provideAppNavigator(): com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator =
+        com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.NavigatorImpl(com.paris_2.aflami.bottomNavBar.bottomNavBarUI.navigation.Destinations.MainGraph)
 
     @Provides
     @Singleton
-    fun provideOnBoardingFeatureAPI(@ApplicationContext context: Context): OnBoardingFeatureAPI = OnBoardingFeatureAPIImpl(context)
+    fun provideOnBoardingFeatureAPI(@ApplicationContext context: Context): OnBoardingFeatureAPI =
+        OnBoardingFeatureAPIImpl(context)
 
     @Provides
     @Singleton
     fun provideSearchNavigator(): SearchNavigator =
         SearchNavigatorImpl(startGraph = SearchDestinations.SearchGraph1)
-
-    @Provides
-    @Singleton
-    fun provideProfileNavigator(): ProfileNavigator = ProfileNavigatorImpl(startGraph = ProfileDestinations.ProfileMainGraph)
 
     @Provides
     @Singleton
@@ -76,7 +74,14 @@ object FeatureAPIModule {
 
     @Provides
     @Singleton
-    fun provideListNavigator(): ListNavigator = ListNavigatorImpl(startGraph = ListDestinations.ListGraph1)
+    fun provideListNavigator(): ListNavigator =
+        ListNavigatorImpl(startGraph = ListDestinations.ListGraph1)
+
+    @Provides
+    @Singleton
+    fun provideGuessGameNavigator(): GuessGameNavigator =
+        GuessGameNavigatorImpl(startGraph = Destinations.Graph1)
+
 
     @Provides
     fun provideHomeFeatureAPI(): HomeFeatureAPI = HomeFeatureAPIImpl()

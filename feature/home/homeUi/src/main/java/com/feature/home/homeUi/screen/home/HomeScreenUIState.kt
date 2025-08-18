@@ -23,12 +23,13 @@ data class HomeUIState(
     val categories: Map<Category, Boolean> = emptyMap(),
     val upComingMediaList: List<MediaUiState> = emptyList(),
     val showMoodPickerDialog: Boolean = false,
-    val isAllCategories: Boolean = false,
-    val moodPickerMovie: MediaUiState? = null,
+    val isAllCategories: Boolean = true,
+    val moodPickerFilteredMovies : List<MediaUiState> = emptyList(),
+    val moodPickerMovie: MediaUiState? = MediaUiState(),
     val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val nsfwThreshold: Float = 0.8f,
     val genderThreshold: Float = 0.6f
-)
+    )
 
 data class MediaUiState(
     val id: Int = 0,
@@ -39,6 +40,8 @@ data class MediaUiState(
     val yearOfRelease: LocalDate = LocalDate(1970, 1, 1),
     val rating: Double? = null
 )
+
+
 
 enum class MediaTypeUi(val mediaID: Int) {
     TV_SHOW(R.string.tv_show),
