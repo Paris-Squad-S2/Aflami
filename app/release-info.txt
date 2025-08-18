@@ -1,2 +1,2 @@
-versionName=1.0.7
-- improve test coverage in repositories
+versionName=1.0.8
+- fix bug: crash on start game
