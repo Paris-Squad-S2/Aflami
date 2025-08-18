@@ -1,8 +1,8 @@
 package com.repository.media.repository
 
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.entity.SearchHistoryEntity
-import com.repository.media.entity.SearchType
+import com.repository.media.models.local.media.SearchHistoryEntity
+import com.repository.media.models.local.media.SearchType
 import com.repository.media.mapper.search.toSearchHistories
 import io.mockk.*
 import kotlinx.coroutines.flow.first

@@ -1,6 +1,6 @@
 package com.repository.media.services
 
-import com.repository.media.dto.GenresDto
+import com.repository.media.models.remote.media.GenresDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

@@ -2,8 +2,8 @@ package com.datasource.local.media.datasource
 
 import com.datasource.local.media.dao.SearchHistoryDao
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.entity.SearchHistoryEntity
-import com.repository.media.entity.SearchType
+import com.repository.media.models.local.media.SearchHistoryEntity
+import com.repository.media.models.local.media.SearchType
 import kotlinx.coroutines.flow.Flow
 
 class HistoryLocalDataSourceImpl (

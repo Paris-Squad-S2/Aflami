@@ -2,7 +2,7 @@ package com.datasource.local.media.datasource
 
 import com.datasource.local.media.dao.GenresUserInteractionDao
 import com.repository.media.datasource.local.GenresInteractionDataSource
-import com.repository.media.entity.GenreUserInteractionEntity
+import com.repository.media.models.local.media.GenreUserInteractionEntity
 
 class GenresInteractionDataSourceImpl(
     private val genresInteractionDao: GenresUserInteractionDao

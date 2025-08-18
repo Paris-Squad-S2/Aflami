@@ -13,11 +13,7 @@ import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -62,19 +58,20 @@ fun GuessByImageContent(
     listener: GuessByImageInteractionListener,
 ) {
     val activity = LocalActivity.current
+
+    if (state.showNotEnoughPointsDialog) {
+        NotEnoughPointsDialog(
+            onDismiss = listener::onDismissNotEnoughPointsDialog,
+            onConfirm = listener::onDismissNotEnoughPointsDialog,
+            title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points
+        )
+    }
+
     if (state.isLoading) {
         PageLoadingPlaceHolder(
             modifier = Modifier.fillMaxSize()
         )
     } else {
-        if (state.showNotEnoughPointsDialog) {
-            NotEnoughPointsDialog(
-                onDismiss = listener::onDismissNotEnoughPointsDialog,
-                onConfirm = listener::onDismissNotEnoughPointsDialog,
-                title = com.feature.guessGame.guessGameUi.R.string.Not_enough_points
-            )
-        }
-
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -102,12 +99,13 @@ fun GuessByImageContent(
 
                 val currentQuestion = state.questionUiState.getOrNull(state.currentQuestion)
 
+
                 QuestionImage(
-                    showHint = !state.isChoiceCorrect,
-                    onHintUsed = listener::onHintUsed,
+                    onHintUsed = { listener.onHintUsed() },
                     imageUrl = currentQuestion?.image.orEmpty(),
-                    uiState = currentQuestion ?: QuestionUiState()
+                    uiState = currentQuestion ?: QuestionUiState(),
                 )
+
 
                 Spacer(Modifier.height(16.dp))
 
@@ -148,28 +146,26 @@ fun GuessByImageContent(
 fun QuestionImage(
     imageUrl: String,
     uiState: QuestionUiState,
-    showHint: Boolean = true,
     onHintUsed: () -> Unit = {},
 ) {
-    var imageState by remember(uiState.usedHint) {
-        mutableStateOf(
-            if (uiState.usedHint) GuessCardImageState.Medium
-            else GuessCardImageState.Hard
-        )
+    val imageState = if (uiState.usedHint) {
+        GuessCardImageState.Medium
+    } else {
+        GuessCardImageState.Hard
     }
+
     GuessCard(
         imagePainter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500$imageUrl"),
         clickable = !uiState.usedHint,
         imageState = imageState,
-        showHint = showHint && !uiState.usedHint && imageState == GuessCardImageState.Hard,
+        showHint = !uiState.usedHint,
         onClick = {
-            if (!uiState.usedHint && imageState == GuessCardImageState.Hard) {
+            if (!uiState.usedHint) {
                 onHintUsed()
-                imageState = GuessCardImageState.Medium
-
             }
         }
     )
+
 }
 
 

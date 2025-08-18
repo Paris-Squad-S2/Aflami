@@ -1,7 +1,7 @@
 package com.repository.media.mapper.search
 
 import com.paris_2.domain.media.entity.GenreUserInteraction
-import com.repository.media.entity.GenreUserInteractionEntity
+import com.repository.media.models.local.media.GenreUserInteractionEntity
 
 fun GenreUserInteractionEntity.toCategoryUserInteractionModel(): GenreUserInteraction {
     return GenreUserInteraction(

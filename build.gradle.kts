@@ -31,9 +31,9 @@ val koverExcludedPackages = listOf(
     "**.navigation.**",
     "**.implementation.**",
     "**.dao.**",
-    "**.SearchConverter*",
-    "**.SearchDatabase*",
-    "**.GuessGameDatabase*",
+    "**.*Converter*",
+    "**.*Database*",
+    "**.*DataBase*",
     "**.NetworkConnectionChecker*",
     "**.navigation.**",
     "**.ui.theme.**",
@@ -70,8 +70,6 @@ val koverExcludedPackages = listOf(
     "**Screen.kt",
     "**Activity**",
     "**appnavigation**",
-    "**.HomeConverter*",
-    "**.HomeDatabase*",
     "**.workmanager.**",
     "**ConcreteBaseViewModel.kt.**",
     "**.TvShowDetailsScreen.kt.**",
@@ -128,15 +126,18 @@ dependencies {
     kover(projects.domain.user)
     kover(projects.domain.guessGame)
     kover(projects.domain.media)
-    kover(projects.repository.movie)
     kover(projects.repository.lists)
     kover(projects.repository.guessGame)
+    kover(projects.repository.media)
+    kover(projects.repository.user)
     kover(projects.datasource.remote.user)
+    kover(projects.datasource.remote.lists)
     kover(projects.datasource.remote.categories)
-    kover(projects.datasource.local.movie)
-    kover(projects.datasource.local.tvShow)
+    kover(projects.datasource.remote.media)
     kover(projects.datasource.local.guessGame)
     kover(projects.datasource.local.categories)
+    kover(projects.datasource.local.media)
+    kover(projects.datasource.local.user)
     kover(projects.feature.onboarding.onboardingUi)
     kover(projects.feature.authentication.authenticationUi)
     kover(projects.feature.home.homeUi)
