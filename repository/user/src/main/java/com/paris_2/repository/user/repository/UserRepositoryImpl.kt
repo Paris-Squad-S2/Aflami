@@ -68,28 +68,22 @@ class UserRepositoryImpl(
 
     override fun getRegisterUrl() = remoteDataSource.getRegisterUrl()
 
-    override fun getForgetPasswordUrl(): String {
-        return remoteDataSource.getForgetPasswordUrl()
+    override fun getForgetPasswordUrl(): String = remoteDataSource.getForgetPasswordUrl()
+
+
+    override fun isLoggedIn(): Boolean = localDataSource.isLoggedIn()
+
+
+    override fun hasAnySession(): Boolean = localDataSource.hasAnySession()
+
+
+    override suspend fun getAccountId(): Int? = handleAuthExceptions {
+        return@handleAuthExceptions remoteDataSource.getAccountDetails().id
     }
 
-    override fun isLoggedIn(): Boolean {
-        return localDataSource.isLoggedIn()
-    }
+    override fun deleteSessionId(): Boolean = localDataSource.deleteSessionId()
 
-    override fun hasAnySession(): Boolean {
-        return localDataSource.hasAnySession()
-    }
 
-    override suspend fun getAccountId(): Int? {
-        return remoteDataSource.getAccountDetails().id
-    }
-
-    override fun deleteSessionId(): Boolean {
-        return localDataSource.deleteSessionId()
-    }
-
-    override fun getUserName(): String {
-        return localDataSource.getUserName()
-    }
+    override fun getUserName(): String = localDataSource.getUserName()
 
 }
