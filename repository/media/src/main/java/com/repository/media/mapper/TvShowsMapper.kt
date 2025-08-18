@@ -10,7 +10,6 @@ import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.entity.TvShowSimilar
-import com.paris_2.domain.media.entity.TvShowVideo
 import com.repository.media.models.local.tvShow.EpisodeEntity
 import com.repository.media.models.local.tvShow.SeasonEntity
 import com.repository.media.models.local.tvShow.TVGenreEntity
@@ -22,7 +21,6 @@ import com.repository.media.models.local.tvShow.TvShowCastEntity
 import com.repository.media.models.local.tvShow.TvShowEntity
 import com.repository.media.models.local.tvShow.TvShowSimilarEntity
 import com.repository.media.models.remote.tvShow.TvShowDto
-
 import com.repository.media.models.remote.tvShow.EpisodeVideoResultDto
 import com.repository.media.models.remote.tvShow.TvShowCastDto
 import com.repository.media.models.remote.tvShow.TvShowEpisodeDto
@@ -34,29 +32,7 @@ import com.repository.media.models.remote.tvShow.TvShowReviewDto
 import com.repository.media.models.remote.tvShow.TvShowSeasonDto
 import com.repository.media.models.remote.tvShow.TvShowSimilarDto
 import com.repository.media.models.remote.tvShow.TvShowVideoResultDto
-import com.repository.model.local.CastEntity
-import com.repository.model.local.EpisodeEntity
-import com.repository.model.local.GalleryEntity
-import com.repository.model.local.GenreEntity
-import com.repository.model.local.ImageEntity
-import com.repository.model.local.ProductionCompanyEntity
-import com.repository.model.local.ReviewEntity
-import com.repository.model.local.SeasonEntity
-import com.repository.model.local.TvShowEntity
-import com.repository.model.local.TvShowSimilarEntity
-import com.repository.model.remote.EpisodeVideoResultDto
-import com.repository.model.remote.TvShowCastDto
-import com.repository.model.remote.TvShowDto
-import com.repository.model.remote.TvShowEpisodeDto
-import com.repository.model.remote.TvShowGenreDto
-import com.repository.model.remote.TvShowImagesDto
-import com.repository.model.remote.TvShowPosterDto
-import com.repository.model.remote.TvShowProductionCompanyDto
-import com.repository.model.remote.TvShowReviewDto
-import com.repository.model.remote.TvShowSeasonDto
-import com.repository.model.remote.TvShowSimilarDto
-import com.repository.model.remote.TvShowVideoResultDto
-import com.repository.util.toImageUrl
+
 import kotlinx.datetime.LocalDate
 
 
