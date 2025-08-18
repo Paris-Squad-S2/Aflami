@@ -6,6 +6,7 @@ import com.paris_2.domain.game.entity.ActorMedia
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
+import com.paris_2.domain.media.entity.Category
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -71,14 +72,14 @@ class WhenIsReleasedSessionUseCaseTest {
                 name = "Movie A",
                 posterImg = "/pA.jpg",
                 yearOfRelease = LocalDate(2020, 1, 1),
-                genres = listOf(12)
+                genres = listOf(Category.TvMovie)
             ),
             ActorMedia(
                 id = 2,
                 name = "Movie B",
                 posterImg = "/pB.jpg",
                 yearOfRelease = LocalDate(2021, 2, 2),
-                genres = listOf(28)
+                genres = listOf(Category.ScifiFantasy)
             )
         )
         private val actor2Movies = listOf(
@@ -87,7 +88,7 @@ class WhenIsReleasedSessionUseCaseTest {
                 name = "Movie C",
                 posterImg = "/pC.jpg",
                 yearOfRelease = LocalDate(2019, 3, 3),
-                genres = listOf(18)
+                genres = listOf( Category.ActionAdventure)
             )
         )
         private val actor3Movies = listOf(
@@ -96,7 +97,7 @@ class WhenIsReleasedSessionUseCaseTest {
                 name = "Movie D",
                 posterImg = "/pD.jpg",
                 yearOfRelease = LocalDate(2018, 4, 4),
-                genres = listOf(35)
+                genres = listOf(Category.TvMovie)
             )
         )
         private val actor4Movies = listOf(
@@ -105,7 +106,7 @@ class WhenIsReleasedSessionUseCaseTest {
                 name = "Movie E",
                 posterImg = "/pE.jpg",
                 yearOfRelease = LocalDate(2017, 5, 5),
-                genres = listOf(80)
+                genres = listOf(Category.Thriller)
             )
         )
 

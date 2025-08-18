@@ -4,6 +4,7 @@ import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
+import com.paris_2.domain.media.entity.Category
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -69,9 +70,9 @@ class RemoveAnswerHintUseCaseTest {
             content = "content",
             correctAnswer = correct,
             options = listOf(
-                answer("q1", correct, isCorrect = true),
-                answer("q1", correct, isCorrect = true),
-                answer("q1", correct, isCorrect = true)
+                answer("q1", correct, isCorrect = true, genre = Category.ActionAdventure),
+                answer("q1", correct, isCorrect = true, genre = Category.ScienceFiction),
+                answer("q1", correct, isCorrect = true, genre = Category.Thriller)
             ),
             usedHint = false
         )
@@ -119,15 +120,16 @@ class RemoveAnswerHintUseCaseTest {
         content = "content",
         correctAnswer = correct,
         options = buildList {
-            add(answer("q1", correct, isCorrect = true))
-            wrong.forEach { add(answer("q1", it, isCorrect = false)) }
+            add(answer("q1", correct, isCorrect = true , genre = Category.WarPolitics))
+            wrong.forEach { add(answer("q1", it, isCorrect = false, genre = Category.War)) }
         },
         usedHint = false
     )
 
-    private fun answer(questionId: String, value: String, isCorrect: Boolean) = Answer(
+    private fun answer(questionId: String, value: String, isCorrect: Boolean,genre: Category) = Answer(
         questionId = questionId,
         text = value,
-        isCorrect = isCorrect
+        isCorrect = isCorrect,
+        genre = genre
     )
 }
