@@ -2,11 +2,11 @@ package com.repository.media
 
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.services.TvShowDetailsApiService
-import com.repository.model.tvShow.EpisodeVideoDto
-import com.repository.model.tvShow.EpisodeVideoResultDto
-import com.repository.model.tvShow.RemoveTvRatingDto
 import com.repository.media.models.remote.movie.RatingDto
 import com.repository.media.models.remote.movie.RatingResponseDto
+import com.repository.media.models.remote.tvShow.EpisodeVideoDto
+import com.repository.media.models.remote.tvShow.EpisodeVideoResultDto
+import com.repository.media.models.remote.tvShow.RemoveTvRatingDto
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
