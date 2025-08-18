@@ -43,3 +43,18 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
+}

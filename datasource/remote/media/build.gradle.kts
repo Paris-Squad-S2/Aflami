@@ -39,3 +39,19 @@ dependencies {
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
 }
+
+val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        minValue = coverageMinValue
+                    }
+                }
+            }
+        }
+    }
+}
