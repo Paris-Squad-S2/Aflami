@@ -1,2 +1,2 @@
-versionName=1.0.9
-- fix bug: crash on start game
+versionName=1.0.10
+- unifying all video entities into media video entity

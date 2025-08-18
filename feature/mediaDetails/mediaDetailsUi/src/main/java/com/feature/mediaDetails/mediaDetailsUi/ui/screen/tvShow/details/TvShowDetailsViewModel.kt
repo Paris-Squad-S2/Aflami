@@ -9,17 +9,18 @@ import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toEpisodeVideoUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfEpisodeUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfMTvShowSimilarUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfProductionCompanyUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toMedia
+import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toTvVideoUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
-import com.paris_2.domain.media.entity.EpisodeVideo
-import com.paris_2.domain.media.entity.TvShowVideo
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
@@ -484,17 +485,17 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onGetVideoTvShowSuccess(tvShowVideo: TvShowVideo) {
+    private fun onGetVideoTvShowSuccess(tvShowVideo: MediaVideo) {
         updateState(
             screenState.value.copy(
                 tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
-                    tvShowVideoUi = tvShowVideo.toUi()
+                    tvShowVideoUi = tvShowVideo.toTvVideoUi()
                 )
             )
         )
     }
 
-    private fun onGetVideoEpisodeSuccess(episodeVideo: EpisodeVideo) {
+    private fun onGetVideoEpisodeSuccess(episodeVideo: MediaVideo) {
         if (episodeVideo.site.isEmpty() || episodeVideo.key.isEmpty()) {
             updateState(
                 screenState.value.copy(
@@ -508,7 +509,7 @@ class TvShowDetailsViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 showSnackBar = false,
-                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(episodeVideoUi = episodeVideo.toUi())
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(episodeVideoUi = episodeVideo.toEpisodeVideoUi())
             )
         )
     }

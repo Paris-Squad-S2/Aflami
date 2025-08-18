@@ -2,9 +2,9 @@ package com.repository.media.repository
 
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
-import com.paris_2.domain.media.entity.MovieVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.exception.AflamiException
@@ -171,7 +171,7 @@ class MovieRepositoryImpl(
         }
     }
 
-    override suspend fun getTrailerVideoForMovie(movieId: Int): List<MovieVideo> {
+    override suspend fun getTrailerVideoForMovie(movieId: Int): List<MediaVideo> {
         return safeCall(FailedException("getTrailerVideoForMovie")) {
             movieRemoteDataSource.getTrailerVideoForMovie(movieId)
                 .movieVideoResultDto

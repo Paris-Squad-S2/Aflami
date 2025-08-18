@@ -3,8 +3,8 @@ package com.repository.media.mapper
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Episode
-import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
@@ -34,6 +34,29 @@ import com.repository.media.models.remote.tvShow.TvShowReviewDto
 import com.repository.media.models.remote.tvShow.TvShowSeasonDto
 import com.repository.media.models.remote.tvShow.TvShowSimilarDto
 import com.repository.media.models.remote.tvShow.TvShowVideoResultDto
+import com.repository.model.local.CastEntity
+import com.repository.model.local.EpisodeEntity
+import com.repository.model.local.GalleryEntity
+import com.repository.model.local.GenreEntity
+import com.repository.model.local.ImageEntity
+import com.repository.model.local.ProductionCompanyEntity
+import com.repository.model.local.ReviewEntity
+import com.repository.model.local.SeasonEntity
+import com.repository.model.local.TvShowEntity
+import com.repository.model.local.TvShowSimilarEntity
+import com.repository.model.remote.EpisodeVideoResultDto
+import com.repository.model.remote.TvShowCastDto
+import com.repository.model.remote.TvShowDto
+import com.repository.model.remote.TvShowEpisodeDto
+import com.repository.model.remote.TvShowGenreDto
+import com.repository.model.remote.TvShowImagesDto
+import com.repository.model.remote.TvShowPosterDto
+import com.repository.model.remote.TvShowProductionCompanyDto
+import com.repository.model.remote.TvShowReviewDto
+import com.repository.model.remote.TvShowSeasonDto
+import com.repository.model.remote.TvShowSimilarDto
+import com.repository.model.remote.TvShowVideoResultDto
+import com.repository.util.toImageUrl
 import kotlinx.datetime.LocalDate
 
 
@@ -109,8 +132,8 @@ fun TvShowCastEntity.toEntity(): Cast {
     )
 }
 
-fun  TvShowVideoResultDto.toEntity(): TvShowVideo {
-    return TvShowVideo(
+fun  TvShowVideoResultDto.toEntity(): MediaVideo {
+    return MediaVideo(
         key = this.key.orEmpty(),
         name = this.name.orEmpty(),
         site = this.site.orEmpty(),
@@ -118,8 +141,8 @@ fun  TvShowVideoResultDto.toEntity(): TvShowVideo {
     )
 }
 
-fun  EpisodeVideoResultDto.toEntity(): EpisodeVideo {
-    return EpisodeVideo(
+fun  EpisodeVideoResultDto.toEntity(): MediaVideo {
+    return MediaVideo(
         key = this.key.orEmpty(),
         name = this.name.orEmpty(),
         site = this.site.orEmpty(),
