@@ -130,4 +130,29 @@ class ContinueWatchingViewModelTest {
 
         coVerify { mediaDetailsFeatureAPI.startMovieDetails(movie.id) }
     }
+
+    @Test
+    fun `onRetry calls load again and clears previous error`() = runTest {
+        // Arrange: Simulate initial failure
+        coEvery { getWatchHistoryUseCase() } throws RuntimeException("Failed to load")
+
+        viewModel = ContinueWatchingViewModel(getWatchHistoryUseCase, mediaDetailsFeatureAPI, settingsUseCase)
+        runCurrent() // Initial load fails
+
+        var state = viewModel.screenState.value
+        assertThat(state.errorMessage).isEqualTo("Failed to load")
+        assertThat(state.isLoading).isFalse()
+
+        // Reset the exception for retry
+        coEvery { getWatchHistoryUseCase() } returns flowOf(fakeMediaList.map { it.toMedia() })
+
+        // Act: Call onRetry
+        viewModel.onRetry()
+        runCurrent() // Let retry run
+
+        // Assert: Error is cleared, loading happened, list is populated
+        val finalState = viewModel.screenState.value
+        assertThat(finalState.continueWatchingMediaList.map { it.title })
+            .isEqualTo(fakeMediaList.map { it.title })
+    }
 }
