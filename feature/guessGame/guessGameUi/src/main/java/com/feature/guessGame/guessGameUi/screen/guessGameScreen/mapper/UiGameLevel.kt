@@ -1,7 +1,9 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper
 
 import com.feature.guessGame.guessGameUi.R
+import kotlinx.serialization.Serializable
 
+@Serializable
 enum class UiGameLevel {
     EASY, MEDIUM, HARD
 }
