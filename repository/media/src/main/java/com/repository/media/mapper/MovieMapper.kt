@@ -189,8 +189,8 @@ fun MovieReviewEntity.toEntity(): Review {
     )
 }
 
-fun MovieVideoResultDto.toEntity(): MovieVideo {
-    return MovieVideo(
+fun MovieVideoResultDto.toEntity(): MediaVideo {
+    return MediaVideo(
         key = this.key.orEmpty(),
         name = this.name.orEmpty(),
         site = this.site.orEmpty(),
