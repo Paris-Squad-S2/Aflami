@@ -3,11 +3,11 @@ package com.datasource.local.media
 import androidx.room.TypeConverter
 import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.MediaTypeEntity
-import com.repository.model.local.EpisodeEntity
-import com.repository.model.local.SeasonEntity
-import com.repository.model.local.TVGenreEntity
-import com.repository.model.local.TVProductionCompanyEntity
-import com.repository.model.local.TVImageEntity
+import com.repository.media.models.local.tvShow.EpisodeEntity
+import com.repository.media.models.local.tvShow.SeasonEntity
+import com.repository.media.models.local.tvShow.TVGenreEntity
+import com.repository.media.models.local.tvShow.TVProductionCompanyEntity
+import com.repository.media.models.local.tvShow.TVImageEntity
 import com.repository.media.models.local.moive.MovieGenreEntity
 import com.repository.media.models.local.moive.MovieImageEntity
 import com.repository.media.models.local.moive.MovieProductionCompanyEntity

@@ -19,8 +19,8 @@ import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris_2.repository.user.repository.SettingRepositoryImpl
 import com.paris_2.repository.user.repository.UserRepositoryImpl
-import com.repository.dataSource.local.TvShowLocalDataSource
-import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.media.datasource.local.TvShowLocalDataSource
+import com.repository.media.datasource.remote.TvShowDetailsRemoteDataSource
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
 import com.repository.guessgame.repository.ActorPopularityRepositoryImpl
@@ -45,7 +45,7 @@ import com.repository.media.util.NetworkConnectionChecker
 import com.repository.media.datasource.local.MovieLocalDataSource
 import com.repository.media.datasource.remote.MovieRemoteDataSource
 import com.repository.media.repository.MovieRepositoryImpl
-import com.repository.repository.TvShowRepositoryImpl
+import com.repository.media.repository.TvShowRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -170,7 +170,7 @@ object RepositoryModule {
     fun provideDetailedTvShowRepository(
         tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource,
         tvShowLocalDataSource: TvShowLocalDataSource,
-        networkConnectionChecker: com.repository.util.NetworkConnectionChecker,
+        networkConnectionChecker: NetworkConnectionChecker,
         settingLocalDataSource: SettingLocalDataSource,
     ): TvShowRepository = TvShowRepositoryImpl(
         tvShowDetailsRemoteDataSource,

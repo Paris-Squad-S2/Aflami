@@ -135,7 +135,6 @@ dependencies {
     implementation(projects.feature.mediaDetails.mediaDetailsUi)
     implementation(projects.feature.onboarding.onboardingUi)
 
-    implementation(projects.repository.tvShows)
     implementation(projects.repository.lists)
     implementation(projects.repository.user)
     implementation(projects.repository.media)

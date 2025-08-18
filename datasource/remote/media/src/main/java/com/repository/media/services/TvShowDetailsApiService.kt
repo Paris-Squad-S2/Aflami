@@ -1,16 +1,16 @@
 package com.repository.media.services
 
-import com.repository.model.remote.EpisodeVideoDto
-import com.repository.model.remote.RemoveTvRatingDto
-import com.repository.model.remote.TvShowCreditsDto
-import com.repository.model.remote.TvShowDto
-import com.repository.model.remote.TvShowImagesDto
-import com.repository.model.remote.TvShowReviewsDto
-import com.repository.model.remote.TvShowSeasonDto
-import com.repository.model.remote.TvShowSimilarsDto
-import com.repository.model.remote.TvShowVideoDto
 import com.repository.media.models.remote.movie.RatingDto
 import com.repository.media.models.remote.movie.RatingResponseDto
+import com.repository.media.models.remote.tvShow.EpisodeVideoDto
+import com.repository.media.models.remote.tvShow.RemoveTvRatingDto
+import com.repository.media.models.remote.tvShow.TvShowCreditsDto
+import com.repository.media.models.remote.tvShow.TvShowDto
+import com.repository.media.models.remote.tvShow.TvShowImagesDto
+import com.repository.media.models.remote.tvShow.TvShowReviewsDto
+import com.repository.media.models.remote.tvShow.TvShowSeasonDto
+import com.repository.media.models.remote.tvShow.TvShowSimilarsDto
+import com.repository.media.models.remote.tvShow.TvShowVideoDto
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET

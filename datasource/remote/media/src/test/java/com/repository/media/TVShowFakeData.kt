@@ -1,18 +1,18 @@
 package com.repository.media
 
-import com.repository.model.remote.TvShowCastDto
-import com.repository.model.remote.TvShowCreditsDto
-import com.repository.model.remote.TvShowDto
-import com.repository.model.remote.TvShowGenreDto
-import com.repository.model.remote.TvShowImagesDto
-import com.repository.model.remote.TvShowPosterDto
-import com.repository.model.remote.TvShowReviewDto
-import com.repository.model.remote.TvShowReviewsDto
-import com.repository.model.remote.TvShowSeasonDto
-import com.repository.model.remote.TvShowSimilarDto
-import com.repository.model.remote.TvShowSimilarsDto
-import com.repository.model.remote.TvShowVideoDto
-import com.repository.model.remote.TvShowVideoResultDto
+import com.repository.model.tvShow.TvShowCastDto
+import com.repository.model.tvShow.TvShowCreditsDto
+import com.repository.model.tvShow.TvShowDto
+import com.repository.model.tvShow.TvShowGenreDto
+import com.repository.model.tvShow.TvShowImagesDto
+import com.repository.model.tvShow.TvShowPosterDto
+import com.repository.model.tvShow.TvShowReviewDto
+import com.repository.model.tvShow.TvShowReviewsDto
+import com.repository.model.tvShow.TvShowSeasonDto
+import com.repository.model.tvShow.TvShowSimilarDto
+import com.repository.model.tvShow.TvShowSimilarsDto
+import com.repository.model.tvShow.TvShowVideoDto
+import com.repository.model.tvShow.TvShowVideoResultDto
 
 val tvShowGenres = listOf(
     TvShowGenreDto(

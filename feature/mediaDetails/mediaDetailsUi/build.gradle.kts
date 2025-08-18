@@ -56,7 +56,6 @@ dependencies {
 
     implementation(projects.domain.user)
     implementation(projects.domain.media)
-    implementation(projects.repository.tvShows)
     implementation(projects.domain.lists)
     implementation(projects.designsystem)
     implementation(projects.feature.authentication.authenticationApi)

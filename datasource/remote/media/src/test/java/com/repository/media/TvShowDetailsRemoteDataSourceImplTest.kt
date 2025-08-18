@@ -2,9 +2,9 @@ package com.repository.media
 
 import com.google.common.truth.Truth.assertThat
 import com.repository.media.services.TvShowDetailsApiService
-import com.repository.model.remote.EpisodeVideoDto
-import com.repository.model.remote.EpisodeVideoResultDto
-import com.repository.model.remote.RemoveTvRatingDto
+import com.repository.model.tvShow.EpisodeVideoDto
+import com.repository.model.tvShow.EpisodeVideoResultDto
+import com.repository.model.tvShow.RemoveTvRatingDto
 import com.repository.media.models.remote.movie.RatingDto
 import com.repository.media.models.remote.movie.RatingResponseDto
 import io.mockk.coEvery

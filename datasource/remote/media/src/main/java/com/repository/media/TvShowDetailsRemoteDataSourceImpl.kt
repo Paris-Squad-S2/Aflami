@@ -1,15 +1,15 @@
 package com.repository.media
 
-import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.media.datasource.remote.TvShowDetailsRemoteDataSource
 import com.repository.media.services.TvShowDetailsApiService
-import com.repository.model.remote.EpisodeVideoDto
-import com.repository.model.remote.TvShowCreditsDto
-import com.repository.model.remote.TvShowDto
-import com.repository.model.remote.TvShowImagesDto
-import com.repository.model.remote.TvShowReviewsDto
-import com.repository.model.remote.TvShowSeasonDto
-import com.repository.model.remote.TvShowSimilarsDto
-import com.repository.model.remote.TvShowVideoDto
+import com.repository.media.models.remote.tvShow.EpisodeVideoDto
+import com.repository.media.models.remote.tvShow.TvShowCreditsDto
+import com.repository.media.models.remote.tvShow.TvShowDto
+import com.repository.media.models.remote.tvShow.TvShowImagesDto
+import com.repository.media.models.remote.tvShow.TvShowReviewsDto
+import com.repository.media.models.remote.tvShow.TvShowSeasonDto
+import com.repository.media.models.remote.tvShow.TvShowSimilarsDto
+import com.repository.media.models.remote.tvShow.TvShowVideoDto
 import com.repository.media.models.remote.movie.RatingDto
 import javax.inject.Inject
 

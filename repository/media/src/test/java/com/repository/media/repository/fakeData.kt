@@ -11,6 +11,18 @@ import com.repository.media.models.remote.movie.MovieSimilarDto
 import com.repository.media.models.remote.movie.MovieSimilarsDto
 import com.repository.media.models.remote.movie.MovieVideoDto
 import com.repository.media.models.remote.movie.MovieVideoResultDto
+import com.repository.media.models.remote.tvShow.TvShowCastDto
+import com.repository.media.models.remote.tvShow.TvShowCreditsDto
+import com.repository.media.models.remote.tvShow.TvShowDto
+import com.repository.media.models.remote.tvShow.TvShowImagesDto
+import com.repository.media.models.remote.tvShow.TvShowLogoDto
+import com.repository.media.models.remote.tvShow.TvShowProductionCompanyDto
+import com.repository.media.models.remote.tvShow.TvShowReviewDto
+import com.repository.media.models.remote.tvShow.TvShowReviewsDto
+import com.repository.media.models.remote.tvShow.TvShowSimilarDto
+import com.repository.media.models.remote.tvShow.TvShowSimilarsDto
+import com.repository.media.models.remote.tvShow.TvShowVideoDto
+import com.repository.media.models.remote.tvShow.TvShowVideoResultDto
 import kotlinx.datetime.LocalDate
 
 val mockMovieDto = MovieDto(
@@ -66,4 +78,67 @@ val review = MovieReviewEntity(
 
 val reviewRemoteDto = MovieReviewDto(
   author = "mohammed",
+)
+
+val mockTvShowDto = TvShowDto(
+    id = 550,
+    name = "The Epic Blockbuster",
+    overview = "Mind-blowing action sequences",
+    firstAirDate = "2024-07-15",
+    productionCompanies = listOf(
+        TvShowProductionCompanyDto(
+            name = "Marvel"
+        )
+    )
+)
+
+val mockTvShowVideosDto = TvShowVideoDto(
+    id = 550,
+    tvShowVideoResultDto = listOf(
+        TvShowVideoResultDto(
+            key = "dQw4w9WgXcQ",
+            name = "Trailer 1",
+            site = "YouTube",
+            type = "Trailer"
+        ),
+        TvShowVideoResultDto(key = "abc123", name = "Trailer 2", site = "Vimeo", type = "Trailer")
+    )
+)
+
+val mockTvShowCreditsDto = TvShowCreditsDto(
+    id = 550,
+    cast = listOf(
+        TvShowCastDto(
+            name = "alex"
+        )
+    )
+)
+
+val mockTvShowSimilarsDto = TvShowSimilarsDto(
+    tvShowSimilarDto = listOf(
+        TvShowSimilarDto(
+            title = "batman"
+        )
+    )
+)
+
+val mockTvShowLogoDto = TvShowImagesDto(
+    id = 123,
+    logos = listOf(
+        TvShowLogoDto(filePath = "http://images.jpeg")
+    )
+)
+
+val mockTvShowImagesDto = listOf(
+    TvShowProductionCompanyDto(
+        name = "sonic"
+    )
+)
+
+val mockTvShowReviewsDto = TvShowReviewsDto(
+    results = listOf(
+        TvShowReviewDto(
+            author = "mohammed"
+        )
+    )
 )

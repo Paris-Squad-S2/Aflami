@@ -4,12 +4,12 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.model.local.TvShowCastEntity
-import com.repository.model.local.TVShowGalleryEntity
-import com.repository.model.local.TVShowReviewEntity
-import com.repository.model.local.SeasonEntity
-import com.repository.model.local.TvShowEntity
-import com.repository.model.local.TvShowSimilarEntity
+import com.repository.media.models.local.tvShow.TvShowCastEntity
+import com.repository.media.models.local.tvShow.TVShowGalleryEntity
+import com.repository.media.models.local.tvShow.TVShowReviewEntity
+import com.repository.media.models.local.tvShow.SeasonEntity
+import com.repository.media.models.local.tvShow.TvShowEntity
+import com.repository.media.models.local.tvShow.TvShowSimilarEntity
 
 @Dao
 interface TvShowDao {

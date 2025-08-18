@@ -29,7 +29,7 @@ import com.paris_2.datasource.remote.user.UserRemoteDataSourceImpl
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
-import com.repository.dataSource.local.TvShowLocalDataSource
+import com.repository.media.datasource.local.TvShowLocalDataSource
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource

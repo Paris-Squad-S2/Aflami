@@ -4,14 +4,14 @@ import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.datasource.local.media.dao.TvShowDao
-import com.repository.dataSource.local.TvShowLocalDataSource
-import com.repository.dataSource.local.workmanager.ClearTvShowDetailsWorker
-import com.repository.model.local.TvShowCastEntity
-import com.repository.model.local.TVShowGalleryEntity
-import com.repository.model.local.TVShowReviewEntity
-import com.repository.model.local.SeasonEntity
-import com.repository.model.local.TvShowEntity
-import com.repository.model.local.TvShowSimilarEntity
+import com.repository.media.datasource.local.TvShowLocalDataSource
+import com.repository.media.datasource.local.workmanager.ClearTvShowDetailsWorker
+import com.repository.media.models.local.tvShow.TvShowCastEntity
+import com.repository.media.models.local.tvShow.TVShowGalleryEntity
+import com.repository.media.models.local.tvShow.TVShowReviewEntity
+import com.repository.media.models.local.tvShow.SeasonEntity
+import com.repository.media.models.local.tvShow.TvShowEntity
+import com.repository.media.models.local.tvShow.TvShowSimilarEntity
 import java.util.concurrent.TimeUnit
 
 class TvShowLocalDataSourceImpl (

@@ -37,7 +37,6 @@ dependencies {
 
     implementation(projects.repository.media)
     implementation(projects.repository.guessGame)
-    implementation(projects.repository.tvShows)
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()
