@@ -1,16 +1,15 @@
 package com.feature.search.searchUi.screen.search
 
 import androidx.lifecycle.viewModelScope
-import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListUpdateCallback
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.comon.BaseViewModel
+import com.feature.search.searchUi.mapper.collectAllItems
+import com.feature.search.searchUi.mapper.collectItems
 import com.feature.search.searchUi.mapper.toDomainList
 import com.feature.search.searchUi.mapper.toDomainModel
 import com.feature.search.searchUi.mapper.toMediaUiList
@@ -18,7 +17,6 @@ import com.feature.search.searchUi.mapper.toSearchHistoryUiList
 import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.PagingSource
 import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.useCase.ClearAllRecentSearchesUseCase
 import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
 import com.paris_2.domain.media.useCase.FilterMediaByRatingUseCase
@@ -30,12 +28,8 @@ import com.paris_2.domain.media.useCase.SearchByQueryUseCase
 import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -157,15 +151,11 @@ class SearchViewModel @Inject constructor(
     }
 
     override fun onNavigateToWorldTourScreen() {
-        navigate(
-            SearchDestinations.WorldTourScreen()
-        )
+        navigate(SearchDestinations.WorldTourScreen())
     }
 
     override fun onNavigateToFindByActorScreen() {
-        navigate(
-            SearchDestinations.FindByActorScreen()
-        )
+        navigate(SearchDestinations.FindByActorScreen())
     }
 
     private var debounceJob: Job? = null
@@ -185,7 +175,7 @@ class SearchViewModel @Inject constructor(
                 delay(1000)
                 searchQuery(query)
             }
-        }else{
+        } else {
             updateState(
                 screenState.value.copy(
                     isLoading = false
@@ -220,25 +210,35 @@ class SearchViewModel @Inject constructor(
             },
             onSuccess = { searchResult ->
                 val moviesResult =
-                    searchResult.map { pagingData  -> pagingData .filter { it.type == MediaTypeUi.Movie } }
+                    searchResult.map { pagingData -> pagingData.filter { it.type == MediaTypeUi.Movie } }
                 val tvShowsResult =
-                    searchResult.map { pagingData -> pagingData .filter { it.type == MediaTypeUi.TvShow } }
-                val filteredMediaByRating = flowOf(PagingData.from(filterMediaByRatingUseCase(
-                    screenState.value.searchUiState.selectedRating,
-                    searchResult.collectAllItems().map { it.toDomainModel() }
-                )))
+                    searchResult.map { pagingData -> pagingData.filter { it.type == MediaTypeUi.TvShow } }
+                val filteredMediaByRating = flowOf(
+                    PagingData.from(
+                        filterMediaByRatingUseCase(
+                            screenState.value.searchUiState.selectedRating,
+                            searchResult.collectAllItems().map { it.toDomainModel() }
+                        )))
                 val filteredMediaByCategories =
-                    if (!screenState.value.searchUiState.isAllCategories) flowOf (PagingData.from(filterMedByListOfCategoriesUseCase(
-                        screenState.value.searchUiState.categories.filter { it.value }.keys.toList(),
-                        filteredMediaByRating.collectItems()
-                    ).toMediaUiList())) else searchResult
+                    if (!screenState.value.searchUiState.isAllCategories) flowOf(
+                        PagingData.from(
+                            filterMedByListOfCategoriesUseCase(
+                                screenState.value.searchUiState.categories.filter { it.value }.keys.toList(),
+                                filteredMediaByRating.collectItems()
+                            ).toMediaUiList()
+                        )
+                    ) else searchResult
 
                 val filteredMoviesResult =
-                    filteredMediaByCategories.map { pagingData  -> pagingData
-                        .filter { it.type == MediaTypeUi.Movie }}
+                    filteredMediaByCategories.map { pagingData ->
+                        pagingData
+                            .filter { it.type == MediaTypeUi.Movie }
+                    }
                 val filteredTvShowsResult =
-                    filteredMediaByCategories.map { pagingData  -> pagingData
-                        .filter { it.type == MediaTypeUi.TvShow }}
+                    filteredMediaByCategories.map { pagingData ->
+                        pagingData
+                            .filter { it.type == MediaTypeUi.TvShow }
+                    }
                 updateState(
                     screenState.value.copy(
                         isLoading = false,
@@ -488,71 +488,6 @@ class SearchViewModel @Inject constructor(
                 )
             }
         )
-    }
-
-    private suspend fun Flow<PagingData<Media>>.collectItems(): List<Media> {
-        val differ = AsyncPagingDataDiffer(
-            diffCallback = object : DiffUtil.ItemCallback<Media>() {
-                override fun areItemsTheSame(oldItem: Media, newItem: Media): Boolean =
-                    oldItem.id == newItem.id
-
-                override fun areContentsTheSame(oldItem: Media, newItem: Media): Boolean =
-                    oldItem == newItem
-            },
-            updateCallback = NoopListUpdateCallback(),
-            mainDispatcher = Dispatchers.Main,
-            workerDispatcher = Dispatchers.Default
-        )
-
-        val job = CoroutineScope(Dispatchers.Main).launch {
-            collectLatest { pagingData ->
-                differ.submitData(pagingData)
-            }
-        }
-
-        delay(1000)
-        job.cancel()
-
-        return differ.snapshot().items
-    }
-
-    private suspend fun Flow<PagingData<MediaUiState>>.collectAllItems(): List<MediaUiState> {
-        val differ = AsyncPagingDataDiffer(
-            diffCallback = object : DiffUtil.ItemCallback<MediaUiState>() {
-                override fun areItemsTheSame(
-                    oldItem: MediaUiState,
-                    newItem: MediaUiState,
-                ): Boolean =
-                    oldItem.id == newItem.id
-
-                override fun areContentsTheSame(
-                    oldItem: MediaUiState,
-                    newItem: MediaUiState,
-                ): Boolean =
-                    oldItem == newItem
-            },
-            updateCallback = NoopListUpdateCallback(),
-            mainDispatcher = Dispatchers.Main,
-            workerDispatcher = Dispatchers.Default
-        )
-
-        val job = CoroutineScope(Dispatchers.Main).launch {
-            collectLatest { pagingData ->
-                differ.submitData(pagingData)
-            }
-        }
-
-        delay(1000)
-        job.cancel()
-
-        return differ.snapshot().items
-    }
-
-    class NoopListUpdateCallback : ListUpdateCallback {
-        override fun onInserted(position: Int, count: Int) {}
-        override fun onRemoved(position: Int, count: Int) {}
-        override fun onMoved(fromPosition: Int, toPosition: Int) {}
-        override fun onChanged(position: Int, count: Int, payload: Any?) {}
     }
 
 

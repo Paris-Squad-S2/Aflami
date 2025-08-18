@@ -5,7 +5,6 @@ import androidx.paging.AsyncPagingDataDiffer
 import androidx.paging.PagingData
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListUpdateCallback
-import com.feature.search.searchUi.screen.search.SearchViewModel.NoopListUpdateCallback
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
