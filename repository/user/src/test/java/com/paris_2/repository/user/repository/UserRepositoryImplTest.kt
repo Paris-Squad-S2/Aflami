@@ -1,10 +1,11 @@
 package com.paris_2.repository.user.repository
 
-import com.google.common.base.Verify.verify
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.user.exception.UnknownAuthException
 import com.paris_2.repository.user.dataSource.local.AuthenticationLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
+import com.paris_2.repository.user.exeptions.NetworkException
+import com.paris_2.repository.user.model.remote.AccountDto
 import com.paris_2.repository.user.model.remote.GuestSessionDto
 import com.paris_2.repository.user.model.remote.LoginRequest
 import com.paris_2.repository.user.model.remote.RequestTokenDto
@@ -20,7 +21,7 @@ import org.junit.jupiter.api.Test
 import kotlin.test.assertFailsWith
 
 
-class AuthenticationRepositoryImplTest {
+class UserRepositoryImplTest {
     private lateinit var remoteDataSource: UserRemoteDataSource
     private lateinit var localDataSource: AuthenticationLocalDataSource
     private lateinit var repository: UserRepositoryImpl
@@ -198,6 +199,41 @@ class AuthenticationRepositoryImplTest {
     fun `hasAnySession should return value from localDataSource`() {
         every { localDataSource.hasAnySession() } returns true
         assertThat(repository.hasAnySession()).isTrue()
+    }
+
+    @Test
+    fun `getAccountId should return account id from remoteDataSource`() = runTest {
+        val accountId = 12345
+        val accountDto = AccountDto(
+            id = accountId,
+            name = "Test User",
+            username = "testuser"
+        )
+        coEvery { remoteDataSource.getAccountDetails() } returns accountDto
+
+        val result = repository.getAccountId()
+
+        assertThat(result).isEqualTo(accountId)
+    }
+
+
+    @Test
+    fun `deleteSessionId should call localDataSource deleteSessionId and return result`() {
+        every { localDataSource.deleteSessionId() } returns true
+
+        val result = repository.deleteSessionId()
+
+        assertThat(result).isTrue()
+    }
+
+    @Test
+    fun `getUserName should return username from localDataSource`() {
+        val username = "Abo Salah"
+        every { localDataSource.getUserName() } returns username
+
+        val result = repository.getUserName()
+
+        assertThat(result).isEqualTo(username)
     }
 
 }
