@@ -139,10 +139,11 @@ Aflami/
 │   └── 🎯 di/                  # Dependency Injection (Hilt setup)
 ├── 🛠️ buildSrc/                # Build configuration
 ├── 📊 datasource/
-│   ├── 🌐 remote/              # Home, Guess Game, Lists, Category, Search, User
-│   └── 💾 local/               # Home, Guess Game, Lists, Category, Search, User
+│   ├── 🌐 remote/              # Media, Guess Game, Lists, Category, User
+│   └── 💾 local/               # Media, Guess Game, Lists, Category, User
 ├── 🎨 designsystem/            # UI components and theming
-├── 📦 repository/              # Home, Guess Game, Lists, Category, Search, User
+├── 📦 repository/              # Media, Guess Game, Lists, Category, User
+├── 🏢 domain/                  # Media, Guess Game, Lists, Category, User
 ├── 🎯 feature/
 │   ├── 🏠 home/                # Home screen
 │   ├── 🎮 guessGame/           # Guessing game
