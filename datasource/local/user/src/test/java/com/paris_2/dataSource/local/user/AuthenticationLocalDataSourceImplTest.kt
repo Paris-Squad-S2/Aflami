@@ -5,9 +5,11 @@ import android.content.SharedPreferences
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.Assertions.assertEquals
 
 class AuthenticationLocalDataSourceImplTest {
     private lateinit var context: Context
@@ -91,6 +93,7 @@ class AuthenticationLocalDataSourceImplTest {
         val result = dataSource.isGuest()
         assertEquals(true, result)
     }
+
     @Test
     fun `hasAnySession should return true when sessionId is not null or blank`() {
         every { sharedPreferences.getString("session_id", null) } returns "some_session"
@@ -110,5 +113,56 @@ class AuthenticationLocalDataSourceImplTest {
         every { sharedPreferences.getString("session_id", null) } returns " "
         val result = dataSource.hasAnySession()
         assertEquals(false, result)
+    }
+
+    @Test
+    fun `saveUserName should save username in SharedPreferences`() {
+        val username = "test_user"
+        every { editor.putString("user_name", username) } returns editor
+
+        dataSource.saveUserName(username)
+
+        verify { editor.putString("user_name", username) }
+    }
+
+    @Test
+    fun `getUserName should return username from SharedPreferences`() {
+        every { sharedPreferences.getString("user_name", "") } returns "test_user"
+
+        val result = dataSource.getUserName()
+
+        assertEquals("test_user", result)
+    }
+
+    @Test
+    fun `getUserName should return empty string when username is null`() {
+        every { sharedPreferences.getString("user_name", "") } returns null
+
+        val result = dataSource.getUserName()
+
+        assertEquals("", result)
+    }
+
+    @Test
+    fun `deleteSessionId should set session_id to null and return true if no session remains`() {
+
+        every { editor.putString("session_id", null) } returns editor
+        every { sharedPreferences.getString("session_id", null) } returns null
+
+
+        val result = dataSource.deleteSessionId()
+
+
+        assertTrue(result)
+    }
+
+    @Test
+    fun `deleteSessionId should return false if session ID still exists after deletion attempt`() {
+        every { editor.putString("session_id", null) } returns editor
+        every { sharedPreferences.getString("session_id", null) } returns "leftover_session"
+
+        val result = dataSource.deleteSessionId()
+
+        assertFalse(result) 
     }
 }
