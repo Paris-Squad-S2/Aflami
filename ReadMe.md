@@ -28,7 +28,7 @@
 ## 📽️ Gifs
 | Light Mode                                                            | Dark Mode                                                            |
 |-----------------------------------------------------------------------|----------------------------------------------------------------------|
-| <img src="assets/light_theme.gif" alt="Light Mode Demo" width="500"/> | <img src="assets/night_theme.gif" alt="Dark Mode Demo" width="500"/> |
+| <img src="assets/light_theme.gif" alt="Light Mode Demo" width="450"/> | <img src="assets/night_theme.gif" alt="Dark Mode Demo" width="450"/> |
 
 
 ## 🚀 Quick Start Guide
