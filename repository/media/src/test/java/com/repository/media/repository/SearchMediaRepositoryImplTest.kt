@@ -5,11 +5,11 @@ import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
-import com.repository.media.dto.search.KnownForDto
-import com.repository.media.dto.search.ResultDto
-import com.repository.media.dto.search.SearchDto
-import com.repository.media.entity.SearchHistoryEntity
-import com.repository.media.entity.SearchType
+import com.repository.media.models.remote.media.search.KnownForDto
+import com.repository.media.models.remote.media.search.ResultDto
+import com.repository.media.models.remote.media.search.SearchDto
+import com.repository.media.models.local.media.SearchHistoryEntity
+import com.repository.media.models.local.media.SearchType
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.Runs
 import io.mockk.coEvery

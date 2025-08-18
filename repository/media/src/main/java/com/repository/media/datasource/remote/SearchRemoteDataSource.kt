@@ -1,6 +1,6 @@
 package com.repository.media.datasource.remote
 
-import com.repository.media.dto.search.SearchDto
+import com.repository.media.models.remote.media.search.SearchDto
 
 interface SearchRemoteDataSource {
     suspend fun searchMulti(query: String, page: Int , language: String ): SearchDto

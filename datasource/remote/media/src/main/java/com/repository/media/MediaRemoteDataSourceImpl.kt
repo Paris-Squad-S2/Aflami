@@ -1,12 +1,12 @@
 package com.repository.media
 
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.dto.category.MovieByCategoryDto
-import com.repository.media.dto.category.TvShowByCategoryDto
-import com.repository.media.dto.home.MovieListDto
-import com.repository.media.dto.home.TvListDto
-import com.repository.media.dto.profile.RatedMoviesDto
-import com.repository.media.dto.profile.RatedTvShowDtoo
+import com.repository.media.models.remote.media.category.MovieByCategoryDto
+import com.repository.media.models.remote.media.category.TvShowByCategoryDto
+import com.repository.media.models.remote.media.home.MovieListDto
+import com.repository.media.models.remote.media.home.TvListDto
+import com.repository.media.models.remote.media.profile.RatedMoviesDto
+import com.repository.media.models.remote.media.profile.RatedTvShowDtoo
 import com.repository.media.services.MediaApiService
 import javax.inject.Inject
 

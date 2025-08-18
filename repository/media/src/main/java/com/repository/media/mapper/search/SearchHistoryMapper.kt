@@ -2,8 +2,8 @@ package com.repository.media.mapper.search
 
 
 import com.paris_2.domain.media.entity.SearchHistoryModel
-import com.repository.media.entity.SearchHistoryEntity
-import com.repository.media.entity.SearchType
+import com.repository.media.models.local.media.SearchHistoryEntity
+import com.repository.media.models.local.media.SearchType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 

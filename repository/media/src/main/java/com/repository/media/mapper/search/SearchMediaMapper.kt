@@ -2,8 +2,8 @@ package com.repository.media.mapper.search
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
-import com.repository.media.dto.search.KnownForDto
-import com.repository.media.dto.search.ResultDto
+import com.repository.media.models.remote.media.search.KnownForDto
+import com.repository.media.models.remote.media.search.ResultDto
 import com.repository.media.mapper.intListToCategoryList
 import kotlinx.datetime.LocalDate
 
