@@ -1,2 +1,4 @@
-versionName=1.0.10
-- unifying all video entities into media video entity
+versionName=1.0.11
+- refactor hint in guess by image screen
+- refactor hint in guss by question screen
+- refactor localization in guess game

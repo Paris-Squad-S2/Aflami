@@ -1,0 +1,32 @@
+import com.feature.guessGame.guessGameUi.R
+
+enum class GenreGameUi(val displayNameResId: Int) {
+    Action(R.string.genre_action),
+    Adventure(R.string.genre_adventure),
+    Animation(R.string.genre_animation),
+    Comedy(R.string.genre_comedy),
+    Crime(R.string.genre_crime),
+    Documentary(R.string.genre_documentary),
+    Drama(R.string.genre_drama),
+    Family(R.string.genre_family),
+    Fantasy(R.string.genre_fantasy),
+    History(R.string.genre_history),
+    Horror(R.string.genre_horror),
+    Music(R.string.genre_music),
+    Mystery(R.string.genre_mystery),
+    Romance(R.string.genre_romance),
+    ScienceFiction(R.string.genre_science_fiction),
+    TvMovie(R.string.genre_tv_movie),
+    Thriller(R.string.genre_thriller),
+    War(R.string.genre_war),
+    Western(R.string.genre_western),
+    ActionAdventure(R.string.genre_action_adventure),
+    Kids(R.string.genre_kids),
+    News(R.string.genre_news),
+    Reality(R.string.genre_reality),
+    ScifiFantasy(R.string.genre_sci_fi_fantasy),
+    Soap(R.string.genre_soap),
+    Talk(R.string.genre_talk),
+    WarPolitics(R.string.genre_war_politics),
+    Unknown(R.string.unknown)
+}

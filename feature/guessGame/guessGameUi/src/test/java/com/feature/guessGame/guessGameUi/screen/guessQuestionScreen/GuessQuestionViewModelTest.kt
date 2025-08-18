@@ -21,6 +21,7 @@ import io.mockk.mockk
 import io.mockk.mockkStatic
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
@@ -102,16 +103,20 @@ class GuessQuestionViewModelTest {
         val session = mockk<GameSession>(relaxed = true) {
             every { getCurrentQuestion() } returns question
         }
+
         coEvery { getAccountIdUseCase() } returns 1
+        coEvery { getUserPointUseCase() } returns flowOf(5)
         coEvery { useHintUseCase(session, 1) } returns false
+
         val field = viewModel.javaClass.getDeclaredField("currentSession")
         field.isAccessible = true
         field.set(viewModel, session)
+
         viewModel.onHintUsed()
         dispatcher.scheduler.advanceUntilIdle()
+
         assertTrue(viewModel.screenState.value.showNotEnoughPointsDialog)
     }
-
 
     private fun makeViewModelWithDefaultStateHandle(): GuessQuestionViewModel {
         every { savedStateHandle.toRoute<Destinations.GuessQuestionScreen>() } returns Destinations.GuessQuestionScreen(
@@ -123,12 +128,12 @@ class GuessQuestionViewModelTest {
         )
         return GuessQuestionViewModel(
             savedStateHandle = savedStateHandle,
-            whenIsReleasedSessionUseCase =whenIsReleasedSessionUseCase,
+            whenIsReleasedSessionUseCase = whenIsReleasedSessionUseCase,
             whichGenreSessionUseCase = whichGenreSessionUseCase,
             removeAnswerHintUseCase = removeAnswerHintUseCase,
             moveToNextQuestionUseCase = moveToNextQuestionUseCase,
-            getUserPointUseCase =getUserPointUseCase,
-            getAccountIdUseCase =getAccountIdUseCase,
+            getUserPointUseCase = getUserPointUseCase,
+            getAccountIdUseCase = getAccountIdUseCase,
             useHintUseCase = useHintUseCase
         )
     }

@@ -48,6 +48,7 @@ dependencies {
     implementation(libs.bundles.navigation)
     implementation(projects.domain.guessGame)
     implementation(projects.domain.user)
+    implementation(projects.domain.media)
 
     //test
     testImplementation(libs.bundles.test)
