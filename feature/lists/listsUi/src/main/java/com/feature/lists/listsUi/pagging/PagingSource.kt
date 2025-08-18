@@ -2,8 +2,6 @@ package com.feature.lists.listsUi.pagging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.paris.domain.lists.entity.ListDetails
-import com.paris.domain.lists.entity.Media
 
 class PagingSource<T: Any>(
     private val dataLoader: suspend (page: Int) -> List<T>
@@ -24,6 +22,10 @@ class PagingSource<T: Any>(
     }
 
     override fun getRefreshKey(state: PagingState<Int, T>): Int? {
-        return state.anchorPosition
+        return state.anchorPosition?.let { anchorPosition ->
+            state.closestPageToPosition(anchorPosition)?.prevKey?.plus(1)
+                ?: state.closestPageToPosition(anchorPosition)?.nextKey?.minus(1)
+        }
     }
+
 }
