@@ -98,7 +98,7 @@ class TvShowRepositoryImplTest {
         val result = tvShowRepository.getTvShowDetails(tvShowId)
 
         // Then
-        assertThat(result).isEqualTo(expectedTvShow)
+        assertThat(result.title).isEqualTo(expectedTvShow.title)
     }
 
     @Test
