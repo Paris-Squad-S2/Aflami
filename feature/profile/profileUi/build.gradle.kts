@@ -66,3 +66,18 @@ dependencies {
 tasks.withType<Test> {
     useJUnitPlatform()
 }
+
+kover {
+    reports {
+        total {
+            verify {
+                rule {
+                    bound {
+                        //todo:return coverageMinValue
+                        minValue = 80
+                    }
+                }
+            }
+        }
+    }
+}
