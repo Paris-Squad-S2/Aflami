@@ -58,5 +58,6 @@
         <string name="genre_soap">مسلسل درامي</string>
         <string name="genre_talk">حوار</string>
         <string name="genre_war_politics">حرب وسياسة</string>
+    <string name="unknown">غير معروف</string>
 
 </resources>

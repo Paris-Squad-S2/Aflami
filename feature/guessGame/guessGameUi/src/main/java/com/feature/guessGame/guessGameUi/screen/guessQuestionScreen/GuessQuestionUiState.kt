@@ -1,5 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
+import GenreGameUi
+import androidx.annotation.StringRes
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
@@ -52,7 +54,7 @@ data class UiQuestion(
 
 data class UiAnswer(
     val text: String,
-    val genreText: Int? = null,
+    @StringRes val genreText: Int? = null,
     val isCorrect: Boolean,
 )
 
@@ -67,45 +69,48 @@ fun Question.toUiQuestion(questionType: QuestionType): UiQuestion {
 }
 
 fun Answer.toUiAnswer(questionType: QuestionType): UiAnswer =
-    if (questionType == QuestionType.GENRE) {
-        val genre = Genre.fromDisplayName(text)
+    if (questionType == QuestionType.GENRE && genre != null) {
         UiAnswer(
-            text = genre?.displayName ?: text,
-            genreText = genre?.toGenreUi()?.localizedName,
+            text = text.orEmpty(),
+            genreText = genre.toDisplayName(),
             isCorrect = isCorrect
         )
     } else {
         UiAnswer(
-            text = text,
+            text = text.orEmpty(),
             isCorrect = isCorrect
         )
     }
 
+fun Genre.toUi(): GenreGameUi = when (this) {
+    Genre.ACTION -> GenreGameUi.Action
+    Genre.ADVENTURE -> GenreGameUi.Adventure
+    Genre.ANIMATION -> GenreGameUi.Animation
+    Genre.COMEDY -> GenreGameUi.Comedy
+    Genre.CRIME -> GenreGameUi.Crime
+    Genre.DOCUMENTARY -> GenreGameUi.Documentary
+    Genre.DRAMA -> GenreGameUi.Drama
+    Genre.FAMILY -> GenreGameUi.Family
+    Genre.FANTASY -> GenreGameUi.Fantasy
+    Genre.HISTORY -> GenreGameUi.History
+    Genre.HORROR -> GenreGameUi.Horror
+    Genre.MUSIC -> GenreGameUi.Music
+    Genre.MYSTERY -> GenreGameUi.Mystery
+    Genre.ROMANCE -> GenreGameUi.Romance
+    Genre.SCIENCE_FICTION -> GenreGameUi.ScienceFiction
+    Genre.TV_MOVIE -> GenreGameUi.TvMovie
+    Genre.THRILLER -> GenreGameUi.Thriller
+    Genre.WAR -> GenreGameUi.War
+    Genre.WESTERN -> GenreGameUi.Western
+    Genre.ACTION_ADVENTURE -> GenreGameUi.ActionAdventure
+    Genre.KIDS -> GenreGameUi.Kids
+    Genre.NEWS -> GenreGameUi.News
+    Genre.REALITY -> GenreGameUi.Reality
+    Genre.SCI_FI_FANTASY -> GenreGameUi.ScifiFantasy
+    Genre.SOAP -> GenreGameUi.Soap
+    Genre.TALK -> GenreGameUi.Talk
+    Genre.WAR_POLITICS -> GenreGameUi.WarPolitics
+    Genre.UNKNOWN -> GenreGameUi.Unknown
+}
 
-data class GenreUi(val displayName: String, val localizedName: Int)
-
-fun Genre.toGenreUi(): GenreUi = GenreUi(
-    displayName = this.displayName,
-    localizedName = when (this) {
-        Genre.ACTION -> R.string.genre_action
-        Genre.ADVENTURE -> R.string.genre_adventure
-        Genre.ANIMATION -> R.string.genre_animation
-        Genre.COMEDY -> R.string.genre_comedy
-        Genre.CRIME -> R.string.genre_crime
-        Genre.DOCUMENTARY -> R.string.genre_documentary
-        Genre.DRAMA -> R.string.genre_drama
-        Genre.FAMILY -> R.string.genre_family
-        Genre.FANTASY -> R.string.genre_fantasy
-        Genre.HISTORY -> R.string.genre_history
-        Genre.HORROR -> R.string.genre_horror
-        Genre.MUSIC -> R.string.genre_music
-        Genre.MYSTERY -> R.string.genre_mystery
-        Genre.ROMANCE -> R.string.genre_romance
-        Genre.SCIENCE_FICTION -> R.string.genre_science_fiction
-        Genre.TV_MOVIE -> R.string.genre_tv_movie
-        Genre.THRILLER -> R.string.genre_thriller
-        Genre.WAR -> R.string.genre_war
-        Genre.WESTERN -> R.string.genre_western
-        else -> R.string.genre_action
-    }
-)
+fun Genre.toDisplayName(): Int = this.toUi().displayNameResId

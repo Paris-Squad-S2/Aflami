@@ -4,6 +4,7 @@ import com.paris_2.domain.game.entity.Answer
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
+import com.paris_2.domain.game.utils.Genre
 import java.util.UUID
 
 class GuessMovieSessionUseCase(
@@ -27,7 +28,8 @@ class GuessMovieSessionUseCase(
                 Answer(
                     questionId = questionId,
                     text = movieName,
-                    isCorrect = movieName == correctMovie.name
+                    isCorrect = movieName == correctMovie.name,
+                    genre = correctMovie.genres.firstOrNull() ?: Genre.UNKNOWN
                 )
             }
             .shuffled()
