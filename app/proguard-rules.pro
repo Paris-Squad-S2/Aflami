@@ -52,3 +52,5 @@
 -dontwarn com.paris_2.aflami.designsystem.theme.AflamiThemeKt
 -dontwarn com.paris_2.aflami.designsystem.theme.Theme
 -dontwarn org.slf4j.impl.StaticLoggerBinder
+-keep class com.feature.guessGame.guessGameUi.navigation.QuestionType { *; }
+-keep class com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel { *; }
