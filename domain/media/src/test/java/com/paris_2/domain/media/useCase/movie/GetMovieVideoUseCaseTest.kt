@@ -8,7 +8,6 @@ import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-import com.paris_2.domain.media.testUtils.fakeMovieVideo
 
 class GetMovieVideoUseCaseTest {
     private lateinit var getMovieVideoUseCase: GetMovieVideoUseCase

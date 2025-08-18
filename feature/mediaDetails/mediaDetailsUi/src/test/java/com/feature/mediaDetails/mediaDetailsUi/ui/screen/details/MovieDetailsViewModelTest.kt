@@ -3,7 +3,6 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
 import com.paris_2.domain.media.entity.Movie
-import com.paris_2.domain.media.entity.MovieVideo
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
@@ -27,6 +26,7 @@ import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.clearAllMocks
@@ -139,7 +139,7 @@ class MovieDetailsViewModelTest {
     @Test
     fun `init loads movie details and video info`() = runTest {
         coEvery { getMovieDetailsUseCase(any()) } returns mockk<Movie>(relaxed = true)
-        coEvery { getMovieVideoUseCase(any()) } returns mockk<MovieVideo>(relaxed = true)
+        coEvery { getMovieVideoUseCase(any()) } returns mockk<MediaVideo>(relaxed = true)
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         coVerify { getMovieDetailsUseCase(testMovieId) }
@@ -237,7 +237,7 @@ class MovieDetailsViewModelTest {
         val movieUi = mockk<MovieUi>()
 
         coEvery { getMovieDetailsUseCase(testMovieId) } returns domainMovie
-        coEvery { getMovieVideoUseCase(testMovieId) } returns mockk<MovieVideo>(relaxed = true)
+        coEvery { getMovieVideoUseCase(testMovieId) } returns mockk<MediaVideo>(relaxed = true)
         coEvery { getMovieReviewsUseCase(testMovieId, 1) } returns domainReviews
 
         mockkStatic("com.feature.mediaDetails.mediaDetailsUi.ui.mapper.UiMapperKt")
