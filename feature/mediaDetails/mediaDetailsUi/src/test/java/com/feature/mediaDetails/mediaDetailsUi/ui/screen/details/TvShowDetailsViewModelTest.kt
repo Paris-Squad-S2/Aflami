@@ -8,7 +8,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsViewModel
-import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
@@ -246,7 +246,7 @@ class TvShowDetailsViewModelTest {
         val testTvShowId = 123
         val testSeasonNumber = 1
         val testEpisodeNumber = 2
-        val mockEpisodeVideo = mockk<EpisodeVideo> {
+        val mockEpisodeVideo = mockk<MediaVideo> {
             every { site } returns "YouTube"
             every { key } returns "abc123"
             every { name } returns "Test Episode"
@@ -265,7 +265,7 @@ class TvShowDetailsViewModelTest {
         val testTvShowId = 123
         val testSeasonNumber = 1
         val testEpisodeNumber = 2
-        val mockEpisodeVideo = mockk<EpisodeVideo> {
+        val mockEpisodeVideo = mockk<MediaVideo> {
             every { site } returns "YouTube"
             every { key } returns "abc123"
             every { name } returns "Test Episode"
@@ -284,7 +284,7 @@ class TvShowDetailsViewModelTest {
         val testTvShowId = 123
         val testSeasonNumber = 1
         val testEpisodeNumber = 2
-        val mockEpisodeVideo = mockk<EpisodeVideo> {
+        val mockEpisodeVideo = mockk<MediaVideo> {
             every { site } returns ""
             every { key } returns ""
             every { name } returns "Test Episode"

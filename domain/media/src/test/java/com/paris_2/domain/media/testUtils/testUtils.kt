@@ -12,8 +12,8 @@ import kotlin.time.ExperimentalTime
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Episode
-import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
 import com.paris_2.domain.media.entity.MovieVideo
@@ -416,17 +416,8 @@ val fakeMovieVideo = listOf(
     )
 )
 
-val fakeTvShowVideo = listOf(
-    TvShowVideo(
-        key = "dQw4w9WgXcQ",
-        name = "Trailer 1",
-        site = "YouTube",
-        type = "Trailer"
-    )
-)
-
-val fakeEpisodeVideo = listOf(
-    EpisodeVideo(
+val fakeMediaVideo = listOf(
+    MediaVideo(
         key = "dQw4w9WgXcQ",
         name = "Trailer 1",
         site = "YouTube",

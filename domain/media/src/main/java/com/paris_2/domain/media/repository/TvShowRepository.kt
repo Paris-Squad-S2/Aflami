@@ -1,8 +1,8 @@
 package com.paris_2.domain.media.repository
 
 import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
@@ -22,7 +22,7 @@ interface TvShowRepository {
     suspend fun getTrailerVideoForEpisode(
         tvShowId: Int, seasonNumber: Int,
         episodeNumber: Int,
-    ): List<EpisodeVideo>
+    ): List<MediaVideo>
     suspend fun addRatingToTvShow(movieId: Int, rating: Float)
 
     suspend fun deleteTvShowRating(tvShowId: Int)

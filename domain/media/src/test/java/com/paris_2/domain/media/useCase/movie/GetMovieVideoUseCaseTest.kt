@@ -2,6 +2,7 @@ package com.paris_2.domain.media.useCase.movie
 
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.testUtils.fakeMediaVideo
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -24,11 +25,11 @@ class GetMovieVideoUseCaseTest {
         val movieId = 1
 
         // when
-        coEvery { movieRepository.getTrailerVideoForMovie(movieId) } returns fakeMovieVideo
+        coEvery { movieRepository.getTrailerVideoForMovie(movieId) } returns fakeMediaVideo
 
         // Then
         val result = getMovieVideoUseCase(movieId)
-        assertThat(result).isEqualTo(fakeMovieVideo.first())
+        assertThat(result).isEqualTo(fakeMediaVideo.first())
 
     }
 

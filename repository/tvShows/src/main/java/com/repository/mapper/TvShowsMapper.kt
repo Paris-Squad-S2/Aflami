@@ -3,8 +3,8 @@ package com.repository.mapper
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Category
 import com.paris_2.domain.media.entity.Episode
-import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
@@ -118,8 +118,8 @@ fun  TvShowVideoResultDto.toEntity(): TvShowVideo {
     )
 }
 
-fun  EpisodeVideoResultDto.toEntity(): EpisodeVideo {
-    return EpisodeVideo(
+fun  EpisodeVideoResultDto.toEntity(): MediaVideo {
+    return MediaVideo(
         key = this.key.orEmpty(),
         name = this.name.orEmpty(),
         site = this.site.orEmpty(),

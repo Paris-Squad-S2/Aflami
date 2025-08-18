@@ -2,7 +2,6 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.mapper
 
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Episode
-import com.paris_2.domain.media.entity.EpisodeVideo
 import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.MovieSimilar
@@ -26,6 +25,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowVideoUi
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.entity.MediaVideo
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.number
 
@@ -199,7 +199,7 @@ fun TvShowVideo.toUi(): TvShowVideoUi{
     )
 }
 
-fun EpisodeVideo.toUi(): EpisodeVideoUi{
+fun MediaVideo.toUi(): EpisodeVideoUi{
     return EpisodeVideoUi(
         key = this.key,
         name = this.name,

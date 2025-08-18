@@ -19,7 +19,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
-import com.paris_2.domain.media.entity.EpisodeVideo
+import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.TvShowVideo
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
@@ -514,7 +514,7 @@ class TvShowDetailsViewModel @Inject constructor(
         )
     }
 
-    private fun onGetVideoEpisodeSuccess(episodeVideo: EpisodeVideo) {
+    private fun onGetVideoEpisodeSuccess(episodeVideo: MediaVideo) {
         if (episodeVideo.site.isEmpty() || episodeVideo.key.isEmpty()) {
             updateState(
                 screenState.value.copy(
