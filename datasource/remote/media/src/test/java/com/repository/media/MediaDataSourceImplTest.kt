@@ -1,7 +1,10 @@
 package com.repository.media
 
 import com.google.common.truth.Truth.assertThat
-import com.repository.media.services.MediaApiService
+import com.repository.media.models.remote.media.category.MovieByCategoryDto
+import com.repository.media.models.remote.media.category.ResultDto
+import com.repository.media.models.remote.media.category.TvResultDto
+import com.repository.media.models.remote.media.category.TvShowByCategoryDto
 import com.repository.media.models.remote.media.home.DatesDto
 import com.repository.media.models.remote.media.home.MovieDto
 import com.repository.media.models.remote.media.home.MovieListDto
@@ -9,18 +12,6 @@ import com.repository.media.models.remote.media.home.TvDto
 import com.repository.media.models.remote.media.home.TvListDto
 import com.repository.media.models.remote.media.profile.RatedMoviesDto
 import com.repository.media.models.remote.media.profile.RatedTvShowDtoo
-import com.repository.media.MediaRemoteDataSourceImpl
-import com.repository.media.dto.category.MovieByCategoryDto
-import com.repository.media.dto.category.ResultDto
-import com.repository.media.dto.category.TvResultDto
-import com.repository.media.dto.category.TvShowByCategoryDto
-import com.repository.media.dto.home.DatesDto
-import com.repository.media.dto.home.MovieDto
-import com.repository.media.dto.home.MovieListDto
-import com.repository.media.dto.home.TvDto
-import com.repository.media.dto.home.TvListDto
-import com.repository.media.dto.profile.RatedMoviesDto
-import com.repository.media.dto.profile.RatedTvShowDtoo
 import com.repository.media.services.MediaApiService
 import io.mockk.coEvery
 import io.mockk.coVerify

@@ -14,17 +14,12 @@ import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.HomeMediaEntity
 import com.repository.media.models.local.media.MediaEntity
 import com.repository.media.models.local.media.MediaTypeEntity
-import com.repository.media.dto.category.MovieByCategoryDto
-import com.repository.media.dto.category.ResultDto
-import com.repository.media.dto.category.TvResultDto
-import com.repository.media.dto.category.TvShowByCategoryDto
-import com.repository.media.dto.home.MovieDto
-import com.repository.media.dto.home.TvDto
-import com.repository.media.entity.Category
-import com.repository.media.entity.HomeMediaEntity
-import com.repository.media.entity.MediaEntity
-import com.repository.media.entity.MediaTypeEntity
+
 import com.repository.media.mapper.toEntity
+import com.repository.media.models.remote.media.category.MovieByCategoryDto
+import com.repository.media.models.remote.media.category.ResultDto
+import com.repository.media.models.remote.media.category.TvResultDto
+import com.repository.media.models.remote.media.category.TvShowByCategoryDto
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.coVerify
