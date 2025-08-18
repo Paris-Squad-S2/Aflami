@@ -6,6 +6,7 @@ import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.entity.UserPoints
 import com.paris_2.domain.game.repositories.GamePointsRepository
+import com.paris_2.domain.media.entity.Category
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -93,8 +94,8 @@ class UseHintUseCaseTest {
         content = "content",
         correctAnswer = correct,
         options = listOf(
-            Answer(id, correct, isCorrect = true),
-            Answer(id, "other", isCorrect = false)
+            Answer(id, correct, isCorrect = true, genre = Category.ScienceFiction),
+            Answer(id, "other", isCorrect = false, genre = Category.War)
         ),
         usedHint = usedHint
     )

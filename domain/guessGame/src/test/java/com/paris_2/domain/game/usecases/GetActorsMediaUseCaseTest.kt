@@ -3,6 +3,7 @@ package com.paris_2.domain.game.usecases
 import com.google.common.truth.Truth.assertThat
 import com.paris_2.domain.game.entity.Actor
 import com.paris_2.domain.game.entity.ActorMedia
+import com.paris_2.domain.media.entity.Category
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -64,14 +65,14 @@ class GetActorsMediaUseCaseTest {
                         name = "Movie A",
                         posterImg = "/pA.jpg",
                         yearOfRelease = LocalDate(2020, 1, 1),
-                        genres = listOf(12, 18)
+                        genres = listOf(Category.ScifiFantasy, Category.ActionAdventure)
                     ),
                     ActorMedia(
                         id = 11,
                         name = "Movie B",
                         posterImg = "/pB.jpg",
                         yearOfRelease = LocalDate(2021, 5, 15),
-                        genres = listOf(28)
+                        genres = listOf(Category.WarPolitics)
                     )
                 )
             ),
