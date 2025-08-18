@@ -6,6 +6,7 @@ import android.content.res.Resources
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
 import androidx.datastore.preferences.core.Preferences
+import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -35,7 +36,7 @@ class SettingLocalDataSourceImpTest {
         dataStore = PreferenceDataStoreFactory.create(
             produceFile = { tempFile }
         )
-        dataSource = SettingLocalDataSourceImpl(dataStore , context)
+        dataSource = SettingLocalDataSourceImpl(dataStore, context)
     }
 
     @AfterEach
@@ -70,5 +71,34 @@ class SettingLocalDataSourceImpTest {
         assertFalse(dataSource.isOnboardingCompleted())
         dataSource.setOnboardingCompleted()
         assertTrue(dataSource.isOnboardingCompleted())
+    }
+
+    @Test
+    fun `setTheme should save dark mode preference to DataStore`() = runTest {
+        dataSource.setTheme(true)
+
+
+        val isDarkTheme = dataSource.getTheme().first()
+
+        assertTrue(isDarkTheme)
+    }
+
+    @Test
+    fun `setRestriction should save restriction level to DataStore`() = runTest {
+        // When
+        dataSource.setRestriction("Moderate")
+
+        // Then
+        val restriction = dataSource.getRestriction()
+        assertEquals("Moderate", restriction)
+    }
+
+    @Test
+    fun `getRestriction should return default STRICT if not set`() = runTest {
+        // When
+        val restriction = dataSource.getRestriction()
+
+        // Then
+        assertEquals("Strict", restriction)
     }
 }

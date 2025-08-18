@@ -1,8 +1,11 @@
 package com
 
 import com.google.common.truth.Truth.assertThat
-import com.repository.media.services.MediaApiService
 import com.repository.media.MediaRemoteDataSourceImpl
+import com.repository.media.dto.category.MovieByCategoryDto
+import com.repository.media.dto.category.ResultDto
+import com.repository.media.dto.category.TvResultDto
+import com.repository.media.dto.category.TvShowByCategoryDto
 import com.repository.media.dto.home.DatesDto
 import com.repository.media.dto.home.MovieDto
 import com.repository.media.dto.home.MovieListDto
@@ -10,6 +13,7 @@ import com.repository.media.dto.home.TvDto
 import com.repository.media.dto.home.TvListDto
 import com.repository.media.dto.profile.RatedMoviesDto
 import com.repository.media.dto.profile.RatedTvShowDtoo
+import com.repository.media.services.MediaApiService
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -109,6 +113,63 @@ class MediaDataSourceImplTest {
         coVerify(exactly = 1) { apiService.getRatedTvShows(123, "en") }
     }
 
+    @Test
+    fun `getMoviesByCategory should return data from api`() = runTest {
+        val genreId = 28
+        val page = 1
+        val language = "en"
+        coEvery { apiService.getMoviesByCategory(genreId, language, page) } returns movieByCategoryDto
+
+        val result = mediaDataSource.getMoviesByCategory(genreId, page, language)
+
+        assertThat(result).isEqualTo(movieByCategoryDto)
+        coVerify(exactly = 1) { apiService.getMoviesByCategory(genreId, language, page) }
+    }
+
+    @Test
+    fun `getMoviesByCategory should propagate exception when API call fails`() = runTest {
+        val genreId = 28
+        val page = 1
+        val language = "en"
+        val apiException = RuntimeException("API Error")
+        coEvery { apiService.getMoviesByCategory(genreId, language, page) } throws apiException
+
+        try {
+            mediaDataSource.getMoviesByCategory(genreId, page, language)
+            throw AssertionError("Should have thrown an exception")
+        } catch (e: Exception) {
+            assertThat(e).isEqualTo(apiException)
+        }
+    }
+
+    @Test
+    fun `getTvShowByCategory should return data from api`() = runTest {
+        val genreId = 28
+        val page = 1
+        val language = "en"
+        coEvery { apiService.getTvShowsByCategory(genreId, language, page) } returns tvShowByCategoryDto
+
+        val result = mediaDataSource.getTvShowsByCategory(genreId, page, language)
+
+        assertThat(result).isEqualTo(tvShowByCategoryDto)
+        coVerify(exactly = 1) { apiService.getTvShowsByCategory(genreId, language, page) }
+    }
+
+    @Test
+    fun `getTvShowByCategory should propagate exception when API call fails`() = runTest {
+        val genreId = 28
+        val page = 1
+        val language = "en"
+        val apiException = RuntimeException("API Error")
+        coEvery { apiService.getTvShowsByCategory(genreId, language, page) } throws apiException
+
+        try {
+            mediaDataSource.getTvShowsByCategory(genreId, page, language)
+            throw AssertionError("Should have thrown an exception")
+        } catch (e: Exception) {
+            assertThat(e).isEqualTo(apiException)
+        }
+    }
 
     private companion object {
         val movieListDto = MovieListDto(
@@ -129,6 +190,55 @@ class MediaDataSourceImplTest {
                 TvDto(id = 1, name = "TV 1"),
                 TvDto(id = 2, name = "TV 2")
             )
+        )
+        val movieByCategoryDto = MovieByCategoryDto(
+            page = 1,
+            resultDto = listOf(
+                ResultDto(id = 1, title = "Movie 1", genre_ids = listOf(1, 2)),
+                ResultDto(id = 2, title = "Movie 2", genre_ids = listOf(1, 2))
+            ),
+            total_pages = 5,
+            total_results = 5,
+        )
+
+        val tvShowByCategoryDto = TvShowByCategoryDto(
+            page = 1,
+            tvResultDto = listOf(
+                TvResultDto(
+                    adult = false,
+                    backdrop_path = "/gQUdijQy29P8JwI8U36yufKrgiD.jpg",
+                    first_air_date = "2023-09-21",
+                    genre_ids = listOf(18, 10766),
+                    id = 210555,
+                    name = "Silo",
+                    origin_country = listOf("US"),
+                    original_language = "en",
+                    original_name = "Silo",
+                    overview = "A dystopian thriller set in a giant underground silo where people live under strict rules.",
+                    popularity = 1876.453,
+                    poster_path = "/aBbqPyZrZG1DftZFreXjsNmuuQy.jpg",
+                    vote_average = 8.2,
+                    vote_count = 1345
+                ),
+                TvResultDto(
+                    adult = false,
+                    backdrop_path = "/bWUQ2gSDetJjVp6VGYqCeIv5DN8.jpg",
+                    first_air_date = "2020-10-23",
+                    genre_ids = listOf(10765, 18),
+                    id = 88329,
+                    name = "The Mandalorian",
+                    origin_country = listOf("US"),
+                    original_language = "en",
+                    original_name = "The Mandalorian",
+                    overview = "A lone bounty hunter in the outer reaches of the galaxy takes on a dangerous mission.",
+                    popularity = 2154.789,
+                    poster_path = "/sWgBv7LV2PRoQgkxwUWNbJFQiyM.jpg",
+                    vote_average = 8.6,
+                    vote_count = 7890
+                )
+            ),
+            total_pages = 5,
+            total_results = 10
         )
     }
 }
