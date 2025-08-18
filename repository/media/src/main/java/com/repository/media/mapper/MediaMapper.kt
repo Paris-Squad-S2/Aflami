@@ -2,16 +2,16 @@ package com.repository.media.mapper
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
-import com.repository.media.dto.category.ResultDto
-import com.repository.media.dto.category.TvResultDto
-import com.repository.media.dto.home.MovieDto
-import com.repository.media.dto.home.TvDto
-import com.repository.media.dto.profile.MovieResult
-import com.repository.media.entity.Category
-import com.repository.media.entity.HomeMediaEntity
-import com.repository.media.entity.MediaEntity
-import com.repository.media.entity.MediaTypeEntity
-import com.repository.media.dto.profile.TvShowResult
+import com.repository.media.models.remote.media.category.ResultDto
+import com.repository.media.models.remote.media.category.TvResultDto
+import com.repository.media.models.remote.media.home.MovieDto
+import com.repository.media.models.remote.media.home.TvDto
+import com.repository.media.models.remote.media.profile.MovieResult
+import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.HomeMediaEntity
+import com.repository.media.models.local.media.MediaEntity
+import com.repository.media.models.local.media.MediaTypeEntity
+import com.repository.media.models.remote.media.profile.TvShowResult
 import kotlinx.datetime.LocalDate
 
 fun MovieDto.toDomain(type: MediaType): Media? {

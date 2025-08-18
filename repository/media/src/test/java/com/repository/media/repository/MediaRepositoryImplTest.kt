@@ -6,20 +6,20 @@ import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
-import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.dto.category.MovieByCategoryDto
-import com.repository.media.dto.category.ResultDto
-import com.repository.media.dto.category.TvResultDto
-import com.repository.media.dto.category.TvShowByCategoryDto
-import com.repository.media.dto.home.MovieDto
-import com.repository.media.dto.home.TvDto
-import com.repository.media.entity.Category
-import com.repository.media.entity.HomeMediaEntity
-import com.repository.media.entity.MediaEntity
-import com.repository.media.entity.MediaTypeEntity
+import com.repository.media.models.remote.media.home.MovieDto
+import com.repository.media.models.remote.media.home.TvDto
+import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.HomeMediaEntity
+import com.repository.media.models.local.media.MediaEntity
+import com.repository.media.models.local.media.MediaTypeEntity
+
 import com.repository.media.mapper.toEntity
+import com.repository.media.models.remote.media.category.MovieByCategoryDto
+import com.repository.media.models.remote.media.category.ResultDto
+import com.repository.media.models.remote.media.category.TvResultDto
+import com.repository.media.models.remote.media.category.TvShowByCategoryDto
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -35,9 +35,7 @@ import org.junit.jupiter.api.assertThrows
 
 class MediaRepositoryImplTest {
     private val remote: MediaRemoteDataSource = mockk()
-    private val local: ContinueWatchingLocalDataSource = mockk(relaxed = true)
-
-    private val homeLocal: HomeMediaLocalDataSource = mockk(relaxed = true)
+    private val mediaLocalDataSource: MediaLocalDataSource = mockk(relaxed = true)
     private val networkChecker: NetworkConnectionChecker = mockk()
     private val settingLocalDataSource: SettingLocalDataSource = mockk()
     private lateinit var repo: MediaRepositoryImpl
@@ -49,8 +47,7 @@ class MediaRepositoryImplTest {
         every { networkChecker.isConnected } returns MutableStateFlow(true)
         repo = MediaRepositoryImpl(
             networkChecker, remote,
-            continueWatchingLocalDataSource = local,
-            homeMediaLocalDataSource = homeLocal,
+            mediaLocalDataSource = mediaLocalDataSource,
             settingLocalDataSource = settingLocalDataSource
         )
     }
@@ -70,7 +67,7 @@ class MediaRepositoryImplTest {
                 language = "en"
             )
         )
-        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR, language) } returns localMedia
+        coEvery { mediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR,language) } returns localMedia
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
         val result = repo.getPopularMedia()
 
@@ -83,7 +80,7 @@ class MediaRepositoryImplTest {
     fun `getPopularMedia fetches remote data when local is empty`() = runTest {
 
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR, "en") } returns emptyList()
+        coEvery { mediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR,"en") } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Remote Movie", releaseDate = "2023-01-01",
@@ -101,13 +98,13 @@ class MediaRepositoryImplTest {
 
         assertThat(result).hasSize(2)
         assertThat(result.first().rating).isEqualTo(8.0)
-        coVerify { homeLocal.addHomeMedia(any()) }
+        coVerify { mediaLocalDataSource.addHomeMedia(any()) }
     }
 
     @Test
     fun `getPopularMedia handles partial remote data`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getHomeMediaByCategory(Category.POPULAR, "en") } returns emptyList()
+        coEvery { mediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR,"en") } returns emptyList()
 
         val movie = MovieDto(
             id = 1, title = "Movie", releaseDate = "2023-01-01",
@@ -173,12 +170,7 @@ class MediaRepositoryImplTest {
                 language = "en"
             )
         )
-        coEvery {
-            homeLocal.getHomeMediaByCategory(
-                Category.TOP_RATED,
-                language
-            )
-        } returns localMedia
+        coEvery { mediaLocalDataSource.getHomeMediaByCategory(Category.TOP_RATED,language) } returns localMedia
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
 
         val result = repo.getTopRatingMedia()
@@ -190,7 +182,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getTopRatingMedia fetches remote data when local is empty`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getHomeMediaByCategory(Category.TOP_RATED, "en") } returns emptyList()
+        coEvery { mediaLocalDataSource.getHomeMediaByCategory(Category.TOP_RATED,"en") } returns emptyList()
 
         val movie = MovieDto(
             id = 3, title = "Top Movie", releaseDate = "2022-01-01",
@@ -204,7 +196,7 @@ class MediaRepositoryImplTest {
 
         assertThat(result).hasSize(1)
         assertThat(result.first().rating).isEqualTo(9.2)
-        coVerify { homeLocal.addHomeMedia(any()) }
+        coVerify { mediaLocalDataSource.addHomeMedia(any()) }
     }
 
     @Test
@@ -260,7 +252,7 @@ class MediaRepositoryImplTest {
                 language = "en"
             )
         )
-        coEvery { homeLocal.getHomeMediaByCategory(Category.UPCOMING, language) } returns localMedia
+        coEvery { mediaLocalDataSource.getHomeMediaByCategory(Category.UPCOMING,language) } returns localMedia
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
 
         val result = repo.getUpComingMedia()
@@ -272,7 +264,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getUpComingMedia fetches remote data when local is empty`() = runTest {
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow("en")
-        coEvery { homeLocal.getHomeMediaByCategory(Category.UPCOMING, "en") } returns emptyList()
+        coEvery { mediaLocalDataSource.getHomeMediaByCategory(Category.UPCOMING,"en") } returns emptyList()
 
         val upcomingMovie = MovieDto(
             id = 4, title = "Upcoming Movie", releaseDate = "2025-06-01",
@@ -284,7 +276,7 @@ class MediaRepositoryImplTest {
         val result = repo.getUpComingMedia()
 
         assertThat(result).hasSize(1)
-        coVerify { homeLocal.addHomeMedia(any()) }
+        coVerify { mediaLocalDataSource.addHomeMedia(any()) }
     }
 
     @Test
@@ -362,18 +354,10 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal delegates to data source`() = runTest {
-        val media = Media(
-            200,
-            "",
-            "Local",
-            MediaType.Movie,
-            listOf(com.paris_2.domain.media.entity.Category.Action),
-            mockk(),
-            8.0
-        )
-        coEvery { local.addMedia(media.toEntity()) } returns Unit
+        val media = Media(200, "", "Local", MediaType.Movie,  listOf(com.paris_2.domain.media.entity.Category.Action), mockk(), 8.0)
+        coEvery { mediaLocalDataSource.addMediaContinueWatching(media.toEntity()) } returns Unit
         repo.addMediaToContinueWatching(media)
-        coVerify { local.addMedia(media.toEntity()) }
+        coVerify { mediaLocalDataSource.addMediaContinueWatching(media.toEntity()) }
     }
 
     @Test
@@ -387,7 +371,7 @@ class MediaRepositoryImplTest {
             voteAverage = 6.6,
             releaseDate = "2023-09-09"
         )
-        coEvery { local.getAllMedia() } returns flowOf(listOf(entity))
+        coEvery { mediaLocalDataSource.getMediaContinueWatching() } returns flowOf(listOf(entity))
         val result = repo.getContinueWatchingMedia().single()
         assertThat(result.single().id).isEqualTo(300)
     }
@@ -431,7 +415,7 @@ class MediaRepositoryImplTest {
             4.0
         )
 
-        coEvery { local.addMedia(any()) } throws RuntimeException("DB insert failed")
+        coEvery { mediaLocalDataSource.addMediaContinueWatching(any()) } throws RuntimeException("DB insert failed")
 
         assertThrows<FailedException> {
             repo.addMediaToContinueWatching(media)

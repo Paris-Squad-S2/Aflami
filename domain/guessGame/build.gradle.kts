@@ -17,6 +17,8 @@ dependencies{
     implementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.bundles.test)
     implementation(projects.domain.user)
+    implementation(projects.domain.media)
+
 }
 
 tasks.test {

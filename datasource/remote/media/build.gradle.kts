@@ -30,14 +30,13 @@ android {
 
 dependencies {
     implementation(libs.bundles.android)
-    implementation(projects.repository.media)
-    implementation(projects.repository.guessGame)
     implementation(libs.bundles.retrofit)
-
     testImplementation(libs.bundles.test)
-
     implementation(libs.bundles.hilt)
     ksp(libs.hilt.android.compiler)
+
+    implementation(projects.repository.media)
+    implementation(projects.repository.guessGame)
 }
 
 val coverageMinValue: Int = (findProperty("coverageMinValue") as String).toInt()

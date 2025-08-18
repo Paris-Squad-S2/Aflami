@@ -6,7 +6,7 @@ import com.paris_2.domain.game.entity.ActorMedia
 import com.paris_2.domain.game.entity.GameSession
 import com.paris_2.domain.game.entity.Question
 import com.paris_2.domain.game.repositories.ActorPopularityRepository
-import com.paris_2.domain.game.utils.Genre
+import com.paris_2.domain.media.entity.Category
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -51,13 +51,13 @@ class WhichGenreSessionUseCaseTest {
 
     private fun assertValidQuestion(q: Question) {
         val allMovies = sampleActors.flatMap { it.media }
-        val allDisplayNames = Genre.values().map { it.displayName }.toSet()
+        val allDisplayNames = Category.values().map { it.name }.toSet()
         assertThat(q.type).isEqualTo(Question.QuestionType.TEXT)
         assertThat(q.usedHint).isFalse()
         assertThat(q.options).hasSize(4)
         val movie = allMovies.find { it.name == q.content }
         assertThat(movie).isNotNull()
-        val movieGenreNames = movie!!.genres.mapNotNull { Genre.fromId(it)?.displayName }.toSet()
+        val movieGenreNames = movie!!.genres.map { it.name }.toSet()
         assertThat(movieGenreNames).isNotEmpty()
         assertThat(movieGenreNames).contains(q.correctAnswer)
         assertThat(q.options.map { it.text }).contains(q.correctAnswer)
@@ -72,14 +72,14 @@ class WhichGenreSessionUseCaseTest {
                 name = "Movie A",
                 posterImg = "/pA.jpg",
                 yearOfRelease = LocalDate(2020, 1, 1),
-                genres = listOf(Genre.ACTION.id, Genre.DRAMA.id)
+                genres = listOf(Category.Drama, Category.Crime)
             ),
             ActorMedia(
                 id = 2,
                 name = "Movie B",
                 posterImg = "/pB.jpg",
                 yearOfRelease = LocalDate(2021, 2, 2),
-                genres = listOf(Genre.COMEDY.id)
+                genres = listOf(Category.Thriller)
             )
         )
         private val actor2Movies = listOf(
@@ -88,7 +88,7 @@ class WhichGenreSessionUseCaseTest {
                 name = "Movie C",
                 posterImg = "/pC.jpg",
                 yearOfRelease = LocalDate(2019, 3, 3),
-                genres = listOf(Genre.CRIME.id)
+                genres = listOf(Category.Crime)
             )
         )
         private val actor3Movies = listOf(
@@ -97,7 +97,7 @@ class WhichGenreSessionUseCaseTest {
                 name = "Movie D",
                 posterImg = "/pD.jpg",
                 yearOfRelease = LocalDate(2018, 4, 4),
-                genres = listOf(Genre.ADVENTURE.id)
+                genres = listOf(Category.ScienceFiction)
             )
         )
         private val actor4Movies = listOf(
@@ -106,7 +106,7 @@ class WhichGenreSessionUseCaseTest {
                 name = "Movie E",
                 posterImg = "/pE.jpg",
                 yearOfRelease = LocalDate(2017, 5, 5),
-                genres = listOf(Genre.FANTASY.id)
+                genres = listOf(Category.TvMovie)
             )
         )
 

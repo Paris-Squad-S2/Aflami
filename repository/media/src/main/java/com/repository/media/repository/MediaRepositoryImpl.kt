@@ -7,10 +7,9 @@ import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.repository.MediaRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
-import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.entity.Category
+import com.repository.media.models.local.media.Category
 import com.repository.media.mapper.toDomain
 import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toId
@@ -24,14 +23,13 @@ import kotlinx.coroutines.flow.map
 class MediaRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val mediaRemoteDataSource: MediaRemoteDataSource,
-    private val continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
-    private val homeMediaLocalDataSource: HomeMediaLocalDataSource,
+    private val mediaLocalDataSource: MediaLocalDataSource,
     private val settingLocalDataSource: SettingLocalDataSource,
 ) : MediaRepository {
 
     override suspend fun getPopularMedia(): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
-        val localMedia = homeMediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR, language)
+        val localMedia = mediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(FailedException("getPopularMedia")) {
@@ -51,7 +49,7 @@ class MediaRepositoryImpl(
                 it.toMediaEntity(category = Category.POPULAR, language)
             }
 
-            homeMediaLocalDataSource.addHomeMedia(entities)
+            mediaLocalDataSource.addHomeMedia(entities)
             combined
         }
     }
@@ -59,7 +57,7 @@ class MediaRepositoryImpl(
     override suspend fun getTopRatingMedia(): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
         val localMedia =
-            homeMediaLocalDataSource.getHomeMediaByCategory(Category.TOP_RATED, language)
+            mediaLocalDataSource.getHomeMediaByCategory(Category.TOP_RATED, language)
 
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
@@ -79,7 +77,7 @@ class MediaRepositoryImpl(
             val entities = combined.map {
                 it.toMediaEntity(category = Category.TOP_RATED, language)
             }
-            homeMediaLocalDataSource.addHomeMedia(entities)
+            mediaLocalDataSource.addHomeMedia(entities)
             combined
         }
     }
@@ -87,7 +85,7 @@ class MediaRepositoryImpl(
     override suspend fun getUpComingMedia(): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
         val localMedia =
-            homeMediaLocalDataSource.getHomeMediaByCategory(Category.UPCOMING, language)
+            mediaLocalDataSource.getHomeMediaByCategory(Category.UPCOMING, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
         return safeCall(FailedException("getUpComingMedia")) {
@@ -98,7 +96,7 @@ class MediaRepositoryImpl(
             val entities = upcomingMovies.map {
                 it.toMediaEntity(category = Category.UPCOMING, language)
             }
-            homeMediaLocalDataSource.addHomeMedia(entities)
+            mediaLocalDataSource.addHomeMedia(entities)
             upcomingMovies
         }
     }
@@ -114,12 +112,12 @@ class MediaRepositoryImpl(
 
     override suspend fun addMediaToContinueWatching(media: Media) {
         return safeCall(FailedException("addMediaToContinueWatching")) {
-            continueWatchingLocalDataSource.addMedia(media.toEntity())
+            mediaLocalDataSource.addMediaContinueWatching(media.toEntity())
         }
     }
 
     override fun getContinueWatchingMedia(): Flow<List<Media>> {
-        return continueWatchingLocalDataSource.getAllMedia().map { list ->
+        return mediaLocalDataSource.getMediaContinueWatching().map { list ->
             list.map { it.toDomain() }
         }
             .catch {

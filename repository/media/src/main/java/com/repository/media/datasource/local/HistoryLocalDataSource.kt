@@ -1,7 +1,7 @@
 package com.repository.media.datasource.local
 
-import com.repository.media.entity.SearchType
-import com.repository.media.entity.SearchHistoryEntity
+import com.repository.media.models.local.media.SearchType
+import com.repository.media.models.local.media.SearchHistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 interface HistoryLocalDataSource {
