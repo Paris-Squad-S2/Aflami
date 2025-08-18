@@ -1,2 +1,2 @@
-versionName=1.0.7
-- improve test coverage in repositories
+versionName=1.0.8
+- improve test coverage in datasource
