@@ -25,15 +25,15 @@
 - 📱 **Responsive Design** - Optimized for all screen sizes
 - 🌐 **Language Support** - Available in English and Arabic
 
-## 📽️ Gifs ( click on gif for high quality video )
+## 📽️ Gifs 
 
-| Dark Mode |
+| Dark Mode ( click on gif for high quality video ) |
 |-----------|
-| <a href="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view"> <img src="assets/night_theme.gif" alt="Watch the video" width="980" height="1200"/> </a> |
+| <a href="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view"> <img src="assets/night_theme.gif" alt="Watch the video" width="900" height="1200"/> </a> |
 
-| Light Mode |
+| Light Mode ( click on gif for high quality video ) |
 |------------|
-| <a href="https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view"> <img src="assets/light_theme.gif" alt="Watch the video" width="980" height="1200"/> </a> |
+| <a href="https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view"> <img src="assets/light_theme.gif" alt="Watch the video" width="900" height="1200"/> </a> |
 
 
 ## 🚀 Quick Start Guide
