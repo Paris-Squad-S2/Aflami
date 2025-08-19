@@ -265,9 +265,9 @@ class GuessQuestionViewModel @Inject constructor(
                 val updatedQuestion = result.updatedQuestion
                 updateState(
                     screenState.value.copy(
-                        questionText = updatedQuestion?.content!!,
-                        answers = updatedQuestion.options.map { it.toUiAnswer(questionType) },
-                        remainingAnswers = updatedQuestion.options.map { it.toUiAnswer(questionType) },
+                        questionText = updatedQuestion?.content?:"",
+                        answers = updatedQuestion?.options?.map { it.toUiAnswer(questionType) }?:emptyList(),
+                        remainingAnswers = updatedQuestion?.options?.map { it.toUiAnswer(questionType) }?:emptyList(),
                         hintUsed = true
                     )
                 )

@@ -33,14 +33,6 @@ class ResultViewModel @Inject constructor(
     }
 
 
-    override fun onExitClicked() { //TODO: remove it
-        navigate(Destinations.Screen)
-    }
-
-    override fun onBackToMenuClicked() { //TODO: remove it
-        navigate(Destinations.Screen)
-    }
-
     override fun onPlayAgainClicked() {
         val settings = DifficultySettings.getDifficultySettings(gameLevel.toInt())
         val destination = when (args.gameType) {
