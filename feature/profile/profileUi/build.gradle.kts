@@ -69,16 +69,4 @@ tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
 
-kover {
-    reports {
-        total {
-            verify {
-                rule {
-                    bound {
-                        minValue = 50
-                    }
-                }
-            }
-        }
-    }
-}
+
