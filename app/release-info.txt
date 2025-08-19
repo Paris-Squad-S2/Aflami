@@ -1,2 +1,2 @@
-versionName=1.0.14
-- refactor the profile view model and category card
+versionName=1.0.15
+- Enhance the media details feature
