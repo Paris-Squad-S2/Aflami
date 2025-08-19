@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -44,6 +45,7 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -75,7 +77,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val movieId by lazy {
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
     }
-    
+
     companion object {
         private const val SNACKBAR_HIDE_DELAY_MS = 3000L
         private const val STRICT_NSFW_THRESHOLD = 0.8f
@@ -127,7 +129,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
         hideSnackBar()
     }
-    
+
     private fun getRestriction() {
         tryToExecute(
             execute = { settingsUseCase.getRestriction() },
@@ -185,7 +187,7 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
+
     private fun onLoadAvailableListsSuccess(lists: List<Lists>) {
         updateState(
             screenState.value.copy(
@@ -215,11 +217,10 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::onLoadMovieDetailsError
         )
     }
-    
-    private fun onLoadMovieDetailsSuccess(movie: Movie, mediaId: Int) {
-        viewModelScope.launch {
-            addWatchHistoryUseCase(movie.toMedia())
-        }
+
+    private suspend fun onLoadMovieDetailsSuccess(movie: Movie, mediaId: Int) {
+
+        addWatchHistoryUseCase(movie.toMedia())
         updateState(
             screenState.value.copy(
                 isLoading = false,
@@ -234,7 +235,7 @@ class MovieDetailsViewModel @Inject constructor(
         loadMovieReviews(mediaId)
         loadMovieProductionCompanies(mediaId)
     }
-    
+
     private fun onLoadMovieDetailsError(error: String) {
         updateState(
             screenState.value.copy(
@@ -251,7 +252,7 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
+
     private fun onLoadMovieProductionCompaniesSuccess(companies: List<ProductionCompany>) {
         updateMovieDetailsUiState { movieDetails ->
             movieDetails.copy(
@@ -269,11 +270,11 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
+
     private suspend fun executeLoadMovieReviews(): List<ReviewUi> {
         return getMovieReviewsUseCase(movieId, 1).toListOfReviewUi()
     }
-    
+
     private fun onLoadMovieReviewsSuccess(reviews: List<ReviewUi>) {
         updateMovieDetailsUiState { movieDetails ->
             movieDetails.copy(reviews = reviews)
@@ -287,8 +288,8 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
-    private fun executeLoadMovieRecommendations(mediaId: Int): kotlinx.coroutines.flow.Flow<androidx.paging.PagingData<SimilarMediaUI>> {
+
+    private fun executeLoadMovieRecommendations(mediaId: Int): Flow<PagingData<SimilarMediaUI>> {
         return Pager(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = {
@@ -303,8 +304,8 @@ class MovieDetailsViewModel @Inject constructor(
             }
         ).flow.cachedIn(viewModelScope)
     }
-    
-    private fun onLoadMovieRecommendationsSuccess(recommendations: kotlinx.coroutines.flow.Flow<androidx.paging.PagingData<SimilarMediaUI>>) {
+
+    private fun onLoadMovieRecommendationsSuccess(recommendations: Flow<PagingData<SimilarMediaUI>>) {
         updateMovieDetailsUiState { movieDetails ->
             movieDetails.copy(recommendations = recommendations)
         }
@@ -317,7 +318,7 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
+
     private fun onLoadCastDetailsSuccess(cast: List<Cast>) {
         updateMovieDetailsUiState { movieDetails ->
             movieDetails.copy(cast = cast.toListOfCastUi())
@@ -331,7 +332,7 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
+
     private fun onLoadMovieGallerySuccess(images: List<Image>) {
         updateMovieDetailsUiState { movieDetails ->
             movieDetails.copy(gallery = images.toUi())
@@ -345,7 +346,7 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
+
     private fun onRateClickSuccess(isLoggedIn: Boolean) {
         if (isLoggedIn) {
             updateState(screenState.value.copy(showRatingDialog = true))
@@ -361,7 +362,7 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::showError
         )
     }
-    
+
     private fun onAddToListClickSuccess(isLoggedIn: Boolean) {
         if (isLoggedIn) {
             updateState(screenState.value.copy(showAddToListDialog = true))
@@ -389,7 +390,7 @@ class MovieDetailsViewModel @Inject constructor(
             )
         }
     }
-    
+
     private fun onAddToSelectedListSuccess(unit: Unit) {
         updateState(
             screenState.value.copy(
@@ -400,7 +401,7 @@ class MovieDetailsViewModel @Inject constructor(
         showSuccessSnackBar(R.string.movie_added_to_list_successfully)
         loadAvailableLists()
     }
-    
+
     private fun onAddToSelectedListError(errorMessage: String) {
         showError(errorMessage)
         showErrorSnackBar(RDesignSystem.string.some_error_happened)
@@ -448,7 +449,7 @@ class MovieDetailsViewModel @Inject constructor(
             )
         }
     }
-    
+
     private fun onCreateListConfirmSuccess(result: Response) {
         updateState(
             screenState.value.copy(
@@ -464,7 +465,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
         loadAvailableLists()
     }
-    
+
     private fun onCreateListConfirmError(error: String) {
         updateState(
             screenState.value.copy(
@@ -537,14 +538,12 @@ class MovieDetailsViewModel @Inject constructor(
             onError = ::onRatingSubmittedError
         )
     }
-    
-    private fun executeSubmitRating(rating: Float) {
-        viewModelScope.launch {
-            val roundedRating = ((rating / RATING_STEP).roundToInt() * RATING_STEP)
-            addRatingToMovieUseCase(movieId, roundedRating)
-        }
+
+    private suspend fun executeSubmitRating(rating: Float) {
+        val roundedRating = ((rating / RATING_STEP).roundToInt() * RATING_STEP)
+        addRatingToMovieUseCase(movieId, roundedRating)
     }
-    
+
     private fun onRatingSubmittedSuccess(unit: Unit) {
         updateState(
             screenState.value.copy(
@@ -553,7 +552,7 @@ class MovieDetailsViewModel @Inject constructor(
         )
         showSuccessSnackBar(R.string.rating_submit_successfully)
     }
-    
+
     private fun onRatingSubmittedError(errorMessage: String) {
         showError(errorMessage)
         showErrorSnackBar(R.string.failed_to_submit_rating)
