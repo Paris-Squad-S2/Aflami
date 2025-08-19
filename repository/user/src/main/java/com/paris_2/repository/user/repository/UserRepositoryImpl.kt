@@ -15,7 +15,6 @@ class UserRepositoryImpl(
 
     ) : UserRepository {
 
-
     override suspend fun login(username: String, password: String): Boolean = handleAuthExceptions {
         val tokenResponse = remoteDataSource.getRequestToken()
         val requestToken = tokenResponse.requestToken ?: return@handleAuthExceptions false
@@ -70,19 +69,15 @@ class UserRepositoryImpl(
 
     override fun getForgetPasswordUrl(): String = remoteDataSource.getForgetPasswordUrl()
 
-
     override fun isLoggedIn(): Boolean = localDataSource.isLoggedIn()
 
-
     override fun hasAnySession(): Boolean = localDataSource.hasAnySession()
-
 
     override suspend fun getAccountId(): Int? = handleAuthExceptions {
         return@handleAuthExceptions remoteDataSource.getAccountDetails().id
     }
 
     override fun deleteSessionId(): Boolean = localDataSource.deleteSessionId()
-
 
     override fun getUserName(): String = localDataSource.getUserName()
 
