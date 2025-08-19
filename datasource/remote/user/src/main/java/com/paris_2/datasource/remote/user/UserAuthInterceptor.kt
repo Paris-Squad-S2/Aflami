@@ -11,9 +11,13 @@ class UserAuthInterceptor(
         val originalRequest = chain.request()
         val originalUrl = originalRequest.url
         val newUrl = sessionId?.let {
-            originalUrl.newBuilder().addQueryParameter("session_id", it).build()
+            originalUrl.newBuilder().addQueryParameter(SESSION_ID, it).build()
         } ?: originalUrl
         val newRequest = originalRequest.newBuilder().url(newUrl).build()
         return chain.proceed(newRequest)
+    }
+
+    private companion object{
+        const val SESSION_ID = "session_id"
     }
 }

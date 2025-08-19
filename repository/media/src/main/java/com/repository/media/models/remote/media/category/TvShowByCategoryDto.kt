@@ -10,7 +10,7 @@ data class TvShowByCategoryDto(
     @SerialName("results")
     val tvResultDto: List<TvResultDto>,
     @SerialName("total_pages")
-    val total_pages: Int,
+    val totalPages: Int,
     @SerialName("total_results")
-    val total_results: Int
+    val totalResults: Int
 )

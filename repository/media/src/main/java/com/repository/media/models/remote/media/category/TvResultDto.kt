@@ -8,29 +8,29 @@ data class TvResultDto(
     @SerialName("adult")
     val adult: Boolean,
     @SerialName("backdrop_path")
-    val backdrop_path: String,
+    val backdropPath: String,
     @SerialName("first_air_date")
-    val first_air_date: String,
+    val firstAirDate: String,
     @SerialName("genre_ids")
-    val genre_ids: List<Int>,
+    val genreIds: List<Int>,
     @SerialName("id")
     val id: Int,
     @SerialName("name")
     val name: String,
     @SerialName("origin_country")
-    val origin_country: List<String>,
+    val originCountry: List<String>,
     @SerialName("original_language")
-    val original_language: String,
+    val originalLanguage: String,
     @SerialName("original_name")
-    val original_name: String,
+    val originalName: String,
     @SerialName("overview")
     val overview: String,
     @SerialName("popularity")
     val popularity: Double,
     @SerialName("poster_path")
-    val poster_path: String,
+    val posterPath: String,
     @SerialName("vote_average")
-    val vote_average: Double,
+    val voteAverage: Double,
     @SerialName("vote_count")
-    val vote_count: Int
+    val voteCount: Int
 )

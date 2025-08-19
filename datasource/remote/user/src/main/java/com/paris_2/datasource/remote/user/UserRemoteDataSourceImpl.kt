@@ -3,10 +3,10 @@ package com.paris_2.datasource.remote.user
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris_2.repository.user.exeptions.NetworkException
 import com.paris_2.repository.user.model.remote.AccountDto
+import com.paris_2.repository.user.model.remote.GuestSessionDto
 import com.paris_2.repository.user.model.remote.LoginRequest
 import com.paris_2.repository.user.model.remote.RequestTokenDto
 import com.paris_2.repository.user.model.remote.SessionDto
-import com.paris_2.repository.user.model.remote.GuestSessionDto
 import retrofit2.HttpException
 
 class UserRemoteDataSourceImpl (
@@ -22,7 +22,7 @@ class UserRemoteDataSourceImpl (
     }
 
     override suspend fun createSession(requestToken: String): SessionDto = safeApiCall {
-        apiService.createSession(mapOf("request_token" to requestToken))
+        apiService.createSession(mapOf(REQUEST_TOKEN to requestToken))
     }
 
     override suspend fun createGuestSession(): GuestSessionDto = safeApiCall {
@@ -50,7 +50,8 @@ class UserRemoteDataSourceImpl (
     }
 
     companion object{
-        const val REGISTER_URL = "https://www.themoviedb.org/signup"
-        const val FORGET_PASSWORD_URL = "https://www.themoviedb.org/reset-password"
+        private const val REGISTER_URL = "https://www.themoviedb.org/signup"
+        private const val FORGET_PASSWORD_URL = "https://www.themoviedb.org/reset-password"
+        private const val REQUEST_TOKEN = "request_token"
     }
 }

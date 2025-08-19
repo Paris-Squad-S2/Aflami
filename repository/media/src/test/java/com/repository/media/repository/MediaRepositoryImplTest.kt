@@ -443,16 +443,16 @@ class MediaRepositoryImplTest {
         val resultDto = ResultDto(
             id = 1,
             title = "Action Movie",
-            genre_ids = listOf(28),
+            genreIds = listOf(28),
             overview = "Explosions everywhere",
-            poster_path = "/action.jpg",
-            vote_average = 8.0,
-            vote_count = 100,
+            posterPath = "/action.jpg",
+            voteAverage = 8.0,
+            voteCount = 100,
             adult = false,
-            backdrop_path = "/backdrop.jpg",
-            original_language = "en",
-            original_title = "Action Movie",
-            release_date = "2023-01-01",
+            backdropPath = "/backdrop.jpg",
+            originalLanguage = "en",
+            originalTitle = "Action Movie",
+            releaseDate = "2023-01-01",
             popularity = 1.0,
             video = true,
         )
@@ -460,8 +460,8 @@ class MediaRepositoryImplTest {
         val movieByCategoryDto = MovieByCategoryDto(
             page = 1,
             resultDto = listOf(resultDto),
-            total_pages = 5,
-            total_results = 20
+            totalPages = 5,
+            totalResults = 20
         )
 
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)
@@ -484,26 +484,26 @@ class MediaRepositoryImplTest {
 
         val tvResultDto = TvResultDto(
             adult = false,
-            backdrop_path = "/backdrop_tv.jpg",
-            first_air_date = "2022-05-05",
-            genre_ids = listOf(18),
+            backdropPath = "/backdrop_tv.jpg",
+            firstAirDate = "2022-05-05",
+            genreIds = listOf(18),
             id = 100,
             name = "Drama Series",
-            origin_country = listOf("US"),
-            original_language = "en",
-            original_name = "Drama Series",
+            originCountry = listOf("US"),
+            originalLanguage = "en",
+            originalName = "Drama Series",
             overview = "Emotional rollercoaster",
             popularity = 70.0,
-            poster_path = "/drama.jpg",
-            vote_average = 9.0,
-            vote_count = 500
+            posterPath = "/drama.jpg",
+            voteAverage = 9.0,
+            voteCount = 500
         )
 
         val tvShowByCategoryDto = TvShowByCategoryDto(
             page = 1,
             tvResultDto = listOf(tvResultDto),
-            total_pages = 5,
-            total_results = 10
+            totalPages = 5,
+            totalResults = 10
         )
 
         coEvery { settingLocalDataSource.getLanguage() } returns MutableStateFlow(language)

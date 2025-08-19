@@ -25,6 +25,17 @@
 - 📱 **Responsive Design** - Optimized for all screen sizes
 - 🌐 **Language Support** - Available in English and Arabic
 
+## 📽️ Gifs 
+
+| Dark Mode ( click on gif for high quality video ) |
+|-----------|
+| <div align="center"> <a href="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view"> <img src="assets/night_theme.gif" alt="Watch the video" width="800" height="1200"/> </a> </div> |
+
+| Light Mode ( click on gif for high quality video ) |
+|------------|
+| <div align="center"> <a href="https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view"> <img src="assets/light_theme.gif" alt="Watch the video" width="800" height="1200"/> </a> </div> |
+
+
 ## 🚀 Quick Start Guide
 
 ### 📋 Prerequisites
@@ -128,10 +139,11 @@ Aflami/
 │   └── 🎯 di/                  # Dependency Injection (Hilt setup)
 ├── 🛠️ buildSrc/                # Build configuration
 ├── 📊 datasource/
-│   ├── 🌐 remote/              # Home, Guess Game, Lists, Category, Search, User
-│   └── 💾 local/               # Home, Guess Game, Lists, Category, Search, User
+│   ├── 🌐 remote/              # Media, Guess Game, Lists, User
+│   └── 💾 local/               # Media, Guess Game, Lists, User
 ├── 🎨 designsystem/            # UI components and theming
-├── 📦 repository/              # Home, Guess Game, Lists, Category, Search, User
+├── 📦 repository/              # Media, Guess Game, Lists, User
+├── 🏢 domain/                  # Media, Guess Game, Lists, User
 ├── 🎯 feature/
 │   ├── 🏠 home/                # Home screen
 │   ├── 🎮 guessGame/           # Guessing game
@@ -229,7 +241,9 @@ If you encounter issues during setup:
 
 
 <div align="center">
-[![Issues](https://img.shields.io/badge/Issues-Report-orange)](https://github.com/Paris-Squad-S2/Aflami/issues)
+    <a href="https://github.com/Paris-Squad-S2/Aflami/issues">
+  <img src="https://img.shields.io/badge/Issues-Report-orange?logo=github" alt="Report Issues"/>
+</a>
 ⭐ Star this repo!
 
 **🎉 You're Ready to Start Developing! 🚀**

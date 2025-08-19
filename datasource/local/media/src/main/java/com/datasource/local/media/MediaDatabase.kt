@@ -14,17 +14,17 @@ import com.repository.media.models.local.media.GenreUserInteractionEntity
 import com.repository.media.models.local.media.HomeMediaEntity
 import com.repository.media.models.local.media.MediaEntity
 import com.repository.media.models.local.media.SearchHistoryEntity
+import com.repository.media.models.local.moive.MovieCastEntity
+import com.repository.media.models.local.moive.MovieEntity
+import com.repository.media.models.local.moive.MovieGalleryEntity
+import com.repository.media.models.local.moive.MovieReviewEntity
+import com.repository.media.models.local.moive.MovieSimilarEntity
 import com.repository.media.models.local.tvShow.SeasonEntity
 import com.repository.media.models.local.tvShow.TVShowGalleryEntity
 import com.repository.media.models.local.tvShow.TVShowReviewEntity
 import com.repository.media.models.local.tvShow.TvShowCastEntity
 import com.repository.media.models.local.tvShow.TvShowEntity
 import com.repository.media.models.local.tvShow.TvShowSimilarEntity
-import com.repository.media.models.local.moive.MovieCastEntity
-import com.repository.media.models.local.moive.MovieGalleryEntity
-import com.repository.media.models.local.moive.MovieEntity
-import com.repository.media.models.local.moive.MovieSimilarEntity
-import com.repository.media.models.local.moive.MovieReviewEntity
 
 @Database(
     entities = [MediaEntity::class, HomeMediaEntity::class, MovieEntity::class,
@@ -45,5 +45,4 @@ abstract class MediaDatabase : RoomDatabase() {
     abstract fun countryDao(): CountryDao
     abstract fun genreUserInteractionDao(): GenresUserInteractionDao
     abstract fun tvShowDao(): TvShowDao
-
 }
