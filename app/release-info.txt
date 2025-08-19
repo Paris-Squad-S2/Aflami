@@ -1,2 +1,2 @@
-versionName=1.0.12
-- merged movie and tv show in media module
+versionName=1.0.13
+- Add the readme file
