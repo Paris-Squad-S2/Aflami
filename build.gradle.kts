@@ -132,10 +132,8 @@ dependencies {
     kover(projects.repository.user)
     kover(projects.datasource.remote.user)
     kover(projects.datasource.remote.lists)
-    kover(projects.datasource.remote.categories)
     kover(projects.datasource.remote.media)
     kover(projects.datasource.local.guessGame)
-    kover(projects.datasource.local.categories)
     kover(projects.datasource.local.media)
     kover(projects.datasource.local.user)
     kover(projects.feature.onboarding.onboardingUi)
@@ -146,4 +144,5 @@ dependencies {
     kover(projects.feature.guessGame.guessGameUi)
     kover(projects.feature.categories.categoriesUi)
     kover(projects.feature.lists.listsApi)
+    kover(projects.feature.profile.profileUi)
 }

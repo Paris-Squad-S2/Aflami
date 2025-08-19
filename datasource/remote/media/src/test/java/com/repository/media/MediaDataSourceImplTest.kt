@@ -193,11 +193,11 @@ class MediaDataSourceImplTest {
         val movieByCategoryDto = MovieByCategoryDto(
             page = 1,
             resultDto = listOf(
-                ResultDto(id = 1, title = "Movie 1", genre_ids = listOf(1, 2)),
-                ResultDto(id = 2, title = "Movie 2", genre_ids = listOf(1, 2))
+                ResultDto(id = 1, title = "Movie 1", genreIds = listOf(1, 2)),
+                ResultDto(id = 2, title = "Movie 2", genreIds = listOf(1, 2))
             ),
-            total_pages = 5,
-            total_results = 5,
+            totalPages = 5,
+            totalResults = 5,
         )
 
         val tvShowByCategoryDto = TvShowByCategoryDto(
@@ -205,39 +205,39 @@ class MediaDataSourceImplTest {
             tvResultDto = listOf(
                 TvResultDto(
                     adult = false,
-                    backdrop_path = "/gQUdijQy29P8JwI8U36yufKrgiD.jpg",
-                    first_air_date = "2023-09-21",
-                    genre_ids = listOf(18, 10766),
+                    backdropPath = "/gQUdijQy29P8JwI8U36yufKrgiD.jpg",
+                    firstAirDate = "2023-09-21",
+                    genreIds = listOf(18, 10766),
                     id = 210555,
                     name = "Silo",
-                    origin_country = listOf("US"),
-                    original_language = "en",
-                    original_name = "Silo",
+                    originCountry = listOf("US"),
+                    originalLanguage = "en",
+                    originalName = "Silo",
                     overview = "A dystopian thriller set in a giant underground silo where people live under strict rules.",
                     popularity = 1876.453,
-                    poster_path = "/aBbqPyZrZG1DftZFreXjsNmuuQy.jpg",
-                    vote_average = 8.2,
-                    vote_count = 1345
+                    posterPath = "/aBbqPyZrZG1DftZFreXjsNmuuQy.jpg",
+                    voteAverage = 8.2,
+                    voteCount = 1345
                 ),
                 TvResultDto(
                     adult = false,
-                    backdrop_path = "/bWUQ2gSDetJjVp6VGYqCeIv5DN8.jpg",
-                    first_air_date = "2020-10-23",
-                    genre_ids = listOf(10765, 18),
+                    backdropPath = "/bWUQ2gSDetJjVp6VGYqCeIv5DN8.jpg",
+                    firstAirDate = "2020-10-23",
+                    genreIds = listOf(10765, 18),
                     id = 88329,
                     name = "The Mandalorian",
-                    origin_country = listOf("US"),
-                    original_language = "en",
-                    original_name = "The Mandalorian",
+                    originCountry = listOf("US"),
+                    originalLanguage = "en",
+                    originalName = "The Mandalorian",
                     overview = "A lone bounty hunter in the outer reaches of the galaxy takes on a dangerous mission.",
                     popularity = 2154.789,
-                    poster_path = "/sWgBv7LV2PRoQgkxwUWNbJFQiyM.jpg",
-                    vote_average = 8.6,
-                    vote_count = 7890
+                    posterPath = "/sWgBv7LV2PRoQgkxwUWNbJFQiyM.jpg",
+                    voteAverage = 8.6,
+                    voteCount = 7890
                 )
             ),
-            total_pages = 5,
-            total_results = 10
+            totalPages = 5,
+            totalResults = 10
         )
     }
 }

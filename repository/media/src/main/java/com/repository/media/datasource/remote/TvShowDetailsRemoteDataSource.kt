@@ -20,7 +20,6 @@ interface TvShowDetailsRemoteDataSource {
         seasonNumber: Int,
         language: String
     ): TvShowSeasonDto
-
     suspend fun getTrailerVideoForTvShow(tvShowId: Int): TvShowVideoDto
     suspend fun getTrailerVideoForEpisode(
         tvShowId: Int, seasonNumber: Int,
@@ -28,6 +27,5 @@ interface TvShowDetailsRemoteDataSource {
         language: String
     ): EpisodeVideoDto
     suspend fun addRatingToTvShow(movieId: Int, rating: Float): Boolean
-
     suspend fun deleteTvShowRating(tvShowId : Int): Boolean
 }
