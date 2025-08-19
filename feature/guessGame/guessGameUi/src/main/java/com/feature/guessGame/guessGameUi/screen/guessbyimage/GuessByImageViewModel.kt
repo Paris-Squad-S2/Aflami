@@ -211,7 +211,13 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     override fun onRetry() {
-
+        updateState(
+            screenState.value.copy(
+                error = null,
+                isLoading = true
+            )
+        )
+        generateSession(level)
     }
 
 
