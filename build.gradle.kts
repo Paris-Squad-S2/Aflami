@@ -144,4 +144,5 @@ dependencies {
     kover(projects.feature.guessGame.guessGameUi)
     kover(projects.feature.categories.categoriesUi)
     kover(projects.feature.lists.listsApi)
+    kover(projects.feature.profile.profileUi)
 }
