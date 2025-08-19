@@ -3,7 +3,6 @@ package com.feature.lists.listsUi.screens.listScreen
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
-import androidx.paging.map
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
@@ -14,7 +13,6 @@ import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,6 +27,7 @@ class ListsViewModel @Inject constructor(
         getLists()
         getIsUserLoggedIn()
     }
+    private var currentPagingSource: PagingSource<ListUiState>? = null
 
     private fun getIsUserLoggedIn() {
         tryToExecute(
@@ -63,12 +62,10 @@ class ListsViewModel @Inject constructor(
                     ),
                     pagingSourceFactory = {
                         PagingSource { page ->
-                            getListsUseCase.invoke(page)
-                        }
+                            getListsUseCase.invoke(page).map { it.toUiState() }
+                        }.also { currentPagingSource = it }
                     }
-                ).flow.map { pagingData ->
-                    pagingData.map { list -> list.toUiState() }
-                }
+                ).flow
             },
             onSuccess = { pagingDataFlow ->
                 updateState(
@@ -106,7 +103,7 @@ class ListsViewModel @Inject constructor(
                     )
                 )
                 hideSnackBar()
-                getLists()
+                currentPagingSource?.invalidate()
             },
             onError = { errorMessage ->
                 updateState(
