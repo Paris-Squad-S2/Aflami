@@ -8,14 +8,12 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.navigation.navigateToGame
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class GuessGameScreenViewModel @Inject constructor(
     private val getUserPointUseCase: GetUserPointUseCase,
-    private val getAccountIdUseCase: GetAccountIdUseCase,
 ) :
     GuessGameScreenInteractionListener,
     BaseViewModel<GuessGameScreenUiState>(GuessGameScreenUiState()) {
@@ -29,13 +27,18 @@ class GuessGameScreenViewModel @Inject constructor(
         tryToCollect(
             flow = getUserPointUseCase(),
             onEach = { points ->
-                updateState(screenState.value.copy(userPoints = points))
+                updateState(
+                    screenState.value.copy(userPoints = points)
+                )
             },
             onError = { error ->
-                updateState(screenState.value.copy(errorMessage = error))
+                updateState(
+                    screenState.value.copy(errorMessage = error)
+                )
             }
         )
     }
+
 
     override fun onGamePlayClicked(gameId: String) {
         updateState(

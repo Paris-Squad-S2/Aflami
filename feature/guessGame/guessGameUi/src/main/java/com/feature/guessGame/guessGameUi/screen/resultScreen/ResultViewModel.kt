@@ -26,12 +26,16 @@ class ResultViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val userId = runCatching { getAccountIdUseCase() }.getOrNull()
-            userId?.let { id ->
-                updatePointsUseCase(id, args.totalGamePoints)
+            val userId = try {
+                getAccountIdUseCase() ?: -1
+            } catch (_: Exception) {
+                -1
             }
+
+            updatePointsUseCase(userId, args.totalGamePoints)
         }
     }
+
 
     override fun onExitClicked() {
         navigate(Destinations.Screen)

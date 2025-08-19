@@ -11,7 +11,12 @@ class GetUserPointUseCase(
     private val getAccountIdUseCase: GetAccountIdUseCase,
 ) {
     operator fun invoke(): Flow<Int> = flow {
-        val userId = getAccountIdUseCase() ?: throw IllegalStateException("User not logged in")
-        emitAll(gamePointsRepository.getUserGamePoints(userId))
+        val userId = getAccountIdUseCase() ?: -1
+        if (userId == -1) {
+            emit(0)
+        } else {
+            emitAll(gamePointsRepository.getUserGamePoints(userId))
+        }
     }
 }
+

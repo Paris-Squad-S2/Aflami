@@ -7,9 +7,10 @@ import kotlinx.coroutines.flow.first
 class UpdatePointsUseCase(
     private val gamePointsRepository: GamePointsRepository
 ) {
-    suspend operator fun invoke(userId: Int, points: Int) {
-        val currentPoints = gamePointsRepository.getUserGamePoints(userId).first()
+    suspend operator fun invoke(userId: Int?, points: Int) {
+        val safeUserId = userId ?: -1
+        val currentPoints = gamePointsRepository.getUserGamePoints(safeUserId).first()
         val updatedPoints = currentPoints + points
-        gamePointsRepository.saveUserGamePoints(UserPoints(userId, updatedPoints))
+        gamePointsRepository.saveUserGamePoints(UserPoints(safeUserId, updatedPoints))
     }
 }
