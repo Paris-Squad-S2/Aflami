@@ -32,6 +32,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
@@ -63,6 +64,9 @@ dependencies {
     implementation(projects.domain.user)
     implementation(projects.domain.guessGame)
 }
-tasks.withType<Test> {
+
+tasks.withType<Test>().configureEach {
     useJUnitPlatform()
 }
+
+
