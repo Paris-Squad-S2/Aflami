@@ -58,7 +58,7 @@ class TvShowDetailsViewModelTest {
     private val getEpisodeVideoUseCase: GetEpisodeVideoUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
-    private val addWatchHistoryUseCase: AddWatchHistoryUseCase = mockk()
+    private val addWatchHistoryUseCase: AddWatchHistoryUseCase = mockk(relaxed = true)
     private val settingsUseCase: SettingsUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
     private lateinit var viewModel: TvShowDetailsViewModel
@@ -143,6 +143,7 @@ class TvShowDetailsViewModelTest {
         assertFalse(state.snackBarSuccess)
         assertEquals(state.snackBarMessage, state.snackBarMessage)
         assertEquals("rating fail", state.errorMessage)
+        assertFalse(state.showRatingDialog)
     }
 
 
@@ -202,7 +203,10 @@ class TvShowDetailsViewModelTest {
 
     @Test
     fun `onClickOnSeason expands season and loads episodes on success`() = runTest {
-        val mockEpisodesResult = mockk<Season>(relaxed = true)
+        val mockEpisodesResult = mockk<Season> {
+            every { seasonNumber } returns 5
+            every { episodes } returns emptyList()
+        }
         coEvery { getSeasonDetailsUseCase(any(), any()) } returns mockEpisodesResult
         viewModel = makeViewModelWithDefaultStateHandle()
         val stateWithSeasons = viewModel.screenState.value.copy(
