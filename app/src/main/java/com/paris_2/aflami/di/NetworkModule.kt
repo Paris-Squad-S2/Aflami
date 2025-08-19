@@ -18,21 +18,10 @@ import retrofit2.converter.kotlinx.serialization.asConverterFactory
 import javax.inject.Singleton
 import com.repository.guessgame.utils.NetworkConnectionChecker as GuessGameConnectionChecker
 import com.repository.media.util.NetworkConnectionChecker as HomeNetworkConnectionChecker
-import com.repository.movie.util.NetworkConnectionChecker as MovieNetworkConnectionChecker
-import com.repository.util.NetworkConnectionChecker as CommonNetworkConnectionChecker
 
 @Module
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
-    @Provides
-    @Singleton
-    fun provideCommonNetworkConnectionChecker(@ApplicationContext context: Context): CommonNetworkConnectionChecker =
-        CommonNetworkConnectionChecker(context)
-
-    @Provides
-    @Singleton
-    fun provideMovieNetworkConnectionChecker(@ApplicationContext context: Context): MovieNetworkConnectionChecker =
-        MovieNetworkConnectionChecker(context)
 
     @Provides
     @Singleton

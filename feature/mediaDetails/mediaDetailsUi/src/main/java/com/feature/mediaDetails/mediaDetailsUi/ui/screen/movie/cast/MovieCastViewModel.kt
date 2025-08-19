@@ -39,23 +39,27 @@ class MovieCastViewModel @Inject constructor(
         updateState(screenState.value.copy(isLoading = true))
         tryToExecute(
             execute = { getMovieCastUseCase(mediaId) },
-            onSuccess = { castList ->
-                updateState(
-                    screenState.value.copy(
-                        cast = castList.toListOfCastUi(),
-                        isLoading = false,
-                        errorMessage = null
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        isLoading = false,
-                        errorMessage = error
-                    )
-                )
-            }
+            onSuccess = ::onLoadMovieCastSuccess,
+            onError = ::onLoadMovieCastError
+        )
+    }
+    
+    private fun onLoadMovieCastSuccess(castList: List<com.paris_2.domain.media.entity.Cast>) {
+        updateState(
+            screenState.value.copy(
+                cast = castList.toListOfCastUi(),
+                isLoading = false,
+                errorMessage = null
+            )
+        )
+    }
+    
+    private fun onLoadMovieCastError(error: String) {
+        updateState(
+            screenState.value.copy(
+                isLoading = false,
+                errorMessage = error
+            )
         )
     }
 

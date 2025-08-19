@@ -30,7 +30,7 @@ class MediaDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        val mediaDetailsDestination = intent.getStringExtra("mediaDetailsDestination")
+        val mediaDetailsDestination = intent.getStringExtra(MediaDetailsFeatureAPIImpl.MEDIA_DETAILS_DESTINATION)
             ?.fromJsonToMediaDetailsDestination()
             ?: MediaDetailsDestinations.MovieDetailsScreen(0)
 

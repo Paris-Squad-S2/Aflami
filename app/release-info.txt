@@ -1,4 +1,2 @@
-versionName=1.0.11
-- refactor hint in guess by image screen
-- refactor hint in guss by question screen
-- refactor localization in guess game
+versionName=1.0.15
+- Enhance the media details feature

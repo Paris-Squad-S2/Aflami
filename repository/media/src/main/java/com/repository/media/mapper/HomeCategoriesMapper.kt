@@ -1,8 +1,8 @@
 package com.repository.media.mapper
 
 import com.paris_2.domain.media.entity.Category
-import com.repository.media.dto.GenreDto
-import com.repository.media.dto.GenresDto
+import com.repository.media.models.remote.media.GenreDto
+import com.repository.media.models.remote.media.GenresDto
 
 
 fun GenreDto.toCategory(): Category {

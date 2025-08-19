@@ -2,7 +2,7 @@ package com.datasource.local.media.datasource
 
 import com.datasource.local.media.dao.CountryDao
 import com.repository.media.datasource.local.CountriesLocalDataSource
-import com.repository.media.entity.CountryEntity
+import com.repository.media.models.local.media.CountryEntity
 import com.repository.media.util.Util
 
 class CountriesLocalDataSourceImpl(

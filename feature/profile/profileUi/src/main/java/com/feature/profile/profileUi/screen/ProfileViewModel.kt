@@ -1,7 +1,6 @@
 package com.feature.profile.profileUi.screen
 
 import android.content.Context
-import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.Destination
@@ -12,8 +11,6 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,40 +20,85 @@ class ProfileViewModel @Inject constructor(
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
     private val getUserPointsUseCase: GetUserPointUseCase,
-    ) :
+) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
 
 
     init {
+        getTheme()
         checkUserLoggedIn()
         getUserName()
         getRestriction()
         getUserPoints()
-        viewModelScope.launch {
-            settingsUseCase.getLanguage().collect {
+        getLanguage()
+    }
+
+    private fun getTheme() {
+        tryToCollect(
+            flow = settingsUseCase.isDarkTheme(),
+            onEach = { isDark ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
-                            language = it.toLanguage(),
+                            theme = if (isDark) Appearance.DARK else Appearance.LIGHT
                         )
                     )
                 )
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
             }
-        }
+        )
+    }
+
+    private fun getLanguage() {
+        tryToCollect(
+            flow = settingsUseCase.getLanguage(),
+            onEach = { language ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            language = language.toLanguage(),
+                        )
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            },
+        )
     }
 
     private fun getRestriction() {
-        viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
-            updateState(
-                screenState.value.copy(
-                    profile = screenState.value.profile.copy(
-                        contentRestriction = ContentRestriction.valueOf(restriction)
+        tryToExecute(
+            execute = settingsUseCase::getRestriction,
+            onSuccess = { restriction ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            contentRestriction = ContentRestriction.valueOf(restriction)
+                        )
                     )
                 )
-            )
-        }
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
+
     private fun getUserPoints() {
         tryToCollect(
             flow = getUserPointsUseCase(),
@@ -80,23 +122,45 @@ class ProfileViewModel @Inject constructor(
     }
 
     private fun getUserName() {
-        viewModelScope.launch{
-            updateState(
-                screenState.value.copy(
-                    profile = screenState.value.profile.copy(
-                            name = settingsUseCase.getUserName()
+        tryToExecute(
+            execute = settingsUseCase::getUserName,
+            onSuccess = { userName ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            name = userName
                         )
+                    )
                 )
-            )
-        }
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
 
     }
 
     private fun checkUserLoggedIn() {
-        updateState(
-            screenState.value.copy(
-                isLogin = isLoggedInUseCase()
-            )
+        tryToExecute(
+            execute = isLoggedInUseCase::invoke,
+            onSuccess = { isLoggedIn ->
+                updateState(
+                    screenState.value.copy(
+                        isLogin = isLoggedIn
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
         )
     }
 
@@ -117,8 +181,10 @@ class ProfileViewModel @Inject constructor(
             onSuccess = ::onChooseAppearanceClickedSuccess,
             onError = ::onChooseAppearanceClickedError
         )
-        viewModelScope.launch {
-            settingsUseCase.isDarkTheme().collectLatest { isDark ->
+
+        tryToCollect(
+            flow = settingsUseCase.isDarkTheme(),
+            onEach = { isDark ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
@@ -127,14 +193,21 @@ class ProfileViewModel @Inject constructor(
                         )
                     )
                 )
-            }
-
-        }
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            },
+        )
     }
 
     private fun onChooseAppearanceClickedSuccess(isDark: Flow<Boolean>) {
-        viewModelScope.launch {
-            isDark.collectLatest { isDark ->
+        tryToCollect(
+            flow = isDark,
+            onEach = { isDark ->
                 updateState(
                     screenState.value.copy(
                         profile = screenState.value.profile.copy(
@@ -143,9 +216,15 @@ class ProfileViewModel @Inject constructor(
                         )
                     )
                 )
-            }
-        }
-
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            },
+        )
     }
 
     private fun onChooseAppearanceClickedError(error: String) {
@@ -210,19 +289,32 @@ class ProfileViewModel @Inject constructor(
     }
 
     override fun onLanguageApplyClicked(language: Language) {
-        viewModelScope.launch {
-            settingsUseCase.setLanguage(language.local)
-        }
+        tryToExecute(
+            execute = { settingsUseCase.setLanguage(language.local) },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     override fun onLogoutApplyClicked() {
         tryToExecute(
+            execute = {
+                deleteSessionIdUseCase()
+            },
             onSuccess = {
                 authenticationFeatureAPI()
             },
-            onError = {},
-            execute = {
-                deleteSessionIdUseCase()
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
             }
         )
     }

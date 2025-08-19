@@ -33,7 +33,6 @@ class GamePointsRepositoryImpl(
     }
 
     private suspend fun <T> safeCall(exception: GameException, call: suspend () -> T): T {
-
         return try {
             call()
         } catch (e: GameException) {

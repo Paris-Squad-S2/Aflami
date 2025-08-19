@@ -4,8 +4,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.repository.media.entity.SearchHistoryEntity
-import com.repository.media.entity.SearchType
+import com.repository.media.models.local.media.SearchHistoryEntity
+import com.repository.media.models.local.media.SearchType
 import kotlinx.coroutines.flow.Flow
 
 @Dao

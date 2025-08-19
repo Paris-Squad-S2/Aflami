@@ -1,6 +1,6 @@
 package com.repository.media.datasource.local
 
-import com.repository.media.entity.CountryEntity
+import com.repository.media.models.local.media.CountryEntity
 
 
 interface CountriesLocalDataSource {

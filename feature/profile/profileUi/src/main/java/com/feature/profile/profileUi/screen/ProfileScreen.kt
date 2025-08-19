@@ -136,7 +136,7 @@ fun ProfileContent(
             )
             ProfileSetUp(
                 interactionListener = profileInteractionListener,
-                typeMode = state.profile.theme.name
+                typeMode = stringResource(state.profile.theme.display)
             )
         }
 

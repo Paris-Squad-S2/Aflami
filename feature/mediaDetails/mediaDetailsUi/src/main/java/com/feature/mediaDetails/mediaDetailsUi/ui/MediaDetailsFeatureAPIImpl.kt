@@ -13,14 +13,18 @@ class MediaDetailsFeatureAPIImpl(
     override fun startMovieDetails(movieId: Int) {
         val intent = Intent(context, MediaDetailsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("mediaDetailsDestination", MediaDetailsDestinations.MovieDetailsScreen(movieId).toJson())
+        intent.putExtra(MEDIA_DETAILS_DESTINATION, MediaDetailsDestinations.MovieDetailsScreen(movieId).toJson())
         context.startActivity(intent)
     }
 
     override fun startTvShowDetails(tvShowId: Int) {
         val intent = Intent(context, MediaDetailsActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra("mediaDetailsDestination", MediaDetailsDestinations.TvShowDetailsScreen(tvShowId).toJson())
+        intent.putExtra(MEDIA_DETAILS_DESTINATION, MediaDetailsDestinations.TvShowDetailsScreen(tvShowId).toJson())
         context.startActivity(intent)
+    }
+
+    companion object {
+         const val MEDIA_DETAILS_DESTINATION = "mediaDetailsDestination"
     }
 }

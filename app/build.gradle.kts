@@ -135,24 +135,16 @@ dependencies {
     implementation(projects.feature.mediaDetails.mediaDetailsUi)
     implementation(projects.feature.onboarding.onboardingUi)
 
-    implementation(projects.repository.tvShows)
     implementation(projects.repository.lists)
-    implementation(projects.repository.movie)
     implementation(projects.repository.user)
     implementation(projects.repository.media)
     implementation(projects.repository.guessGame)
 
-
-    implementation(projects.datasource.remote.lists)
-    implementation(projects.datasource.remote.tvShow)
-    implementation(projects.datasource.remote.movie)
     implementation(projects.datasource.remote.user)
     implementation(projects.datasource.remote.media)
-
+    implementation(projects.datasource.remote.lists)
 
     implementation(projects.datasource.local.media)
-    implementation(projects.datasource.local.tvShow)
-    implementation(projects.datasource.local.movie)
     implementation(projects.datasource.local.user)
     implementation(projects.datasource.local.guessGame)
 

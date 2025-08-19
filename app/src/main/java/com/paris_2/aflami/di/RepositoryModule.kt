@@ -19,19 +19,18 @@ import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris_2.repository.user.repository.SettingRepositoryImpl
 import com.paris_2.repository.user.repository.UserRepositoryImpl
-import com.repository.dataSource.local.TvShowLocalDataSource
-import com.repository.dataSource.remote.TvShowDetailsRemoteDataSource
+import com.repository.media.datasource.local.TvShowLocalDataSource
+import com.repository.media.datasource.remote.TvShowDetailsRemoteDataSource
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
 import com.repository.guessgame.repository.ActorPopularityRepositoryImpl
 import com.repository.guessgame.repository.GamePointsRepositoryImpl
 import com.repository.lists.ListsRepositoryImpl
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
-import com.repository.media.datasource.local.ContinueWatchingLocalDataSource
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
-import com.repository.media.datasource.local.HomeMediaLocalDataSource
+import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
@@ -43,10 +42,10 @@ import com.repository.media.repository.MoviesCategoriesRepositoryImpl
 import com.repository.media.repository.SearchHistoryRepositoryImpl
 import com.repository.media.repository.SearchMediaRepositoryImpl
 import com.repository.media.util.NetworkConnectionChecker
-import com.repository.movie.dataSource.local.MovieLocalDataSource
-import com.repository.movie.dataSource.remote.MovieRemoteDataSource
-import com.repository.movie.repository.MovieRepositoryImpl
-import com.repository.repository.TvShowRepositoryImpl
+import com.repository.media.datasource.local.MovieLocalDataSource
+import com.repository.media.datasource.remote.MovieRemoteDataSource
+import com.repository.media.repository.MovieRepositoryImpl
+import com.repository.media.repository.TvShowRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -130,13 +129,12 @@ object RepositoryModule {
     fun provideDetailedMediaRepository(
         networkConnectionChecker: NetworkConnectionChecker,
         mediaRemoteDataSource: MediaRemoteDataSource,
-        continueWatchingLocalDataSource: ContinueWatchingLocalDataSource,
-        homeMediaLocalDataSource: HomeMediaLocalDataSource,
+        mediaLocalDataSource: MediaLocalDataSource,
         settingLocalDataSource: SettingLocalDataSource,
     ): MediaRepository = MediaRepositoryImpl(
         networkConnectionChecker,
         mediaRemoteDataSource,
-        continueWatchingLocalDataSource, homeMediaLocalDataSource,
+        mediaLocalDataSource,
         settingLocalDataSource
     )
 
@@ -156,7 +154,7 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideDetailedMovieRepository(
-        networkConnectionChecker: com.repository.movie.util.NetworkConnectionChecker,
+        networkConnectionChecker: NetworkConnectionChecker,
         movieLocalDataSource: MovieLocalDataSource,
         movieRemoteDataSource: MovieRemoteDataSource,
         settingLocalDataSource: SettingLocalDataSource,
@@ -172,7 +170,7 @@ object RepositoryModule {
     fun provideDetailedTvShowRepository(
         tvShowDetailsRemoteDataSource: TvShowDetailsRemoteDataSource,
         tvShowLocalDataSource: TvShowLocalDataSource,
-        networkConnectionChecker: com.repository.util.NetworkConnectionChecker,
+        networkConnectionChecker: NetworkConnectionChecker,
         settingLocalDataSource: SettingLocalDataSource,
     ): TvShowRepository = TvShowRepositoryImpl(
         tvShowDetailsRemoteDataSource,

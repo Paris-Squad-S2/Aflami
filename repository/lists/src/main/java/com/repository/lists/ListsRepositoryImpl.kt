@@ -39,7 +39,6 @@ class ListsRepositoryImpl(
         return listRemoteDataSource.removeMovieFromList(listId, movieId).toDomain()
     }
 
-
     private inline fun <T> handleListsExceptions(block: () -> T): T {
         try {
             return block()

@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
@@ -19,11 +20,18 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import com.paris.domain.lists.entity.Lists
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris.domain.lists.entity.Response
 import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris_2.domain.media.entity.Cast
+import com.paris_2.domain.media.entity.Image
 import com.paris_2.domain.media.entity.MediaVideo
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
 import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
@@ -37,6 +45,7 @@ import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
@@ -69,11 +78,56 @@ class MovieDetailsViewModel @Inject constructor(
         savedStateHandle.toRoute<MediaDetailsDestinations.MovieDetailsScreen>().movieId
     }
 
+    companion object {
+        private const val SNACKBAR_HIDE_DELAY_MS = 3000L
+        private const val STRICT_NSFW_THRESHOLD = 0.8f
+        private const val STRICT_GENDER_THRESHOLD = 0.6f
+        private const val MODERATE_NSFW_THRESHOLD = 0.4f
+        private const val MODERATE_GENDER_THRESHOLD = 0.6f
+        private const val OFF_NSFW_THRESHOLD = 0.0f
+        private const val OFF_GENDER_THRESHOLD = 0.0f
+        private const val RATING_STEP = 0.5f
+    }
+
     init {
         getRestriction()
         loadedMovieDetails(mediaId = movieId)
         getInformationVideoMovie()
         loadAvailableLists()
+    }
+
+    private fun updateMovieDetailsUiState(updater: (MovieDetailsUiState) -> MovieDetailsUiState) {
+        updateState(
+            screenState.value.copy(
+                movieDetailsUiState = updater(screenState.value.movieDetailsUiState)
+            )
+        )
+    }
+
+    private fun showError(errorMessage: String) {
+        updateState(screenState.value.copy(errorMessage = errorMessage))
+    }
+
+    private fun showSuccessSnackBar(message: Int) {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = true,
+                snackBarSuccess = true,
+                snackBarMessage = message
+            )
+        )
+        hideSnackBar()
+    }
+
+    private fun showErrorSnackBar(message: Int) {
+        updateState(
+            screenState.value.copy(
+                showSnackBar = true,
+                snackBarSuccess = false,
+                snackBarMessage = message
+            )
+        )
+        hideSnackBar()
     }
 
     private fun getRestriction() {
@@ -92,29 +146,28 @@ class MovieDetailsViewModel @Inject constructor(
                 snackBarMessage = null
             )
         )
-        when (screenState.value.contentRestriction) {
+        when (ContentRestriction.valueOf(restriction)) {
             ContentRestriction.Strict -> updateState(
                 screenState.value.copy(
-                    nsfwThreshold = 0.8f,
-                    genderThreshold = 0.6f
+                    nsfwThreshold = STRICT_NSFW_THRESHOLD,
+                    genderThreshold = STRICT_GENDER_THRESHOLD
                 )
             )
 
             ContentRestriction.Moderate -> updateState(
                 screenState.value.copy(
-                    nsfwThreshold = 0.4f,
-                    genderThreshold = 0.6f
+                    nsfwThreshold = MODERATE_NSFW_THRESHOLD,
+                    genderThreshold = MODERATE_GENDER_THRESHOLD
                 )
             )
 
             ContentRestriction.Off -> updateState(
                 screenState.value.copy(
-                    nsfwThreshold = 0f,
-                    genderThreshold = 0f
+                    nsfwThreshold = OFF_NSFW_THRESHOLD,
+                    genderThreshold = OFF_GENDER_THRESHOLD
                 )
             )
         }
-
     }
 
     private fun onGetRestrictionError(error: String) {
@@ -130,26 +183,22 @@ class MovieDetailsViewModel @Inject constructor(
     private fun loadAvailableLists() {
         tryToExecute(
             execute = { getListsUseCase(1) },
-            onSuccess = { lists ->
-                updateState(
-                    screenState.value.copy(
-                        availableLists = lists.map {
-                            ListItemUi(
-                                id = it.id.toString(),
-                                name = it.name,
-                                itemCount = it.itemCount
-                            )
-                        }
+            onSuccess = ::onLoadAvailableListsSuccess,
+            onError = ::showError
+        )
+    }
+
+    private fun onLoadAvailableListsSuccess(lists: List<Lists>) {
+        updateState(
+            screenState.value.copy(
+                availableLists = lists.map {
+                    ListItemUi(
+                        id = it.id.toString(),
+                        name = it.name,
+                        itemCount = it.itemCount
                     )
-                )
-            },
-            onError = { errorMessage ->
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = errorMessage
-                    )
-                )
-            }
+                }
+            )
         )
     }
 
@@ -161,195 +210,165 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-
     private fun loadedMovieDetails(mediaId: Int) {
         tryToExecute(
             execute = { getMovieDetailsUseCase(mediaId) },
-            onSuccess = { movie ->
-                addWatchHistoryUseCase(movie.toMedia())
-                updateState(
-                    screenState.value.copy(
-                        isLoading = false,
-                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            movie = movie.toUi(),
-                        )
-                    )
+            onSuccess = { movie -> onLoadMovieDetailsSuccess(movie, mediaId) },
+            onError = ::onLoadMovieDetailsError
+        )
+    }
+
+    private suspend fun onLoadMovieDetailsSuccess(movie: Movie, mediaId: Int) {
+
+        addWatchHistoryUseCase(movie.toMedia())
+        updateState(
+            screenState.value.copy(
+                isLoading = false,
+                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                    movie = movie.toUi(),
                 )
-                loadCastDetails(mediaId)
-                loadMovieGallery(mediaId)
-                loadMovieRecommendations(mediaId)
-                loadMovieReviews(mediaId)
-                loadMovieProductionCompanies(mediaId)
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        isLoading = false,
-                        errorMessage = it
-                    )
-                )
-            }
+            )
+        )
+        loadCastDetails(mediaId)
+        loadMovieGallery(mediaId)
+        loadMovieRecommendations(mediaId)
+        loadMovieReviews(mediaId)
+        loadMovieProductionCompanies(mediaId)
+    }
+
+    private fun onLoadMovieDetailsError(error: String) {
+        updateState(
+            screenState.value.copy(
+                isLoading = false,
+                errorMessage = error
+            )
         )
     }
 
     private fun loadMovieProductionCompanies(mediaId: Int) {
         tryToExecute(
             execute = { getMovieProductionCompaniesUseCase(mediaId) },
-            onSuccess = {
-                updateState(
-                    screenState.value.copy(
-                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            movie = screenState.value.movieDetailsUiState.movie.copy(
-                                productionCompanies = it.toListOfProductionCompanyUi()
-                            )
-                        )
-                    )
-                )
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
-                )
-            }
+            onSuccess = ::onLoadMovieProductionCompaniesSuccess,
+            onError = ::showError
         )
+    }
+
+    private fun onLoadMovieProductionCompaniesSuccess(companies: List<ProductionCompany>) {
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(
+                movie = movieDetails.movie.copy(
+                    productionCompanies = companies.toListOfProductionCompanyUi()
+                )
+            )
+        }
     }
 
     private fun loadMovieReviews(mediaId: Int) {
         tryToExecute(
-            execute = {
-                getMovieReviewsUseCase(mediaId, 1).toListOfReviewUi()
-            },
-            onSuccess = { reviews ->
-                updateState(
-                    screenState.value.copy(
-                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            reviews = reviews
-                        )
-                    )
-                )
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
-                )
-            }
+            execute = ::executeLoadMovieReviews,
+            onSuccess = ::onLoadMovieReviewsSuccess,
+            onError = ::showError
         )
+    }
+
+    private suspend fun executeLoadMovieReviews(): List<ReviewUi> {
+        return getMovieReviewsUseCase(movieId, 1).toListOfReviewUi()
+    }
+
+    private fun onLoadMovieReviewsSuccess(reviews: List<ReviewUi>) {
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(reviews = reviews)
+        }
     }
 
     private fun loadMovieRecommendations(mediaId: Int) {
         tryToExecute(
-            execute = {
-                Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = {
-                        PagingSource(
-                            mediaUseCase = { page ->
-                                getMovieRecommendationsUseCase(
-                                    mediaId,
-                                    page
-                                ).toListOfMovieSimilarUI()
-                            }
-                        )
+            execute = { executeLoadMovieRecommendations(mediaId) },
+            onSuccess = ::onLoadMovieRecommendationsSuccess,
+            onError = ::showError
+        )
+    }
+
+    private fun executeLoadMovieRecommendations(mediaId: Int): Flow<PagingData<SimilarMediaUI>> {
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = {
+                PagingSource(
+                    mediaUseCase = { page ->
+                        getMovieRecommendationsUseCase(
+                            mediaId,
+                            page
+                        ).toListOfMovieSimilarUI()
                     }
-                ).flow.cachedIn(viewModelScope)
-            },
-            onSuccess = {
-                updateState(
-                    screenState.value.copy(
-                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            recommendations = it
-                        )
-                    )
-                )
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
                 )
             }
-        )
+        ).flow.cachedIn(viewModelScope)
+    }
+
+    private fun onLoadMovieRecommendationsSuccess(recommendations: Flow<PagingData<SimilarMediaUI>>) {
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(recommendations = recommendations)
+        }
     }
 
     private fun loadCastDetails(mediaId: Int) {
         tryToExecute(
             execute = { getMovieCastUseCase(mediaId) },
-            onSuccess = {
-                updateState(
-                    screenState.value.copy(
-                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            cast = it.toListOfCastUi()
-                        )
-                    )
-                )
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
-                )
-            }
+            onSuccess = ::onLoadCastDetailsSuccess,
+            onError = ::showError
         )
+    }
+
+    private fun onLoadCastDetailsSuccess(cast: List<Cast>) {
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(cast = cast.toListOfCastUi())
+        }
     }
 
     private fun loadMovieGallery(mediaId: Int) {
         tryToExecute(
             execute = { getMovieGalleryUseCase(mediaId) },
-            onSuccess = {
-                updateState(
-                    screenState.value.copy(
-                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                            gallery = it.toUi()
-                        )
-                    )
-                )
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        errorMessage = it
-                    )
-                )
-            }
+            onSuccess = ::onLoadMovieGallerySuccess,
+            onError = ::showError
         )
+    }
+
+    private fun onLoadMovieGallerySuccess(images: List<Image>) {
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(gallery = images.toUi())
+        }
     }
 
     override fun onRateClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
-            onSuccess = { isLoggedIn ->
-                if (isLoggedIn) {
-                    updateState(screenState.value.copy(showRatingDialog = true))
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.rate))
-                }
-            },
-            onError = {
-                updateState(screenState.value.copy(errorMessage = it))
-            }
+            onSuccess = ::onRateClickSuccess,
+            onError = ::showError
         )
+    }
+
+    private fun onRateClickSuccess(isLoggedIn: Boolean) {
+        if (isLoggedIn) {
+            updateState(screenState.value.copy(showRatingDialog = true))
+        } else {
+            navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.rate))
+        }
     }
 
     override fun onAddToListClick() {
         tryToExecute(
             execute = { isLoggedInUseCase() },
-            onSuccess = { isLoggedIn ->
-                if (isLoggedIn) {
-                    updateState(screenState.value.copy(showAddToListDialog = true))
-                } else {
-                    navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.add_to_list))
-                }
-            },
-            onError = {
-                updateState(screenState.value.copy(errorMessage = it))
-            }
+            onSuccess = ::onAddToListClickSuccess,
+            onError = ::showError
         )
+    }
+
+    private fun onAddToListClickSuccess(isLoggedIn: Boolean) {
+        if (isLoggedIn) {
+            updateState(screenState.value.copy(showAddToListDialog = true))
+        } else {
+            navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.add_to_list))
+        }
     }
 
     override fun onListSelectionChanged(index: Int) {
@@ -365,34 +384,27 @@ class MovieDetailsViewModel @Inject constructor(
             screenState.value.availableLists.getOrNull(screenState.value.selectedListIndex)
         if (selectedList != null) {
             tryToExecute(
-                execute = {
-                    addMovieToListUseCase(selectedList.id, movieId)
-                },
-                onSuccess = {
-                    updateState(
-                        screenState.value.copy(
-                            showAddToListDialog = false,
-                            selectedListIndex = -1,
-                            showSnackBar = true,
-                            snackBarSuccess = true,
-                            snackBarMessage = R.string.movie_added_to_list_successfully
-                        )
-                    )
-                    hideSnackBar()
-                    loadAvailableLists()
-                },
-                onError = { errorMessage ->
-                    updateState(
-                        screenState.value.copy(
-                            errorMessage = errorMessage,
-                            showSnackBar = true,
-                            snackBarSuccess = false,
-                        )
-                    )
-                    hideSnackBar()
-                }
+                execute = { addMovieToListUseCase(selectedList.id, movieId) },
+                onSuccess = ::onAddToSelectedListSuccess,
+                onError = ::onAddToSelectedListError
             )
         }
+    }
+
+    private fun onAddToSelectedListSuccess(unit: Unit) {
+        updateState(
+            screenState.value.copy(
+                showAddToListDialog = false,
+                selectedListIndex = -1
+            )
+        )
+        showSuccessSnackBar(R.string.movie_added_to_list_successfully)
+        loadAvailableLists()
+    }
+
+    private fun onAddToSelectedListError(errorMessage: String) {
+        showError(errorMessage)
+        showErrorSnackBar(RDesignSystem.string.some_error_happened)
     }
 
     override fun onDismissAddToListDialog() {
@@ -432,30 +444,35 @@ class MovieDetailsViewModel @Inject constructor(
             updateState(screenState.value.copy(createListButtonState = ButtonState.Loading))
             tryToExecute(
                 execute = { createListUseCase.invoke(listName) },
-                onSuccess = { result ->
-                    updateState(
-                        screenState.value.copy(
-                            showCreateListDialog = false,
-                            createListName = "",
-                            createListButtonState = ButtonState.Normal,
-                            showSnackBar = true,
-                            snackBarSuccess = result.success,
-                            snackBarMessage = if (result.success) RDesignSystem.string.added_new_list_successfully else RDesignSystem.string.some_error_happened
-                        )
-                    )
-                    hideSnackBar()
-                    loadAvailableLists()
-                },
-                onError = { errorMessage ->
-                    updateState(
-                        screenState.value.copy(
-                            errorMessage = errorMessage,
-                            createListButtonState = ButtonState.Normal
-                        )
-                    )
-                }
+                onSuccess = ::onCreateListConfirmSuccess,
+                onError = ::onCreateListConfirmError
             )
         }
+    }
+
+    private fun onCreateListConfirmSuccess(result: Response) {
+        updateState(
+            screenState.value.copy(
+                showCreateListDialog = false,
+                createListName = "",
+                createListButtonState = ButtonState.Normal
+            )
+        )
+        if (result.success) {
+            showSuccessSnackBar(RDesignSystem.string.added_new_list_successfully)
+        } else {
+            showErrorSnackBar(RDesignSystem.string.some_error_happened)
+        }
+        loadAvailableLists()
+    }
+
+    private fun onCreateListConfirmError(error: String) {
+        updateState(
+            screenState.value.copy(
+                createListButtonState = ButtonState.Normal,
+                errorMessage = error
+            )
+        )
     }
 
     override fun onShowAllCastClick(movieId: Int) {
@@ -477,45 +494,34 @@ class MovieDetailsViewModel @Inject constructor(
     }
 
     override fun playYoutubeVideo(videoKey: String) {
-        updateState(
-            screenState.value.copy(
-                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                    isYoutubePlayerVisible = true,
-                    youtubeVideoKey = videoKey
-                )
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(
+                isYoutubePlayerVisible = true,
+                youtubeVideoKey = videoKey
             )
-        )
+        }
     }
 
     override fun closeYoutubePlayer() {
-        updateState(
-            screenState.value.copy(
-                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                    isYoutubePlayerVisible = false,
-                    youtubeVideoKey = null
-                )
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(
+                isYoutubePlayerVisible = false,
+                youtubeVideoKey = null
             )
-        )
+        }
     }
 
     private fun onGetVideoMovieSuccess(movieVideo: MediaVideo) {
-        updateState(
-            screenState.value.copy(
-                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
-                    movieVideoUi = movieVideo.toMovieVideoUi()
-                )
+        updateMovieDetailsUiState { movieDetails ->
+            movieDetails.copy(
+                movieVideoUi = movieVideo.toMovieVideoUi()
             )
-        )
+        }
     }
 
     private fun onGetVideoMovieError(error: String) {
-        updateState(
-            screenState.value.copy(
-                errorMessage = error
-            )
-        )
+        showError(error)
     }
-
 
     override fun onDismissRatingDialog() {
         updateState(
@@ -525,39 +531,32 @@ class MovieDetailsViewModel @Inject constructor(
         )
     }
 
-
     override fun onRatingSubmitted(movieId: Int, rating: Float) {
         tryToExecute(
-            execute = {
-                val step = 0.5f
-                val roundedRating = ((rating / step).roundToInt() * step)
-                addRatingToMovieUseCase(movieId, roundedRating)
-            },
-            onSuccess = {
-                updateState(
-                    screenState.value.copy(
-                        showSnackBar = true,
-                        snackBarSuccess = true,
-                        snackBarMessage = R.string.rating_submit_successfully,
-                        showRatingDialog = false
-                    )
-                )
-                hideSnackBar()
-            },
-            onError = {
-                updateState(
-                    screenState.value.copy(
-                        showSnackBar = true,
-                        snackBarSuccess = false,
-                        snackBarMessage = R.string.failed_to_submit_rating,
-                        errorMessage = it
-                    )
-                )
-                hideSnackBar()
-            }
+            execute = { executeSubmitRating(rating) },
+            onSuccess = ::onRatingSubmittedSuccess,
+            onError = ::onRatingSubmittedError
         )
     }
 
+    private suspend fun executeSubmitRating(rating: Float) {
+        val roundedRating = ((rating / RATING_STEP).roundToInt() * RATING_STEP)
+        addRatingToMovieUseCase(movieId, roundedRating)
+    }
+
+    private fun onRatingSubmittedSuccess(unit: Unit) {
+        updateState(
+            screenState.value.copy(
+                showRatingDialog = false
+            )
+        )
+        showSuccessSnackBar(R.string.rating_submit_successfully)
+    }
+
+    private fun onRatingSubmittedError(errorMessage: String) {
+        showError(errorMessage)
+        showErrorSnackBar(R.string.failed_to_submit_rating)
+    }
 
     override fun onHideSnackBar() {
         updateState(
@@ -570,10 +569,9 @@ class MovieDetailsViewModel @Inject constructor(
     private fun hideSnackBar() {
         viewModelScope.launch {
             if (screenState.value.showSnackBar) {
-                delay(3000)
+                delay(SNACKBAR_HIDE_DELAY_MS)
                 updateState(screenState.value.copy(showSnackBar = false))
             }
         }
     }
-
 }
