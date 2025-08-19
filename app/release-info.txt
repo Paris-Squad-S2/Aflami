@@ -1,2 +1,2 @@
-versionName=1.0.13
-- Add the readme file
+versionName=1.0.14
+- Enhance the media details feature

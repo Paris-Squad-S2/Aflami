@@ -39,23 +39,27 @@ class TvShowCastViewModel @Inject constructor(
 
         tryToExecute(
             execute = { getTvShowCastUseCase(mediaId) },
-            onSuccess = { castList ->
-                updateState(
-                    screenState.value.copy(
-                        cast = castList.toListOfCastUi(),
-                        isLoading = false,
-                        errorMessage = null
-                    )
-                )
-            },
-            onError = { error ->
-                updateState(
-                    screenState.value.copy(
-                        isLoading = false,
-                        errorMessage = error
-                    )
-                )
-            }
+            onSuccess = ::onLoadTvShowCastSuccess,
+            onError = ::onLoadTvShowCastError
+        )
+    }
+    
+    private fun onLoadTvShowCastSuccess(castList: List<com.paris_2.domain.media.entity.Cast>) {
+        updateState(
+            screenState.value.copy(
+                cast = castList.toListOfCastUi(),
+                isLoading = false,
+                errorMessage = null
+            )
+        )
+    }
+    
+    private fun onLoadTvShowCastError(error: String) {
+        updateState(
+            screenState.value.copy(
+                isLoading = false,
+                errorMessage = error
+            )
         )
     }
 }

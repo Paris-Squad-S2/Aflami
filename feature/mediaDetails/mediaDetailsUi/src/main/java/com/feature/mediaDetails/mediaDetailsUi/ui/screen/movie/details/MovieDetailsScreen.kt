@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalSharedTransitionApi::class)
+
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import androidx.activity.compose.LocalActivity
@@ -76,7 +78,6 @@ fun MovieDetailsScreen(
     )
 }
 
-@OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
@@ -111,6 +112,7 @@ fun MovieDetailsScreenContent(
             }
         )
     }
+
     if (state.showAddToListDialog) {
         AddToListDialog(
             lists = state.availableLists,
@@ -218,6 +220,7 @@ fun MovieDetailsScreenContent(
                             }
                         }
                     }
+
                     LazyColumn(
                         state = scrollState,
                         modifier = Modifier
