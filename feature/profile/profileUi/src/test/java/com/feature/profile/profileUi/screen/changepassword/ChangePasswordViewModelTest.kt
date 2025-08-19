@@ -1,10 +1,8 @@
 package com.feature.profile.profileUi.screen.changepassword
 
 import com.paris_2.domain.user.usecase.GetForgetPasswordUrlUseCase
-import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import io.mockk.verify
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
