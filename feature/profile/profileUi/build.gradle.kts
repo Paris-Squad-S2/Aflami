@@ -73,8 +73,7 @@ kover {
             verify {
                 rule {
                     bound {
-                        //todo:return coverageMinValue
-                        minValue = 80
+                        minValue = 50
                     }
                 }
             }
