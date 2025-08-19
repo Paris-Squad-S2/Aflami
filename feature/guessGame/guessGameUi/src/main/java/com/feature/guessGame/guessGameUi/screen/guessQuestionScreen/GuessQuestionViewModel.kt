@@ -150,8 +150,14 @@ class GuessQuestionViewModel @Inject constructor(
         tryToExecute(
             execute = { handleHint(session, currentQuestion) },
             onSuccess = { result -> handleHintResult(result) },
-            onError = { updateState(screenState.value.copy(error = it, isLoading = false)) }
-        )
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        showNotEnoughPointsDialog = true,
+                        isLoading = false
+                    )
+                )
+            })
     }
 
 

@@ -187,8 +187,8 @@ class GuessByImageViewModel @Inject constructor(
         tryToExecute(
             execute = { handleHintUse(session, currentQuestion) },
             onSuccess = { handleHintResult(it) },
-            onError = { error ->
-                updateState(screenState.value.copy(error = error, isLoading = false))
+            onError = {
+                updateState(screenState.value.copy(showNotEnoughPointsDialog = true, isLoading = false))
             }
         )
     }
