@@ -25,11 +25,34 @@ class ProfileViewModel @Inject constructor(
 
 
     init {
+        getTheme()
         checkUserLoggedIn()
         getUserName()
         getRestriction()
         getUserPoints()
         getLanguage()
+    }
+
+    private fun getTheme() {
+        tryToCollect(
+            flow = settingsUseCase.isDarkTheme(),
+            onEach = { isDark ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            theme = if (isDark) Appearance.DARK else Appearance.LIGHT
+                        )
+                    )
+                )
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     private fun getLanguage() {
