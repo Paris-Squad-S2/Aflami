@@ -25,13 +25,19 @@ class ResultViewModel @Inject constructor(
     private val args = savedStateHandle.toRoute<Destinations.FinishGameScreen>()
     private val gameLevel = args.gameLevel
 
-        init {
-            viewModelScope.launch {
-                getAccountIdUseCase.invoke()?.let { userId ->
-                    updatePointsUseCase.invoke(userId, args.totalGamePoints)
-                }
+    init {
+        viewModelScope.launch {
+            val userId = try {
+                getAccountIdUseCase.invoke()
+            } catch (_: Exception) {
+                null
+            }
+
+            if (userId != null) {
+                updatePointsUseCase.invoke(userId, args.totalGamePoints)
             }
         }
+    }
 
 
 
