@@ -32,7 +32,15 @@ class GuessQuestionViewModel @Inject constructor(
     private val getUserPointUseCase: GetUserPointUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
     private val useHintUseCase: UseHintUseCase,
-) : BaseViewModel<GuessQuestionUiState>(GuessQuestionUiState()), GuessQuestionInteractionListener {
+) : BaseViewModel<GuessQuestionUiState>(
+    GuessQuestionUiState(
+        totalQuestions = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().totalQuestions,
+        timePerQuestion = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().timePerQuestion,
+        pointsPerQuestion = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().pointsPerQuestion,
+        gameTitle = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().questionType.name,
+        session = GameSessionUi(level = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().gameLevel.name)
+    )
+), GuessQuestionInteractionListener {
 
     private val args = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>()
     private val questionType = args.questionType
