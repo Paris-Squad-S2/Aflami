@@ -115,7 +115,7 @@ class ResultViewModelTest {
                     assert(d.timePerQuestion == settings.timePerQuestionSec)
                     assert(d.pointsPerQuestion == settings.pointsPerQuestion)
                 },
-                null
+                any()
             )
         }
     }
@@ -152,7 +152,7 @@ class ResultViewModelTest {
                     assert(d.pointsPerQuestion == settings.pointsPerQuestion)
                     assert(d.gameLevel == UiGameLevel.EASY)
                 },
-                null
+                any(),
             )
         }
     }

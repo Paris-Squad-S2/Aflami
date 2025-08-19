@@ -3,6 +3,7 @@ package com.feature.profile.profileUi.screen
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.coEvery
@@ -30,6 +31,7 @@ class ProfileViewModelTest {
     private val authenticationFeatureAPI = mockk<AuthenticationFeatureAPI>()
     private val deleteSessionIdUseCase = mockk<DeleteSessionIdUseCase>()
     private val getUserPointsUseCase = mockk<GetUserPointUseCase>()
+    private val getAccountIdUseCase = mockk<GetAccountIdUseCase>()
 
     private val testDispatcher = StandardTestDispatcher()
 
@@ -39,19 +41,20 @@ class ProfileViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        coEvery { settingsUseCase.isDarkTheme() } returns kotlinx.coroutines.flow.flowOf(false)
-        coEvery { settingsUseCase.getLanguage() } returns kotlinx.coroutines.flow.flowOf("en")
+        coEvery { settingsUseCase.isDarkTheme() } returns flowOf(false)
+        coEvery { settingsUseCase.getLanguage() } returns flowOf("en")
         every { settingsUseCase.getUserName() } returns "Test User"
         coEvery { settingsUseCase.getRestriction() } returns ContentRestriction.Off.name
         every { isLoggedInUseCase.invoke() } returns true
-        coEvery { getUserPointsUseCase() } returns kotlinx.coroutines.flow.flowOf(100)
+        coEvery { getUserPointsUseCase(any()) } returns flowOf(100)
 
         viewModel = ProfileViewModel(
             settingsUseCase = settingsUseCase,
             isLoggedInUseCase = isLoggedInUseCase,
             authenticationFeatureAPI = authenticationFeatureAPI,
             deleteSessionIdUseCase = deleteSessionIdUseCase,
-            getUserPointsUseCase = getUserPointsUseCase
+            getUserPointsUseCase = getUserPointsUseCase,
+            getAccountIdUseCase = getAccountIdUseCase
         )
     }
 
