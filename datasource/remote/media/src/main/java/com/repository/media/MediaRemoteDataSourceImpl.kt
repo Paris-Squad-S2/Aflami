@@ -27,6 +27,7 @@ class MediaRemoteDataSourceImpl @Inject constructor(
     override suspend fun getTopRatedTvShows(language: String): TvListDto = apiService.getTopRatedTv(language)
 
     override suspend fun getRatedMovies(accountId: Int,language: String): RatedMoviesDto = apiService.getRatedMovies(accountId, language)
+
     override suspend fun getRatedTvShows(accountId: Int,language: String): RatedTvShowDtoo = apiService.getRatedTvShows(accountId, language)
 
     override suspend fun getMoviesByCategory(genreId: Int, page: Int, language: String): MovieByCategoryDto = apiService.getMoviesByCategory(genreId, language, page)

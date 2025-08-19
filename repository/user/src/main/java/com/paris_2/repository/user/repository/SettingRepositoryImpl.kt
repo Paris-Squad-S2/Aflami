@@ -17,12 +17,9 @@ class SettingRepositoryImpl(
     override suspend fun setLanguage(language: String) =
         settingLocalDataSource.setLanguage(language = language)
 
-
     override suspend fun setOnboardingCompleted() = settingLocalDataSource.setOnboardingCompleted()
 
-
     override suspend fun isOnboardingCompleted() = settingLocalDataSource.isOnboardingCompleted()
-
 
     override suspend fun setTheme(isDarkTheme: Boolean) =
         settingLocalDataSource.setTheme(isDarkTheme)

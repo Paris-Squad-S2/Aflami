@@ -10,7 +10,7 @@ data class RatedMoviesDto(
     @SerialName("results")
     val results: List<MovieResult>,
     @SerialName("total_pages")
-    val total_pages: Int,
+    val totalPages: Int,
     @SerialName("total_results")
-    val total_results: Int
+    val totalResults: Int
 )

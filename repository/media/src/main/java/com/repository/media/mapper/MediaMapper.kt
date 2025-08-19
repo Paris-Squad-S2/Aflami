@@ -118,42 +118,42 @@ fun MovieResult.toDomain(type: MediaType): Media? {
 }
 
 fun TvShowResult.toDomain(type: MediaType): Media? {
-    val parsedDate = runCatching { LocalDate.parse(first_air_date) }.getOrNull() ?: return null
+    val parsedDate = runCatching { LocalDate.parse(firstAirDate) }.getOrNull() ?: return null
     return Media(
         id = id,
-        imageUri = poster_path.toImageUrl().orEmpty(),
+        imageUri = posterPath.toImageUrl().orEmpty(),
         title = name,
         type = type,
-        categories = genre_ids.intListToCategoryList(),
+        categories = genreIds.intListToCategoryList(),
         yearOfRelease = parsedDate,
-        rating = vote_average
+        rating = voteAverage
     )
 }
 
 
 fun ResultDto.toDomain(): Media? {
-    val parsedDate = runCatching { release_date?.let { LocalDate.parse(it) } }.getOrNull() ?: return null
+    val parsedDate = runCatching { releaseDate?.let { LocalDate.parse(it) } }.getOrNull() ?: return null
     return Media(
         id = id ?: return null,
-        imageUri = poster_path.toImageUrl().orEmpty(),
+        imageUri = posterPath.toImageUrl().orEmpty(),
         title = title.orEmpty(),
         type = MediaType.Movie,
-        categories = genre_ids.intListToCategoryList(),
+        categories = genreIds.intListToCategoryList(),
         yearOfRelease = parsedDate,
-        rating = vote_average
+        rating = voteAverage
     )
 }
 
 fun TvResultDto.toDomain(): Media? {
-    val parsedDate = runCatching { LocalDate.parse(first_air_date) }.getOrNull() ?: return null
+    val parsedDate = runCatching { LocalDate.parse(firstAirDate) }.getOrNull() ?: return null
     return Media(
         id = id,
-        imageUri = poster_path.toImageUrl().orEmpty(),
+        imageUri = posterPath.toImageUrl().orEmpty(),
         title = name,
         type = MediaType.TvShow,
-        categories = genre_ids.intListToCategoryList(),
+        categories = genreIds.intListToCategoryList(),
         yearOfRelease = parsedDate,
-        rating = vote_average
+        rating = voteAverage
     )
 }
 
