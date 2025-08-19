@@ -2,6 +2,7 @@ package com.feature.guessGame.guessGameUi.screen.resultScreen
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.NavOptions
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.Destinations
@@ -26,18 +27,17 @@ class ResultViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val userId = runCatching { getAccountIdUseCase() }.getOrNull()
-            userId?.let { id ->
-                updatePointsUseCase(id, args.totalGamePoints)
-            }
+            val userId = getAccountIdUseCase() ?: -1
+            updatePointsUseCase(userId, args.totalGamePoints)
         }
     }
 
-    override fun onExitClicked() {
+
+    override fun onExitClicked() { //TODO: remove it
         navigate(Destinations.Screen)
     }
 
-    override fun onBackToMenuClicked() {
+    override fun onBackToMenuClicked() { //TODO: remove it
         navigate(Destinations.Screen)
     }
 
@@ -65,6 +65,11 @@ class ResultViewModel @Inject constructor(
                 )
             }
         }
-        navigate(destination)
+        navigate(
+            destination,
+            NavOptions.Builder()
+                .setPopUpTo(0, true)
+                .build()
+        )
     }
 }

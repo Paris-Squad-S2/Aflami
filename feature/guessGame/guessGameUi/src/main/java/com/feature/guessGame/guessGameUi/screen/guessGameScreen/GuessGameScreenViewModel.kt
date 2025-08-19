@@ -15,27 +15,49 @@ import javax.inject.Inject
 @HiltViewModel
 class GuessGameScreenViewModel @Inject constructor(
     private val getUserPointUseCase: GetUserPointUseCase,
-    private val getAccountIdUseCase: GetAccountIdUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase
 ) :
     GuessGameScreenInteractionListener,
     BaseViewModel<GuessGameScreenUiState>(GuessGameScreenUiState()) {
 
 
     init {
-        loadUserPoints()
+        getAccountId()
+    }
+
+    private fun getAccountId() {
+        tryToExecute(
+            execute = { getAccountIdUseCase() },
+            onSuccess = { accountId ->
+                updateState(
+                    screenState.value.copy(accountId = accountId ?: -1)
+                )
+                loadUserPoints()
+            },
+            onError = { error ->
+                updateState(
+                    screenState.value.copy(errorMessage = error)
+                )
+            }
+        )
     }
 
     private fun loadUserPoints() {
         tryToCollect(
-            flow = getUserPointUseCase(),
+            flow = getUserPointUseCase(screenState.value.accountId),
             onEach = { points ->
-                updateState(screenState.value.copy(userPoints = points))
+                updateState(
+                    screenState.value.copy(userPoints = points)
+                )
             },
             onError = { error ->
-                updateState(screenState.value.copy(errorMessage = error))
+                updateState(
+                    screenState.value.copy(errorMessage = error)
+                )
             }
         )
     }
+
 
     override fun onGamePlayClicked(gameId: String) {
         updateState(
