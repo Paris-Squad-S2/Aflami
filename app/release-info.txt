@@ -1,2 +1,2 @@
-versionName=1.0.14
+versionName=1.0.15
 - Enhance the media details feature
