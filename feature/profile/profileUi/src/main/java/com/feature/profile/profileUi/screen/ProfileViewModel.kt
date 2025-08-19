@@ -7,6 +7,7 @@ import com.feature.profile.profileUi.navigation.Destination
 import com.feature.profile.profileUi.navigation.navigateDestination
 import com.paris_2.domain.game.usecases.GetUserPointUseCase
 import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,6 +20,7 @@ class ProfileViewModel @Inject constructor(
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase,
     private val getUserPointsUseCase: GetUserPointUseCase,
 ) :
     BaseViewModel<ProfileScreenUiState>(ProfileScreenUiState()), InterActionListener {
@@ -29,8 +31,31 @@ class ProfileViewModel @Inject constructor(
         checkUserLoggedIn()
         getUserName()
         getRestriction()
-        getUserPoints()
+        getAccountId()
         getLanguage()
+    }
+
+    private fun getAccountId() {
+        tryToExecute(
+            execute = getAccountIdUseCase::invoke,
+            onSuccess = { accountId ->
+                updateState(
+                    screenState.value.copy(
+                        profile = screenState.value.profile.copy(
+                            accountId = accountId ?: -1
+                        )
+                    )
+                )
+                getUserPoints()
+            },
+            onError = { errorMessage ->
+                updateState(
+                    screenState.value.copy(
+                        errorMessage = errorMessage
+                    )
+                )
+            }
+        )
     }
 
     private fun getTheme() {
@@ -101,7 +126,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getUserPoints() {
         tryToCollect(
-            flow = getUserPointsUseCase(),
+            flow = getUserPointsUseCase(screenState.value.profile.accountId),
             onEach = { points ->
                 updateState(
                     screenState.value.copy(

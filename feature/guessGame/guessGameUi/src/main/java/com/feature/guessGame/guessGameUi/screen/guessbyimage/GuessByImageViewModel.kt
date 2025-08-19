@@ -1,6 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavOptions
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.HintUsageResult
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
@@ -112,7 +113,10 @@ class GuessByImageViewModel @Inject constructor(
                         totalGamePoints = updatedSession.score,
                         gameType = questionType,
                         gameLevel = level,
-                    )
+                    ),
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .build()
                 )
             } else {
                 val newTime = when (level) {
@@ -230,7 +234,7 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     private suspend fun handleHintUse(session: GameSession, question: Question?): HintUsageResult {
-        val userId = getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
+        val userId = getAccountIdUseCase() ?: -1
         val hintUsed = useHintUseCase(session, userId)
 
         return if (hintUsed) {

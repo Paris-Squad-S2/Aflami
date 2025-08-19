@@ -1,6 +1,7 @@
 package com.feature.guessGame.guessGameUi.screen.guessQuestionScreen
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavOptions
 import androidx.navigation.toRoute
 import com.feature.guessGame.guessGameUi.HintUsageResult
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
@@ -31,9 +32,7 @@ class GuessQuestionViewModel @Inject constructor(
     private val getUserPointUseCase: GetUserPointUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
     private val useHintUseCase: UseHintUseCase,
-) : BaseViewModel<GuessQuestionUiState>(
-    GuessQuestionUiState()
-), GuessQuestionInteractionListener {
+) : BaseViewModel<GuessQuestionUiState>(GuessQuestionUiState()), GuessQuestionInteractionListener {
 
     private val args = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>()
     private val questionType = args.questionType
@@ -129,7 +128,10 @@ class GuessQuestionViewModel @Inject constructor(
                     totalGamePoints = updatedSession.score,
                     gameType = questionType,
                     gameLevel = args.gameLevel
-                )
+                ),
+                NavOptions.Builder()
+                    .setPopUpTo(0, true)
+                    .build()
             )
         } else {
             loadQuestion(updatedSession)
@@ -214,7 +216,7 @@ class GuessQuestionViewModel @Inject constructor(
     private suspend fun handleHint(session: GameSession, question: Question): HintUsageResult {
         val userId = getAccountIdUseCase() ?: -1
 
-        val points = getUserPointUseCase().first { it >= 0 }
+        val points = getUserPointUseCase(userId).first { it >= 0 }
 
         if (points < HINT_COST) return HintUsageResult.NotEnoughPoints
 

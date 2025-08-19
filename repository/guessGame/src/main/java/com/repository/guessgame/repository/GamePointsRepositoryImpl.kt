@@ -22,14 +22,8 @@ class GamePointsRepositoryImpl(
 
     override fun getUserGamePoints(userId: Int): Flow<Int> {
         return gamePointsLocalDataSource.getUserGamePoints(userId)
-            .catch { 
-                throw FailedException("Failed to get user game points") 
-            }
-            .map { entity ->
-                safeCall(FailedException("Failed to get user game points")) {
-                    entity?.toDomain()?.gamePoints ?: 0
-                }
-            }
+            .map { entity -> entity?.toDomain()?.gamePoints ?: 0 }
+            .catch { throw FailedException("Failed to get user game points") }
     }
 
     private suspend fun <T> safeCall(exception: GameException, call: suspend () -> T): T {

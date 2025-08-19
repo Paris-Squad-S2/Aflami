@@ -20,6 +20,7 @@ data class ProfileUIState(
     val contentRestriction: ContentRestriction = ContentRestriction.Strict,
     val isContentRestrictionDialogOpen: Boolean = false,
     val isLogoutDialogOpen: Boolean = false,
+    val accountId: Int = -1,
 )
 
 enum class Appearance(val display: Int) {
