@@ -34,6 +34,7 @@ import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.GuessCard
 import com.paris_2.aflami.designsystem.components.GuessCardImageState
+import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 
@@ -67,78 +68,84 @@ fun GuessByImageContent(
         )
     }
 
-    if (state.isLoading) {
-        PageLoadingPlaceHolder(
-            modifier = Modifier.fillMaxSize()
-        )
-    } else {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-        ) {
-            Header(
-                head = state.screenTitle,
-                onCanceled = { activity?.finish() },
-                onTimeFinished = listener::onTimeFinished,
-                time = state.time,
-                currentQuestion = state.currentQuestion
+    when {
+        state.isLoading -> {
+            PageLoadingPlaceHolder(
+                modifier = Modifier.fillMaxSize()
             )
+        }
 
+        state.error!= null -> {
+            NetworkError(
+                modifier = Modifier.fillMaxSize(),
+                onRetry = listener::onRetry
+            )
+        }
+
+        else -> {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .statusBarsPadding()
             ) {
-                QuestionIndicator(
-                    numberOfQuestions = state.questionUiState.size,
-                    step = state.currentQuestion,
-                    modifier = Modifier.padding(vertical = 16.dp)
+                Header(
+                    head = state.screenTitle,
+                    onCanceled = { activity?.finish() },
+                    onTimeFinished = listener::onTimeFinished,
+                    time = state.time,
+                    currentQuestion = state.currentQuestion
                 )
 
-                val currentQuestion = state.questionUiState.getOrNull(state.currentQuestion)
-
-
-                QuestionImage(
-                    onHintUsed = { listener.onHintUsed() },
-                    imageUrl = currentQuestion?.image.orEmpty(),
-                    uiState = currentQuestion ?: QuestionUiState(),
-                )
-
-
-                Spacer(Modifier.height(16.dp))
-
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    currentQuestion?.answers?.forEach { answer ->
-                        val isSelected = answer == currentQuestion.selectedAnswer
-                        val isCorrect = answer == currentQuestion.correctAnswer
-
-                        OptionItem(
-                            text = answer,
-                            selected = isSelected,
-                            isCorrect = currentQuestion.selectedAnswer != null && isCorrect,
-                            onClick = { listener.onAnswerSelected(answer) }
-                        )
-                    }
-                }
-
-                Spacer(Modifier.weight(1f))
-
-                CustomButton(
-                    onClick = listener::onNextClicked,
-                    text = com.feature.guessGame.guessGameUi.R.string.next,
-                    type = ButtonType.Primary,
-                    state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                Column(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .navigationBarsPadding()
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    QuestionIndicator(
+                        numberOfQuestions = state.questionUiState.size,
+                        step = state.currentQuestion,
+                        modifier = Modifier.padding(vertical = 16.dp)
+                    )
 
-                )
+                    val currentQuestion = state.questionUiState.getOrNull(state.currentQuestion)
+
+                    QuestionImage(
+                        onHintUsed = { listener.onHintUsed() },
+                        imageUrl = currentQuestion?.image.orEmpty(),
+                        uiState = currentQuestion ?: QuestionUiState(),
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        currentQuestion?.answers?.forEach { answer ->
+                            val isSelected = answer == currentQuestion.selectedAnswer
+                            val isCorrect = answer == currentQuestion.correctAnswer
+
+                            OptionItem(
+                                text = answer,
+                                selected = isSelected,
+                                isCorrect = currentQuestion.selectedAnswer != null && isCorrect,
+                                onClick = { listener.onAnswerSelected(answer) }
+                            )
+                        }
+                    }
+
+                    Spacer(Modifier.weight(1f))
+
+                    CustomButton(
+                        onClick = listener::onNextClicked,
+                        text = com.feature.guessGame.guessGameUi.R.string.next,
+                        type = ButtonType.Primary,
+                        state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                    )
+                }
             }
         }
-
-
     }
 }
 

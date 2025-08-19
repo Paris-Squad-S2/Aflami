@@ -32,15 +32,7 @@ class GuessQuestionViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
     private val useHintUseCase: UseHintUseCase,
 ) : BaseViewModel<GuessQuestionUiState>(
-    GuessQuestionUiState(
-        totalQuestions = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().totalQuestions,
-        timePerQuestion = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().timePerQuestion,
-        pointsPerQuestion = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().pointsPerQuestion,
-        gameTitle = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().questionType.name,
-        session = GameSessionUi(
-            level = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>().gameLevel.name
-        )
-    )
+    GuessQuestionUiState()
 ), GuessQuestionInteractionListener {
 
     private val args = savedStateHandle.toRoute<Destinations.GuessQuestionScreen>()
@@ -60,7 +52,7 @@ class GuessQuestionViewModel @Inject constructor(
                 val session = when (questionType) {
                     QuestionType.RELEASE_YEAR -> whenIsReleasedSessionUseCase.startNewSession(level.toUiLevel())
                     QuestionType.GENRE -> whichGenreSessionUseCase.startNewSession(level.toUiLevel())
-                    QuestionType.ACTOR, QuestionType.POSTER -> TODO()
+                    else -> error("Session type $questionType is not supported yet")
                 }
                 currentSession = session
                 gameStartTimeMillis = System.currentTimeMillis()
@@ -71,7 +63,6 @@ class GuessQuestionViewModel @Inject constructor(
                 loadQuestion(session)
             },
             onError = { error ->
-                Log.e("GuessQuestionVM", "Error generating session: $error")
                 updateState(screenState.value.copy(error = error, isLoading = false))
             }
         )
@@ -117,7 +108,6 @@ class GuessQuestionViewModel @Inject constructor(
 
     override fun onNextClicked() {
         val session = currentSession ?: run {
-            Log.e("GuessQuestionVM", "No session found when onNextClicked called")
             return
         }
 
@@ -149,12 +139,10 @@ class GuessQuestionViewModel @Inject constructor(
 
     override fun onHintUsed() {
         val session = currentSession ?: run {
-            Log.e(TAG, "No active session when hint requested")
             return
         }
 
         val currentQuestion = session.getCurrentQuestion() ?: run {
-            Log.e(TAG, "No current question when hint requested")
             return
         }
 
@@ -177,6 +165,30 @@ class GuessQuestionViewModel @Inject constructor(
     override fun onCancelClick() {
         navigateUp()
     }
+
+    override fun onRetry() {
+        val level = args.gameLevel
+        currentSession = null
+        gameStartTimeMillis = 0L
+
+        updateState(
+            screenState.value.copy(
+                isLoading = true,
+                error = null,
+                currentStep = 0,
+                questionUiState = emptyList(),
+                answers = emptyList(),
+                remainingAnswers = emptyList(),
+                selectedAnswer = null,
+                correctAnswer = null,
+                hintUsed = false,
+                session = screenState.value.session?.copy(score = 0)
+            )
+        )
+
+        generateSession(level)
+    }
+
 
     private fun calculateTotalGameTime(): Int =
         if (gameStartTimeMillis > 0) ((System.currentTimeMillis() - gameStartTimeMillis) / 1000).toInt() else 0
@@ -201,9 +213,17 @@ class GuessQuestionViewModel @Inject constructor(
 
         if (points < HINT_COST) return HintUsageResult.NotEnoughPoints
 
-        Log.e("handleHint", "points: $points, HINT_COST: $HINT_COST, comparison: ${points < HINT_COST}")
+        Log.e(
+            "handleHint",
+            "points: $points, HINT_COST: $HINT_COST, comparison: ${points < HINT_COST}"
+        )
 
-        val hintResult = removeAnswerHintUseCase(gameSession = session, usedHint = question.usedHint,  currentPoints = points, requiredPointsForHint = HINT_COST)
+        val hintResult = removeAnswerHintUseCase(
+            gameSession = session,
+            usedHint = question.usedHint,
+            currentPoints = points,
+            requiredPointsForHint = HINT_COST
+        )
 
         return when (hintResult) {
             is RemoveAnswerHintUseCase.UseHintResult.Success -> {
@@ -241,12 +261,10 @@ class GuessQuestionViewModel @Inject constructor(
                         hintUsed = true
                     )
                 )
-                Log.d(TAG, "Hint applied successfully. $HINT_COST points deducted.")
             }
 
             HintUsageResult.NotEnoughPoints -> {
                 updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
-                Log.d(TAG, "Not enough points for hint. Required: $HINT_COST")
             }
 
             HintUsageResult.AlreadyUsed -> Log.d(TAG, "Hint already used")

@@ -220,6 +220,17 @@ class GuessByImageViewModel @Inject constructor(
         navigateUp()
     }
 
+    override fun onRetry() {
+        updateState(
+            screenState.value.copy(
+                isLoading = true,
+                error = null
+            )
+        )
+        generateSession(level)
+
+    }
+
 
     private fun canUseHint(question: Question): Boolean {
         return when {

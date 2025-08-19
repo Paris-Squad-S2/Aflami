@@ -38,6 +38,7 @@ import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
 import com.paris_2.aflami.designsystem.components.GuessCard
+import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
 
@@ -66,104 +67,111 @@ fun GuessQuestionContent(
     val currentQuestionIndex = state.currentStep
     val activity = LocalActivity.current
 
-
     if (state.showNotEnoughPointsDialog) {
         NotEnoughPointsDialog(
             onDismiss = listener::onDismissNotEnoughPointsDialog,
             onConfirm = listener::onDismissNotEnoughPointsDialog
         )
     }
-    if (state.isLoading) {
-        PageLoadingPlaceHolder(
-            modifier = Modifier.fillMaxSize()
-        )
-    } else {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .statusBarsPadding()
-        ) {
-            AppTopBar(
-                title = stringResource(id = questionType.getTitleResId()),
-                leadingIcons = listOf(
-                    iconItemWithDefaults(
-                        icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
-                        onClick = { activity?.finish() }
-                    )
-                ),
-                trailingContent = {
-                    key(currentQuestionIndex) {
-                        GameTimer(
-                            totalSeconds = state.timePerQuestion,
-                            onFinished = listener::onTimeFinished
-                        )
-                    }
-                }
-            )
 
+    when {
+        state.isLoading -> {
+            PageLoadingPlaceHolder(
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        state.error != null -> {
+            NetworkError(
+                modifier = Modifier.fillMaxSize(),
+                onRetry = listener::onRetry
+            )
+        }
+
+        else -> {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 16.dp, vertical = 8.dp)
+                    .statusBarsPadding()
             ) {
-                QuestionIndicator(
-                    numberOfQuestions = state.totalQuestions,
-                    step = state.currentStep
-                )
-
-                Spacer(Modifier.height(16.dp))
-
-                GuessCard(
-                    textNoImage = state.questionText,
-                    clickable = true,
-                    showHint = !state.hintUsed,
-                    onClick =  listener::onHintUsed
-                )
-
-                Spacer(Modifier.height(16.dp))
-
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-
-                    val currentOptions = state.remainingAnswers
-
-
-                    currentOptions.forEach { answer ->
-                        val displayText =
-                            answer.genreText?.let { stringResource(id = it) } ?: answer.text
-
-                        AnimatedVisibility(
-                            visible = true,
-                            enter = fadeIn(),
-                            exit = fadeOut()
-                        ) {
-                            OptionItem(
-                                text = displayText,
-                                selected = state.selectedAnswer == answer.text,
-                                isCorrect = state.selectedAnswer != null && answer.text == state.correctAnswer,
-                                onClick = {
-                                    if (state.selectedAnswer == null) {
-                                        listener.onAnswerSelected(answer.text)
-                                    }
-                                }
+                AppTopBar(
+                    title = stringResource(id = questionType.getTitleResId()),
+                    leadingIcons = listOf(
+                        iconItemWithDefaults(
+                            icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
+                            onClick = { activity?.finish() }
+                        )
+                    ),
+                    trailingContent = {
+                        key(currentQuestionIndex) {
+                            GameTimer(
+                                totalSeconds = state.timePerQuestion,
+                                onFinished = listener::onTimeFinished
                             )
                         }
                     }
-
-                }
-
-                Spacer(Modifier.weight(1f))
-
-                CustomButton(
-                    onClick = listener::onNextClicked,
-                    text = R.string.next,
-                    type = ButtonType.Primary,
-                    state = if (state.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .navigationBarsPadding()
-
                 )
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .verticalScroll(rememberScrollState())
+                        .padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    QuestionIndicator(
+                        numberOfQuestions = state.totalQuestions,
+                        step = state.currentStep
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+
+                    GuessCard(
+                        textNoImage = state.questionText,
+                        clickable = true,
+                        showHint = !state.hintUsed,
+                        onClick = listener::onHintUsed
+                    )
+
+                    Spacer(Modifier.height(16.dp))
+
+                    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        val currentOptions = state.remainingAnswers
+
+                        currentOptions.forEach { answer ->
+                            val displayText =
+                                answer.genreText?.let { stringResource(id = it) } ?: answer.text
+
+                            AnimatedVisibility(
+                                visible = true,
+                                enter = fadeIn(),
+                                exit = fadeOut()
+                            ) {
+                                OptionItem(
+                                    text = displayText,
+                                    selected = state.selectedAnswer == answer.text,
+                                    isCorrect = state.selectedAnswer != null && answer.text == state.correctAnswer,
+                                    onClick = {
+                                        if (state.selectedAnswer == null) {
+                                            listener.onAnswerSelected(answer.text)
+                                        }
+                                    }
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(Modifier.weight(1f))
+
+                    CustomButton(
+                        onClick = listener::onNextClicked,
+                        text = R.string.next,
+                        type = ButtonType.Primary,
+                        state = if (state.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                    )
+                }
             }
         }
     }
@@ -196,6 +204,7 @@ fun GuessReleaseYearContentPreview() {
                 override fun onTimeFinished() {}
                 override fun onDismissNotEnoughPointsDialog() {}
                 override fun onCancelClick() {}
+                override fun onRetry() {}
                 override fun onHintUsed() {}
                 override fun onAnswerSelected(answer: String) {}
                 override fun onNextClicked() {}
