@@ -27,13 +27,13 @@
 
 ## 📽️ Gifs 
 
-| Dark Mode ( click on gif for high quality video ) |
-|-----------|
-| <div align="center"> <a href="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view"> <img src="https://github.com/user-attachments/assets/f6f5fb11-c63e-4162-b507-96c5d626c62c" alt="Watch the video" width="800" height="1200"/> </a> </div> |
+| Dark Mode ( click on gif for high quality video )                                                                                                                                                      |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <div align="center"> <a href="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view"> <img src="assets/night_theme.gif" alt="Watch the video" width="800" height="1200"/> </a> </div> |
 
-| Light Mode ( click on gif for high quality video ) |
-|------------|
-| <div align="center"> <a href="https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view"> <img src="https://github.com/user-attachments/assets/2a329e29-4068-48d3-836c-dab935a9f4d4" alt="Watch the video" width="800" height="1200"/> </a> </div> |
+| Light Mode ( click on gif for high quality video )                                                                                                                                                     |
+|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| <div align="center"> <a href="https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view"> <img src="assets/light_theme.gif" alt="Watch the video" width="800" height="1200"/> </a> </div> |
 
 
 ## 🚀 Quick Start Guide
