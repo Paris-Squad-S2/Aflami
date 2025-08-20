@@ -49,7 +49,7 @@ class TopRatingMoviesViewModelTest {
             11,
             "img/b",
             "Top 2",
-            MediaTypeUi.TVSHOW,
+            MediaTypeUi.TV_SHOW,
             listOf(CATEGORY_COMEDY),
             LocalDate(2021, 7, 8),
             8.4
@@ -65,7 +65,7 @@ class TopRatingMoviesViewModelTest {
         categories = listOf(Category.Action),
         type = when (type) {
             MediaTypeUi.MOVIE -> DomainMediaType.Movie
-            MediaTypeUi.TVSHOW -> DomainMediaType.TvShow
+            MediaTypeUi.TV_SHOW -> DomainMediaType.TvShow
         }
     )
 

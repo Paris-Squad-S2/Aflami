@@ -37,13 +37,13 @@ data class MediaUiState(
     val title: String = "",
     val type: MediaTypeUi = MediaTypeUi.MOVIE,
     val categories: List<Int> = emptyList(),
-    val yearOfRelease: LocalDate = LocalDate(2023, 1, 1),
-    val rating: Double? = 0.0,
+    val yearOfRelease: LocalDate = LocalDate(1970, 1, 1),
+    val rating: Double? = null
 )
 
 
 
 enum class MediaTypeUi(val mediaID: Int) {
-    TVSHOW(R.string.tv_show),
+    TV_SHOW(R.string.tv_show),
     MOVIE(R.string.movie)
 }

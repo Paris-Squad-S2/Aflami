@@ -1,9 +1,12 @@
 package com.feature.lists.listsUi.screens.listDetails
 
 import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import androidx.paging.filter
 import com.feature.lists.listsUi.common.BaseViewModel
 import com.feature.lists.listsUi.navigation.ListDestinations
 import com.feature.lists.listsUi.pagging.PagingSource
@@ -13,6 +16,8 @@ import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,6 +31,7 @@ class ListDetailsViewModel @Inject constructor(
 ) : BaseViewModel<ListDetailsScreenState>(ListDetailsScreenState()),
     ListDetailsScreenInteractionListener {
     private val listId = savedStateHandle.toRoute<ListDestinations.ListDetails>().listId
+    private val removedIds = MutableStateFlow<Set<Int>>(emptySet())
 
     init {
         getRestriction()
@@ -39,7 +45,6 @@ class ListDetailsViewModel @Inject constructor(
             onError = ::onGetRestrictionError
         )
     }
-
     private fun onGetRestrictionSuccess(restriction: String) {
         updateState(
             screenState.value.copy(
@@ -90,11 +95,11 @@ class ListDetailsViewModel @Inject constructor(
             )
         })
     }
-
     private fun getListDetails(listId: String) {
         updateState(
             screenState.value.copy(
-                isLoading = true, errorMessage = null
+                isLoading = true,
+                errorMessage = null
             )
         )
 
@@ -102,7 +107,8 @@ class ListDetailsViewModel @Inject constructor(
             execute = {
                 Pager(
                     config = PagingConfig(
-                        pageSize = 20, enablePlaceholders = false
+                        pageSize = 20,
+                        enablePlaceholders = false
                     ),
                     pagingSourceFactory = {
                         PagingSource { page: Int ->
@@ -111,18 +117,21 @@ class ListDetailsViewModel @Inject constructor(
                         }
                     }
                 ).flow
+                    .combine(removedIds) { paging, removed ->
+                        paging.filter { media ->
+                            val keep = media.id !in removed
+                            keep
+                        }
+                    }
+                    .cachedIn(viewModelScope)
             },
-            onSuccess = { pagingFlow ->
-                tryToExecute(
-                    execute = {
-                        val listDetails = getListDetailsUseCase.invoke(1, listId)
-                        listDetails.name
-                    },
-                    onSuccess = { name ->
+            onSuccess = { filteredFlow ->
+                tryToExecuteFlow(
+                    flow = filteredFlow,
+                    onEachItem = { pagingData ->
                         updateState(
                             screenState.value.copy(
-                                listTitle = name,
-                                mediaItems = pagingFlow,
+                                mediaItems = kotlinx.coroutines.flow.flowOf(pagingData),
                                 isLoading = false,
                                 errorMessage = null
                             )
@@ -131,7 +140,25 @@ class ListDetailsViewModel @Inject constructor(
                     onError = { errorMessage ->
                         updateState(
                             screenState.value.copy(
-                                errorMessage = errorMessage, isLoading = false
+                                errorMessage = errorMessage,
+                                isLoading = false
+                            )
+                        )
+                    }
+                )
+
+                tryToExecute(
+                    execute = { getListDetailsUseCase.invoke(1, listId).name },
+                    onSuccess = { name ->
+                        updateState(
+                            screenState.value.copy(listTitle = name)
+                        )
+                    },
+                    onError = { errorMessage ->
+                        updateState(
+                            screenState.value.copy(
+                                errorMessage = errorMessage,
+                                isLoading = false
                             )
                         )
                     }
@@ -140,7 +167,8 @@ class ListDetailsViewModel @Inject constructor(
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
-                        errorMessage = errorMessage, isLoading = false
+                        errorMessage = errorMessage,
+                        isLoading = false
                     )
                 )
             }
@@ -162,13 +190,13 @@ class ListDetailsViewModel @Inject constructor(
             )
         })
     }
-
     private fun removeMovieFromList(listId: String, movieId: Int) {
         tryToExecute(execute = {
             val result = removeMovieFromListUseCase.invoke(listId, movieId)
             result
         }, onSuccess = {
             getListDetails(listId)
+
         }, onError = { errorMessage ->
             updateState(
                 screenState.value.copy(

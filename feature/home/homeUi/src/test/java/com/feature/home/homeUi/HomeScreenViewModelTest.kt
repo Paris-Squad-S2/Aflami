@@ -2,8 +2,8 @@ package com.feature.home.homeUi
 
 import com.feature.home.homeUi.mapper.toCategory
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
+import com.feature.home.homeUi.screen.home.MediaTypeUi.TV_SHOW
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
-import com.feature.home.homeUi.screen.home.MediaTypeUi.TVSHOW
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.home.components.SliderMedia
@@ -69,7 +69,7 @@ class HomeScreenViewModelTest {
             2,
             "img/2",
             "Popular 2",
-            TVSHOW,
+            TV_SHOW,
             listOf(R.string.category_comedy),
             LocalDate(2023, 1, 1),
             8.5
@@ -100,7 +100,7 @@ class HomeScreenViewModelTest {
             21,
             "img/u2",
             "Upcoming 2",
-            TVSHOW,
+            TV_SHOW,
             listOf(R.string.category_comedy),
             LocalDate(2024, 5, 1),
             7.9
@@ -111,7 +111,7 @@ class HomeScreenViewModelTest {
             200,
             "img/c1",
             "Continue 1",
-            TVSHOW,
+            TV_SHOW,
             listOf(R.string.category_drama),
             LocalDate(2023, 9, 9),
             5.0
@@ -151,7 +151,7 @@ class HomeScreenViewModelTest {
         categories = categories.map { it.toCategory() },
         type = when (type) {
             MOVIE -> DomainMediaType.Movie
-            TVSHOW -> DomainMediaType.TvShow
+            TV_SHOW -> DomainMediaType.TvShow
         }
     )
 
@@ -204,7 +204,7 @@ class HomeScreenViewModelTest {
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
             settingsUseCase
-            )
+        )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
     }
@@ -223,7 +223,7 @@ class HomeScreenViewModelTest {
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
             settingsUseCase
-            )
+        )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
     }
@@ -240,7 +240,8 @@ class HomeScreenViewModelTest {
                 )
             )
         )
-        coEvery { getWatchHistoryUseCase() } returns kotlinx.coroutines.flow.flowOf(fakeContinueWatchingList.map { it.toMedia() })
+        coEvery { getWatchHistoryUseCase() } returns flowOf(
+            fakeContinueWatchingList.map { it.toMedia() })
         viewModel.apply {
             this.javaClass.getDeclaredMethod("loadContinueWatchingMedia")
                 .apply { isAccessible = true }.invoke(this)
@@ -291,7 +292,7 @@ class HomeScreenViewModelTest {
         runTest {
             coEvery { settingsUseCase.getRestriction() } returns "Off"
             val movie = fakePopularList.first().copy(type = MOVIE)
-            val tv = fakePopularList.last().copy(type = TVSHOW)
+            val tv = fakePopularList.last().copy(type = TV_SHOW)
             viewModel.onMediaCardClick(movie)
             runCurrent()
             coVerify { mediaDetailsFeatureAPI.startMovieDetails(movie.id) }
