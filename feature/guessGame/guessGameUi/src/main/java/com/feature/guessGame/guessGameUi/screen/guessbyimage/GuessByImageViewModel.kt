@@ -1,8 +1,9 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.NavOptions
 import androidx.navigation.toRoute
+import com.feature.guessGame.guessGameUi.HintUsageResult
 import com.feature.guessGame.guessGameUi.common.BaseViewModel
 import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
@@ -54,8 +55,6 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     fun generateSession(gameLevel: UiGameLevel) {
-        Log.d("TAG", "generateSession:${questionType} ")
-        Log.d("TAG", "generateSession:${level} ")
 
         updateState(screenState.value.copy(isLoading = true))
 
@@ -68,7 +67,6 @@ class GuessByImageViewModel @Inject constructor(
                         guessMovieSessionUseCase.startNewSession(gameLevel.toUiLevel())
                 currentSession = session
                 startTimeMillis = System.currentTimeMillis()
-                Log.d("navTest", "generateSession done with ${session.questions.size} questions")
                 session
             },
             onSuccess = { session ->
@@ -81,7 +79,6 @@ class GuessByImageViewModel @Inject constructor(
                 loadQuestion(session)
             },
             onError = {
-                Log.e("navTest", "Error in generateSession $it")
                 updateState(
                     screenState.value.copy(
                         error = it, isLoading = false
@@ -100,19 +97,12 @@ class GuessByImageViewModel @Inject constructor(
                     questionUiState = session.questions.map { it.toUiModel() },
                 )
             )
-            val image = firstQuestion.content
-            Log.d("image", "loadQuestion: $image")
         }
     }
 
     override fun onNextClicked() {
         currentSession?.let { session ->
             val updatedSession = moveToNextQuestionUseCase(session)
-            Log.d(
-                "image",
-                "loadQuestion: ${updatedSession.questions.getOrNull(updatedSession.currentQuestionIndex)?.content}"
-            )
-
             if (updatedSession.isCompleted) {
                 val totalTimeSeconds =
                     ((System.currentTimeMillis() - startTimeMillis) / 1000).toInt()
@@ -123,7 +113,10 @@ class GuessByImageViewModel @Inject constructor(
                         totalGamePoints = updatedSession.score,
                         gameType = questionType,
                         gameLevel = level,
-                    )
+                    ),
+                    NavOptions.Builder()
+                        .setPopUpTo(0, true)
+                        .build()
                 )
             } else {
                 val newTime = when (level) {
@@ -143,7 +136,7 @@ class GuessByImageViewModel @Inject constructor(
                     )
                 )
             }
-        } ?: Log.e("navTest", "No session found when onNextClicked called")
+        }
     }
 
 
@@ -168,7 +161,7 @@ class GuessByImageViewModel @Inject constructor(
                     )
                 )
             }
-        } ?: Log.e("navTest", "No session found when onAnswerSelected called")
+        }
     }
 
     fun updateScore() {
@@ -177,7 +170,6 @@ class GuessByImageViewModel @Inject constructor(
             UiGameLevel.MEDIUM -> 10
             UiGameLevel.EASY -> 5
         }
-        Log.d("navTest", "updateScore: ${currentSession?.score}")
         currentSession?.let { session ->
             session.score += points
         }
@@ -190,16 +182,18 @@ class GuessByImageViewModel @Inject constructor(
     }
 
     override fun onHintUsed() {
-        val session = currentSession ?: return logError("No active session when hint requested")
+        val session = currentSession ?: return
         val currentQuestion = session.getCurrentQuestion()
-            ?: return logError("No current question when hint requested")
+
 
         if (!canUseHint(currentQuestion)) return
 
         tryToExecute(
             execute = { handleHintUse(session, currentQuestion) },
             onSuccess = { handleHintResult(it) },
-            onError = { error -> Log.e("GuessByImageVM", "Error using hint: $error") }
+            onError = {
+                updateState(screenState.value.copy(showNotEnoughPointsDialog = true, isLoading = false))
+            }
         )
     }
 
@@ -220,16 +214,24 @@ class GuessByImageViewModel @Inject constructor(
         navigateUp()
     }
 
+    override fun onRetry() {
+        updateState(
+            screenState.value.copy(
+                error = null,
+                isLoading = true
+            )
+        )
+        generateSession(level)
+    }
 
-    private fun canUseHint(question: Question): Boolean {
+
+    private fun canUseHint(question: Question?): Boolean {
         return when {
-            question.usedHint -> {
-                Log.d("GuessByImageVM", "Hint already used for this question")
+            question?.usedHint == true -> {
                 false
             }
 
-            question.selectedAnswer != null -> {
-                Log.d("GuessByImageVM", "Cannot use hint after answering")
+            question?.selectedAnswer != null -> {
                 false
             }
 
@@ -237,12 +239,12 @@ class GuessByImageViewModel @Inject constructor(
         }
     }
 
-    private suspend fun handleHintUse(session: GameSession, question: Question): HintUsageResult {
-        val userId = getAccountIdUseCase() ?: throw IllegalStateException("No user account found")
+    private suspend fun handleHintUse(session: GameSession, question: Question?): HintUsageResult {
+        val userId = getAccountIdUseCase() ?: -1
         val hintUsed = useHintUseCase(session, userId)
 
         return if (hintUsed) {
-            question.usedHint = true
+            question?.usedHint = true
             HintUsageResult.Success(question)
         } else {
             HintUsageResult.NotEnoughPoints
@@ -254,31 +256,27 @@ class GuessByImageViewModel @Inject constructor(
             is HintUsageResult.Success -> {
                 applyHint(result.updatedQuestion)
                 updateState(screenState.value.copy(hintUsed = true))
-                Log.d("GuessByImageVM", "Hint applied successfully. $HINT_COST points deducted.")
             }
 
-            HintUsageResult.NotEnoughPoints -> {
-                updateState(screenState.value.copy(showNotEnoughPointsDialog = true))
-                Log.d("GuessByImageVM", "Not enough points for hint. Required: $HINT_COST")
-            }
-
-            is HintUsageResult.Failed -> Log.e(
-                "GuessByImageVM",
-                "Hint usage failed: ${result.error}"
+            is HintUsageResult.NotEnoughPoints -> updateState(
+                screenState.value.copy(
+                    showNotEnoughPointsDialog = true
+                )
             )
 
-            HintUsageResult.AlreadyUsed -> Log.d("GuessByImageVM", "Hint already used")
+
+            is HintUsageResult.Failed -> updateState(screenState.value.copy(error = result.error))
+
+
+            is HintUsageResult.AlreadyUsed -> updateState(screenState.value.copy(error = "Hint already used"))
+
         }
     }
 
-    private fun logError(message: String) {
-        Log.e("GuessByImageVM", message)
-    }
-
-    private fun applyHint(updatedQuestion: Question) {
+    private fun applyHint(updatedQuestion: Question?) {
         val session = currentSession ?: return
 
-        val index = session.questions.indexOfFirst { it.id == updatedQuestion.id }
+        val index = session.questions.indexOfFirst { it.id == updatedQuestion?.id }
         if (index != -1) {
             session.questions = session.questions.toMutableList()
                 .also { it[index] = it[index].copy(usedHint = true) }
@@ -291,14 +289,7 @@ class GuessByImageViewModel @Inject constructor(
         )
     }
 
-    private sealed class HintUsageResult {
-        data class Success(val updatedQuestion: Question) : HintUsageResult()
-        object AlreadyUsed : HintUsageResult()
-        object NotEnoughPoints : HintUsageResult()
-        data class Failed(val error: String) : HintUsageResult()
-    }
-
     companion object {
-        private const val HINT_COST = 10
+        const val IMAGE_BASE_URL =  "https://image.tmdb.org/t/p/w500"
     }
 }

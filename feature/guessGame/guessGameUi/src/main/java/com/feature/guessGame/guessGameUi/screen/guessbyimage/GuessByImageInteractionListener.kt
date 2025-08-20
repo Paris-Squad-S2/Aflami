@@ -7,4 +7,5 @@ interface GuessByImageInteractionListener {
     fun onTimeFinished()
     fun onDismissNotEnoughPointsDialog()
     fun onCancelClick()
+    fun onRetry()
 }

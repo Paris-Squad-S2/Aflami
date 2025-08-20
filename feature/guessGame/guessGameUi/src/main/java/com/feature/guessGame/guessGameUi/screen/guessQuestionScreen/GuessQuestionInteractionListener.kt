@@ -7,4 +7,6 @@ interface GuessQuestionInteractionListener {
     fun onTimeFinished()
    fun onDismissNotEnoughPointsDialog()
     fun onCancelClick()
+
+    fun onRetry()
 }
