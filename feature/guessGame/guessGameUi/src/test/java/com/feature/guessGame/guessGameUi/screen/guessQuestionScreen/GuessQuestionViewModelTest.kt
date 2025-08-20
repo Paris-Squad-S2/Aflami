@@ -105,7 +105,7 @@ class GuessQuestionViewModelTest {
         }
 
         coEvery { getAccountIdUseCase() } returns 1
-        coEvery { getUserPointUseCase() } returns flowOf(5)
+        coEvery { getUserPointUseCase(any()) } returns flowOf(5)
         coEvery { useHintUseCase(session, 1) } returns false
 
         val field = viewModel.javaClass.getDeclaredField("currentSession")

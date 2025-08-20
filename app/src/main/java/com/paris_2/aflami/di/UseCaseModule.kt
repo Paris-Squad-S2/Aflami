@@ -372,9 +372,8 @@ object UseCaseModule {
 
     @Provides
     fun provideGetUserPointUseCase(
-        repository: GamePointsRepository,
-        getAccountIdUseCase: GetAccountIdUseCase
-    ) = GetUserPointUseCase(repository, getAccountIdUseCase)
+        repository: GamePointsRepository
+    ) = GetUserPointUseCase(repository)
 
     @Provides
     fun provideRemoveAnswerHintUseCase() =

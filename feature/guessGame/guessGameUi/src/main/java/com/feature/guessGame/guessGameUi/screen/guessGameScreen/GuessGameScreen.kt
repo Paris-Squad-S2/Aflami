@@ -1,7 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessGameScreen
 
 import android.content.Context
-import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

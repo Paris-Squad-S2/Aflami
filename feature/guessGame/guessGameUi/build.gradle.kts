@@ -49,6 +49,7 @@ dependencies {
     implementation(projects.domain.guessGame)
     implementation(projects.domain.user)
     implementation(projects.domain.media)
+    implementation(projects.safeimageviewer)
 
     //test
     testImplementation(libs.bundles.test)

@@ -73,9 +73,9 @@ class UserRepositoryImpl(
 
     override fun hasAnySession(): Boolean = localDataSource.hasAnySession()
 
-    override suspend fun getAccountId(): Int? = handleAuthExceptions {
-        return@handleAuthExceptions remoteDataSource.getAccountDetails().id
-    }
+    override suspend fun getAccountId(): Int? = runCatching {
+        handleAuthExceptions { remoteDataSource.getAccountDetails().id }
+    }.getOrNull()
 
     override fun deleteSessionId(): Boolean = localDataSource.deleteSessionId()
 
