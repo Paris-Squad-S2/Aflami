@@ -26,13 +26,16 @@ import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.domain.lists.entity.Response
+import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.Movie
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
+import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
 import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
@@ -41,6 +44,7 @@ import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -69,6 +73,9 @@ class MovieDetailsViewModel @Inject constructor(
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
     private val settingsUseCase: SettingsUseCase,
+    private val getListDetailsUseCase: GetListDetailsUseCase,
+    private val getRatingUseCase: FilterRatedMediaUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase,
     navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener,
     BaseViewModel<MovieDetailsScreenState>(MovieDetailsScreenState(), navigator) {
@@ -221,6 +228,8 @@ class MovieDetailsViewModel @Inject constructor(
     private suspend fun onLoadMovieDetailsSuccess(movie: Movie, mediaId: Int) {
 
         addWatchHistoryUseCase(movie.toMedia())
+        updateMovieIfAddedToList(movieId)
+        updateMovieIfRated(movieId)
         updateState(
             screenState.value.copy(
                 isLoading = false,
@@ -235,6 +244,81 @@ class MovieDetailsViewModel @Inject constructor(
         loadMovieReviews(mediaId)
         loadMovieProductionCompanies(mediaId)
     }
+
+    private fun updateMovieIfAddedToList(mediaId: Int) {
+        tryToExecute(
+            execute = {
+                val isMovieAddedToList: Boolean = getListsUseCase(1)
+                    .any {
+                        getListDetailsUseCase(
+                            1,
+                            it.id.toString()
+                        ).items.any { media ->
+                            media.id == mediaId
+                        }
+                    }
+                isMovieAddedToList
+            },
+            onSuccess = { isMovieAddedToList ->
+                updateState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            movie = screenState.value.movieDetailsUiState.movie.copy(
+                                isAddedToLists = isMovieAddedToList
+                            )
+                        )
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            movie = screenState.value.movieDetailsUiState.movie.copy(
+                                isAddedToLists = false,
+                            )
+                        ),
+                        errorMessage = it
+                    )
+                )
+            },
+        )
+    }
+
+    private fun updateMovieIfRated(mediaId: Int) {
+        tryToExecute(
+            execute = {
+                val accountId = getAccountIdUseCase() ?: -1
+                getRatingUseCase(accountId = accountId, MediaType.Movie).any {
+                    it.id == mediaId
+                }
+            },
+            onSuccess = { isRated ->
+                updateState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            movie = screenState.value.movieDetailsUiState.movie.copy(
+                                isRated = isRated
+                            )
+                        )
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                            movie = screenState.value.movieDetailsUiState.movie.copy(
+                                isRated = false,
+                            )
+                        ),
+                        errorMessage = it
+                    )
+                )
+            },
+        )
+    }
+
 
     private fun onLoadMovieDetailsError(error: String) {
         updateState(
@@ -349,7 +433,11 @@ class MovieDetailsViewModel @Inject constructor(
 
     private fun onRateClickSuccess(isLoggedIn: Boolean) {
         if (isLoggedIn) {
-            updateState(screenState.value.copy(showRatingDialog = true))
+            updateState(
+                screenState.value.copy(
+                    showRatingDialog = true,
+                )
+            )
         } else {
             navigate(MediaDetailsDestinations.LoginDialogDestination(R.string.rate))
         }
@@ -395,7 +483,12 @@ class MovieDetailsViewModel @Inject constructor(
         updateState(
             screenState.value.copy(
                 showAddToListDialog = false,
-                selectedListIndex = -1
+                selectedListIndex = -1,
+                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                    movie = screenState.value.movieDetailsUiState.movie.copy(
+                        isAddedToLists = true
+                    )
+                )
             )
         )
         showSuccessSnackBar(R.string.movie_added_to_list_successfully)
@@ -547,7 +640,12 @@ class MovieDetailsViewModel @Inject constructor(
     private fun onRatingSubmittedSuccess(unit: Unit) {
         updateState(
             screenState.value.copy(
-                showRatingDialog = false
+                showRatingDialog = false,
+                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                    movie = screenState.value.movieDetailsUiState.movie.copy(
+                        isRated = true
+                    )
+                )
             )
         )
         showSuccessSnackBar(R.string.rating_submit_successfully)

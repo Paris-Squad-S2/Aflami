@@ -68,7 +68,7 @@ fun TopComponentDetails(
             val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
             val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
             DetailsImage(
-                imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl) + state.tvShowDetailsUiState.gallery,
+                imageUris = state.tvShowDetailsUiState.gallery,
                 rating = state.tvShowDetailsUiState.tvShowUi.rating,
                 hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
                 onPlayClick = {
@@ -90,9 +90,11 @@ fun TopComponentDetails(
                 trailingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_star),
-                        onClick = {
-                            tvShowScreenInteractionListener.onRateClick()
-                        }
+                        onClick = if (state.tvShowDetailsUiState.tvShowUi.isRated.not())
+                            tvShowScreenInteractionListener::onRateClick
+                        else null,
+                        tint = if (state.tvShowDetailsUiState.tvShowUi.isRated) Theme.colors.status.yellowAccent
+                        else Theme.colors.text.title
                     ),
                 ),
                 modifier = Modifier
@@ -111,6 +113,7 @@ fun TvTopComponent(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     title: String,
+    state : TvShowDetailsScreenState,
     modifier: Modifier = Modifier,
 ) {
     val activity = LocalActivity.current
@@ -138,9 +141,11 @@ fun TvTopComponent(
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = {
-                        tvShowScreenInteractionListener.onRateClick()
-                    }
+                    onClick = if (state.tvShowDetailsUiState.tvShowUi.isRated.not())
+                        tvShowScreenInteractionListener::onRateClick
+                    else null,
+                    tint = if (state.tvShowDetailsUiState.tvShowUi.isRated) Theme.colors.status.yellowAccent
+                    else Theme.colors.text.title
                 ),
             ),
         )

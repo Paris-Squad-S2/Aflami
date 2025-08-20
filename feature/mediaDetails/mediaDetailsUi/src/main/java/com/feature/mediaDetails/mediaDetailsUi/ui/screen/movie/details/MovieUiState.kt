@@ -69,6 +69,8 @@ data class MovieUi(
     val country: String = "",
     val description: String = "",
     val productionCompanies: List<ProductionCompanyUi> = emptyList(),
+    val isAddedToLists: Boolean = false,
+    val isRated: Boolean = false
 ): MediaUi
 
 data class ProductionCompanyUi(

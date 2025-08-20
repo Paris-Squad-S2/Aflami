@@ -49,7 +49,7 @@ data class TvShowDetailsUiState(
     val selectedRating: Float = 0f,
     val episodeVideoUi: EpisodeVideoUi = EpisodeVideoUi(),
     val isYoutubePlayerVisible: Boolean = false,
-    val youtubeVideoKey: String? = null
+    val youtubeVideoKey: String? = null,
 )
 
 data class TvShowVideoUi(
@@ -70,7 +70,8 @@ data class TvShowUi(
     val description: String = "",
     val seasons: List<SeasonUi> = emptyList(),
     val productionCompanies: List<ProductionCompanyUi> = emptyList(),
-) : MediaUi
+    val isRated:Boolean = false,
+    ) : MediaUi
 
 data class SeasonUi(
     val id: Int = 0,

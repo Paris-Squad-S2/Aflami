@@ -162,6 +162,7 @@ fun TvShowDetailsScreenContent(
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
                                         title = state.tvShowDetailsUiState.tvShowUi.title,
+                                        state = state
                                     )
                                 }
 
