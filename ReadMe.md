@@ -32,6 +32,7 @@
 |---------------------------------------------------|---------------------------------------------------|
 | ![light_theme2](https://github.com/user-attachments/assets/6662d5f1-b722-4d7f-8478-6d896b51b60e)|![night_theme2](https://github.com/user-attachments/assets/f47dfa5d-f8b3-4b35-a2e5-89ac2fa75659)|
 
+![Watch the video](https://youtu.be/Cq8Cb-ZVN3Y)
 
 
 ## 🚀 Quick Start Guide
