@@ -68,7 +68,7 @@ fun TopComponentDetails(
             val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
             val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
             DetailsImage(
-                imageUris = listOf(state.tvShowDetailsUiState.tvShowUi.posterUrl) + state.tvShowDetailsUiState.gallery,
+                imageUris = state.tvShowDetailsUiState.gallery,
                 rating = state.tvShowDetailsUiState.tvShowUi.rating,
                 hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
                 onPlayClick = {
