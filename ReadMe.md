@@ -27,13 +27,11 @@
 
 ## 📽️ Gifs 
 
-| Dark Mode ( click on gif for high quality video )                                                                                                                                                      |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <div align="center"> <a href="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/view"> <img src="assets/night_theme.gif" alt="Watch the video" width="800" height="1200"/> </a> </div> |
 
-| Light Mode ( click on gif for high quality video )                                                                                                                                                     |
-|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| <div align="center"> <a href="https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/view"> <img src="assets/light_theme.gif" alt="Watch the video" width="800" height="1200"/> </a> </div> |
+| Light Mode ( click on gif for high quality video )|Dark Mode ( click on gif for high quality video )|
+|---------------------------------------------------|---------------------------------------------------|
+| ![light_theme2](https://github.com/user-attachments/assets/6662d5f1-b722-4d7f-8478-6d896b51b60e)|![night_theme2](https://github.com/user-attachments/assets/f47dfa5d-f8b3-4b35-a2e5-89ac2fa75659)|
+
 
 
 ## 🚀 Quick Start Guide
