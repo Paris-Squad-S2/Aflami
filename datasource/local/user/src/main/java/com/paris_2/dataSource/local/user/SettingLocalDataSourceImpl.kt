@@ -47,7 +47,7 @@ class SettingLocalDataSourceImpl @Inject constructor(
 
     override fun getTheme(): Flow<Boolean> {
         return dataStore.data.mapLatest {
-            it[KEY_IS_DARK_THEME] ?: isSystemInDarkTheme()
+            it[KEY_IS_DARK_THEME] ?: true
         }
     }
 
