@@ -61,10 +61,6 @@ class SettingLocalDataSourceImpl @Inject constructor(
         }.first()
     }
 
-    private fun isSystemInDarkTheme(): Boolean {
-        return (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
-    }
-
     private suspend fun <T> DataStore<Preferences>.setValue(
         key: Preferences.Key<T>,
         value: T,
