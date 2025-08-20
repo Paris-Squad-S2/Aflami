@@ -23,7 +23,7 @@ class GetUserPointUseCaseTest {
     fun setUp() {
         repository = mockk()
         getAccountIdUseCase = mockk()
-        useCase = GetUserPointUseCase(repository, getAccountIdUseCase)
+        useCase = GetUserPointUseCase(repository)
     }
 
     @Test
@@ -32,7 +32,7 @@ class GetUserPointUseCaseTest {
         coEvery { getAccountIdUseCase() } returns USER_ID
         coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints.gamePoints)
         // When
-        val result = useCase().first()
+        val result = useCase(USER_ID).first()
         // Then
         assertThat(result).isEqualTo(sampleUserPoints.gamePoints)
     }
@@ -43,7 +43,7 @@ class GetUserPointUseCaseTest {
         coEvery { getAccountIdUseCase() } returns USER_ID
         coEvery { repository.getUserGamePoints(USER_ID) } returns flowOf(sampleUserPoints.gamePoints)
         // When
-        useCase().first()
+        useCase(USER_ID).first()
         // Then
         coVerify(exactly = 1) { repository.getUserGamePoints(USER_ID) }
     }
@@ -56,7 +56,7 @@ class GetUserPointUseCaseTest {
         coEvery { repository.getUserGamePoints(USER_ID) } throws exception
         // When & Then
         try {
-            useCase().first()
+            useCase(USER_ID).first()
             throw AssertionError("Exception should have been thrown")
         } catch (e: Exception) {
             assertThat(e).isEqualTo(exception)

@@ -37,9 +37,9 @@ fun ResultScreen(
     totalGameTime: Int,
     totalGamePoints: Int,
     gameType: QuestionType,
-    viewModel: ResultViewModel = hiltViewModel()
+    viewModel: ResultViewModel = hiltViewModel(),
 
-) {
+    ) {
     GuessGameBackground {
         ResultScreenContent(
             listener = viewModel,
@@ -55,9 +55,9 @@ fun ResultScreenContent(
     totalGameTime: Int,
     totalGamePoints: Int,
     gameType: QuestionType,
-    listener: ResultInteractionListener
+    listener: ResultInteractionListener,
 
-) {
+    ) {
     val activity = LocalActivity.current
     Column(
         modifier = Modifier
@@ -133,8 +133,6 @@ private fun Preview() {
         GuessGameBackground {
             ResultScreenContent(
                 listener = object : ResultInteractionListener {
-                    override fun onExitClicked() {}
-                    override fun onBackToMenuClicked() {}
                     override fun onPlayAgainClicked() {}
                 },
                 totalGameTime = 100,

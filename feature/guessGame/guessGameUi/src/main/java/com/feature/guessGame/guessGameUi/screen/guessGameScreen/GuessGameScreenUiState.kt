@@ -12,6 +12,7 @@ data class GuessGameScreenUiState(
     val selectedDifficulty: Int = Difficulty.EASY,
     val showDifficultyDialog: Boolean = false,
     val selectedGameId: String = "",
+    val accountId: Int = -1,
 )
 
 data class GameUiState(
