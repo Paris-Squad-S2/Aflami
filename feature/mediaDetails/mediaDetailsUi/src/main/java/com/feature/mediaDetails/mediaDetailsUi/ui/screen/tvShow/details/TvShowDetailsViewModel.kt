@@ -25,11 +25,13 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.paris_2.domain.media.entity.Cast
 import com.paris_2.domain.media.entity.Image
+import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.entity.ProductionCompany
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
+import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
@@ -40,6 +42,7 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -66,6 +69,8 @@ class TvShowDetailsViewModel @Inject constructor(
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
     private val settingsUseCase: SettingsUseCase,
+    private val getRatingUseCase: FilterRatedMediaUseCase,
+    private val getAccountIdUseCase: GetAccountIdUseCase,
     navigator: MediaDetailsNavigator,
 ) : TvShowScreenInteractionListener, BaseViewModel<TvShowDetailsScreenState>(
     TvShowDetailsScreenState(
@@ -175,6 +180,7 @@ class TvShowDetailsViewModel @Inject constructor(
     
     private suspend fun onLoadTvShowDetailsSuccess(tvShow: TvShow, mediaId: Int) {
         addWatchHistoryUseCase(tvShow.toMedia())
+        updateTvShowIfItRated(mediaId)
         updateState(
             screenState.value.copy(
                 tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
@@ -190,7 +196,41 @@ class TvShowDetailsViewModel @Inject constructor(
         loadTvShowReviews(mediaId)
         loadTvShowsProductionCompanies(mediaId)
     }
-    
+
+    private fun updateTvShowIfItRated(mediaId: Int) {
+        tryToExecute(
+            execute = {
+                val accountId = getAccountIdUseCase() ?: -1
+                getRatingUseCase(accountId = accountId, MediaType.TvShow).any {
+                    it.id == mediaId
+                }
+            },
+            onSuccess = { isRated ->
+                updateState(
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
+                                isRated = isRated
+                            )
+                        )
+                    )
+                )
+            },
+            onError = {
+                updateState(
+                    screenState.value.copy(
+                        tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                            tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
+                                isRated = false
+                            )
+                        ),
+                        errorMessage = it
+                    )
+                )
+            },
+        )
+    }
+
     private fun onLoadTvShowDetailsError(error: String) {
         updateState(
             screenState.value.copy(
@@ -414,7 +454,12 @@ class TvShowDetailsViewModel @Inject constructor(
                 showSnackBar = true,
                 snackBarSuccess = true,
                 snackBarMessage = R.string.rating_submit_successfully,
-                showRatingDialog = false
+                showRatingDialog = false,
+                tvShowDetailsUiState = screenState.value.tvShowDetailsUiState.copy(
+                    tvShowUi = screenState.value.tvShowDetailsUiState.tvShowUi.copy(
+                        isRated = true
+                    )
+                )
             )
         )
         hideSnackBar()

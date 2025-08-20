@@ -90,9 +90,11 @@ fun TopComponentDetails(
                 trailingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_star),
-                        onClick = {
-                            tvShowScreenInteractionListener.onRateClick()
-                        }
+                        onClick = if (state.tvShowDetailsUiState.tvShowUi.isRated.not())
+                            tvShowScreenInteractionListener::onRateClick
+                        else null,
+                        tint = if (state.tvShowDetailsUiState.tvShowUi.isRated) Theme.colors.status.yellowAccent
+                        else Theme.colors.text.title
                     ),
                 ),
                 modifier = Modifier
@@ -111,6 +113,7 @@ fun TvTopComponent(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     title: String,
+    state : TvShowDetailsScreenState,
     modifier: Modifier = Modifier,
 ) {
     val activity = LocalActivity.current
@@ -138,9 +141,11 @@ fun TvTopComponent(
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = {
-                        tvShowScreenInteractionListener.onRateClick()
-                    }
+                    onClick = if (state.tvShowDetailsUiState.tvShowUi.isRated.not())
+                        tvShowScreenInteractionListener::onRateClick
+                    else null,
+                    tint = if (state.tvShowDetailsUiState.tvShowUi.isRated) Theme.colors.status.yellowAccent
+                    else Theme.colors.text.title
                 ),
             ),
         )
