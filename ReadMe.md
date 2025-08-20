@@ -52,7 +52,9 @@
     </tr>
     <tr>
       <td>
-        <iframe src="https://drive.google.com/file/d/1tFgcD1Key39COI7rTbbN9zOJ7Ftz0Iej/preview" width="100%" height="400"></iframe>
+        <a href="https://github.com/user-attachments/assets/6662d5f1-b722-4d7f-8478-6d896b51b60e">
+          <img src="https://github.com/user-attachments/assets/6662d5f1-b722-4d7f-8478-6d896b51b60e" alt="light_theme2" style="max-width:100%;">
+        </a>
       </td>
       <td>
         <a href="https://github.com/user-attachments/assets/f47dfa5d-f8b3-4b35-a2e5-89ac2fa75659">
