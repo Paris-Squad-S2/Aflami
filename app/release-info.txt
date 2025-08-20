@@ -1,2 +1,2 @@
-versionName=1.0.16
-- Refactor Guess Game Crash When User Is A Guest
+versionName=1.0.17
+- refactor updateMovieIfAddedToList logic

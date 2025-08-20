@@ -83,7 +83,7 @@ fun DetailsImage(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.Center),
-                        contentScale = ContentScale.Fit,
+                        contentScale = ContentScale.Crop,
                         contentDescription = "poster",
                         nsfwThreshold = nsfwThreshold,
                         genderThreshold = genderThreshold,

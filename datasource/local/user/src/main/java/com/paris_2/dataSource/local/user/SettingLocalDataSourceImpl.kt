@@ -47,7 +47,7 @@ class SettingLocalDataSourceImpl @Inject constructor(
 
     override fun getTheme(): Flow<Boolean> {
         return dataStore.data.mapLatest {
-            it[KEY_IS_DARK_THEME] ?: isSystemInDarkTheme()
+            it[KEY_IS_DARK_THEME] ?: true
         }
     }
 
@@ -59,10 +59,6 @@ class SettingLocalDataSourceImpl @Inject constructor(
         return dataStore.data.mapLatest {
             it[RESTRICTION] ?: STRICT
         }.first()
-    }
-
-    private fun isSystemInDarkTheme(): Boolean {
-        return (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
     }
 
     private suspend fun <T> DataStore<Preferences>.setValue(
