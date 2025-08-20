@@ -201,24 +201,24 @@ The app supports both English and Arabic languages. The appropriate language wil
 5. **Configure CI/CD**: Set up automated builds and testing
 
 ## 👥 Team
-| Name               | GitHub              |
-|--------------------|---------------------|
-| Mohamed Elhanafy   | [@Mohamed-Elhanafy] |
-| Aziza Helmy        | [@AzizaHelmy]       |
-| Haidy AbuGom3a     | [@HaidyAbuGom3a]    |
-| Asmaa Karam        | [@Asmaa7071]        |
-| Joseph Sameh Fouad | [@Joseph-Sameh-0]   |
-| Ahmed Naser        | [@ahmedNaser7]      |
-| Renad Alalfy       | [@Renad-Alalfy]     |
-| Zeinab             | [@Zeinab979]        |
-| Mahmoud Abdelnaby  | [@M-Abdelnabi]      |
-| Mustafa Ibrahim    | [@MustafaIbrahim96] |
-| Dina Othman        | [@DinaOthman21]     |
-| Ahmed Salah        | [@itsahmedsalah]    |
-| Muhammed Wael      | [@MuhammedWael9991] |
-| Mohammed Al-Akkad  | [@mohammed-akkad]   |
-| Islam Magdy        | [@IslamMagd]        |
-| Yousef Osama Kamal | [@yousef-osama11]   |
+| Name               | GitHub                                                   |
+|--------------------|----------------------------------------------------------|
+| Mohamed Elhanafy   | [@Mohamed-Elhanafy](https://github.com/Mohamed-Elhanafy) |
+| Mohammed Al-Akkad  | [@mohammed-akkad](https://github.com/mohammed-akkad)     |
+| Aziza Helmy        | [@AzizaHelmy](https://github.com/AzizaHelmy)             |
+| Haidy AbuGom3a     | [@HaidyAbuGom3a](https://github.com/HaidyAbuGom3a)       |
+| Muhammed Wael      | [@MuhammedWael9991](https://github.com/MuhammedWael9991) |
+| Mahmoud Abdelnaby  | [@M-Abdelnabi](https://github.com/M-Abdelnabi)           |
+| Joseph Sameh Fouad | [@Joseph-Sameh-0](https://github.com/Joseph-Sameh-0)     |
+| Ahmed Abdelnasser  | [@ahmedNaser7](https://github.com/ahmedNaser7)           |
+| Renad Alalfy       | [@Renad-Alalfy](https://github.com/Renad-Alalfy)         |
+| Zeinab             | [@Zeinab979](https://github.com/Zeinab979)               |
+| Mustafa Ibrahim    | [@MustafaIbrahim96](https://github.com/MustafaIbrahim96) |
+| Dina Othman        | [@DinaOthman21](https://github.com/DinaOthman21)         |
+| Ahmed Salah        | [@itsahmedsalah](https://github.com/itsahmedsalah)       |
+| asmaa karam        | [@Asmaa7071](https://github.com/Asmaa7071)               |
+| Islam Magdy        | [@IslamMagd](https://github.com/IslamMagd)               |
+| Yousef Osama Kamal | [@yousef-osama11](https://github.com/yousef-osama11)     |
 
 
 ## 📄 Contributing
