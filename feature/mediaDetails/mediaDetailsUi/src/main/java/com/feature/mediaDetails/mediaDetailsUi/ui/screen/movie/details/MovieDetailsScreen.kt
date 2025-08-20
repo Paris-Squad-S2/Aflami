@@ -214,6 +214,7 @@ fun MovieDetailsScreenContent(
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
                                         title = state.movieDetailsUiState.movie.title,
+                                        state = state
                                     )
                                 }
 

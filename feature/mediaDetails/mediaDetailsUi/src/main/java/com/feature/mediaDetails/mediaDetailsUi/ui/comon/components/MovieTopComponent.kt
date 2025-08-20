@@ -99,15 +99,20 @@ fun MovieTopComponentDetails(
                 trailingIcons = listOf(
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_star),
-                        onClick = {
-                            movieDetailsScreenInteractionListener.onRateClick()
-                        }
+                        onClick = if (state.movieDetailsUiState.movie.isRated.not())
+                            movieDetailsScreenInteractionListener::onRateClick
+                        else null,
+                        tint = if (state.movieDetailsUiState.movie.isRated) Theme.colors.status.yellowAccent
+                        else Theme.colors.text.title
                     ),
                     iconItemWithDefaults(
                         icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                        onClick = {
-                            movieDetailsScreenInteractionListener.onAddToListClick()
-                        }
+                        onClick = if (state.movieDetailsUiState.movie.isAddedToLists.not())
+                            movieDetailsScreenInteractionListener::onAddToListClick
+                        else null,
+                        tint = if (state.movieDetailsUiState.movie.isAddedToLists) Theme.colors.status.yellowAccent
+                        else Theme.colors.text.title
+
                     )
                 ),
                 modifier = Modifier
@@ -126,6 +131,7 @@ fun MovieTopComponent(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     title: String,
+    state: MovieDetailsScreenState,
     modifier: Modifier = Modifier,
 ) {
     val activity = LocalActivity.current
@@ -153,15 +159,20 @@ fun MovieTopComponent(
             trailingIcons = listOf(
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_star),
-                    onClick = {
-                        movieDetailsScreenInteractionListener.onRateClick()
-                    }
+                    onClick = if (state.movieDetailsUiState.movie.isRated.not())
+                        movieDetailsScreenInteractionListener::onRateClick
+                    else null,
+                    tint = if (state.movieDetailsUiState.movie.isRated) Theme.colors.status.yellowAccent
+                    else Theme.colors.text.title
                 ),
                 iconItemWithDefaults(
                     icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
-                    onClick = {
-                        movieDetailsScreenInteractionListener.onAddToListClick()
-                    }
+                    onClick = if (state.movieDetailsUiState.movie.isAddedToLists.not())
+                        movieDetailsScreenInteractionListener::onAddToListClick
+                    else null,
+                    tint = if (state.movieDetailsUiState.movie.isAddedToLists) Theme.colors.status.yellowAccent
+                    else Theme.colors.text.title
+
                 )
             ),
         )
