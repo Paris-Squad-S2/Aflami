@@ -2,6 +2,7 @@
 
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
+import android.annotation.SuppressLint
 import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -14,8 +15,10 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -34,6 +37,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -78,6 +82,7 @@ fun MovieDetailsScreen(
     )
 }
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @Composable
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
@@ -89,6 +94,7 @@ fun MovieDetailsScreenContent(
     val defaultIndex = movieChips.indexOf(MovieChips.REVIEWS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
+    val scrollState = rememberLazyListState()
 
     LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
         if (state.showSnackBar && state.snackBarSuccess) {
@@ -96,6 +102,17 @@ fun MovieDetailsScreenContent(
             movieDetailsScreenInteractionListener.onHideSnackBar()
         }
     }
+    val isCollapsed by remember {
+        derivedStateOf {
+            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+        }
+    }
+    LaunchedEffect(isCollapsed) {
+        if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
+            scrollState.animateScrollToItem(index = scrollState.layoutInfo.totalItemsCount - 1)
+        }
+    }
+
 
     if (state.showRatingDialog) {
         RatingDialog(
@@ -184,12 +201,6 @@ fun MovieDetailsScreenContent(
                 }
 
                 else -> {
-                    val scrollState = rememberLazyListState()
-                    val isCollapsed by remember {
-                        derivedStateOf {
-                            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
-                        }
-                    }
                     if (state.movieDetailsUiState.isYoutubePlayerVisible && !state.movieDetailsUiState.youtubeVideoKey.isNullOrEmpty()) {
                         VideoPlayer(
                             videoKey = state.movieDetailsUiState.youtubeVideoKey,
@@ -207,6 +218,7 @@ fun MovieDetailsScreenContent(
                                         movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
+                                        listState = scrollState
                                     )
                                 } else {
                                     MovieTopComponent(
@@ -403,6 +415,13 @@ fun MovieDetailsScreenContent(
                                     }
                                 }
                             }
+                        }
+                        item {
+                            Spacer(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(LocalConfiguration.current.screenHeightDp.dp / 12)
+                            )
                         }
                     }
                 }

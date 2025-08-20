@@ -1,6 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
-import androidx.activity.compose.LocalActivity
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalSharedTransitionApi
@@ -16,6 +16,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -36,6 +38,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -73,6 +76,7 @@ fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {
     )
 }
 
+@SuppressLint("ConfigurationScreenWidthHeight")
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun TvShowDetailsScreenContent(
@@ -80,7 +84,6 @@ fun TvShowDetailsScreenContent(
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
 ) {
     val tvChips = TvShowChips.entries
-    val activity = LocalActivity.current
     var currentRating by remember { mutableFloatStateOf(state.tvShowDetailsUiState.selectedRating) }
     val scrollState = rememberLazyListState()
     val isCollapsed by remember {
@@ -97,6 +100,14 @@ fun TvShowDetailsScreenContent(
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
     val reviewsList = state.tvShowDetailsUiState.reviews
+
+    LaunchedEffect(isCollapsed) {
+        if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
+            scrollState.animateScrollToItem(
+                index = scrollState.layoutInfo.totalItemsCount - 1
+            )
+        }
+    }
 
     if (state.showRatingDialog) {
         RatingDialog(
@@ -155,6 +166,7 @@ fun TvShowDetailsScreenContent(
                                         tvShowScreenInteractionListener = tvShowScreenInteractionListener,
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
+                                        listState = scrollState
                                     )
                                 } else {
                                     TvTopComponent(
@@ -441,11 +453,10 @@ fun TvShowDetailsScreenContent(
                         }
 
                         item {
-                            Box(
+                            Spacer(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(200.dp)
-                                    .navigationBarsPadding()
+                                    .height(LocalConfiguration.current.screenHeightDp.dp / 12)
                             )
                         }
                     }
