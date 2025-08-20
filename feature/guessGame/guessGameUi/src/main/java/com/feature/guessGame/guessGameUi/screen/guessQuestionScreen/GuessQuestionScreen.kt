@@ -28,6 +28,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
+import com.feature.guessGame.guessGameUi.common.components.GuessCard
 import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
@@ -37,7 +38,6 @@ import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.GuessCard
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults

@@ -1,5 +1,6 @@
 package com.feature.guessGame.guessGameUi.screen.guessbyimage
 
+import android.util.Log
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,8 +22,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.rememberAsyncImagePainter
 import com.feature.guessGame.guessGameUi.common.components.GameTimer
+import com.feature.guessGame.guessGameUi.common.components.GuessCard
+import com.feature.guessGame.guessGameUi.common.components.GuessCardImageState
 import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
@@ -32,8 +34,6 @@ import com.paris_2.aflami.designsystem.components.AppTopBar
 import com.paris_2.aflami.designsystem.components.ButtonState
 import com.paris_2.aflami.designsystem.components.ButtonType
 import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.GuessCard
-import com.paris_2.aflami.designsystem.components.GuessCardImageState
 import com.paris_2.aflami.designsystem.components.NetworkError
 import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
@@ -160,9 +160,9 @@ fun QuestionImage(
     } else {
         GuessCardImageState.Hard
     }
-
+   Log.d("QuestionImage", "QuestionImage: $imageUrl")
     GuessCard(
-        imagePainter = rememberAsyncImagePainter("https://image.tmdb.org/t/p/w500$imageUrl"),
+        imageUrl = GuessByImageViewModel.IMAGE_BASE_URL+imageUrl,
         clickable = !uiState.usedHint,
         imageState = imageState,
         showHint = !uiState.usedHint,
