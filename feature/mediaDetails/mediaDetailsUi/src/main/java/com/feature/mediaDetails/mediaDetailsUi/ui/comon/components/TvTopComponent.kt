@@ -10,10 +10,9 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -38,13 +37,13 @@ fun TopComponentDetails(
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
+    listState: LazyListState,
     modifier: Modifier = Modifier
 ) {
     with(sharedTransitionScope) {
         Box(
             modifier
                 .background(Theme.colors.surface)
-                .navigationBarsPadding()
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component Detail"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -53,7 +52,6 @@ fun TopComponentDetails(
                     resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
                 )
         ) {
-            val listState = rememberLazyListState()
             val density = LocalDensity.current
             val maxScrollPx = with(density) { 56.dp.toPx() }
             val alpha by remember {
