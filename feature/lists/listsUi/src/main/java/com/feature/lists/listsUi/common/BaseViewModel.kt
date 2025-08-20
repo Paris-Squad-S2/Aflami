@@ -9,9 +9,11 @@ import javax.inject.Inject
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -51,6 +53,19 @@ open class BaseViewModel<S>(
             } catch (e: Exception) {
                 onError(e.message ?: "Unexpected error")
             }
+        }
+    }
+
+    protected fun <T> tryToExecuteFlow(
+        flow: Flow<T>,
+        onEachItem: suspend (T) -> Unit,
+        onError: (String) -> Unit,
+        scope: CoroutineScope = viewModelScope
+    ): Job {
+        return scope.launch {
+            flow
+                .catch { throwable -> onError(throwable.message ?: "Unexpected error") }
+                .collect{item -> onEachItem(item) }
         }
     }
 }

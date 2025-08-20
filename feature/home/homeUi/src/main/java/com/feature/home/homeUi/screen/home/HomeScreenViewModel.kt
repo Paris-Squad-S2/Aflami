@@ -279,7 +279,7 @@ class HomeScreenViewModel @Inject constructor(
                 movieId = media.id
             )
 
-            MediaTypeUi.TVSHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
+            MediaTypeUi.TV_SHOW -> mediaDetailsFeatureAPI.startTvShowDetails(
                 tvShowId = media.id
             )
         }
