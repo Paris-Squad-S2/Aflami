@@ -13,6 +13,7 @@ import com.paris_2.domain.media.entity.Review
 import com.paris_2.domain.media.entity.Season
 import com.paris_2.domain.media.entity.TvShow
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
+import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
 import com.paris_2.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
@@ -23,6 +24,7 @@ import com.paris_2.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris_2.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.clearAllMocks
@@ -61,6 +63,8 @@ class TvShowDetailsViewModelTest {
     private val addWatchHistoryUseCase: AddWatchHistoryUseCase = mockk(relaxed = true)
     private val settingsUseCase: SettingsUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
+    private val getRatingUseCase: FilterRatedMediaUseCase= mockk()
+    private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private lateinit var viewModel: TvShowDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testTvShowId = 88
@@ -162,6 +166,7 @@ class TvShowDetailsViewModelTest {
         val errorMsg = "videoFail"
         coEvery { getTvShowDetailsUseCase(any()) } returns mockk<TvShow>(relaxed = true)
         coEvery { getTvShowVideoUseCase(any()) } throws RuntimeException(errorMsg)
+        coEvery { getAccountIdUseCase() } throws RuntimeException(errorMsg)
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
@@ -353,6 +358,8 @@ class TvShowDetailsViewModelTest {
             isLoggedInUseCase,
             addRatingToTvShowUseCase,
             settingsUseCase,
+            getRatingUseCase,
+            getAccountIdUseCase,
             navigator
         )
     }

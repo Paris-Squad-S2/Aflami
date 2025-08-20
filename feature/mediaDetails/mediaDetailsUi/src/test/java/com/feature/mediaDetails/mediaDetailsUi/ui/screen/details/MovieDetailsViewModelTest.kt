@@ -25,9 +25,12 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
 import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
+import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris_2.domain.media.entity.MediaVideo
 import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
+import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -66,6 +69,9 @@ class MovieDetailsViewModelTest {
     private val createListUseCase: CreateListUseCase = mockk()
     private val getSessionIdUseCase: AddMovieToListUseCase = mockk()
     private val settingsUseCase: SettingsUseCase = mockk()
+    private val getListDetailsUseCase: GetListDetailsUseCase = mockk()
+    private val getRatingUseCase: FilterRatedMediaUseCase = mockk()
+    private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private lateinit var viewModel: MovieDetailsViewModel
     private val testDispatcher = StandardTestDispatcher()
     private val testMovieId = 42
@@ -152,6 +158,8 @@ class MovieDetailsViewModelTest {
         coEvery { getMovieDetailsUseCase(any()) } returns mockk<Movie>(relaxed = true)
         coEvery { getMovieVideoUseCase(any()) } throws RuntimeException(errorMsg)
         coEvery { getListsUseCase(any()) } returns emptyList()
+        coEvery { getAccountIdUseCase() } throws RuntimeException(errorMsg)
+
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
         assertEquals(errorMsg, viewModel.screenState.value.errorMessage)
@@ -234,7 +242,7 @@ class MovieDetailsViewModelTest {
         val uiReviews = listOf(mockk<ReviewUi>())
 
         val domainMovie = mockk<Movie>(relaxed = true)
-        val movieUi = mockk<MovieUi>()
+        val movieUi = MovieUi()
 
         coEvery { getMovieDetailsUseCase(testMovieId) } returns domainMovie
         coEvery { getMovieVideoUseCase(testMovieId) } returns mockk<MediaVideo>(relaxed = true)
@@ -410,7 +418,10 @@ class MovieDetailsViewModelTest {
             getListsUseCase,
             createListUseCase,
             settingsUseCase,
-            mediaDetailsNavigator
+            getListDetailsUseCase,
+            getRatingUseCase,
+            getAccountIdUseCase,
+            mediaDetailsNavigator,
         )
     }
 }
