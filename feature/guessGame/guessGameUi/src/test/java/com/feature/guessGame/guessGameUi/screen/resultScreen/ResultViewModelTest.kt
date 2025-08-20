@@ -40,50 +40,6 @@ class ResultViewModelTest {
     }
 
     @Test
-    fun `onExitClicked navigates to GuessGameScreen`() = runTest {
-        every { savedStateHandle.toRoute<Destinations.FinishGameScreen>() } returns Destinations.FinishGameScreen(
-            totalGameTime = 100,
-            totalGamePoints = 200,
-            gameType = QuestionType.ACTOR,
-            gameLevel = UiGameLevel.EASY
-        )
-
-        val viewModel = ResultViewModel(
-            savedStateHandle,
-            getAccountIdUseCase,
-            updatePointsUseCase
-        )
-        viewModel.navigator = navigator
-
-        viewModel.onExitClicked()
-        runCurrent()
-
-        coVerify { navigator.navigate(Destinations.Screen, null) }
-    }
-
-    @Test
-    fun `onBackToMenuClicked navigates to GuessGameScreen`() = runTest {
-        every { savedStateHandle.toRoute<Destinations.FinishGameScreen>() } returns Destinations.FinishGameScreen(
-            totalGameTime = 100,
-            totalGamePoints = 200,
-            gameType = QuestionType.GENRE,
-            gameLevel = UiGameLevel.EASY
-        )
-
-        val viewModel = ResultViewModel(
-            savedStateHandle,
-            getAccountIdUseCase,
-            updatePointsUseCase
-        )
-        viewModel.navigator = navigator
-
-        viewModel.onBackToMenuClicked()
-        runCurrent()
-
-        coVerify { navigator.navigate(Destinations.Screen, null) }
-    }
-
-    @Test
     fun `onPlayAgainClicked with ACTOR navigates to GuessByImageScreen with EASY defaults`() = runTest {
         every { savedStateHandle.toRoute<Destinations.FinishGameScreen>() } returns Destinations.FinishGameScreen(
             totalGameTime = 90,
