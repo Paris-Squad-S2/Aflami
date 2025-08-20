@@ -36,7 +36,9 @@
 
 https://github.com/user-attachments/assets/5db85383-a6ad-4ed7-b762-3bdf8f3fdb3f
 
-[https://aaaaa.com/ay7aga.mp4](https://drive.google.com/uc?export=download&id=1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq)
+https://drive.google.com/uc?export=download&id=1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq
+
+https://drive.google.com/file/d/1eHXZRQvcWl356LC3ev4-SmSe9pXKkhkq/preview
 
 
 ## 🚀 Quick Start Guide
