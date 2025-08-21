@@ -1,5 +1,6 @@
 import org.gradle.api.GradleException
 import org.gradle.api.Project
+import java.io.File
 import java.io.FileInputStream
 import java.util.Properties
 
@@ -35,4 +36,12 @@ fun Project.getSigningConfig(): SigningConfig {
         ?: throw GradleException("KEY_PASSWORD is not set.")
 
     return SigningConfig(keystorePath, keystorePassword, keyAlias, keyPassword)
+}
+
+fun Project.getApiToken(): String {
+    val localPropertiesFile = File(rootProject.rootDir, "local.properties")
+    return if (localPropertiesFile.exists()) {
+        Properties().apply { load(localPropertiesFile.inputStream()) }
+            .getProperty("API_TOKEN") ?: ""
+    } else ""
 }
