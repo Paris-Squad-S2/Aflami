@@ -194,12 +194,10 @@ object RepositoryModule {
     @Singleton
     fun provideActorPopularityRepository(
         networkConnectionChecker: com.repository.guessgame.utils.NetworkConnectionChecker,
-        actorPopularityDataSource: ActorPopularityRemoteDataSource,
-        settingLocalDataSource: SettingLocalDataSource
+        actorPopularityDataSource: ActorPopularityRemoteDataSource
     ) : ActorPopularityRepository = ActorPopularityRepositoryImpl(
         networkConnectionChecker,
-        actorPopularityDataSource,
-        settingLocalDataSource
+        actorPopularityDataSource
     )
 
     @Provides

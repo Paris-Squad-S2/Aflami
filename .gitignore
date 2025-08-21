@@ -71,3 +71,4 @@ gradle.properties.user
 .vscode/
 
 schemas/
+/app/google-services.json

@@ -9,7 +9,7 @@ import kotlin.random.Random
 class ActorPopularityRemoteDataSourceImpl @Inject constructor(
     private val apiService : ActorPopularityApiService
 ): ActorPopularityRemoteDataSource {
-    override suspend fun getPopularActors(language: String): ActorPopularityListDto {
-        return apiService.getPopularActors(language, Random.nextInt(1, 500))
+    override suspend fun getPopularActors(): ActorPopularityListDto {
+        return apiService.getPopularActors(page = Random.nextInt(1, 500))
     }
 }

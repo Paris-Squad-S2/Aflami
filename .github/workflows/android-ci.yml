@@ -23,6 +23,12 @@ jobs:
           distribution: 'temurin'
           cache: 'gradle'
 
+
+      - name: Decode google-services.json from secret
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > app/google-services.json    
+
+
       - name: Make gradlew executable
         run: chmod +x gradlew
 
@@ -57,6 +63,10 @@ jobs:
           java-version: 17
           distribution: 'temurin'
           cache: 'gradle'
+
+      - name: Decode google-services.json from secret
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > app/google-services.json
 
       - name: Grant execute permission to Gradle
         run: chmod +x gradlew

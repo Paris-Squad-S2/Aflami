@@ -114,6 +114,7 @@ fun GuessByImageContent(
                         onHintUsed = { listener.onHintUsed() },
                         imageUrl = currentQuestion?.image.orEmpty(),
                         uiState = currentQuestion ?: QuestionUiState(),
+                        onReloadQuestion = listener::onRetry
                     )
 
                     Spacer(Modifier.height(16.dp))
@@ -154,6 +155,7 @@ fun QuestionImage(
     imageUrl: String,
     uiState: QuestionUiState,
     onHintUsed: () -> Unit = {},
+    onReloadQuestion: () -> Unit = {}
 ) {
     val imageState = if (uiState.usedHint) {
         GuessCardImageState.Medium
@@ -165,6 +167,7 @@ fun QuestionImage(
         imageUrl = GuessByImageViewModel.IMAGE_BASE_URL+imageUrl,
         clickable = !uiState.usedHint,
         imageState = imageState,
+        onImageLoadError = onReloadQuestion,
         showHint = !uiState.usedHint,
         onClick = {
             if (!uiState.usedHint) {
