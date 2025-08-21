@@ -12,7 +12,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -37,7 +37,7 @@ fun TopComponentDetails(
     tvShowScreenInteractionListener: TvShowScreenInteractionListener,
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
-    listState: LazyListState,
+    listState: LazyGridState,
     modifier: Modifier = Modifier
 ) {
     with(sharedTransitionScope) {
