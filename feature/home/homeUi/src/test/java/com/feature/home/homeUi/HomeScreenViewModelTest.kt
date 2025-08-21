@@ -4,19 +4,19 @@ import com.feature.home.homeUi.mapper.toCategory
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
 import com.feature.home.homeUi.screen.home.MediaTypeUi.TV_SHOW
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetMoviesCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetPopularMediaUseCase
-import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
-import com.paris_2.domain.media.useCase.GetUpComingMediaUseCase
-import com.paris_2.domain.media.useCase.GetWatchHistoryUseCase
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
+import com.paris.domain.media.useCase.GetMoviesCategoriesUseCase
+import com.paris.domain.media.useCase.GetPopularMediaUseCase
+import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris.domain.media.useCase.GetUpComingMediaUseCase
+import com.paris.domain.media.useCase.GetWatchHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.clearAllMocks
@@ -31,8 +31,8 @@ import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.paris_2.domain.media.entity.Media as DomainMedia
-import com.paris_2.domain.media.entity.MediaType as DomainMediaType
+import com.paris.domain.media.entity.Media as DomainMedia
+import com.paris.domain.media.entity.MediaType as DomainMediaType
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class HomeScreenViewModelTest {

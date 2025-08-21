@@ -1,7 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details
 
 import com.feature.mediaDetails.mediaDetailsUi.R
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 enum class TvShowChips(val titleResId: Int, val iconResId: Int) {
 

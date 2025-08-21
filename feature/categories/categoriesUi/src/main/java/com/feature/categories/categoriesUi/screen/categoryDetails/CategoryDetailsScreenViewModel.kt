@@ -9,15 +9,15 @@ import com.feature.categories.categoriesUi.paging.PagingSource
 import com.feature.categories.categoriesUi.shared.BaseViewModel
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.useCase.GetMoviesByCategoryUseCase
-import com.paris_2.domain.media.useCase.GetTvShowsByCategoryUseCase
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.useCase.GetMoviesByCategoryUseCase
+import com.paris.domain.media.useCase.GetTvShowsByCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 @HiltViewModel
 class CategoryDetailsScreenViewModel @Inject constructor(

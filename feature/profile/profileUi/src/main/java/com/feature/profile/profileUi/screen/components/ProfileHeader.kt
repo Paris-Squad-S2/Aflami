@@ -14,7 +14,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun ProfileHeader(modifier: Modifier = Modifier) {

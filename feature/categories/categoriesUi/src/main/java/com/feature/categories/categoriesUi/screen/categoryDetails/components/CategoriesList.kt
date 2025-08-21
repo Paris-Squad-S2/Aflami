@@ -14,7 +14,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.feature.categories.categoriesUi.shared.CategoryUiState
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun CategoriesList(

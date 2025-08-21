@@ -27,26 +27,26 @@ import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.Image
-import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.entity.MediaVideo
-import com.paris_2.domain.media.entity.Movie
-import com.paris_2.domain.media.entity.ProductionCompany
-import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
-import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
-import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
-import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
-import com.paris_2.domain.user.usecase.IsLoggedInUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.domain.media.entity.Cast
+import com.paris.domain.media.entity.Image
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.entity.MediaVideo
+import com.paris.domain.media.entity.Movie
+import com.paris.domain.media.entity.ProductionCompany
+import com.paris.domain.media.useCase.AddWatchHistoryUseCase
+import com.paris.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.IsLoggedInUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -55,7 +55,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.math.roundToInt
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(

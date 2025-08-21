@@ -14,9 +14,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.categories.categoriesUi.navigation.navigateToMediaDetails
 import com.feature.categories.categoriesUi.screen.categories.components.CategoriesList
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.TabRow
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.TabRow
 
 @Composable
 fun CategoriesScreen(

@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 fun IconLogin(modifier: Modifier = Modifier) {
 
     Image(
-        painter = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.play_media),
+        painter = painterResource(id = com.paris.aflami.designsystem.R.drawable.play_media),
         contentDescription = null,
         modifier = modifier
             .width(25.dp)

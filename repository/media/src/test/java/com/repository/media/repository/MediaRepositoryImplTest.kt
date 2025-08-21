@@ -1,13 +1,13 @@
 package com.repository.media.repository
 
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.exception.FailedException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.exception.FailedException
+import com.paris.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.repository.MovieRepository
 import com.paris_2.domain.media.repository.TvShowRepository
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.mapper.toEntity
@@ -357,7 +357,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `addMediaToLocal delegates to data source`() = runTest {
-        val media = Media(200, "", "Local", MediaType.Movie,  listOf(com.paris_2.domain.media.entity.Category.Action), mockk(), 8.0)
+        val media = Media(200, "", "Local", MediaType.Movie,  listOf(com.paris.domain.media.entity.Category.Action), mockk(), 8.0)
         coEvery { mediaLocalDataSource.addMediaContinueWatching(media.toEntity()) } returns Unit
         repo.addMediaToContinueWatching(media)
         coVerify { mediaLocalDataSource.addMediaContinueWatching(media.toEntity()) }
@@ -372,7 +372,7 @@ class MediaRepositoryImplTest {
             "",
             "Test",
             MediaType.Movie,
-            listOf(com.paris_2.domain.media.entity.Category.Action),
+            listOf(com.paris.domain.media.entity.Category.Action),
             mockk(),
             8.0
         )
@@ -398,7 +398,7 @@ class MediaRepositoryImplTest {
             "",
             "Fail",
             MediaType.TvShow,
-            listOf(com.paris_2.domain.media.entity.Category.Action),
+            listOf(com.paris.domain.media.entity.Category.Action),
             mockk(),
             4.0
         )
@@ -424,7 +424,7 @@ class MediaRepositoryImplTest {
 
     @Test
     fun `getMoviesByCategory should return mapped movie list from remote`() = runTest {
-        val category = com.paris_2.domain.media.entity.Category.Action // assume .toId() = 28
+        val category = com.paris.domain.media.entity.Category.Action // assume .toId() = 28
         val page = 1
         val language = "en"
 
@@ -466,7 +466,7 @@ class MediaRepositoryImplTest {
     @Test
     fun `getTvShowsByCategory should return mapped TV list from remote`() = runTest {
         // Given
-        val category = com.paris_2.domain.media.entity.Category.Drama // Assume toId() = 18
+        val category = com.paris.domain.media.entity.Category.Drama // Assume toId() = 18
         val page = 1
         val language = "en"
 

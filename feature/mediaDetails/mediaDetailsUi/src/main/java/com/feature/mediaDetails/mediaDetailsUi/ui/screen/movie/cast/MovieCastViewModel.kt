@@ -6,7 +6,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.BaseViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfCastUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
-import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris.domain.media.useCase.movie.GetMovieCastUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -44,7 +44,7 @@ class MovieCastViewModel @Inject constructor(
         )
     }
     
-    private fun onLoadMovieCastSuccess(castList: List<com.paris_2.domain.media.entity.Cast>) {
+    private fun onLoadMovieCastSuccess(castList: List<com.paris.domain.media.entity.Cast>) {
         updateState(
             screenState.value.copy(
                 cast = castList.toListOfCastUi(),

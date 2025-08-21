@@ -34,18 +34,18 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.lists.listsUi.R
 import com.feature.lists.listsUi.screens.listScreen.components.CreateListDialog
 import com.feature.lists.listsUi.screens.listScreen.components.ListCard
-import com.paris_2.aflami.designsystem.components.AppSnackBar
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppSnackBar
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.PlaceholderView
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun ListsScreen(viewModel: ListsViewModel = hiltViewModel()) {
@@ -192,7 +192,7 @@ fun LoggedOutContent(
         )
         CustomButton(
             onClick = listInteractionListener::onLogoutApplyClicked,
-            text = com.paris_2.aflami.designsystem.R.string.login,
+            text = com.paris.aflami.designsystem.R.string.login,
             type = ButtonType.Secondary,
             modifier = Modifier.padding(top = 24.dp, bottom = 100.dp)
         )

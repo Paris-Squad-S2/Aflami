@@ -1,11 +1,11 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.exception.AflamiException
-import com.paris_2.domain.media.exception.FailedException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.repository.SearchMediaRepository
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.exception.AflamiException
+import com.paris.domain.media.exception.FailedException
+import com.paris.domain.media.exception.NoInternetConnectionException
+import com.paris.domain.media.repository.SearchMediaRepository
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.media.models.local.media.SearchType

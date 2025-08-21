@@ -25,9 +25,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun CastItem(
@@ -64,7 +64,7 @@ fun CastItem(
             }
             androidx.compose.animation.AnimatedVisibility(visible = imageState == ImageState.Error) {
                 Image(
-                    painter = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.ic_film_roll),
+                    painter = painterResource(id = com.paris.aflami.designsystem.R.drawable.ic_film_roll),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

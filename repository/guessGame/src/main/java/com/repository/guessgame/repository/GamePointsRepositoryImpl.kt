@@ -1,9 +1,9 @@
 package com.repository.guessgame.repository
 
-import com.paris_2.domain.game.entity.UserPoints
-import com.paris_2.domain.game.exception.FailedException
-import com.paris_2.domain.game.exception.GameException
-import com.paris_2.domain.game.repositories.GamePointsRepository
+import com.paris.domain.game.entity.UserPoints
+import com.paris.domain.game.exception.FailedException
+import com.paris.domain.game.exception.GameException
+import com.paris.domain.game.repositories.GamePointsRepository
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.guessgame.mapper.toDomain
 import com.repository.guessgame.mapper.toEntity

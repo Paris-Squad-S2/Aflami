@@ -2,21 +2,21 @@ package com.feature.search.searchUi.screen.search
 
 
 import androidx.paging.PagingData
-import com.paris_2.domain.user.usecase.SettingsUseCase
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.entity.SearchHistoryModel
-import com.paris_2.domain.media.entity.SearchType
-import com.paris_2.domain.media.useCase.ClearAllRecentSearchesUseCase
-import com.paris_2.domain.media.useCase.ClearRecentSearchUseCase
-import com.paris_2.domain.media.useCase.FilterMediaByRatingUseCase
-import com.paris_2.domain.media.useCase.FilterMediaUseCase
-import com.paris_2.domain.media.useCase.GetAllCategoriesUseCase
-import com.paris_2.domain.media.useCase.GetAllRecentSearchesUseCase
-import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris_2.domain.media.useCase.SearchByQueryUseCase
-import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.entity.SearchHistoryModel
+import com.paris.domain.media.entity.SearchType
+import com.paris.domain.media.useCase.ClearAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.ClearRecentSearchUseCase
+import com.paris.domain.media.useCase.FilterMediaByRatingUseCase
+import com.paris.domain.media.useCase.FilterMediaUseCase
+import com.paris.domain.media.useCase.GetAllCategoriesUseCase
+import com.paris.domain.media.useCase.GetAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris.domain.media.useCase.SearchByQueryUseCase
+import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
