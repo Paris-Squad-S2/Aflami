@@ -131,11 +131,15 @@ object RepositoryModule {
         mediaRemoteDataSource: MediaRemoteDataSource,
         mediaLocalDataSource: MediaLocalDataSource,
         settingLocalDataSource: SettingLocalDataSource,
+        movieRepository: MovieRepository,
+        tvShowRepository: TvShowRepository
     ): MediaRepository = MediaRepositoryImpl(
         networkConnectionChecker,
         mediaRemoteDataSource,
         mediaLocalDataSource,
-        settingLocalDataSource
+        settingLocalDataSource,
+        movieRepository,
+        tvShowRepository
     )
 
     @Provides
