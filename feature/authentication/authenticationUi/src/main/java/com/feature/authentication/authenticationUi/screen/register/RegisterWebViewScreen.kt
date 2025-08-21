@@ -11,7 +11,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.comon.WebViewComposable
 import com.paris.aflami.designsystem.components.NetworkError
-import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
@@ -22,7 +21,7 @@ fun RegisterWebViewScreen(viewModel: RegisterViewModel = hiltViewModel()) {
 }
 
 @Composable
-private fun RegisterScreenContent(uIState: RegisterUIState, registerViewModel: RegisterViewModel) {
+private fun RegisterScreenContent(uiState: RegisterUIState, registerViewModel: RegisterViewModel) {
 
     Box(
         modifier = Modifier
@@ -38,16 +37,11 @@ private fun RegisterScreenContent(uIState: RegisterUIState, registerViewModel: R
             .statusBarsPadding()
     ) {
         WebViewComposable(
-            url = uIState.registrationUrl,
-            onWebMessageReceived = { message: String ->
+            url = uiState.registrationUrl,
+            onWebMessageReceived = {
                 registerViewModel.onNavigateBack()
             },
             modifier = Modifier.fillMaxSize(),
-            loadingPlaceholder = {
-                PageLoadingPlaceHolder(
-                    modifier = Modifier.fillMaxSize()
-                )
-            },
             errorPlaceholder = { onRetry ->
                 NetworkError(
                     modifier = Modifier

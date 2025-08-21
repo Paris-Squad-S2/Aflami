@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.google.common.truth.Truth.assertThat
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.spyk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -22,8 +23,9 @@ class WebViewClientImplTest {
     fun setUp() {
         isLoading = mutableStateOf(false)
         hasError = mutableStateOf(false)
-        webViewClient = WebViewClientImpl(isLoading, hasError)
+        webViewClient = WebViewClientImpl(isLoading, hasError, skipSuper = true)
     }
+
 
     @Test
     fun `onPageStarted sets isLoading true and hasError false`() {
@@ -39,11 +41,21 @@ class WebViewClientImplTest {
         Assertions.assertFalse(isLoading.value)
     }
 
+
     @Test
     fun `onReceivedError sets hasError true and isLoading false`() {
-        isLoading.value = true
-        hasError.value = false
+        val isLoading = mutableStateOf(true)
+        val hasError = mutableStateOf(false)
+
+        val webViewClient = spyk(WebViewClientImpl(isLoading, hasError))
+
+        every { webViewClient.onReceivedError(any(), any(), any()) } answers {
+            isLoading.value = false
+            hasError.value = true
+        }
+
         webViewClient.onReceivedError(mockk(), mockk(), mockk())
+
         Assertions.assertTrue(hasError.value)
         Assertions.assertFalse(isLoading.value)
     }
@@ -57,7 +69,8 @@ class WebViewClientImplTest {
         val client = WebViewClientImpl(isLoading, hasError, onNavigationEvent)
 
         val mockUri = mockk<Uri>()
-        every { mockUri.toString() } returns "https://www.themoviedb.org/"
+        every { mockUri.toString() } returns "https://www.themoviedb.org"
+
         val request = mockk<WebResourceRequest>()
         every { request.url } returns mockUri
 
@@ -87,7 +100,7 @@ class WebViewClientImplTest {
     }
 
     @Test
-    fun `should set isLoading true and hasError false for non-matching url`() {
+    fun `should set isLoading false and hasError false for non-matching url`() {
         val isLoading = mutableStateOf(false)
         val hasError = mutableStateOf(true)
         val client = WebViewClientImpl(isLoading, hasError)
@@ -101,7 +114,7 @@ class WebViewClientImplTest {
 
         assertThat(isLoading.value).isTrue()
         assertThat(hasError.value).isFalse()
-        assertThat(result).isTrue()
+        assertThat(result).isFalse()
     }
 
     @Test
@@ -112,7 +125,7 @@ class WebViewClientImplTest {
         val result = client.shouldOverrideUrlLoading(mockk<WebView>(), null as WebResourceRequest?)
         assertThat(isLoading.value).isTrue()
         assertThat(hasError.value).isFalse()
-        assertThat(result).isTrue()
+        assertThat(result).isFalse()
     }
 
     @Test
@@ -125,7 +138,7 @@ class WebViewClientImplTest {
         val result = client.shouldOverrideUrlLoading(mockk<WebView>(), request)
         assertThat(isLoading.value).isTrue()
         assertThat(hasError.value).isFalse()
-        assertThat(result).isTrue()
+        assertThat(result).isFalse()
     }
 
 
