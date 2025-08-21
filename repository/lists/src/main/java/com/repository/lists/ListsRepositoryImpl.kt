@@ -3,12 +3,11 @@ package com.repository.lists
 import com.paris.domain.lists.entity.ListDetails
 import com.paris.domain.lists.entity.Lists
 import com.paris.domain.lists.entity.Response
-import com.paris.domain.lists.exception.ListsNetworkException
 import com.paris.domain.lists.repository.ListsRepository
 import com.paris.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
-import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.mapper.toDomain
+import com.repository.lists.util.handleListsExceptions
 
 class ListsRepositoryImpl(
     private val listRemoteDataSource: ListsRemoteDataSource,
@@ -37,17 +36,5 @@ class ListsRepositoryImpl(
 
     override suspend fun removeMovieFromList(listId: String, movieId: Int): Response = handleListsExceptions {
         return listRemoteDataSource.removeMovieFromList(listId, movieId).toDomain()
-    }
-
-    private inline fun <T> handleListsExceptions(block: () -> T): T {
-        try {
-            return block()
-        } catch (e: NetworkException.ServerException) {
-            throw ListsNetworkException(e.message ?: "Server error")
-        } catch (e: NetworkException.UnknownException) {
-            throw ListsNetworkException(e.message ?: "Unknown authentication error")
-        } catch (e: Exception) {
-            throw ListsNetworkException(e.message ?: "Unknown authentication error")
-        }
     }
 }
