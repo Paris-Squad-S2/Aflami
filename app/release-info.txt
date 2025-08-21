@@ -1,2 +1,2 @@
-versionName=1.0.18
-- fix assets gifs in readme file
+versionName=1.0.20
+- update ci configurations and remove services json.
