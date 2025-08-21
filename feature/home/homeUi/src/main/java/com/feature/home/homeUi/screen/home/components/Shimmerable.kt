@@ -1,4 +1,4 @@
-package com.feature.home.homeUi.utils
+package com.feature.home.homeUi.screen.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,7 +22,7 @@ fun Modifier.shimmerable(
     return this
         .shimmer()
         .background(shape = shape, color = color)
-        .drawWithContent{
+        .drawWithContent {
         }
 
 }

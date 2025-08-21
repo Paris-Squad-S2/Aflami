@@ -23,7 +23,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.feature.home.homeUi.utils.shimmerable
 import com.paris.aflami.designsystem.components.AppIcon
 import com.paris.aflami.designsystem.theme.AflamiTheme
 

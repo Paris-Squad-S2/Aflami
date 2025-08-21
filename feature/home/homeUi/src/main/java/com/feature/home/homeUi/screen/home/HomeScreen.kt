@@ -54,8 +54,8 @@ import com.feature.home.homeUi.screen.home.components.MediaCardType
 import com.feature.home.homeUi.screen.home.components.MoodPicker
 import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.feature.home.homeUi.screen.home.components.SectionTitle
+import com.feature.home.homeUi.screen.home.components.shimmerable
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
-import com.feature.home.homeUi.utils.shimmerable
 import com.paris.aflami.designsystem.components.AppTopBar
 import com.paris.aflami.designsystem.components.IconItem
 import com.paris.aflami.designsystem.components.NetworkError
