@@ -44,12 +44,12 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import coil.compose.AsyncImage
 import coil.compose.AsyncImagePainter
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
-import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.Theme
-import com.paris_2.aflami.designsystem.utils.BasePreview
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppHorizontalDivider
+import com.paris.aflami.designsystem.components.AppIcon
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.utils.BasePreview
 import kotlin.math.ceil
 
 
@@ -109,12 +109,9 @@ fun GuessCard(
                         contentDescription = stringResource(R.string.character_image),
                         contentScale = ContentScale.Crop,
                         onState = { state ->
-                            when (state) {
-                                is AsyncImagePainter.State.Error -> {
-                                    imageLoadFailed = true
-                                    onImageLoadError?.invoke()
-                                }
-                                else -> {}
+                            if (state is AsyncImagePainter.State.Error) {
+                                imageLoadFailed = true
+                                onImageLoadError?.invoke()
                             }
                         }
                     )
