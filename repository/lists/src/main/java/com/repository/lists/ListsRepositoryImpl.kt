@@ -2,7 +2,6 @@ package com.repository.lists
 
 import com.paris.domain.lists.entity.ListDetails
 import com.paris.domain.lists.entity.Lists
-import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.repository.ListsRepository
 import com.paris.repository.user.dataSource.remote.UserRemoteDataSource
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
@@ -19,22 +18,22 @@ class ListsRepositoryImpl(
     }
 
     override suspend fun getListDetails(page: Int, listId: String): ListDetails = handleListsExceptions {
-        return listRemoteDataSource.getListDetails(page = page, listId = listId).toDomain()
+         listRemoteDataSource.getListDetails(page = page, listId = listId).toDomain()
     }
 
-    override suspend fun deleteList(listId: String): Response = handleListsExceptions {
-        return listRemoteDataSource.deleteList(listId).toDomain()
+    override suspend fun deleteList(listId: String) = handleListsExceptions {
+         listRemoteDataSource.deleteList(listId).success?:false
     }
 
-    override suspend fun createList(name: String): Response = handleListsExceptions {
-        return listRemoteDataSource.createList(name).toDomain()
+    override suspend fun createList(name: String) = handleListsExceptions {
+         listRemoteDataSource.createList(name).success?:false
     }
 
-    override suspend fun addMovieToList(listId: String, movieId: Int): Response = handleListsExceptions {
-        return listRemoteDataSource.addMovieToList(listId , movieId).toDomain()
+    override suspend fun addMovieToList(listId: String, movieId: Int) = handleListsExceptions {
+         listRemoteDataSource.addMovieToList(listId , movieId).success?:false
     }
 
-    override suspend fun removeMovieFromList(listId: String, movieId: Int): Response = handleListsExceptions {
-        return listRemoteDataSource.removeMovieFromList(listId, movieId).toDomain()
+    override suspend fun removeMovieFromList(listId: String, movieId: Int) = handleListsExceptions {
+         listRemoteDataSource.removeMovieFromList(listId, movieId).success?:false
     }
 }

@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.White
 import androidx.compose.ui.graphics.Shape
@@ -21,4 +22,5 @@ fun Modifier.shimmerable(
     return this
         .shimmer()
         .background(shape = shape, color = color)
+        .drawWithContent{}
 }

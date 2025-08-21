@@ -11,7 +11,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
-import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
@@ -29,9 +28,9 @@ import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
-import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -168,11 +167,7 @@ class MovieDetailsViewModelTest {
     @Test
     fun `onRatingButtonClick when logged in shows rating dialog`() = runTest {
         coEvery { isLoggedInUseCase() } returns true
-        coEvery { getSessionIdUseCase(any(), any()) } returns Response(
-            statusCode = 200,
-            success = true,
-            statusMessage = ""
-        )
+        coEvery { getSessionIdUseCase(any(), any()) } returns true
 
         coEvery {
             addRatingToMovieUseCase(
@@ -281,11 +276,7 @@ class MovieDetailsViewModelTest {
     @Test
     fun `onAddToSelectedList with selected list updates snackbar on success`() = runTest {
         val mockList = com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ListItemUi("123", "MyList", itemCount = 1)
-        coEvery { addMovieToListUseCase(any(), any()) } returns Response(
-            statusCode = 200,
-            success = true,
-            statusMessage = ""
-        )
+        coEvery { addMovieToListUseCase(any(), any()) } returns true
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.updateState(
             viewModel.screenState.value.copy(
@@ -340,11 +331,7 @@ class MovieDetailsViewModelTest {
 
     @Test
     fun `onCreateListConfirm success updates snackBar and reloads lists`() = runTest {
-        coEvery { createListUseCase.invoke(any()) } returns Response(
-            statusCode = 200,
-            success = true,
-            statusMessage = ""
-        )
+        coEvery { createListUseCase.invoke(any()) } returns true
         coEvery { getListsUseCase(any()) } returns emptyList()
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.updateState(viewModel.screenState.value.copy(createListName = "mylist"))

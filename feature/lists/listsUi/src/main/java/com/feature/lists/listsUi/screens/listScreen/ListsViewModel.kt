@@ -99,7 +99,7 @@ class ListsViewModel @Inject constructor(
                         createListName = "",
                         createListButtonState = ButtonState.Normal,
                         showSnackBar = true,
-                        snackBarSuccess = result.success
+                        snackBarSuccess = result
                     )
                 )
                 hideSnackBar()

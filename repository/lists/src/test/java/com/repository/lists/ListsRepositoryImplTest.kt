@@ -1,7 +1,7 @@
 package com.repository.lists
 
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.lists.entity.Media
-import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.exception.ListsNetworkException
 import com.paris.repository.user.dataSource.remote.UserRemoteDataSource
 import com.paris.repository.user.model.remote.AccountDto
@@ -16,11 +16,11 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.test.runTest
-import com.google.common.truth.Truth.assertThat
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import kotlin.test.assertTrue
 
 class ListsRepositoryImplTest {
 
@@ -138,13 +138,7 @@ class ListsRepositoryImplTest {
 
         val result = listsRepositoryImpl.deleteList(listId)
 
-        assertThat(result).isEqualTo(
-            Response(
-                statusCode = 200,
-                statusMessage = "List deleted successfully",
-                success = true
-            )
-        )
+        assertTrue (result)
     }
 
     @Test
@@ -159,13 +153,8 @@ class ListsRepositoryImplTest {
 
         val result = listsRepositoryImpl.createList(listName)
 
-        assertThat(result).isEqualTo(
-            Response(
-                statusCode = 201,
-                statusMessage = "List created successfully",
-                success = true
-            )
-        )
+        assertTrue (result)
+
     }
 
     @Test
@@ -181,13 +170,8 @@ class ListsRepositoryImplTest {
 
         val result = listsRepositoryImpl.addMovieToList(listId, movieId)
 
-        assertThat(result).isEqualTo(
-            Response(
-                statusCode = 200,
-                statusMessage = "Movie added successfully",
-                success = true
-            )
-        )
+        assertTrue (result)
+
     }
 
     @Test
@@ -204,13 +188,8 @@ class ListsRepositoryImplTest {
         val result = listsRepositoryImpl.removeMovieFromList(listId, movieId)
 
 
-        assertThat(result).isEqualTo(
-            Response(
-                statusCode = 200,
-                statusMessage = "Movie removed successfully",
-                success = true
-            )
-        )
+        assertTrue (result)
+
     }
 
     @Test

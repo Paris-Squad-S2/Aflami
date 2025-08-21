@@ -23,7 +23,6 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
 import com.paris.aflami.designsystem.components.ButtonState
 import com.paris.domain.lists.entity.Lists
-import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
@@ -543,7 +542,7 @@ class MovieDetailsViewModel @Inject constructor(
         }
     }
 
-    private fun onCreateListConfirmSuccess(result: Response) {
+    private fun onCreateListConfirmSuccess(result: Boolean) {
         updateState(
             screenState.value.copy(
                 showCreateListDialog = false,
@@ -551,7 +550,7 @@ class MovieDetailsViewModel @Inject constructor(
                 createListButtonState = ButtonState.Normal
             )
         )
-        if (result.success) {
+        if (result) {
             showSuccessSnackBar(RDesignSystem.string.added_new_list_successfully)
         } else {
             showErrorSnackBar(RDesignSystem.string.some_error_happened)

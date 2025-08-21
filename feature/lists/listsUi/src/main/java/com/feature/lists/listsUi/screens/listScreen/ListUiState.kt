@@ -1,10 +1,8 @@
 package com.feature.lists.listsUi.screens.listScreen
 
-import androidx.annotation.StringRes
 import androidx.paging.PagingData
-import com.paris.domain.lists.entity.Lists
-import com.paris.domain.lists.entity.Response
 import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.domain.lists.entity.Lists
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
