@@ -5,8 +5,8 @@ import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.exception.FailedException
 import com.paris.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.repository.MovieRepository
-import com.paris_2.domain.media.repository.TvShowRepository
+import com.paris.domain.media.repository.MovieRepository
+import com.paris.domain.media.repository.TvShowRepository
 import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
