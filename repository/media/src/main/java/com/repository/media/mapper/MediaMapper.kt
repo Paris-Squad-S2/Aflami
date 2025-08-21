@@ -46,18 +46,6 @@ fun TvDto.toDomain(type: MediaType): Media? {
     )
 }
 
-fun MediaEntity.toDomain(): Media {
-    return Media(
-        id = this.id,
-        title = this.title,
-        rating = this.voteAverage,
-        imageUri = this.posterPath,
-        yearOfRelease = LocalDate.parse(this.releaseDate),
-        categories = this.genreIds.intListToCategoryList(),
-        type = this.type.toDomain()
-    )
-}
-
 fun MediaTypeEntity.toDomain(): MediaType = when (this) {
     MediaTypeEntity.Movie -> MediaType.Movie
     MediaTypeEntity.TvShow -> MediaType.TvShow
