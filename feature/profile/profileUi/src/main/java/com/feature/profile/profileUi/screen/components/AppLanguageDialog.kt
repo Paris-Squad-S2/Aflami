@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
-import com.feature.profile.profileUi.screen.Language
+import com.feature.profile.profileUi.screen.profile.Language
 import com.paris.aflami.designsystem.components.AppDialog
 import com.paris.aflami.designsystem.components.ButtonType
 import com.paris.aflami.designsystem.components.CustomButton

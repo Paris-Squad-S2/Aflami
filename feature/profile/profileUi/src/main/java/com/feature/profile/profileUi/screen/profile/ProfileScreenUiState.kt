@@ -1,4 +1,4 @@
-package com.feature.profile.profileUi.screen
+package com.feature.profile.profileUi.screen.profile
 
 import com.paris.aflami.designsystem.R
 

@@ -1,6 +1,10 @@
 package com.feature.profile.profileUi.screen
 
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
+import com.feature.profile.profileUi.screen.profile.Appearance
+import com.feature.profile.profileUi.screen.profile.ContentRestriction
+import com.feature.profile.profileUi.screen.profile.Language
+import com.feature.profile.profileUi.screen.profile.ProfileViewModel
 import com.paris.domain.game.usecases.GetUserPointUseCase
 import com.paris.domain.user.usecase.DeleteSessionIdUseCase
 import com.paris.domain.user.usecase.GetAccountIdUseCase

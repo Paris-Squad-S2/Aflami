@@ -1,4 +1,4 @@
-package com.feature.profile.profileUi.screen
+package com.feature.profile.profileUi.screen.profile
 
 import android.content.Context
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
