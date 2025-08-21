@@ -1,2 +1,2 @@
 versionName=1.0.19
-- Improve Guess Game image loading and actor data handling
+- fix the issue of gallery and company in details
