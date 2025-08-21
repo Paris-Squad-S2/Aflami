@@ -1,14 +1,14 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridItemSpan
+import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,48 +22,34 @@ import com.paris_2.aflami.designsystem.theme.AflamiTheme
 import com.paris_2.aflami.designsystem.theme.Theme
 import com.paris_2.aflami.designsystem.utils.BasePreview
 
-@Composable
-fun ProductionCompanySection(
+fun LazyGridScope.productionCompanySection(
     companies: List<ProductionCompanyUi>,
     modifier: Modifier = Modifier
 ) {
     if (companies.isNotEmpty()) {
-        Column(
-            modifier = modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            companies.chunked(2).forEach { rowItems ->
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    rowItems.forEach { company ->
-                        CompanyProductionCard(
-                            imageUrl = company.logoUrl,
-                            companyName = company.name,
-                            countryName = company.originCountry,
-                            modifier = Modifier.weight(1f)
-                        )
-                    }
-                    if (rowItems.size == 1) {
-                        Spacer(modifier = Modifier.weight(1f))
-                    }
-                }
-            }
+        items(companies){ company ->
+            CompanyProductionCard(
+                imageUrl = company.logoUrl,
+                companyName = company.name,
+                countryName = company.originCountry,
+                modifier = Modifier.padding(8.dp).width(160.dp).height(145.dp)
+            )
         }
     } else {
-        Box(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = 30.dp)
-                .navigationBarsPadding(),
-            contentAlignment = Alignment.Center
-        ) {
-            AppText(
-                text = stringResource(R.string.there_is_no_production_company),
-                style = Theme.textStyle.label.large,
-                color = Theme.colors.text.body.copy(alpha = 0.6f)
-            )
+        item (span = {GridItemSpan(maxLineSpan)}){
+            Box(
+                modifier = modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 30.dp)
+                    .navigationBarsPadding(),
+                contentAlignment = Alignment.Center
+            ) {
+                AppText(
+                    text = stringResource(R.string.there_is_no_production_company),
+                    style = Theme.textStyle.label.large,
+                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+                )
+            }
         }
     }
 }
@@ -101,11 +87,11 @@ fun PreviewProductionCompanySection() {
             )
         )
         BasePreview {
-            ProductionCompanySection(
-                companies = fakeCompanies,
-                modifier = Modifier
-                    .height(400.dp)
-            )
+//            ProductionCompanySection(
+//                companies = fakeCompanies,
+//                modifier = Modifier
+//                    .height(400.dp)
+//            )
         }
     }
 }
