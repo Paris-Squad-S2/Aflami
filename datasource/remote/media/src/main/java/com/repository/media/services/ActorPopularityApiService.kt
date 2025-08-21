@@ -7,7 +7,8 @@ import retrofit2.http.Query
 interface ActorPopularityApiService{
     @GET("person/popular")
     suspend fun getPopularActors(
-        @Query("language") language: String,
         @Query("page") page: Int,
+        @Query("language") language: String = "en-US",
+        @Query("adult") isAdult: Boolean = false
     ) : ActorPopularityListDto
 }

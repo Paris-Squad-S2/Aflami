@@ -7,26 +7,36 @@ import com.paris.domain.media.entity.Category
 import com.repository.guessgame.dto.ActorDto
 import com.repository.guessgame.dto.ActorMediaDto
 import com.repository.guessgame.entity.UserGamePointsEntity
+import com.repository.guessgame.utils.isEnglish
 import kotlinx.datetime.LocalDate
 
 fun ActorDto.toDomain(): Actor? {
+    if (profilePath.isNullOrEmpty()) return null
+    val actorMedia = knownFor?.mapNotNull { it?.toDomain() } ?: emptyList()
+    if (actorMedia.isEmpty()) return null
+    val safeName = name?.takeIf { it.isEnglish() } ?: return null
+
     return Actor(
         id = id ?: -1,
-        name = name ?: "",
-        imageUri = profilePath ?: "",
-        media = knownFor?.mapNotNull { it?.toDomain() } ?: emptyList()
+        name = safeName,
+        imageUri = profilePath,
+        media = actorMedia
     )
 }
 
 fun ActorMediaDto.toDomain(): ActorMedia? {
+    if (posterPath.isNullOrEmpty()) return null
+    val safeTitle = title?.takeIf { it.isEnglish() } ?: return null
+
     val dateString = releaseDate ?: firstAirDate
     val parsedDate = dateString?.let {
         runCatching { LocalDate.parse(it) }.getOrNull()
     } ?: return null
+
     return ActorMedia(
         id = id ?: -1,
-        name = title ?: name ?: originalTitle ?: originalName ?: "",
-        posterImg = posterPath ?: "",
+        name = safeTitle,
+        posterImg = posterPath ,
         yearOfRelease = parsedDate,
         genres = genreIds?.mapNotNull { it.toDomainCategory() } ?: emptyList()
     )

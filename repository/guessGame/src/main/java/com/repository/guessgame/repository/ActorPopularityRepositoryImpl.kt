@@ -13,13 +13,11 @@ import kotlinx.coroutines.flow.first
 class ActorPopularityRepositoryImpl(
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val actorPopularityDataSource: ActorPopularityRemoteDataSource,
-    private val settingLocalDataSource: SettingLocalDataSource
 
 ) : ActorPopularityRepository {
     override suspend fun getPopularActor(): List<Actor> {
-        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(FailedException("Failed to get popular actor"), networkConnectionChecker) {
-            actorPopularityDataSource.getPopularActors(language)
+            actorPopularityDataSource.getPopularActors()
                 .results
                 ?.mapNotNull { it?.toDomain() }
                 ?: emptyList()
@@ -27,10 +25,9 @@ class ActorPopularityRepositoryImpl(
     }
 
     override suspend fun getRandomActors(numberOfActors: Int): List<Actor> {
-        val language = settingLocalDataSource.getLanguage().first()
         return safeCall(FailedException("Failed to get random actors"), networkConnectionChecker) {
             val allActors = actorPopularityDataSource
-                .getPopularActors(language)
+                .getPopularActors()
                 .results
                 ?.mapNotNull { it?.toDomain() }
                 ?: emptyList()
