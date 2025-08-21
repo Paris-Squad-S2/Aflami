@@ -1,3 +1,2 @@
-versionName=1.0.21
-- make the continue watching media list change to arabic or english
-based on current language
+versionName=1.0.22
+- delete unused files and rename fields
