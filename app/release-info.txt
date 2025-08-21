@@ -1,2 +1,2 @@
-versionName=1.0.18
-- fix assets gifs in readme file
+versionName=1.0.19
+- Improve Guess Game image loading and actor data handling
