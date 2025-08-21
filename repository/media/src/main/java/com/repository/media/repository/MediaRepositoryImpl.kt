@@ -6,17 +6,23 @@ import com.paris_2.domain.media.exception.AflamiException
 import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
 import com.paris_2.domain.media.repository.MediaRepository
+import com.paris_2.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.TvShowRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.models.local.media.Category
 import com.repository.media.mapper.toDomain
 import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toId
+import com.repository.media.mapper.toMedia
 import com.repository.media.mapper.toMediaEntity
+import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.MediaTypeEntity
 import com.repository.media.util.NetworkConnectionChecker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -25,6 +31,8 @@ class MediaRepositoryImpl(
     private val mediaRemoteDataSource: MediaRemoteDataSource,
     private val mediaLocalDataSource: MediaLocalDataSource,
     private val settingLocalDataSource: SettingLocalDataSource,
+    private val movieRepository: MovieRepository,
+    private val tvShowRepository: TvShowRepository
 ) : MediaRepository {
 
     override suspend fun getPopularMedia(): List<Media> {
@@ -116,13 +124,24 @@ class MediaRepositoryImpl(
         }
     }
 
-    override fun getContinueWatchingMedia(): Flow<List<Media>> {
-        return mediaLocalDataSource.getMediaContinueWatching().map { list ->
-            list.map { it.toDomain() }
-        }
-            .catch {
-                throw FailedException("getContinueWatchingMedia")
+    override  fun getContinueWatchingMedia(): Flow<List<Media>> {
+
+        return mediaLocalDataSource.getMediaContinueWatching().map { mediaList ->
+
+            val movies = mediaList.filter { it.type == MediaTypeEntity.Movie }
+            val tvShows = mediaList.filter { it.type == MediaTypeEntity.TvShow }
+
+            val filteredMovies = CoroutineScope(IO).async {
+                movies.map { movieRepository.getMovieDetails(it.id) }
             }
+
+            val filteredTvShows = CoroutineScope(IO).async {
+                tvShows.map { tvShowRepository.getTvShowDetails(it.id) }
+            }
+
+            filteredMovies.await().map { it.toMedia() } + filteredTvShows.await().map { it.toMedia() }
+        }
+
     }
 
     override suspend fun getRatedMedia(accountId: Int): List<Media> {

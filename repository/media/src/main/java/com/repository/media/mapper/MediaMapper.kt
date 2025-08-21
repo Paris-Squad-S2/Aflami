@@ -2,6 +2,8 @@ package com.repository.media.mapper
 
 import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
+import com.paris_2.domain.media.entity.Movie
+import com.paris_2.domain.media.entity.TvShow
 import com.repository.media.models.remote.media.category.ResultDto
 import com.repository.media.models.remote.media.category.TvResultDto
 import com.repository.media.models.remote.media.home.MovieDto
@@ -159,4 +161,28 @@ fun TvResultDto.toDomain(): Media? {
 
 fun String?.toImageUrl(): String? {
     return this?.let { "https://image.tmdb.org/t/p/w500/$it" }
+}
+
+fun TvShow.toMedia(): Media {
+    return Media(
+        id = this.id,
+        title = this.title,
+        rating = this.voteAverage,
+        imageUri = this.posterPath,
+        yearOfRelease = this.releaseDate,
+        categories = categories,
+        type = MediaType.TvShow,
+    )
+}
+
+fun Movie.toMedia(): Media {
+    return Media(
+        id = this.id,
+        title = this.title,
+        rating = this.voteAverage,
+        imageUri = this.posterPath,
+        yearOfRelease = this.releaseDate,
+        categories = categories,
+        type = MediaType.Movie,
+    )
 }
