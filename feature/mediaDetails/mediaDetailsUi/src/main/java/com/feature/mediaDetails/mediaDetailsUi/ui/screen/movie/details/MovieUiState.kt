@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.emptyFlow
 
 data class MovieDetailsScreenState(
     val movieDetailsUiState: MovieDetailsUiState = MovieDetailsUiState(),
-    val isLoading: Boolean = false,
+    val isLoading: Boolean = true,
     val errorMessage: String? = null,
     val isImageLoading: Boolean = false,
     val isDescriptionLoading: Boolean = false,
