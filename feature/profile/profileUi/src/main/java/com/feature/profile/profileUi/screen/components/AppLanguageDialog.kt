@@ -20,12 +20,12 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.Language
-import com.paris_2.aflami.designsystem.components.AppDialog
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppDialog
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.theme.Theme
 
-import  com.paris_2.aflami.designsystem.R as resDesignSystem
+import  com.paris.aflami.designsystem.R as resDesignSystem
 
 @Composable
 fun AppLanguageDialog(

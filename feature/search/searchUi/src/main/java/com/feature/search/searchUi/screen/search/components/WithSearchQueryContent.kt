@@ -14,10 +14,10 @@ import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.components.SearchResultContent
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
 import com.feature.search.searchUi.screen.search.SearchScreenState
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.TabRow
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.PlaceholderView
+import com.paris.aflami.designsystem.components.TabRow
 
 @Composable
 fun WithSearchQueryContent(
@@ -58,7 +58,7 @@ fun WithSearchQueryContent(
             if (searchResult.collectAsLazyPagingItems().itemCount == 0) {
                 PlaceholderView(
                     modifier = Modifier.fillMaxSize(),
-                    image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_no_search_result),
+                    image = painterResource(com.paris.aflami.designsystem.R.drawable.img_no_search_result),
                     title = stringResource(R.string.no_search_result),
                     subTitle = stringResource(R.string.please_try_with_another_keyword),
                     spacer = 16.dp

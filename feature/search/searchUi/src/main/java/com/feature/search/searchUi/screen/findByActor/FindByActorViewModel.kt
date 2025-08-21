@@ -14,10 +14,10 @@ import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.PagingSource
 import com.feature.search.searchUi.screen.search.ContentRestriction
 import com.feature.search.searchUi.screen.search.MediaUiState
-import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
-import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

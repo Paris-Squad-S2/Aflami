@@ -1,8 +1,8 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.exception.FailedException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.media.exception.FailedException
+import com.paris.domain.media.exception.NoInternetConnectionException
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
 import com.repository.media.models.remote.media.search.KnownForDto

@@ -5,11 +5,11 @@ import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.Destination
 import com.feature.profile.profileUi.navigation.navigateDestination
-import com.paris_2.domain.game.usecases.GetUserPointUseCase
-import com.paris_2.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
-import com.paris_2.domain.user.usecase.IsLoggedInUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.game.usecases.GetUserPointUseCase
+import com.paris.domain.user.usecase.DeleteSessionIdUseCase
+import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.IsLoggedInUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject

@@ -35,12 +35,12 @@ import com.feature.home.homeUi.R
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.home.components.MediaCard
 import com.feature.home.homeUi.screen.home.components.MediaCardType
-import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppIcon
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun TopRatingMoviesScreen(
@@ -124,7 +124,7 @@ fun TopRatingMoviesScreen(
 
             AppTopBar(
                 logo = iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
+                    icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_back),
                     onClick = {
                         context?.finish()
                     },

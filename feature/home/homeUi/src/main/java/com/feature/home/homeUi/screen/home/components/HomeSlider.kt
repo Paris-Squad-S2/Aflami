@@ -32,9 +32,9 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.feature.home.homeUi.R
 import com.feature.home.homeUi.utils.shimmerable
-import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppIcon
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.Theme
 import io.sifr.shaded.blurProcessor.BlurEdgeTreatment
 import io.sifr.shaded.modifiers.blur
 

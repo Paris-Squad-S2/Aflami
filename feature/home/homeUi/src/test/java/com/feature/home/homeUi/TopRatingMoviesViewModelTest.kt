@@ -3,12 +3,12 @@ package com.feature.home.homeUi
 import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesViewModel
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -21,8 +21,8 @@ import kotlinx.coroutines.test.setMain
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.paris_2.domain.media.entity.Media as DomainMedia
-import com.paris_2.domain.media.entity.MediaType as DomainMediaType
+import com.paris.domain.media.entity.Media as DomainMedia
+import com.paris.domain.media.entity.MediaType as DomainMediaType
 
 private const val CATEGORY_DRAMA = 1
 private const val CATEGORY_COMEDY = 2

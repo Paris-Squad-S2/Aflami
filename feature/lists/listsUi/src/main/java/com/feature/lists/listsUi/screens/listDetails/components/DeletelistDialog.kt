@@ -13,12 +13,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.feature.lists.listsUi.R
-import com.paris_2.aflami.designsystem.components.AppDialog
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppDialog
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun DeleteListDialog(

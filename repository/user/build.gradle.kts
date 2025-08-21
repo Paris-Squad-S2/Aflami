@@ -7,7 +7,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.repository.user"
+    namespace = "com.paris.repository.user"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

@@ -1,6 +1,6 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.mapper
 
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.media.entity.Category
 
 
 fun Category.toUiCategory(): CategoryMediaUi = when (this) {

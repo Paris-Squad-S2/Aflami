@@ -2,17 +2,17 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.paris_2.domain.media.entity.Movie
-import com.paris_2.domain.media.entity.Review
-import com.paris_2.domain.media.useCase.movie.AddRatingToMovieUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieCastUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieDetailsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieGalleryUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieRecommendationsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieReviewsUseCase
-import com.paris_2.domain.media.useCase.movie.GetMovieVideoUseCase
-import com.paris_2.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris_2.domain.user.usecase.IsLoggedInUseCase
+import com.paris.domain.media.entity.Movie
+import com.paris.domain.media.entity.Review
+import com.paris.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
@@ -27,11 +27,11 @@ import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
-import com.paris_2.domain.media.entity.MediaVideo
-import com.paris_2.domain.media.useCase.AddWatchHistoryUseCase
-import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.entity.MediaVideo
+import com.paris.domain.media.useCase.AddWatchHistoryUseCase
+import com.paris.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -324,9 +324,9 @@ class MovieDetailsViewModelTest {
     fun `onCreateListNameChange disables button if blank, enables if not blank`() = runTest {
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onCreateListNameChange("")
-        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Disabled, viewModel.screenState.value.createListButtonState)
+        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Disabled, viewModel.screenState.value.createListButtonState)
         viewModel.onCreateListNameChange("NotBlank")
-        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -335,7 +335,7 @@ class MovieDetailsViewModelTest {
         viewModel.updateState(viewModel.screenState.value.copy(createListName = "   "))
         viewModel.onCreateListConfirm()
         // Should not trigger loading state or dialog close
-        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -354,7 +354,7 @@ class MovieDetailsViewModelTest {
         assertEquals("", viewModel.screenState.value.createListName)
         assertTrue(viewModel.screenState.value.showSnackBar)
         assertTrue(viewModel.screenState.value.snackBarSuccess)
-        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -365,7 +365,7 @@ class MovieDetailsViewModelTest {
         viewModel.onCreateListConfirm()
         runCurrent()
         assertEquals("create-list-failure", viewModel.screenState.value.errorMessage)
-        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -381,12 +381,12 @@ class MovieDetailsViewModelTest {
         viewModel.updateState(viewModel.screenState.value.copy(
             showCreateListDialog = true,
             createListName = "foo",
-            createListButtonState = com.paris_2.aflami.designsystem.components.ButtonState.Loading
+            createListButtonState = com.paris.aflami.designsystem.components.ButtonState.Loading
         ))
         viewModel.onCreateListDismiss()
         assertFalse(viewModel.screenState.value.showCreateListDialog)
         assertEquals("", viewModel.screenState.value.createListName)
-        assertEquals(com.paris_2.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test

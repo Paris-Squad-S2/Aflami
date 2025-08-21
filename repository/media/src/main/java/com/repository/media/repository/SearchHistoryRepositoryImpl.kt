@@ -1,8 +1,8 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.entity.SearchHistoryModel
-import com.paris_2.domain.media.entity.SearchType
-import com.paris_2.domain.media.repository.SearchHistoryRepository
+import com.paris.domain.media.entity.SearchHistoryModel
+import com.paris.domain.media.entity.SearchType
+import com.paris.domain.media.repository.SearchHistoryRepository
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.mapper.search.toRepositorySearchType
 import com.repository.media.mapper.search.toSearchHistories

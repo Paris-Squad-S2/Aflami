@@ -26,13 +26,13 @@ import com.feature.categories.categoriesUi.screen.categoryDetails.components.Cat
 import com.feature.categories.categoriesUi.screen.categoryDetails.components.CategoryDetailsEmptyScreen
 import com.feature.categories.categoriesUi.screen.categoryDetails.components.CategoryDetailsMediaList
 import com.feature.categories.categoriesUi.shared.CategoryUiState
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.Theme
+import com.paris.domain.media.exception.NoInternetConnectionException
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun CategoryDetailsScreen(

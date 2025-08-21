@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.paging.PagingData
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.MediaUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
-import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

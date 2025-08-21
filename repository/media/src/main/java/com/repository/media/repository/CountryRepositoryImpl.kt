@@ -1,7 +1,7 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.entity.Country
-import com.paris_2.domain.media.repository.CountryRepository
+import com.paris.domain.media.entity.Country
+import com.paris.domain.media.repository.CountryRepository
 import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.mapper.search.toCountry
 

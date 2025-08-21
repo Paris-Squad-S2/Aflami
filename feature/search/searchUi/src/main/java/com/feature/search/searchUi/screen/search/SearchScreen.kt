@@ -25,13 +25,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.search.searchUi.screen.search.components.FilterDialog
 import com.feature.search.searchUi.screen.search.components.NoSearchQueryContent
 import com.feature.search.searchUi.screen.search.components.WithSearchQueryContent
-import com.paris_2.aflami.designsystem.components.AppTextField
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppTextField
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.Theme
 import java.util.Locale
 import com.feature.search.searchUi.R as RSearchUi
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 
 @Composable

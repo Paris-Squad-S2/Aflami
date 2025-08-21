@@ -25,8 +25,8 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class GuessGameScreenViewModelTest {
 
-    private val getUserPointUseCase: com.paris_2.domain.game.usecases.GetUserPointUseCase = mockk()
-    private val getAccountIdUseCase: com.paris_2.domain.user.usecase.GetAccountIdUseCase = mockk()
+    private val getUserPointUseCase: com.paris.domain.game.usecases.GetUserPointUseCase = mockk()
+    private val getAccountIdUseCase: com.paris.domain.user.usecase.GetAccountIdUseCase = mockk()
     private val navigator: GuessGameNavigator = mockk(relaxed = true)
     private lateinit var viewModel: GuessGameScreenViewModel
     private val dispatcher = StandardTestDispatcher()

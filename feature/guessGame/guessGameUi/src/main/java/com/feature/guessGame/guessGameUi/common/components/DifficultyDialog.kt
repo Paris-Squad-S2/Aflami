@@ -25,13 +25,13 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.feature.guessGame.guessGameUi.R
-import com.paris_2.aflami.designsystem.components.AppDialog
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppDialog
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.Theme
 
 private object DifficultyDialogDefaults {
     val chipShape = RoundedCornerShape(8.dp)
@@ -119,7 +119,7 @@ fun DifficultyDialog(
             }
 
             CustomButton(
-                text = com.paris_2.aflami.designsystem.R.string.let_s_play,
+                text = com.paris.aflami.designsystem.R.string.let_s_play,
                 onClick = onClickButton,
                 type = ButtonType.Primary,
                 state = ButtonState.Normal,

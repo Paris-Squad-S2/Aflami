@@ -10,13 +10,13 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
-import com.paris_2.domain.game.entity.GameSession
-import com.paris_2.domain.game.entity.Question
-import com.paris_2.domain.game.usecases.MoveToNextQuestionUseCase
-import com.paris_2.domain.game.usecases.UseHintUseCase
-import com.paris_2.domain.game.usecases.guessActor.GuessActorSessionUseCase
-import com.paris_2.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.game.entity.GameSession
+import com.paris.domain.game.entity.Question
+import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
+import com.paris.domain.game.usecases.UseHintUseCase
+import com.paris.domain.game.usecases.guessActor.GuessActorSessionUseCase
+import com.paris.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
+import com.paris.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

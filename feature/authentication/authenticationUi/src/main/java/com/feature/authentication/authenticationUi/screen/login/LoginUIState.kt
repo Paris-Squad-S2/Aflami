@@ -2,7 +2,7 @@ package com.feature.authentication.authenticationUi.screen.login
 
 import androidx.annotation.StringRes
 import com.feature.authentication.authenticationUi.R
-import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonState
 
 data class LoginUIState(
     val username: String = "",

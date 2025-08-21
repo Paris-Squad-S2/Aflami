@@ -34,16 +34,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.screen.login.components.CircleBackground
 import com.feature.authentication.authenticationUi.screen.login.components.HeaderIconLogin
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.AppSnackBar
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.AppTextField
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.components.AppSnackBar
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.AppTextField
+import com.paris.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 @Composable
 fun LoginScreen(viewModel: LoginViewModel = hiltViewModel()) {

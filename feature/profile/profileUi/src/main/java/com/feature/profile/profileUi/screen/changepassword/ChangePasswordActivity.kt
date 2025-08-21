@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import com.feature.profile.profileUi.main.InstallSavedAppLanguage
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.AflamiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

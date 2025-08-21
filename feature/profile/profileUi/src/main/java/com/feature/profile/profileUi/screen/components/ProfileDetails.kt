@@ -19,9 +19,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
-import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppIcon
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun ProfileDetails(modifier: Modifier = Modifier, username: String,userPoints: Int) {
@@ -56,7 +56,7 @@ fun ProfileDetails(modifier: Modifier = Modifier, username: String,userPoints: I
             )
             Spacer(Modifier.width(4.dp))
             AppIcon(
-                imageVector = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_horisontal_star),
+                imageVector = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_horisontal_star),
                 contentDescription = null,
                 tint = Theme.colors.onPrimaryColors.onPrimary
             )

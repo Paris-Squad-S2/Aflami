@@ -1,7 +1,7 @@
 package com.repository.media.mapper
 
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
 import com.repository.media.models.remote.media.category.ResultDto
 import com.repository.media.models.remote.media.category.TvResultDto
 import com.repository.media.models.remote.media.home.MovieDto
