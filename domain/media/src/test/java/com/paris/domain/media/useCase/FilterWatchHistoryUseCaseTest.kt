@@ -4,12 +4,13 @@ import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.repository.MediaRepository
 import com.paris.domain.media.testUtils.createMedia
+import com.paris.domain.media.useCase.media.FilterWatchHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 

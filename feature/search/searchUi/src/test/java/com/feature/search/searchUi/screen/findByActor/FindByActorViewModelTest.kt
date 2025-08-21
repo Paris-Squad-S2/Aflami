@@ -1,21 +1,20 @@
 package com.feature.search.searchUi.screen.findByActor
 
-import com.feature.search.searchUi.screen.search.MediaTypeUi
-import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.search.searchUi.screen.utils.collectAllItems
-import com.paris.domain.user.usecase.SettingsUseCase
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.useCase.GetMediaByActorNameUseCase
-import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.media.GetMediaByActorNameUseCase
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

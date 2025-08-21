@@ -6,7 +6,7 @@ import com.feature.profile.profileUi.mapper.toMediaType
 import com.feature.profile.profileUi.mapper.toMediaUiStateList
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
-import com.paris.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
 import com.paris.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
 import com.paris.domain.user.usecase.GetAccountIdUseCase

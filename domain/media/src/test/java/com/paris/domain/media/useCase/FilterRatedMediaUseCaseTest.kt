@@ -1,14 +1,15 @@
 package com.paris.domain.media.useCase
 
-import com.paris.domain.media.repository.MediaRepository
-import io.mockk.mockk
-import org.junit.jupiter.api.BeforeEach
-import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.testUtils.createMedia
-import io.mockk.coEvery
-import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.Test
 import com.google.common.truth.Truth.assertThat
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.repository.MediaRepository
+import com.paris.domain.media.testUtils.createMedia
+import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
+import io.mockk.coEvery
+import io.mockk.mockk
+import kotlinx.coroutines.test.runTest
+import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Test
 
 class FilterRatedMediaUseCaseTest {
 

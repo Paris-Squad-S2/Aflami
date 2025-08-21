@@ -31,7 +31,6 @@ class GuessMovieSessionUseCaseTest {
     @Test
     fun `should create requested number of poster questions with valid options`() = runTest {
         // Given
-        val count = 7
         val allMovies = sampleActors.flatMap { it.media }
         // When
         val session: GameSession = useCase.startNewSession(GameSession.GameLevel.MEDIUM)

@@ -1,4 +1,4 @@
-package com.paris.domain.media.useCase
+package com.paris.domain.media.useCase.tvShows
 
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Media

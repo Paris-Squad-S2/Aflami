@@ -1,4 +1,4 @@
-package com.paris.domain.media.useCase
+package com.paris.domain.media.useCase.search
 
 import com.paris.domain.media.repository.CountryRepository
 

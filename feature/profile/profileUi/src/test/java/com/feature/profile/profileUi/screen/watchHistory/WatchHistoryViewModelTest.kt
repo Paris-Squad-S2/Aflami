@@ -3,7 +3,7 @@ package com.feature.profile.profileUi.screen.watchHistory
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
-import com.paris.domain.media.useCase.FilterWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.FilterWatchHistoryUseCase
 import com.paris.domain.user.usecase.SettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify

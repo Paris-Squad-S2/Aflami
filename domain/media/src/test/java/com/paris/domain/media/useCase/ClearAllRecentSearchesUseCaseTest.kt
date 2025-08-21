@@ -1,7 +1,8 @@
 package com.paris.domain.media.useCase
 
-import com.paris.domain.media.repository.SearchHistoryRepository
 import com.google.common.truth.Truth.assertThat
+import com.paris.domain.media.repository.SearchHistoryRepository
+import com.paris.domain.media.useCase.search.ClearAllRecentSearchesUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

@@ -1,16 +1,17 @@
 package com.paris.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.repository.CountryRepository
 import com.paris.domain.media.testUtils.sampleCountries
-import com.google.common.truth.Truth.assertThat
+import com.paris.domain.media.useCase.search.AutoCompleteCountryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Nested
+import org.junit.jupiter.api.Test
 
 class AutoCompleteCountryUseCaseTest {
     private lateinit var countryRepository: CountryRepository

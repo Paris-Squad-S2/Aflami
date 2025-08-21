@@ -30,8 +30,8 @@ import com.paris.domain.media.entity.MediaVideo
 import com.paris.domain.media.entity.ProductionCompany
 import com.paris.domain.media.entity.Season
 import com.paris.domain.media.entity.TvShow
-import com.paris.domain.media.useCase.AddWatchHistoryUseCase
-import com.paris.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.media.AddWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
 import com.paris.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
 import com.paris.domain.media.useCase.tvShows.GetSeasonDetailsUseCase

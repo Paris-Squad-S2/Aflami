@@ -1,17 +1,18 @@
 package com.paris.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
+import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.repository.MediaRepository
+import com.paris.domain.media.useCase.media.GetWatchHistoryUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
-import com.google.common.truth.Truth.assertThat
-import com.paris.domain.media.entity.Category
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOf
 
 class GetWatchHistoryUseCaseTest {
     private val mediaRepository: MediaRepository = mockk()

@@ -1,4 +1,4 @@
-package com.paris.domain.media.useCase
+package com.paris.domain.media.useCase.media
 
 import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType

@@ -3,12 +3,12 @@ package com.feature.home.homeUi
 import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris.domain.user.usecase.SettingsUseCase
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesViewModel
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
-import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris.domain.media.useCase.media.GetTopRatingMediaUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
