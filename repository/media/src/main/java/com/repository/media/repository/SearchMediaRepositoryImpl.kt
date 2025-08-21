@@ -1,16 +1,15 @@
 package com.repository.media.repository
 
 import com.paris.domain.media.entity.Media
-import com.paris.domain.media.exception.AflamiException
 import com.paris.domain.media.exception.FailedException
-import com.paris.domain.media.exception.NoInternetConnectionException
 import com.paris.domain.media.repository.SearchMediaRepository
 import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
-import com.repository.media.models.local.media.SearchType
 import com.repository.media.mapper.search.toMedia
+import com.repository.media.models.local.media.SearchType
 import com.repository.media.util.NetworkConnectionChecker
+import com.repository.media.util.safeCall
 import kotlinx.coroutines.flow.first
 
 class SearchMediaRepositoryImpl(
@@ -22,7 +21,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByActor(actorName: String, page: Int): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMediaByActor")) {
+        return safeCall(FailedException("getMediaByActor"), networkConnectionChecker) {
             val remoteDto = searchRemoteDataSource.searchPerson(
                 query = actorName,
                 language = language,
@@ -41,7 +40,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMoviesByCountry(countryName: String, page: Int): List<Media> {
         val language =  settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMoviesByCountry")) {
+        return safeCall(FailedException("getMoviesByCountry"), networkConnectionChecker) {
             val remoteDto = searchRemoteDataSource.searchCountryCode(
                 countryCode = countryName,
                 language = language,
@@ -59,7 +58,7 @@ class SearchMediaRepositoryImpl(
 
     override suspend fun getMediaByQuery(query: String, page: Int): List<Media> {
         val language =  settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMediaByQuery")) {
+        return safeCall(FailedException("getMediaByQuery"), networkConnectionChecker) {
             val remoteDto = searchRemoteDataSource.searchMulti(
                 query = query,
                 language = language,
@@ -70,19 +69,6 @@ class SearchMediaRepositoryImpl(
                 searchType = SearchType.Query
             )
             remoteDto.results?.mapNotNull { it.toMedia() } ?: emptyList()
-        }
-    }
-
-    private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
-            throw NoInternetConnectionException()
-        }
-        return try {
-            call()
-        } catch (e: AflamiException) {
-            throw e
-        } catch (_: Exception) {
-            throw exception
         }
     }
 

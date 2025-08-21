@@ -7,9 +7,7 @@ import com.paris.domain.media.entity.Movie
 import com.paris.domain.media.entity.MovieSimilar
 import com.paris.domain.media.entity.ProductionCompany
 import com.paris.domain.media.entity.Review
-import com.paris.domain.media.exception.AflamiException
 import com.paris.domain.media.exception.FailedException
-import com.paris.domain.media.exception.NoInternetConnectionException
 import com.paris.domain.media.repository.MovieRepository
 import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MovieLocalDataSource
@@ -18,6 +16,7 @@ import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toLocalDto
 import com.repository.media.models.local.moive.MovieGalleryEntity
 import com.repository.media.util.NetworkConnectionChecker
+import com.repository.media.util.safeCall
 import kotlinx.coroutines.flow.first
 
 class MovieRepositoryImpl(
@@ -29,7 +28,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieDetails(movieId: Int): Movie {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMovieDetails")) {
+        return safeCall(FailedException("getMovieDetails"), networkConnectionChecker) {
             val localMovie = movieLocalDataSource.getMovieById(movieId, language)
 
             if (localMovie != null) {
@@ -45,7 +44,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieCast(movieId: Int): List<Cast> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMovieCast")) {
+        return safeCall(FailedException("getMovieCast"), networkConnectionChecker) {
             val localCast = movieLocalDataSource.getCastByMovieId(movieId, language)
 
             if (localCast.isNotEmpty()) {
@@ -68,7 +67,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieRecommendations(movieId: Int, page: Int): List<MovieSimilar> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMovieRecommendations")) {
+        return safeCall(FailedException("getMovieRecommendations"), networkConnectionChecker) {
 
             val localMoviesSimilar =
                 movieLocalDataSource.getSimilarMovies(movieId, page, language)
@@ -96,7 +95,7 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getMovieGallery(movieId: Int): List<Image> {
-        return safeCall(FailedException("getMovieGallery")) {
+        return safeCall(FailedException("getMovieGallery"), networkConnectionChecker) {
             val localGallery = movieLocalDataSource.getGalleryByMovieId(movieId)
 
             if (localGallery != null) {
@@ -118,7 +117,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getCompanyProducts(movieId: Int): List<ProductionCompany> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getCompanyProducts")) {
+        return safeCall(FailedException("getCompanyProducts"), networkConnectionChecker) {
             val localMovie = movieLocalDataSource.getMovieById(movieId, language)
             val localProductionCompanies = localMovie?.productionCompanies
             if (!localProductionCompanies.isNullOrEmpty()) {
@@ -144,7 +143,7 @@ class MovieRepositoryImpl(
 
     override suspend fun getMovieReview(movieId: Int, page: Int): List<Review> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMovieReview")) {
+        return safeCall(FailedException("getMovieReview"), networkConnectionChecker) {
 
             val localReviews = movieLocalDataSource.getReviewsByMovieId(movieId, language)
 
@@ -172,7 +171,7 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun getTrailerVideoForMovie(movieId: Int): List<MediaVideo> {
-        return safeCall(FailedException("getTrailerVideoForMovie")) {
+        return safeCall(FailedException("getTrailerVideoForMovie"), networkConnectionChecker) {
             movieRemoteDataSource.getTrailerVideoForMovie(movieId)
                 .movieVideoResultDto
                 ?.map { it.toEntity() }
@@ -182,7 +181,7 @@ class MovieRepositoryImpl(
 
     override suspend fun addRatingToMovie(movieId: Int, rating: Float) {
         movieRemoteDataSource
-        return safeCall(FailedException("addRatingToMovie")) {
+        return safeCall(FailedException("addRatingToMovie"), networkConnectionChecker) {
             movieRemoteDataSource.addRatingToMovie(
                 movieId = movieId,
                 rating = rating
@@ -191,23 +190,11 @@ class MovieRepositoryImpl(
     }
 
     override suspend fun deleteMovieRating(movieId: Int) {
-        return safeCall(FailedException("deleteMovieRating")) {
+        return safeCall(FailedException("deleteMovieRating"), networkConnectionChecker) {
             movieRemoteDataSource.deleteMovieRating(
                 movieId = movieId
             )
         }
     }
 
-    private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
-            throw NoInternetConnectionException()
-        }
-        return try {
-            call()
-        } catch (e: AflamiException) {
-            throw e
-        } catch (_: Exception) {
-            throw exception
-        }
-    }
 }

@@ -1,39 +1,26 @@
 package com.repository.media.repository
 
 import com.paris.domain.media.entity.Category
-import com.paris.domain.media.exception.AflamiException
 import com.paris.domain.media.exception.FailedException
-import com.paris.domain.media.exception.NoInternetConnectionException
 import com.paris.domain.media.repository.MoviesCategoriesRepository
 import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.mapper.genreListToCategoryList
 import com.repository.media.util.NetworkConnectionChecker
+import com.repository.media.util.safeCall
 import kotlinx.coroutines.flow.first
 
 class MoviesCategoriesRepositoryImpl(
     private val genresRemoteDataSource: GenresRemoteDataSource,
     private val networkConnectionChecker: NetworkConnectionChecker,
     private val settingLocalDataSource: SettingLocalDataSource
-): MoviesCategoriesRepository {
+) : MoviesCategoriesRepository {
     override suspend fun getMoviesCategories(): List<Category> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getMoviesCategories")) {
+        return safeCall(FailedException("getMoviesCategories"), networkConnectionChecker) {
             val genresDto = genresRemoteDataSource.getMoviesGenres(language)
             genresDto.genreListToCategoryList()
         }
     }
 
-    private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
-            throw NoInternetConnectionException()
-        }
-        return try {
-            call()
-        } catch (e: AflamiException) {
-            throw e
-        } catch (_: Exception) {
-            throw exception
-        }
-    }
 }
