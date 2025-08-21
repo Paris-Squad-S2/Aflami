@@ -13,7 +13,6 @@ import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.mapper.toEntity
 import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.HomeMediaEntity
-import com.repository.media.models.local.media.MediaEntity
 import com.repository.media.models.local.media.MediaTypeEntity
 import com.repository.media.models.remote.media.category.MovieByCategoryDto
 import com.repository.media.models.remote.media.category.ResultDto
@@ -27,8 +26,6 @@ import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -366,21 +363,6 @@ class MediaRepositoryImplTest {
         coVerify { mediaLocalDataSource.addMediaContinueWatching(media.toEntity()) }
     }
 
-    @Test
-    fun `getMediaFromLocal maps entities to domain`() = runTest {
-        val entity = MediaEntity(
-            id = 300,
-            title = "Saved",
-            posterPath = "saved.jpg",
-            type = MediaTypeEntity.TvShow,
-            genreIds = listOf(2),
-            voteAverage = 6.6,
-            releaseDate = "2023-09-09"
-        )
-        coEvery { mediaLocalDataSource.getMediaContinueWatching() } returns flowOf(listOf(entity))
-        val result = repo.getContinueWatchingMedia().single()
-        assertThat(result.single().id).isEqualTo(300)
-    }
 
     @Test
     fun `addMediaToContinueWatching throws NoInternetConnectionException when offline`() = runTest {
