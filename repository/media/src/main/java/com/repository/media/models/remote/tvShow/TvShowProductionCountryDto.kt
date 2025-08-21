@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class TvShowProductionCountryDto(
-    @SerialName("iso_3166_1") val iso31661: String? = null,
+    @SerialName("iso_3166_1") val countryCode: String? = null,
     @SerialName("name") val name: String? = null
 )
