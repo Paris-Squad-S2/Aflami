@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.feature.categories.categoriesUi.screen.main.InstallSavedAppLanguage
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.categories.categoriesUi.shared.fromJsonToCategoryUiState
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

@@ -25,11 +25,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.guessGame.guessGameUi.common.components.DifficultyDialog
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.components.PointsBadge
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.GameCard
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.GameCard
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.Theme
 import com.feature.guessGame.guessGameUi.R as GuessR
 
 @Composable

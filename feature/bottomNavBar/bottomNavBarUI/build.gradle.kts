@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.aflami.bottomNavBar.bottomNavBarUI"
+    namespace = "com.paris.aflami.bottomNavBar.bottomNavBarUI"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

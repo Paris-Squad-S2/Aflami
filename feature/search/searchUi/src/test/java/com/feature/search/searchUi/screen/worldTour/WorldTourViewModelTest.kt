@@ -1,18 +1,18 @@
 package com.feature.search.searchUi.screen.worldTour
 
 import com.feature.search.searchUi.screen.search.MediaTypeUi
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.Country
-import com.paris_2.domain.media.useCase.AutoCompleteCountryUseCase
-import com.paris_2.domain.media.useCase.GetCountryCodeByNameUseCase
-import com.paris_2.domain.media.useCase.GetMediaByActorNameUseCase
-import com.paris_2.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.paris_2.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris_2.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.entity.Country
+import com.paris.domain.media.useCase.AutoCompleteCountryUseCase
+import com.paris.domain.media.useCase.GetCountryCodeByNameUseCase
+import com.paris.domain.media.useCase.GetMediaByActorNameUseCase
+import com.paris.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
+import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
+import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.clearAllMocks

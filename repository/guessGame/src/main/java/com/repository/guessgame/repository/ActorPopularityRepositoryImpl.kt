@@ -1,11 +1,11 @@
 package com.repository.guessgame.repository
 
-import com.paris_2.domain.game.entity.Actor
-import com.paris_2.domain.game.exception.FailedException
-import com.paris_2.domain.game.exception.GameException
-import com.paris_2.domain.game.exception.NoInternetConnectionException
-import com.paris_2.domain.game.repositories.ActorPopularityRepository
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.game.entity.Actor
+import com.paris.domain.game.exception.FailedException
+import com.paris.domain.game.exception.GameException
+import com.paris.domain.game.exception.NoInternetConnectionException
+import com.paris.domain.game.repositories.ActorPopularityRepository
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
 import com.repository.guessgame.mapper.toDomain
 import com.repository.guessgame.utils.NetworkConnectionChecker

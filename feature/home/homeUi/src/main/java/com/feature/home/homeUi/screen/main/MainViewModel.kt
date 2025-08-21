@@ -1,7 +1,7 @@
 package com.feature.home.homeUi.screen.main
 
 import androidx.lifecycle.ViewModel
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

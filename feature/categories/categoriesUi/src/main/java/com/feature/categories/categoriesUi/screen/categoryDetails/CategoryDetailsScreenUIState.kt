@@ -3,11 +3,11 @@ package com.feature.categories.categoriesUi.screen.categoryDetails
 import androidx.paging.PagingData
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.categories.categoriesUi.shared.Status
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 data class CategoryDetailsScreenUIState(
     val categoryDetailsUIState: CategoryDetailsUIState = CategoryDetailsUIState(),

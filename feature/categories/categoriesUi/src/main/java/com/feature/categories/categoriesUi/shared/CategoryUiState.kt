@@ -3,8 +3,8 @@ package com.feature.categories.categoriesUi.shared
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.feature.categories.categoriesUi.R
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.MediaType
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.entity.MediaType
 import kotlinx.serialization.InternalSerializationApi
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json

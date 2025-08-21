@@ -10,9 +10,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.profile.profileUi.screen.components.WebViewComposable
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun ChangePasswordWebViewScreen(viewModel: ChangePasswordViewModel = hiltViewModel()) {

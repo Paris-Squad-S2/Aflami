@@ -1,7 +1,7 @@
 package com.feature.categories.categoriesUi.screen.categoryDetails.components
 
 import com.feature.categories.categoriesUi.R
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.media.entity.Category
 
 object CategoryResourceMapper {
     private val categoryToResourceMap = mapOf(

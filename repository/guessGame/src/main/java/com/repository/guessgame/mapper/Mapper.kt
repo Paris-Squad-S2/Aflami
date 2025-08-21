@@ -1,9 +1,9 @@
 package com.repository.guessgame.mapper
 
-import com.paris_2.domain.game.entity.Actor
-import com.paris_2.domain.game.entity.ActorMedia
-import com.paris_2.domain.game.entity.UserPoints
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.game.entity.Actor
+import com.paris.domain.game.entity.ActorMedia
+import com.paris.domain.game.entity.UserPoints
+import com.paris.domain.media.entity.Category
 import com.repository.guessgame.dto.ActorDto
 import com.repository.guessgame.dto.ActorMediaDto
 import com.repository.guessgame.entity.UserGamePointsEntity

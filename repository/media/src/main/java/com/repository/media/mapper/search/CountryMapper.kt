@@ -1,6 +1,6 @@
 package com.repository.media.mapper.search
 
-import com.paris_2.domain.media.entity.Country
+import com.paris.domain.media.entity.Country
 import com.repository.media.models.local.media.CountryEntity
 
 

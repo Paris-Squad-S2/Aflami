@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.paging.PagingData
 import com.paris.domain.lists.entity.Lists
 import com.paris.domain.lists.entity.Response
-import com.paris_2.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 

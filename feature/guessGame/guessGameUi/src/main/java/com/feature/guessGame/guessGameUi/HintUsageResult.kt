@@ -1,6 +1,6 @@
 package com.feature.guessGame.guessGameUi
 
-import com.paris_2.domain.game.entity.Question
+import com.paris.domain.game.entity.Question
 
  sealed class HintUsageResult {
     data class Success(val updatedQuestion: Question?) : HintUsageResult()
