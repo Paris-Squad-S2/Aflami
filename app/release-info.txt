@@ -1,2 +1,2 @@
-versionName=1.0.18
-- fix assets gifs in readme file
+versionName=1.0.19
+- fix the issue of gallery and company in details
