@@ -427,7 +427,7 @@ fun TvShowDetailsScreenContent(
 
                                 TvShowChips.GALLERY ->  {
                                     if (state.tvShowDetailsUiState.gallery.isEmpty()) {
-                                        item {
+                                        item (span = {GridItemSpan(maxLineSpan)}){
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -456,7 +456,7 @@ fun TvShowDetailsScreenContent(
                             }
                         }
 
-                        item {
+                        item (span = {GridItemSpan(maxLineSpan)}){
                             Spacer(
                                 modifier = Modifier
                                     .fillMaxWidth()

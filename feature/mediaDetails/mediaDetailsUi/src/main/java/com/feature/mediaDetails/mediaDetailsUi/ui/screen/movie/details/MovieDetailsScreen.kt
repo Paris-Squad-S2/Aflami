@@ -244,7 +244,7 @@ fun MovieDetailsScreenContent(
                             .navigationBarsPadding(),
                     ) {
                         if (state.isDescriptionLoading) {
-                            item (span = {GridItemSpan(1)}){
+                            item (span = {GridItemSpan(maxLineSpan)}){
                                 PageLoadingPlaceHolder(
                                     modifier = Modifier.padding(16.dp)
                                 )
