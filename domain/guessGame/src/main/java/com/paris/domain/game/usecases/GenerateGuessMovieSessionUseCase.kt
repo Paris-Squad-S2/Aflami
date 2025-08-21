@@ -1,48 +1,45 @@
-package com.paris.domain.game.usecases.whichGenre
+package com.paris.domain.game.usecases
 
 import com.paris.domain.game.entity.Answer
 import com.paris.domain.game.entity.GameSession
 import com.paris.domain.game.entity.Question
 import com.paris.domain.game.repositories.ActorPopularityRepository
+import com.paris.domain.media.entity.Category
 import java.util.UUID
 
-class WhichGenreSessionUseCase(
+class GenerateGuessMovieSessionUseCase(
     private val actorPopularityRepository: ActorPopularityRepository,
 ) {
-
     private suspend fun generateQuestion(): Question {
+
         val actors = actorPopularityRepository.getPopularActor()
-        val allMovies = actors.flatMap { it.media }.filter { it.genres.isNotEmpty() }
-
+        val allMovies = actors.flatMap { it.media }
         val correctMovie = allMovies.random()
-        val correctGenreName = correctMovie.genres.random()
 
-        val questionId = UUID.randomUUID().toString()
-
-        val wrongGenreNames = allMovies
-            .flatMap { it.genres }
-            .distinct()
-            .filter { it != correctGenreName }
+        val wrongOptions = allMovies
+            .filter { it.id != correctMovie.id }
+            .map { it.name }
             .shuffled()
             .take(3)
 
-        val allOptions = (wrongGenreNames + correctGenreName)
-            .shuffled()
-            .map { genreName ->
+        val questionId = UUID.randomUUID().toString()
+        val options = (wrongOptions + correctMovie.name)
+            .map { movieName ->
                 Answer(
                     questionId = questionId,
-                    text = genreName.toString(),
-                    isCorrect = genreName == correctGenreName,
-                    genre = genreName
+                    text = movieName,
+                    isCorrect = movieName == correctMovie.name,
+                    genre = correctMovie.genres.firstOrNull() ?: Category.Unknown
                 )
             }
+            .shuffled()
 
         return Question(
             id = questionId,
-            type = Question.QuestionType.TEXT,
-            content = correctMovie.name,
-            correctAnswer = correctGenreName.toString(),
-            options = allOptions,
+            type = Question.QuestionType.IMAGE,
+            content = correctMovie.posterImg,
+            correctAnswer = correctMovie.name,
+            options = options,
             usedHint = false
         )
     }

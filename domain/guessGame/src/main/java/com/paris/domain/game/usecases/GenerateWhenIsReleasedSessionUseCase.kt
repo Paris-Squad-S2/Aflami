@@ -1,4 +1,4 @@
-package com.paris.domain.game.usecases.whenIsReleased
+package com.paris.domain.game.usecases
 
 import com.paris.domain.game.entity.Answer
 import com.paris.domain.game.entity.GameSession
@@ -7,7 +7,7 @@ import com.paris.domain.game.repositories.ActorPopularityRepository
 import com.paris.domain.media.entity.Category
 import java.util.UUID
 
-class WhenIsReleasedSessionUseCase(
+class GenerateWhenIsReleasedSessionUseCase(
     private val actorPopularityRepository: ActorPopularityRepository
 ) {
 

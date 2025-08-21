@@ -1,14 +1,11 @@
 package com.paris.aflami.di
 
-import com.paris.domain.lists.repository.ListsRepository
-import com.paris.domain.lists.useCase.AddMovieToListUseCase
-import com.paris.domain.lists.useCase.CreateListUseCase
-import com.paris.domain.lists.useCase.DeleteListUseCase
-import com.paris.domain.lists.useCase.GetListDetailsUseCase
-import com.paris.domain.lists.useCase.GetListUseCase
-import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris.domain.game.repositories.ActorPopularityRepository
 import com.paris.domain.game.repositories.GamePointsRepository
+import com.paris.domain.game.usecases.GenerateGuessActorSessionUseCase
+import com.paris.domain.game.usecases.GenerateGuessMovieSessionUseCase
+import com.paris.domain.game.usecases.GenerateWhenIsReleasedSessionUseCase
+import com.paris.domain.game.usecases.GenerateWhichGenreSessionUseCase
 import com.paris.domain.game.usecases.GetActorsMediaUseCase
 import com.paris.domain.game.usecases.GetPopularActorsUseCase
 import com.paris.domain.game.usecases.GetUserPointUseCase
@@ -16,10 +13,13 @@ import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris.domain.game.usecases.UpdatePointsUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.game.usecases.guessActor.GuessActorSessionUseCase
-import com.paris.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
-import com.paris.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
-import com.paris.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
+import com.paris.domain.lists.repository.ListsRepository
+import com.paris.domain.lists.useCase.AddMovieToListUseCase
+import com.paris.domain.lists.useCase.CreateListUseCase
+import com.paris.domain.lists.useCase.DeleteListUseCase
+import com.paris.domain.lists.useCase.GetListDetailsUseCase
+import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris.domain.media.repository.CategoriesRepository
 import com.paris.domain.media.repository.CountryRepository
 import com.paris.domain.media.repository.GenresInteractionRepository
@@ -356,19 +356,19 @@ object UseCaseModule {
 
     @Provides
     fun provideGuessActorSessionUseCase(repository: ActorPopularityRepository) =
-        GuessActorSessionUseCase(repository)
+        GenerateGuessActorSessionUseCase(repository)
 
     @Provides
     fun provideGuessMovieSessionUseCase(repository: ActorPopularityRepository) =
-        GuessMovieSessionUseCase(repository)
+        GenerateGuessMovieSessionUseCase(repository)
 
     @Provides
     fun provideWhenIsReleasedSessionUseCase(repository: ActorPopularityRepository) =
-        WhenIsReleasedSessionUseCase(repository)
+        GenerateWhenIsReleasedSessionUseCase(repository)
 
     @Provides
     fun provideWhichGenreSessionUseCase(repository: ActorPopularityRepository) =
-        WhichGenreSessionUseCase(repository)
+        GenerateWhichGenreSessionUseCase(repository)
 
     @Provides
     fun provideGetUserPointUseCase(

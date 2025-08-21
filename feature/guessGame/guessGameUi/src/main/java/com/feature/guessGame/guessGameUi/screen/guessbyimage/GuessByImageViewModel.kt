@@ -12,10 +12,10 @@ import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResI
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris.domain.game.entity.GameSession
 import com.paris.domain.game.entity.Question
+import com.paris.domain.game.usecases.GenerateGuessActorSessionUseCase
+import com.paris.domain.game.usecases.GenerateGuessMovieSessionUseCase
 import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.game.usecases.guessActor.GuessActorSessionUseCase
-import com.paris.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
 import com.paris.domain.user.usecase.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -23,8 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class GuessByImageViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val guessMovieSessionUseCase: GuessMovieSessionUseCase,
-    private val guessActorSessionUseCase: GuessActorSessionUseCase,
+    private val generateGuessMovieSessionUseCase: GenerateGuessMovieSessionUseCase,
+    private val generateGuessActorSessionUseCase: GenerateGuessActorSessionUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val useHintUseCase: UseHintUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
@@ -61,10 +61,10 @@ class GuessByImageViewModel @Inject constructor(
         tryToExecute(
             execute = {
                 val session =
-                    if (questionType == QuestionType.ACTOR) guessActorSessionUseCase.startNewSession(
+                    if (questionType == QuestionType.ACTOR) generateGuessActorSessionUseCase.startNewSession(
                         gameLevel.toUiLevel()
                     ) else
-                        guessMovieSessionUseCase.startNewSession(gameLevel.toUiLevel())
+                        generateGuessMovieSessionUseCase.startNewSession(gameLevel.toUiLevel())
                 currentSession = session
                 startTimeMillis = System.currentTimeMillis()
                 session

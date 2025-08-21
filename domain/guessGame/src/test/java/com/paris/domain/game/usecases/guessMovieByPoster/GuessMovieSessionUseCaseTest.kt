@@ -4,27 +4,27 @@ import com.google.common.truth.Truth.assertThat
 import com.paris.domain.game.entity.Actor
 import com.paris.domain.game.entity.ActorMedia
 import com.paris.domain.game.entity.GameSession
-import com.paris.domain.game.entity.MoviePosterQuestion
 import com.paris.domain.game.entity.Question
 import com.paris.domain.game.repositories.ActorPopularityRepository
+import com.paris.domain.game.usecases.GenerateGuessMovieSessionUseCase
 import com.paris.domain.media.entity.Category
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
-import kotlinx.datetime.LocalDate
 import kotlinx.coroutines.test.runTest
+import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class GuessMovieSessionUseCaseTest {
 
     private lateinit var repository: ActorPopularityRepository
-    private lateinit var useCase: GuessMovieSessionUseCase
+    private lateinit var useCase: GenerateGuessMovieSessionUseCase
 
     @BeforeEach
     fun setUp() {
         repository = mockk()
-        useCase = GuessMovieSessionUseCase(repository)
+        useCase = GenerateGuessMovieSessionUseCase(repository)
         coEvery { repository.getPopularActor() } returns sampleActors
     }
 

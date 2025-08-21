@@ -6,6 +6,7 @@ import com.paris.domain.game.entity.ActorMedia
 import com.paris.domain.game.entity.GameSession
 import com.paris.domain.game.entity.Question
 import com.paris.domain.game.repositories.ActorPopularityRepository
+import com.paris.domain.game.usecases.GenerateWhenIsReleasedSessionUseCase
 import com.paris.domain.media.entity.Category
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -18,12 +19,12 @@ import org.junit.jupiter.api.Test
 class WhenIsReleasedSessionUseCaseTest {
 
     private lateinit var repository: ActorPopularityRepository
-    private lateinit var useCase: WhenIsReleasedSessionUseCase
+    private lateinit var useCase: GenerateWhenIsReleasedSessionUseCase
 
     @BeforeEach
     fun setUp() {
         repository = mockk()
-        useCase = WhenIsReleasedSessionUseCase(repository)
+        useCase = GenerateWhenIsReleasedSessionUseCase(repository)
         coEvery { repository.getPopularActor() } returns sampleActors
     }
 
