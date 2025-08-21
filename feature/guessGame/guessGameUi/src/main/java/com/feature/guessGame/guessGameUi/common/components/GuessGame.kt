@@ -42,7 +42,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.designSystem.safeimageviewer.SafeImageViewer
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
 import com.paris_2.aflami.designsystem.R
 import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
 import com.paris_2.aflami.designsystem.components.AppIcon
@@ -59,6 +60,7 @@ fun GuessCard(
     textNoImage: String? = null,
     clickable: Boolean = false,
     onClick: () -> Unit = {},
+    onImageLoadError: (() -> Unit)? = null,
     imageState: GuessCardImageState = GuessCardImageState.Show,
     showHint: Boolean = false,
     hintPoints: Int = 10
@@ -96,14 +98,27 @@ fun GuessCard(
             ) {
 
             if (imageUrl != null) {
-                SafeImageViewer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(176.dp),
-                    imageUrl = imageUrl,
-                    contentDescription = stringResource(R.string.character_image),
-                    contentScale = ContentScale.Crop
-                )
+                var imageLoadFailed by remember { mutableStateOf(false) }
+
+                if (!imageLoadFailed) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(176.dp),
+                        model = imageUrl,
+                        contentDescription = stringResource(R.string.character_image),
+                        contentScale = ContentScale.Crop,
+                        onState = { state ->
+                            when (state) {
+                                is AsyncImagePainter.State.Error -> {
+                                    imageLoadFailed = true
+                                    onImageLoadError?.invoke()
+                                }
+                                else -> {}
+                            }
+                        }
+                    )
+                }
             } else if (textNoImage != null) {
                 Box(
                     modifier = Modifier

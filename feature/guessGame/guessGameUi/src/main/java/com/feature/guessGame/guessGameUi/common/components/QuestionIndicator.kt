@@ -70,7 +70,6 @@ private fun IndicatorBox(
     modifier: Modifier = Modifier,
     isSelect: Boolean = false
 ) {
-    val layoutDirection = LocalLayoutDirection.current
     val progress = remember { Animatable(0f) }
 
     LaunchedEffect(isSelect) {
@@ -98,15 +97,7 @@ private fun IndicatorBox(
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .then(
-                    if (layoutDirection == LayoutDirection.Ltr) {
-                        Modifier.fillMaxWidth(progress.value)
-                    } else {
-                        Modifier
-                            .fillMaxWidth(progress.value)
-                            .align(Alignment.CenterEnd)
-                    }
-                )
+                .fillMaxWidth(progress.value)
                 .background(startColor)
         )
     }
