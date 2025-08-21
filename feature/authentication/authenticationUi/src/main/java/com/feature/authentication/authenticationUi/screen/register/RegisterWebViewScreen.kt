@@ -11,7 +11,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.comon.WebViewComposable
 import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
 import com.paris_2.aflami.designsystem.theme.Theme
 
 @Composable
@@ -43,11 +42,6 @@ private fun RegisterScreenContent(uiState: RegisterUIState, registerViewModel: R
                 registerViewModel.onNavigateBack()
             },
             modifier = Modifier.fillMaxSize(),
-            loadingPlaceholder = {
-                PageLoadingPlaceHolder(
-                    modifier = Modifier.fillMaxSize()
-                )
-            },
             errorPlaceholder = { onRetry ->
                 NetworkError(
                     modifier = Modifier
