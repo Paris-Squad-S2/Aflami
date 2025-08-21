@@ -2,6 +2,7 @@ package com.paris.domain.media.useCase
 
 import com.paris.domain.media.entity.SearchType
 import com.paris.domain.media.repository.SearchHistoryRepository
+import com.paris.domain.media.useCase.search.ClearRecentSearchUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

@@ -10,13 +10,13 @@ import com.feature.categories.categoriesUi.shared.BaseViewModel
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.useCase.GetMoviesByCategoryUseCase
-import com.paris.domain.media.useCase.GetTvShowsByCategoryUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesByCategoryUseCase
+import com.paris.domain.media.useCase.tvShows.GetTvShowsByCategoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import com.paris.aflami.designsystem.R as RDesignSystem
 
 @HiltViewModel

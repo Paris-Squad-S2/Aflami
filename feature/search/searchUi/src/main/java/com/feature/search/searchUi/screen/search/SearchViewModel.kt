@@ -19,16 +19,16 @@ import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.PagingSource
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Media
-import com.paris.domain.media.useCase.ClearAllRecentSearchesUseCase
-import com.paris.domain.media.useCase.ClearRecentSearchUseCase
-import com.paris.domain.media.useCase.FilterMediaByRatingUseCase
-import com.paris.domain.media.useCase.FilterMediaUseCase
-import com.paris.domain.media.useCase.GetAllCategoriesUseCase
-import com.paris.domain.media.useCase.GetAllRecentSearchesUseCase
-import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris.domain.media.useCase.SearchByQueryUseCase
-import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.media.FilterMediaByRatingUseCase
+import com.paris.domain.media.useCase.media.FilterMediaUseCase
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.search.ClearAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.search.ClearRecentSearchUseCase
+import com.paris.domain.media.useCase.search.GetAllCategoriesUseCase
+import com.paris.domain.media.useCase.search.GetAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
+import com.paris.domain.media.useCase.search.SearchByQueryUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +54,7 @@ class SearchViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(),
@@ -67,7 +67,7 @@ class SearchViewModel @Inject constructor(
 
     private fun getRestriction() {
         viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
+            val restriction = manageSettingsUseCase.getRestriction()
             updateState(
                 screenState.value.copy(
                     screenState.value.searchUiState.copy(

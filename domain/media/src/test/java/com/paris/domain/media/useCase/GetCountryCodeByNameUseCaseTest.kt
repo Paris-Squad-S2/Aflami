@@ -1,14 +1,15 @@
 package com.paris.domain.media.useCase
 
-import com.paris.domain.media.repository.CountryRepository
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Country
+import com.paris.domain.media.repository.CountryRepository
+import com.paris.domain.media.useCase.search.GetCountryCodeByNameUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.google.common.truth.Truth.assertThat
 
 class GetCountryCodeByNameUseCaseTest {
 

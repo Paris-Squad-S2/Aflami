@@ -17,7 +17,7 @@ import com.feature.profile.profileUi.utils.WebViewClientImpl
 fun WebViewComposable(
     modifier: Modifier = Modifier,
     url: String,
-    onWebMessageReceived: (String) -> Unit,
+    onWebMessageReceived: (String) -> Unit = {},
     loadingPlaceholder: @Composable () -> Unit,
     errorPlaceholder: @Composable (onRetry: () -> Unit) -> Unit,
     onNavigationEvent: (() -> Unit)? = null,

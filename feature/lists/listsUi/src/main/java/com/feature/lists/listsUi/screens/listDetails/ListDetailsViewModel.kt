@@ -14,7 +14,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
@@ -26,7 +26,7 @@ class ListDetailsViewModel @Inject constructor(
     private val getListDetailsUseCase: GetListDetailsUseCase,
     private val removeMovieFromListUseCase: RemoveMovieFromListUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel<ListDetailsScreenState>(ListDetailsScreenState()),
     ListDetailsScreenInteractionListener {
@@ -40,7 +40,7 @@ class ListDetailsViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

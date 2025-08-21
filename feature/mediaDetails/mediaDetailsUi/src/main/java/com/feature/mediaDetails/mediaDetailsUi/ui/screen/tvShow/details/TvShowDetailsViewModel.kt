@@ -30,8 +30,8 @@ import com.paris.domain.media.entity.MediaVideo
 import com.paris.domain.media.entity.ProductionCompany
 import com.paris.domain.media.entity.Season
 import com.paris.domain.media.entity.TvShow
-import com.paris.domain.media.useCase.AddWatchHistoryUseCase
-import com.paris.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.media.AddWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
 import com.paris.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
 import com.paris.domain.media.useCase.tvShows.GetSeasonDetailsUseCase
@@ -42,9 +42,9 @@ import com.paris.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
@@ -68,7 +68,7 @@ class TvShowDetailsViewModel @Inject constructor(
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
     private val getRatingUseCase: FilterRatedMediaUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
     navigator: MediaDetailsNavigator,
@@ -122,7 +122,7 @@ class TvShowDetailsViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

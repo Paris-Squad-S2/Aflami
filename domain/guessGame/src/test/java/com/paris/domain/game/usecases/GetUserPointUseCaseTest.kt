@@ -3,7 +3,7 @@ package com.paris.domain.game.usecases
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.game.entity.UserPoints
 import com.paris.domain.game.repositories.GamePointsRepository
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

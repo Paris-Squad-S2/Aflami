@@ -21,21 +21,21 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestina
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.paging.PagingSource
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.SimilarMediaUI
+import com.paris.aflami.designsystem.components.ButtonState
 import com.paris.domain.lists.entity.Lists
+import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
-import com.paris.domain.lists.useCase.GetListUseCase
-import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
-import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.domain.media.entity.Cast
 import com.paris.domain.media.entity.Image
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.entity.MediaVideo
 import com.paris.domain.media.entity.Movie
 import com.paris.domain.media.entity.ProductionCompany
-import com.paris.domain.media.useCase.AddWatchHistoryUseCase
-import com.paris.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.media.AddWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
 import com.paris.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.paris.domain.media.useCase.movie.GetMovieCastUseCase
 import com.paris.domain.media.useCase.movie.GetMovieDetailsUseCase
@@ -44,9 +44,9 @@ import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -74,7 +74,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val addMovieToListUseCase: AddMovieToListUseCase,
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
     private val getListDetailsUseCase: GetListDetailsUseCase,
     private val getRatingUseCase: FilterRatedMediaUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
@@ -141,7 +141,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

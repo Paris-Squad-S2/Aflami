@@ -6,6 +6,7 @@ import com.feature.guessGame.guessGameUi.navigation.Destinations
 import com.feature.guessGame.guessGameUi.navigation.GuessGameNavigator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.navigation.navigateToGame
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -26,7 +27,7 @@ import org.junit.jupiter.api.Test
 class GuessGameScreenViewModelTest {
 
     private val getUserPointUseCase: com.paris.domain.game.usecases.GetUserPointUseCase = mockk()
-    private val getAccountIdUseCase: com.paris.domain.user.usecase.GetAccountIdUseCase = mockk()
+    private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private val navigator: GuessGameNavigator = mockk(relaxed = true)
     private lateinit var viewModel: GuessGameScreenViewModel
     private val dispatcher = StandardTestDispatcher()

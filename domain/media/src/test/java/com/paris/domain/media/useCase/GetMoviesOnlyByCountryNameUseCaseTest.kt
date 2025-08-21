@@ -1,9 +1,10 @@
 package com.paris.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.repository.SearchMediaRepository
 import com.paris.domain.media.testUtils.createMedia
-import com.google.common.truth.Truth.assertThat
+import com.paris.domain.media.useCase.movie.GetMoviesOnlyByCountryNameUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

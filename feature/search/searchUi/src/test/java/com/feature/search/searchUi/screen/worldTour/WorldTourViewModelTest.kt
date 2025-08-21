@@ -1,21 +1,21 @@
 package com.feature.search.searchUi.screen.worldTour
 
-import com.feature.search.searchUi.screen.search.MediaTypeUi
-import com.paris.domain.user.usecase.SettingsUseCase
-import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
+import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Country
-import com.paris.domain.media.useCase.AutoCompleteCountryUseCase
-import com.paris.domain.media.useCase.GetCountryCodeByNameUseCase
-import com.paris.domain.media.useCase.GetMediaByActorNameUseCase
-import com.paris.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.media.GetMediaByActorNameUseCase
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesOnlyByCountryNameUseCase
+import com.paris.domain.media.useCase.search.AutoCompleteCountryUseCase
+import com.paris.domain.media.useCase.search.GetCountryCodeByNameUseCase
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
+import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.clearAllMocks
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -41,7 +41,7 @@ class WorldTourViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -54,7 +54,7 @@ class WorldTourViewModelTest {
         getCountryCodeByNameUseCase = mockk(relaxed = true)
         incrementCategoryInteractionUseCase = mockk(relaxed = true)
         sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = WorldTourViewModel(
             autoCompleteCountryUseCase = autoCompleteCountryUseCase,
@@ -64,7 +64,7 @@ class WorldTourViewModelTest {
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             savedStateHandle = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase = settingsUseCase,
+            manageSettingsUseCase = manageSettingsUseCase,
         )
     }
 

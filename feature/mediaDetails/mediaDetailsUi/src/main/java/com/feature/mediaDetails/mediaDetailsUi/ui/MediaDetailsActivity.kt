@@ -11,7 +11,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigat
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.fromJsonToMediaDetailsDestination
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.main.InstallSavedAppLanguage
 import com.paris.aflami.designsystem.theme.AflamiTheme
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class MediaDetailsActivity : AppCompatActivity() {
     lateinit var authenticationFeatureAPI: AuthenticationFeatureAPI
 
     @Inject
-    lateinit var settingsUseCase: SettingsUseCase
+    lateinit var manageSettingsUseCase: ManageSettingsUseCase
 
     @Inject
     lateinit var navigator: MediaDetailsNavigator
@@ -37,7 +37,7 @@ class MediaDetailsActivity : AppCompatActivity() {
 
         setContent {
             InstallSavedAppLanguage(this)
-            AflamiTheme(settingsUseCase.isDarkTheme()) {
+            AflamiTheme(manageSettingsUseCase.isDarkTheme()) {
                 MediaDetailsNavGraph(
                     navigator = navigator,
                     authenticationFeatureAPI = authenticationFeatureAPI,

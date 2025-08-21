@@ -31,7 +31,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.feature.home.homeUi.R
-import com.feature.home.homeUi.utils.shimmerable
 import com.paris.aflami.designsystem.components.AppIcon
 import com.paris.aflami.designsystem.components.AppText
 import com.paris.aflami.designsystem.theme.Theme

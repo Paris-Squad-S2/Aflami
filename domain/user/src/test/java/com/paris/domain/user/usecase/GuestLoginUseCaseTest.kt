@@ -1,6 +1,7 @@
 package com.paris.domain.user.usecase
 
 import com.paris.domain.user.repository.UserRepository
+import com.paris.domain.user.usecase.auth.GuestLoginUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
