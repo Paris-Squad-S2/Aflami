@@ -15,7 +15,8 @@ object AuthUrls {
 open class WebViewClientImpl(
     private val isLoading: MutableState<Boolean>,
     private val hasError: MutableState<Boolean>,
-    private val onNavigationEvent: (() -> Unit)? = null
+    private val onNavigationEvent: (() -> Unit)? = null,
+    private val skipSuper: Boolean = false,
 ) : WebViewClient() {
 
     override fun shouldOverrideUrlLoading(
@@ -44,13 +45,13 @@ open class WebViewClientImpl(
         url: String?,
         favicon: Bitmap?
     ) {
-        super.onPageStarted(view, url, favicon)
+        if (!skipSuper) super.onPageStarted(view, url, favicon)
         isLoading.value = true
         hasError.value = false
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {
-        super.onPageFinished(view, url)
+        if (!skipSuper) super.onPageFinished(view, url)
         isLoading.value = false
     }
 
