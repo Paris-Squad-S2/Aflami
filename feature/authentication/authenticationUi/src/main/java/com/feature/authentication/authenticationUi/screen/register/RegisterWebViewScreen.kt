@@ -10,9 +10,9 @@ import androidx.compose.ui.graphics.Brush
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.feature.authentication.authenticationUi.comon.WebViewComposable
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun RegisterWebViewScreen(viewModel: RegisterViewModel = hiltViewModel()) {

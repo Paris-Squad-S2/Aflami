@@ -56,11 +56,11 @@ import com.feature.home.homeUi.screen.home.components.MoodPickerDialog
 import com.feature.home.homeUi.screen.home.components.SectionTitle
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingActivity
 import com.feature.home.homeUi.utils.shimmerable
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.IconItem
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.IconItem
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun HomeScreen(
@@ -178,7 +178,7 @@ fun HomeScreenContent(
                     onEmojiClick = { emojiMood ->
                         action.moodPickerSelected(emojiMood.tags)
                     },
-                    image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_clown),
+                    image = painterResource(com.paris.aflami.designsystem.R.drawable.img_clown),
                     backgroundColor = listOf(
                         Theme.colors.primary,
                         Theme.colors.status.redAccent,
@@ -313,13 +313,13 @@ fun HomeScreenContent(
             .background(topBarBackground)
             .padding(top = 32.dp),
         logo = iconItemWithDefaults(
-            icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_aflami_logo),
+            icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_aflami_logo),
             backgroundColor = Theme.colors.primaryVariant,
             tint = Color.Unspecified,
         ),
         trailingIcons = listOf(
             IconItem(
-                icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_search),
+                icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_search),
                 onClick = action::onSearchIconClick,
                 backgroundColor = Theme.colors.primaryVariant,
                 tint = Theme.colors.text.body

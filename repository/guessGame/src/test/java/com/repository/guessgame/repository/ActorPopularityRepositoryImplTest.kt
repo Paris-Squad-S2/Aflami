@@ -1,9 +1,9 @@
 package com.repository.guessgame.repository
 
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.game.exception.FailedException
-import com.paris_2.domain.game.exception.NoInternetConnectionException
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.game.exception.FailedException
+import com.paris.domain.game.exception.NoInternetConnectionException
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
 import com.repository.guessgame.dto.ActorDto
 import com.repository.guessgame.dto.ActorMediaDto

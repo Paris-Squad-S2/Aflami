@@ -1,6 +1,6 @@
 package com.feature.search.searchUi.screen.search
 
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.media.entity.Category
 
 interface SearchScreenInteractionListener {
     fun onNavigateToWorldTourScreen()

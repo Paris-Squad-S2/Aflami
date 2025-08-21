@@ -4,10 +4,10 @@ import com.feature.search.searchUi.screen.search.MediaTypeUi
 import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.search.searchUi.screen.search.SearchHistoryUiState
 import com.feature.search.searchUi.screen.search.SearchTypeUi
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.entity.SearchHistoryModel
-import com.paris_2.domain.media.entity.SearchType
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.entity.SearchHistoryModel
+import com.paris.domain.media.entity.SearchType
 
 
 fun List<MediaUiState>.toDomainList() = this.map { it.toDomainModel() }

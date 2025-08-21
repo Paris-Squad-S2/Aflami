@@ -30,10 +30,10 @@ import com.feature.onboarding.onboardingUi.R
 import com.feature.onboarding.onboardingUi.components.OnboardingContent
 import com.feature.onboarding.onboardingUi.components.OnboardingPage
 import com.feature.onboarding.onboardingUi.components.PageIndicator
-import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppIcon
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.theme.Theme
 import kotlinx.coroutines.launch
 
 @Composable

@@ -3,8 +3,8 @@ package com.repository.lists
 import com.paris.domain.lists.entity.Media
 import com.paris.domain.lists.entity.Response
 import com.paris.domain.lists.exception.ListsNetworkException
-import com.paris_2.repository.user.dataSource.remote.UserRemoteDataSource
-import com.paris_2.repository.user.model.remote.AccountDto
+import com.paris.repository.user.dataSource.remote.UserRemoteDataSource
+import com.paris.repository.user.model.remote.AccountDto
 import com.repository.lists.dataSource.remote.ListsRemoteDataSource
 import com.repository.lists.exeptions.NetworkException
 import com.repository.lists.model.dto.ListDetailsDto

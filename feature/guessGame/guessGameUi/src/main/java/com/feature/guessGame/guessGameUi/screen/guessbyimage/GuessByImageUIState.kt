@@ -22,7 +22,7 @@ data class QuestionUiState(
     val usedHint: Boolean = false,
 )
 
-fun com.paris_2.domain.game.entity.Question.toUiModel(): QuestionUiState {
+fun com.paris.domain.game.entity.Question.toUiModel(): QuestionUiState {
     return QuestionUiState(
         image = content,
         answers = options.map { it.text },

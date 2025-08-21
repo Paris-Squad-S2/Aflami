@@ -11,7 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun ReviewsSection(

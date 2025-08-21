@@ -10,8 +10,8 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavGrap
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.fromJsonToMediaDetailsDestination
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.main.InstallSavedAppLanguage
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

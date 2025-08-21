@@ -1,7 +1,7 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.GenreUserInteraction
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.entity.GenreUserInteraction
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.models.local.media.GenreUserInteractionEntity
 import com.repository.media.mapper.search.toCategoryUserInteractionEntity

@@ -3,7 +3,7 @@ package com.feature.search.searchUi.screen.worldTour
 import androidx.paging.PagingData
 import com.feature.search.searchUi.screen.search.ContentRestriction
 import com.feature.search.searchUi.screen.search.MediaUiState
-import com.paris_2.domain.media.entity.Country
+import com.paris.domain.media.entity.Country
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 

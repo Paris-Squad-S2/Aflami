@@ -1,7 +1,7 @@
 package com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details
 
 import com.feature.mediaDetails.mediaDetailsUi.R
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 enum class MovieChips(val titleResId: Int, val iconResId: Int) {
     MORE_LIKE_THIS(

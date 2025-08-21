@@ -2,7 +2,7 @@ package com.feature.search.searchUi.screen.search
 
 import androidx.paging.PagingData
 import com.feature.search.searchUi.R
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.media.entity.Category
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.datetime.LocalDate

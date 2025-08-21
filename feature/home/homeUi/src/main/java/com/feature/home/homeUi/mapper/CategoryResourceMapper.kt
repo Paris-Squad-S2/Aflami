@@ -1,7 +1,7 @@
 package com.feature.home.homeUi.mapper
 
 import com.feature.home.homeUi.R
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.media.entity.Category
 
 
 object CategoryResourceMapper {

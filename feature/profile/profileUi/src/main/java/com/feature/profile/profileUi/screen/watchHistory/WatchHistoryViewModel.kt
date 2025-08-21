@@ -4,8 +4,8 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.mapper.toMediaType
 import com.feature.profile.profileUi.mapper.toMediaUiStateList
-import com.paris_2.domain.media.useCase.FilterWatchHistoryUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.FilterWatchHistoryUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
