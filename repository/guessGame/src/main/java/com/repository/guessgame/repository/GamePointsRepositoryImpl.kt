@@ -2,11 +2,11 @@ package com.repository.guessgame.repository
 
 import com.paris.domain.game.entity.UserPoints
 import com.paris.domain.game.exception.FailedException
-import com.paris.domain.game.exception.GameException
 import com.paris.domain.game.repositories.GamePointsRepository
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.guessgame.mapper.toDomain
 import com.repository.guessgame.mapper.toEntity
+import com.repository.guessgame.utils.safeCall
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -24,15 +24,5 @@ class GamePointsRepositoryImpl(
         return gamePointsLocalDataSource.getUserGamePoints(userId)
             .map { entity -> entity?.toDomain()?.gamePoints ?: 0 }
             .catch { throw FailedException("Failed to get user game points") }
-    }
-
-    private suspend fun <T> safeCall(exception: GameException, call: suspend () -> T): T {
-        return try {
-            call()
-        } catch (e: GameException) {
-            throw e
-        } catch (_: Exception) {
-            throw exception
-        }
     }
 }
