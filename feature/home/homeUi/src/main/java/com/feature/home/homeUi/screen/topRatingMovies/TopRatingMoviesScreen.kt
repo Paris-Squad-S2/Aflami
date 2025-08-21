@@ -120,7 +120,6 @@ fun TopRatingMoviesScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 12.dp)
         ) {
 
             AppTopBar(

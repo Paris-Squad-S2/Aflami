@@ -48,6 +48,8 @@ import com.paris_2.domain.user.usecase.GetAccountIdUseCase
 import com.paris_2.domain.user.usecase.IsLoggedInUseCase
 import com.paris_2.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -207,6 +209,7 @@ class MovieDetailsViewModel @Inject constructor(
                 }
             )
         )
+        updateMovieIfAddedToList(movieId)
     }
 
     private fun getInformationVideoMovie() {
@@ -228,7 +231,6 @@ class MovieDetailsViewModel @Inject constructor(
     private suspend fun onLoadMovieDetailsSuccess(movie: Movie, mediaId: Int) {
 
         addWatchHistoryUseCase(movie.toMedia())
-        updateMovieIfAddedToList(movieId)
         updateMovieIfRated(movieId)
         updateState(
             screenState.value.copy(
@@ -248,16 +250,14 @@ class MovieDetailsViewModel @Inject constructor(
     private fun updateMovieIfAddedToList(mediaId: Int) {
         tryToExecute(
             execute = {
-                val isMovieAddedToList: Boolean = getListsUseCase(1)
-                    .any {
-                        getListDetailsUseCase(
-                            1,
-                            it.id.toString()
-                        ).items.any { media ->
+                val deferredResults = screenState.value.availableLists.map { listItemUi ->
+                    viewModelScope.async {
+                        getListDetailsUseCase(1, listItemUi.id).items.any { media ->
                             media.id == mediaId
                         }
                     }
-                isMovieAddedToList
+                }
+                deferredResults.awaitAll().any { it }
             },
             onSuccess = { isMovieAddedToList ->
                 updateState(
