@@ -8,9 +8,7 @@ import com.paris.domain.media.entity.Review
 import com.paris.domain.media.entity.Season
 import com.paris.domain.media.entity.TvShow
 import com.paris.domain.media.entity.TvShowSimilar
-import com.paris.domain.media.exception.AflamiException
 import com.paris.domain.media.exception.FailedException
-import com.paris.domain.media.exception.NoInternetConnectionException
 import com.paris.domain.media.repository.TvShowRepository
 import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.TvShowLocalDataSource
@@ -18,6 +16,7 @@ import com.repository.media.datasource.remote.TvShowDetailsRemoteDataSource
 import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toLocalDto
 import com.repository.media.util.NetworkConnectionChecker
+import com.repository.media.util.safeCall
 import kotlinx.coroutines.flow.first
 
 class TvShowRepositoryImpl(
@@ -29,7 +28,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getTvShowDetails(tvShowId: Int): TvShow {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getTvShowDetails")) {
+        return safeCall(FailedException("getTvShowDetails"), networkConnectionChecker) {
             val localTVShow = tvShowLocalDataSource.getTvShowId(tvShowId, language)
             if (localTVShow != null) {
                 localTVShow.toEntity()
@@ -46,7 +45,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getTvShowCast(tvShowId: Int): List<Cast> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getTvShowCast")) {
+        return safeCall(FailedException("getTvShowCast"), networkConnectionChecker) {
             val localCast = tvShowLocalDataSource.getCastByTvShowId(tvShowId, language)
             if (localCast.isNotEmpty()) {
                 localCast.map { it.toEntity() }
@@ -67,7 +66,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getTvShowRecommendations(tvShowId: Int, page: Int): List<TvShowSimilar> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getTvShowRecommendations")) {
+        return safeCall(FailedException("getTvShowRecommendations"), networkConnectionChecker) {
             val localSimilar =
                 tvShowLocalDataSource.getSimilarTvShows(tvShowId, page, language)
             if (localSimilar.isNotEmpty()) {
@@ -91,7 +90,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun getTvShowGallery(tvShowId: Int): List<Image> {
-        return safeCall(FailedException("getTvShowGallery")) {
+        return safeCall(FailedException("getTvShowGallery"), networkConnectionChecker) {
             val localGallery = tvShowLocalDataSource.getGalleryByTvShowId(tvShowId)
             if (localGallery != null) {
                 localGallery.toEntity()
@@ -106,7 +105,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getCompanyProducts(tvShowId: Int): List<ProductionCompany> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getCompanyProducts")) {
+        return safeCall(FailedException("getCompanyProducts"), networkConnectionChecker) {
             val localCompany = tvShowLocalDataSource.getTvShowId(tvShowId, language)
                 ?.productionCompanies ?: emptyList()
 
@@ -127,7 +126,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getSeasonDetails(tvShowId: Int, seasonNumber: Int): Season {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getSeasonDetails")) {
+        return safeCall(FailedException("getSeasonDetails"), networkConnectionChecker) {
             val localSeason = tvShowLocalDataSource.getSeasonByTvShowIdAndSeasonNumber(
                 tvShowId,
                 seasonNumber
@@ -152,7 +151,7 @@ class TvShowRepositoryImpl(
 
     override suspend fun getTvShowReview(tvShowId: Int, page: Int): List<Review> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getTvShowReview")) {
+        return safeCall(FailedException("getTvShowReview"), networkConnectionChecker) {
             val localReview = tvShowLocalDataSource.getReviewsByTvShowId(tvShowId, language)
             if (localReview.isNotEmpty()) {
                 localReview.map { it.toEntity() }
@@ -173,7 +172,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun addRatingToTvShow(movieId: Int, rating: Float) {
-        return safeCall(FailedException("addRatingToTvShow")) {
+        return safeCall(FailedException("addRatingToTvShow"), networkConnectionChecker) {
             tvShowDetailsRemoteDataSource.addRatingToTvShow(
                 movieId = movieId,
                 rating = rating
@@ -182,7 +181,7 @@ class TvShowRepositoryImpl(
     }
 
     override suspend fun deleteTvShowRating(tvShowId: Int) {
-        return safeCall(FailedException("deleteTvShowRating")) {
+        return safeCall(FailedException("deleteTvShowRating"), networkConnectionChecker) {
             tvShowDetailsRemoteDataSource.deleteTvShowRating(
                 tvShowId = tvShowId
             )
@@ -191,7 +190,7 @@ class TvShowRepositoryImpl(
 
 
     override suspend fun getTrailerVideoForTvShow(tvShowId: Int): List<MediaVideo> {
-        return safeCall(FailedException("getTrailerVideoForTvShow")) {
+        return safeCall(FailedException("getTrailerVideoForTvShow"), networkConnectionChecker) {
             tvShowDetailsRemoteDataSource.getTrailerVideoForTvShow(tvShowId)
                 .tvShowVideoResultDto
                 ?.map { it.toEntity() }
@@ -215,17 +214,4 @@ class TvShowRepositoryImpl(
             ?: emptyList()
     }
 
-
-    private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
-            throw NoInternetConnectionException()
-        }
-        return try {
-            call()
-        } catch (e: AflamiException) {
-            throw e
-        } catch (_: Exception) {
-            throw exception
-        }
-    }
 }

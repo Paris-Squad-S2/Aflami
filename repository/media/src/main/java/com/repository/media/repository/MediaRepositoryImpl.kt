@@ -2,9 +2,7 @@ package com.repository.media.repository
 
 import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.exception.AflamiException
 import com.paris.domain.media.exception.FailedException
-import com.paris.domain.media.exception.NoInternetConnectionException
 import com.paris.domain.media.repository.MediaRepository
 import com.paris.domain.media.repository.MovieRepository
 import com.paris.domain.media.repository.TvShowRepository
@@ -17,8 +15,10 @@ import com.repository.media.mapper.toId
 import com.repository.media.mapper.toMedia
 import com.repository.media.mapper.toMediaEntity
 import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.MediaTypeEntity
 import com.repository.media.util.NetworkConnectionChecker
+import com.repository.media.util.safeCall
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
@@ -42,7 +42,7 @@ class MediaRepositoryImpl(
         val localMedia = mediaLocalDataSource.getHomeMediaByCategory(Category.POPULAR, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
-        return safeCall(FailedException("getPopularMedia")) {
+        return safeCall(FailedException("getPopularMedia"), networkConnectionChecker) {
             val remoteMovies =
                 mediaRemoteDataSource.getPopularMovies(language).results?.mapNotNull {
                     it.toDomain(MediaType.Movie)
@@ -71,7 +71,7 @@ class MediaRepositoryImpl(
 
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
-        return safeCall(FailedException("getTopRatingMedia")) {
+        return safeCall(FailedException("getTopRatingMedia"), networkConnectionChecker) {
 
             val remoteMovies =
                 mediaRemoteDataSource.getTopRatedMovies(language).results?.mapNotNull {
@@ -98,7 +98,7 @@ class MediaRepositoryImpl(
             mediaLocalDataSource.getHomeMediaByCategory(Category.UPCOMING, language)
         if (localMedia.isNotEmpty()) return localMedia.mapNotNull { it.toDomain() }
 
-        return safeCall(FailedException("getUpComingMedia")) {
+        return safeCall(FailedException("getUpComingMedia"), networkConnectionChecker) {
             val upcomingMovies =
                 mediaRemoteDataSource.getUpcomingMovies(language = language).results?.mapNotNull {
                     it.toDomain(MediaType.Movie)
@@ -112,7 +112,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getNowPlayingMedia(): List<Media> {
-        return safeCall(FailedException("getNowPlayingMedia")) {
+        return safeCall(FailedException("getNowPlayingMedia"), networkConnectionChecker) {
             val nowPlaying = mediaRemoteDataSource.getNowPlayingMovies().results?.mapNotNull {
                 it.toDomain(MediaType.Movie)
             } ?: emptyList()
@@ -121,7 +121,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun addMediaToContinueWatching(media: Media) {
-        return safeCall(FailedException("addMediaToContinueWatching")) {
+        return safeCall(FailedException("addMediaToContinueWatching"), networkConnectionChecker) {
             mediaLocalDataSource.addMediaContinueWatching(media.toEntity())
         }
     }
@@ -164,7 +164,7 @@ class MediaRepositoryImpl(
 
     override suspend fun getRatedMedia(accountId: Int): List<Media> {
         val language = settingLocalDataSource.getLanguage().first()
-        return safeCall(FailedException("getRatedMedia")) {
+        return safeCall(FailedException("getRatedMedia"), networkConnectionChecker) {
             val ratedMovies = mediaRemoteDataSource.getRatedMovies(accountId, language)
                 .results.mapNotNull { it.toDomain(MediaType.Movie) }
 
@@ -180,7 +180,7 @@ class MediaRepositoryImpl(
         category: com.paris.domain.media.entity.Category,
         page: Int
     ): List<Media> {
-        return safeCall(FailedException("getMoviesByCategory")) {
+        return safeCall(FailedException("getMoviesByCategory"), networkConnectionChecker) {
             val language = settingLocalDataSource.getLanguage().first()
             mediaRemoteDataSource.getMoviesByCategory(
                 category.toId(),
@@ -196,7 +196,7 @@ class MediaRepositoryImpl(
         category: com.paris.domain.media.entity.Category,
         page: Int
     ): List<Media> {
-        return safeCall(FailedException("getTvShowsByCategory")) {
+        return safeCall(FailedException("getTvShowsByCategory"), networkConnectionChecker) {
             val language = settingLocalDataSource.getLanguage().first()
             mediaRemoteDataSource.getTvShowsByCategory(
                 category.toId(),
@@ -205,19 +205,6 @@ class MediaRepositoryImpl(
             ).tvResultDto.mapNotNull {
                 it.toDomain()
             }
-        }
-    }
-
-    private suspend fun <T> safeCall(exception: AflamiException, call: suspend () -> T): T {
-        if (networkConnectionChecker.isConnected.value.not()) {
-            throw NoInternetConnectionException()
-        }
-        return try {
-            call()
-        } catch (e: AflamiException) {
-            throw e
-        } catch (_: Exception) {
-            throw exception
         }
     }
 }
