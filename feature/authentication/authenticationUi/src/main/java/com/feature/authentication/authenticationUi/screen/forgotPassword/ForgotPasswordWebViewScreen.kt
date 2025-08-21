@@ -42,7 +42,7 @@ private fun ForgotPasswordScreenContent(
     ) {
         WebViewComposable(
             url = uIState.resetPasswordUrl,
-            onWebMessageReceived = { message: String ->
+            onWebMessageReceived = {
                 registerViewModel.onNavigateBack()
             },
             modifier = Modifier.fillMaxSize(),

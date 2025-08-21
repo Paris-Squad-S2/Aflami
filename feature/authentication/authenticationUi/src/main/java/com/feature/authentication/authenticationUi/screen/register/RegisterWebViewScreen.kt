@@ -39,7 +39,7 @@ private fun RegisterScreenContent(uiState: RegisterUIState, registerViewModel: R
     ) {
         WebViewComposable(
             url = uiState.registrationUrl,
-            onWebMessageReceived = { message: String ->
+            onWebMessageReceived = {
                 registerViewModel.onNavigateBack()
             },
             modifier = Modifier.fillMaxSize(),
