@@ -4,16 +4,24 @@ import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.exception.FailedException
 import com.paris.domain.media.repository.MediaRepository
+import com.paris.domain.media.repository.MovieRepository
+import com.paris.domain.media.repository.TvShowRepository
 import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.mapper.toDomain
 import com.repository.media.mapper.toEntity
 import com.repository.media.mapper.toId
+import com.repository.media.mapper.toMedia
 import com.repository.media.mapper.toMediaEntity
 import com.repository.media.models.local.media.Category
+import com.repository.media.models.local.media.MediaTypeEntity
 import com.repository.media.util.NetworkConnectionChecker
 import com.repository.media.util.safeCall
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -24,6 +32,8 @@ class MediaRepositoryImpl(
     private val mediaRemoteDataSource: MediaRemoteDataSource,
     private val mediaLocalDataSource: MediaLocalDataSource,
     private val settingLocalDataSource: SettingLocalDataSource,
+    private val movieRepository: MovieRepository,
+    private val tvShowRepository: TvShowRepository
 ) : MediaRepository {
 
     override suspend fun getPopularMedia(): List<Media> {
@@ -115,13 +125,40 @@ class MediaRepositoryImpl(
         }
     }
 
-    override fun getContinueWatchingMedia(): Flow<List<Media>> {
-        return mediaLocalDataSource.getMediaContinueWatching().map { list ->
-            list.map { it.toDomain() }
+    override  fun getContinueWatchingMedia(): Flow<List<Media>> {
+
+        val language = CoroutineScope(IO).async {
+            settingLocalDataSource.getLanguage().first()
         }
-            .catch {
-                throw FailedException("getContinueWatchingMedia")
+
+        return mediaLocalDataSource.getMediaContinueWatching().map { mediaList ->
+
+
+            val localMedia =CoroutineScope(IO).async {
+                mediaLocalDataSource.getHomeMediaByCategory(
+                    Category.CONTINUE_WATCHING,
+                    language.await()
+                )
+            }.await()
+
+            if (localMedia.isNotEmpty()) return@map localMedia.mapNotNull { it.toDomain() }
+
+            val filteredMovies  = mediaList.map {
+                CoroutineScope(IO).async {
+                    when(it.type){
+                        MediaTypeEntity.Movie -> movieRepository.getMovieDetails(it.id).toMedia()
+                        MediaTypeEntity.TvShow -> tvShowRepository.getTvShowDetails(it.id).toMedia()
+                    }
+                }
             }
+            val continueWatchingMedias = filteredMovies.awaitAll()
+            mediaLocalDataSource.addHomeMedia(continueWatchingMedias.map { it.toMediaEntity(category = Category.CONTINUE_WATCHING,language.await()) })
+
+            return@map continueWatchingMedias
+        }.catch {
+            throw FailedException("getContinueWatchingMedia")
+        }
+
     }
 
     override suspend fun getRatedMedia(accountId: Int): List<Media> {

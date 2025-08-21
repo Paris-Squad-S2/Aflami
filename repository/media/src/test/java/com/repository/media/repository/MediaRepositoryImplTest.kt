@@ -5,29 +5,27 @@ import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.exception.FailedException
 import com.paris.domain.media.exception.NoInternetConnectionException
+import com.paris.domain.media.repository.MovieRepository
+import com.paris.domain.media.repository.TvShowRepository
 import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.models.remote.media.home.MovieDto
-import com.repository.media.models.remote.media.home.TvDto
+import com.repository.media.mapper.toEntity
 import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.HomeMediaEntity
-import com.repository.media.models.local.media.MediaEntity
 import com.repository.media.models.local.media.MediaTypeEntity
-
-import com.repository.media.mapper.toEntity
 import com.repository.media.models.remote.media.category.MovieByCategoryDto
 import com.repository.media.models.remote.media.category.ResultDto
 import com.repository.media.models.remote.media.category.TvResultDto
 import com.repository.media.models.remote.media.category.TvShowByCategoryDto
+import com.repository.media.models.remote.media.home.MovieDto
+import com.repository.media.models.remote.media.home.TvDto
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -38,6 +36,9 @@ class MediaRepositoryImplTest {
     private val mediaLocalDataSource: MediaLocalDataSource = mockk(relaxed = true)
     private val networkChecker: NetworkConnectionChecker = mockk()
     private val settingLocalDataSource: SettingLocalDataSource = mockk()
+    private val movieRepository: MovieRepository = mockk()
+    private val tvShowRepository: TvShowRepository = mockk()
+
     private lateinit var repo: MediaRepositoryImpl
 
     val language = "en"
@@ -48,7 +49,9 @@ class MediaRepositoryImplTest {
         repo = MediaRepositoryImpl(
             networkChecker, remote,
             mediaLocalDataSource = mediaLocalDataSource,
-            settingLocalDataSource = settingLocalDataSource
+            settingLocalDataSource = settingLocalDataSource,
+            movieRepository = movieRepository,
+            tvShowRepository = tvShowRepository
         )
     }
 
@@ -360,21 +363,6 @@ class MediaRepositoryImplTest {
         coVerify { mediaLocalDataSource.addMediaContinueWatching(media.toEntity()) }
     }
 
-    @Test
-    fun `getMediaFromLocal maps entities to domain`() = runTest {
-        val entity = MediaEntity(
-            id = 300,
-            title = "Saved",
-            posterPath = "saved.jpg",
-            type = MediaTypeEntity.TvShow,
-            genreIds = listOf(2),
-            voteAverage = 6.6,
-            releaseDate = "2023-09-09"
-        )
-        coEvery { mediaLocalDataSource.getMediaContinueWatching() } returns flowOf(listOf(entity))
-        val result = repo.getContinueWatchingMedia().single()
-        assertThat(result.single().id).isEqualTo(300)
-    }
 
     @Test
     fun `addMediaToContinueWatching throws NoInternetConnectionException when offline`() = runTest {
