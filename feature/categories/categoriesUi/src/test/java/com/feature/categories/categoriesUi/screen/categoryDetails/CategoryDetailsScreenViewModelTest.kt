@@ -2,17 +2,17 @@ package com.feature.categories.categoriesUi.screen.categoryDetails
 
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.useCase.GetMoviesByCategoryUseCase
-import com.paris_2.domain.media.useCase.GetTvShowsByCategoryUseCase
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.useCase.GetMoviesByCategoryUseCase
+import com.paris.domain.media.useCase.GetTvShowsByCategoryUseCase
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
-import com.paris_2.aflami.designsystem.R as RDesignSystem
+import com.paris.aflami.designsystem.R as RDesignSystem
 
 class CategoryDetailsScreenViewModelTest {
 

@@ -2,9 +2,9 @@ package com.repository.media.repository
 
 import com.google.common.truth.Truth
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.media.exception.FailedException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.media.exception.FailedException
+import com.paris.domain.media.exception.NoInternetConnectionException
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.TvShowLocalDataSource
 import com.repository.media.datasource.remote.TvShowDetailsRemoteDataSource
 import com.repository.media.mapper.toEntity

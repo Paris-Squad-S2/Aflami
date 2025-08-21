@@ -42,13 +42,14 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
-import com.designSystem.safeimageviewer.SafeImageViewer
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
-import com.paris_2.aflami.designsystem.components.AppIcon
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.Theme
-import com.paris_2.aflami.designsystem.utils.BasePreview
+import coil.compose.AsyncImage
+import coil.compose.AsyncImagePainter
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppHorizontalDivider
+import com.paris.aflami.designsystem.components.AppIcon
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.utils.BasePreview
 import kotlin.math.ceil
 
 
@@ -59,6 +60,7 @@ fun GuessCard(
     textNoImage: String? = null,
     clickable: Boolean = false,
     onClick: () -> Unit = {},
+    onImageLoadError: (() -> Unit)? = null,
     imageState: GuessCardImageState = GuessCardImageState.Show,
     showHint: Boolean = false,
     hintPoints: Int = 10
@@ -96,14 +98,24 @@ fun GuessCard(
             ) {
 
             if (imageUrl != null) {
-                SafeImageViewer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(176.dp),
-                    imageUrl = imageUrl,
-                    contentDescription = stringResource(R.string.character_image),
-                    contentScale = ContentScale.Crop
-                )
+                var imageLoadFailed by remember { mutableStateOf(false) }
+
+                if (!imageLoadFailed) {
+                    AsyncImage(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(176.dp),
+                        model = imageUrl,
+                        contentDescription = stringResource(R.string.character_image),
+                        contentScale = ContentScale.Crop,
+                        onState = { state ->
+                            if (state is AsyncImagePainter.State.Error) {
+                                imageLoadFailed = true
+                                onImageLoadError?.invoke()
+                            }
+                        }
+                    )
+                }
             } else if (textNoImage != null) {
                 Box(
                     modifier = Modifier

@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.compose.LazyPagingItems
 import com.feature.categories.categoriesUi.R
 import com.feature.categories.categoriesUi.screen.categoryDetails.MediaUI
-import com.paris_2.domain.media.entity.MediaType
+import com.paris.domain.media.entity.MediaType
 
 @Composable
 fun CategoryDetailsMediaList(

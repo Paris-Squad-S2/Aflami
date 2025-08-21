@@ -1,13 +1,13 @@
 package com.repository.media.mapper
 
-import com.paris_2.domain.media.entity.Cast
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.entity.Image
-import com.paris_2.domain.media.entity.MediaVideo
-import com.paris_2.domain.media.entity.Movie
-import com.paris_2.domain.media.entity.MovieSimilar
-import com.paris_2.domain.media.entity.ProductionCompany
-import com.paris_2.domain.media.entity.Review
+import com.paris.domain.media.entity.Cast
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.entity.Image
+import com.paris.domain.media.entity.MediaVideo
+import com.paris.domain.media.entity.Movie
+import com.paris.domain.media.entity.MovieSimilar
+import com.paris.domain.media.entity.ProductionCompany
+import com.paris.domain.media.entity.Review
 import com.repository.media.models.local.moive.MovieCastEntity
 import com.repository.media.models.local.moive.MovieEntity
 import com.repository.media.models.local.moive.MovieGalleryEntity

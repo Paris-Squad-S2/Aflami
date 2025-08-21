@@ -1,7 +1,7 @@
 package com.feature.search.searchUi.comon
 
 import com.feature.search.searchUi.R
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.media.entity.Category
 
 object CategoryResourceMapper {
     private val categoryToResourceMap = mapOf(

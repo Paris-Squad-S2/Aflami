@@ -1,9 +1,9 @@
 package com.repository.guessgame.repository
 
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.game.exception.FailedException
-import com.paris_2.domain.game.exception.NoInternetConnectionException
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.game.exception.FailedException
+import com.paris.domain.game.exception.NoInternetConnectionException
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
 import com.repository.guessgame.dto.ActorDto
 import com.repository.guessgame.dto.ActorMediaDto
@@ -24,38 +24,39 @@ class ActorPopularityRepositoryImplTest {
     private lateinit var repository: ActorPopularityRepositoryImpl
     private val networkChecker: NetworkConnectionChecker = mockk()
     private val remote: ActorPopularityRemoteDataSource = mockk()
-    private val settings: SettingLocalDataSource = mockk()
-    private val language = "en"
 
     @BeforeEach
     fun setUp() {
         every { networkChecker.isConnected } returns MutableStateFlow(true)
-        coEvery { settings.getLanguage() } returns MutableStateFlow(language)
-        repository = ActorPopularityRepositoryImpl(networkChecker, remote, settings)
+        repository = ActorPopularityRepositoryImpl(networkChecker, remote)
     }
+
 
     @Test
     fun `getPopularActor returns mapped actors when online`() = runTest {
         // Given
         val dto = ActorPopularityListDto(results = sampleActorDtos)
-        coEvery { remote.getPopularActors(language) } returns dto
+        coEvery { remote.getPopularActors() } returns dto
 
         // When
         val result = repository.getPopularActor()
 
         // Then
-        assertThat(result).hasSize(sampleActorDtos.size)
+        val expectedActors = sampleActorDtos.filter {
+            it.profilePath?.isNotEmpty() == true && !it.knownFor.isNullOrEmpty() && it.name?.isNotEmpty() == true
+        }
+
+        assertThat(result).hasSize(expectedActors.size)
         assertThat(result.map { it.name })
-            .containsExactlyElementsIn(sampleActorDtos.map { it.name!! })
+            .containsExactlyElementsIn(expectedActors.map { it.name!! })
 
-        coVerify(exactly = 1) { remote.getPopularActors(language) }
+        coVerify(exactly = 1) { remote.getPopularActors() }
     }
-
 
     @Test
     fun `getPopularActor returns empty list when remote returns null results`() = runTest {
         // Given
-        coEvery { remote.getPopularActors(language) } returns ActorPopularityListDto(results = null)
+        coEvery { remote.getPopularActors() } returns ActorPopularityListDto(results = null)
         // When
         val result = repository.getPopularActor()
         // Then
@@ -72,7 +73,7 @@ class ActorPopularityRepositoryImplTest {
 
     @Test
     fun `getPopularActor wraps unknown exception as FailedException`() = runTest {
-        coEvery { remote.getPopularActors(language) } throws RuntimeException("boom")
+        coEvery { remote.getPopularActors() } throws RuntimeException("boom")
         assertThrows<FailedException> {
             repository.getPopularActor()
         }
@@ -81,14 +82,20 @@ class ActorPopularityRepositoryImplTest {
     @Test
     fun `getRandomActors returns requested number of actors`() = runTest {
         // Given
-        coEvery { remote.getPopularActors(language) } returns ActorPopularityListDto(results = sampleActorDtos)
+        coEvery { remote.getPopularActors() } returns ActorPopularityListDto(results = sampleActorDtos)
         // When
         val result = repository.getRandomActors(3)
         // Then
-        assertThat(result).hasSize(3)
-        assertThat(sampleActorDtos.mapNotNull { it.name }
+        val expectedActors = sampleActorDtos.filter {
+            it.profilePath?.isNotEmpty() == true &&
+                    !it.knownFor.isNullOrEmpty() &&
+                    it.name?.isNotEmpty() == true
+        }
+
+        assertThat(result).hasSize(expectedActors.size)
+        assertThat(expectedActors.mapNotNull { it.name }
             .toSet()).containsAtLeastElementsIn(result.map { it.name }.toSet())
-        coVerify(exactly = 1) { remote.getPopularActors(language) }
+        coVerify(exactly = 1) { remote.getPopularActors() }
     }
 
     @Test

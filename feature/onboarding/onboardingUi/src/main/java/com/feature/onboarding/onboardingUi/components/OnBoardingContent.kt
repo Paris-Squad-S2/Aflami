@@ -15,13 +15,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.feature.onboarding.onboardingUi.R
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.UiDrawable
-import com.paris_2.aflami.designsystem.components.UiText
-import com.paris_2.aflami.designsystem.components.asPainter
-import com.paris_2.aflami.designsystem.components.asString
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.UiDrawable
+import com.paris.aflami.designsystem.components.UiText
+import com.paris.aflami.designsystem.components.asPainter
+import com.paris.aflami.designsystem.components.asString
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun OnboardingContent(

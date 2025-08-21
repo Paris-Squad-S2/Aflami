@@ -61,12 +61,12 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSe
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.gallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.seasonSection.SeasonHeader
-import com.paris_2.aflami.designsystem.components.AppSnackBar
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppSnackBar
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.theme.Theme
 import com.feature.mediaDetails.mediaDetailsUi.R as featureMediaDetailsUiR
-import com.paris_2.aflami.designsystem.R as designsystemR
+import com.paris.aflami.designsystem.R as designsystemR
 
 @Composable
 fun TvShowDetailsScreen(viewModel: TvShowDetailsViewModel = hiltViewModel()) {

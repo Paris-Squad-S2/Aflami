@@ -5,7 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.feature.onboarding.onboardingUi.ui.main.InstallSavedAppLanguage
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.AflamiTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

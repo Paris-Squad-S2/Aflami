@@ -25,11 +25,11 @@ class ActorPopularityRemoteDataSourceImplTest {
     fun `getPopularActors should propagate exception when API call fails`() = runTest {
         // Given
         val apiException = RuntimeException("API Error")
-        coEvery { apiService.getPopularActors(LANGUAGE, any()) } throws apiException
+        coEvery { apiService.getPopularActors( any()) } throws apiException
 
         // When & Then
         try {
-            dataSource.getPopularActors(LANGUAGE)
+            dataSource.getPopularActors()
             throw AssertionError("Should have propagated the exception")
         } catch (e: Exception) {
             Truth.assertThat(e).isEqualTo(apiException)
@@ -39,9 +39,9 @@ class ActorPopularityRemoteDataSourceImplTest {
     @Test
     fun `getPopularActors should return actors from API`() = runTest {
         // Given
-        coEvery { apiService.getPopularActors(LANGUAGE, any()) } returns expectedActors
+        coEvery { apiService.getPopularActors(any()) } returns expectedActors
         // When
-        val result = dataSource.getPopularActors(LANGUAGE)
+        val result = dataSource.getPopularActors()
         // Then
         Truth.assertThat(result).isEqualTo(expectedActors)
     }
@@ -49,11 +49,11 @@ class ActorPopularityRemoteDataSourceImplTest {
     @Test
     fun `getPopularActors should call service once with valid page`() = runTest {
         // Given
-        coEvery { apiService.getPopularActors(LANGUAGE, any()) } returns expectedActors
+        coEvery { apiService.getPopularActors( any()) } returns expectedActors
         // When
-        dataSource.getPopularActors(LANGUAGE)
+        dataSource.getPopularActors()
         // Then
-        coVerify(exactly = 1) { apiService.getPopularActors(LANGUAGE, match { it in 1..499 }) }
+        coVerify(exactly = 1) { apiService.getPopularActors( match { it in 1..499 }) }
     }
 
     private companion object {

@@ -34,13 +34,13 @@ import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
 
 @Composable
 fun GuessQuestionScreen(
@@ -98,7 +98,7 @@ fun GuessQuestionContent(
                     title = stringResource(id = questionType.getTitleResId()),
                     leadingIcons = listOf(
                         iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
+                            icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel),
                             onClick = { activity?.finish() }
                         )
                     ),
@@ -129,7 +129,8 @@ fun GuessQuestionContent(
                         textNoImage = state.questionText,
                         clickable = true,
                         showHint = !state.hintUsed,
-                        onClick = listener::onHintUsed
+                        onClick = listener::onHintUsed,
+                        onImageLoadError =  listener::onRetry
                     )
 
                     Spacer(Modifier.height(16.dp))

@@ -9,7 +9,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.feature.categories.categoriesUi.R
-import com.paris_2.aflami.designsystem.components.PlaceholderView
+import com.paris.aflami.designsystem.components.PlaceholderView
 
 @Composable
 fun CategoryDetailsEmptyScreen() {

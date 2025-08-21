@@ -1,7 +1,7 @@
 package com.repository.media.mapper.search
 
 
-import com.paris_2.domain.media.entity.SearchHistoryModel
+import com.paris.domain.media.entity.SearchHistoryModel
 import com.repository.media.models.local.media.SearchHistoryEntity
 import com.repository.media.models.local.media.SearchType
 import kotlinx.coroutines.flow.Flow
@@ -20,18 +20,18 @@ fun SearchHistoryEntity.toSearchHistoryModel(): SearchHistoryModel {
     )
 }
 
-fun com.paris_2.domain.media.entity.SearchType.toRepositorySearchType(): SearchType {
+fun com.paris.domain.media.entity.SearchType.toRepositorySearchType(): SearchType {
     return when (this) {
-        com.paris_2.domain.media.entity.SearchType.Query -> SearchType.Query
-        com.paris_2.domain.media.entity.SearchType.Country -> SearchType.Country
-        com.paris_2.domain.media.entity.SearchType.Actor -> SearchType.Actor
+        com.paris.domain.media.entity.SearchType.Query -> SearchType.Query
+        com.paris.domain.media.entity.SearchType.Country -> SearchType.Country
+        com.paris.domain.media.entity.SearchType.Actor -> SearchType.Actor
     }
 }
 
-fun SearchType.toDomainSearchType(): com.paris_2.domain.media.entity.SearchType {
+fun SearchType.toDomainSearchType(): com.paris.domain.media.entity.SearchType {
     return when (this) {
-        SearchType.Query -> com.paris_2.domain.media.entity.SearchType.Query
-        SearchType.Country  -> com.paris_2.domain.media.entity.SearchType.Country
-        SearchType.Actor -> com.paris_2.domain.media.entity.SearchType.Actor
+        SearchType.Query -> com.paris.domain.media.entity.SearchType.Query
+        SearchType.Country  -> com.paris.domain.media.entity.SearchType.Country
+        SearchType.Actor -> com.paris.domain.media.entity.SearchType.Actor
     }
 }

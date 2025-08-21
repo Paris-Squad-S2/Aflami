@@ -28,13 +28,13 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.components.MediaCard
 import com.feature.profile.profileUi.screen.components.MediaCardType
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.TabRow
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.PlaceholderView
+import com.paris.aflami.designsystem.components.TabRow
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun WatchHistoryScreen(
@@ -51,7 +51,7 @@ fun WatchHistoryScreen(
         var selectedIndex by remember { mutableIntStateOf(0) }
         AppTopBar(
             logo = iconItemWithDefaults(
-                icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_back),
+                icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_back),
                 onClick = { activity?.finish() },
                 backgroundColor = Theme.colors.surface,
                 tint = Theme.colors.text.title

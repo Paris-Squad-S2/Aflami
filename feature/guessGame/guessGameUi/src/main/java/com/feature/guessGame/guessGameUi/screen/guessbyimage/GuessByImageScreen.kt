@@ -29,14 +29,14 @@ import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
 
 
 @Composable
@@ -114,6 +114,7 @@ fun GuessByImageContent(
                         onHintUsed = { listener.onHintUsed() },
                         imageUrl = currentQuestion?.image.orEmpty(),
                         uiState = currentQuestion ?: QuestionUiState(),
+                        onReloadQuestion = listener::onRetry
                     )
 
                     Spacer(Modifier.height(16.dp))
@@ -154,6 +155,7 @@ fun QuestionImage(
     imageUrl: String,
     uiState: QuestionUiState,
     onHintUsed: () -> Unit = {},
+    onReloadQuestion: () -> Unit = {}
 ) {
     val imageState = if (uiState.usedHint) {
         GuessCardImageState.Medium
@@ -165,6 +167,7 @@ fun QuestionImage(
         imageUrl = GuessByImageViewModel.IMAGE_BASE_URL+imageUrl,
         clickable = !uiState.usedHint,
         imageState = imageState,
+        onImageLoadError = onReloadQuestion,
         showHint = !uiState.usedHint,
         onClick = {
             if (!uiState.usedHint) {

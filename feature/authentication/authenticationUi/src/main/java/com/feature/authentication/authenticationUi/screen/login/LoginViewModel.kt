@@ -5,10 +5,10 @@ import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.comon.BaseViewModel
 import com.feature.authentication.authenticationUi.navigation.AuthenticationDestinations
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
-import com.paris_2.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.domain.user.usecase.GuestLoginUseCase
-import com.paris_2.domain.user.usecase.LoginUseCase
+import com.paris.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.domain.user.usecase.GuestLoginUseCase
+import com.paris.domain.user.usecase.LoginUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

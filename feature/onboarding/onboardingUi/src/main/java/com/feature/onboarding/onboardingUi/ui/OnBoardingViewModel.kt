@@ -6,10 +6,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.onboarding.onboardingUi.R
-import com.paris_2.aflami.designsystem.components.UiDrawable
-import com.paris_2.aflami.designsystem.components.UiText
-import com.paris_2.domain.user.usecase.CompleteOnboardingUseCase
-import com.paris_2.domain.user.usecase.IsOnboardingCompletedUseCase
+import com.paris.aflami.designsystem.components.UiDrawable
+import com.paris.aflami.designsystem.components.UiText
+import com.paris.domain.user.usecase.CompleteOnboardingUseCase
+import com.paris.domain.user.usecase.IsOnboardingCompletedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch

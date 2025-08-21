@@ -1,7 +1,7 @@
 package com.feature.authentication.authenticationUi.screen.register
 
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
-import com.paris_2.domain.user.usecase.GetRegisterUrlUseCase
+import com.paris.domain.user.usecase.GetRegisterUrlUseCase
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk

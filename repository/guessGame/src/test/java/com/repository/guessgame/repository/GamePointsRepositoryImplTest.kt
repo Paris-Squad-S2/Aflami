@@ -1,9 +1,9 @@
 package com.repository.guessgame.repository
 
 import com.google.common.truth.Truth.assertThat
-import com.paris_2.domain.game.entity.UserPoints
-import com.paris_2.domain.game.exception.FailedException
-import com.paris_2.domain.game.exception.NoInternetConnectionException
+import com.paris.domain.game.entity.UserPoints
+import com.paris.domain.game.exception.FailedException
+import com.paris.domain.game.exception.NoInternetConnectionException
 import com.repository.guessgame.datasource.local.GamePointsLocalDataSource
 import com.repository.guessgame.entity.UserGamePointsEntity
 import com.repository.guessgame.utils.NetworkConnectionChecker

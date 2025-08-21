@@ -1,6 +1,6 @@
 package com.repository.media.mapper.search
 
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.media.entity.Category
 import com.repository.media.models.remote.media.GenreDto
 
 

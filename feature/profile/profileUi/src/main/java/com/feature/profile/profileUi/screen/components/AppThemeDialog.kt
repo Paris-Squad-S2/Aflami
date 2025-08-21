@@ -19,10 +19,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
 import com.feature.profile.profileUi.screen.Appearance
-import com.paris_2.aflami.designsystem.components.AppDialog
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppDialog
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun AppThemeDialog(
@@ -42,18 +42,18 @@ fun AppThemeDialog(
             ) {
 
                 SelectionCard(
-                    optionTitle = stringResource(com.paris_2.aflami.designsystem.R.string.dark),
+                    optionTitle = stringResource(com.paris.aflami.designsystem.R.string.dark),
                     isSelected = dialogSelectedTheme == Appearance.DARK,
-                    icon = com.paris_2.aflami.designsystem.R.drawable.ic_dark_theme,
+                    icon = com.paris.aflami.designsystem.R.drawable.ic_dark_theme,
                     onClick = {
                         dialogSelectedTheme = Appearance.DARK
                     }
                 )
 
                 SelectionCard(
-                    optionTitle = stringResource(com.paris_2.aflami.designsystem.R.string.light),
+                    optionTitle = stringResource(com.paris.aflami.designsystem.R.string.light),
                     isSelected = dialogSelectedTheme == Appearance.LIGHT,
-                    icon = com.paris_2.aflami.designsystem.R.drawable.ic_light_theme,
+                    icon = com.paris.aflami.designsystem.R.drawable.ic_light_theme,
                     onClick = {
                         dialogSelectedTheme = Appearance.LIGHT
                     },

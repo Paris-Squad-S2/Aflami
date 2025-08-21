@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.dataSource.local.user"
+    namespace = "com.paris.dataSource.local.user"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

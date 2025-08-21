@@ -25,10 +25,10 @@ import androidx.compose.ui.unit.dp
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreenState
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowScreenInteractionListener
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.Theme
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable

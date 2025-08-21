@@ -27,8 +27,8 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.Theme
 
 
 @Composable
@@ -70,7 +70,6 @@ private fun IndicatorBox(
     modifier: Modifier = Modifier,
     isSelect: Boolean = false
 ) {
-    val layoutDirection = LocalLayoutDirection.current
     val progress = remember { Animatable(0f) }
 
     LaunchedEffect(isSelect) {
@@ -98,15 +97,7 @@ private fun IndicatorBox(
         Box(
             modifier = Modifier
                 .fillMaxHeight()
-                .then(
-                    if (layoutDirection == LayoutDirection.Ltr) {
-                        Modifier.fillMaxWidth(progress.value)
-                    } else {
-                        Modifier
-                            .fillMaxWidth(progress.value)
-                            .align(Alignment.CenterEnd)
-                    }
-                )
+                .fillMaxWidth(progress.value)
                 .background(startColor)
         )
     }

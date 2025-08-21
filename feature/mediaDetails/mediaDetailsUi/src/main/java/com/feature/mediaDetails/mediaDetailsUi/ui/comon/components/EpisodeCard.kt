@@ -15,10 +15,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 import androidx.compose.ui.unit.dp
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun EpisodeCard(

@@ -1,6 +1,6 @@
 package com.feature.profile.profileUi.screen
 
-import com.paris_2.aflami.designsystem.R
+import com.paris.aflami.designsystem.R
 
 data class ProfileScreenUiState(
     val profile: ProfileUIState = ProfileUIState(),
