@@ -7,26 +7,37 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.MutableState
 
-class WebViewClientImpl(
+object AuthUrls {
+    const val BASE = "https://www.themoviedb.org"
+    const val LOGIN = "$BASE/login"
+}
+
+open class WebViewClientImpl(
     private val isLoading: MutableState<Boolean>,
     private val hasError: MutableState<Boolean>,
-    private val onNavigationEvent: (() -> Unit)? = null
+    private val onNavigationEvent: (() -> Unit)? = null,
+    private val skipSuper: Boolean = false,
 ) : WebViewClient() {
 
     override fun shouldOverrideUrlLoading(
         view: WebView?,
         request: WebResourceRequest?
     ): Boolean {
-        val url = request?.url?.toString()
-        if (url != null) {
-            if (url == "https://www.themoviedb.org/" || url == "https://www.themoviedb.org/login") {
+        val url = request?.url?.toString().orEmpty()
+        return when {
+
+            url == AuthUrls.BASE || url.startsWith(AuthUrls.LOGIN) -> {
                 onNavigationEvent?.invoke()
-                return true
+                true
+            }
+
+            else -> {
+                isLoading.value = true
+                hasError.value = false
+                false
             }
         }
-        isLoading.value = true
-        hasError.value = false
-        return true
+
     }
 
     override fun onPageStarted(
@@ -34,11 +45,13 @@ class WebViewClientImpl(
         url: String?,
         favicon: Bitmap?
     ) {
+        if (!skipSuper) super.onPageStarted(view, url, favicon)
         isLoading.value = true
         hasError.value = false
     }
 
     override fun onPageFinished(view: WebView?, url: String?) {
+        if (!skipSuper) super.onPageFinished(view, url)
         isLoading.value = false
     }
 
@@ -46,8 +59,11 @@ class WebViewClientImpl(
         view: WebView?,
         request: WebResourceRequest?,
         error: WebResourceError?
-    ){
-        hasError.value = true
-        isLoading.value = false
+    ) {
+        super.onReceivedError(view, request, error)
+        if (request?.isForMainFrame == true) {
+            hasError.value = true
+            isLoading.value = false
+        }
     }
 }
