@@ -14,7 +14,7 @@ import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine

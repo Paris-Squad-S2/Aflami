@@ -9,8 +9,8 @@ import com.feature.profile.profileUi.navigation.Destination
 import com.feature.profile.profileUi.navigation.fromJsonToDestination
 import com.feature.profile.profileUi.screen.myRating.MyRatingScreen
 import com.feature.profile.profileUi.screen.watchHistory.WatchHistoryScreen
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

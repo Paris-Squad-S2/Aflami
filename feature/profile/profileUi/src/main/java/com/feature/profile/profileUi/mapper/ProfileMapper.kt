@@ -2,8 +2,8 @@ package com.feature.profile.profileUi.mapper
 
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
 
 
 fun List<Media>.toMediaUiStateList() = this.map { it.toUiState() }

@@ -1,11 +1,11 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.entity.Category
-import com.paris_2.domain.media.exception.AflamiException
-import com.paris_2.domain.media.exception.FailedException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.repository.CategoriesRepository
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.exception.AflamiException
+import com.paris.domain.media.exception.FailedException
+import com.paris.domain.media.exception.NoInternetConnectionException
+import com.paris.domain.media.repository.CategoriesRepository
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.mapper.search.toCategories
 import com.repository.media.util.NetworkConnectionChecker

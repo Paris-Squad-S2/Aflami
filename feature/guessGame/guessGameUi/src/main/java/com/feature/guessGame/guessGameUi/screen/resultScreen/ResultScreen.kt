@@ -25,12 +25,12 @@ import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.WinCard
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
-import com.paris_2.aflami.designsystem.components.AppTopBar
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.iconItemWithDefaults
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.components.AppTopBar
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.components.iconItemWithDefaults
+import com.paris.aflami.designsystem.theme.AflamiTheme
 
 @Composable
 fun ResultScreen(
@@ -67,7 +67,7 @@ fun ResultScreenContent(
             title = stringResource(id = gameType.getTitleResId()),
             leadingIcons = listOf(
                 iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(com.paris_2.aflami.designsystem.R.drawable.ic_cancel),
+                    icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel),
                     onClick = { activity?.finish() },
                 )
             ),

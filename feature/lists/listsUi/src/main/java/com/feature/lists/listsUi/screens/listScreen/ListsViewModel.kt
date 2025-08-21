@@ -9,8 +9,8 @@ import com.feature.lists.listsUi.navigation.ListDestinations
 import com.feature.lists.listsUi.pagging.PagingSource
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.domain.user.usecase.IsLoggedInUseCase
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.domain.user.usecase.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

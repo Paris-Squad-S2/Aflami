@@ -22,35 +22,35 @@
 
 # Please add these rules to your existing keep rules in order to suppress warnings.
 # This is generated automatically by the Android Gradle plugin.
--dontwarn com.paris_2.aflami.designsystem.color.Colors
--dontwarn com.paris_2.aflami.designsystem.color.Gradient
--dontwarn com.paris_2.aflami.designsystem.color.TextColors
--dontwarn com.paris_2.aflami.designsystem.components.CustomButtonKt
--dontwarn com.paris_2.aflami.designsystem.components.AppDialogKt
--dontwarn com.paris_2.aflami.designsystem.components.AppHorizontalDividerKt
--dontwarn com.paris_2.aflami.designsystem.components.MediaCardKt
--dontwarn com.paris_2.aflami.designsystem.components.CustomTabKt
--dontwarn com.paris_2.aflami.designsystem.components.AppTextKt
--dontwarn com.paris_2.aflami.designsystem.components.ButtonState
--dontwarn com.paris_2.aflami.designsystem.components.ButtonType$Primary
--dontwarn com.paris_2.aflami.designsystem.components.ButtonType$Secondary
--dontwarn com.paris_2.aflami.designsystem.components.ButtonType$TextButton
--dontwarn com.paris_2.aflami.designsystem.components.ButtonType
--dontwarn com.paris_2.aflami.designsystem.components.ChipsKt
--dontwarn com.paris_2.aflami.designsystem.components.IconItem
--dontwarn com.paris_2.aflami.designsystem.components.MediaCardType
--dontwarn com.paris_2.aflami.designsystem.components.NetworkErrorKt
--dontwarn com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolderKt
--dontwarn com.paris_2.aflami.designsystem.components.PlaceholderViewKt
--dontwarn com.paris_2.aflami.designsystem.components.RatingBarKt
--dontwarn com.paris_2.aflami.designsystem.components.RecentSearchItemKt
--dontwarn com.paris_2.aflami.designsystem.components.SearchSuggestionHubKt
--dontwarn com.paris_2.aflami.designsystem.components.AppTextFieldsKt
--dontwarn com.paris_2.aflami.designsystem.components.AppTopBarKt
--dontwarn com.paris_2.aflami.designsystem.text_style.AflamiTextStyle
--dontwarn com.paris_2.aflami.designsystem.text_style.SizedTextStyle
--dontwarn com.paris_2.aflami.designsystem.theme.AflamiThemeKt
--dontwarn com.paris_2.aflami.designsystem.theme.Theme
+-dontwarn com.paris.aflami.designsystem.color.Colors
+-dontwarn com.paris.aflami.designsystem.color.Gradient
+-dontwarn com.paris.aflami.designsystem.color.TextColors
+-dontwarn com.paris.aflami.designsystem.components.CustomButtonKt
+-dontwarn com.paris.aflami.designsystem.components.AppDialogKt
+-dontwarn com.paris.aflami.designsystem.components.AppHorizontalDividerKt
+-dontwarn com.paris.aflami.designsystem.components.MediaCardKt
+-dontwarn com.paris.aflami.designsystem.components.CustomTabKt
+-dontwarn com.paris.aflami.designsystem.components.AppTextKt
+-dontwarn com.paris.aflami.designsystem.components.ButtonState
+-dontwarn com.paris.aflami.designsystem.components.ButtonType$Primary
+-dontwarn com.paris.aflami.designsystem.components.ButtonType$Secondary
+-dontwarn com.paris.aflami.designsystem.components.ButtonType$TextButton
+-dontwarn com.paris.aflami.designsystem.components.ButtonType
+-dontwarn com.paris.aflami.designsystem.components.ChipsKt
+-dontwarn com.paris.aflami.designsystem.components.IconItem
+-dontwarn com.paris.aflami.designsystem.components.MediaCardType
+-dontwarn com.paris.aflami.designsystem.components.NetworkErrorKt
+-dontwarn com.paris.aflami.designsystem.components.PageLoadingPlaceHolderKt
+-dontwarn com.paris.aflami.designsystem.components.PlaceholderViewKt
+-dontwarn com.paris.aflami.designsystem.components.RatingBarKt
+-dontwarn com.paris.aflami.designsystem.components.RecentSearchItemKt
+-dontwarn com.paris.aflami.designsystem.components.SearchSuggestionHubKt
+-dontwarn com.paris.aflami.designsystem.components.AppTextFieldsKt
+-dontwarn com.paris.aflami.designsystem.components.AppTopBarKt
+-dontwarn com.paris.aflami.designsystem.text_style.AflamiTextStyle
+-dontwarn com.paris.aflami.designsystem.text_style.SizedTextStyle
+-dontwarn com.paris.aflami.designsystem.theme.AflamiThemeKt
+-dontwarn com.paris.aflami.designsystem.theme.Theme
 -dontwarn org.slf4j.impl.StaticLoggerBinder
 -keep class com.feature.guessGame.guessGameUi.navigation.QuestionType { *; }
 -keep class com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel { *; }

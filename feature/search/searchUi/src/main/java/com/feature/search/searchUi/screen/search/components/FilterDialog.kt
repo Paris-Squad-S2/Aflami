@@ -23,13 +23,13 @@ import androidx.compose.ui.unit.dp
 import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.CategoryResourceMapper.getResourceId
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.AppDialog
-import com.paris_2.aflami.designsystem.components.RatingBar
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.components.AppDialog
+import com.paris.aflami.designsystem.components.RatingBar
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun FilterDialog(

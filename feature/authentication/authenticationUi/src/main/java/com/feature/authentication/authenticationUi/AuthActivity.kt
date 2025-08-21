@@ -7,8 +7,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavGraph
 import com.feature.authentication.authenticationUi.screen.main.InstallSavedAppLanguage
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

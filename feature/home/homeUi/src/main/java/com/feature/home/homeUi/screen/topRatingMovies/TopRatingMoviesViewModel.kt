@@ -6,8 +6,8 @@ import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris_2.domain.media.useCase.GetTopRatingMediaUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

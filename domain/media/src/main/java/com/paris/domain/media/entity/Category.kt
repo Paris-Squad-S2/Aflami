@@ -1,0 +1,32 @@
+package com.paris.domain.media.entity
+
+enum class Category {
+    Action,
+    Adventure,
+    Animation,
+    Comedy,
+    Crime,
+    Documentary,
+    Drama,
+    Family,
+    Fantasy,
+    History,
+    Horror,
+    Music,
+    Mystery,
+    Romance,
+    ScienceFiction,
+    TvMovie,
+    Thriller,
+    War,
+    Western,
+    ActionAdventure,
+    Kids,
+    News,
+    Reality,
+    ScifiFantasy,
+    Soap,
+    Talk,
+    WarPolitics,
+    Unknown
+}

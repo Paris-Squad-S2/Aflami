@@ -1,7 +1,7 @@
 package com.feature.home.homeUi.mapper
 
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.home.components.SliderMedia

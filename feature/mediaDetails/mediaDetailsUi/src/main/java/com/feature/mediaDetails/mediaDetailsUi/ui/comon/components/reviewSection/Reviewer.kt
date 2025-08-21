@@ -24,8 +24,8 @@ import coil.compose.AsyncImage
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.ExpandableText
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun ReviewCard(

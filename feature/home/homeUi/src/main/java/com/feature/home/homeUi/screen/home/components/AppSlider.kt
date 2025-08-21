@@ -32,8 +32,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import com.feature.home.homeUi.R
-import com.paris_2.aflami.designsystem.utils.BasePreview
-import com.paris_2.aflami.designsystem.utils.PreviewMultiDevices
+import com.paris.aflami.designsystem.utils.BasePreview
+import com.paris.aflami.designsystem.utils.PreviewMultiDevices
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 

@@ -1,12 +1,12 @@
 package com.repository.media.repository
 
-import com.paris_2.domain.media.entity.Media
-import com.paris_2.domain.media.entity.MediaType
-import com.paris_2.domain.media.exception.AflamiException
-import com.paris_2.domain.media.exception.FailedException
-import com.paris_2.domain.media.exception.NoInternetConnectionException
-import com.paris_2.domain.media.repository.MediaRepository
-import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.exception.AflamiException
+import com.paris.domain.media.exception.FailedException
+import com.paris.domain.media.exception.NoInternetConnectionException
+import com.paris.domain.media.repository.MediaRepository
+import com.paris.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.models.local.media.Category
@@ -140,7 +140,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getMoviesByCategory(
-        category: com.paris_2.domain.media.entity.Category,
+        category: com.paris.domain.media.entity.Category,
         page: Int
     ): List<Media> {
         return safeCall(FailedException("getMoviesByCategory")) {
@@ -156,7 +156,7 @@ class MediaRepositoryImpl(
     }
 
     override suspend fun getTvShowsByCategory(
-        category: com.paris_2.domain.media.entity.Category,
+        category: com.paris.domain.media.entity.Category,
         page: Int
     ): List<Media> {
         return safeCall(FailedException("getTvShowsByCategory")) {

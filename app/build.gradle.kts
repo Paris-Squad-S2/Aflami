@@ -13,7 +13,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.aflami"
+    namespace = "com.paris.aflami"
     compileSdk = Configurations.COMPILE_SDK
 
     signingConfigs {
@@ -27,7 +27,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.paris_2.aflami"
+        applicationId = "com.paris.aflami"
         minSdk = Configurations.MIN_SDK
         targetSdk = Configurations.TARGET_SDK
         versionCode = Configurations.VERSION_CODE

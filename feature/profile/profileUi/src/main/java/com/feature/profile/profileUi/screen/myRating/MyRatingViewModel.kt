@@ -6,11 +6,11 @@ import com.feature.profile.profileUi.mapper.toMediaType
 import com.feature.profile.profileUi.mapper.toMediaUiStateList
 import com.feature.profile.profileUi.screen.watchHistory.MediaTypeUi
 import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
-import com.paris_2.domain.media.useCase.FilterRatedMediaUseCase
-import com.paris_2.domain.media.useCase.movie.DeleteMovieRatingUseCase
-import com.paris_2.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
-import com.paris_2.domain.user.usecase.GetAccountIdUseCase
-import com.paris_2.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.movie.DeleteMovieRatingUseCase
+import com.paris.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
+import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.SettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

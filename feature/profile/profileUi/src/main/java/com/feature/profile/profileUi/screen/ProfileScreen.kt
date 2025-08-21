@@ -33,12 +33,12 @@ import com.feature.profile.profileUi.screen.components.AppThemeDialog
 import com.feature.profile.profileUi.screen.components.ProfileDetails
 import com.feature.profile.profileUi.screen.components.ProfileHeader
 import com.feature.profile.profileUi.screen.components.ProfileSetUp
-import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CategoryCard
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.AppHorizontalDivider
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CategoryCard
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.theme.Theme
 
 
 @Composable
@@ -81,7 +81,7 @@ fun LoggedOutContent(
         )
         CustomButton(
             onClick = profileInteractionListener::onLogoutApplyClicked,
-            text = com.paris_2.aflami.designsystem.R.string.login,
+            text = com.paris.aflami.designsystem.R.string.login,
             type = ButtonType.Secondary,
             modifier = Modifier.padding(top = 24.dp)
         )

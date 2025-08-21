@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.paris_2.media"
+    namespace = "com.paris.media"
     compileSdk = Configurations.COMPILE_SDK
 
     defaultConfig {

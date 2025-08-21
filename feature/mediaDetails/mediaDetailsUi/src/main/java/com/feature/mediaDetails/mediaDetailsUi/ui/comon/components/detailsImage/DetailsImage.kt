@@ -28,9 +28,9 @@ import com.designSystem.safeimageviewer.SafeImageViewer
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaButtonType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaPlayButton
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.RatingCard
-import com.paris_2.aflami.designsystem.R
-import com.paris_2.aflami.designsystem.theme.AflamiTheme
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.theme.AflamiTheme
+import com.paris.aflami.designsystem.theme.Theme
 import dropShadow
 import kotlinx.coroutines.delay
 

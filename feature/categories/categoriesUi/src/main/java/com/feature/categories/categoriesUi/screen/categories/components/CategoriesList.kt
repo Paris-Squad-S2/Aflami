@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.feature.categories.categoriesUi.shared.CategoryUiState
-import com.paris_2.aflami.designsystem.components.CategoryCard
+import com.paris.aflami.designsystem.components.CategoryCard
 
 @Composable
 fun CategoriesList(

@@ -19,15 +19,15 @@ import com.feature.search.searchUi.R
 import com.feature.search.searchUi.comon.components.RecentSearchItem
 import com.feature.search.searchUi.comon.components.SearchSuggestionHub
 import com.feature.search.searchUi.screen.search.SearchScreenInteractionListener
-import com.paris_2.aflami.designsystem.components.ButtonState
-import com.paris_2.aflami.designsystem.components.ButtonType
-import com.paris_2.aflami.designsystem.components.CustomButton
-import com.paris_2.aflami.designsystem.components.AppHorizontalDivider
-import com.paris_2.aflami.designsystem.components.NetworkError
-import com.paris_2.aflami.designsystem.components.PageLoadingPlaceHolder
-import com.paris_2.aflami.designsystem.components.PlaceholderView
-import com.paris_2.aflami.designsystem.components.AppText
-import com.paris_2.aflami.designsystem.theme.Theme
+import com.paris.aflami.designsystem.components.ButtonState
+import com.paris.aflami.designsystem.components.ButtonType
+import com.paris.aflami.designsystem.components.CustomButton
+import com.paris.aflami.designsystem.components.AppHorizontalDivider
+import com.paris.aflami.designsystem.components.NetworkError
+import com.paris.aflami.designsystem.components.PageLoadingPlaceHolder
+import com.paris.aflami.designsystem.components.PlaceholderView
+import com.paris.aflami.designsystem.components.AppText
+import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun NoSearchQueryContent(
@@ -52,7 +52,7 @@ fun NoSearchQueryContent(
                 SearchSuggestionHub(
                     title = stringResource(R.string.world_tour),
                     description = stringResource(R.string.explore_world_cinema),
-                    icon = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.img_world_tour),
+                    icon = painterResource(id = com.paris.aflami.designsystem.R.drawable.img_world_tour),
                     gradientColors = Theme.colors.gradient.pinkGradient,
                     onCardClick = searchScreenInteractionListener::onNavigateToWorldTourScreen,
                     modifier = Modifier.weight(1f)
@@ -60,7 +60,7 @@ fun NoSearchQueryContent(
                 SearchSuggestionHub(
                     title = stringResource(R.string.find_by_actor),
                     description = stringResource(R.string.search_by_favorite_actor),
-                    icon = painterResource(id = com.paris_2.aflami.designsystem.R.drawable.img_find_by_actor),
+                    icon = painterResource(id = com.paris.aflami.designsystem.R.drawable.img_find_by_actor),
                     gradientColors = Theme.colors.gradient.blueGradient,
                     onCardClick = searchScreenInteractionListener::onNavigateToFindByActorScreen,
                     modifier = Modifier.weight(1f)
@@ -117,7 +117,7 @@ fun NoSearchQueryContent(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(vertical = 70.dp),
-                    image = painterResource(com.paris_2.aflami.designsystem.R.drawable.img_no_search_result),
+                    image = painterResource(com.paris.aflami.designsystem.R.drawable.img_no_search_result),
                     subTitle = stringResource(R.string.start_exploring_search_for_your_favorite_movies_series_and_shows),
                     spacer = 16.dp
                 )

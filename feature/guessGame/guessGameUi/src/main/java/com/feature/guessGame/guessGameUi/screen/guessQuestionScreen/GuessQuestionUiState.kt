@@ -5,9 +5,9 @@ import androidx.annotation.StringRes
 import com.feature.guessGame.guessGameUi.R
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
-import com.paris_2.domain.game.entity.Answer
-import com.paris_2.domain.game.entity.Question
-import com.paris_2.domain.media.entity.Category
+import com.paris.domain.game.entity.Answer
+import com.paris.domain.game.entity.Question
+import com.paris.domain.media.entity.Category
 
 data class GuessQuestionUiState(
     val gameTitle: String = "",
