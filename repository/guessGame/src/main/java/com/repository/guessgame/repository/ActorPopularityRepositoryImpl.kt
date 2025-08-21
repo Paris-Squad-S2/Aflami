@@ -29,10 +29,6 @@ class ActorPopularityRepositoryImpl(
                 .results
                 ?.mapNotNull { it?.toDomain() }
                 ?: emptyList()
-
-            require(allActors.size >= numberOfActors) {
-                "Not enough actors available to provide $numberOfActors"
-            }
             allActors.shuffled().take(numberOfActors)
         }
     }
