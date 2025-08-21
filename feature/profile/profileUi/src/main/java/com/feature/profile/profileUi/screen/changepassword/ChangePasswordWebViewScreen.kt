@@ -18,13 +18,12 @@ import com.paris.aflami.designsystem.theme.Theme
 fun ChangePasswordWebViewScreen(viewModel: ChangePasswordViewModel = hiltViewModel()) {
 
     val uiState = viewModel.screenState.collectAsStateWithLifecycle()
-    ChangePasswordScreenContent(uiState.value, viewModel)
+    ChangePasswordScreenContent(uiState.value)
 }
 
 @Composable
 private fun ChangePasswordScreenContent(
-    uIState: ChangePasswordUiState,
-    registerViewModel: ChangePasswordViewModel
+    uIState: ChangePasswordUiState
 ) {
 
     Box(
@@ -42,9 +41,6 @@ private fun ChangePasswordScreenContent(
     ) {
         WebViewComposable(
             url = uIState.resetPasswordUrl,
-            onWebMessageReceived = { message: String ->
-               // registerViewModel.onNavigateBack()
-            },
             modifier = Modifier.fillMaxSize(),
             loadingPlaceholder = {
                 PageLoadingPlaceHolder(
@@ -58,10 +54,7 @@ private fun ChangePasswordScreenContent(
                         .background(Theme.colors.surface),
                     onRetry = onRetry,
                 )
-            },
-            onNavigationEvent = {
-               // registerViewModel.onNavigateBack()
-            },
+            }
         )
     }
 }

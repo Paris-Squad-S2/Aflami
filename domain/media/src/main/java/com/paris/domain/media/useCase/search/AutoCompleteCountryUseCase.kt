@@ -1,0 +1,16 @@
+package com.paris.domain.media.useCase.search
+
+import com.paris.domain.media.entity.Country
+import com.paris.domain.media.repository.CountryRepository
+
+class AutoCompleteCountryUseCase(
+    private val countryRepository: CountryRepository,
+) {
+    suspend operator fun invoke(query: String): List<Country> {
+        return countryRepository.getAllCountries()
+            .filter {
+                it.englishName.contains(query, ignoreCase = true) ||
+                        it.arabicName.contains(query, ignoreCase = true)
+            }
+    }
+}

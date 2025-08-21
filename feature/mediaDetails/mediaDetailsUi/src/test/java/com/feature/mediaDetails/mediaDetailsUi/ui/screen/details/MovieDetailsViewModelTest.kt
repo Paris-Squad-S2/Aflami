@@ -2,17 +2,6 @@ package com.feature.mediaDetails.mediaDetailsUi.ui.screen.details
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.navigation.toRoute
-import com.paris.domain.media.entity.Movie
-import com.paris.domain.media.entity.Review
-import com.paris.domain.media.useCase.movie.AddRatingToMovieUseCase
-import com.paris.domain.media.useCase.movie.GetMovieCastUseCase
-import com.paris.domain.media.useCase.movie.GetMovieDetailsUseCase
-import com.paris.domain.media.useCase.movie.GetMovieGalleryUseCase
-import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
-import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
-import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
-import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
@@ -28,10 +17,21 @@ import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.domain.media.entity.MediaVideo
-import com.paris.domain.media.useCase.AddWatchHistoryUseCase
-import com.paris.domain.media.useCase.FilterRatedMediaUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.entity.Movie
+import com.paris.domain.media.entity.Review
+import com.paris.domain.media.useCase.media.AddWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.movie.AddRatingToMovieUseCase
+import com.paris.domain.media.useCase.movie.GetMovieCastUseCase
+import com.paris.domain.media.useCase.movie.GetMovieDetailsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieGalleryUseCase
+import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
+import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -68,7 +68,7 @@ class MovieDetailsViewModelTest {
     private val getListsUseCase: GetListUseCase = mockk()
     private val createListUseCase: CreateListUseCase = mockk()
     private val getSessionIdUseCase: AddMovieToListUseCase = mockk()
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk()
     private val getListDetailsUseCase: GetListDetailsUseCase = mockk()
     private val getRatingUseCase: FilterRatedMediaUseCase = mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
@@ -417,7 +417,7 @@ class MovieDetailsViewModelTest {
             addMovieToListUseCase,
             getListsUseCase,
             createListUseCase,
-            settingsUseCase,
+            manageSettingsUseCase,
             getListDetailsUseCase,
             getRatingUseCase,
             getAccountIdUseCase,

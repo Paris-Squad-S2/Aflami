@@ -4,8 +4,9 @@ import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
-import org.junit.jupiter.api.BeforeEach
 import com.paris.domain.media.testUtils.createMedia
+import com.paris.domain.media.useCase.media.FilterMediaUseCase
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class FilterByListOfCategoriesUseCaseTest {

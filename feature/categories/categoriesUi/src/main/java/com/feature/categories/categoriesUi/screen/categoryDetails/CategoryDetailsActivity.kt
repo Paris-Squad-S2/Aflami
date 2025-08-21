@@ -8,7 +8,7 @@ import com.feature.categories.categoriesUi.screen.main.InstallSavedAppLanguage
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.categories.categoriesUi.shared.fromJsonToCategoryUiState
 import com.paris.aflami.designsystem.theme.AflamiTheme
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ import javax.inject.Inject
 class CategoryDetailsActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var settingsUseCase: SettingsUseCase
+    lateinit var manageSettingsUseCase: ManageSettingsUseCase
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -27,7 +27,7 @@ class CategoryDetailsActivity : AppCompatActivity() {
 
         setContent {
             InstallSavedAppLanguage(this)
-            AflamiTheme(settingsUseCase.isDarkTheme()) {
+            AflamiTheme(manageSettingsUseCase.isDarkTheme()) {
                 CategoryDetailsScreen(
                     category = category,
                 )

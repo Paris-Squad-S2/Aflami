@@ -4,8 +4,8 @@ import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.useCase.GetMoviesByCategoryUseCase
-import com.paris.domain.media.useCase.GetTvShowsByCategoryUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesByCategoryUseCase
+import com.paris.domain.media.useCase.tvShows.GetTvShowsByCategoryUseCase
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

@@ -1,6 +1,6 @@
 package com.feature.profile.profileUi.screen.changepassword
 
-import com.paris.domain.user.usecase.GetForgetPasswordUrlUseCase
+import com.paris.domain.user.usecase.auth.GetForgetPasswordUrlUseCase
 import io.mockk.every
 import io.mockk.mockk
 import kotlin.test.Test

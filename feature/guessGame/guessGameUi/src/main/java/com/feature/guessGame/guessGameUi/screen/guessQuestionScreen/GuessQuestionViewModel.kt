@@ -11,13 +11,13 @@ import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLev
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.mapper.toUiLevel
 import com.paris.domain.game.entity.GameSession
 import com.paris.domain.game.entity.Question
+import com.paris.domain.game.usecases.GenerateWhenIsReleasedSessionUseCase
+import com.paris.domain.game.usecases.GenerateWhichGenreSessionUseCase
 import com.paris.domain.game.usecases.GetUserPointUseCase
 import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
-import com.paris.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject
@@ -25,8 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class GuessQuestionViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val whenIsReleasedSessionUseCase: WhenIsReleasedSessionUseCase,
-    private val whichGenreSessionUseCase: WhichGenreSessionUseCase,
+    private val generateWhenIsReleasedSessionUseCase: GenerateWhenIsReleasedSessionUseCase,
+    private val generateWhichGenreSessionUseCase: GenerateWhichGenreSessionUseCase,
     private val removeAnswerHintUseCase: RemoveAnswerHintUseCase,
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase,
     private val getUserPointUseCase: GetUserPointUseCase,
@@ -57,8 +57,8 @@ class GuessQuestionViewModel @Inject constructor(
             execute = {
                 updateState(screenState.value.copy(isLoading = true))
                 val session = if (questionType == QuestionType.RELEASE_YEAR)
-                    whenIsReleasedSessionUseCase.startNewSession(level.toUiLevel())
-                else whichGenreSessionUseCase.startNewSession(level.toUiLevel())
+                    generateWhenIsReleasedSessionUseCase.startNewSession(level.toUiLevel())
+                else generateWhichGenreSessionUseCase.startNewSession(level.toUiLevel())
 
                 currentSession = session
                 gameStartTimeMillis = System.currentTimeMillis()

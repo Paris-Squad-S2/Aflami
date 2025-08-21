@@ -12,7 +12,7 @@ import com.feature.profile.profileApi.ProfileFeatureAPI
 import com.paris.aflami.bottomNavBar.bottomNavBarUI.navigation.Navigator
 import com.paris.aflami.bottomNavBar.bottomNavBarUI.ui.main.InstallSavedAppLanguage
 import com.paris.aflami.designsystem.theme.AflamiTheme
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,14 +38,14 @@ class BottomNavBarActivity : AppCompatActivity() {
     lateinit var profileFeature: ProfileFeatureAPI
 
     @Inject
-    lateinit var settingsUseCase: SettingsUseCase
+    lateinit var manageSettingsUseCase: ManageSettingsUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             InstallSavedAppLanguage(this)
-            AflamiTheme(settingsUseCase.isDarkTheme()) {
+            AflamiTheme(manageSettingsUseCase.isDarkTheme()) {
                 BottomNavBarScaffold(
                     navigator = bottomNavBarNavigator,
                     homeFeature = homeFeature,

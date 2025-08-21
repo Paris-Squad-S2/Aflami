@@ -1,6 +1,7 @@
 package com.paris.domain.user.usecase
 
 import com.paris.domain.user.repository.UserRepository
+import com.paris.domain.user.usecase.auth.GetSessionIdUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

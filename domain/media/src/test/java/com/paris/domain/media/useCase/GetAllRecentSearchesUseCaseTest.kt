@@ -1,8 +1,10 @@
 package com.paris.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.SearchHistoryModel
 import com.paris.domain.media.entity.SearchType
 import com.paris.domain.media.repository.SearchHistoryRepository
+import com.paris.domain.media.useCase.search.GetAllRecentSearchesUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -11,7 +13,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.google.common.truth.Truth.assertThat
 
 class GetAllRecentSearchesUseCaseTest {
 

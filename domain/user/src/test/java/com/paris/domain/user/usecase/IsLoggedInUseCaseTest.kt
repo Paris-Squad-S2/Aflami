@@ -1,6 +1,7 @@
 package com.paris.domain.user.usecase
 
 import com.paris.domain.user.repository.UserRepository
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
 import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertFalse

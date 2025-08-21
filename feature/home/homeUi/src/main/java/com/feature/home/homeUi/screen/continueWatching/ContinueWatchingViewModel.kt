@@ -6,8 +6,8 @@ import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris.domain.media.useCase.GetWatchHistoryUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.media.GetWatchHistoryUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class ContinueWatchingViewModel @Inject constructor(
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : BaseViewModel<ContinueWatchingUiState>(
     ContinueWatchingUiState()
 ), ContinueWatchingInteractionListener {
@@ -27,7 +27,7 @@ class ContinueWatchingViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

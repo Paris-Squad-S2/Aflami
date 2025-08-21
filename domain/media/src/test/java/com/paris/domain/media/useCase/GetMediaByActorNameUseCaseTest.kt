@@ -1,15 +1,16 @@
 package com.paris.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.repository.SearchMediaRepository
 import com.paris.domain.media.testUtils.createMedia
+import com.paris.domain.media.useCase.media.GetMediaByActorNameUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.google.common.truth.Truth.assertThat
 
 class GetMediaByActorNameUseCaseTest {
     private lateinit var searchMediaRepository: SearchMediaRepository

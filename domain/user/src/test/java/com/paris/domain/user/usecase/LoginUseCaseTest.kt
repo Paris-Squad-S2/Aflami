@@ -2,6 +2,7 @@ package com.paris.domain.user.usecase
 
 import com.paris.domain.user.repository.UserRepository
 import com.google.common.truth.Truth.assertThat
+import com.paris.domain.user.usecase.auth.LoginUseCase
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest

@@ -1,14 +1,15 @@
 package com.paris.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.repository.CategoriesRepository
+import com.paris.domain.media.useCase.search.GetAllCategoriesUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.google.common.truth.Truth.assertThat
 
 class GetAllCategoriesUseCaseTest {
 

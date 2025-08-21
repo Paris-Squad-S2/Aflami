@@ -14,12 +14,12 @@ import com.feature.search.searchUi.navigation.SearchDestinations
 import com.feature.search.searchUi.pagging.PagingSource
 import com.feature.search.searchUi.screen.search.ContentRestriction
 import com.feature.search.searchUi.screen.search.MediaUiState
-import com.paris.domain.media.useCase.AutoCompleteCountryUseCase
-import com.paris.domain.media.useCase.GetCountryCodeByNameUseCase
-import com.paris.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesOnlyByCountryNameUseCase
+import com.paris.domain.media.useCase.search.AutoCompleteCountryUseCase
+import com.paris.domain.media.useCase.search.GetCountryCodeByNameUseCase
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -36,7 +36,7 @@ class WorldTourViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : WorldTourScreenInteractionListener,
     BaseViewModel<WorldTourScreenState>(
         WorldTourScreenState(),
@@ -52,7 +52,7 @@ class WorldTourViewModel @Inject constructor(
 
     private fun getRestriction() {
         viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
+            val restriction = manageSettingsUseCase.getRestriction()
             updateState(
                 screenState.value.copy(
                     screenState.value.uiState.copy(

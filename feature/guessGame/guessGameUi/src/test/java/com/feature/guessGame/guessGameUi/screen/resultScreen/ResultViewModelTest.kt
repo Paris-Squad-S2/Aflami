@@ -8,7 +8,7 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.DifficultySettings
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.paris.domain.game.usecases.UpdatePointsUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk

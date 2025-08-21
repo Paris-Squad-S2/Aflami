@@ -7,13 +7,13 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.UiGameLevel
 import com.paris.domain.game.entity.GameSession
 import com.paris.domain.game.entity.Question
+import com.paris.domain.game.usecases.GenerateWhenIsReleasedSessionUseCase
+import com.paris.domain.game.usecases.GenerateWhichGenreSessionUseCase
 import com.paris.domain.game.usecases.GetUserPointUseCase
 import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
-import com.paris.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every
@@ -34,8 +34,8 @@ import org.junit.jupiter.api.Test
 @OptIn(ExperimentalCoroutinesApi::class)
 class GuessQuestionViewModelTest {
 
-    private val whenIsReleasedSessionUseCase: WhenIsReleasedSessionUseCase = mockk()
-    private val whichGenreSessionUseCase: WhichGenreSessionUseCase = mockk()
+    private val generateWhenIsReleasedSessionUseCase: GenerateWhenIsReleasedSessionUseCase = mockk()
+    private val generateWhichGenreSessionUseCase: GenerateWhichGenreSessionUseCase = mockk()
     private val removeAnswerHintUseCase: RemoveAnswerHintUseCase = mockk()
     private val moveToNextQuestionUseCase: MoveToNextQuestionUseCase = mockk()
     private val getUserPointUseCase: GetUserPointUseCase = mockk()
@@ -67,7 +67,7 @@ class GuessQuestionViewModelTest {
     @Test
     fun `generateSession sets up initial state`() = runTest {
         val session = mockk<GameSession>(relaxed = true)
-        coEvery { whenIsReleasedSessionUseCase.startNewSession(any()) } returns session
+        coEvery { generateWhenIsReleasedSessionUseCase.startNewSession(any()) } returns session
         every { session.getCurrentQuestion() } returns mockk(relaxed = true)
         viewModel
         assertNotNull(viewModel.screenState.value)
@@ -128,8 +128,8 @@ class GuessQuestionViewModelTest {
         )
         return GuessQuestionViewModel(
             savedStateHandle = savedStateHandle,
-            whenIsReleasedSessionUseCase = whenIsReleasedSessionUseCase,
-            whichGenreSessionUseCase = whichGenreSessionUseCase,
+            generateWhenIsReleasedSessionUseCase = generateWhenIsReleasedSessionUseCase,
+            generateWhichGenreSessionUseCase = generateWhichGenreSessionUseCase,
             removeAnswerHintUseCase = removeAnswerHintUseCase,
             moveToNextQuestionUseCase = moveToNextQuestionUseCase,
             getUserPointUseCase = getUserPointUseCase,
