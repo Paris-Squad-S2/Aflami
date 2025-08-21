@@ -15,7 +15,6 @@ import com.repository.media.mapper.toId
 import com.repository.media.mapper.toMedia
 import com.repository.media.mapper.toMediaEntity
 import com.repository.media.models.local.media.Category
-import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.MediaTypeEntity
 import com.repository.media.util.NetworkConnectionChecker
 import com.repository.media.util.safeCall
