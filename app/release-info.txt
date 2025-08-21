@@ -1,2 +1,2 @@
-versionName=1.0.17
-- refactor updateMovieIfAddedToList logic
+versionName=1.0.18
+- fix assets gifs in readme file
