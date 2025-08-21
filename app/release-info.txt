@@ -1,2 +1,2 @@
-versionName=1.0.19
-- fix the issue of gallery and company in details
+versionName=1.0.20
+- update ci configurations and remove services json.
