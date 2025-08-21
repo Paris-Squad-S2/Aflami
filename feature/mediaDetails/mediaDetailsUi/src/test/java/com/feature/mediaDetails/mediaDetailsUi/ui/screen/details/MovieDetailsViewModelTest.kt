@@ -29,9 +29,9 @@ import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -68,7 +68,7 @@ class MovieDetailsViewModelTest {
     private val getListsUseCase: GetListUseCase = mockk()
     private val createListUseCase: CreateListUseCase = mockk()
     private val getSessionIdUseCase: AddMovieToListUseCase = mockk()
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk()
     private val getListDetailsUseCase: GetListDetailsUseCase = mockk()
     private val getRatingUseCase: FilterRatedMediaUseCase = mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
@@ -417,7 +417,7 @@ class MovieDetailsViewModelTest {
             addMovieToListUseCase,
             getListsUseCase,
             createListUseCase,
-            settingsUseCase,
+            manageSettingsUseCase,
             getListDetailsUseCase,
             getRatingUseCase,
             getAccountIdUseCase,

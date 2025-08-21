@@ -9,9 +9,9 @@ import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
 import com.paris.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.GetSessionIdUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetSessionIdUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -32,7 +32,7 @@ class MyRatingViewModelTest {
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase = mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk()
     private lateinit var viewModel: MyRatingViewModel
 
     @BeforeEach
@@ -52,7 +52,7 @@ class MyRatingViewModelTest {
             deleteMovieRatingUseCase = deleteMovieRatingUseCase,
             deleteTvShowRatingUseCase = deleteTvShowRatingUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase = settingsUseCase
+            manageSettingsUseCase = manageSettingsUseCase
         )
     }
 

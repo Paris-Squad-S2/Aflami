@@ -17,7 +17,7 @@ import com.paris.domain.game.usecases.GetUserPointUseCase
 import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
 import javax.inject.Inject

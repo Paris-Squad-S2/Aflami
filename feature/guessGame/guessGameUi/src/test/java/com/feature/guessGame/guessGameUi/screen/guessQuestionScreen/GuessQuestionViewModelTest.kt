@@ -13,7 +13,7 @@ import com.paris.domain.game.usecases.GetUserPointUseCase
 import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.every

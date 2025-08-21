@@ -17,7 +17,7 @@ import com.feature.search.searchUi.screen.search.MediaUiState
 import com.paris.domain.media.useCase.media.GetMediaByActorNameUseCase
 import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
 import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -32,7 +32,7 @@ class FindByActorViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : FindByActorScreenInteractionListener, BaseViewModel<FindByActorScreenState>(
     FindByActorScreenState(),
 ) {
@@ -48,7 +48,7 @@ class FindByActorViewModel @Inject constructor(
 
     private fun getRestriction() {
         viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
+            val restriction = manageSettingsUseCase.getRestriction()
             updateState(
                 screenState.value.copy(
                     screenState.value.uiState.copy(

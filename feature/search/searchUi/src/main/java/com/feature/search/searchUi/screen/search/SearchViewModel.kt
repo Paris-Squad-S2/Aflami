@@ -28,7 +28,7 @@ import com.paris.domain.media.useCase.search.GetAllCategoriesUseCase
 import com.paris.domain.media.useCase.search.GetAllRecentSearchesUseCase
 import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
 import com.paris.domain.media.useCase.search.SearchByQueryUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -54,7 +54,7 @@ class SearchViewModel @Inject constructor(
     private val incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase,
     private val sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : SearchScreenInteractionListener,
     BaseViewModel<SearchScreenState>(
         SearchScreenState(),
@@ -67,7 +67,7 @@ class SearchViewModel @Inject constructor(
 
     private fun getRestriction() {
         viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
+            val restriction = manageSettingsUseCase.getRestriction()
             updateState(
                 screenState.value.copy(
                     screenState.value.searchUiState.copy(

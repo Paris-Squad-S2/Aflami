@@ -16,7 +16,7 @@ import com.paris.domain.game.usecases.GenerateGuessActorSessionUseCase
 import com.paris.domain.game.usecases.GenerateGuessMovieSessionUseCase
 import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

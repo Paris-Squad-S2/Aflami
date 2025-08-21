@@ -6,10 +6,10 @@ import com.feature.profile.profileUi.screen.profile.ContentRestriction
 import com.feature.profile.profileUi.screen.profile.Language
 import com.feature.profile.profileUi.screen.profile.ProfileViewModel
 import com.paris.domain.game.usecases.GetUserPointUseCase
-import com.paris.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.DeleteSessionIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -30,7 +30,7 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileViewModelTest {
 
-    private val settingsUseCase = mockk<SettingsUseCase>()
+    private val manageSettingsUseCase = mockk<ManageSettingsUseCase>()
     private val isLoggedInUseCase = mockk<IsLoggedInUseCase>()
     private val authenticationFeatureAPI = mockk<AuthenticationFeatureAPI>()
     private val deleteSessionIdUseCase = mockk<DeleteSessionIdUseCase>()
@@ -45,15 +45,15 @@ class ProfileViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        coEvery { settingsUseCase.isDarkTheme() } returns flowOf(false)
-        coEvery { settingsUseCase.getLanguage() } returns flowOf("en")
-        every { settingsUseCase.getUserName() } returns "Test User"
-        coEvery { settingsUseCase.getRestriction() } returns ContentRestriction.Off.name
+        coEvery { manageSettingsUseCase.isDarkTheme() } returns flowOf(false)
+        coEvery { manageSettingsUseCase.getLanguage() } returns flowOf("en")
+        every { manageSettingsUseCase.getUserName() } returns "Test User"
+        coEvery { manageSettingsUseCase.getRestriction() } returns ContentRestriction.Off.name
         every { isLoggedInUseCase.invoke() } returns true
         coEvery { getUserPointsUseCase(any()) } returns flowOf(100)
 
         viewModel = ProfileViewModel(
-            settingsUseCase = settingsUseCase,
+            manageSettingsUseCase = manageSettingsUseCase,
             isLoggedInUseCase = isLoggedInUseCase,
             authenticationFeatureAPI = authenticationFeatureAPI,
             deleteSessionIdUseCase = deleteSessionIdUseCase,
@@ -79,7 +79,7 @@ class ProfileViewModelTest {
     @Test
     fun `onChooseAppearanceClicked opens theme dialog`() = runTest {
         // Given
-        coEvery { settingsUseCase.isDarkTheme() } returns flowOf(false)
+        coEvery { manageSettingsUseCase.isDarkTheme() } returns flowOf(false)
 
         // When
         viewModel.onChooseAppearanceClicked()
@@ -135,7 +135,7 @@ class ProfileViewModelTest {
 
         // Then
         assertEquals(Appearance.DARK, viewModel.screenState.value.profile.theme)
-        coVerify(exactly = 1) { settingsUseCase.setTheme(true) }
+        coVerify(exactly = 1) { manageSettingsUseCase.setTheme(true) }
     }
 
     @Test
@@ -148,7 +148,7 @@ class ProfileViewModelTest {
         advanceUntilIdle()
 
         // Then
-        coVerify(exactly = 1) { settingsUseCase.setLanguage(language.local) }
+        coVerify(exactly = 1) { manageSettingsUseCase.setLanguage(language.local) }
     }
 
     @Test
@@ -272,6 +272,6 @@ class ProfileViewModelTest {
         advanceUntilIdle()
 
         // Then
-        coVerify(exactly = 1) { settingsUseCase.setRestriction(ContentRestriction.Moderate.name) }
+        coVerify(exactly = 1) { manageSettingsUseCase.setRestriction(ContentRestriction.Moderate.name) }
     }
 }

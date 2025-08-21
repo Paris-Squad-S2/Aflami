@@ -12,7 +12,7 @@ import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.useCase.media.GetMediaByActorNameUseCase
 import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
 import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -36,7 +36,7 @@ class FindByActorViewModelTest {
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
     private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
     private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
-    private lateinit var settingsUseCase: SettingsUseCase
+    private lateinit var manageSettingsUseCase: ManageSettingsUseCase
     private val testDispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -46,15 +46,15 @@ class FindByActorViewModelTest {
         getMediaByActorNameUseCase = mockk(relaxed = true)
         incrementCategoryInteractionUseCase = mockk(relaxed = true)
         sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
-        settingsUseCase = mockk(relaxed = true)
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        manageSettingsUseCase = mockk(relaxed = true)
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
         viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            settingsUseCase = settingsUseCase
+            manageSettingsUseCase = manageSettingsUseCase
         )
     }
 
@@ -183,15 +183,15 @@ class FindByActorViewModelTest {
     @Test
     fun `onMediaCardClick navigates to detailsScreen`() = runTest {
         val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
-        val settingsUseCase = mockk<SettingsUseCase>(relaxed = true)
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        val manageSettingsUseCase = mockk<ManageSettingsUseCase>(relaxed = true)
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
         val viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase = settingsUseCase
+            manageSettingsUseCase = manageSettingsUseCase
         )
         val mediaUiState = MediaUiState(
             id = 42,

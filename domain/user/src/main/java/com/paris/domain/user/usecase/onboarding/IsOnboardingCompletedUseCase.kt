@@ -1,4 +1,4 @@
-package com.paris.domain.user.usecase
+package com.paris.domain.user.usecase.onboarding
 
 import com.paris.domain.user.repository.SettingRepository
 

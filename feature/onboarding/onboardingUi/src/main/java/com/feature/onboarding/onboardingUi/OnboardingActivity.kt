@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.feature.onboarding.onboardingUi.ui.OnboardingScreen
 import com.feature.onboarding.onboardingUi.ui.main.InstallSavedAppLanguage
 import com.paris.aflami.designsystem.theme.AflamiTheme
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class OnboardingActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var settingsUseCase: SettingsUseCase
+    lateinit var manageSettingsUseCase: ManageSettingsUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class OnboardingActivity : AppCompatActivity() {
 
         setContent {
             InstallSavedAppLanguage(this)
-            AflamiTheme(isDarkTheme = settingsUseCase.isDarkTheme(), isLightStatusBars = false) {
+            AflamiTheme(isDarkTheme = manageSettingsUseCase.isDarkTheme(), isLightStatusBars = false) {
                 OnboardingScreen()
             }
         }

@@ -6,17 +6,17 @@ import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.navigation.Destination
 import com.feature.profile.profileUi.navigation.navigateDestination
 import com.paris.domain.game.usecases.GetUserPointUseCase
-import com.paris.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.DeleteSessionIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
     private val isLoggedInUseCase: IsLoggedInUseCase,
     private val authenticationFeatureAPI: AuthenticationFeatureAPI,
     private val deleteSessionIdUseCase: DeleteSessionIdUseCase,
@@ -60,7 +60,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getTheme() {
         tryToCollect(
-            flow = settingsUseCase.isDarkTheme(),
+            flow = manageSettingsUseCase.isDarkTheme(),
             onEach = { isDark ->
                 updateState(
                     screenState.value.copy(
@@ -82,7 +82,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getLanguage() {
         tryToCollect(
-            flow = settingsUseCase.getLanguage(),
+            flow = manageSettingsUseCase.getLanguage(),
             onEach = { language ->
                 updateState(
                     screenState.value.copy(
@@ -104,7 +104,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = settingsUseCase::getRestriction,
+            execute = manageSettingsUseCase::getRestriction,
             onSuccess = { restriction ->
                 updateState(
                     screenState.value.copy(
@@ -148,7 +148,7 @@ class ProfileViewModel @Inject constructor(
 
     private fun getUserName() {
         tryToExecute(
-            execute = settingsUseCase::getUserName,
+            execute = manageSettingsUseCase::getUserName,
             onSuccess = { userName ->
                 updateState(
                     screenState.value.copy(
@@ -202,13 +202,13 @@ class ProfileViewModel @Inject constructor(
     override fun onChooseAppearanceClicked() {
 
         tryToExecute(
-            execute = { settingsUseCase.isDarkTheme() },
+            execute = { manageSettingsUseCase.isDarkTheme() },
             onSuccess = ::onChooseAppearanceClickedSuccess,
             onError = ::onChooseAppearanceClickedError
         )
 
         tryToCollect(
-            flow = settingsUseCase.isDarkTheme(),
+            flow = manageSettingsUseCase.isDarkTheme(),
             onEach = { isDark ->
                 updateState(
                     screenState.value.copy(
@@ -300,7 +300,7 @@ class ProfileViewModel @Inject constructor(
             )
         )
         tryToExecute(
-            execute = { settingsUseCase.setTheme(appearance == Appearance.DARK) },
+            execute = { manageSettingsUseCase.setTheme(appearance == Appearance.DARK) },
             onError = ::onAppearanceApplyClickedError
         )
     }
@@ -315,7 +315,7 @@ class ProfileViewModel @Inject constructor(
 
     override fun onLanguageApplyClicked(language: Language) {
         tryToExecute(
-            execute = { settingsUseCase.setLanguage(language.local) },
+            execute = { manageSettingsUseCase.setLanguage(language.local) },
             onError = { errorMessage ->
                 updateState(
                     screenState.value.copy(
@@ -407,7 +407,7 @@ class ProfileViewModel @Inject constructor(
 
     override fun onRestrictionSelected(contentRestriction: ContentRestriction) {
         tryToExecute(
-            execute = { settingsUseCase.setRestriction(contentRestriction.name) },
+            execute = { manageSettingsUseCase.setRestriction(contentRestriction.name) },
             onError = ::onRestrictionSelectedError
         )
     }

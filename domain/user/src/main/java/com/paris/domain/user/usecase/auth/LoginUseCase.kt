@@ -1,4 +1,4 @@
-package com.paris.domain.user.usecase
+package com.paris.domain.user.usecase.auth
 
 import com.paris.domain.user.repository.UserRepository
 

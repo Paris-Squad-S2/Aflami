@@ -24,9 +24,9 @@ import com.paris.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowVideoUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -61,7 +61,7 @@ class TvShowDetailsViewModelTest {
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private val isLoggedInUseCase: IsLoggedInUseCase = mockk()
     private val addWatchHistoryUseCase: AddWatchHistoryUseCase = mockk(relaxed = true)
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk()
     private val addRatingToTvShowUseCase: AddRatingToTvShowUseCase = mockk()
     private val getRatingUseCase: FilterRatedMediaUseCase= mockk()
     private val getAccountIdUseCase: GetAccountIdUseCase = mockk()
@@ -357,7 +357,7 @@ class TvShowDetailsViewModelTest {
             mediaDetailsFeatureAPI,
             isLoggedInUseCase,
             addRatingToTvShowUseCase,
-            settingsUseCase,
+            manageSettingsUseCase,
             getRatingUseCase,
             getAccountIdUseCase,
             navigator

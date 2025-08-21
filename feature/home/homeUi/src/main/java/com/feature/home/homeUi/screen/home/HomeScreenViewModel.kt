@@ -16,7 +16,7 @@ import com.paris.domain.media.useCase.media.GetTopRatingMediaUseCase
 import com.paris.domain.media.useCase.media.GetUpComingMediaUseCase
 import com.paris.domain.media.useCase.media.GetWatchHistoryUseCase
 import com.paris.domain.media.useCase.movie.GetMoviesCategoriesUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -31,7 +31,7 @@ class HomeScreenViewModel @Inject constructor(
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase,
     private val searchFeatureAPI: SearchFeatureAPI,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : HomeScreenInteractionListener,
     BaseViewModel<HomeScreenUIState>(
         HomeScreenUIState()
@@ -55,7 +55,7 @@ class HomeScreenViewModel @Inject constructor(
 
     private fun getRestriction() {
         viewModelScope.launch {
-            val restriction = settingsUseCase.getRestriction()
+            val restriction = manageSettingsUseCase.getRestriction()
             updateState(
                 screenState.value.copy(
                     homeUIState = screenState.value.homeUIState.copy(

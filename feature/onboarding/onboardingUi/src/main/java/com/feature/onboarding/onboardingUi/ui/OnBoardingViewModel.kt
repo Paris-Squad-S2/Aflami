@@ -8,8 +8,8 @@ import com.feature.authentication.authenticationApi.AuthenticationFeatureAPI
 import com.feature.onboarding.onboardingUi.R
 import com.paris.aflami.designsystem.components.UiDrawable
 import com.paris.aflami.designsystem.components.UiText
-import com.paris.domain.user.usecase.CompleteOnboardingUseCase
-import com.paris.domain.user.usecase.IsOnboardingCompletedUseCase
+import com.paris.domain.user.usecase.onboarding.CompleteOnboardingUseCase
+import com.paris.domain.user.usecase.onboarding.IsOnboardingCompletedUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.launch

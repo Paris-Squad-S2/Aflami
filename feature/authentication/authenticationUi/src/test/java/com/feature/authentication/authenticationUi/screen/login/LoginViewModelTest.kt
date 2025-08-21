@@ -4,7 +4,7 @@ import com.feature.authentication.authenticationUi.R
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris.aflami.bottomNavBar.bottomNavBarAPI.BottomNavBarAPI
 import com.paris.aflami.designsystem.components.ButtonState
-import com.paris.domain.user.usecase.LoginUseCase
+import com.paris.domain.user.usecase.auth.LoginUseCase
 import io.mockk.mockk
 import io.mockk.spyk
 import org.junit.jupiter.api.Assertions

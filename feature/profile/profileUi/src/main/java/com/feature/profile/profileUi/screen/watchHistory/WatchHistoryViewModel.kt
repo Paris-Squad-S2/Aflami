@@ -5,7 +5,7 @@ import com.feature.profile.profileUi.common.BaseViewModel
 import com.feature.profile.profileUi.mapper.toMediaType
 import com.feature.profile.profileUi.mapper.toMediaUiStateList
 import com.paris.domain.media.useCase.media.FilterWatchHistoryUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class WatchHistoryViewModel @Inject constructor(
     private val filterWatchHistoryUseCase: FilterWatchHistoryUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : WatchHistoryInteractionListener, BaseViewModel<WatchHistoryUiState>(WatchHistoryUiState()) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
 
@@ -25,7 +25,7 @@ class WatchHistoryViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

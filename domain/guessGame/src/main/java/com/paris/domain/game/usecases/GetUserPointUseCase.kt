@@ -1,7 +1,6 @@
 package com.paris.domain.game.usecases
 
 import com.paris.domain.game.repositories.GamePointsRepository
-import com.paris.domain.user.usecase.GetAccountIdUseCase
 import kotlinx.coroutines.flow.Flow
 
 class GetUserPointUseCase(

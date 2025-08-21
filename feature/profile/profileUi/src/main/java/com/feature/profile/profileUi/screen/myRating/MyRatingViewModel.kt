@@ -9,8 +9,8 @@ import com.feature.profile.profileUi.screen.watchHistory.MediaUiState
 import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
 import com.paris.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ class MyRatingViewModel @Inject constructor(
     private val getAccountIdUseCase: GetAccountIdUseCase,
     private val deleteMovieRatingUseCase: DeleteMovieRatingUseCase,
     private val deleteTvShowRatingUseCase: DeleteTvShowRatingUseCase,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : MyRatingInteractionListener, BaseViewModel<MyRatingUiState>(MyRatingUiState()) {
     private var selectedMediaType: MediaTypeUi = MediaTypeUi.MOVIE
 
@@ -32,7 +32,7 @@ class MyRatingViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

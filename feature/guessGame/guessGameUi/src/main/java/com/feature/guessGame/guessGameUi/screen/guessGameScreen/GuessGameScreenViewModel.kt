@@ -8,7 +8,7 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.navigation.navigateToGame
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toUiGameLevel
 import com.paris.domain.game.usecases.GetUserPointUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

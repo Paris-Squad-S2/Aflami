@@ -4,7 +4,7 @@ import com.paris.domain.user.repository.SettingRepository
 import com.paris.domain.user.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 
-class SettingsUseCase(
+class ManageSettingsUseCase(
     private val settingRepository: SettingRepository,
     private val userRepository: UserRepository,
 ) {

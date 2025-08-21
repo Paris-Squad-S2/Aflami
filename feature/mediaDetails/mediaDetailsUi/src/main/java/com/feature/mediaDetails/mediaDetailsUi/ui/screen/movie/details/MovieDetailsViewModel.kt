@@ -44,9 +44,9 @@ import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -74,7 +74,7 @@ class MovieDetailsViewModel @Inject constructor(
     private val addMovieToListUseCase: AddMovieToListUseCase,
     private val getListsUseCase: GetListUseCase,
     private val createListUseCase: CreateListUseCase,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
     private val getListDetailsUseCase: GetListDetailsUseCase,
     private val getRatingUseCase: FilterRatedMediaUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
@@ -141,7 +141,7 @@ class MovieDetailsViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

@@ -75,18 +75,18 @@ import com.paris.domain.media.useCase.tvShows.GetTvShowsByCategoryUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.paris.domain.user.repository.SettingRepository
 import com.paris.domain.user.repository.UserRepository
-import com.paris.domain.user.usecase.CompleteOnboardingUseCase
-import com.paris.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.GetForgetPasswordUrlUseCase
-import com.paris.domain.user.usecase.GetRegisterUrlUseCase
-import com.paris.domain.user.usecase.GetSessionIdUseCase
-import com.paris.domain.user.usecase.GuestLoginUseCase
-import com.paris.domain.user.usecase.HasAnySessionUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.IsOnboardingCompletedUseCase
-import com.paris.domain.user.usecase.LoginUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.onboarding.CompleteOnboardingUseCase
+import com.paris.domain.user.usecase.auth.DeleteSessionIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetForgetPasswordUrlUseCase
+import com.paris.domain.user.usecase.auth.GetRegisterUrlUseCase
+import com.paris.domain.user.usecase.auth.GetSessionIdUseCase
+import com.paris.domain.user.usecase.auth.GuestLoginUseCase
+import com.paris.domain.user.usecase.auth.HasAnySessionUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.onboarding.IsOnboardingCompletedUseCase
+import com.paris.domain.user.usecase.auth.LoginUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -321,7 +321,7 @@ object UseCaseModule {
         settingRepository: SettingRepository,
         userRepository: UserRepository,
     ) =
-        SettingsUseCase(settingRepository, userRepository)
+        ManageSettingsUseCase(settingRepository, userRepository)
 
     @Provides
     fun provideGetListUseCase(listRepository: ListsRepository) = GetListUseCase(listRepository)

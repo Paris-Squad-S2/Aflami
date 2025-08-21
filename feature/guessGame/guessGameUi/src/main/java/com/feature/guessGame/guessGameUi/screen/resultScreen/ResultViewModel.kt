@@ -10,7 +10,7 @@ import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.DifficultySettings
 import com.feature.guessGame.guessGameUi.screen.guessGameScreen.mapper.toInt
 import com.paris.domain.game.usecases.UpdatePointsUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
