@@ -5,21 +5,22 @@ import com.paris_2.domain.media.entity.Media
 import com.paris_2.domain.media.entity.MediaType
 import com.paris_2.domain.media.exception.FailedException
 import com.paris_2.domain.media.exception.NoInternetConnectionException
+import com.paris_2.domain.media.repository.MovieRepository
+import com.paris_2.domain.media.repository.TvShowRepository
 import com.paris_2.repository.user.dataSource.local.SettingLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
-import com.repository.media.models.remote.media.home.MovieDto
-import com.repository.media.models.remote.media.home.TvDto
+import com.repository.media.mapper.toEntity
 import com.repository.media.models.local.media.Category
 import com.repository.media.models.local.media.HomeMediaEntity
 import com.repository.media.models.local.media.MediaEntity
 import com.repository.media.models.local.media.MediaTypeEntity
-
-import com.repository.media.mapper.toEntity
 import com.repository.media.models.remote.media.category.MovieByCategoryDto
 import com.repository.media.models.remote.media.category.ResultDto
 import com.repository.media.models.remote.media.category.TvResultDto
 import com.repository.media.models.remote.media.category.TvShowByCategoryDto
+import com.repository.media.models.remote.media.home.MovieDto
+import com.repository.media.models.remote.media.home.TvDto
 import com.repository.media.util.NetworkConnectionChecker
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -38,6 +39,9 @@ class MediaRepositoryImplTest {
     private val mediaLocalDataSource: MediaLocalDataSource = mockk(relaxed = true)
     private val networkChecker: NetworkConnectionChecker = mockk()
     private val settingLocalDataSource: SettingLocalDataSource = mockk()
+    private val movieRepository: MovieRepository = mockk()
+    private val tvShowRepository: TvShowRepository = mockk()
+
     private lateinit var repo: MediaRepositoryImpl
 
     val language = "en"
@@ -48,7 +52,9 @@ class MediaRepositoryImplTest {
         repo = MediaRepositoryImpl(
             networkChecker, remote,
             mediaLocalDataSource = mediaLocalDataSource,
-            settingLocalDataSource = settingLocalDataSource
+            settingLocalDataSource = settingLocalDataSource,
+            movieRepository = movieRepository,
+            tvShowRepository = tvShowRepository
         )
     }
 
