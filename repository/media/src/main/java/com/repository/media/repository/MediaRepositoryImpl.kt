@@ -22,7 +22,9 @@ import com.repository.media.util.NetworkConnectionChecker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -126,20 +128,36 @@ class MediaRepositoryImpl(
 
     override  fun getContinueWatchingMedia(): Flow<List<Media>> {
 
+        val language = CoroutineScope(IO).async {
+            settingLocalDataSource.getLanguage().first()
+        }
+
         return mediaLocalDataSource.getMediaContinueWatching().map { mediaList ->
 
-            val movies = mediaList.filter { it.type == MediaTypeEntity.Movie }
-            val tvShows = mediaList.filter { it.type == MediaTypeEntity.TvShow }
 
-            val filteredMovies = CoroutineScope(IO).async {
-                movies.map { movieRepository.getMovieDetails(it.id) }
+            val localMedia =CoroutineScope(IO).async {
+                mediaLocalDataSource.getHomeMediaByCategory(
+                    Category.CONTINUE_WATCHING,
+                    language.await()
+                )
+            }.await()
+
+            if (localMedia.isNotEmpty()) return@map localMedia.mapNotNull { it.toDomain() }
+
+            val filteredMovies  = mediaList.map {
+                CoroutineScope(IO).async {
+                    when(it.type){
+                        MediaTypeEntity.Movie -> movieRepository.getMovieDetails(it.id).toMedia()
+                        MediaTypeEntity.TvShow -> tvShowRepository.getTvShowDetails(it.id).toMedia()
+                    }
+                }
             }
+            val continueWatchingMedias = filteredMovies.awaitAll()
+            mediaLocalDataSource.addHomeMedia(continueWatchingMedias.map { it.toMediaEntity(category = Category.CONTINUE_WATCHING,language.await()) })
 
-            val filteredTvShows = CoroutineScope(IO).async {
-                tvShows.map { tvShowRepository.getTvShowDetails(it.id) }
-            }
-
-            filteredMovies.await().map { it.toMedia() } + filteredTvShows.await().map { it.toMedia() }
+            return@map continueWatchingMedias
+        }.catch {
+            throw FailedException("getContinueWatchingMedia")
         }
 
     }

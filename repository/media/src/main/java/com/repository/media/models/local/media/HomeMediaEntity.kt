@@ -21,5 +21,6 @@ data class HomeMediaEntity(
 enum class Category {
     POPULAR,
     TOP_RATED,
-    UPCOMING
+    UPCOMING,
+    CONTINUE_WATCHING
 }
