@@ -1,2 +1,3 @@
-versionName=1.0.18
-- fix assets gifs in readme file
+versionName=1.0.19
+- make the continue watching media list change to arabic or english
+based on current language
