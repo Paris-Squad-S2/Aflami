@@ -49,7 +49,7 @@ fun SettingsItem(
             AppIcon(
                 imageVector = ImageVector.vectorResource(icon),
                 contentDescription = null,
-                tint = Theme.colors.text.body,
+                tint = Theme.colors.text.hint,
             )
         }
         AppText(
