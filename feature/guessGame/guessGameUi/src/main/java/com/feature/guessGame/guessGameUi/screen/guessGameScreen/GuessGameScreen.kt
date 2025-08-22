@@ -4,9 +4,7 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -33,9 +31,6 @@ import com.paris.aflami.designsystem.components.AppTopBar
 import com.paris.aflami.designsystem.components.GameCard
 import com.paris.aflami.designsystem.theme.AflamiTheme
 import com.paris.aflami.designsystem.theme.Theme
-import com.paris.domain.user.repository.SettingRepository
-import com.paris.domain.user.usecase.ManageSettingsUseCase
-import com.paris.domain.user.usecase.auth.LoginUseCase
 import com.feature.guessGame.guessGameUi.R as GuessR
 
 @Composable
