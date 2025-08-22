@@ -3,6 +3,7 @@ package com.feature.profile.profileUi.screen.components
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -46,10 +47,15 @@ fun AppLogOutDialog(
                     textAlign = TextAlign.Center
                 )
                 CustomButton(
-                    onClick = { onLogout() },
+                    onClick = {
+                        onLogout()
+
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
+                    type = ButtonType.Primary,
                     isNegative = true,
-                    modifier = Modifier.padding(top = 12.dp),
-                    type = ButtonType.Secondary,
                     text = R.string.logout
                 )
             }
