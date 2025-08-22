@@ -50,11 +50,11 @@ fun WatchHistoryScreen(
     ) {
         var selectedIndex by remember { mutableIntStateOf(0) }
         AppTopBar(
-            logo = iconItemWithDefaults(
-                icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_back),
-                onClick = { activity?.finish() },
-                backgroundColor = Theme.colors.surface,
-                tint = Theme.colors.text.title
+            leadingIcons = listOf(
+                iconItemWithDefaults(
+                    icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_back),
+                    onClick = { activity?.finish() },
+                )
             ),
             title = stringResource(R.string.watch_history),
         )
