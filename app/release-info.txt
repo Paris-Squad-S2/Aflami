@@ -1,2 +1,2 @@
-versionName=1.0.26
-- fix some UI issues
+versionName=1.0.27
+- fix some UI issues and remove unused data sources and repositories
