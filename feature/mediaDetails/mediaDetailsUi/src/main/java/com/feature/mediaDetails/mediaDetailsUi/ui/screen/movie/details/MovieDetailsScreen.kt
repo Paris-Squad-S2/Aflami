@@ -15,10 +15,8 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -39,7 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -50,7 +47,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.gallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
@@ -60,6 +56,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.VideoPlayer
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.productionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.gallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.components.CreateListDialog
@@ -426,11 +423,20 @@ fun MovieDetailsScreenContent(
                             }
                         }
                         item (span = {GridItemSpan(maxLineSpan)}){
-                            Spacer(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(LocalConfiguration.current.screenHeightDp.dp / 12)
-                            )
+                                    .background(Theme.colors.surface)
+                                    .padding(vertical = 30.dp)
+                                    .navigationBarsPadding(),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                AppText(
+                                    text = stringResource(R.string.there_is_no_items),
+                                    style = Theme.textStyle.label.large,
+                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                )
+                            }
                         }
                     }
                 }

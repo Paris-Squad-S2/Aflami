@@ -73,4 +73,5 @@
     <string name="failed_to_load_restriction_settings">فشل في تحميل إعدادات القيود</string>
     <string name="select_how_much_you_like_it">اختر مدى إعجابك به</string>
     <string name="failed_to_add_movie_to_list">خطأ في إضافة الفيلم إلى القائمة</string>
+    <string name="there_is_no_items">لا يوجد عناصر</string>
 </resources>
