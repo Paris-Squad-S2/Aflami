@@ -50,7 +50,7 @@ fun MoodPickerDialog(
                 mediaType = movie.type.toString(),
                 year = movie.yearOfRelease.year.toString(),
                 mediaCardType = MediaCardType.UP_COMING,
-                showGradientFilter = false,
+                showGradientFilter = true,
                 modifier = Modifier
                     .padding(12.dp),
                 nsfwThreshold = nsfwThreshold,
