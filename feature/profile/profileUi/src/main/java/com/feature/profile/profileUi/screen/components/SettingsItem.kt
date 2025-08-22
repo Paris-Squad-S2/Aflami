@@ -25,8 +25,8 @@ import com.paris.aflami.designsystem.theme.Theme
 fun SettingsItem(
     modifier: Modifier = Modifier,
     icon: Int,
-    tint: Color = Theme.colors.text.body,
     title: String,
+    tint :Color = Theme.colors.text.body,
     onClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {

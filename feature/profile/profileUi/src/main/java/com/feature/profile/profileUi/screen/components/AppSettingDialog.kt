@@ -49,7 +49,6 @@ fun AppSettingDialog(
                         AppIcon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
                             contentDescription = null,
-                            tint = Theme.colors.text.hint,
                         )
                     })
                 SettingsItem(
@@ -61,7 +60,6 @@ fun AppSettingDialog(
                         AppIcon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
                             contentDescription = null,
-                            tint = Theme.colors.text.hint,
                         )
                     })
 
