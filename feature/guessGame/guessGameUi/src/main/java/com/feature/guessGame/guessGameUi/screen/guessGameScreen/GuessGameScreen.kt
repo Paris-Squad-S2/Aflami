@@ -4,7 +4,9 @@ import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
@@ -13,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -30,12 +33,16 @@ import com.paris.aflami.designsystem.components.AppTopBar
 import com.paris.aflami.designsystem.components.GameCard
 import com.paris.aflami.designsystem.theme.AflamiTheme
 import com.paris.aflami.designsystem.theme.Theme
+import com.paris.domain.user.repository.SettingRepository
+import com.paris.domain.user.usecase.ManageSettingsUseCase
+import com.paris.domain.user.usecase.auth.LoginUseCase
 import com.feature.guessGame.guessGameUi.R as GuessR
 
 @Composable
 fun GuessGameScreen(
     viewModel: GuessGameScreenViewModel = hiltViewModel(),
 ) {
+
     val screenState = viewModel.screenState.collectAsStateWithLifecycle()
     GuessGameScreenContent(state = screenState.value, action = viewModel)
 }
@@ -72,7 +79,7 @@ fun GuessGameScreenContent(
                 .verticalScroll(scrollState)
                 .systemBarsPadding()
                 .padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             val gamesToShow = getStaticGames().map { game ->
                 game.copy(
@@ -88,7 +95,10 @@ fun GuessGameScreenContent(
                     trailingImages = game.trailingImages,
                     onPlayClick = { action.onGamePlayClicked(game.id) },
                     isPlayButtonLocked = game.isLocked,
-                    pointsToUnlock = game.pointsToUnlock
+                    pointsToUnlock = game.pointsToUnlock,
+                    modifier = Modifier.padding(vertical = 1.dp),
+                    borderColor = game.borderColor,
+                    shadowColor = game.shadowColor
                 )
             }
 
@@ -118,6 +128,8 @@ private fun getStaticGames(): List<GameData> = listOf(
         description = stringResource(GuessR.string.guess_the_character_desc),
         backgroundColors = listOf(Theme.colors.primaryVariant, Theme.colors.primary),
         trailingImages = listOf(painterResource(R.drawable.image_clown)),
+        borderColor = Color(0xFFD85895),
+        shadowColor = Color(0xFFD85895),
         isLocked = false
     ),
     GameData(
@@ -126,6 +138,8 @@ private fun getStaticGames(): List<GameData> = listOf(
         description = stringResource(GuessR.string.guess_the_movie_desc),
         backgroundColors = listOf(Theme.colors.status.blueCard, Theme.colors.status.blueAccent),
         trailingImages = imageIds.map { painterResource(it) },
+        borderColor = Color(0xFF2BA3D9),
+        shadowColor = Color(0xFF2BA3D9) ,
         isLocked = false
     ),
     GameData(
@@ -134,6 +148,8 @@ private fun getStaticGames(): List<GameData> = listOf(
         description = stringResource(GuessR.string.when_was_it_released_desc),
         backgroundColors = listOf(Theme.colors.status.navyCard, Theme.colors.status.darkBlue),
         trailingImages = listOf(painterResource(R.drawable.ic_purpl_calendar)),
+        borderColor = Color(0xFF0A203A),
+        shadowColor = Color(0xFF0C57C8),
         isLocked = true,
         pointsToUnlock = 5
     ),
@@ -143,6 +159,8 @@ private fun getStaticGames(): List<GameData> = listOf(
         description = stringResource(GuessR.string.which_genre_desc),
         backgroundColors = listOf(Theme.colors.status.yellowCard, Theme.colors.status.yellowAccent),
         trailingImages = listOf(painterResource(R.drawable.image_chair)),
+        borderColor = Color(0xFFE5A02E) ,
+        shadowColor = Color(0xFFE5A02E),
         isLocked = true,
         pointsToUnlock = 5
     )
