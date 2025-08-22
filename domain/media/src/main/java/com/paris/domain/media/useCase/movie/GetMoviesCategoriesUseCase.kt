@@ -2,7 +2,7 @@ package com.paris.domain.media.useCase.movie
 
 import com.paris.domain.media.entity.Category
 
-class GetMoviesCategoriesUseCase() {
+class GetMoviesCategoriesUseCase {
     operator fun invoke(): List<Category> {
         return listOf(
             Category.Action,

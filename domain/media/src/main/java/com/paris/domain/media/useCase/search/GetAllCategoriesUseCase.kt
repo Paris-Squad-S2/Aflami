@@ -2,7 +2,7 @@ package com.paris.domain.media.useCase.search
 
 import com.paris.domain.media.entity.Category
 
-class GetAllCategoriesUseCase() {
+class GetAllCategoriesUseCase {
     operator fun invoke(): List<Category> {
         return listOf(
             Category.Action,
