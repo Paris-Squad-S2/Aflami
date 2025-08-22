@@ -2,12 +2,10 @@ package com.paris.aflami.di
 
 import com.repository.guessgame.datasource.remote.ActorPopularityRemoteDataSource
 import com.repository.media.ActorPopularityRemoteDataSourceImpl
-import com.repository.media.GenresRemoteDataSourceImpl
 import com.repository.media.MediaRemoteDataSourceImpl
 import com.repository.media.MovieRemoteDataSourceImpl
 import com.repository.media.SearchRemoteDataSourceImpl
 import com.repository.media.TvShowDetailsRemoteDataSourceImpl
-import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.datasource.remote.MovieRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
@@ -23,11 +21,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 abstract class RemoteDataSourceModule {
 
-    @Binds
-    @Singleton
-    abstract fun bindGenresRemoteDataSource(
-        impl: GenresRemoteDataSourceImpl
-    ): GenresRemoteDataSource
 
     @Binds
     @Singleton
