@@ -30,6 +30,7 @@ import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppScaffold
 import com.paris.aflami.designsystem.components.AppTopBar
 import com.paris.aflami.designsystem.components.ButtonState
 import com.paris.aflami.designsystem.components.ButtonType
@@ -75,7 +76,7 @@ fun GuessByImageContent(
             )
         }
 
-        state.error!= null -> {
+        state.error != null -> {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = listener::onRetry
@@ -83,25 +84,37 @@ fun GuessByImageContent(
         }
 
         else -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
-            ) {
-                Header(
-                    head = state.screenTitle,
-                    onCanceled = { activity?.finish() },
-                    onTimeFinished = listener::onTimeFinished,
-                    time = state.time,
-                    currentQuestion = state.currentQuestion
-                )
+            AppScaffold(
+                bottomBar = {
+                    val currentQuestion = state.questionUiState.getOrNull(state.currentQuestion)
 
+                    CustomButton(
+                        onClick = listener::onNextClicked,
+                        text = com.feature.guessGame.guessGameUi.R.string.next,
+                        type = ButtonType.Primary,
+                        state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .statusBarsPadding()
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
+                    Header(
+                        head = state.screenTitle,
+                        onCanceled = { activity?.finish() },
+                        onTimeFinished = listener::onTimeFinished,
+                        time = state.time,
+                        currentQuestion = state.currentQuestion
+                    )
+
                     QuestionIndicator(
                         numberOfQuestions = state.questionUiState.size,
                         step = state.currentQuestion,
@@ -132,23 +145,12 @@ fun GuessByImageContent(
                             )
                         }
                     }
-
-                    Spacer(Modifier.weight(1f))
-
-                    CustomButton(
-                        onClick = listener::onNextClicked,
-                        text = com.feature.guessGame.guessGameUi.R.string.next,
-                        type = ButtonType.Primary,
-                        state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .navigationBarsPadding()
-                    )
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun QuestionImage(
