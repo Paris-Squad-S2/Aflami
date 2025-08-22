@@ -3,12 +3,10 @@ package com.paris.aflami.di
 import com.paris.domain.lists.repository.ListsRepository
 import com.paris.domain.game.repositories.ActorPopularityRepository
 import com.paris.domain.game.repositories.GamePointsRepository
-import com.paris.domain.media.repository.CategoriesRepository
 import com.paris.domain.media.repository.CountryRepository
 import com.paris.domain.media.repository.GenresInteractionRepository
 import com.paris.domain.media.repository.MediaRepository
 import com.paris.domain.media.repository.MovieRepository
-import com.paris.domain.media.repository.MoviesCategoriesRepository
 import com.paris.domain.media.repository.SearchHistoryRepository
 import com.paris.domain.media.repository.SearchMediaRepository
 import com.paris.domain.media.repository.TvShowRepository
@@ -31,14 +29,11 @@ import com.repository.media.datasource.local.CountriesLocalDataSource
 import com.repository.media.datasource.local.GenresInteractionDataSource
 import com.repository.media.datasource.local.HistoryLocalDataSource
 import com.repository.media.datasource.local.MediaLocalDataSource
-import com.repository.media.datasource.remote.GenresRemoteDataSource
 import com.repository.media.datasource.remote.MediaRemoteDataSource
 import com.repository.media.datasource.remote.SearchRemoteDataSource
-import com.repository.media.repository.CategoriesRepositoryImpl
 import com.repository.media.repository.CountryRepositoryImpl
 import com.repository.media.repository.GenresInteractionRepositoryImpl
 import com.repository.media.repository.MediaRepositoryImpl
-import com.repository.media.repository.MoviesCategoriesRepositoryImpl
 import com.repository.media.repository.SearchHistoryRepositoryImpl
 import com.repository.media.repository.SearchMediaRepositoryImpl
 import com.repository.media.util.NetworkConnectionChecker
@@ -88,19 +83,6 @@ object RepositoryModule {
         return CountryRepositoryImpl(countriesLocalDataSource)
     }
 
-    @Provides
-    @Singleton
-    fun provideCategoriesRepository(
-        networkConnectionChecker: NetworkConnectionChecker,
-        genresRemoteDataSource: GenresRemoteDataSource,
-        settingLocalDataSource: SettingLocalDataSource,
-    ): CategoriesRepository {
-        return CategoriesRepositoryImpl(
-            networkConnectionChecker,
-            genresRemoteDataSource,
-            settingLocalDataSource
-        )
-    }
 
     @Provides
     @Singleton
@@ -141,19 +123,6 @@ object RepositoryModule {
         movieRepository,
         tvShowRepository
     )
-
-    @Provides
-    @Singleton
-    fun provideMoviesCategoriesRepository(
-        genresRemoteDataSource: GenresRemoteDataSource,
-        networkConnectionChecker: NetworkConnectionChecker,
-        settingLocalDataSource: SettingLocalDataSource,
-    ): MoviesCategoriesRepository =
-        MoviesCategoriesRepositoryImpl(
-            genresRemoteDataSource,
-            networkConnectionChecker,
-            settingLocalDataSource
-        )
 
     @Provides
     @Singleton

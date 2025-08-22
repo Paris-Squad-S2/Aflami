@@ -20,12 +20,10 @@ import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
-import com.paris.domain.media.repository.CategoriesRepository
 import com.paris.domain.media.repository.CountryRepository
 import com.paris.domain.media.repository.GenresInteractionRepository
 import com.paris.domain.media.repository.MediaRepository
 import com.paris.domain.media.repository.MovieRepository
-import com.paris.domain.media.repository.MoviesCategoriesRepository
 import com.paris.domain.media.repository.SearchHistoryRepository
 import com.paris.domain.media.repository.SearchMediaRepository
 import com.paris.domain.media.repository.TvShowRepository
@@ -134,8 +132,7 @@ object UseCaseModule {
     fun provideFilterMediaByRatingUseCase() = FilterMediaByRatingUseCase()
 
     @Provides
-    fun provideGetAllCategoriesUseCase(categoriesRepository: CategoriesRepository) =
-        GetAllCategoriesUseCase(categoriesRepository)
+    fun provideGetAllCategoriesUseCase() = GetAllCategoriesUseCase()
 
     @Provides
     fun provideGetMediaByActorNameUseCase(searchMediaRepository: SearchMediaRepository) =
@@ -226,8 +223,7 @@ object UseCaseModule {
         GetPopularMediaUseCase(mediaRepository)
 
     @Provides
-    fun provideGetMoviesCategoriesUseCase(moviesCategoriesRepository: MoviesCategoriesRepository) =
-        GetMoviesCategoriesUseCase(moviesCategoriesRepository)
+    fun provideGetMoviesCategoriesUseCase() = GetMoviesCategoriesUseCase()
 
     @Provides
     fun provideGetUpComingMediaUseCase(mediaRepository: MediaRepository) =
