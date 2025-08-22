@@ -3,7 +3,6 @@ package com.paris.aflami.di
 import com.datasource.remote.lists.service.ListApiService
 import com.paris.datasource.remote.user.UserApi
 import com.repository.media.services.ActorPopularityApiService
-import com.repository.media.services.GenresApiServices
 import com.repository.media.services.MediaApiService
 import com.repository.media.services.MovieApiService
 import com.repository.media.services.TvShowDetailsApiService
@@ -32,11 +31,6 @@ object ServiceModule {
     @Singleton
     fun provideTvShowDetailsApiService(retrofit: Retrofit): TvShowDetailsApiService =
         retrofit.create(TvShowDetailsApiService::class.java)
-
-    @Provides
-    @Singleton
-    fun provideGenresApiServices(retrofit: Retrofit): GenresApiServices =
-        retrofit.create(GenresApiServices::class.java)
 
     @Provides
     @Singleton
