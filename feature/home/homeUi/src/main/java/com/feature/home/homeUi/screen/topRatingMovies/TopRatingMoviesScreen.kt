@@ -6,13 +6,16 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
@@ -25,8 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -48,18 +53,35 @@ fun TopRatingMoviesScreen(
 ) {
     val state = viewModel.screenState.collectAsState()
     val context = LocalActivity.current
+    val lazyGridState = rememberLazyGridState()
+
+    val maxScrollPx = with(LocalDensity.current) { 56.dp.toPx() }
+    val topBarAlpha by remember {
+        derivedStateOf {
+            val scroll =
+                if (lazyGridState.firstVisibleItemIndex > 0) maxScrollPx
+                else lazyGridState.firstVisibleItemScrollOffset.toFloat()
+            (scroll / maxScrollPx).coerceIn(0f, 1f)
+        }
+    }
+    val backgroundColor = Theme.colors.surface.copy(alpha = topBarAlpha)
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = Theme.colors.gradient.pointsOverly + listOf(
-                        Theme.colors.surface.copy(alpha = 0.5f), Theme.colors.surface
+            .background(Theme.colors.surface)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.7f)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = Theme.colors.gradient.lightPinkGradient +
+                                Color.Transparent
                     )
                 )
-            )
-    ) {
+        )
         AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
@@ -118,8 +140,7 @@ fun TopRatingMoviesScreen(
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
 
             AppTopBar(
@@ -132,12 +153,15 @@ fun TopRatingMoviesScreen(
                     tint = Theme.colors.text.title,
                 ),
                 title = stringResource(R.string.top_rating),
-                modifier = Modifier.statusBarsPadding()
+                modifier = Modifier
+                    .background(backgroundColor)
+                    .statusBarsPadding()
             )
             if (state.value.topRatingMovies.isNotEmpty()) {
                 TopRatingMoviesContent(
                     topRatingMoviesUiState = state.value,
-                    onMediaCardClick = viewModel::onMediaCardClick
+                    onMediaCardClick = viewModel::onMediaCardClick,
+                    lazyGridState = lazyGridState
                 )
             } else if (state.value.isLoading) {
                 PageLoadingPlaceHolder(
@@ -156,8 +180,8 @@ fun TopRatingMoviesScreen(
 fun TopRatingMoviesContent(
     topRatingMoviesUiState: TopRatingMoviesUiState,
     onMediaCardClick: (MediaUiState) -> Unit,
+    lazyGridState: LazyGridState
 ) {
-    val lazyGridState = rememberLazyGridState()
     val isScrolling by remember { derivedStateOf { lazyGridState.isScrollInProgress } }
 
     LazyVerticalGrid(

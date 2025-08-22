@@ -290,7 +290,7 @@ fun HomeScreenContent(
                     mediaType = stringResource(upcomingMedia.type.mediaID),
                     year = upcomingMedia.yearOfRelease.year.toString(),
                     mediaCardType = MediaCardType.UP_COMING,
-                    showGradientFilter = false,
+                    showGradientFilter = true,
                     nsfwThreshold = state.homeUIState.nsfwThreshold,
                     genderThreshold = state.homeUIState.genderThreshold,
                     modifier = Modifier

@@ -120,6 +120,8 @@ private fun CategoriesScreenContent(
                         CategoryDetailsMediaList(
                             mediaList = mediaList,
                             onMediaSelected = interactionListener::onMediaSelected,
+                            nsfwThreshold = state.categoryDetailsUIState.nsfwThreshold,
+                            genderThreshold = state.categoryDetailsUIState.genderThreshold
                         )
                     }
                 }
