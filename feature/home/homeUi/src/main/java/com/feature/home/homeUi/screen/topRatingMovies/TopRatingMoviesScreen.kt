@@ -154,8 +154,8 @@ fun TopRatingMoviesScreen(
                 ),
                 title = stringResource(R.string.top_rating),
                 modifier = Modifier
-                    .statusBarsPadding()
                     .background(backgroundColor)
+                    .statusBarsPadding()
             )
             if (state.value.topRatingMovies.isNotEmpty()) {
                 TopRatingMoviesContent(
