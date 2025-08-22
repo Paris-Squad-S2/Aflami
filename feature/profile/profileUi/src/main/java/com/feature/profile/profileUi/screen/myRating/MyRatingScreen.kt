@@ -53,11 +53,11 @@ fun MyRatingScreen(
     ) {
         var selectedIndex by remember { mutableIntStateOf(0) }
         AppTopBar(
-            logo = iconItemWithDefaults(
-                icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_back),
-                onClick = { activity?.finish() },
-                backgroundColor = Theme.colors.surface,
-                tint = Theme.colors.text.title
+            leadingIcons = listOf(
+                iconItemWithDefaults(
+                    icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_back),
+                    onClick = { activity?.finish() },
+                )
             ),
             title = stringResource(R.string.my_rating),
         )
@@ -133,7 +133,7 @@ fun MyRatingScreenContent(
                 mediaCardType = MediaCardType.NORMAL,
                 showGradientFilter = true,
                 isRated = true,
-                onFavouriteIconClick = {onFavouriteIconClick(media)},
+                onFavouriteIconClick = { onFavouriteIconClick(media) },
                 nsfwThreshold = nsfwThreshold,
                 genderThreshold = genderThreshold
             )
