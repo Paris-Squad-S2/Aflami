@@ -1,2 +1,2 @@
-versionName=1.0.27
-- fix some UI issues and remove unused data sources and repositories
+versionName=1.0.28
+- fix top rating movie ui
