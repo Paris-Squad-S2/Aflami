@@ -40,7 +40,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -102,6 +103,8 @@ fun TvShowDetailsScreenContent(
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
     val reviewsList = state.tvShowDetailsUiState.reviews
+
+    val screenHeight = with(LocalDensity){ LocalWindowInfo.current.containerSize.height.dp }
 
     LaunchedEffect(isCollapsed) {
         if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
@@ -460,7 +463,7 @@ fun TvShowDetailsScreenContent(
                             Spacer(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(LocalConfiguration.current.screenHeightDp.dp / 12)
+                                    .height(screenHeight/11)
                             )
                         }
                     }
