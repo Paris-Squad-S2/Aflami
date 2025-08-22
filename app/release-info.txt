@@ -1,2 +1,2 @@
-versionName=1.0.22
-- refactor rle
+versionName=1.0.23
+- delete unused files and rename fields

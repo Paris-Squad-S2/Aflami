@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 data class TvShowSeasonDto(
     @SerialName("air_date") val airDate: String? = null,
     @SerialName("episodes") val episodesDto: List<TvShowEpisodeDto>? = null,
-    @SerialName("_id") val _id: String? = null,
+    @SerialName("_id") val stringId: String? = null,
     @SerialName("id") val id: Int? = null,
     @SerialName("name") val name: String? = null,
     @SerialName("overview") val overview: String? = null,
