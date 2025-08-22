@@ -37,7 +37,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
@@ -90,7 +89,8 @@ fun MovieDetailsScreen(
 fun MovieDetailsScreenContent(
     state: MovieDetailsScreenState,
     movieDetailsScreenInteractionListener: MovieDetailsScreenInteractionListener,
-) {
+
+    ) {
     val movieChips = MovieChips.entries
     val activity = LocalActivity.current
     var currentRating by remember { mutableFloatStateOf(state.movieDetailsUiState.selectedRating) }
@@ -218,26 +218,14 @@ fun MovieDetailsScreenContent(
                                 label = "basic_transition"
                             ) { target ->
                                 if (!target) {
-                                    Box {
-                                        MovieTopComponentDetails(
-                                            state = state,
-                                            movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
-                                            animatedVisibilityScope = this@AnimatedContent,
-                                            sharedTransitionScope = this@SharedTransitionLayout,
-                                            listState = scrollState
-                                        )
-                                        Box(
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .height(360.dp)
-                                                .align(Alignment.TopCenter)
-                                                .background(
-                                                    brush = Brush.verticalGradient(
-                                                        colors = Theme.colors.gradient.overlyDark.asReversed()
-                                                    )
-                                                )
-                                        )
-                                    }
+                                    MovieTopComponentDetails(
+                                        state = state,
+                                        movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        listState = scrollState
+                                    )
+
                                 } else {
                                     MovieTopComponent(
                                         movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
