@@ -119,7 +119,6 @@ fun TvTopComponent(
         AppTopBar(
             modifier = modifier
                 .statusBarsPadding()
-                .background(Theme.colors.stroke)
                 .padding(bottom = 1.dp)
                 .background(Theme.colors.surface)
                 .sharedBounds(
