@@ -67,7 +67,7 @@ fun ResultScreenContent(
             title = stringResource(id = gameType.getTitleResId()),
             leadingIcons = listOf(
                 iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel),
+                    icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel_thin),
                     onClick = { activity?.finish() },
                 )
             ),

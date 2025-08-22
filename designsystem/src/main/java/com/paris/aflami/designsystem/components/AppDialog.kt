@@ -65,7 +65,7 @@ fun AppDialog(
                             .weight(1f)
                     )
                     AppIcon(
-                       imageVector = ImageVector.vectorResource(R.drawable.ic_cancel),
+                       imageVector = ImageVector.vectorResource(R.drawable.ic_cancel_thin),
                         modifier = Modifier
                             .size(40.dp)
                             .clip(RoundedCornerShape(12.dp))

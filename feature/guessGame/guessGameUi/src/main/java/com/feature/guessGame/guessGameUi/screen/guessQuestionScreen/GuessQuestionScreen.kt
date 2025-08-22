@@ -98,7 +98,7 @@ fun GuessQuestionContent(
                     title = stringResource(id = questionType.getTitleResId()),
                     leadingIcons = listOf(
                         iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel),
+                            icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel_thin),
                             onClick = { activity?.finish() }
                         )
                     ),

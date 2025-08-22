@@ -1,2 +1,2 @@
-versionName=1.0.25
-- handle continue watching list
+versionName=1.0.26
+- fix some UI issues

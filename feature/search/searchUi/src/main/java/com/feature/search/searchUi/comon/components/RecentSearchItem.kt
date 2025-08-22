@@ -55,7 +55,7 @@ fun RecentSearchItem(
             modifier = Modifier.weight(1f)
         )
         AppIcon(
-            imageVector = ImageVector.vectorResource(id = R.drawable.ic_cancel),
+            imageVector = ImageVector.vectorResource(id = R.drawable.ic_cancel_thin),
             contentDescription = null,
             modifier = Modifier
                 .padding(start = 8.dp)

@@ -192,7 +192,7 @@ private fun Header(
         title = stringResource(id = head),
         leadingIcons = listOf(
             iconItemWithDefaults(
-                ImageVector.vectorResource(R.drawable.ic_cancel), onCanceled
+                ImageVector.vectorResource(R.drawable.ic_cancel_thin), onCanceled
             )
         ),
         trailingContent = {
