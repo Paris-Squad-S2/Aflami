@@ -2,6 +2,7 @@ package com.feature.categories.categoriesUi.screen.categories.components
 
 import android.content.Context
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -23,16 +24,15 @@ fun CategoriesList(
     val context = androidx.compose.ui.platform.LocalContext.current
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 160.dp),
-        contentPadding = PaddingValues(start = 8.dp, end = 8.dp, bottom = 8.dp, top = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        contentPadding = PaddingValues(16.dp),
     ) {
         items(categories) { category ->
             CategoryCard(
                 categoryName = stringResource(category.name),
                 categoryImage = painterResource(category.icon),
                 onCategoryClick = { onCategoryClick(context, category) },
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clickable { onCategoryClick(context, category) }
             )
         }
     }
