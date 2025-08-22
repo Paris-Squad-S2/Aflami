@@ -11,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -22,6 +23,7 @@ import com.paris.aflami.designsystem.theme.Theme
 fun SettingsItem(
     modifier: Modifier = Modifier,
     icon: Int,
+    tint : Color = Theme.colors.text.body,
     title: String,
     onClick: () -> Unit,
     content: @Composable () -> Unit,
@@ -49,7 +51,7 @@ fun SettingsItem(
             AppIcon(
                 imageVector = ImageVector.vectorResource(icon),
                 contentDescription = null,
-                tint = Theme.colors.text.hint,
+                tint = tint,
             )
         }
         AppText(

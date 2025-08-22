@@ -44,8 +44,8 @@ fun AppSettingDialog(
                     },
                     title = stringResource(R.string.change_password),
                     icon = R.drawable.ic_door_lock,
+                    tint = Theme.colors.text.hint,
                     content = {
-
                         AppIcon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
                             contentDescription = null,
@@ -56,6 +56,7 @@ fun AppSettingDialog(
                     onClick = isRestrictionDialogVisible,
                     title = stringResource(R.string.content_restriction),
                     icon = R.drawable.ic_security,
+                    tint = Theme.colors.text.hint,
                     content = {
                         AppIcon(
                             imageVector = ImageVector.vectorResource(R.drawable.ic_arrow_left),
@@ -68,6 +69,7 @@ fun AppSettingDialog(
                     onClick = isLogoutDialogVisible,
                     title = stringResource(R.string.tired_of_watching),
                     icon = R.drawable.ic_dead,
+                    tint = Theme.colors.text.hint,
                     content = {
                         AppText(
                             text = stringResource(R.string.logout),
