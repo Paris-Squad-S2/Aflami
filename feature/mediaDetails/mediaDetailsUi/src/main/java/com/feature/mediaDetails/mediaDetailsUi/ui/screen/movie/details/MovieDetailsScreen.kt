@@ -40,6 +40,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -97,6 +99,8 @@ fun MovieDetailsScreenContent(
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
     val scrollState = rememberLazyGridState()
+
+    val screenHeight = with(LocalDensity){ LocalWindowInfo.current.containerSize.height.dp }
 
     LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
         if (state.showSnackBar && state.snackBarSuccess) {
@@ -429,7 +433,7 @@ fun MovieDetailsScreenContent(
                             Spacer(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(LocalConfiguration.current.screenHeightDp.dp / 12)
+                                    .height(screenHeight/11)
                             )
                         }
                     }

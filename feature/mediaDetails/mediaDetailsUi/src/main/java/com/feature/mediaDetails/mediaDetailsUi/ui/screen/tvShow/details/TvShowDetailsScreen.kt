@@ -463,7 +463,7 @@ fun TvShowDetailsScreenContent(
                             Spacer(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(screenHeight/11)
+                                    .height(screenHeight/10)
                             )
                         }
                     }
