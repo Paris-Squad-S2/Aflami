@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -29,7 +28,6 @@ fun AppLogOutDialog(
     onLogout: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
     if (isVisible) {
         AppDialog(onDismiss = onDismiss, title = R.string.logout, modifier = modifier) {
             Column(
@@ -53,7 +51,9 @@ fun AppLogOutDialog(
                         onLogout()
 
                     },
-                    modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 24.dp),
                     type = ButtonType.Primary,
                     isNegative = true,
                     text = R.string.logout
