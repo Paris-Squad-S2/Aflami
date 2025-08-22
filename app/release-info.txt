@@ -1,2 +1,2 @@
-versionName=1.0.24
-- fix tv show scrolling behaviour
+versionName=1.0.25
+- handle continue watching list
