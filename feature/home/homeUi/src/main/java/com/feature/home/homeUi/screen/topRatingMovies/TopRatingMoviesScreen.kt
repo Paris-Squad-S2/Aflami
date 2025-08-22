@@ -6,7 +6,9 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
@@ -25,6 +27,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -52,14 +55,19 @@ fun TopRatingMoviesScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = Theme.colors.gradient.pointsOverly + listOf(
-                        Theme.colors.surface.copy(alpha = 0.5f), Theme.colors.surface
+            .background(Theme.colors.surface)
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.7f)
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = Theme.colors.gradient.lightPinkGradient +
+                                Color.Transparent
                     )
                 )
-            )
-    ) {
+        )
         AppIcon(
             imageVector = ImageVector.vectorResource(R.drawable.ic_fire),
             contentDescription = "",
@@ -118,8 +126,7 @@ fun TopRatingMoviesScreen(
         )
 
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         ) {
 
             AppTopBar(
