@@ -6,8 +6,8 @@ import com.feature.home.homeUi.mapper.toMediaUiStateList
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
-import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.media.useCase.media.GetTopRatingMediaUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
@@ -15,7 +15,7 @@ import javax.inject.Inject
 class TopRatingMoviesViewModel @Inject constructor(
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI,
-    private val settingsUseCase: SettingsUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
 ) : BaseViewModel<TopRatingMoviesUiState>(
     TopRatingMoviesUiState()
 ), TopRatingInteractionListener {
@@ -27,7 +27,7 @@ class TopRatingMoviesViewModel @Inject constructor(
 
     private fun getRestriction() {
         tryToExecute(
-            execute = { settingsUseCase.getRestriction() },
+            execute = { manageSettingsUseCase.getRestriction() },
             onSuccess = ::onGetRestrictionSuccess,
             onError = ::onGetRestrictionError
         )

@@ -3,6 +3,7 @@ package com.paris.domain.media.useCase
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.GenreUserInteraction
 import com.paris.domain.media.repository.GenresInteractionRepository
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

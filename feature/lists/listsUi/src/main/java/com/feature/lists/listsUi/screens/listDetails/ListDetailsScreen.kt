@@ -47,7 +47,6 @@ fun ListDetailsScreenContent(
         Modifier
             .fillMaxSize()
             .background(Theme.colors.surface)
-            .navigationBarsPadding()
     ) {
         AppTopBar(
             modifier = Modifier

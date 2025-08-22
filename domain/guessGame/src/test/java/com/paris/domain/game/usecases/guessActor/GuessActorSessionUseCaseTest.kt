@@ -5,6 +5,7 @@ import com.paris.domain.game.entity.Actor
 import com.paris.domain.game.entity.ActorMedia
 import com.paris.domain.game.entity.GameSession
 import com.paris.domain.game.repositories.ActorPopularityRepository
+import com.paris.domain.game.usecases.GenerateGuessActorSessionUseCase
 import com.paris.domain.media.entity.Category
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -17,12 +18,12 @@ import org.junit.jupiter.api.Test
 class GuessActorSessionUseCaseTest {
 
     private lateinit var repository: ActorPopularityRepository
-    private lateinit var useCase: GuessActorSessionUseCase
+    private lateinit var useCase: GenerateGuessActorSessionUseCase
 
     @BeforeEach
     fun setUp() {
         repository = mockk()
-        useCase = GuessActorSessionUseCase(repository)
+        useCase = GenerateGuessActorSessionUseCase(repository)
         coEvery { repository.getRandomActors(4) } returns sampleActors
     }
 

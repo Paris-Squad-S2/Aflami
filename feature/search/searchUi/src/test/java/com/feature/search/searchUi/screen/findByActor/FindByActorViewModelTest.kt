@@ -1,21 +1,20 @@
 package com.feature.search.searchUi.screen.findByActor
 
-import com.feature.search.searchUi.screen.search.MediaTypeUi
-import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
+import com.feature.search.searchUi.screen.search.MediaTypeUi
+import com.feature.search.searchUi.screen.search.MediaUiState
 import com.feature.search.searchUi.screen.utils.collectAllItems
-import com.paris.domain.user.usecase.SettingsUseCase
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.useCase.GetMediaByActorNameUseCase
-import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.media.GetMediaByActorNameUseCase
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -37,7 +36,7 @@ class FindByActorViewModelTest {
     private lateinit var getMediaByActorNameUseCase: GetMediaByActorNameUseCase
     private lateinit var incrementCategoryInteractionUseCase: IncrementCategoryInteractionUseCase
     private lateinit var sortingMediaByCategoriesInteractionUseCase: SortingMediaByCategoriesInteractionUseCase
-    private lateinit var settingsUseCase: SettingsUseCase
+    private lateinit var manageSettingsUseCase: ManageSettingsUseCase
     private val testDispatcher = StandardTestDispatcher()
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -47,15 +46,15 @@ class FindByActorViewModelTest {
         getMediaByActorNameUseCase = mockk(relaxed = true)
         incrementCategoryInteractionUseCase = mockk(relaxed = true)
         sortingMediaByCategoriesInteractionUseCase = mockk(relaxed = true)
-        settingsUseCase = mockk(relaxed = true)
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        manageSettingsUseCase = mockk(relaxed = true)
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
         viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            settingsUseCase = settingsUseCase
+            manageSettingsUseCase = manageSettingsUseCase
         )
     }
 
@@ -184,15 +183,15 @@ class FindByActorViewModelTest {
     @Test
     fun `onMediaCardClick navigates to detailsScreen`() = runTest {
         val mediaDetailsFeatureAPI = mockk<MediaDetailsFeatureAPI>(relaxed = true)
-        val settingsUseCase = mockk<SettingsUseCase>(relaxed = true)
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        val manageSettingsUseCase = mockk<ManageSettingsUseCase>(relaxed = true)
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
         val viewModel = FindByActorViewModel(
             savedStateHandle = mockk(relaxed = true),
             getMediaByActorNameUseCase = getMediaByActorNameUseCase,
             incrementCategoryInteractionUseCase = incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase = sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase = settingsUseCase
+            manageSettingsUseCase = manageSettingsUseCase
         )
         val mediaUiState = MediaUiState(
             id = 42,

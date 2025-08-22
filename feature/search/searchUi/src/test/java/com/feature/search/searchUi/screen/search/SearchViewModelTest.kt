@@ -2,26 +2,26 @@ package com.feature.search.searchUi.screen.search
 
 
 import androidx.paging.PagingData
-import com.paris.domain.user.usecase.SettingsUseCase
-import com.paris.domain.media.entity.Category
-import com.paris.domain.media.entity.Media
-import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.entity.SearchHistoryModel
-import com.paris.domain.media.entity.SearchType
-import com.paris.domain.media.useCase.ClearAllRecentSearchesUseCase
-import com.paris.domain.media.useCase.ClearRecentSearchUseCase
-import com.paris.domain.media.useCase.FilterMediaByRatingUseCase
-import com.paris.domain.media.useCase.FilterMediaUseCase
-import com.paris.domain.media.useCase.GetAllCategoriesUseCase
-import com.paris.domain.media.useCase.GetAllRecentSearchesUseCase
-import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris.domain.media.useCase.SearchByQueryUseCase
-import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchUi.mapper.toMediaUiList
 import com.feature.search.searchUi.mapper.toUi
 import com.feature.search.searchUi.screen.utils.collectAllItems
 import com.google.common.truth.Truth.assertThat
+import com.paris.domain.media.entity.Category
+import com.paris.domain.media.entity.Media
+import com.paris.domain.media.entity.MediaType
+import com.paris.domain.media.entity.SearchHistoryModel
+import com.paris.domain.media.entity.SearchType
+import com.paris.domain.media.useCase.media.FilterMediaByRatingUseCase
+import com.paris.domain.media.useCase.media.FilterMediaUseCase
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.search.ClearAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.search.ClearRecentSearchUseCase
+import com.paris.domain.media.useCase.search.GetAllCategoriesUseCase
+import com.paris.domain.media.useCase.search.GetAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
+import com.paris.domain.media.useCase.search.SearchByQueryUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -57,7 +57,7 @@ class SearchViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
 
-    private val settingsUseCase: SettingsUseCase = mockk(relaxed = true)
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk(relaxed = true)
 
     private val mockMovie1 = Media(
         id = 1,
@@ -122,7 +122,7 @@ class SearchViewModelTest {
 
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(emptyList())
         coEvery { getAllCategoriesUseCase() } returns emptyList()
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = spyk(
             SearchViewModel(
@@ -136,7 +136,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                settingsUseCase
+                manageSettingsUseCase
             )
         )
     }
@@ -149,7 +149,7 @@ class SearchViewModelTest {
 
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(recentSearches)
         coEvery { getAllCategoriesUseCase() } returns categories
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -162,7 +162,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase
+            manageSettingsUseCase
         )
 
         advanceUntilIdle()
@@ -176,7 +176,7 @@ class SearchViewModelTest {
     fun `init should handle error when loading recent searches`() = runTest {
         val errorMessage = "Failed to load recent searches"
         coEvery { getAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -189,7 +189,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase
+            manageSettingsUseCase
         )
 
         advanceUntilIdle()
@@ -201,7 +201,7 @@ class SearchViewModelTest {
     fun `init should handle error when loading categories`() = runTest {
         val errorMessage = "Failed to load categories"
         coEvery { getAllCategoriesUseCase() } throws RuntimeException(errorMessage)
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -214,7 +214,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase
+            manageSettingsUseCase
         )
 
         advanceUntilIdle()
@@ -478,7 +478,7 @@ class SearchViewModelTest {
             coEvery { clearAllRecentSearchesUseCase() } answers {
                 recentSearchesFlow.value = emptyList()
             }
-            coEvery { settingsUseCase.getRestriction() } returns "Strict"
+            coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
             viewModel = SearchViewModel(
                 getAllRecentSearchesUseCase,
@@ -491,7 +491,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                settingsUseCase
+                manageSettingsUseCase
             )
             advanceUntilIdle()
 
@@ -511,7 +511,7 @@ class SearchViewModelTest {
         val errorMessage = "Failed to clear all recent searches"
         coEvery { clearAllRecentSearchesUseCase() } throws RuntimeException(errorMessage)
         coEvery { getAllRecentSearchesUseCase() } returns flowOf(listOf(mockSearchHistory1))
-        coEvery { settingsUseCase.getRestriction() } returns "Strict"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
         viewModel = SearchViewModel(
             getAllRecentSearchesUseCase,
@@ -524,7 +524,7 @@ class SearchViewModelTest {
             incrementCategoryInteractionUseCase,
             sortingMediaByCategoriesInteractionUseCase,
             mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-            settingsUseCase
+            manageSettingsUseCase
         )
         advanceUntilIdle()
 
@@ -557,7 +557,7 @@ class SearchViewModelTest {
             coEvery { clearRecentSearchUseCase(idToClear, SearchType.Query) } answers {
                 recentSearchesFlow.value = afterClearRecentSearches
             }
-            coEvery { settingsUseCase.getRestriction() } returns "Strict"
+            coEvery { manageSettingsUseCase.getRestriction() } returns "Strict"
 
             viewModel = SearchViewModel(
                 getAllRecentSearchesUseCase,
@@ -570,7 +570,7 @@ class SearchViewModelTest {
                 incrementCategoryInteractionUseCase,
                 sortingMediaByCategoriesInteractionUseCase,
                 mediaDetailsFeatureAPI = mediaDetailsFeatureAPI,
-                settingsUseCase
+                manageSettingsUseCase
             )
             advanceUntilIdle()
 

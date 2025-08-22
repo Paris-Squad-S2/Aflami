@@ -1,12 +1,12 @@
 package com.paris.aflami.di
 
 import com.datasource.remote.lists.service.ListApiService
-import com.repository.media.services.MovieApiService
-import com.repository.media.services.TvShowDetailsApiService
 import com.paris.datasource.remote.user.UserApi
 import com.repository.media.services.ActorPopularityApiService
 import com.repository.media.services.GenresApiServices
 import com.repository.media.services.MediaApiService
+import com.repository.media.services.MovieApiService
+import com.repository.media.services.TvShowDetailsApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,6 +14,7 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
+@Suppress("unused")
 @Module
 @InstallIn(SingletonComponent::class)
 object ServiceModule {

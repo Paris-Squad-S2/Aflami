@@ -8,9 +8,9 @@ data class EpisodeVideoResultDto(
     @SerialName("id")
     val id: String? = null,
     @SerialName("iso_3166_1")
-    val iso31661: String? = null,
+    val countryCode: String? = null,
     @SerialName("iso_639_1")
-    val iso6391: String? = null,
+    val languageCode: String? = null,
     @SerialName("key")
     val key: String? = null,
     @SerialName("name")

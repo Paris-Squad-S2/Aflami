@@ -8,14 +8,14 @@ import com.feature.authentication.authenticationUi.navigation.AuthenticationNavG
 import com.feature.authentication.authenticationUi.screen.main.InstallSavedAppLanguage
 import com.feature.authentication.authenticationUi.navigation.AuthenticationNavigator
 import com.paris.aflami.designsystem.theme.AflamiTheme
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AuthActivity : AppCompatActivity() {
     @Inject
-    lateinit var settingsUseCase: SettingsUseCase
+    lateinit var manageSettingsUseCase: ManageSettingsUseCase
 
     @Inject
     lateinit var navigator: AuthenticationNavigator
@@ -25,7 +25,7 @@ class AuthActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContent {
             InstallSavedAppLanguage(this)
-            AflamiTheme(settingsUseCase.isDarkTheme()) {
+            AflamiTheme(manageSettingsUseCase.isDarkTheme()) {
                 AuthenticationNavGraph(navigator = navigator)
             }
         }

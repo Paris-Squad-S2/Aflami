@@ -10,7 +10,7 @@ import com.feature.lists.listsUi.pagging.PagingSource
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
 import com.paris.aflami.designsystem.components.ButtonState
-import com.paris.domain.user.usecase.IsLoggedInUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -99,7 +99,7 @@ class ListsViewModel @Inject constructor(
                         createListName = "",
                         createListButtonState = ButtonState.Normal,
                         showSnackBar = true,
-                        snackBarSuccess = result.success
+                        snackBarSuccess = result
                     )
                 )
                 hideSnackBar()

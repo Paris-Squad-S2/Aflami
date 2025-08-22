@@ -141,7 +141,7 @@ class MediaRepositoryImpl(
                 )
             }.await()
 
-            if (localMedia.isNotEmpty()) return@map localMedia.mapNotNull { it.toDomain() }
+            if (localMedia.isNotEmpty()&&networkConnectionChecker.isConnected.value.not()) return@map localMedia.mapNotNull { it.toDomain() }
 
             val filteredMovies  = mediaList.map {
                 CoroutineScope(IO).async {

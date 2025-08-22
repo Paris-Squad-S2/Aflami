@@ -10,7 +10,7 @@ import com.feature.profile.profileUi.navigation.fromJsonToDestination
 import com.feature.profile.profileUi.screen.myRating.MyRatingScreen
 import com.feature.profile.profileUi.screen.watchHistory.WatchHistoryScreen
 import com.paris.aflami.designsystem.theme.AflamiTheme
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class ProfileDestinationActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var settingsUseCase: SettingsUseCase
+    lateinit var manageSettingsUseCase: ManageSettingsUseCase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +30,7 @@ class ProfileDestinationActivity : AppCompatActivity() {
 
         setContent {
             InstallSavedAppLanguage(this)
-            AflamiTheme(settingsUseCase.isDarkTheme()) {
+            AflamiTheme(manageSettingsUseCase.isDarkTheme()) {
                 when (destination) {
                     Destination.WatchHistoryScreen -> WatchHistoryScreen()
                     Destination.MyRatingScreen -> MyRatingScreen()

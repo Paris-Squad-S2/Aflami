@@ -1,14 +1,11 @@
 package com.paris.aflami.di
 
-import com.paris.domain.lists.repository.ListsRepository
-import com.paris.domain.lists.useCase.AddMovieToListUseCase
-import com.paris.domain.lists.useCase.CreateListUseCase
-import com.paris.domain.lists.useCase.DeleteListUseCase
-import com.paris.domain.lists.useCase.GetListDetailsUseCase
-import com.paris.domain.lists.useCase.GetListUseCase
-import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris.domain.game.repositories.ActorPopularityRepository
 import com.paris.domain.game.repositories.GamePointsRepository
+import com.paris.domain.game.usecases.GenerateGuessActorSessionUseCase
+import com.paris.domain.game.usecases.GenerateGuessMovieSessionUseCase
+import com.paris.domain.game.usecases.GenerateWhenIsReleasedSessionUseCase
+import com.paris.domain.game.usecases.GenerateWhichGenreSessionUseCase
 import com.paris.domain.game.usecases.GetActorsMediaUseCase
 import com.paris.domain.game.usecases.GetPopularActorsUseCase
 import com.paris.domain.game.usecases.GetUserPointUseCase
@@ -16,10 +13,13 @@ import com.paris.domain.game.usecases.MoveToNextQuestionUseCase
 import com.paris.domain.game.usecases.RemoveAnswerHintUseCase
 import com.paris.domain.game.usecases.UpdatePointsUseCase
 import com.paris.domain.game.usecases.UseHintUseCase
-import com.paris.domain.game.usecases.guessActor.GuessActorSessionUseCase
-import com.paris.domain.game.usecases.guessMovieByPoster.GuessMovieSessionUseCase
-import com.paris.domain.game.usecases.whenIsReleased.WhenIsReleasedSessionUseCase
-import com.paris.domain.game.usecases.whichGenre.WhichGenreSessionUseCase
+import com.paris.domain.lists.repository.ListsRepository
+import com.paris.domain.lists.useCase.AddMovieToListUseCase
+import com.paris.domain.lists.useCase.CreateListUseCase
+import com.paris.domain.lists.useCase.DeleteListUseCase
+import com.paris.domain.lists.useCase.GetListDetailsUseCase
+import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris.domain.media.repository.CategoriesRepository
 import com.paris.domain.media.repository.CountryRepository
 import com.paris.domain.media.repository.GenresInteractionRepository
@@ -29,30 +29,18 @@ import com.paris.domain.media.repository.MoviesCategoriesRepository
 import com.paris.domain.media.repository.SearchHistoryRepository
 import com.paris.domain.media.repository.SearchMediaRepository
 import com.paris.domain.media.repository.TvShowRepository
-import com.paris.domain.media.useCase.AddWatchHistoryUseCase
-import com.paris.domain.media.useCase.AutoCompleteCountryUseCase
-import com.paris.domain.media.useCase.ClearAllRecentSearchesUseCase
-import com.paris.domain.media.useCase.ClearRecentSearchUseCase
-import com.paris.domain.media.useCase.FilterMediaByRatingUseCase
-import com.paris.domain.media.useCase.FilterMediaUseCase
-import com.paris.domain.media.useCase.FilterRatedMediaUseCase
-import com.paris.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris.domain.media.useCase.FilterWatchHistoryUseCase
-import com.paris.domain.media.useCase.GetAllCategoriesUseCase
-import com.paris.domain.media.useCase.GetAllRecentSearchesUseCase
-import com.paris.domain.media.useCase.GetCountryCodeByNameUseCase
-import com.paris.domain.media.useCase.GetMediaByActorNameUseCase
-import com.paris.domain.media.useCase.GetMoviesByCategoryUseCase
-import com.paris.domain.media.useCase.GetMoviesCategoriesUseCase
-import com.paris.domain.media.useCase.GetMoviesOnlyByCountryNameUseCase
-import com.paris.domain.media.useCase.GetPopularMediaUseCase
-import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
-import com.paris.domain.media.useCase.GetTvShowsByCategoryUseCase
-import com.paris.domain.media.useCase.GetUpComingMediaUseCase
-import com.paris.domain.media.useCase.GetWatchHistoryUseCase
-import com.paris.domain.media.useCase.IncrementCategoryInteractionUseCase
-import com.paris.domain.media.useCase.SearchByQueryUseCase
-import com.paris.domain.media.useCase.SortingMediaByCategoriesInteractionUseCase
+import com.paris.domain.media.useCase.media.AddWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.FilterMediaByRatingUseCase
+import com.paris.domain.media.useCase.media.FilterMediaUseCase
+import com.paris.domain.media.useCase.media.FilterRatedMediaUseCase
+import com.paris.domain.media.useCase.media.FilterUpComingMediaByCategoriesUseCase
+import com.paris.domain.media.useCase.media.FilterWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.GetMediaByActorNameUseCase
+import com.paris.domain.media.useCase.media.GetPopularMediaUseCase
+import com.paris.domain.media.useCase.media.GetTopRatingMediaUseCase
+import com.paris.domain.media.useCase.media.GetUpComingMediaUseCase
+import com.paris.domain.media.useCase.media.GetWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
 import com.paris.domain.media.useCase.movie.AddRatingToMovieUseCase
 import com.paris.domain.media.useCase.movie.DeleteMovieRatingUseCase
 import com.paris.domain.media.useCase.movie.GetMovieCastUseCase
@@ -61,7 +49,18 @@ import com.paris.domain.media.useCase.movie.GetMovieGalleryUseCase
 import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesByCategoryUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesCategoriesUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesOnlyByCountryNameUseCase
 import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris.domain.media.useCase.search.AutoCompleteCountryUseCase
+import com.paris.domain.media.useCase.search.ClearAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.search.ClearRecentSearchUseCase
+import com.paris.domain.media.useCase.search.GetAllCategoriesUseCase
+import com.paris.domain.media.useCase.search.GetAllRecentSearchesUseCase
+import com.paris.domain.media.useCase.search.GetCountryCodeByNameUseCase
+import com.paris.domain.media.useCase.search.IncrementCategoryInteractionUseCase
+import com.paris.domain.media.useCase.search.SearchByQueryUseCase
 import com.paris.domain.media.useCase.tvShows.AddRatingToTvShowUseCase
 import com.paris.domain.media.useCase.tvShows.DeleteTvShowRatingUseCase
 import com.paris.domain.media.useCase.tvShows.GetEpisodeVideoUseCase
@@ -72,21 +71,22 @@ import com.paris.domain.media.useCase.tvShows.GetTvShowGalleryUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowRecommendationsUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowReviewsUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowVideoUseCase
+import com.paris.domain.media.useCase.tvShows.GetTvShowsByCategoryUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.paris.domain.user.repository.SettingRepository
 import com.paris.domain.user.repository.UserRepository
-import com.paris.domain.user.usecase.CompleteOnboardingUseCase
-import com.paris.domain.user.usecase.DeleteSessionIdUseCase
-import com.paris.domain.user.usecase.GetAccountIdUseCase
-import com.paris.domain.user.usecase.GetForgetPasswordUrlUseCase
-import com.paris.domain.user.usecase.GetRegisterUrlUseCase
-import com.paris.domain.user.usecase.GetSessionIdUseCase
-import com.paris.domain.user.usecase.GuestLoginUseCase
-import com.paris.domain.user.usecase.HasAnySessionUseCase
-import com.paris.domain.user.usecase.IsLoggedInUseCase
-import com.paris.domain.user.usecase.IsOnboardingCompletedUseCase
-import com.paris.domain.user.usecase.LoginUseCase
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.paris.domain.user.usecase.onboarding.CompleteOnboardingUseCase
+import com.paris.domain.user.usecase.auth.DeleteSessionIdUseCase
+import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
+import com.paris.domain.user.usecase.auth.GetForgetPasswordUrlUseCase
+import com.paris.domain.user.usecase.auth.GetRegisterUrlUseCase
+import com.paris.domain.user.usecase.auth.GetSessionIdUseCase
+import com.paris.domain.user.usecase.auth.GuestLoginUseCase
+import com.paris.domain.user.usecase.auth.HasAnySessionUseCase
+import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
+import com.paris.domain.user.usecase.onboarding.IsOnboardingCompletedUseCase
+import com.paris.domain.user.usecase.auth.LoginUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -321,7 +321,7 @@ object UseCaseModule {
         settingRepository: SettingRepository,
         userRepository: UserRepository,
     ) =
-        SettingsUseCase(settingRepository, userRepository)
+        ManageSettingsUseCase(settingRepository, userRepository)
 
     @Provides
     fun provideGetListUseCase(listRepository: ListsRepository) = GetListUseCase(listRepository)
@@ -356,19 +356,19 @@ object UseCaseModule {
 
     @Provides
     fun provideGuessActorSessionUseCase(repository: ActorPopularityRepository) =
-        GuessActorSessionUseCase(repository)
+        GenerateGuessActorSessionUseCase(repository)
 
     @Provides
     fun provideGuessMovieSessionUseCase(repository: ActorPopularityRepository) =
-        GuessMovieSessionUseCase(repository)
+        GenerateGuessMovieSessionUseCase(repository)
 
     @Provides
     fun provideWhenIsReleasedSessionUseCase(repository: ActorPopularityRepository) =
-        WhenIsReleasedSessionUseCase(repository)
+        GenerateWhenIsReleasedSessionUseCase(repository)
 
     @Provides
     fun provideWhichGenreSessionUseCase(repository: ActorPopularityRepository) =
-        WhichGenreSessionUseCase(repository)
+        GenerateWhichGenreSessionUseCase(repository)
 
     @Provides
     fun provideGetUserPointUseCase(

@@ -16,7 +16,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -40,7 +39,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -103,6 +103,8 @@ fun TvShowDetailsScreenContent(
     }
     val reviewsList = state.tvShowDetailsUiState.reviews
 
+    val screenHeight = with(LocalDensity){ LocalWindowInfo.current.containerSize.height.dp }
+
     LaunchedEffect(isCollapsed) {
         if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
             scrollState.animateScrollToItem(
@@ -163,13 +165,13 @@ fun TvShowDetailsScreenContent(
                                 label = "basic_transition"
                             ) { target ->
                                 if (!target) {
-                                    TopComponentDetails(
-                                        state = state,
-                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        sharedTransitionScope = this@SharedTransitionLayout,
-                                        listState = scrollState
-                                    )
+                                        TopComponentDetails(
+                                            state = state,
+                                            tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            listState = scrollState
+                                        )
                                 } else {
                                     TvTopComponent(
                                         tvShowScreenInteractionListener = tvShowScreenInteractionListener,
@@ -179,7 +181,6 @@ fun TvShowDetailsScreenContent(
                                         state = state
                                     )
                                 }
-
                             }
                         }
                     }
@@ -457,11 +458,19 @@ fun TvShowDetailsScreenContent(
                         }
 
                         item (span = {GridItemSpan(maxLineSpan)}){
-                            Spacer(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(LocalConfiguration.current.screenHeightDp.dp / 12)
-                            )
+                                    .height(screenHeight / 26),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                AppText(
+                                    text = stringResource(R.string.no_more_items),
+                                    style = Theme.textStyle.label.small,
+                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+
+                                )
+                            }
                         }
                     }
                 }

@@ -7,6 +7,7 @@ import com.paris.domain.media.entity.GenreUserInteraction
 import com.paris.domain.media.repository.GenresInteractionRepository
 import com.paris.domain.media.testUtils.assertIds
 import com.paris.domain.media.testUtils.media
+import com.paris.domain.media.useCase.media.SortingMediaByCategoriesInteractionUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

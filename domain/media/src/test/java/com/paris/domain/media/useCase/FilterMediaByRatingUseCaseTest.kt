@@ -1,11 +1,12 @@
 package com.paris.domain.media.useCase
 
+import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.testUtils.createMedia
+import com.paris.domain.media.useCase.media.FilterMediaByRatingUseCase
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import com.google.common.truth.Truth.assertThat
 
 class FilterMediaByRatingUseCaseTest {
 

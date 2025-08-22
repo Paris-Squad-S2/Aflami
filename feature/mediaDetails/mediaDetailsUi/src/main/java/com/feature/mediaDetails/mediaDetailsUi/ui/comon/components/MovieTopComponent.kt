@@ -11,6 +11,8 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.LazyGridState
@@ -18,7 +20,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
@@ -119,6 +123,17 @@ fun MovieTopComponentDetails(
                     .background(backgroundColor)
 
             )
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(60.dp)
+                    .align(Alignment.TopCenter)
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = Theme.colors.gradient.overlyDark
+                        )
+                    )
+            )
         }
     }
 }
@@ -138,7 +153,6 @@ fun MovieTopComponent(
         AppTopBar(
             modifier = modifier
                 .statusBarsPadding()
-                .background(Theme.colors.stroke)
                 .padding(bottom = 1.dp)
                 .background(Theme.colors.surface)
                 .sharedBounds(

@@ -2,24 +2,24 @@ package com.feature.home.homeUi
 
 import com.feature.home.homeUi.mapper.toCategory
 import com.feature.home.homeUi.screen.home.HomeScreenViewModel
-import com.feature.home.homeUi.screen.home.MediaTypeUi.TV_SHOW
 import com.feature.home.homeUi.screen.home.MediaTypeUi.MOVIE
-import com.paris.domain.user.usecase.SettingsUseCase
+import com.feature.home.homeUi.screen.home.MediaTypeUi.TV_SHOW
 import com.feature.home.homeUi.screen.home.MediaUiState
 import com.feature.home.homeUi.screen.home.components.SliderMedia
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.feature.search.searchApi.SearchFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
-import com.paris.domain.media.useCase.FilterUpComingMediaByCategoriesUseCase
-import com.paris.domain.media.useCase.GetMoviesCategoriesUseCase
-import com.paris.domain.media.useCase.GetPopularMediaUseCase
-import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
-import com.paris.domain.media.useCase.GetUpComingMediaUseCase
-import com.paris.domain.media.useCase.GetWatchHistoryUseCase
+import com.paris.domain.media.useCase.media.FilterUpComingMediaByCategoriesUseCase
+import com.paris.domain.media.useCase.media.GetPopularMediaUseCase
+import com.paris.domain.media.useCase.media.GetTopRatingMediaUseCase
+import com.paris.domain.media.useCase.media.GetUpComingMediaUseCase
+import com.paris.domain.media.useCase.media.GetWatchHistoryUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesCategoriesUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
+import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.clearAllMocks
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,7 +43,7 @@ class HomeScreenViewModelTest {
         mockk()
     private val getUpcomingMediaUseCase: GetUpComingMediaUseCase = mockk()
     private val getWatchHistoryUseCase: GetWatchHistoryUseCase = mockk()
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk()
     private val searchFeatureAPI: SearchFeatureAPI = mockk(relaxed = true)
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
 
@@ -122,7 +122,7 @@ class HomeScreenViewModelTest {
     fun setUp() {
         clearAllMocks()
         Dispatchers.setMain(testDispatcher)
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         coEvery { getPopularMediaUseCase() } returns fakePopularList.map { it.toMedia() }
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
         coEvery { getMoviesCategoriesUseCase() } returns fakeCategories
@@ -138,7 +138,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            settingsUseCase,
+            manageSettingsUseCase,
         )
     }
 
@@ -173,7 +173,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `loadCategories handles error`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         coEvery { getMoviesCategoriesUseCase() } throws RuntimeException("Failed categories")
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -184,7 +184,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            settingsUseCase
+            manageSettingsUseCase
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.categories).isEqualTo(emptyMap<Category, Boolean>())
@@ -192,7 +192,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `loadPopularMedia handles error`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         coEvery { getPopularMediaUseCase() } throws RuntimeException("Popular error")
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -203,7 +203,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            settingsUseCase
+            manageSettingsUseCase
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.popularMediaList).isEqualTo(emptyList<SliderMedia>())
@@ -211,7 +211,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `loadTopRatingMedia handles error`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         coEvery { getTopRatingMediaUseCase() } throws RuntimeException("TopRating error")
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -222,7 +222,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI,
             mediaDetailsFeatureAPI,
-            settingsUseCase
+            manageSettingsUseCase
         )
         runCurrent()
         assertThat(viewModel.screenState.value.homeUIState.topRatedMediaList).isEqualTo(emptyList<MediaUiState>())
@@ -231,7 +231,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `loadContinueWatchingMedia does not affect errorMessage`() = runTest {
         val oldError = "Something else before"
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         viewModel.updateState(viewModel.screenState.value.copy(errorMessage = oldError))
         viewModel.updateState(
             viewModel.screenState.value.copy(
@@ -254,7 +254,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `onAllCategoriesSelect fetches upcoming media and resets all categories selection`() =
         runTest {
-            coEvery { settingsUseCase.getRestriction() } returns "Off"
+            coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
             val catMap = fakeCategories.associateWith { true }.toMutableMap()
             viewModel.updateState(
                 viewModel.screenState.value.copy(
@@ -272,7 +272,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onAllCategoriesSelect handles error`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         coEvery { getUpcomingMediaUseCase() } throws RuntimeException("Upcoming error")
         viewModel.onAllCategoriesSelect()
         runCurrent()
@@ -281,7 +281,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onSearchIconClick triggers navigation`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         viewModel.onSearchIconClick()
         runCurrent()
         coVerify { searchFeatureAPI() }
@@ -290,7 +290,7 @@ class HomeScreenViewModelTest {
     @Test
     fun `onMediaCardClick adds to local, updates continue watching, and navigates to movie or tv details`() =
         runTest {
-            coEvery { settingsUseCase.getRestriction() } returns "Off"
+            coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
             val movie = fakePopularList.first().copy(type = MOVIE)
             val tv = fakePopularList.last().copy(type = TV_SHOW)
             viewModel.onMediaCardClick(movie)
@@ -303,7 +303,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `getRandomMoodPickerMovie picks a random movie from moodPickerFilteredMovies`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
@@ -319,7 +319,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected updates upcoming list, moodPickerMovie, and dialog flag`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         val mood = listOf(Category.Drama)
         val filteredMovies =
             fakeTopRatedList.filter { it.categories.contains(R.string.category_drama) }
@@ -340,7 +340,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `moodPickerSelected handles error`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         coEvery { getTopRatingMediaUseCase.invoke() } throws RuntimeException(
             "Mood error"
         )
@@ -351,7 +351,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onCategorySelect toggles selection and filters upcoming list`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         val cat = fakeCategories.first()
         val filteredMovies = fakeUpcomingList.filter { it.toMedia().categories.contains(cat) }
         coEvery { filterUpComingMediaByCategoriesUseCase(listOf(cat)) } returns filteredMovies.map { it.toMedia() }
@@ -372,7 +372,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onCategorySelect handles error`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         val cat = fakeCategories.first()
         coEvery { filterUpComingMediaByCategoriesUseCase.invoke(listOf(cat)) } throws RuntimeException(
             "Category error"
@@ -391,7 +391,7 @@ class HomeScreenViewModelTest {
 
     @Test
     fun `onDismissMoodPicker hides dialog and resets moodPickerMovie`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         viewModel.updateState(
             viewModel.screenState.value.copy(
                 homeUIState = viewModel.screenState.value.homeUIState.copy(
@@ -411,7 +411,7 @@ class HomeScreenViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `onRetry loads all media and categories again`() = runTest {
-        coEvery { settingsUseCase.getRestriction() } returns "Off"
+        coEvery { manageSettingsUseCase.getRestriction() } returns "Off"
         coEvery { getPopularMediaUseCase() } returns listOf()
         viewModel = HomeScreenViewModel(
             getPopularMediaUseCase,
@@ -422,7 +422,7 @@ class HomeScreenViewModelTest {
             getWatchHistoryUseCase,
             searchFeatureAPI = mockk(relaxed = true),
             mediaDetailsFeatureAPI = mockk(relaxed = true),
-            settingsUseCase
+            manageSettingsUseCase
         )
         viewModel.onRetry()
         runCurrent()

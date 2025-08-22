@@ -5,6 +5,7 @@ import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.repository.MediaRepository
 import com.paris.domain.media.testUtils.createMedia
+import com.paris.domain.media.useCase.tvShows.GetTvShowsByCategoryUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

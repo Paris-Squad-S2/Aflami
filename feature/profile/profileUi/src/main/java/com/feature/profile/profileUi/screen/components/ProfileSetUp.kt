@@ -10,7 +10,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import com.feature.profile.profileUi.R
-import com.feature.profile.profileUi.screen.InterActionListener
+import com.feature.profile.profileUi.screen.profile.InterActionListener
 import com.paris.aflami.designsystem.components.AppIcon
 import com.paris.aflami.designsystem.components.AppText
 import com.paris.aflami.designsystem.theme.Theme

@@ -3,12 +3,12 @@ package com.feature.home.homeUi
 import com.feature.home.homeUi.common.ContentRestriction
 import com.feature.home.homeUi.screen.home.MediaTypeUi
 import com.feature.home.homeUi.screen.home.MediaUiState
-import com.paris.domain.user.usecase.SettingsUseCase
 import com.feature.home.homeUi.screen.topRatingMovies.TopRatingMoviesViewModel
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.google.common.truth.Truth.assertThat
 import com.paris.domain.media.entity.Category
-import com.paris.domain.media.useCase.GetTopRatingMediaUseCase
+import com.paris.domain.media.useCase.media.GetTopRatingMediaUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -30,7 +30,7 @@ private const val CATEGORY_COMEDY = 2
 @OptIn(ExperimentalCoroutinesApi::class)
 class TopRatingMoviesViewModelTest {
     private val getTopRatingMediaUseCase: GetTopRatingMediaUseCase = mockk()
-    private val settingsUseCase: SettingsUseCase = mockk()
+    private val manageSettingsUseCase: ManageSettingsUseCase = mockk()
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI = mockk(relaxed = true)
     private lateinit var viewModel: TopRatingMoviesViewModel
     private val testDispatcher = StandardTestDispatcher()
@@ -77,8 +77,8 @@ class TopRatingMoviesViewModelTest {
     @Test
     fun `init loads top rating movies and updates state`() = runTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
-        coEvery { settingsUseCase.getRestriction() } returns ContentRestriction.Off.name
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI, settingsUseCase)
+        coEvery { manageSettingsUseCase.getRestriction() } returns ContentRestriction.Off.name
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI, manageSettingsUseCase)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.topRatingMovies.map { it.title }).isEqualTo(fakeTopRatedList.map { it.title })
@@ -89,7 +89,7 @@ class TopRatingMoviesViewModelTest {
     @Test
     fun `init error updates errorMessage and sets isLoading false`() = runTest {
         coEvery { getTopRatingMediaUseCase() } throws RuntimeException("Failed to load top")
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,settingsUseCase)
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,manageSettingsUseCase)
         runCurrent()
         val state = viewModel.screenState.value
         assertThat(state.errorMessage).isEqualTo("Failed to load top")
@@ -100,7 +100,7 @@ class TopRatingMoviesViewModelTest {
     @Test
     fun `onMediaCardClick for movie triggers correct navigation`() = runTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,settingsUseCase)
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,manageSettingsUseCase)
         runCurrent()
         val movie = fakeTopRatedList[0]
         viewModel.onMediaCardClick(movie)
@@ -111,7 +111,7 @@ class TopRatingMoviesViewModelTest {
     @Test
     fun `onMediaCardClick for tvshow triggers correct navigation`() = runTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,settingsUseCase)
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,manageSettingsUseCase)
         runCurrent()
         val tv = fakeTopRatedList[1]
         viewModel.onMediaCardClick(tv)
@@ -122,7 +122,7 @@ class TopRatingMoviesViewModelTest {
     @Test
     fun `onMediaCardClick error updates errorMessage`() = runTest {
         coEvery { getTopRatingMediaUseCase() } returns fakeTopRatedList.map { it.toMedia() }
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,settingsUseCase)
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI,manageSettingsUseCase)
         runCurrent()
         val movie = fakeTopRatedList[0]
         coEvery { mediaDetailsFeatureAPI.startMovieDetails(any()) } throws RuntimeException("nav error")
@@ -139,7 +139,7 @@ class TopRatingMoviesViewModelTest {
             callCount += 1
             fakeTopRatedList.map { it.toMedia() }
         }
-        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI, settingsUseCase)
+        viewModel = TopRatingMoviesViewModel(getTopRatingMediaUseCase, mediaDetailsFeatureAPI, manageSettingsUseCase)
         runCurrent()
         viewModel.onRetry()
         runCurrent()

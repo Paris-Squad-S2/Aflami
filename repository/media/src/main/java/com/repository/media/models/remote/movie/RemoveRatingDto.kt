@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class RemoveRatingDto(
     @SerialName("status_code")
-    val status_code: Int,
+    val statusCode: Int,
     @SerialName("status_message")
-    val status_message: String,
+    val statusMessage: String,
     @SerialName("success")
     val success: Boolean
 )

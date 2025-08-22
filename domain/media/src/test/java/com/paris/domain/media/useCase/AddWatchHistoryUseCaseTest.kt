@@ -4,11 +4,12 @@ import com.paris.domain.media.entity.Category
 import com.paris.domain.media.entity.Media
 import com.paris.domain.media.entity.MediaType
 import com.paris.domain.media.repository.MediaRepository
+import com.paris.domain.media.useCase.media.AddWatchHistoryUseCase
+import io.mockk.coVerify
+import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import kotlinx.datetime.LocalDate
 import org.junit.jupiter.api.Test
-import io.mockk.coVerify
-import io.mockk.mockk
 
 class AddWatchHistoryUseCaseTest {
     private val mediaRepository: MediaRepository = mockk(relaxed = true)

@@ -10,24 +10,28 @@ import com.feature.categories.categoriesUi.shared.BaseViewModel
 import com.feature.categories.categoriesUi.shared.CategoryUiState
 import com.feature.mediaDetails.mediaDetailsApi.MediaDetailsFeatureAPI
 import com.paris.domain.media.entity.MediaType
-import com.paris.domain.media.useCase.GetMoviesByCategoryUseCase
-import com.paris.domain.media.useCase.GetTvShowsByCategoryUseCase
+import com.paris.domain.media.useCase.movie.GetMoviesByCategoryUseCase
+import com.paris.domain.media.useCase.tvShows.GetTvShowsByCategoryUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import com.paris.aflami.designsystem.R as RDesignSystem
 
 @HiltViewModel
 class CategoryDetailsScreenViewModel @Inject constructor(
     private val getMoviesByCategoryUseCase: GetMoviesByCategoryUseCase,
     private val getTvShowsByCategoryUseCase: GetTvShowsByCategoryUseCase,
+    private val manageSettingsUseCase: ManageSettingsUseCase,
     private val mediaDetailsFeatureAPI: MediaDetailsFeatureAPI
 ) : CategoryDetailsScreenInteractionListener,
     BaseViewModel<CategoryDetailsScreenUIState>(CategoryDetailsScreenUIState()) {
 
     fun initialCategory(category: CategoryUiState) {
+        getRestriction()
+
         updateState(
             screenState.value.copy(
                 categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
@@ -46,6 +50,46 @@ class CategoryDetailsScreenViewModel @Inject constructor(
         onCategorySelected(category)
     }
 
+    private fun getRestriction() {
+        viewModelScope.launch {
+            val restriction = manageSettingsUseCase.getRestriction()
+            updateState(
+                screenState.value.copy(
+                    categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
+                        contentRestriction = ContentRestriction.valueOf(restriction)
+                    ),
+                )
+            )
+            when (screenState.value.categoryDetailsUIState.contentRestriction) {
+                ContentRestriction.Strict -> updateState(
+                    screenState.value.copy(
+                        categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
+                            nsfwThreshold = 0.8f,
+                            genderThreshold = 0.6f
+                        ),
+                    )
+                )
+
+                ContentRestriction.Moderate -> updateState(
+                    screenState.value.copy(
+                        categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
+                            nsfwThreshold = 0.4f,
+                            genderThreshold = 0.6f
+                        ),
+                    )
+                )
+
+                ContentRestriction.Off -> updateState(
+                    screenState.value.copy(
+                        categoryDetailsUIState = screenState.value.categoryDetailsUIState.copy(
+                            nsfwThreshold = 0f,
+                            genderThreshold = 0f
+                        ),
+                    )
+                )
+            }
+        }
+    }
     override fun onCategorySelected(category: CategoryUiState) {
         reloadAnimation()
         selectCategory(category)
