@@ -53,7 +53,8 @@ fun AppLogOutDialog(
 
                     },
                     modifier = Modifier.padding(top = 12.dp),
-                    type = ButtonType.Secondary,
+                    type = ButtonType.Primary,
+                    isNegative = true,
                     text = R.string.logout
                 )
             }
