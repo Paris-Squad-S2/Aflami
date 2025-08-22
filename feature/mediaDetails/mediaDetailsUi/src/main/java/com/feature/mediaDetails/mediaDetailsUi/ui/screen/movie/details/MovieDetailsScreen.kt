@@ -15,7 +15,6 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -446,11 +445,18 @@ fun MovieDetailsScreenContent(
                             }
                         }
                         item(span = { GridItemSpan(maxLineSpan) }) {
-                            Spacer(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(screenHeight / 11)
-                            )
+                                    .height(screenHeight / 26),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                AppText(
+                                    text = stringResource(R.string.no_more_items),
+                                    style = Theme.textStyle.label.small,
+                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+                                )
+                            }
                         }
                     }
                 }
