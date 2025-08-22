@@ -38,8 +38,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
@@ -52,7 +52,6 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import com.feature.mediaDetails.mediaDetailsUi.R
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.AddToListDialog
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.ChipsRowSection
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.gallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCard
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MediaCardType
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.MovieTopComponent
@@ -62,6 +61,7 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.VideoPlayer
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.castSection.CastSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.companyProductionSection.productionCompanySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.descriptionSection.DescriptionSection
+import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.gallerySection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.reviewSection.ReviewsSection
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.hasDescriptionContent
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.components.CreateListDialog
@@ -100,7 +100,7 @@ fun MovieDetailsScreenContent(
     val mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
     val scrollState = rememberLazyGridState()
 
-    val screenHeight = with(LocalDensity){ LocalWindowInfo.current.containerSize.height.dp }
+    val screenHeight = with(LocalDensity) { LocalWindowInfo.current.containerSize.height.dp }
 
     LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
         if (state.showSnackBar && state.snackBarSuccess) {
@@ -219,13 +219,26 @@ fun MovieDetailsScreenContent(
                                 label = "basic_transition"
                             ) { target ->
                                 if (!target) {
-                                    MovieTopComponentDetails(
-                                        state = state,
-                                        movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        sharedTransitionScope = this@SharedTransitionLayout,
-                                        listState = scrollState
-                                    )
+                                    Box {
+                                        MovieTopComponentDetails(
+                                            state = state,
+                                            movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            listState = scrollState
+                                        )
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(360.dp)
+                                                .align(Alignment.TopCenter)
+                                                .background(
+                                                    brush = Brush.verticalGradient(
+                                                        colors = Theme.colors.gradient.overlyDark.asReversed()
+                                                    )
+                                                )
+                                        )
+                                    }
                                 } else {
                                     MovieTopComponent(
                                         movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
@@ -235,12 +248,11 @@ fun MovieDetailsScreenContent(
                                         state = state
                                     )
                                 }
-
                             }
                         }
                     }
 
-                    LazyVerticalGrid (
+                    LazyVerticalGrid(
                         state = scrollState,
                         columns = GridCells.Adaptive(150.dp),
                         modifier = Modifier
@@ -248,13 +260,13 @@ fun MovieDetailsScreenContent(
                             .navigationBarsPadding(),
                     ) {
                         if (state.isDescriptionLoading) {
-                            item (span = {GridItemSpan(maxLineSpan)}){
+                            item(span = { GridItemSpan(maxLineSpan) }) {
                                 PageLoadingPlaceHolder(
                                     modifier = Modifier.padding(16.dp)
                                 )
                             }
                         } else if (hasDescriptionContent(state.movieDetailsUiState.movie)) {
-                            item (span = {GridItemSpan(maxLineSpan)}){
+                            item(span = { GridItemSpan(maxLineSpan) }) {
                                 DescriptionSection(
                                     title = state.movieDetailsUiState.movie.title,
                                     genres = state.movieDetailsUiState.movie.genres,
@@ -267,13 +279,13 @@ fun MovieDetailsScreenContent(
                         }
 
                         if (state.isCastLoading) {
-                            item (span = {GridItemSpan(maxLineSpan)}){
+                            item(span = { GridItemSpan(maxLineSpan) }) {
                                 PageLoadingPlaceHolder(
                                     modifier = Modifier.padding(16.dp)
                                 )
                             }
                         } else if (state.movieDetailsUiState.cast.isNotEmpty()) {
-                            item (span = {GridItemSpan(maxLineSpan)}){
+                            item(span = { GridItemSpan(maxLineSpan) }) {
                                 CastSection(
                                     castList = state.movieDetailsUiState.cast,
                                     onSeeAllClick = {
@@ -285,7 +297,7 @@ fun MovieDetailsScreenContent(
                             }
                         }
 
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             ChipsRowSection(
                                 items = movieChips.map { chip ->
                                     stringResource(chip.titleResId) to chip.iconResId
@@ -299,13 +311,13 @@ fun MovieDetailsScreenContent(
                             when (movieChips[index]) {
                                 MovieChips.MORE_LIKE_THIS ->
                                     if (state.isRecommendationsLoading) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             PageLoadingPlaceHolder(
                                                 modifier = Modifier.padding(16.dp)
                                             )
                                         }
                                     } else if (mediaList.itemSnapshotList.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -322,7 +334,9 @@ fun MovieDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(mediaList.itemCount,span = {GridItemSpan(maxLineSpan)}) { mediaIndex ->
+                                        items(
+                                            mediaList.itemCount,
+                                            span = { GridItemSpan(maxLineSpan) }) { mediaIndex ->
                                             mediaList[mediaIndex]?.let { media ->
                                                 MediaCard(
                                                     modifier = Modifier
@@ -355,13 +369,13 @@ fun MovieDetailsScreenContent(
 
                                 MovieChips.REVIEWS ->
                                     if (state.isReviewsLoading) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             PageLoadingPlaceHolder(
                                                 modifier = Modifier.padding(16.dp)
                                             )
                                         }
                                     } else if (state.movieDetailsUiState.reviews.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -378,20 +392,22 @@ fun MovieDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(state.movieDetailsUiState.reviews,span = {GridItemSpan(maxLineSpan)}) { review ->
+                                        items(
+                                            state.movieDetailsUiState.reviews,
+                                            span = { GridItemSpan(maxLineSpan) }) { review ->
                                             ReviewsSection(review)
                                         }
                                     }
 
                                 MovieChips.GALLERY -> {
                                     if (state.isGalleryLoading) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             PageLoadingPlaceHolder(
                                                 modifier = Modifier.padding(16.dp)
                                             )
                                         }
                                     } else if (state.movieDetailsUiState.gallery.isEmpty()) {
-                                        item(span = {GridItemSpan(maxLineSpan)}) {
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -414,11 +430,11 @@ fun MovieDetailsScreenContent(
 
                                 MovieChips.COMPANY_PRODUCTION -> {
                                     if (state.isProductionCompaniesLoading) {
-                                       item (span = {GridItemSpan(maxLineSpan)}){
-                                           PageLoadingPlaceHolder(
-                                               modifier = Modifier.padding(16.dp)
-                                           )
-                                       }
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
+                                            PageLoadingPlaceHolder(
+                                                modifier = Modifier.padding(16.dp)
+                                            )
+                                        }
                                     } else {
                                         productionCompanySection(
                                             companies = state.movieDetailsUiState.movie.productionCompanies,
@@ -429,11 +445,11 @@ fun MovieDetailsScreenContent(
                                 }
                             }
                         }
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             Spacer(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(screenHeight/11)
+                                    .height(screenHeight / 11)
                             )
                         }
                     }

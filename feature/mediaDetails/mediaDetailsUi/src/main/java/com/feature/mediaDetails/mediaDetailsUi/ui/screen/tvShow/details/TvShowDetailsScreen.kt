@@ -40,6 +40,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
@@ -166,13 +167,26 @@ fun TvShowDetailsScreenContent(
                                 label = "basic_transition"
                             ) { target ->
                                 if (!target) {
-                                    TopComponentDetails(
-                                        state = state,
-                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        sharedTransitionScope = this@SharedTransitionLayout,
-                                        listState = scrollState
-                                    )
+                                    Box {
+                                        TopComponentDetails(
+                                            state = state,
+                                            tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            listState = scrollState
+                                        )
+                                        Box(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(360.dp)
+                                                .align(Alignment.TopCenter)
+                                                .background(
+                                                    brush = Brush.verticalGradient(
+                                                        colors = Theme.colors.gradient.overlyDark.asReversed()
+                                                    )
+                                                )
+                                        )
+                                    }
                                 } else {
                                     TvTopComponent(
                                         tvShowScreenInteractionListener = tvShowScreenInteractionListener,
@@ -463,7 +477,7 @@ fun TvShowDetailsScreenContent(
                             Spacer(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(screenHeight/11)
+                                    .height(screenHeight / 11)
                             )
                         }
                     }
