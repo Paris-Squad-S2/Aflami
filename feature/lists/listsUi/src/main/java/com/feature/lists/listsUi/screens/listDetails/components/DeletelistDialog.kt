@@ -29,7 +29,7 @@ fun DeleteListDialog(
     if (!showDialog) return
     AppDialog(
         onDismiss = onDismiss,
-        title = R.string.create_new_list,
+        title = R.string.delete_list,
     ) {
         Column(
             modifier = Modifier.fillMaxWidth()

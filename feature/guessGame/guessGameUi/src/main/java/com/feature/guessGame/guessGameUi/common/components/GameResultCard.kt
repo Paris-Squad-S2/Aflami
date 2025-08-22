@@ -92,7 +92,7 @@ fun GameResultCard(
             contentDescription = if (isPoint) stringResource(R.string.points_achieved)
             else stringResource(R.string.total_time),
             modifier = Modifier
-                .size(70.dp)
+                .size(63.dp)
                 .align(Alignment.TopCenter)
         )
     }
