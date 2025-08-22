@@ -84,7 +84,7 @@ fun MoodPicker(
             modifier = Modifier
                 .padding(start = 12.dp, top = 44.dp, bottom = 10.dp)
                 .align(Alignment.TopStart),
-            color = Theme.colors.text.title
+            color = Theme.colors.onPrimaryColors.onPrimary
         )
 
 
