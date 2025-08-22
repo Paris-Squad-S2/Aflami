@@ -3,6 +3,7 @@ package com.feature.lists.listsUi.screens.listScreen.components
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
@@ -11,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.paris.aflami.designsystem.R
 import com.paris.aflami.designsystem.components.AppIcon
@@ -41,18 +43,22 @@ fun ListCard(
         )
         Column(
             modifier = Modifier
-                .padding(start = 8.dp, bottom = 21.dp)
+                .padding(start = 8.dp, end = 16.dp, bottom = 21.dp)
                 .align(Alignment.BottomStart)
         ) {
             AppText(
                 text = title,
                 color = Theme.colors.text.title,
-                style = Theme.textStyle.title.medium
+                style = Theme.textStyle.title.medium,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
             AppText(
                 text = stringResource(R.string.item, count),
                 color = Theme.colors.text.hint,
-                style = Theme.textStyle.label.large
+                style = Theme.textStyle.label.large,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
             )
         }
     }

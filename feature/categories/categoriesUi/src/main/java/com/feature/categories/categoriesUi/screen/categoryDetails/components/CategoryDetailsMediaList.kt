@@ -16,7 +16,9 @@ import com.paris.domain.media.entity.MediaType
 @Composable
 fun CategoryDetailsMediaList(
     mediaList: LazyPagingItems<MediaUI>,
-    onMediaSelected: (MediaUI) -> Unit
+    onMediaSelected: (MediaUI) -> Unit,
+    nsfwThreshold: Float = 0.8f,
+    genderThreshold: Float = 0.6f
 ) {
     LazyVerticalGrid(
         columns = GridCells.Adaptive(minSize = 200.dp),
@@ -28,6 +30,8 @@ fun CategoryDetailsMediaList(
                 MediaCard(
                     modifier = Modifier
                         .fillMaxWidth(),
+                    nsfwThreshold = nsfwThreshold ,
+                    genderThreshold = genderThreshold,
                     imageUri = media.posterPath,
                     rating = media.voteAverage?.toFloat(),
                     movieName = media.title,

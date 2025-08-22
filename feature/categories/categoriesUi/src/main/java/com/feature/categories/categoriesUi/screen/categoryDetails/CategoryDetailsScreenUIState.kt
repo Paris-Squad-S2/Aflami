@@ -19,7 +19,10 @@ data class CategoryDetailsUIState(
     val categories: List<CategoryUiState> = CategoryUiState.getMoviesCategories(),
     val title: Int = RDesignSystem.string.movies,
     val media: Flow<PagingData<MediaUI>> = flowOf(PagingData.empty()),
-    val selectedCategory: CategoryUiState = CategoryUiState.getDefault()
+    val selectedCategory: CategoryUiState = CategoryUiState.getDefault(),
+    val contentRestriction: ContentRestriction = ContentRestriction.Strict,
+    val nsfwThreshold: Float = 0.8f,
+    val genderThreshold: Float = 0.6f
 )
 
 data class MediaUI(
@@ -44,4 +47,10 @@ fun Media.toMediaUI(): MediaUI {
 
 fun List<Media>.toMediaUIList(): List<MediaUI> {
     return this.map { it.toMediaUI() }
+}
+
+enum class ContentRestriction() {
+    Strict,
+    Moderate,
+    Off
 }
