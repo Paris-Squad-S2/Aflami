@@ -74,4 +74,5 @@
     <string name="select_how_much_you_like_it">Select how much you like it</string>
     <string name="failed_to_load_restriction_settings">Failed to load restriction settings</string>
     <string name="failed_to_add_movie_to_list">Failed to add movie to list</string>
+    <string name="no_more_items">no more items</string>
 </resources>

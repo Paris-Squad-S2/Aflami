@@ -16,7 +16,6 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -166,13 +165,13 @@ fun TvShowDetailsScreenContent(
                                 label = "basic_transition"
                             ) { target ->
                                 if (!target) {
-                                    TopComponentDetails(
-                                        state = state,
-                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                        animatedVisibilityScope = this@AnimatedContent,
-                                        sharedTransitionScope = this@SharedTransitionLayout,
-                                        listState = scrollState
-                                    )
+                                        TopComponentDetails(
+                                            state = state,
+                                            tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                            animatedVisibilityScope = this@AnimatedContent,
+                                            sharedTransitionScope = this@SharedTransitionLayout,
+                                            listState = scrollState
+                                        )
                                 } else {
                                     TvTopComponent(
                                         tvShowScreenInteractionListener = tvShowScreenInteractionListener,
@@ -182,7 +181,6 @@ fun TvShowDetailsScreenContent(
                                         state = state
                                     )
                                 }
-
                             }
                         }
                     }
@@ -460,11 +458,19 @@ fun TvShowDetailsScreenContent(
                         }
 
                         item (span = {GridItemSpan(maxLineSpan)}){
-                            Spacer(
+                            Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .height(screenHeight/11)
-                            )
+                                    .height(screenHeight / 26),
+                                contentAlignment = Alignment.Center
+                            ) {
+                                AppText(
+                                    text = stringResource(R.string.no_more_items),
+                                    style = Theme.textStyle.label.small,
+                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+
+                                )
+                            }
                         }
                     }
                 }
