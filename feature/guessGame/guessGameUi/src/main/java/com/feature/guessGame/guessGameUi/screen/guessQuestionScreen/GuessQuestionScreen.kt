@@ -177,7 +177,7 @@ fun GuessQuestionContent(
     }
 }
 
-
+@Preview(showBackground = true, device = "spec:width=320dp,height=640dp")
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -193,9 +193,13 @@ fun GuessReleaseYearContentPreview() {
                 totalQuestions = 5,
                 currentStep = 2,
                 questionText = "In which year was 'Inception' released?",
-                answers = listOf(),
                 correctAnswer = "2010",
-                remainingAnswers = listOf(),
+                remainingAnswers = listOf(
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true),
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true),
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true),
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true)
+                ),
                 selectedAnswer = "2008",
                 hintUsed = false,
                 timePerQuestion = 30,

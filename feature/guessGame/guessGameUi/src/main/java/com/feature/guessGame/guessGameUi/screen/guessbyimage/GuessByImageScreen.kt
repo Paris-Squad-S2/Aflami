@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -204,6 +205,42 @@ private fun Header(
                     onFinished = { onTimeFinished() }
                 )
             }
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Preview(showBackground = true, device = "spec:width=320dp,height=640dp")
+@Composable
+fun PreviewGuessByImageScreen() {
+    val mockState = GuessCharacterUIState(
+        screenTitle = R.string.aflami,
+        time = 60,
+        currentQuestion = 0,
+        questionUiState = listOf(
+            QuestionUiState(
+                image = "mock_image_url",
+                answers = listOf("Answer 1", "Answer 2", "Answer 3", "Answer 4"),
+                correctAnswer = "Answer 1",
+                selectedAnswer = null,
+                usedHint = false
+            )
+        ),
+        isLoading = false,
+        error = null,
+        showNotEnoughPointsDialog = false
+    )
+
+    GuessByImageContent(
+        state = mockState,
+        listener = object : GuessByImageInteractionListener {
+            override fun onNextClicked() {}
+            override fun onRetry() {}
+            override fun onAnswerSelected(answer: String) {}
+            override fun onHintUsed() {}
+            override fun onDismissNotEnoughPointsDialog() {}
+            override fun onCancelClick() {}
+            override fun onTimeFinished() {}
         }
     )
 }
