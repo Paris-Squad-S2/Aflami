@@ -28,6 +28,8 @@ data class GameData(
     val trailingImages: List<Painter> = emptyList(),
     val isLocked: Boolean = false,
     val pointsToUnlock: Int = 0,
+    val shadowColor: Color = Color.Transparent,
+    val borderColor: Color = Color.Transparent,
 )
 
 data class DifficultySettings(

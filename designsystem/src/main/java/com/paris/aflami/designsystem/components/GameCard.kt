@@ -55,6 +55,8 @@ fun GameCard(
     trailingImages: List<Painter>,
     onPlayClick: () -> Unit,
     isPlayButtonLocked: Boolean,
+    borderColor: Color = Theme.colors.onPrimaryColors.onPrimaryButton,
+    shadowColor: Color = Theme.colors.onPrimaryColors.onPrimaryButton,
     pointsToUnlock: Int = 0,
 ) {
 
@@ -65,18 +67,17 @@ fun GameCard(
             .height(140.dp)
             .dropShadow(
                 shape = RoundedCornerShape(16.dp),
-                color = backgroundColors.first().copy(alpha = 0.12f),
+                color = shadowColor,
                 blur = 12.dp,
                 offsetY = 4.dp,
-                offsetX = 0.dp,
-                spread = 0.dp
+                alpha = 0.12f
             )
             .background(color = Theme.colors.surfaceHigh, shape = RoundedCornerShape(16.dp))
             .clip(RoundedCornerShape(15.dp))
             .border(
                 width = 1.dp, brush = Brush.linearGradient(
                     colorStops = arrayOf(
-                        0.0f to backgroundColors.first().copy(alpha = 0.50f),
+                        0.0f to borderColor.copy(alpha = 0.50f),
                         0.75f to Theme.colors.surfaceHigh.copy(alpha = 0.02f),
                         1f to Theme.colors.surfaceHigh.copy(alpha = 0.02f),
                     ),
@@ -173,7 +174,7 @@ fun GameCard(
                                 imageVector = ImageVector.vectorResource(R.drawable.ic_locked),
                                 contentDescription = "icon lock",
                                 tint = Theme.colors.text.title
-                            )
+                        )
                     }
                 }
             }
