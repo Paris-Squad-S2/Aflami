@@ -98,6 +98,7 @@ object UseCaseModule {
     @Provides
     fun provideGetMovieListIdUseCase(listsRepository: ListsRepository) =
         GetMovieListIdUseCase(listsRepository)
+
     @Provides
     fun provideGetAllRecentSearchesUseCase(searchHistoryRepository: SearchHistoryRepository) =
         GetAllRecentSearchesUseCase(searchHistoryRepository)
