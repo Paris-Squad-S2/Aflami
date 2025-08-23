@@ -49,8 +49,6 @@ import com.paris.domain.user.usecase.ManageSettingsUseCase
 import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -254,14 +252,7 @@ class MovieDetailsViewModel @Inject constructor(
     private fun updateMovieIfAddedToList(mediaId: Int) {
         tryToExecute(
             execute = {
-                val deferredResults = screenState.value.availableLists.map { listItemUi ->
-                    viewModelScope.async {
-                        getListDetailsUseCase(1, listItemUi.id).items.any { media ->
-                            media.id == mediaId
-                        }
-                    }
-                }
-                deferredResults.awaitAll().any { it }
+                getMovieListIdUseCase(mediaId) != null
             },
             onSuccess = { isMovieAddedToList ->
                 updateState(
