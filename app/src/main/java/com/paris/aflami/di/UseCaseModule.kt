@@ -19,6 +19,7 @@ import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.DeleteListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris.domain.lists.useCase.GetMovieListIdUseCase
 import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris.domain.media.repository.CountryRepository
 import com.paris.domain.media.repository.GenresInteractionRepository
@@ -73,7 +74,7 @@ import com.paris.domain.media.useCase.tvShows.GetTvShowsByCategoryUseCase
 import com.paris.domain.media.useCase.tvShows.GetTvShowsProductionCompaniesUseCase
 import com.paris.domain.user.repository.SettingRepository
 import com.paris.domain.user.repository.UserRepository
-import com.paris.domain.user.usecase.onboarding.CompleteOnboardingUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import com.paris.domain.user.usecase.auth.DeleteSessionIdUseCase
 import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import com.paris.domain.user.usecase.auth.GetForgetPasswordUrlUseCase
@@ -82,9 +83,9 @@ import com.paris.domain.user.usecase.auth.GetSessionIdUseCase
 import com.paris.domain.user.usecase.auth.GuestLoginUseCase
 import com.paris.domain.user.usecase.auth.HasAnySessionUseCase
 import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
-import com.paris.domain.user.usecase.onboarding.IsOnboardingCompletedUseCase
 import com.paris.domain.user.usecase.auth.LoginUseCase
-import com.paris.domain.user.usecase.ManageSettingsUseCase
+import com.paris.domain.user.usecase.onboarding.CompleteOnboardingUseCase
+import com.paris.domain.user.usecase.onboarding.IsOnboardingCompletedUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -93,6 +94,10 @@ import dagger.hilt.components.SingletonComponent
 @Module
 @InstallIn(SingletonComponent::class)
 object UseCaseModule {
+
+    @Provides
+    fun provideGetMovieListIdUseCase(listsRepository: ListsRepository) =
+        GetMovieListIdUseCase(listsRepository)
     @Provides
     fun provideGetAllRecentSearchesUseCase(searchHistoryRepository: SearchHistoryRepository) =
         GetAllRecentSearchesUseCase(searchHistoryRepository)
