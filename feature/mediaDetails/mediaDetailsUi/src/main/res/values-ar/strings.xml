@@ -41,6 +41,8 @@
     <string name="kittens">Kittens</string>
     <string name="Item">%1$d عنصر</string>
     <string name="movie_added_to_list_successfully">تمت إضافة الفيلم إلى القائمة بنجاح</string>
+    <string name="movie_removed_from_list_successfully">تمت إزالة الفيلم من القائمة بنجاح</string>
+    <string name="failed_to_remove_movie_from_list">فشل في إزالة الفيلم من القائمة</string>
     <string name="list_title">اسم القائمة</string>
     <string name="category_action">أكشن</string>
     <string name="category_adventure">مغامرة</string>
