@@ -32,5 +32,6 @@
     <string name="no_content_is_blurred">لا يتم طمس أي محتوى.</string>
     <string name="save">حفظ</string>
     <string name="pts">%1$d نقطة</string>
+    <string name="you_will_be_attacked_by_a_group_of_bright_colors">سيتم مهاجمتك من قبل مجموعة من الألوان الزاهية!</string>
 
 </resources>

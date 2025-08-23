@@ -1,2 +1,2 @@
-versionName=1.0.31
-- fix onboarding indicator
+versionName=1.0.32
+- fix some UI issues
