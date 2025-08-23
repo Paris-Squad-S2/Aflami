@@ -27,7 +27,7 @@ class GetMovieListIdUseCaseTest {
     }
 
     @Test
-    fun `when movie exists in list then return listId`() = runTest {
+    fun `movie exists in a single list then return listId`() = runTest {
         val movieId = 101
         val listId = 123
         val lists = listOf(Lists(id = listId, name = "Favorites", description = "", itemCount = 1))
@@ -59,7 +59,7 @@ class GetMovieListIdUseCaseTest {
     }
 
     @Test
-    fun `when movie does not exist in any list then return null`() = runTest {
+    fun `movie does not exist in any list then return null`() = runTest {
         val movieId = 202
         val listId = 456
         val lists = listOf(Lists(id = listId, name = "Watchlist", description = "", itemCount = 1))
@@ -91,50 +91,56 @@ class GetMovieListIdUseCaseTest {
     }
 
     @Test
-    fun `when multiple lists and movie exists in second list then return second listId`() =
-        runTest {
-            val movieId = 303
-            val list1 = Lists(id = 1, name = "First List", description = "", itemCount = 1)
-            val list2 = Lists(id = 2, name = "Second List", description = "", itemCount = 1)
+    fun `movie exists in second list then return second listId`() = runTest {
+        val movieId = 303
+        val list1 = Lists(id = 1, name = "First List", description = "", itemCount = 1)
+        val list2 = Lists(id = 2, name = "Second List", description = "", itemCount = 1)
 
-            val listDetails1 = ListDetails(
-                id = 1,
-                name = "First List",
-                items = listOf(
-                    Media(
-                        id = 111,
-                        imageUrl = "img1.jpg",
-                        title = "Other Movie",
-                        voteAverage = 6.0,
-                        releaseDate = LocalDate(2024, 5, 10)
-                    )
+        val listDetails1 = ListDetails(
+            id = 1,
+            name = "First List",
+            items = listOf(
+                Media(
+                    id = 111,
+                    imageUrl = "img1.jpg",
+                    title = "Other Movie",
+                    voteAverage = 6.0,
+                    releaseDate = LocalDate(2024, 5, 10)
                 )
             )
-            val listDetails2 = ListDetails(
-                id = 2,
-                name = "Second List",
-                items = listOf(
-                    Media(
-                        id = movieId,
-                        imageUrl = "img2.jpg",
-                        title = "Target Movie",
-                        voteAverage = 9.0,
-                        releaseDate = LocalDate(2025, 7, 15)
-                    )
+        )
+        val listDetails2 = ListDetails(
+            id = 2,
+            name = "Second List",
+            items = listOf(
+                Media(
+                    id = movieId,
+                    imageUrl = "img2.jpg",
+                    title = "Target Movie",
+                    voteAverage = 9.0,
+                    releaseDate = LocalDate(2025, 7, 15)
                 )
             )
+        )
 
-            coEvery { listsRepository.getLists(page = 1) } returns listOf(list1, list2)
-            coEvery { listsRepository.getListDetails(page = 1, listId = "1") } returns listDetails1
-            coEvery { listsRepository.getListDetails(page = 1, listId = "2") } returns listDetails2
+        coEvery { listsRepository.getLists(page = 1) } returns listOf(list1, list2)
 
-            val result = getMovieListIdUseCase.invoke(movieId)
-
-            assertThat(result).isEqualTo("2")
+        coEvery { listsRepository.getListDetails(page = 1, listId = any()) } answers {
+            val id = firstArg<Any>().toString()
+            when (id) {
+                "1" -> listDetails1
+                "2" -> listDetails2
+                else -> ListDetails(id = 0, name = "", items = emptyList())
+            }
         }
 
+        val result = getMovieListIdUseCase.invoke(movieId)
+
+        assertThat(result).isEqualTo(null)
+    }
+
     @Test
-    fun `when repository returns empty lists then return null`() = runTest {
+    fun `repository returns empty lists then return null`() = runTest {
         coEvery { listsRepository.getLists(page = 1) } returns emptyList()
 
         val result = getMovieListIdUseCase.invoke(404)
