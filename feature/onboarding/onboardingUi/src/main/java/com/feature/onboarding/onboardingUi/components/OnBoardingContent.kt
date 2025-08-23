@@ -4,13 +4,17 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -25,7 +29,9 @@ import com.paris.aflami.designsystem.theme.Theme
 
 @Composable
 fun OnboardingContent(
-    page: OnboardingPage
+    page: OnboardingPage,
+    currentPage: Int = 0,
+    totalPages: Int = 3
 ) {
     Box(
         modifier = Modifier
@@ -45,11 +51,18 @@ fun OnboardingContent(
             modifier = Modifier
                 .fillMaxSize()
                 .navigationBarsPadding()
-
                 .padding(start = 12.dp, end = 12.dp, bottom = 96.dp),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.Start
         ) {
+
+            PageIndicator(
+                currentPage = currentPage,
+                totalPages = totalPages,
+                modifier = Modifier
+                    .padding(bottom = 24.dp, end = 144.dp)
+            )
+
             AppText(
                 text = page.title.asString(),
                 style = Theme.textStyle.headline.small,
