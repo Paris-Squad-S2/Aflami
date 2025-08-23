@@ -1,2 +1,2 @@
-versionName=1.0.29
-- fix game card issue
+versionName=1.0.30
+- fix search safe image viewer
