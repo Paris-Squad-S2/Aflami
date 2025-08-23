@@ -72,8 +72,8 @@ fun MediaCard(
             modifier = Modifier.fillMaxSize(),
             contentDescription = "media poster",
             contentScale = ContentScale.Crop,
-            blurFemales = true,
-            blurNSFW = true,
+            blurFemales = genderThreshold != 0f,
+            blurNSFW = nsfwThreshold != 0f,
             nsfwThreshold = nsfwThreshold,
             genderThreshold = genderThreshold,
             onAnalysisComplete = { _ ->
