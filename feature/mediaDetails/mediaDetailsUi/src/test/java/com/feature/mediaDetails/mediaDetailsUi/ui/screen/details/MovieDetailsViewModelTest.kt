@@ -164,7 +164,7 @@ class MovieDetailsViewModelTest {
         coEvery { getMovieVideoUseCase(any()) } throws RuntimeException(errorMsg)
         coEvery { getListsUseCase(any()) } returns emptyList()
         coEvery { getAccountIdUseCase() } throws RuntimeException(errorMsg)
-        coEvery { getMovieListIdUseCase(any()) } returns null // أو throws RuntimeException(errorMsg)
+        coEvery { getMovieListIdUseCase(any()) } returns null
 
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
