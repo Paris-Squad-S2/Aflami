@@ -9,7 +9,7 @@ interface MovieDetailsScreenInteractionListener {
     fun onDismissRatingDialog()
     fun onRatingSubmitted(movieId: Int, rating: Float)
     fun onHideSnackBar()
-
+    fun onRemoveMovieFromList()
     fun onListSelectionChanged(index: Int)
     fun onAddToSelectedList()
     fun onDismissAddToListDialog()

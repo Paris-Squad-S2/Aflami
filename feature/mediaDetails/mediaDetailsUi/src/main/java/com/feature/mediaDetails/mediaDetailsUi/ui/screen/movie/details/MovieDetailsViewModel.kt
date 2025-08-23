@@ -27,6 +27,8 @@ import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris.domain.lists.useCase.GetMovieListIdUseCase
+import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris.domain.media.entity.Cast
 import com.paris.domain.media.entity.Image
 import com.paris.domain.media.entity.MediaType
@@ -43,9 +45,9 @@ import com.paris.domain.media.useCase.movie.GetMovieRecommendationsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieReviewsUseCase
 import com.paris.domain.media.useCase.movie.GetMovieVideoUseCase
 import com.paris.domain.media.useCase.movie.GetMoviesProductionCompaniesUseCase
+import com.paris.domain.user.usecase.ManageSettingsUseCase
 import com.paris.domain.user.usecase.auth.GetAccountIdUseCase
 import com.paris.domain.user.usecase.auth.IsLoggedInUseCase
-import com.paris.domain.user.usecase.ManageSettingsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -77,6 +79,8 @@ class MovieDetailsViewModel @Inject constructor(
     private val getListDetailsUseCase: GetListDetailsUseCase,
     private val getRatingUseCase: FilterRatedMediaUseCase,
     private val getAccountIdUseCase: GetAccountIdUseCase,
+    private val getMovieListIdUseCase: GetMovieListIdUseCase,
+    private val removeMovieFromListUseCase: RemoveMovieFromListUseCase,
     navigator: MediaDetailsNavigator,
 ) : MovieDetailsScreenInteractionListener,
     BaseViewModel<MovieDetailsScreenState>(MovieDetailsScreenState(), navigator) {
@@ -103,6 +107,7 @@ class MovieDetailsViewModel @Inject constructor(
         getInformationVideoMovie()
         loadAvailableLists()
     }
+
 
     private fun updateMovieDetailsUiState(updater: (MovieDetailsUiState) -> MovieDetailsUiState) {
         updateState(
@@ -660,6 +665,34 @@ class MovieDetailsViewModel @Inject constructor(
             screenState.value.copy(
                 showSnackBar = false
             )
+        )
+    }
+    private fun onRemoveMovieFromListError(errorMessage: String) {
+        showErrorSnackBar(R.string.failed_to_remove_movie_from_list)
+        showError(errorMessage)
+    }
+
+    private fun onRemoveMovieFromListSuccess() {
+        showSuccessSnackBar(R.string.movie_removed_from_list_successfully)
+        updateState(
+            screenState.value.copy(
+                movieDetailsUiState = screenState.value.movieDetailsUiState.copy(
+                    movie = screenState.value.movieDetailsUiState.movie.copy(
+                        isAddedToLists = false
+                    )
+                )
+            )
+        )
+    }
+
+    override fun onRemoveMovieFromList() {
+        tryToExecute(
+            execute = {
+                val listId = getMovieListIdUseCase(movieId)
+                if (listId != null) removeMovieFromListUseCase(listId, movieId)
+            },
+            onSuccess = { onRemoveMovieFromListSuccess() },
+            onError = { onRemoveMovieFromListError(it) }
         )
     }
 
