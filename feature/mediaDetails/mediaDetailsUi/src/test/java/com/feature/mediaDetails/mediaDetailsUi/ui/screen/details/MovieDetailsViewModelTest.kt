@@ -8,13 +8,17 @@ import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toListOfReviewUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.mapper.toUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsDestinations
 import com.feature.mediaDetails.mediaDetailsUi.ui.navigation.MediaDetailsNavigator
+import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ListItemUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieDetailsViewModel
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.MovieUi
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ReviewUi
+import com.paris.aflami.designsystem.components.ButtonState
 import com.paris.domain.lists.useCase.AddMovieToListUseCase
 import com.paris.domain.lists.useCase.CreateListUseCase
 import com.paris.domain.lists.useCase.GetListDetailsUseCase
 import com.paris.domain.lists.useCase.GetListUseCase
+import com.paris.domain.lists.useCase.GetMovieListIdUseCase
+import com.paris.domain.lists.useCase.RemoveMovieFromListUseCase
 import com.paris.domain.media.entity.MediaVideo
 import com.paris.domain.media.entity.Movie
 import com.paris.domain.media.entity.Review
@@ -75,6 +79,8 @@ class MovieDetailsViewModelTest {
     private val testDispatcher = StandardTestDispatcher()
     private val testMovieId = 42
     private val mediaDetailsNavigator: MediaDetailsNavigator = mockk(relaxed = true)
+    private val removeMovieFromListUseCase: RemoveMovieFromListUseCase = mockk()
+    private val getMovieListIdUseCase: GetMovieListIdUseCase = mockk()
 
     @BeforeEach
     fun setUp() {
@@ -158,6 +164,7 @@ class MovieDetailsViewModelTest {
         coEvery { getMovieVideoUseCase(any()) } throws RuntimeException(errorMsg)
         coEvery { getListsUseCase(any()) } returns emptyList()
         coEvery { getAccountIdUseCase() } throws RuntimeException(errorMsg)
+        coEvery { getMovieListIdUseCase(any()) } returns null // أو throws RuntimeException(errorMsg)
 
         viewModel = makeViewModelWithDefaultStateHandle()
         runCurrent()
@@ -275,7 +282,7 @@ class MovieDetailsViewModelTest {
 
     @Test
     fun `onAddToSelectedList with selected list updates snackbar on success`() = runTest {
-        val mockList = com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ListItemUi("123", "MyList", itemCount = 1)
+        val mockList = ListItemUi("123", "MyList", itemCount = 1)
         coEvery { addMovieToListUseCase(any(), any()) } returns true
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.updateState(
@@ -294,7 +301,7 @@ class MovieDetailsViewModelTest {
 
     @Test
     fun `onAddToSelectedList with selected list handles error`() = runTest {
-        val mockList = com.feature.mediaDetails.mediaDetailsUi.ui.screen.movie.details.ListItemUi("321", "TestList", itemCount = 2)
+        val mockList = ListItemUi("321", "TestList", itemCount = 2)
         coEvery { addMovieToListUseCase(any(), any()) } throws Exception("add-list-error")
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.updateState(
@@ -315,9 +322,9 @@ class MovieDetailsViewModelTest {
     fun `onCreateListNameChange disables button if blank, enables if not blank`() = runTest {
         viewModel = makeViewModelWithDefaultStateHandle()
         viewModel.onCreateListNameChange("")
-        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Disabled, viewModel.screenState.value.createListButtonState)
+        assertEquals(ButtonState.Disabled, viewModel.screenState.value.createListButtonState)
         viewModel.onCreateListNameChange("NotBlank")
-        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -326,7 +333,7 @@ class MovieDetailsViewModelTest {
         viewModel.updateState(viewModel.screenState.value.copy(createListName = "   "))
         viewModel.onCreateListConfirm()
         // Should not trigger loading state or dialog close
-        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -341,7 +348,7 @@ class MovieDetailsViewModelTest {
         assertEquals("", viewModel.screenState.value.createListName)
         assertTrue(viewModel.screenState.value.showSnackBar)
         assertTrue(viewModel.screenState.value.snackBarSuccess)
-        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -352,7 +359,7 @@ class MovieDetailsViewModelTest {
         viewModel.onCreateListConfirm()
         runCurrent()
         assertEquals("create-list-failure", viewModel.screenState.value.errorMessage)
-        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -368,12 +375,12 @@ class MovieDetailsViewModelTest {
         viewModel.updateState(viewModel.screenState.value.copy(
             showCreateListDialog = true,
             createListName = "foo",
-            createListButtonState = com.paris.aflami.designsystem.components.ButtonState.Loading
+            createListButtonState = ButtonState.Loading
         ))
         viewModel.onCreateListDismiss()
         assertFalse(viewModel.screenState.value.showCreateListDialog)
         assertEquals("", viewModel.screenState.value.createListName)
-        assertEquals(com.paris.aflami.designsystem.components.ButtonState.Normal, viewModel.screenState.value.createListButtonState)
+        assertEquals(ButtonState.Normal, viewModel.screenState.value.createListButtonState)
     }
 
     @Test
@@ -408,6 +415,8 @@ class MovieDetailsViewModelTest {
             getListDetailsUseCase,
             getRatingUseCase,
             getAccountIdUseCase,
+            getMovieListIdUseCase,
+            removeMovieFromListUseCase,
             mediaDetailsNavigator,
         )
     }
