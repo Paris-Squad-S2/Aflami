@@ -1,2 +1,2 @@
-versionName=1.0.30
-- fix search safe image viewer
+versionName=1.0.31
+- fix onboarding indicator

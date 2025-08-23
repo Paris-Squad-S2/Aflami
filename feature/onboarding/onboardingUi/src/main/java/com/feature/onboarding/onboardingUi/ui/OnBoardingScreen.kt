@@ -3,14 +3,12 @@ package com.feature.onboarding.onboardingUi.ui
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -25,11 +23,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavHostController
 import com.feature.onboarding.onboardingUi.R
 import com.feature.onboarding.onboardingUi.components.OnboardingContent
 import com.feature.onboarding.onboardingUi.components.OnboardingPage
-import com.feature.onboarding.onboardingUi.components.PageIndicator
 import com.paris.aflami.designsystem.components.AppIcon
 import com.paris.aflami.designsystem.components.ButtonType
 import com.paris.aflami.designsystem.components.CustomButton
@@ -60,13 +56,15 @@ fun OnboardingScreen(
             state = pagerState,
             userScrollEnabled = false,
             modifier = Modifier.fillMaxSize()
-        ) {
+        ) { page ->
             OnboardingContent(
-                OnboardingPage(
+                page = OnboardingPage(
                     title = viewModel.getTitle(),
                     description = viewModel.getDescription(),
                     backgroundRes = viewModel.getBackground()
-                )
+                ),
+                currentPage = page,
+                totalPages = pageCount
             )
         }
         CustomButton(
@@ -76,12 +74,6 @@ fun OnboardingScreen(
             text = R.string.skip,
             type = ButtonType.TextButton,
             modifier = Modifier.padding(start = 16.dp, top = 56.dp)
-        )
-
-        PageIndicator(
-            totalPages = 4,
-            currentPage = pagerState.currentPage,
-            modifier = Modifier.padding(start = 12.dp, top = 600.dp, end = 144.dp)
         )
 
 
