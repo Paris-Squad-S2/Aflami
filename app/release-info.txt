@@ -1,2 +1,2 @@
-versionName=1.0.32
-- fix some UI issues
+versionName=1.0.33
+- add new feature remove movie from list
