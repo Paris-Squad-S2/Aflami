@@ -38,12 +38,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -98,8 +98,24 @@ fun MovieDetailsScreenContent(
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
     val scrollState = rememberLazyGridState()
+    val collapseIndex = 3
 
-    val screenHeight = with(LocalDensity) { LocalWindowInfo.current.containerSize.height.dp }
+    val shrinkProgress by remember {
+        derivedStateOf {
+            val index = scrollState.firstVisibleItemIndex
+            val offset = scrollState.firstVisibleItemScrollOffset
+
+            when {
+                index >= collapseIndex -> 1f
+                index == 0 -> (offset / 600f).coerceIn(0f, 1f)
+                else -> 0.5f
+            }
+        }
+    }
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val expandedHeight = (screenHeight * 0.4f)
+    val collapsedHeight = 56.dp
+    val headerHeight = lerp(expandedHeight, collapsedHeight, shrinkProgress)
 
     LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
         if (state.showSnackBar && state.snackBarSuccess) {
@@ -223,7 +239,8 @@ fun MovieDetailsScreenContent(
                                         movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
-                                        listState = scrollState
+                                        listState = scrollState,
+                                        modifier = Modifier.height(headerHeight)
                                     )
 
                                 } else {
@@ -243,7 +260,7 @@ fun MovieDetailsScreenContent(
                         state = scrollState,
                         columns = GridCells.Adaptive(150.dp),
                         modifier = Modifier
-                            .fillMaxSize()
+
                             .navigationBarsPadding(),
                     ) {
                         if (state.isDescriptionLoading) {
@@ -432,20 +449,20 @@ fun MovieDetailsScreenContent(
                                 }
                             }
                         }
-                        item(span = { GridItemSpan(maxLineSpan) }) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(screenHeight / 26),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                AppText(
-                                    text = stringResource(R.string.no_more_items),
-                                    style = Theme.textStyle.label.small,
-                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
-                                )
-                            }
-                        }
+//                        item(span = { GridItemSpan(maxLineSpan) }) {
+//                            Box(
+//                                modifier = Modifier
+//                                    .fillMaxWidth()
+//                                    .height(screenHeight / 26),
+//                                contentAlignment = Alignment.Center
+//                            ) {
+//                                AppText(
+//                                    text = stringResource(R.string.no_more_items),
+//                                    style = Theme.textStyle.label.small,
+//                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
+//                                )
+//                            }
+//                        }
                     }
                 }
             }

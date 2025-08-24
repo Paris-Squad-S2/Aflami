@@ -118,8 +118,8 @@ fun MovieTopComponentDetails(
                     )
                 ),
                 modifier = Modifier
-                    .statusBarsPadding()
                     .background(backgroundColor)
+                    .statusBarsPadding()
 
             )
             Box(
@@ -151,9 +151,8 @@ fun MovieTopComponent(
     with(sharedTransitionScope) {
         AppTopBar(
             modifier = modifier
-                .statusBarsPadding()
-                .padding(bottom = 1.dp)
                 .background(Theme.colors.surface)
+                .statusBarsPadding()
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component"),
                     animatedVisibilityScope = animatedVisibilityScope,
