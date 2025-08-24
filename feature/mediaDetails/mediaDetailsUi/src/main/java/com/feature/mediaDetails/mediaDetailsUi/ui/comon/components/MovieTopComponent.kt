@@ -114,7 +114,8 @@ fun MovieTopComponentDetails(
                             ImageVector.vectorResource(R.drawable.ic_heart_add),
                         onClick = if (state.movieDetailsUiState.movie.isAddedToLists.not())
                             movieDetailsScreenInteractionListener::onAddToListClick
-                        else null,
+                        else
+                            movieDetailsScreenInteractionListener::onRemoveMovieFromList,
                         tint = Theme.colors.text.title
                     )
                 ),
@@ -185,7 +186,8 @@ fun MovieTopComponent(
                         ImageVector.vectorResource(R.drawable.ic_heart_add),
                     onClick = if (state.movieDetailsUiState.movie.isAddedToLists.not())
                         movieDetailsScreenInteractionListener::onAddToListClick
-                    else null,
+                    else
+                        movieDetailsScreenInteractionListener::onRemoveMovieFromList,
                     tint = Theme.colors.text.title
                 )
             ),
