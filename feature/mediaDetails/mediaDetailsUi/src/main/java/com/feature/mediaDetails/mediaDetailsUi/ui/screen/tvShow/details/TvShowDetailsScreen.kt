@@ -39,10 +39,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -88,13 +88,30 @@ fun TvShowDetailsScreenContent(
     val tvChips = TvShowChips.entries
     var currentRating by remember { mutableFloatStateOf(state.tvShowDetailsUiState.selectedRating) }
     val scrollState = rememberLazyGridState()
+    val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
     val isCollapsed by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+            scrollState.firstVisibleItemIndex > 3
         }
     }
-    val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
+    val collapseIndex = 3
 
+    val shrinkProgress by remember {
+        derivedStateOf {
+            val index = scrollState.firstVisibleItemIndex
+            val offset = scrollState.firstVisibleItemScrollOffset
+
+            when {
+                index >= collapseIndex -> 1f
+                index == 0 -> (offset / 600f).coerceIn(0f, 1f)
+                else -> 0.5f
+            }
+        }
+    }
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val expandedHeight = (screenHeight * 0.4f)
+    val collapsedHeight = 56.dp
+    val headerHeight = lerp(expandedHeight, collapsedHeight, shrinkProgress)
     val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
@@ -103,7 +120,6 @@ fun TvShowDetailsScreenContent(
     }
     val reviewsList = state.tvShowDetailsUiState.reviews
 
-    val screenHeight = with(LocalDensity){ LocalWindowInfo.current.containerSize.height.dp }
 
     LaunchedEffect(isCollapsed) {
         if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
@@ -165,34 +181,38 @@ fun TvShowDetailsScreenContent(
                                 label = "basic_transition"
                             ) { target ->
                                 if (!target) {
-                                        TopComponentDetails(
-                                            state = state,
-                                            tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                            animatedVisibilityScope = this@AnimatedContent,
-                                            sharedTransitionScope = this@SharedTransitionLayout,
-                                            listState = scrollState
-                                        )
+                                    TopComponentDetails(
+                                        state = state,
+                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        listState = scrollState,
+                                        modifier = Modifier.height(headerHeight)
+                                    )
+
                                 } else {
+
                                     TvTopComponent(
                                         tvShowScreenInteractionListener = tvShowScreenInteractionListener,
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
                                         title = state.tvShowDetailsUiState.tvShowUi.title,
-                                        state = state
+                                        state = state,
                                     )
+
                                 }
                             }
                         }
+
                     }
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(150.dp),
                         state = scrollState,
                         modifier = Modifier
-                            .fillMaxSize()
                             .navigationBarsPadding()
                     )
                     {
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             DescriptionSection(
                                 title = state.tvShowDetailsUiState.tvShowUi.title,
                                 genres = state.tvShowDetailsUiState.tvShowUi.genres,
@@ -202,7 +222,7 @@ fun TvShowDetailsScreenContent(
                                 description = state.tvShowDetailsUiState.tvShowUi.description
                             )
                         }
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             if (state.tvShowDetailsUiState.cast.isNotEmpty()) {
                                 CastSection(
                                     castList = state.tvShowDetailsUiState.cast,
@@ -214,7 +234,7 @@ fun TvShowDetailsScreenContent(
                                 )
                             }
                         }
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             ChipsRowSection(
                                 items = tvChips.map {
                                     stringResource(it.titleResId) to it.iconResId
@@ -229,7 +249,7 @@ fun TvShowDetailsScreenContent(
                                 TvShowChips.SEASONS -> {
 
                                     if (state.tvShowDetailsUiState.tvShowUi.seasons.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -272,7 +292,7 @@ fun TvShowDetailsScreenContent(
 
                                             if (isExpanded) {
                                                 if (isSeasonLoading) {
-                                                    item (span = {GridItemSpan(maxLineSpan)}){
+                                                    item(span = { GridItemSpan(maxLineSpan) }) {
                                                         Box(
                                                             modifier = Modifier
                                                                 .fillMaxWidth()
@@ -283,7 +303,9 @@ fun TvShowDetailsScreenContent(
                                                         }
                                                     }
                                                 } else {
-                                                    items(season.episodes.size,span = {GridItemSpan(maxLineSpan)}) { episodeIndex ->
+                                                    items(
+                                                        season.episodes.size,
+                                                        span = { GridItemSpan(maxLineSpan) }) { episodeIndex ->
                                                         val episode = season.episodes[episodeIndex]
                                                         AnimatedVisibility(
                                                             visible = true,
@@ -352,7 +374,7 @@ fun TvShowDetailsScreenContent(
 
                                 TvShowChips.MORE_LIKE_THIS ->
                                     if (mediaList.itemSnapshotList.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -369,7 +391,9 @@ fun TvShowDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(mediaList.itemCount,span = {GridItemSpan(maxLineSpan)}) { mediaIndex ->
+                                        items(
+                                            mediaList.itemCount,
+                                            span = { GridItemSpan(maxLineSpan) }) { mediaIndex ->
                                             mediaList[mediaIndex]?.let { media ->
                                                 MediaCard(
                                                     modifier = Modifier
@@ -404,7 +428,7 @@ fun TvShowDetailsScreenContent(
 
                                 TvShowChips.REVIEWS ->
                                     if (reviewsList.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -421,14 +445,16 @@ fun TvShowDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(reviewsList,span = {GridItemSpan(maxLineSpan)}) { review ->
+                                        items(
+                                            reviewsList,
+                                            span = { GridItemSpan(maxLineSpan) }) { review ->
                                             ReviewsSection(review)
                                         }
                                     }
 
-                                TvShowChips.GALLERY ->  {
+                                TvShowChips.GALLERY -> {
                                     if (state.tvShowDetailsUiState.gallery.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -454,22 +480,6 @@ fun TvShowDetailsScreenContent(
                                         companies = state.tvShowDetailsUiState.tvShowUi.productionCompanies
                                     )
 
-                            }
-                        }
-
-                        item (span = {GridItemSpan(maxLineSpan)}){
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(screenHeight / 26),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                AppText(
-                                    text = stringResource(R.string.no_more_items),
-                                    style = Theme.textStyle.label.small,
-                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
-
-                                )
                             }
                         }
                     }

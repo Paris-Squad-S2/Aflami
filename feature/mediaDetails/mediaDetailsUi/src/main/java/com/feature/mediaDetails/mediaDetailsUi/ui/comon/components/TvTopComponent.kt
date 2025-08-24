@@ -100,8 +100,8 @@ fun TopComponentDetails(
                     ),
                 ),
                 modifier = Modifier
-                    .statusBarsPadding()
                     .background(backgroundColor)
+                    .statusBarsPadding()
 
             )
             Box(
@@ -126,16 +126,16 @@ fun TvTopComponent(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     title: String,
-    state : TvShowDetailsScreenState,
+    state: TvShowDetailsScreenState,
     modifier: Modifier = Modifier,
 ) {
     val activity = LocalActivity.current
     with(sharedTransitionScope) {
+
         AppTopBar(
             modifier = modifier
-                .statusBarsPadding()
-                .padding(bottom = 1.dp)
                 .background(Theme.colors.surface)
+                .statusBarsPadding()
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component"),
                     animatedVisibilityScope = animatedVisibilityScope,
