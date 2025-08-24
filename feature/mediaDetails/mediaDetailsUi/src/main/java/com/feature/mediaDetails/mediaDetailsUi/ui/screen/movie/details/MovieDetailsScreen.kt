@@ -125,7 +125,7 @@ fun MovieDetailsScreenContent(
     }
     val isCollapsed by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+            scrollState.firstVisibleItemIndex > 3
         }
     }
     LaunchedEffect(isCollapsed) {
@@ -260,7 +260,6 @@ fun MovieDetailsScreenContent(
                         state = scrollState,
                         columns = GridCells.Adaptive(150.dp),
                         modifier = Modifier
-
                             .navigationBarsPadding(),
                     ) {
                         if (state.isDescriptionLoading) {

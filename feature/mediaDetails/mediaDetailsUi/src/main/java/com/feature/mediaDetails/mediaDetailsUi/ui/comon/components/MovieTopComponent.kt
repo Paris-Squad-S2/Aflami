@@ -48,7 +48,6 @@ fun MovieTopComponentDetails(
 ) {
     with(sharedTransitionScope) {
         Box(
-
             modifier
                 .background(Theme.colors.surface)
                 .sharedBounds(
