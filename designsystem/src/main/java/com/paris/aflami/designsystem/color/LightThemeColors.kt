@@ -32,6 +32,7 @@ val lightThemeColors = Colors(
         blueGradient = listOf(Color(0xFF53ABF9), Color(0xFF336490)),
         pinkGradient = listOf(Color(0xFFD85895), Color(0xFF803559)),
         logoGradient = listOf(Color(0xDED85895), Color(0xDE64163B)),
+        lightPinkGradient = listOf(Color(0xCC64163B), Color(0x0064163B))
     ),
     status = Status(
         redAccent = Color(0xFFD94C56),

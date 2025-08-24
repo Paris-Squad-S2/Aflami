@@ -2,16 +2,15 @@ package com.feature.guessGame.guessGameUi.screen.resultScreen
 
 import androidx.activity.compose.LocalActivity
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -25,6 +24,7 @@ import com.feature.guessGame.guessGameUi.common.components.GuessGameBackground
 import com.feature.guessGame.guessGameUi.common.components.WinCard
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
 import com.feature.guessGame.guessGameUi.screen.guessQuestionScreen.getTitleResId
+import com.paris.aflami.designsystem.components.AppScaffold
 import com.paris.aflami.designsystem.components.AppTopBar
 import com.paris.aflami.designsystem.components.ButtonState
 import com.paris.aflami.designsystem.components.ButtonType
@@ -56,50 +56,16 @@ fun ResultScreenContent(
     totalGamePoints: Int,
     gameType: QuestionType,
     listener: ResultInteractionListener,
-
-    ) {
+) {
     val activity = LocalActivity.current
-    Column(
-        modifier = Modifier
-            .statusBarsPadding()
-    ) {
-        AppTopBar(
-            title = stringResource(id = gameType.getTitleResId()),
-            leadingIcons = listOf(
-                iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel_thin),
-                    onClick = { activity?.finish() },
-                )
-            ),
-        )
-        WinCard(
-            modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .padding(top = 16.dp, bottom = 24.dp)
-        )
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 12.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            GameResultCard(
-                value = totalGamePoints,
-                isPoint = true,
-            )
-            GameResultCard(
-                value = totalGameTime,
-                isPoint = false,
-            )
-        }
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
+    val scrollState = rememberScrollState()
+
+    AppScaffold(
+        bottomBar = {
             Column(
                 modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .padding(bottom = 16.dp),
+                    .fillMaxWidth()
+                    .navigationBarsPadding(),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 CustomButton(
@@ -118,8 +84,47 @@ fun ResultScreenContent(
                     state = ButtonState.Normal,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .navigationBarsPadding()
                         .padding(horizontal = 16.dp)
+                )
+            }
+        }
+    ) {
+        Column(
+            modifier = Modifier
+                .statusBarsPadding()
+                .verticalScroll(scrollState),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            AppTopBar(
+                title = stringResource(id = gameType.getTitleResId()),
+                leadingIcons = listOf(
+                    iconItemWithDefaults(
+                        icon = ImageVector.vectorResource(
+                            com.paris.aflami.designsystem.R.drawable.ic_cancel_thin
+                        ),
+                        onClick = { activity?.finish() },
+                    )
+                ),
+            )
+
+            WinCard(
+                modifier = Modifier
+                    .padding(horizontal = 12.dp, vertical = 16.dp)
+            )
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                GameResultCard(
+                    value = totalGamePoints,
+                    isPoint = true,
+                )
+                GameResultCard(
+                    value = totalGameTime,
+                    isPoint = false,
                 )
             }
         }

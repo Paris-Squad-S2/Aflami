@@ -108,13 +108,15 @@ fun MovieTopComponentDetails(
                         else Theme.colors.text.title
                     ),
                     iconItemWithDefaults(
-                        icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
+                        icon = if (state.movieDetailsUiState.movie.isAddedToLists)
+                            ImageVector.vectorResource(R.drawable.ic_heart_remove)
+                        else
+                            ImageVector.vectorResource(R.drawable.ic_heart_add),
                         onClick = if (state.movieDetailsUiState.movie.isAddedToLists.not())
                             movieDetailsScreenInteractionListener::onAddToListClick
-                        else null,
-                        tint = if (state.movieDetailsUiState.movie.isAddedToLists) Theme.colors.status.yellowAccent
-                        else Theme.colors.text.title
-
+                        else
+                            movieDetailsScreenInteractionListener::onRemoveMovieFromList,
+                        tint = Theme.colors.text.title
                     )
                 ),
                 modifier = Modifier
@@ -177,13 +179,15 @@ fun MovieTopComponent(
                     else Theme.colors.text.title
                 ),
                 iconItemWithDefaults(
-                    icon = ImageVector.vectorResource(R.drawable.ic_heart_add),
+                    icon = if (state.movieDetailsUiState.movie.isAddedToLists)
+                        ImageVector.vectorResource(R.drawable.ic_heart_remove)
+                    else
+                        ImageVector.vectorResource(R.drawable.ic_heart_add),
                     onClick = if (state.movieDetailsUiState.movie.isAddedToLists.not())
                         movieDetailsScreenInteractionListener::onAddToListClick
-                    else null,
-                    tint = if (state.movieDetailsUiState.movie.isAddedToLists) Theme.colors.status.yellowAccent
-                    else Theme.colors.text.title
-
+                    else
+                        movieDetailsScreenInteractionListener::onRemoveMovieFromList,
+                    tint = Theme.colors.text.title
                 )
             ),
         )

@@ -42,6 +42,8 @@
     <string name="kittens">Kittens</string>
     <string name="Item">%1$d item</string>
     <string name="movie_added_to_list_successfully">Movie added to list successfully</string>
+    <string name="movie_removed_from_list_successfully">Movie removed from list successfully</string>
+    <string name="failed_to_remove_movie_from_list">Failed to remove movie from list</string>
     <string name="list_title">List title</string>
     <string name="category_action">Action</string>
     <string name="category_adventure">Adventure</string>

@@ -34,6 +34,7 @@ import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.feature.guessGame.guessGameUi.navigation.QuestionType
+import com.paris.aflami.designsystem.components.AppScaffold
 import com.paris.aflami.designsystem.components.AppTopBar
 import com.paris.aflami.designsystem.components.ButtonState
 import com.paris.aflami.designsystem.components.ButtonType
@@ -89,35 +90,45 @@ fun GuessQuestionContent(
         }
 
         else -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
+            AppScaffold(
+                bottomBar = {
+                    CustomButton(
+                        onClick = listener::onNextClicked,
+                        text = R.string.next,
+                        type = ButtonType.Primary,
+                        state = if (state.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
             ) {
-                AppTopBar(
-                    title = stringResource(id = questionType.getTitleResId()),
-                    leadingIcons = listOf(
-                        iconItemWithDefaults(
-                            icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel_thin),
-                            onClick = { activity?.finish() }
-                        )
-                    ),
-                    trailingContent = {
-                        key(currentQuestionIndex) {
-                            GameTimer(
-                                totalSeconds = state.timePerQuestion,
-                                onFinished = listener::onTimeFinished
-                            )
-                        }
-                    }
-                )
-
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .statusBarsPadding()
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
+                    AppTopBar(
+                        title = stringResource(id = questionType.getTitleResId()),
+                        leadingIcons = listOf(
+                            iconItemWithDefaults(
+                                icon = ImageVector.vectorResource(com.paris.aflami.designsystem.R.drawable.ic_cancel_thin),
+                                onClick = { activity?.finish() }
+                            )
+                        ),
+                        trailingContent = {
+                            key(currentQuestionIndex) {
+                                GameTimer(
+                                    totalSeconds = state.timePerQuestion,
+                                    onFinished = listener::onTimeFinished
+                                )
+                            }
+                        }
+                    )
+
                     QuestionIndicator(
                         numberOfQuestions = state.totalQuestions,
                         step = state.currentStep
@@ -130,7 +141,7 @@ fun GuessQuestionContent(
                         clickable = true,
                         showHint = !state.hintUsed,
                         onClick = listener::onHintUsed,
-                        onImageLoadError =  listener::onRetry
+                        onImageLoadError = listener::onRetry
                     )
 
                     Spacer(Modifier.height(16.dp))
@@ -160,24 +171,13 @@ fun GuessQuestionContent(
                             }
                         }
                     }
-
-                    Spacer(Modifier.weight(1f))
-
-                    CustomButton(
-                        onClick = listener::onNextClicked,
-                        text = R.string.next,
-                        type = ButtonType.Primary,
-                        state = if (state.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .navigationBarsPadding()
-                    )
                 }
             }
         }
     }
 }
 
+@Preview(showBackground = true, device = "spec:width=320dp,height=640dp")
 @Preview(
     showBackground = true,
     showSystemUi = true,
@@ -193,9 +193,13 @@ fun GuessReleaseYearContentPreview() {
                 totalQuestions = 5,
                 currentStep = 2,
                 questionText = "In which year was 'Inception' released?",
-                answers = listOf(),
                 correctAnswer = "2010",
-                remainingAnswers = listOf(),
+                remainingAnswers = listOf(
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true),
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true),
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true),
+                    UiAnswer(text = "2010", genreText = null, isCorrect = true)
+                ),
                 selectedAnswer = "2008",
                 hintUsed = false,
                 timePerQuestion = 30,

@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -30,6 +31,7 @@ import com.feature.guessGame.guessGameUi.common.components.NotEnoughPointsDialog
 import com.feature.guessGame.guessGameUi.common.components.OptionItem
 import com.feature.guessGame.guessGameUi.common.components.QuestionIndicator
 import com.paris.aflami.designsystem.R
+import com.paris.aflami.designsystem.components.AppScaffold
 import com.paris.aflami.designsystem.components.AppTopBar
 import com.paris.aflami.designsystem.components.ButtonState
 import com.paris.aflami.designsystem.components.ButtonType
@@ -75,7 +77,7 @@ fun GuessByImageContent(
             )
         }
 
-        state.error!= null -> {
+        state.error != null -> {
             NetworkError(
                 modifier = Modifier.fillMaxSize(),
                 onRetry = listener::onRetry
@@ -83,25 +85,37 @@ fun GuessByImageContent(
         }
 
         else -> {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .statusBarsPadding()
-            ) {
-                Header(
-                    head = state.screenTitle,
-                    onCanceled = { activity?.finish() },
-                    onTimeFinished = listener::onTimeFinished,
-                    time = state.time,
-                    currentQuestion = state.currentQuestion
-                )
+            AppScaffold(
+                bottomBar = {
+                    val currentQuestion = state.questionUiState.getOrNull(state.currentQuestion)
 
+                    CustomButton(
+                        onClick = listener::onNextClicked,
+                        text = com.feature.guessGame.guessGameUi.R.string.next,
+                        type = ButtonType.Primary,
+                        state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .navigationBarsPadding()
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    )
+                }
+            ) {
                 Column(
                     modifier = Modifier
                         .fillMaxSize()
+                        .statusBarsPadding()
                         .verticalScroll(rememberScrollState())
                         .padding(horizontal = 16.dp, vertical = 8.dp)
                 ) {
+                    Header(
+                        head = state.screenTitle,
+                        onCanceled = { activity?.finish() },
+                        onTimeFinished = listener::onTimeFinished,
+                        time = state.time,
+                        currentQuestion = state.currentQuestion
+                    )
+
                     QuestionIndicator(
                         numberOfQuestions = state.questionUiState.size,
                         step = state.currentQuestion,
@@ -132,23 +146,12 @@ fun GuessByImageContent(
                             )
                         }
                     }
-
-                    Spacer(Modifier.weight(1f))
-
-                    CustomButton(
-                        onClick = listener::onNextClicked,
-                        text = com.feature.guessGame.guessGameUi.R.string.next,
-                        type = ButtonType.Primary,
-                        state = if (currentQuestion?.selectedAnswer != null) ButtonState.Normal else ButtonState.Disabled,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .navigationBarsPadding()
-                    )
                 }
             }
         }
     }
 }
+
 
 @Composable
 fun QuestionImage(
@@ -202,6 +205,42 @@ private fun Header(
                     onFinished = { onTimeFinished() }
                 )
             }
+        }
+    )
+}
+
+@Preview(showBackground = true)
+@Preview(showBackground = true, device = "spec:width=320dp,height=640dp")
+@Composable
+fun PreviewGuessByImageScreen() {
+    val mockState = GuessCharacterUIState(
+        screenTitle = R.string.aflami,
+        time = 60,
+        currentQuestion = 0,
+        questionUiState = listOf(
+            QuestionUiState(
+                image = "mock_image_url",
+                answers = listOf("Answer 1", "Answer 2", "Answer 3", "Answer 4"),
+                correctAnswer = "Answer 1",
+                selectedAnswer = null,
+                usedHint = false
+            )
+        ),
+        isLoading = false,
+        error = null,
+        showNotEnoughPointsDialog = false
+    )
+
+    GuessByImageContent(
+        state = mockState,
+        listener = object : GuessByImageInteractionListener {
+            override fun onNextClicked() {}
+            override fun onRetry() {}
+            override fun onAnswerSelected(answer: String) {}
+            override fun onHintUsed() {}
+            override fun onDismissNotEnoughPointsDialog() {}
+            override fun onCancelClick() {}
+            override fun onTimeFinished() {}
         }
     )
 }
