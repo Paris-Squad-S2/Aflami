@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -38,10 +37,8 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -93,24 +90,6 @@ fun TvShowDetailsScreenContent(
             scrollState.firstVisibleItemIndex > 1
         }
     }
-    val collapseIndex = 3
-
-    val shrinkProgress by remember {
-        derivedStateOf {
-            val index = scrollState.firstVisibleItemIndex
-            val offset = scrollState.firstVisibleItemScrollOffset
-
-            when {
-                index >= collapseIndex -> 1f
-                index == 0 -> (offset / 600f).coerceIn(0f, 1f)
-                else -> 0.5f
-            }
-        }
-    }
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val expandedHeight = (screenHeight * 0.4f)
-    val collapsedHeight = 56.dp
-    val headerHeight = lerp(expandedHeight, collapsedHeight, shrinkProgress)
     val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
@@ -177,11 +156,9 @@ fun TvShowDetailsScreenContent(
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
                                         listState = scrollState,
-                                        modifier = Modifier.height(headerHeight)
                                     )
 
                                 } else {
-
                                     TvTopComponent(
                                         tvShowScreenInteractionListener = tvShowScreenInteractionListener,
                                         animatedVisibilityScope = this@AnimatedContent,
