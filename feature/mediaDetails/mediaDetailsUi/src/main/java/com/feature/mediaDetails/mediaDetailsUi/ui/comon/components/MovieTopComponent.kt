@@ -55,7 +55,7 @@ fun MovieTopComponentDetails(
                     animatedVisibilityScope = animatedVisibilityScope,
                     enter = fadeIn() + scaleIn(),
                     exit = fadeOut() + scaleOut(),
-                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                    resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
                 )
         ) {
             val density = LocalDensity.current
@@ -159,7 +159,7 @@ fun MovieTopComponent(
                     animatedVisibilityScope = animatedVisibilityScope,
                     enter = fadeIn() + scaleIn(),
                     exit = fadeOut() + scaleOut(),
-                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                    resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
                 ),
             title = title,
             leadingIcons = listOf(
