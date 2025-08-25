@@ -10,26 +10,17 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.lerp
-import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreenState
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowScreenInteractionListener
 import com.paris.aflami.designsystem.R
@@ -47,30 +38,9 @@ fun TopComponentDetails(
     listState: LazyGridState,
     modifier: Modifier = Modifier
 ) {
-    val scrollState = rememberLazyGridState()
-    val collapseIndex = 3
-
-    val shrinkProgress by remember {
-        derivedStateOf {
-            val index = scrollState.firstVisibleItemIndex
-            val offset = scrollState.firstVisibleItemScrollOffset
-
-            when {
-                index >= collapseIndex -> 1f
-                index == 0 -> (offset / 600f).coerceIn(0f, 1f)
-                else -> 0.5f
-            }
-        }
-    }
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val expandedHeight = (screenHeight * 0.4f)
-    val collapsedHeight = 56.dp
-    val headerHeight = lerp(expandedHeight, collapsedHeight, shrinkProgress)
-
     with(sharedTransitionScope) {
         Box(
             modifier
-                .background(Theme.colors.surface)
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component Detail"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -90,23 +60,6 @@ fun TopComponentDetails(
             }
             val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
             val activity = LocalActivity.current
-            val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
-            val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
-            DetailsImage(
-                imageUris = state.tvShowDetailsUiState.gallery,
-                rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
-                onPlayClick = {
-                    if (tvShowSite.isNotEmpty() && tvShowKey.isNotEmpty()) {
-                        tvShowScreenInteractionListener.playYoutubeVideo(tvShowKey)
-                    }
-                },
-                modifier = Modifier
-                    .padding(bottom = 12.dp)
-                    .height(headerHeight),
-                nsfwThreshold = state.nsfwThreshold,
-                genderThreshold = state.genderThreshold
-            )
             AppTopBar(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
@@ -128,17 +81,6 @@ fun TopComponentDetails(
                     .background(backgroundColor)
                     .statusBarsPadding()
 
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .align(Alignment.TopCenter)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = Theme.colors.gradient.overlyDark
-                        )
-                    )
             )
         }
     }
