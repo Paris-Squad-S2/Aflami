@@ -163,26 +163,6 @@ fun TvShowDetailsScreenContent(
                                     )
                                 }
                             }
-//                            AnimatedContent(
-//                                targetState = isCollapsed,
-//                                label = "basic_transition"
-//                            ) { target ->
-//                                if (!target) {
-//                                    TopComponentDetails(
-//                                        state = state,
-//                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-//                                        animatedVisibilityScope = this@AnimatedContent,
-//                                        sharedTransitionScope = this@SharedTransitionLayout,
-//                                        listState = scrollState,
-//                                    )
-//
-//                                } else {
-//
-//
-//
-//                                }
-//                            }
-
                         }
                         LazyVerticalGrid(
                             columns = GridCells.Adaptive(150.dp),
