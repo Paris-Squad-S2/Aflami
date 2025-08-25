@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.LazyGridState
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -23,9 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import com.feature.mediaDetails.mediaDetailsUi.ui.comon.components.detailsImage.DetailsImage
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowDetailsScreenState
 import com.feature.mediaDetails.mediaDetailsUi.ui.screen.tvShow.details.TvShowScreenInteractionListener
@@ -44,6 +47,26 @@ fun TopComponentDetails(
     listState: LazyGridState,
     modifier: Modifier = Modifier
 ) {
+    val scrollState = rememberLazyGridState()
+    val collapseIndex = 3
+
+    val shrinkProgress by remember {
+        derivedStateOf {
+            val index = scrollState.firstVisibleItemIndex
+            val offset = scrollState.firstVisibleItemScrollOffset
+
+            when {
+                index >= collapseIndex -> 1f
+                index == 0 -> (offset / 600f).coerceIn(0f, 1f)
+                else -> 0.5f
+            }
+        }
+    }
+    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
+    val expandedHeight = (screenHeight * 0.4f)
+    val collapsedHeight = 56.dp
+    val headerHeight = lerp(expandedHeight, collapsedHeight, shrinkProgress)
+
     with(sharedTransitionScope) {
         Box(
             modifier
@@ -53,7 +76,7 @@ fun TopComponentDetails(
                     animatedVisibilityScope = animatedVisibilityScope,
                     enter = fadeIn() + scaleIn(),
                     exit = fadeOut() + scaleOut(),
-                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                    resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
                 )
         ) {
             val density = LocalDensity.current
@@ -78,7 +101,9 @@ fun TopComponentDetails(
                         tvShowScreenInteractionListener.playYoutubeVideo(tvShowKey)
                     }
                 },
-                modifier = Modifier.padding(bottom = 12.dp),
+                modifier = Modifier
+                    .padding(bottom = 12.dp)
+                    .height(headerHeight),
                 nsfwThreshold = state.nsfwThreshold,
                 genderThreshold = state.genderThreshold
             )
@@ -100,8 +125,8 @@ fun TopComponentDetails(
                     ),
                 ),
                 modifier = Modifier
-                    .statusBarsPadding()
                     .background(backgroundColor)
+                    .statusBarsPadding()
 
             )
             Box(
@@ -126,22 +151,22 @@ fun TvTopComponent(
     sharedTransitionScope: SharedTransitionScope,
     animatedVisibilityScope: AnimatedVisibilityScope,
     title: String,
-    state : TvShowDetailsScreenState,
+    state: TvShowDetailsScreenState,
     modifier: Modifier = Modifier,
 ) {
     val activity = LocalActivity.current
     with(sharedTransitionScope) {
+
         AppTopBar(
             modifier = modifier
-                .statusBarsPadding()
-                .padding(bottom = 1.dp)
                 .background(Theme.colors.surface)
+                .statusBarsPadding()
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component"),
                     animatedVisibilityScope = animatedVisibilityScope,
                     enter = fadeIn() + scaleIn(),
                     exit = fadeOut() + scaleOut(),
-                    resizeMode = SharedTransitionScope.ResizeMode.ScaleToBounds()
+                    resizeMode = SharedTransitionScope.ResizeMode.RemeasureToBounds
                 ),
             title = title,
             leadingIcons = listOf(

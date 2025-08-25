@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -28,7 +27,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -39,8 +37,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -88,13 +84,12 @@ fun TvShowDetailsScreenContent(
     val tvChips = TvShowChips.entries
     var currentRating by remember { mutableFloatStateOf(state.tvShowDetailsUiState.selectedRating) }
     val scrollState = rememberLazyGridState()
+    val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
     val isCollapsed by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+            scrollState.firstVisibleItemIndex > 1
         }
     }
-    val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
-
     val defaultIndex = tvChips.indexOf(TvShowChips.SEASONS)
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
 
@@ -102,16 +97,6 @@ fun TvShowDetailsScreenContent(
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
     val reviewsList = state.tvShowDetailsUiState.reviews
-
-    val screenHeight = with(LocalDensity){ LocalWindowInfo.current.containerSize.height.dp }
-
-    LaunchedEffect(isCollapsed) {
-        if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
-            scrollState.animateScrollToItem(
-                index = scrollState.layoutInfo.totalItemsCount - 1
-            )
-        }
-    }
 
     if (state.showRatingDialog) {
         RatingDialog(
@@ -165,34 +150,36 @@ fun TvShowDetailsScreenContent(
                                 label = "basic_transition"
                             ) { target ->
                                 if (!target) {
-                                        TopComponentDetails(
-                                            state = state,
-                                            tvShowScreenInteractionListener = tvShowScreenInteractionListener,
-                                            animatedVisibilityScope = this@AnimatedContent,
-                                            sharedTransitionScope = this@SharedTransitionLayout,
-                                            listState = scrollState
-                                        )
+                                    TopComponentDetails(
+                                        state = state,
+                                        tvShowScreenInteractionListener = tvShowScreenInteractionListener,
+                                        animatedVisibilityScope = this@AnimatedContent,
+                                        sharedTransitionScope = this@SharedTransitionLayout,
+                                        listState = scrollState,
+                                    )
+
                                 } else {
                                     TvTopComponent(
                                         tvShowScreenInteractionListener = tvShowScreenInteractionListener,
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
                                         title = state.tvShowDetailsUiState.tvShowUi.title,
-                                        state = state
+                                        state = state,
                                     )
+
                                 }
                             }
                         }
+
                     }
                     LazyVerticalGrid(
                         columns = GridCells.Adaptive(150.dp),
                         state = scrollState,
                         modifier = Modifier
-                            .fillMaxSize()
                             .navigationBarsPadding()
                     )
                     {
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             DescriptionSection(
                                 title = state.tvShowDetailsUiState.tvShowUi.title,
                                 genres = state.tvShowDetailsUiState.tvShowUi.genres,
@@ -202,7 +189,7 @@ fun TvShowDetailsScreenContent(
                                 description = state.tvShowDetailsUiState.tvShowUi.description
                             )
                         }
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             if (state.tvShowDetailsUiState.cast.isNotEmpty()) {
                                 CastSection(
                                     castList = state.tvShowDetailsUiState.cast,
@@ -214,7 +201,7 @@ fun TvShowDetailsScreenContent(
                                 )
                             }
                         }
-                        item (span = {GridItemSpan(maxLineSpan)}){
+                        item(span = { GridItemSpan(maxLineSpan) }) {
                             ChipsRowSection(
                                 items = tvChips.map {
                                     stringResource(it.titleResId) to it.iconResId
@@ -229,7 +216,7 @@ fun TvShowDetailsScreenContent(
                                 TvShowChips.SEASONS -> {
 
                                     if (state.tvShowDetailsUiState.tvShowUi.seasons.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -272,7 +259,7 @@ fun TvShowDetailsScreenContent(
 
                                             if (isExpanded) {
                                                 if (isSeasonLoading) {
-                                                    item (span = {GridItemSpan(maxLineSpan)}){
+                                                    item(span = { GridItemSpan(maxLineSpan) }) {
                                                         Box(
                                                             modifier = Modifier
                                                                 .fillMaxWidth()
@@ -283,7 +270,9 @@ fun TvShowDetailsScreenContent(
                                                         }
                                                     }
                                                 } else {
-                                                    items(season.episodes.size,span = {GridItemSpan(maxLineSpan)}) { episodeIndex ->
+                                                    items(
+                                                        season.episodes.size,
+                                                        span = { GridItemSpan(maxLineSpan) }) { episodeIndex ->
                                                         val episode = season.episodes[episodeIndex]
                                                         AnimatedVisibility(
                                                             visible = true,
@@ -352,7 +341,7 @@ fun TvShowDetailsScreenContent(
 
                                 TvShowChips.MORE_LIKE_THIS ->
                                     if (mediaList.itemSnapshotList.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -369,7 +358,9 @@ fun TvShowDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(mediaList.itemCount,span = {GridItemSpan(maxLineSpan)}) { mediaIndex ->
+                                        items(
+                                            mediaList.itemCount,
+                                            span = { GridItemSpan(maxLineSpan) }) { mediaIndex ->
                                             mediaList[mediaIndex]?.let { media ->
                                                 MediaCard(
                                                     modifier = Modifier
@@ -404,7 +395,7 @@ fun TvShowDetailsScreenContent(
 
                                 TvShowChips.REVIEWS ->
                                     if (reviewsList.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -421,14 +412,16 @@ fun TvShowDetailsScreenContent(
                                             }
                                         }
                                     } else {
-                                        items(reviewsList,span = {GridItemSpan(maxLineSpan)}) { review ->
+                                        items(
+                                            reviewsList,
+                                            span = { GridItemSpan(maxLineSpan) }) { review ->
                                             ReviewsSection(review)
                                         }
                                     }
 
-                                TvShowChips.GALLERY ->  {
+                                TvShowChips.GALLERY -> {
                                     if (state.tvShowDetailsUiState.gallery.isEmpty()) {
-                                        item (span = {GridItemSpan(maxLineSpan)}){
+                                        item(span = { GridItemSpan(maxLineSpan) }) {
                                             Box(
                                                 modifier = Modifier
                                                     .fillMaxWidth()
@@ -454,22 +447,6 @@ fun TvShowDetailsScreenContent(
                                         companies = state.tvShowDetailsUiState.tvShowUi.productionCompanies
                                     )
 
-                            }
-                        }
-
-                        item (span = {GridItemSpan(maxLineSpan)}){
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(screenHeight / 26),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                AppText(
-                                    text = stringResource(R.string.no_more_items),
-                                    style = Theme.textStyle.label.small,
-                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
-
-                                )
                             }
                         }
                     }

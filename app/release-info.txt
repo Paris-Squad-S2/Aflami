@@ -1,2 +1,2 @@
-versionName=1.0.33
-- add new feature remove movie from list
+versionName=1.0.34
+- fix scroll behavior for media details

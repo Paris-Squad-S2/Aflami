@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -38,8 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -98,9 +95,6 @@ fun MovieDetailsScreenContent(
     val selectedIndex = rememberSaveable { mutableIntStateOf(defaultIndex) }
     val mediaList = state.movieDetailsUiState.recommendations.collectAsLazyPagingItems()
     val scrollState = rememberLazyGridState()
-
-    val screenHeight = with(LocalDensity) { LocalWindowInfo.current.containerSize.height.dp }
-
     LaunchedEffect(state.snackBarSuccess, state.showSnackBar) {
         if (state.showSnackBar && state.snackBarSuccess) {
             delay(3000)
@@ -109,15 +103,9 @@ fun MovieDetailsScreenContent(
     }
     val isCollapsed by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemScrollOffset > 50 || scrollState.firstVisibleItemIndex > 0
+            scrollState.firstVisibleItemIndex > 1
         }
     }
-    LaunchedEffect(isCollapsed) {
-        if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
-            scrollState.animateScrollToItem(index = scrollState.layoutInfo.totalItemsCount - 1)
-        }
-    }
-
 
     if (state.showRatingDialog) {
         RatingDialog(
@@ -223,7 +211,7 @@ fun MovieDetailsScreenContent(
                                         movieDetailsScreenInteractionListener = movieDetailsScreenInteractionListener,
                                         animatedVisibilityScope = this@AnimatedContent,
                                         sharedTransitionScope = this@SharedTransitionLayout,
-                                        listState = scrollState
+                                        listState = scrollState,
                                     )
 
                                 } else {
@@ -243,7 +231,6 @@ fun MovieDetailsScreenContent(
                         state = scrollState,
                         columns = GridCells.Adaptive(150.dp),
                         modifier = Modifier
-                            .fillMaxSize()
                             .navigationBarsPadding(),
                     ) {
                         if (state.isDescriptionLoading) {
@@ -430,20 +417,6 @@ fun MovieDetailsScreenContent(
                                         )
                                     }
                                 }
-                            }
-                        }
-                        item(span = { GridItemSpan(maxLineSpan) }) {
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(screenHeight / 26),
-                                contentAlignment = Alignment.Center
-                            ) {
-                                AppText(
-                                    text = stringResource(R.string.no_more_items),
-                                    style = Theme.textStyle.label.small,
-                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
-                                )
                             }
                         }
                     }
