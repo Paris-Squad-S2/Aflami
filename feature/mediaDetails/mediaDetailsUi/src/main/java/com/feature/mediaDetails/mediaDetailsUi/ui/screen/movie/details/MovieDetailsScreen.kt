@@ -125,15 +125,9 @@ fun MovieDetailsScreenContent(
     }
     val isCollapsed by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemIndex > 3
+            scrollState.firstVisibleItemIndex > 1
         }
     }
-    LaunchedEffect(isCollapsed) {
-        if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
-            scrollState.animateScrollToItem(index = scrollState.layoutInfo.totalItemsCount - 1)
-        }
-    }
-
 
     if (state.showRatingDialog) {
         RatingDialog(

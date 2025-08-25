@@ -28,7 +28,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -91,7 +90,7 @@ fun TvShowDetailsScreenContent(
     val mediaList = state.tvShowDetailsUiState.recommendations.collectAsLazyPagingItems()
     val isCollapsed by remember {
         derivedStateOf {
-            scrollState.firstVisibleItemIndex > 3
+            scrollState.firstVisibleItemIndex > 1
         }
     }
     val collapseIndex = 3
@@ -119,15 +118,6 @@ fun TvShowDetailsScreenContent(
         mutableStateOf(List(state.tvShowDetailsUiState.tvShowUi.seasons.size) { false })
     }
     val reviewsList = state.tvShowDetailsUiState.reviews
-
-
-    LaunchedEffect(isCollapsed) {
-        if (isCollapsed && scrollState.layoutInfo.totalItemsCount > 0) {
-            scrollState.animateScrollToItem(
-                index = scrollState.layoutInfo.totalItemsCount - 1
-            )
-        }
-    }
 
     if (state.showRatingDialog) {
         RatingDialog(
