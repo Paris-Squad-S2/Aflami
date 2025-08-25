@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.LazyGridState
-import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -51,25 +50,49 @@ fun MovieTopComponentDetails(
     listState: LazyGridState,
     modifier: Modifier = Modifier
 ) {
-    val scrollState = rememberLazyGridState()
-    val collapseIndex = 3
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
+    val screenHeight = configuration.screenHeightDp.dp
+    val screenWidth = configuration.screenWidthDp.dp
+    val isLandscape =
+        configuration.orientation == android.content.res.Configuration.ORIENTATION_LANDSCAPE
+    val collapsedHeight = 56.dp
+    val expandedHeight = if (isLandscape) {
+        screenWidth * 0.6f
+    } else {
+        screenHeight * 0.4f
+    }
+    val maxOffsetPx = with(density) { (expandedHeight - collapsedHeight).toPx() }
+
+    val canScroll = remember {
+        derivedStateOf {
+            val info = listState.layoutInfo
+            info.totalItemsCount > 0 &&
+                    info.visibleItemsInfo.lastOrNull()?.index != info.totalItemsCount - 1 ||
+                    info.viewportEndOffset < info.totalItemsCount * info.viewportEndOffset
+        }
+    }
 
     val shrinkProgress by remember {
         derivedStateOf {
-            val index = scrollState.firstVisibleItemIndex
-            val offset = scrollState.firstVisibleItemScrollOffset
+            if (!canScroll.value) {
+                0f
+            } else {
+                when {
+                    listState.firstVisibleItemIndex > 0 -> 1f
+                    maxOffsetPx > 0 ->
+                        (listState.firstVisibleItemScrollOffset / maxOffsetPx).coerceIn(0f, 1f)
 
-            when {
-                index >= collapseIndex -> 1f
-                index == 0 -> (offset / 600f).coerceIn(0f, 1f)
-                else -> 0.5f
+                    else -> 0f
+                }
             }
         }
     }
-    val screenHeight = LocalConfiguration.current.screenHeightDp.dp
-    val expandedHeight = (screenHeight * 0.4f)
-    val collapsedHeight = 56.dp
-    val headerHeight = lerp(expandedHeight, collapsedHeight, shrinkProgress)
+    val headerHeight = if (canScroll.value) {
+        lerp(expandedHeight, collapsedHeight, shrinkProgress)
+    } else {
+        expandedHeight
+    }
 
     with(sharedTransitionScope) {
         Box(
