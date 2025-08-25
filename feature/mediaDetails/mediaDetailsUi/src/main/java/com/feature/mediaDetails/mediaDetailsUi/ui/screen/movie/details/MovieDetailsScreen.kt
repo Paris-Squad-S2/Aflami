@@ -448,20 +448,6 @@ fun MovieDetailsScreenContent(
                                 }
                             }
                         }
-//                        item(span = { GridItemSpan(maxLineSpan) }) {
-//                            Box(
-//                                modifier = Modifier
-//                                    .fillMaxWidth()
-//                                    .height(screenHeight / 26),
-//                                contentAlignment = Alignment.Center
-//                            ) {
-//                                AppText(
-//                                    text = stringResource(R.string.no_more_items),
-//                                    style = Theme.textStyle.label.small,
-//                                    color = Theme.colors.text.body.copy(alpha = 0.6f)
-//                                )
-//                            }
-//                        }
                     }
                 }
             }
