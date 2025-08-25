@@ -47,7 +47,6 @@ fun TopComponentDetails(
     with(sharedTransitionScope) {
         Box(
             modifier
-                .background(Theme.colors.surface)
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component Detail"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -67,21 +66,6 @@ fun TopComponentDetails(
             }
             val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
             val activity = LocalActivity.current
-            val tvShowSite = state.tvShowDetailsUiState.tvShowVideoUi.site
-            val tvShowKey = state.tvShowDetailsUiState.tvShowVideoUi.key
-            DetailsImage(
-                imageUris = state.tvShowDetailsUiState.gallery,
-                rating = state.tvShowDetailsUiState.tvShowUi.rating,
-                hasVideo = !(tvShowSite.isEmpty() || tvShowKey.isEmpty()),
-                onPlayClick = {
-                    if (tvShowSite.isNotEmpty() && tvShowKey.isNotEmpty()) {
-                        tvShowScreenInteractionListener.playYoutubeVideo(tvShowKey)
-                    }
-                },
-                modifier = Modifier.padding(bottom = 12.dp),
-                nsfwThreshold = state.nsfwThreshold,
-                genderThreshold = state.genderThreshold
-            )
             AppTopBar(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
@@ -103,17 +87,6 @@ fun TopComponentDetails(
                     .background(backgroundColor)
                     .statusBarsPadding()
 
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .align(Alignment.TopCenter)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = Theme.colors.gradient.overlyDark
-                        )
-                    )
             )
         }
     }

@@ -49,7 +49,6 @@ fun MovieTopComponentDetails(
     with(sharedTransitionScope) {
         Box(
             modifier
-                .background(Theme.colors.surface)
                 .sharedBounds(
                     rememberSharedContentState(key = "Top Component Detail"),
                     animatedVisibilityScope = animatedVisibilityScope,
@@ -69,27 +68,7 @@ fun MovieTopComponentDetails(
             }
             val backgroundColor = Theme.colors.surface.copy(alpha = alpha)
             val activity = LocalActivity.current
-            val site = state.movieDetailsUiState.movieVideoUi.site
-            val key = state.movieDetailsUiState.movieVideoUi.key
-            if (state.isImageLoading) {
-                PageLoadingPlaceHolder(
-                    modifier = Modifier.padding(bottom = 12.dp)
-                )
-            } else {
-                DetailsImage(
-                    imageUris = listOf(state.movieDetailsUiState.movie.posterUrl) + state.movieDetailsUiState.gallery,
-                    rating = state.movieDetailsUiState.movie.rating,
-                    onPlayClick = {
-                        if (site.isNotEmpty() && key.isNotEmpty()) {
-                            movieDetailsScreenInteractionListener.playYoutubeVideo(key)
-                        }
-                    },
-                    hasVideo = !(site.isEmpty() || key.isEmpty()),
-                    modifier = Modifier.padding(bottom = 12.dp),
-                    nsfwThreshold = state.nsfwThreshold,
-                    genderThreshold = state.genderThreshold
-                )
-            }
+
             AppTopBar(
                 leadingIcons = listOf(
                     iconItemWithDefaults(
@@ -122,17 +101,6 @@ fun MovieTopComponentDetails(
                     .background(backgroundColor)
                     .statusBarsPadding()
 
-            )
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(60.dp)
-                    .align(Alignment.TopCenter)
-                    .background(
-                        brush = Brush.verticalGradient(
-                            colors = Theme.colors.gradient.overlyDark
-                        )
-                    )
             )
         }
     }
