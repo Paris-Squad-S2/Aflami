@@ -1,2 +1,2 @@
-versionName=1.0.34
-- fix scroll behavior for media details
+versionName=1.0.35
+- ensured consistent expandedHeight behavior across different screen sizes
