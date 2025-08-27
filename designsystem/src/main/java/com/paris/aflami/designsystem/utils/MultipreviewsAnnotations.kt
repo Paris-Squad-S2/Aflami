@@ -27,5 +27,11 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
     device = "spec:width=1280dp,height=800dp,dpi=480"
 )
 
+@Preview(
+    name = "Desktop",
+    group = "devices",
+    device = "spec:width=1920dp,height=1080dp,dpi=480"
+)
+
 @PreviewLightDark
 annotation class PreviewMultiDevices

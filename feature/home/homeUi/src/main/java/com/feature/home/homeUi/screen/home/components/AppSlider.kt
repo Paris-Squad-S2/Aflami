@@ -29,6 +29,7 @@ import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.fontscaling.MathUtils.lerp
 import com.feature.home.homeUi.R
@@ -80,8 +81,10 @@ fun AppSlider(
     }
 
     val configuration = LocalConfiguration.current
-    val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val screenCenterPx = with(LocalDensity.current) { screenWidth.toPx() } / 2f
+    val screenWidth = LocalWindowInfo.current.containerSize.width
+    val screenWidthDp = with(LocalDensity.current) { screenWidth.dp }
+    val screenCenterPx = with(LocalDensity.current) { screenWidth.dp.toPx() } / 2f
+
 
     Box(
         modifier = modifier,
@@ -92,7 +95,7 @@ fun AppSlider(
             contentPadding = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
                 PaddingValues(horizontal = 80.dp)
             } else
-                PaddingValues(horizontal = 300.dp),
+                PaddingValues(horizontal = screenWidthDp/8),
             modifier = Modifier.fillMaxWidth(),
             beyondViewportPageCount = 2,
         ) { page ->
@@ -181,6 +184,51 @@ fun SliderPreview() {
                 categories = listOf(R.string.category_animation),
                 rating = 9.0f,
                 yearOfRelease = "2022"
+            ),
+            SliderMedia(
+                id = 3,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
+                title = "Sample Movie 2",
+                type = SliderMediaTypeUi.Movie,
+                categories = listOf(R.string.category_action),
+                rating = 7.8f,
+                yearOfRelease = "2024"
+            ),
+            SliderMedia(
+                id = 3,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
+                title = "Sample Movie 2",
+                type = SliderMediaTypeUi.Movie,
+                categories = listOf(R.string.category_action),
+                rating = 7.8f,
+                yearOfRelease = "2024"
+            ),
+            SliderMedia(
+                id = 3,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
+                title = "Sample Movie 2",
+                type = SliderMediaTypeUi.Movie,
+                categories = listOf(R.string.category_action),
+                rating = 7.8f,
+                yearOfRelease = "2024"
+            ),
+            SliderMedia(
+                id = 3,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
+                title = "Sample Movie 2",
+                type = SliderMediaTypeUi.Movie,
+                categories = listOf(R.string.category_action),
+                rating = 7.8f,
+                yearOfRelease = "2024"
+            ),
+            SliderMedia(
+                id = 3,
+                imageUri = "https://image.tmdb.org/t/p/w500/your_sample_image3.jpg",
+                title = "Sample Movie 2",
+                type = SliderMediaTypeUi.Movie,
+                categories = listOf(R.string.category_action),
+                rating = 7.8f,
+                yearOfRelease = "2024"
             ),
             SliderMedia(
                 id = 3,

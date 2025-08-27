@@ -1,2 +1,2 @@
-versionName=1.0.35
-- ensured consistent expandedHeight behavior across different screen sizes
+versionName=1.0.36
+- update home slider
