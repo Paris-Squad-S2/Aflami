@@ -243,5 +243,31 @@ val loadingList = listOf(
         categories = emptyList(),
         rating = 0f,
         yearOfRelease = "2022",
+    ),
+    SliderMedia(
+        id = 0,
+        imageUri = "",
+        title = "",
+        type = SliderMediaTypeUi.Movie,
+        categories = emptyList(),
+        rating = 0f,
+        yearOfRelease = "2022",
+    ),
+    SliderMedia(
+        id = 0,
+        imageUri = "",
+        title = "",
+        type = SliderMediaTypeUi.Movie,
+        categories = emptyList(),
+        rating = 0f,
+        yearOfRelease = "2022",
+    ),SliderMedia(
+        id = 0,
+        imageUri = "",
+        title = "",
+        type = SliderMediaTypeUi.Movie,
+        categories = emptyList(),
+        rating = 0f,
+        yearOfRelease = "2022",
     )
 )
