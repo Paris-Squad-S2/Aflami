@@ -93,7 +93,7 @@ fun AppSlider(
         HorizontalPager(
             state = pagerState,
             contentPadding = if (configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-                PaddingValues(horizontal = 80.dp)
+                PaddingValues(horizontal = 70.dp)
             } else
                 PaddingValues(horizontal = screenWidthDp/8),
             modifier = Modifier.fillMaxWidth(),
